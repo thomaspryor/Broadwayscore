@@ -1,26 +1,26 @@
 {
  "city": "los-angeles-ca",
- "today": "2026-11-19",
+ "today": "2026-11-24",
  "models": {
-  "gemini": "gemini-2.5-flash",
+  "gemini": "gemini-3.5-flash-lite",
   "openai": "gpt-5.6-terra"
  },
  "itemsChecked": {
-  "shows": 67,
+  "shows": 70,
   "images": 79,
-  "publishedReviews": 238,
+  "publishedReviews": 265,
   "excludedFiles": 15,
-  "reviewsWithoutText": 17,
+  "reviewsWithoutText": 25,
   "tourStops": 14,
-  "coverageShows": 43,
-  "totalShows": 82,
-  "totalPublished": 274
+  "coverageShows": 46,
+  "totalShows": 86,
+  "totalPublished": 306
  },
- "flaggedByGemini": 88,
- "flaggedByOpenAI": 72,
- "flaggedLocalChecks": 40,
- "flaggedAny": 138,
- "flaggedByBoth": 55,
+ "flaggedByGemini": 93,
+ "flaggedByOpenAI": 78,
+ "flaggedLocalChecks": 18,
+ "flaggedAny": 126,
+ "flaggedByBoth": 60,
  "triagedItems": 141,
  "confirmed": 57,
  "falsePositives": 84,
@@ -151,7 +151,7 @@
    "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
   }
  ],
- "untriaged": 37,
+ "untriaged": 26,
  "flags": [
   {
    "kind": "show",
@@ -755,14 +755,6 @@
   },
   {
    "kind": "show",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
    "id": "in-the-tomb-of-ten-thousand-calendars-regional-2026",
    "label": "In the Tomb of Ten Thousand Calendars",
    "model": "gemini",
@@ -1083,14 +1075,6 @@
   },
   {
    "kind": "show",
-   "id": "kaiju-regional-2026",
-   "label": "Kaiju",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
    "id": "saint-megan-regional-2026",
    "label": "Saint Megan",
    "model": "gemini",
@@ -1123,14 +1107,6 @@
   },
   {
    "kind": "show",
-   "id": "saint-megan-regional-2026",
-   "label": "Saint Megan",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
    "id": "rorschach-regional-2026",
    "label": "Rorschach",
    "model": "gemini",
@@ -1144,14 +1120,6 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-10-15, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "rorschach-regional-2026",
-   "label": "Rorschach",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
   },
   {
    "kind": "show",
@@ -1174,24 +1142,8 @@
    "id": "confederates-regional-2026-fountain-theatre",
    "label": "Confederates",
    "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-11-06 / page 2026-10-30"
-  },
-  {
-   "kind": "show",
-   "id": "confederates-regional-2026-fountain-theatre",
-   "label": "Confederates",
-   "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-10-28, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "confederates-regional-2026-fountain-theatre",
-   "label": "Confederates",
-   "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-11-06 / page 2026-10-30"
   },
   {
    "kind": "show",
@@ -1267,14 +1219,6 @@
   },
   {
    "kind": "show",
-   "id": "barefoot-in-the-park-regional-2026",
-   "label": "Barefoot In The Park",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
    "id": "the-difficulty-adjustment-regional-2026",
    "label": "The Difficulty Adjustment",
    "model": "local",
@@ -1291,32 +1235,8 @@
   },
   {
    "kind": "show",
-   "id": "the-laugh-track-regional-2026",
-   "label": "The Laugh Track",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
-   "id": "little-women-regional-2026",
-   "label": "Little Women",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
    "id": "nacho-ate-spiderman-regional-2026",
    "label": "Nacho Ate Spiderman",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
-   "id": "radio-galaxy-regional-2026",
-   "label": "Radio Galaxy",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
@@ -1328,14 +1248,6 @@
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
-  },
-  {
-   "kind": "show",
-   "id": "recent-alien-abductions-regional-2026",
-   "label": "Recent Alien Abductions",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
   },
   {
    "kind": "show",
@@ -1370,6 +1282,30 @@
    "detail": "closingDateSource missing"
   },
   {
+   "kind": "show",
+   "id": "the-farce-awakens-feydeau-x-2-regional-2026",
+   "label": "The Farce Awakens: Feydeau x 2",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "death-and-the-maiden-regional-2026",
+   "label": "Death and the Maiden",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "the-heiress-regional-2026",
+   "label": "The Heiress",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
    "kind": "review",
    "id": "a-case-for-the-existence-of-god-regional-2026|https://www.artsbeatla.com/2026/09/a-case-for-the-existence-of-god|terry morgan",
    "label": "A Case for the Existence of God | ArtsBeatLA / Terry Morgan",
@@ -1392,6 +1328,102 @@
    "model": "openai",
    "code": "wrong-production",
    "detail": "Theatre 40, 241 S. Moreno Dr., Beverly Hills."
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://www.newyorktheatreguide.com/reviews/dear-evan-hansen|margret echeverria",
+   "label": "Dear Evan Hansen | New York Theatre Guide / Margret Echeverria",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "Broadway's Music Box Theater proves a perfect fit for this sensitive musical starring a sensational Ben Platt"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://www.newyorktheatreguide.com/reviews/dear-evan-hansen|margret echeverria",
+   "label": "Dear Evan Hansen | New York Theatre Guide / Margret Echeverria",
+   "model": "gemini",
+   "code": "publish-date",
+   "detail": "ours 2026-11-16 / article 2017-09-22"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://www.newyorktheatreguide.com/reviews/dear-evan-hansen|margret echeverria",
+   "label": "Dear Evan Hansen | New York Theatre Guide / Margret Echeverria",
+   "model": "gemini",
+   "code": "pre-run-date",
+   "detail": "article dated 2017-09-22, run opens 2026-11-02"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://www.newyorktheatreguide.com/reviews/dear-evan-hansen|margret echeverria",
+   "label": "Dear Evan Hansen | New York Theatre Guide / Margret Echeverria",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "\"Broadway's Music Box Theater proves a perfect fit\""
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://www.newyorktheatreguide.com/reviews/dear-evan-hansen|margret echeverria",
+   "label": "Dear Evan Hansen | New York Theatre Guide / Margret Echeverria",
+   "model": "openai",
+   "code": "publish-date",
+   "detail": "ours 2026-11-16 / article 2017-09-22"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://www.newyorktheatreguide.com/reviews/dear-evan-hansen|margret echeverria",
+   "label": "Dear Evan Hansen | New York Theatre Guide / Margret Echeverria",
+   "model": "openai",
+   "code": "pre-run-date",
+   "detail": "article dated 2017-09-22, run opens 2026-11-02"
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://rhombusrota.co.uk/2026/11/12/dear-evan-hansen-a-reflection-of-contemporary-musical-excellence|",
+   "label": "Dear Evan Hansen | Rhombus Rota / null",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "The article is an analysis and review of the musical's score and cast album rather than a specific regional theatre production."
+  },
+  {
+   "kind": "review",
+   "id": "dear-evan-hansen-la-regional-2026|https://rhombusrota.co.uk/2026/11/12/dear-evan-hansen-a-reflection-of-contemporary-musical-excellence|",
+   "label": "Dear Evan Hansen | Rhombus Rota / null",
+   "model": "openai",
+   "code": "non-review:other",
+   "detail": "This is a song-by-song appreciation of the musical rather than a review of a stated production."
+  },
+  {
+   "kind": "review",
+   "id": "destiny-of-desire-regional-2026|https://aroundthetownchicago.com/theatre-reviews/destiny-of-desire|",
+   "label": "Destiny of Desire | Around the Town Chicago / null",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "The Goodman Theatre"
+  },
+  {
+   "kind": "review",
+   "id": "destiny-of-desire-regional-2026|https://aroundthetownchicago.com/theatre-reviews/destiny-of-desire|",
+   "label": "Destiny of Desire | Around the Town Chicago / null",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "\"This is a co-production with South Coast Repertory in Costa Mesa, California, and I am glad that The Goodman decided to be adventurous\""
+  },
+  {
+   "kind": "review",
+   "id": "destiny-of-desire-regional-2026|https://laexcites.com/2026/11/17/destiny-of-desire-mark-taper-forum-adrian-javier|imaan jalali",
+   "label": "Destiny of Desire | LA Excites / Imaan Jalali",
+   "model": "gemini",
+   "code": "non-review:interview",
+   "detail": "This article is an interview with cast member Adrián Javier about the production."
+  },
+  {
+   "kind": "review",
+   "id": "destiny-of-desire-regional-2026|https://laexcites.com/2026/11/17/destiny-of-desire-mark-taper-forum-adrian-javier|imaan jalali",
+   "label": "Destiny of Desire | LA Excites / Imaan Jalali",
+   "model": "openai",
+   "code": "non-review:interview",
+   "detail": "An interview with Adrián Javier that describes the Taper production as “the funniest show to come around in a long time.”"
   },
   {
    "kind": "review",
@@ -1440,14 +1472,6 @@
    "model": "local",
    "code": "pull-quote-not-in-text",
    "detail": "It's all très charmant (but also très talky), which is why audiences will thank producer Charles A. Duncombe and director Frédérique Michel "
-  },
-  {
-   "kind": "review",
-   "id": "primary-trust-regional-2026|https://www.latimes.com/entertainment-arts/story/2026-05-29/primary-trust-eboni-booth-mark-taper-forum-knud-adams-review|charles mcnulty",
-   "label": "Primary Trust | Los Angeles Times / Charles McNulty",
-   "model": "local",
-   "code": "pull-quote-not-in-text",
-   "detail": "\"Primary Trust\" is a tonic for ailing spirits."
   },
   {
    "kind": "review",
@@ -1528,126 +1552,6 @@
    "model": "openai",
    "code": "excluded-looks-valid",
    "detail": "The Case-Book of C. Auguste Dupin at Theatre 40 at The Reuben Cordova Theatre 241 Moreno Drive Beverly Hills | flags on file: partial_text"
-  },
-  {
-   "kind": "review",
-   "id": "confederates-regional-2026-fountain-theatre|https://hollywoodprogressive.com/stage/confederates-at-the-fountain-theatre|dick price",
-   "label": "confederates-regional-2026-fountain-theatre | Hollywood Progressive",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://hollywoodprogressive.com/stage/confederates-at-the-fountain-theatre"
-  },
-  {
-   "kind": "review",
-   "id": "dear-evan-hansen-la-regional-2026|https://www.broadwayworld.com/los-angeles/article/review-dear-evan-hansen-at-la-mirada-theatre-20261109|michael quintos",
-   "label": "dear-evan-hansen-la-regional-2026 | BroadwayWorld",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://www.broadwayworld.com/los-angeles/article/Review-DEAR-EVAN-HANSEN-at-La-Mirada-Theatre-20261109"
-  },
-  {
-   "kind": "review",
-   "id": "dear-evan-hansen-la-regional-2026|https://www.newyorktheatreguide.com/reviews/dear-evan-hansen|margret echeverria",
-   "label": "dear-evan-hansen-la-regional-2026 | New York Theatre Guide",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://www.newyorktheatreguide.com/reviews/dear-evan-hansen"
-  },
-  {
-   "kind": "review",
-   "id": "dear-evan-hansen-la-regional-2026|https://stagescenela.com/2026/11/dear-evan-hansen-2|",
-   "label": "dear-evan-hansen-la-regional-2026 | StageSceneLA",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://stagescenela.com/2026/11/dear-evan-hansen-2"
-  },
-  {
-   "kind": "review",
-   "id": "dear-evan-hansen-la-regional-2026|https://www.whittierdailynews.com/2026/11/03/review-dear-evan-hansen-is-a-soaring-triumph-at-la-mirada-theatre|christopher smith",
-   "label": "dear-evan-hansen-la-regional-2026 | Whittier Daily News",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://www.whittierdailynews.com/2026/11/03/review-dear-evan-hansen-is-a-soaring-triumph-at-la-mirada-theatre/"
-  },
-  {
-   "kind": "review",
-   "id": "destiny-of-desire-regional-2026|https://laexcites.com/2026/11/17/destiny-of-desire-mark-taper-forum-adrian-javier|imaan jalali",
-   "label": "destiny-of-desire-regional-2026 | LA Excites",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://laexcites.com/2026/11/17/destiny-of-desire-mark-taper-forum-adrian-javier/"
-  },
-  {
-   "kind": "review",
-   "id": "destiny-of-desire-regional-2026|https://splashmags.com/2026/11/destiny-of-desire-a-laugh-out-loud-telenovela-with-music|elaine mura",
-   "label": "destiny-of-desire-regional-2026 | Splash Magazines",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://splashmags.com/2026/11/destiny-of-desire-a-laugh-out-loud-telenovela-with-music/"
-  },
-  {
-   "kind": "review",
-   "id": "nacho-ate-spiderman-regional-2026|https://www.discoverhollywood.com/nacho-ate-spiderman-ruskin-group-theatre|amalisha hueck",
-   "label": "nacho-ate-spiderman-regional-2026 | Discover Hollywood",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://www.discoverhollywood.com/nacho-ate-spiderman-ruskin-group-theatre"
-  },
-  {
-   "kind": "review",
-   "id": "passing-strange-regional-2026|https://stageraw.com/stage-raw-review-passing-strange|f kathleen foley",
-   "label": "passing-strange-regional-2026 | Stage Raw",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://stageraw.com/stage-raw-review-passing-strange"
-  },
-  {
-   "kind": "review",
-   "id": "radio-galaxy-regional-2026|https://www.latheatrix.com/post/review-stellar-radio-galaxy-at-the-wallis|anita w harris",
-   "label": "radio-galaxy-regional-2026 | LA Theatrix",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://www.latheatrix.com/post/review-stellar-radio-galaxy-at-the-wallis"
-  },
-  {
-   "kind": "review",
-   "id": "the-39-steps-regional-2026|https://www.onthereels.com/p/wheezing-with-laughter-the-39-steps|r c samo",
-   "label": "the-39-steps-regional-2026 | OnTheReels",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://www.onthereels.com/p/wheezing-with-laughter-the-39-steps"
-  },
-  {
-   "kind": "review",
-   "id": "the-laugh-track-regional-2026|https://www.discoverhollywood.com/the-laugh-track-ict-beverly-oneill-theater|amalisha hueck",
-   "label": "the-laugh-track-regional-2026 | Discover Hollywood",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://www.discoverhollywood.com/the-laugh-track-ict-beverly-oneill-theater/"
-  },
-  {
-   "kind": "review",
-   "id": "the-laugh-track-regional-2026|https://lbpost.com/esd/eat-see-do-2/see/theater-review-the-laugh-track-i-love-lucy-madelyn-pugh-wendy-macleod|anita w harris",
-   "label": "the-laugh-track-regional-2026 | Long Beach Post",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://lbpost.com/esd/eat-see-do-2/see/theater-review-the-laugh-track-i-love-lucy-madelyn-pugh-wendy-macleod"
-  },
-  {
-   "kind": "review",
-   "id": "the-laugh-track-regional-2026|https://stageraw.com/stage-raw-review-the-laugh-track|julyza commodore",
-   "label": "the-laugh-track-regional-2026 | Stage Raw",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://stageraw.com/stage-raw-review-the-laugh-track/"
-  },
-  {
-   "kind": "review",
-   "id": "the-laugh-track-regional-2026|https://stagescenela.com/2026/11/the-laugh-track|",
-   "label": "the-laugh-track-regional-2026 | StageSceneLA",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://stagescenela.com/2026/11/the-laugh-track"
   },
   {
    "kind": "tour",
@@ -2800,33 +2704,46 @@
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Hollywood Times / Robert St. Martin 2026-11-01 https://hollywoodtimes.net/confederates-a-thought-provoking-play-about-institutional-racism-and-its-impact-on-black-women/"
-  }
- ],
- "pages": {
-  "hub": {
-   "problems": [],
-   "status": 200,
-   "counts": {
-    "now": 22,
-    "soon": 11,
-    "closed": 26
-   },
-   "expectedLocal": {
-    "now": 21,
-    "soon": 0,
-    "closedRecent": 12,
-    "archive": 49
-   }
   },
-  "app": {
-   "feedStatus": 200,
-   "feedCount": 81,
-   "webCount": 82,
-   "problems": [],
-   "byDesignUnscoredClosed": [
-    "into-the-woods-regional-2026",
-    "come-from-away-noise-regional-2026"
-   ]
+  {
+   "kind": "coverage",
+   "id": "passing-strange-regional-2026",
+   "label": "Passing Strange",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Nerds of Color / Edward Hong 2026-11-09 https://thenerdsofcolor.org/2026/11/09/a-los-angeles-theatre-review-passing-strange/"
+  },
+  {
+   "kind": "coverage",
+   "id": "passing-strange-regional-2026",
+   "label": "Passing Strange",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Larchmont Buzz / Carol M. Becker 2026-11-12 https://larchmontbuzz.com/theater/passing-strange-is-starting-to-feel-real/"
+  },
+  {
+   "kind": "coverage",
+   "id": "passing-strange-regional-2026",
+   "label": "Passing Strange",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "TicketHoldersLA / Travis Michael Holder 2026-11-18 https://www.ticketholdersla.com/current-reviews/"
+  },
+  {
+   "kind": "coverage",
+   "id": "at-the-very-bottom-of-a-body-of-water-regional-2026",
+   "label": "At The Very Bottom of a Body of Water",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Steven Leigh Morris 2026-11-04 https://stageraw.com/at-the-very-bottom-of-a-body-of-water/"
+  },
+  {
+   "kind": "coverage",
+   "id": "at-the-very-bottom-of-a-body-of-water-regional-2026",
+   "label": "At The Very Bottom of a Body of Water",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Steven Leigh Morris 2026-11-04 https://stageraw.com/stage-raw-review-at-the-very-bottom-of-a-body-of-water/"
   }
- }
+ ]
 }

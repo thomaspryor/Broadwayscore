@@ -1,32 +1,32 @@
 {
  "city": "san-diego-ca",
- "today": "2026-11-17",
+ "today": "2026-11-24",
  "models": {
-  "gemini": "gemini-2.5-flash",
+  "gemini": "gemini-3.5-flash-lite",
   "openai": "gpt-5.6-terra"
  },
  "itemsChecked": {
-  "shows": 13,
+  "shows": 17,
   "images": 0,
-  "publishedReviews": 65,
+  "publishedReviews": 94,
   "excludedFiles": 0,
-  "reviewsWithoutText": 47,
+  "reviewsWithoutText": 49,
   "tourStops": 0,
-  "coverageShows": 6,
-  "totalShows": 48,
-  "totalPublished": 156
+  "coverageShows": 9,
+  "totalShows": 51,
+  "totalPublished": 162
  },
- "flaggedByGemini": 16,
- "flaggedByOpenAI": 14,
- "flaggedLocalChecks": 2,
- "flaggedAny": 18,
- "flaggedByBoth": 14,
- "triagedItems": 5,
+ "flaggedByGemini": 19,
+ "flaggedByOpenAI": 20,
+ "flaggedLocalChecks": 1,
+ "flaggedAny": 23,
+ "flaggedByBoth": 17,
+ "triagedItems": 6,
  "confirmed": 0,
- "falsePositives": 5,
+ "falsePositives": 6,
  "fixed": 0,
  "remaining": [],
- "untriaged": 18,
+ "untriaged": 23,
  "flags": [
   {
    "kind": "show",
@@ -237,12 +237,60 @@
    "detail": "page 2026-06-05, ours empty"
   },
   {
+   "kind": "show",
+   "id": "measure-for-measure-regional-2026",
+   "label": "Measure for Measure",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-14, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "north-by-northwest-old-regional-2026",
+   "label": "North by Northwest",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-07-03, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "north-by-northwest-old-regional-2026",
+   "label": "North by Northwest",
+   "model": "gemini",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "north-by-northwest-old-regional-2026",
+   "label": "North by Northwest",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-07-03, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "north-by-northwest-old-regional-2026",
+   "label": "North by Northwest",
+   "model": "openai",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
    "kind": "review",
-   "id": "arcadia-regional-2026|https://theatrereviewskurahashi.wordpress.com/2026/07/19/waltzing-through-time-in-arcadia-cygnet-theatres-arcadia|yuko kurahashi",
-   "label": "Arcadia | Theatre Reviews Kurahashi / Yuko Kurahashi",
-   "model": "local",
-   "code": "pull-quote-not-in-text",
-   "detail": "Cygnet Theatre's Arcadia is a superb, intellectually and aesthetically stimulating, and moving work that reflects on two periods."
+   "id": "carrie-the-musical-regional-2026|https://www.broadwayworld.com/louisville/article/review-carrie-the-musical-at-the-carnegie-20261028|taylor clemons",
+   "label": "Carrie: The Musical | BroadwayWorld / Taylor Clemons",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "The Carnegie 1028 Scott St Covington, KY 41011"
+  },
+  {
+   "kind": "review",
+   "id": "carrie-the-musical-regional-2026|https://www.broadwayworld.com/louisville/article/review-carrie-the-musical-at-the-carnegie-20261028|taylor clemons",
+   "label": "Carrie: The Musical | BroadwayWorld / Taylor Clemons",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "The Carnegie 1028 Scott St Covington, KY 41011"
   },
   {
    "kind": "review",
@@ -499,6 +547,62 @@
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Stage West / David Coddon 2026-07-24 https://www.davidcoddon.com/theatre-reviews/category/all"
+  },
+  {
+   "kind": "coverage",
+   "id": "scapin-regional-2026",
+   "label": "Scapin",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Culture Vulture / Lynne Friedmann 2026-08-06 https://culturevulture.net"
+  },
+  {
+   "kind": "coverage",
+   "id": "scapin-regional-2026",
+   "label": "Scapin",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage West / David Coddon 2026-07-26 http://www.davidcoddon.com"
+  },
+  {
+   "kind": "coverage",
+   "id": "scapin-regional-2026",
+   "label": "Scapin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage West / David L. Coddon 2026-07-26 https://www.davidcoddon.com/theatre-reviews/stage-west-scapin-at-north-coast-repertory-theatre"
+  },
+  {
+   "kind": "coverage",
+   "id": "scapin-regional-2026",
+   "label": "Scapin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Carol's Theatre Reviews / Carol Davis 2026-07-27 https://gilatwo.blogspot.com/2026/07/scapinat-north-coast-laugh-minute.html"
+  },
+  {
+   "kind": "coverage",
+   "id": "scapin-regional-2026",
+   "label": "Scapin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "North County Daily Star / Tom Robertson 2026-07-29 https://northcountydailystar.com/north-coast-reps-fast-paced-comedy-scapin-will-leave-you-aching-from-laughter/"
+  },
+  {
+   "kind": "coverage",
+   "id": "ha-ha-ha-ha-ha-ha-ha-regional-2026",
+   "label": "ha ha ha ha ha ha ha",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Talk Theatre to Me / ErinMarie Reiter 2026-08-01 https://www.talktheatretome.com/theatre/ljphahaha"
+  },
+  {
+   "kind": "coverage",
+   "id": "much-ado-about-nothing-regional-2026",
+   "label": "Much Ado About Nothing",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "STAGE WEST / David L. Coddon 2026-08-10 https://www.davidcoddon.com/theatre-reviews/stage-west-much-ado-about-nothing-at-the-old-globe"
   }
  ]
 }

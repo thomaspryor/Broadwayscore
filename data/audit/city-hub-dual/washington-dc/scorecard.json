@@ -1,26 +1,26 @@
 {
  "city": "washington-dc",
- "today": "2026-11-19",
+ "today": "2026-11-24",
  "models": {
-  "gemini": "gemini-2.5-flash",
+  "gemini": "gemini-3.5-flash-lite",
   "openai": "gpt-5.6-terra"
  },
  "itemsChecked": {
-  "shows": 50,
+  "shows": 54,
   "images": 61,
-  "publishedReviews": 196,
+  "publishedReviews": 222,
   "excludedFiles": 21,
-  "reviewsWithoutText": 14,
+  "reviewsWithoutText": 19,
   "tourStops": 12,
-  "coverageShows": 36,
+  "coverageShows": 39,
   "totalShows": 64,
-  "totalPublished": 211
+  "totalPublished": 225
  },
- "flaggedByGemini": 68,
- "flaggedByOpenAI": 57,
- "flaggedLocalChecks": 16,
- "flaggedAny": 93,
- "flaggedByBoth": 44,
+ "flaggedByGemini": 76,
+ "flaggedByOpenAI": 64,
+ "flaggedLocalChecks": 12,
+ "flaggedAny": 98,
+ "flaggedByBoth": 49,
  "triagedItems": 126,
  "confirmed": 41,
  "falsePositives": 85,
@@ -79,7 +79,7 @@
    "reason": "Official tour page lists the National Theatre stop Nov 24 to Dec 6; ours ends Nov 29. tour-schedules.json is rewritten by fetch-tour-schedules.js so a manual edit would not hold. Remaining item: needs a tour-stop override layer."
   }
  ],
- "untriaged": 18,
+ "untriaged": 23,
  "flags": [
   {
    "kind": "show",
@@ -611,14 +611,6 @@
   },
   {
    "kind": "show",
-   "id": "metamorphosis-regional-2026",
-   "label": "Metamorphosis",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
    "id": "the-elaborate-entrance-of-chad-deity-regional-2026",
    "label": "The Elaborate Entrance of Chad Deity",
    "model": "gemini",
@@ -672,6 +664,38 @@
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "a-beautiful-blue-morning-sky-regional-2026",
+   "label": "A Beautiful Blue Morning Sky",
+   "model": "gemini",
+   "code": "closing-date-missing",
+   "detail": "page 2026-09-13, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "a-beautiful-blue-morning-sky-regional-2026",
+   "label": "A Beautiful Blue Morning Sky",
+   "model": "openai",
+   "code": "closing-date-missing",
+   "detail": "page 2026-09-13, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "body-language-regional-2026",
+   "label": "Body Language",
+   "model": "gemini",
+   "code": "closing-date-missing",
+   "detail": "page 2026-09-27, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "body-language-regional-2026",
+   "label": "Body Language",
+   "model": "openai",
+   "code": "closing-date-missing",
+   "detail": "page 2026-09-27, ours empty"
   },
   {
    "kind": "show",
@@ -776,6 +800,30 @@
    "model": "openai",
    "code": "wrong-production",
    "detail": "GHOST LIMB, written by Marisela Treviño Orta and directed by Elena Velasco at Avant Bard T"
+  },
+  {
+   "kind": "review",
+   "id": "my-english-persian-kitchen-regional-2026|https://mdtheatreguide.com/2026/11/theatre-review-my-english-persian-kitchen-presented-by-solas-nua-in-association-with-mosaic-theater-company-at-the-atlas-performing-arts-center|alexander ferguson",
+   "label": "My English Persian Kitchen | Maryland Theatre Guide / Alexander Ferguson",
+   "model": "gemini",
+   "code": "publish-date",
+   "detail": "ours 2026-11-18 / article 2026-11-24"
+  },
+  {
+   "kind": "review",
+   "id": "nixon-in-china-regional-2026|https://seenandheard-international.com/2026/11/washington-national-opera-proves-the-past-has-a-present-tense-in-nixon-in-china|rick perdian",
+   "label": "Nixon in China | Seen and Heard International / Rick Perdian",
+   "model": "gemini",
+   "code": "publish-date",
+   "detail": "ours 2026-11-15 / article 2026-11-19"
+  },
+  {
+   "kind": "review",
+   "id": "nixon-in-china-regional-2026|https://georgetowner.com/articles/2026/11/18/wnos-nixon-in-china-political-theater-at-its-best|amy titus",
+   "label": "Nixon in China | The Georgetowner / Amy Titus",
+   "model": "openai",
+   "code": "byline",
+   "detail": "ours \"Amy Titus\" / article \"The Georgetowner\""
   },
   {
    "kind": "review",
@@ -899,6 +947,22 @@
   },
   {
    "kind": "review",
+   "id": "takes-all-kinds-regional-2026|https://dctheaterarts.org/2026/11/15/in-takes-all-kinds-dan-hoyle-shares-a-secret-for-saving-democracy|john stoltenberg",
+   "label": "Takes All Kinds | DC Theater Arts / John Stoltenberg",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "“presented by Voices Festival Productions at Universalist National Memorial Church (where Spooky Action Theater performs)”"
+  },
+  {
+   "kind": "review",
+   "id": "the-elaborate-entrance-of-chad-deity-regional-2026|https://morristheatredc.com/reviews/chad-deity-nextstop|drew morris",
+   "label": "The Elaborate Entrance of Chad Deity | Morris Theatre DC / Drew Morris",
+   "model": "gemini",
+   "code": "score-vs-text",
+   "detail": "text reads mixed, score 35"
+  },
+  {
+   "kind": "review",
    "id": "the-play-that-goes-wrong-regional-2026|https://www.metroweekly.com/2026/06/the-play-that-goes-wrong-review-keegan-theatre|andre hereford",
    "label": "The Play That Goes Wrong | Metro Weekly / André Hereford",
    "model": "gemini",
@@ -952,30 +1016,6 @@
    "model": "openai",
    "code": "excluded-looks-valid",
    "detail": "“Directed by Robert McNamara and staged by Scena Theatre, it proceeds over a brisk 90 minutes at the DC Arts Center” | flags on file: "
-  },
-  {
-   "kind": "review",
-   "id": "madama-butterfly-regional-2026|https://www.metroweekly.com/2026/11/madama-butterfly-review-washington-national-opera|kate wingfield",
-   "label": "madama-butterfly-regional-2026 | Metro Weekly",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://www.metroweekly.com/2026/11/madama-butterfly-review-washington-national-opera/"
-  },
-  {
-   "kind": "review",
-   "id": "the-war-of-the-worlds-regional-2026|https://aroundthetownchicago.com/theatre-reviews/a-war-of-the-worlds-reviewed-by-julia-w-rath|",
-   "label": "the-war-of-the-worlds-regional-2026 | Around the Town Chicago",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://aroundthetownchicago.com/theatre-reviews/a-war-of-the-worlds-reviewed-by-julia-w-rath/"
-  },
-  {
-   "kind": "review",
-   "id": "the-war-of-the-worlds-regional-2026|https://dc.citycast.fm/theater-reviews/war-worlds-orson-welles-dc|chris klimek",
-   "label": "the-war-of-the-worlds-regional-2026 | City Cast DC",
-   "model": "local",
-   "code": "no-review-text-file",
-   "detail": "https://dc.citycast.fm/theater-reviews/war-worlds-orson-welles-dc"
   },
   {
    "kind": "tour",
@@ -1687,14 +1727,6 @@
    "label": "Merrily We Roll Along",
    "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "DC Theater Arts / Bob Ashby 2026-09-05 https://dctheaterarts.org/2026/09/05/merrily-we-roll-along-asks-what-if-you-got-everything-you-ever-wanted/"
-  },
-  {
-   "kind": "coverage",
-   "id": "merrily-we-roll-along-regional-2026",
-   "label": "Merrily We Roll Along",
-   "model": "gemini",
-   "code": "missing-review-candidate",
    "detail": "Washingtonian / Jordan Wright 2026-09-06 https://www.washingtonian.com/2026/09/06/stephen-sondheims-musical-merrily-we-roll-along-is-a-hit-at-signature-theatre/"
   },
   {
@@ -1712,14 +1744,6 @@
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "The Washington Post / Thomas Floyd 2026-09-16 https://www.washingtonpost.com/entertainment/theater/2026/09/16/signature-merrily-we-roll-along-peaks-sondheimian-perfection/"
-  },
-  {
-   "kind": "coverage",
-   "id": "merrily-we-roll-along-regional-2026",
-   "label": "Merrily We Roll Along",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "DC Theater Arts / Bob Ashby 2026-09-05 https://dctheaterarts.org/2026/09/05/merrily-we-roll-along-asks-what-if-you-ever-wanted/"
   },
   {
    "kind": "coverage",
@@ -2048,38 +2072,166 @@
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Talkin' Broadway / Susan Berlin 2026-11-13 https://talkinbroadway.com/page/regional/dc/dc1407.html"
-  }
- ],
- "pages": {
-  "hub": {
-   "problems": [],
-   "status": 200,
-   "counts": {
-    "now": 13,
-    "soon": 12,
-    "closed": 23
-   },
-   "expectedLocal": {
-    "now": 13,
-    "soon": 0,
-    "closedRecent": 12,
-    "archive": 39
-   }
   },
-  "app": {
-   "feedStatus": 200,
-   "feedCount": 59,
-   "webCount": 64,
-   "problems": [],
-   "byDesignUnscoredClosed": [
-    "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026",
-    "a-beautiful-blue-morning-sky-regional-2026",
-    "come-from-away-fords-regional-2026",
-    "the-second-best-school-shooting-regional-2026",
-    "hakawatis-women-of-the-arabian-nights-regional-2026",
-    "handle-with-care-regional-2026",
-    "sparked-the-vanishing-at-buzzard-point-regional-2026"
-   ]
+  {
+   "kind": "coverage",
+   "id": "a-beautiful-blue-morning-sky-regional-2026",
+   "label": "A Beautiful Blue Morning Sky",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Roger Catlin 2026-09-13 https://www.broadwayworld.com/washington-dc/article/Review-A-BEAUTIFUL-BLUE-MORNING-SKY-at-The-Keegan-Theatre-20260913"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-beautiful-blue-morning-sky-regional-2026",
+   "label": "A Beautiful Blue Morning Sky",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Debbie Minter Jackson 2026-09-12 https://dctheaterarts.org/2026/09/12/keegan-theatre-marks-9-11-with-world-premiere-a-beautiful-blue-morning-sky/"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-beautiful-blue-morning-sky-regional-2026",
+   "label": "A Beautiful Blue Morning Sky",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Roger Catlin 2026-09-13 https://www.broadwayworld.com/washington-dc/article/Review-A-BEAUTIFUL-BLUE-MORNING-SKY-at-The-Keegan-Theatre-20260913"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-beautiful-blue-morning-sky-regional-2026",
+   "label": "A Beautiful Blue Morning Sky",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Debbie Minter Jackson 2026-09-12 https://dctheaterarts.org/2026/09/12/keegan-theatre-marks-9-11-with-world-premiere-a-beautiful-blue-morning-sky/"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Aidan O'Connor 2026-09-18 https://www.broadwayworld.com/washington-dc/article/Review-COME-FROM-AWAY-at-Fords-Theatre-20260918"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Caroline Bock 2026-09-23 https://dctheaterarts.org/2026/09/23/come-from-away-returns-to-fords-theatre-when-we-need-it-most/"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Jeanie Casison 2026-09-24 https://mdtheatreguide.com/2026/09/theatre-review-come-from-away-at-fords-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Morris Theatre DC / Drew Morris 2026-09-18 https://morristheatredc.com"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Aidan O'Connor 2026-09-18 https://www.broadwayworld.com/washington-dc/article/review-come-from-away-at-fords-theatre-20260918"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Morris Theatre DC / Drew Morris 2026-09-18 https://morristheatredc.com/reviews/come-from-away-fords"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "TheatreBloom / Amanda N. Gunther 2026-09-18 https://www.theatrebloom.com/2026/09/come-from-away-at-fords-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage and Cinema / Helen Bard-Sobola 2026-09-19 https://stageandcinema.com/2026/09/19/come-from-away-fords-theatre-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "HOTCHKA / Chuck Duncan 2026-09-19 https://hotchka.com/come-from-away-review-fords-theatre"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Caroline Bock 2026-09-23 https://dctheaterarts.org/2026/09/23/come-from-away-returns-to-fords-theatre-when-we-need-it-most/"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-09-23 https://www.washingtonpost.com/entertainment/theater/2026/09/23/come-away-ford-theatre-celebrates-best-humanity/"
+  },
+  {
+   "kind": "coverage",
+   "id": "come-from-away-fords-regional-2026",
+   "label": "Come From Away",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Jeanie Casison 2026-09-24 https://mdtheatreguide.com/2026/09/theatre-review-come-from-away-at-fords-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-second-best-school-shooting-regional-2026",
+   "label": "The Second Best School Shooting",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Kendall Mostafavi 2026-09-24 https://dctheaterarts.org/2026/09/24/the-second-best-school-shooting-is-movingly-real-and-raw-at-nextstop/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-second-best-school-shooting-regional-2026",
+   "label": "The Second Best School Shooting",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Che Flory 2026-09-29 https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-second-best-school-shooting-regional-2026",
+   "label": "The Second Best School Shooting",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Kendall Mostafavi 2026-09-24 https://dctheaterarts.org/2026/09/24/the-second-best-school-shooting-is-movingly-real-and-raw-at-nextstop/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-second-best-school-shooting-regional-2026",
+   "label": "The Second Best School Shooting",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Che Flory 2026-09-29 https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/"
   }
- }
+ ]
 }

@@ -1,7 +1,7 @@
 {
  "city": "washington-dc",
- "week": "2026-W47",
- "today": "2026-11-17",
+ "week": "2026-W48",
+ "today": "2026-11-24",
  "findings": 20,
  "byClass": {
   "1": 2,
@@ -10,18 +10,18 @@
   "4": 0,
   "6": 9
  },
- "newFindings": 2,
+ "newFindings": 0,
  "newByClass": {
   "1": 0,
   "2": 0,
-  "3": 1,
+  "3": 0,
   "4": 0,
-  "6": 1
+  "6": 0
  },
  "provenance": 0,
  "newProvenance": 0,
  "plan": null,
- "card": "BRO-7678",
+ "card": null,
  "findingKeys": [
   "review:bronte-sister-house-party-regional-2026|https://dctheaterarts.org/2026/08/16/sibling-revelry-comes-to-afterlife-in-bronte-sister-house-party-by-nu-sass|john stoltenberg:wrong-production",
   "review:frida-a-self-portrait-regional-2026|https://www.hillrag.com/2026/10/20/the-shakespeare-theatres-frida-delights|gregory ford:wrong-production",
@@ -44,35 +44,6 @@
   "show:what-became-of-us-regional-2026:opening-date",
   "show:woody-guthries-american-song-regional-2026:venue"
  ],
- "fresh": [
-  {
-   "key": "show:les-miserables-regional-2026:opening-date",
-   "cls": 6,
-   "kind": "show",
-   "id": "les-miserables-regional-2026",
-   "label": "Les Miserables",
-   "code": "opening-date",
-   "detail": "ours 2026-11-10 / page 2026-10-30",
-   "models": [
-    "gemini",
-    "openai"
-   ],
-   "fix": null
-  },
-  {
-   "key": "review:sally-and-tom-regional-2026|https://www.washingtonpost.com/entertainment/theater/2026/06/10/play-about-jefferson-hemings-lays-bare-founding-fathers-sins|thomas floyd:non-review:roundup",
-   "cls": 3,
-   "kind": "review",
-   "id": "sally-and-tom-regional-2026|https://www.washingtonpost.com/entertainment/theater/2026/06/10/play-about-jefferson-hemings-lays-bare-founding-fathers-sins|thomas floyd",
-   "label": "Sally & Tom | The Washington Post / Thomas Floyd",
-   "code": "non-review:roundup",
-   "detail": "The review for 'Sally & Tom' is generally positive, highlighting strong performances despite some narrative meandering.",
-   "models": [
-    "gemini",
-    "openai"
-   ],
-   "fix": null
-  }
- ],
+ "fresh": [],
  "provenanceRows": []
 }

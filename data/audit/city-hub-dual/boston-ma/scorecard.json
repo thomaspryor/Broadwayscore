@@ -1,32 +1,32 @@
 {
  "city": "boston-ma",
- "today": "2026-11-17",
+ "today": "2026-11-24",
  "models": {
-  "gemini": "gemini-2.5-flash",
+  "gemini": "gemini-3.5-flash-lite",
   "openai": "gpt-5.6-terra"
  },
  "itemsChecked": {
-  "shows": 10,
+  "shows": 13,
   "images": 0,
-  "publishedReviews": 61,
+  "publishedReviews": 86,
   "excludedFiles": 0,
-  "reviewsWithoutText": 28,
+  "reviewsWithoutText": 30,
   "tourStops": 0,
-  "coverageShows": 6,
-  "totalShows": 35,
-  "totalPublished": 165
+  "coverageShows": 9,
+  "totalShows": 45,
+  "totalPublished": 182
  },
- "flaggedByGemini": 11,
- "flaggedByOpenAI": 12,
- "flaggedLocalChecks": 6,
- "flaggedAny": 21,
- "flaggedByBoth": 8,
- "triagedItems": 2,
+ "flaggedByGemini": 13,
+ "flaggedByOpenAI": 15,
+ "flaggedLocalChecks": 7,
+ "flaggedAny": 26,
+ "flaggedByBoth": 9,
+ "triagedItems": 3,
  "confirmed": 0,
- "falsePositives": 2,
+ "falsePositives": 3,
  "fixed": 0,
  "remaining": [],
- "untriaged": 21,
+ "untriaged": 26,
  "flags": [
   {
    "kind": "show",
@@ -102,27 +102,35 @@
   },
   {
    "kind": "show",
-   "id": "delirium-regional-2026",
-   "label": "Delirium",
-   "model": "gemini",
-   "code": "opening-date",
-   "detail": "ours 2026-06-12 / page 2026-06-18"
-  },
-  {
-   "kind": "show",
-   "id": "delirium-regional-2026",
-   "label": "Delirium",
+   "id": "merrily-we-roll-along-sullivan-regional-2026",
+   "label": "Merrily We Roll Along",
    "model": "gemini",
    "code": "venue",
-   "detail": "ours \"Arlekin Players Theatre, Boston, MA\" / page \"Calderwood Pavilion at the BCA\""
+   "detail": "ours \"Sullivan Rep, Dedham, MA\" / page \"Mother Brook Arts & Community Center\""
   },
   {
    "kind": "show",
-   "id": "delirium-regional-2026",
-   "label": "Delirium",
+   "id": "in-old-age-regional-2026",
+   "label": "In Old Age",
+   "model": "gemini",
+   "code": "venue",
+   "detail": "ours \"ArtsEmerson, Boston, MA\" / page \"Jackie Liebergott Black Box Theatre, Emerson Paramount Center\""
+  },
+  {
+   "kind": "show",
+   "id": "in-old-age-regional-2026",
+   "label": "In Old Age",
    "model": "openai",
-   "code": "opening-date",
-   "detail": "ours 2026-06-12 / page 2026-06-18"
+   "code": "venue",
+   "detail": "ours \"ArtsEmerson, Boston, MA\" / page \"Jackie Liebergott Black Box Theatre, Emerson Paramount Center\""
+  },
+  {
+   "kind": "show",
+   "id": "bouncers-regional-2026",
+   "label": "Bouncers",
+   "model": "local",
+   "code": "no-closing-date",
+   "detail": "open show without closingDate"
   },
   {
    "kind": "review",
@@ -147,6 +155,30 @@
    "model": "gemini",
    "code": "non-review:roundup",
    "detail": "The article reviews two productions, 'The Wash' and '1972', with positive assessments for both."
+  },
+  {
+   "kind": "review",
+   "id": "a-streetcar-named-desire-regional-2026|https://parterre.com/2026/11/14/the-trolley-problem|harry rose",
+   "label": "A Streetcar Named Desire | Parterre Box / Harry Rose",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "At Boston Lyric Opera, a hardworking cast can’t make magic of André Previn’s disenchanting adaptation of A Streetcar Named Desire"
+  },
+  {
+   "kind": "review",
+   "id": "a-streetcar-named-desire-regional-2026|https://parterre.com/2026/11/14/the-trolley-problem|harry rose",
+   "label": "A Streetcar Named Desire | Parterre Box / Harry Rose",
+   "model": "gemini",
+   "code": "score-vs-text",
+   "detail": "text reads mixed, score 39"
+  },
+  {
+   "kind": "review",
+   "id": "a-streetcar-named-desire-regional-2026|https://parterre.com/2026/11/14/the-trolley-problem|harry rose",
+   "label": "A Streetcar Named Desire | Parterre Box / Harry Rose",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "At Boston Lyric Opera, a hardworking cast can’t make magic"
   },
   {
    "kind": "review",
@@ -190,6 +222,14 @@
   },
   {
    "kind": "review",
+   "id": "eureka-day-regional-2026|https://artsfuse.org/329962/theater-review-eureka-day-groupthink-gone-viral|martin copenhaver",
+   "label": "Eureka Day | The Arts Fuse / Martin Copenhaver",
+   "model": "openai",
+   "code": "score-vs-text",
+   "detail": "text reads rave, score 79"
+  },
+  {
+   "kind": "review",
    "id": "purpose-regional-2026||",
    "label": "purpose-regional-2026 | Broadway News",
    "model": "local",
@@ -216,14 +256,6 @@
    "kind": "review",
    "id": "purpose-regional-2026||",
    "label": "purpose-regional-2026 | TheWrap",
-   "model": "local",
-   "code": "no-url",
-   "detail": ""
-  },
-  {
-   "kind": "review",
-   "id": "purpose-regional-2026||",
-   "label": "purpose-regional-2026 | Time Out New York",
    "model": "local",
    "code": "no-url",
    "detail": ""
@@ -403,6 +435,14 @@
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Boston Globe / Chris Vognar 2026-08-03 https://www.bostonglobe.com/2026/08/03/arts/commonwealth-shakespeare-company/"
+  },
+  {
+   "kind": "coverage",
+   "id": "rock-of-ages-north-regional-2026",
+   "label": "Rock of Ages",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "onbostonstages / Rich Fahey 2026-08-17 https://onbostonstages.blog/2026/08/17/its-back-to-the-80s-in-nsmts-lively-rock-of-ages/"
   }
  ]
 }

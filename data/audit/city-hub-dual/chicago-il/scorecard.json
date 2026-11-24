@@ -1,32 +1,32 @@
 {
  "city": "chicago-il",
- "today": "2026-11-17",
+ "today": "2026-11-24",
  "models": {
-  "gemini": "gemini-2.5-flash",
+  "gemini": "gemini-3.5-flash-lite",
   "openai": "gpt-5.6-terra"
  },
  "itemsChecked": {
-  "shows": 11,
+  "shows": 15,
   "images": 0,
-  "publishedReviews": 60,
+  "publishedReviews": 85,
   "excludedFiles": 0,
-  "reviewsWithoutText": 194,
+  "reviewsWithoutText": 195,
   "tourStops": 0,
-  "coverageShows": 6,
-  "totalShows": 771,
-  "totalPublished": 5578
+  "coverageShows": 9,
+  "totalShows": 790,
+  "totalPublished": 5663
  },
- "flaggedByGemini": 17,
- "flaggedByOpenAI": 19,
- "flaggedLocalChecks": 17,
- "flaggedAny": 40,
- "flaggedByBoth": 13,
- "triagedItems": 7,
+ "flaggedByGemini": 21,
+ "flaggedByOpenAI": 32,
+ "flaggedLocalChecks": 16,
+ "flaggedAny": 54,
+ "flaggedByBoth": 15,
+ "triagedItems": 9,
  "confirmed": 0,
- "falsePositives": 7,
+ "falsePositives": 9,
  "fixed": 0,
  "remaining": [],
- "untriaged": 40,
+ "untriaged": 54,
  "flags": [
   {
    "kind": "show",
@@ -105,40 +105,8 @@
    "id": "hayward-regional-2026",
    "label": "Hayward",
    "model": "gemini",
-   "code": "closing-date",
-   "detail": "ours 2026-11-15 / page 2026-11-22"
-  },
-  {
-   "kind": "show",
-   "id": "hayward-regional-2026",
-   "label": "Hayward",
-   "model": "gemini",
-   "code": "preview-date-missing",
-   "detail": "page 2026-10-14, ours empty"
-  },
-  {
-   "kind": "show",
-   "id": "hayward-regional-2026",
-   "label": "Hayward",
-   "model": "gemini",
-   "code": "venue",
-   "detail": "ours \"Steppenwolf Theatre, Chicago, IL\" / page \"The 1700 Theater\""
-  },
-  {
-   "kind": "show",
-   "id": "hayward-regional-2026",
-   "label": "Hayward",
-   "model": "gemini",
    "code": "category",
    "detail": "page says touring production"
-  },
-  {
-   "kind": "show",
-   "id": "hayward-regional-2026",
-   "label": "Hayward",
-   "model": "openai",
-   "code": "closing-date",
-   "detail": "ours 2026-11-15 / page 2026-11-22"
   },
   {
    "kind": "show",
@@ -163,6 +131,30 @@
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-09-26, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-thanksgiving-play-regional-2024",
+   "label": "The Thanksgiving Play",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2024-04-25, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-thanksgiving-play-regional-2024",
+   "label": "The Thanksgiving Play",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2024-04-25, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-thanksgiving-play-regional-2024",
+   "label": "The Thanksgiving Play",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"Steppenwolf Theatre, Chicago, IL\" / page \"The Ensemble Theater\""
   },
   {
    "kind": "show",
@@ -198,40 +190,8 @@
   },
   {
    "kind": "show",
-   "id": "church-hurt-regional-2026",
-   "label": "Church Hurt",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
    "id": "king-hedley-ii-regional-2026",
    "label": "King Hedley II",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
-   "id": "the-royale-regional-2026",
-   "label": "The Royale",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
-   "id": "the-snow-queen-regional-2026",
-   "label": "The Snow Queen",
-   "model": "local",
-   "code": "closing-unsourced",
-   "detail": "closingDateSource missing"
-  },
-  {
-   "kind": "show",
-   "id": "a-body-of-water-regional-2026",
-   "label": "A Body of Water",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
@@ -254,16 +214,48 @@
   },
   {
    "kind": "show",
-   "id": "year-one-regional-2026",
-   "label": "Year One",
+   "id": "our-town-regional-2026",
+   "label": "Our Town",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
   },
   {
    "kind": "show",
-   "id": "our-town-regional-2026",
-   "label": "Our Town",
+   "id": "the-winters-tale-regional-2026",
+   "label": "The Winter's Tale",
+   "model": "local",
+   "code": "no-closing-date",
+   "detail": "open show without closingDate"
+  },
+  {
+   "kind": "show",
+   "id": "its-a-wonderful-life-live-in-chicago-regional-2023",
+   "label": "It's A Wonderful Life Live in Chicago",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "engines-and-instruments-of-flight-a-fantasia-in-three-acts-by-calamity-west-regional-2026",
+   "label": "Engines and Instruments of Flight: A Fantasia in Three Acts",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "all-the-world-regional-2026",
+   "label": "All the World",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "constellations-regional-2026",
+   "label": "Constellations",
    "model": "local",
    "code": "closing-unsourced",
    "detail": "closingDateSource missing"
@@ -342,14 +334,6 @@
   },
   {
    "kind": "review",
-   "id": "25th-annual-putnam-county-spelling-bee-regional-2024|https://chicagocultureauthority.com/2024/03/17/music-theater-works-mounts-an-energetic-production-that-entertains-for-a-spell|frank sennett",
-   "label": "25th Annual Putnam County Spelling Bee | Chicago Culture Authority / Frank Sennett",
-   "model": "local",
-   "code": "pull-quote-not-in-text",
-   "detail": "Audience members are embarrassed. And there's plenty of time to go out for drinks after the show. The Music Theater Works production of The "
-  },
-  {
-   "kind": "review",
    "id": "25th-annual-putnam-county-spelling-bee-regional-2024|https://thefourthwalsh.com/2024/03/review-the-25th-annual-putnam-county-spelling-bee-music-theater-works-f-u-n|katy walsh",
    "label": "25th Annual Putnam County Spelling Bee | The Fourth Walsh / Katy Walsh",
    "model": "openai",
@@ -403,6 +387,118 @@
    "model": "openai",
    "code": "wrong-production",
    "detail": "\"The theater is located at 721 West Howard Street , Evanston.\""
+  },
+  {
+   "kind": "review",
+   "id": "8-track-regional-2021|http://www.buzznews.net/theatre/theatre-reviews/item/4948-8-track-the-sounds-of-the-70s-is-exactly-what-it-promises-a-fun-look-back.html|kerstin broockmann",
+   "label": "8-Track | Buzznews / Kerstin Broockmann",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "“8-Track: The Sounds of the ‘70s runs through January 23 at Theo Ubique Cabaret Theatre at 721 Howard Street, Evanston.”"
+  },
+  {
+   "kind": "review",
+   "id": "8-track-regional-2021|https://www.chicagoonstage.com/theo-ubiques-8-track-sounds-like-sweet-memories|karen topham",
+   "label": "8-Track | Chicago On Stage / Karen Topham",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "“8-Track is playing at Theo Ubique Theatre until Jan 23”"
+  },
+  {
+   "kind": "review",
+   "id": "8-track-regional-2021|https://chicagoreader.com/performing-arts/theater/theater-review/that-70s-show|kerry reid",
+   "label": "8-Track | Chicago Reader / Kerry Reid",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Howard Street Theatre, 721 Howard, Evanston"
+  },
+  {
+   "kind": "review",
+   "id": "8-track-regional-2021|https://www.chicagotheatrereview.com/2021/12/memories-are-made-of-this|colin douglas",
+   "label": "8-Track | Chicago Theatre Review / Colin Douglas",
+   "model": "gemini",
+   "code": "publish-date",
+   "detail": "ours 2021-12-14 / article 2021-12-01"
+  },
+  {
+   "kind": "review",
+   "id": "8-track-regional-2021|https://www.chicagotribune.com/2022/01/07/review-musical-show-8-track-at-theo-ubique-cabaret-offers-1970s-balm-and-dozens-of-songs|chris jones",
+   "label": "8-Track | Chicago Tribune / Chris Jones",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "“8-Track: The Sounds of the ’70s,” ... at the Theo Ubique Cabaret Theatre"
+  },
+  {
+   "kind": "review",
+   "id": "8-track-regional-2021|https://www.newcitystage.com/2021/12/16/everything-is-beautiful-a-review-of-8-track-the-sounds-of-the-70s-at-theo-ubique|brian hieggelke",
+   "label": "8-Track | New City Stage / Brian Hieggelke",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "At Theo Ubique Cabaret Theatre, 721 Howard Street, Evanston"
+  },
+  {
+   "kind": "review",
+   "id": "8-track-regional-2021|https://www.picturethispost.com/theo-ubique-cabaret-theatre-presents-8-track-the-sounds-of-the-70s-review|amy munice",
+   "label": "8-Track | Picture This Post / Amy Munice",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "WHERE: Theo Ubique Cabaret Theatre (721 W Howard St)"
+  },
+  {
+   "kind": "review",
+   "id": "8-track-regional-2021|https://news.wttw.com/2021/12/15/8-track-brilliantly-taps-emotional-heat-and-exuberance-songs-turbulent-era|hedy weiss",
+   "label": "8-Track | WTTW / Hedy Weiss",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "“8-Track” runs through Jan. 23 at Theo-Ubique’s Howard Street Theatre, 721 Howard St. in Evanston."
+  },
+  {
+   "kind": "review",
+   "id": "a-body-of-water-regional-2026|https://aroundthetownchicago.com/theatre-reviews/a-body-of-water-reviewed-by-frank-meccia|frank meccia",
+   "label": "A Body of Water | Around the Town Chicago / Frank Meccia",
+   "model": "openai",
+   "code": "byline",
+   "detail": "ours \"Frank Meccia\" / article \"Alan Bresloff\""
+  },
+  {
+   "kind": "review",
+   "id": "a-body-of-water-regional-2026|https://stageraw.com/stage-raw-review-at-the-very-bottom-of-a-body-of-water|steven leigh morris",
+   "label": "A Body of Water | Stage Raw / Steven Leigh Morris",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "The Theatre at Boston Court, 70 N. Mentor Ave., Pasadena."
+  },
+  {
+   "kind": "review",
+   "id": "a-body-of-water-regional-2026|https://stageraw.com/stage-raw-review-at-the-very-bottom-of-a-body-of-water|steven leigh morris",
+   "label": "A Body of Water | Stage Raw / Steven Leigh Morris",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "The Theatre at Boston Court, 70 N. Mentor Ave., Pasadena."
+  },
+  {
+   "kind": "review",
+   "id": "a-bright-room-called-day-regional-2024|https://www.chicagotheatrereview.com/2024/12/an-important-work-for-today|colin douglas",
+   "label": "A Bright Room Called Day | Chicago Theatre Review / Colin Douglas",
+   "model": "gemini",
+   "code": "publish-date",
+   "detail": "ours 2024-12-12 / article 2024-12-08"
+  },
+  {
+   "kind": "review",
+   "id": "a-bright-room-called-day-regional-2024|https://thirdcoastreview.com/2024/12/13/stages-review-blank-theatre-a-bright-room-called-day|nancy s bishop",
+   "label": "A Bright Room Called Day | Third Coast Review / Nancy S. Bishop",
+   "model": "openai",
+   "code": "score-vs-text",
+   "detail": "text reads rave, score 78"
+  },
+  {
+   "kind": "review",
+   "id": "a-chorus-line-regional-2023|https://aroundthetownchicago.com/theatre-reviews/a-chorus-line-5|alan bresloff",
+   "label": "A Chorus Line | Around the Town Chicago / Alan Bresloff",
+   "model": "openai",
+   "code": "score-vs-text",
+   "detail": "text reads rave, score 77"
   },
   {
    "kind": "review",
@@ -731,6 +827,22 @@
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Talkin' Broadway / Christine Malcom 2026-09-24 https://www.talkinbroadway.com/page/regional/chicago/ch927.html"
+  },
+  {
+   "kind": "coverage",
+   "id": "dead-girls-quinceanera-regional-2026",
+   "label": "Dead Girl's Quinceanera",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Chicago Tribune / Chris Jones 2026-10-06 https://bancodeprofissionais.com/2026/10/06/review-dead-girls-quinceanera-goodman-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "dead-girls-quinceanera-regional-2026",
+   "label": "Dead Girl's Quinceanera",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Third Coast Review / Emily Werner 2026-10-07 https://third-coast-nextjs.vercel.app/stages/2026/10/07/review-dead-girls-quinceanera-goodman-theatre"
   }
  ]
 }
