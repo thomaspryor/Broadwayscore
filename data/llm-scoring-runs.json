@@ -1,5 +1,25 @@
 [
   {
+    "startedAt": "2026-11-22T14:56:32.074Z",
+    "completedAt": "2026-11-22T14:56:41.250Z",
+    "totalReviews": 16,
+    "processed": 2,
+    "skipped": 14,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 10467,
+      "output": 615,
+      "cacheRead": 7614,
+      "cacheWrite": 0,
+      "total": 27971
+    },
+    "costUsd": 0.0189615,
+    "runId": "45035230852",
+    "source": "index",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-21T00:00:00.000Z"
+  },
+  {
     "startedAt": "2026-11-22T15:01:38.878Z",
     "completedAt": "2026-11-22T15:01:38.917Z",
     "totalReviews": 0,
@@ -424958,59 +424978,44 @@
     "logKeepsSince": "2026-11-23T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-24T03:01:50.899Z",
-    "completedAt": "2026-11-24T03:04:40.880Z",
-    "totalReviews": 84875,
-    "processed": 14,
-    "skipped": 84850,
-    "errors": 2,
+    "startedAt": "2026-11-24T03:15:09.936Z",
+    "completedAt": "2026-11-24T03:15:17.240Z",
+    "totalReviews": 26,
+    "processed": 1,
+    "skipped": 25,
+    "errors": 17,
     "tokensUsed": {
-      "input": 127412,
-      "output": 5977,
-      "cacheRead": 76093,
-      "cacheWrite": 11329,
-      "total": 328793
+      "input": 29897,
+      "output": 1373,
+      "cacheRead": 22795,
+      "cacheWrite": 3760,
+      "total": 86189
     },
-    "costUsd": 0.127820625,
-    "runId": "45316164646",
+    "costUsd": 0.0569713,
+    "runId": "45317340450",
     "source": "index",
     "errorDetails": [
       {
-        "showId": "one-man-two-guvnors-2012",
-        "outletId": "wsj",
-        "error": "input_validation_failed:body_too_short"
+        "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+        "outletId": "herald",
+        "error": "resume_input_hash_mismatch"
       },
       {
-        "showId": "race-2009",
-        "outletId": "vulture",
-        "error": "input_validation_failed:body_too_short"
+        "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
+        "outletId": "jamr",
+        "error": "resume_prep_failed:input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-front-page-regional-2026",
+        "outletId": "spotlightonlake",
+        "error": "resume_input_hash_mismatch"
       }
     ],
     "logKeepsSince": "2026-11-23T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-24T03:05:00.513Z",
-    "completedAt": "2026-11-24T03:10:31.063Z",
-    "totalReviews": 3,
-    "processed": 3,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 8139,
-      "output": 753,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 8892
-    },
-    "costUsd": 0.00782995,
-    "runId": "45316164646",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-23T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-24T03:17:35.229Z",
-    "completedAt": "2026-11-24T03:17:35.231Z",
+    "startedAt": "2026-11-24T03:20:14.834Z",
+    "completedAt": "2026-11-24T03:20:14.883Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -425023,7 +425028,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "45317349761",
+    "runId": "45317340450",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-23T00:00:00.000Z"
