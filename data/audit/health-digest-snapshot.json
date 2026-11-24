@@ -1,17 +1,12 @@
 {
-  "generatedAt": "2026-11-24T00:27:23.035Z",
-  "subject": "BSC URGENT (day 117): 2 unresolved errors",
-  "bannerText": "2 errors, 29 warnings",
-  "consecutiveErrorDays": 117,
+  "generatedAt": "2026-11-24T03:41:13.758Z",
+  "subject": "BSC Daily: 1 internal issue, no visitor-facing errors (day 118)",
+  "bannerText": "1 error, 28 warnings",
+  "consecutiveErrorDays": 118,
   "errors": [
     {
-      "name": "Revenue: affiliate health",
-      "message": "1 critical: impact API",
-      "firstSeen": "2026-11-23T10:54:31.404Z"
-    },
-    {
       "name": "Push-retry deadman",
-      "message": "55 push-retry failure(s) in the last 7d across Broadwayscore:main [Opening Night Poller x19, Collect Review Texts x11, LLM Ensemble Score Reviews x10, Scoring Experiment x8, Land x2, Rebuild Reviews (Fast) x1, Rebuild Reviews Data x1, Gather Review Data x1, Scrape New Aggregators x1, Collect WE/OB Review Texts x1]. Most recent reason: retries-exhausted(deadline). 271 committed file(s) discarded across 47 run(s). 225 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line).",
+      "message": "57 push-retry failure(s) in the last 7d across Broadwayscore:main [Opening Night Poller x21, Collect Review Texts x11, LLM Ensemble Score Reviews x10, Scoring Experiment x8, Land x2, Rebuild Reviews (Fast) x1, Rebuild Reviews Data x1, Gather Review Data x1, Scrape New Aggregators x1, Collect WE/OB Review Texts x1]. Most recent reason: retries-exhausted(deadline). 273 committed file(s) discarded across 49 run(s). 230 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line).",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     }
   ],
@@ -23,28 +18,33 @@
     },
     {
       "name": "Quality: opening date vs review dates",
-      "message": "1 show(s) store an opening date later than their reviews: a-midsummer-nights-dream-jentes-regional-2026 (stored 2026-11-21, reviews 2026-11-15)",
+      "message": "2 show(s) store an opening date later than their reviews: a-christmas-carol-west-end-2026 (stored 2026-11-24, reviews 2026-11-18); a-midsummer-nights-dream-jentes-regional-2026 (stored 2026-11-21, reviews 2026-11-15)",
       "firstSeen": "2026-11-11T23:31:10.176Z"
     },
     {
+      "name": "Quality: Show Score gap",
+      "message": "1 opened show(s) have a cached Show Score URL but no Show Score audience score (the-holes-off-broadway-2026)",
+      "firstSeen": "2026-11-24T03:41:10.298Z"
+    },
+    {
+      "name": "Revenue: affiliate health",
+      "message": "1 anomaly: Bot click divergence",
+      "firstSeen": "2026-11-23T10:54:31.404Z"
+    },
+    {
       "name": "Data quality: cross-outlet attribution drift",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (3h ago)",
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (2h ago)",
       "firstSeen": "2026-11-19T10:27:03.024Z"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "message": "1 unmatched review(s) with contamination evidence open (0 new since last run; 868 total across 614 show(s), 3h ago)",
+      "message": "1 unmatched review(s) with contamination evidence open (0 new since last run; 870 total across 615 show(s), 2h ago)",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
-      "message": "1 unverified revival flag(s) with a same-title earlier production open (0 new since last run; 5 total across 5 show(s), 3h ago)",
+      "message": "1 unverified revival flag(s) with a same-title earlier production open (0 new since last run; 5 total across 5 show(s), 2h ago)",
       "firstSeen": "2026-11-23T20:39:11.051Z"
-    },
-    {
-      "name": "Data: tour automation stopped reporting",
-      "message": "A national-tour job has not run on schedule: daily new-tour check (scrape-new-aggregators.yml, BWW landing job): last report 2 day(s) ago.",
-      "firstSeen": "2026-11-24T00:27:18.079Z"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -62,23 +62,13 @@
       "firstSeen": "2026-11-23T20:39:11.051Z"
     },
     {
-      "name": "Credits: ScrapingBee",
-      "message": "6k credits left (3%) · 13k/day burn · exhausts in ~0d (renews Dec 5) — acknowledged: ScrapingBee is a fallback; ride out until renewal (owner rule 2026-08-03) [expires 2026-11-27]",
-      "firstSeen": "2026-11-20T10:11:00.929Z"
-    },
-    {
       "name": "Autofix: persistent visitor rows with no open card",
-      "message": "1 visitor-facing row(s) red for 4+ days with no open card: Press night: score gate undecided (5d, BRO-7980 closed)",
+      "message": "3 visitor-facing row(s) red for 4+ days with no open card: Data quality: missed opening-night broadcasts (10d, BRO-7592 closed); Quality: opening date vs review dates (5d, BRO-7823 closed); Press night: score gate undecided (5d, BRO-7980 closed)",
       "firstSeen": "2026-11-23T10:54:31.404Z"
     },
     {
       "name": "Data freshness: shows missing poster/synopsis/tickets",
       "message": "76 open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.",
-      "firstSeen": "1970-01-01T00:00:00.000Z"
-    },
-    {
-      "name": "Feedback: needs-manual-review backlog",
-      "message": "2 open user-feedback issue(s) awaiting manual review (oldest 0d). Newest: #1203 Bug Diagnosis: Two attribution errors reported for 'Falls for Jodie': ",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     },
     {
@@ -93,16 +83,51 @@
     },
     {
       "name": "Data: review coverage holes",
-      "message": "82 review(s) with no usable text, 68 rejected although verified as a review, 30 never scored, 15 with a blocked URL (0 published on the site), across 775 current shows",
+      "message": "92 review(s) with no usable text, 67 rejected although verified as a review, 22 never scored, 15 with a blocked URL (0 published on the site), across 769 current shows",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     },
     {
       "name": "Data: approved-fix drift",
       "message": "4 unexplained approved-fix drift(s) across 3965 files with approvals",
       "firstSeen": "2026-11-22T09:54:48.949Z"
+    },
+    {
+      "name": "Autofix: digest rows listed 4+ days with no card",
+      "message": "1 digest row(s) listed 4+ days with no card: Quality: opening date vs review dates (12d)",
+      "firstSeen": "2026-11-15T09:26:50.133Z"
     }
   ],
   "cleared": {
+    "Data: tour automation stopped reporting": {
+      "at": "2026-11-24T03:41:10.298Z",
+      "firstSeen": "2026-11-24T00:27:18.079Z",
+      "status": "warn"
+    },
+    "Cron: Rebuild Reviews": {
+      "at": "2026-11-24T03:41:10.298Z",
+      "firstSeen": "1970-01-01T00:00:00.000Z",
+      "status": "warn"
+    },
+    "Cron: Collect Review Texts": {
+      "at": "2026-11-24T03:41:10.298Z",
+      "firstSeen": "2026-11-08T09:07:13.279Z",
+      "status": "warn"
+    },
+    "Cron: LLM Ensemble Score": {
+      "at": "2026-11-24T03:41:10.298Z",
+      "firstSeen": "2026-11-23T10:54:31.404Z",
+      "status": "warn"
+    },
+    "Credits: ScrapingBee": {
+      "at": "2026-11-24T03:41:10.298Z",
+      "firstSeen": "2026-11-20T10:11:00.929Z",
+      "status": "warn"
+    },
+    "Feedback: needs-manual-review backlog": {
+      "at": "2026-11-24T03:41:10.298Z",
+      "firstSeen": "1970-01-01T00:00:00.000Z",
+      "status": "warn"
+    },
     "Data quality: missed opening-night broadcasts": {
       "at": "2026-11-24T00:27:18.079Z",
       "firstSeen": "2026-11-14T09:07:36.576Z",
@@ -288,23 +313,26 @@
       "firstSeen": "2026-11-15T09:26:50.133Z",
       "status": "warn"
     },
-    "Cron: Opening Night Broadcast": {
-      "at": "2026-11-18T10:17:10.370Z",
-      "firstSeen": "2026-11-11T23:31:10.176Z",
-      "status": "warn"
-    },
     "Workflow repeat-failure: Test Suite / E2E Tests / Run E2E tests": {
       "at": "2026-11-18T10:17:10.370Z",
       "firstSeen": "2026-11-17T10:48:55.951Z",
       "status": "warn"
-    },
-    "Autofix: digest rows listed 4+ days with no card": {
-      "at": "2026-11-17T10:48:55.951Z",
-      "firstSeen": "2026-11-15T09:26:50.133Z",
-      "status": "warn"
     }
   },
   "queued": [
+    {
+      "conditionKey": "coverage-holes:a-christmas-carol-west-end-2026",
+      "title": "a-christmas-carol-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+      "description": "- rejected as not-a-review, verification says review: a-christmas-carol-west-end-2026/i-paper--fiona-mountford.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
     {
       "conditionKey": "coverage-holes:nine-night-off-west-end-2026",
       "title": "nine-night-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
@@ -1438,34 +1466,8 @@
       ]
     },
     {
-      "conditionKey": "test-yml:data-validation-red:run-data-validation",
-      "title": "Data audit failing: Run data validation — already tracked at BRO-7775",
-      "description": "This condition already has an open tracker (BRO-7775); not filing a duplicate. It will go quiet in the digest from here.\n\nThe \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
-      "severity": "warning",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45251876007",
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": "BRO-7775",
-      "fields": [
-        {
-          "name": "Job",
-          "value": "Data Validation"
-        },
-        {
-          "name": "Step",
-          "value": "Run data validation"
-        },
-        {
-          "name": "Run",
-          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45251876007)"
-        }
-      ]
-    },
-    {
       "conditionKey": "corpus-drift:monitor-only",
-      "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +18 more). Checked 2026-11-23.",
+      "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-24.",
       "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
       "severity": "info",
       "url": null,
@@ -1759,19 +1761,6 @@
           "value": "success"
         }
       ]
-    },
-    {
-      "conditionKey": "t1-gaps:needs-manual-recovery",
-      "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-23.",
-      "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-      "severity": "info",
-      "url": null,
-      "decision": false,
-      "info": true,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
     },
     {
       "conditionKey": "red-first-skip:BRO-6866",
@@ -2221,9 +2210,164 @@
       "model": null,
       "tracked": null,
       "fields": []
+    },
+    {
+      "conditionKey": "test-yml:data-validation-red:run-data-validation",
+      "title": "Data audit failing: Run data validation — already tracked at BRO-8225",
+      "description": "This condition already has an open tracker (BRO-8225); not filing a duplicate. It will go quiet in the digest from here.\n\nThe \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+      "severity": "warning",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45305163083",
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": "BRO-8225",
+      "fields": [
+        {
+          "name": "Job",
+          "value": "Data Validation"
+        },
+        {
+          "name": "Step",
+          "value": "Run data validation"
+        },
+        {
+          "name": "Run",
+          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45305163083)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "land:land/job/linear-BRO-8218-mwtyigms",
+      "title": "Landing blocked: scripts-lib-tests red on land/job/linear-BRO-8218-mwtyigms",
+      "description": "land.yml did not land land/job/linear-BRO-8218-mwtyigms: the scripts-lib-tests gate went red at 40d9c49d0f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45298406940",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/job/linear-BRO-8218-mwtyigms"
+        },
+        {
+          "name": "gate",
+          "value": "scripts-lib-tests"
+        },
+        {
+          "name": "tip",
+          "value": "40d9c49d0f4873a4384633a77c6416247e62be77"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45298406940"
+        }
+      ]
+    },
+    {
+      "conditionKey": "land:land/bro-8209-fix-plan",
+      "title": "Landing blocked: rebase red on land/bro-8209-fix-plan",
+      "description": "land.yml did not land land/bro-8209-fix-plan: the rebase gate went red at f796be89aa. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45298263621",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-8209-fix-plan"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "f796be89aa4440fb87c828a052a9f082c3f82edf"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45298263621"
+        }
+      ]
+    },
+    {
+      "conditionKey": "opening-night-placeholder-synopsis-a-clockwork-orange-a-play-with-music-regional-2026",
+      "title": "Placeholder synopsis on A Clockwork Orange: A Play with Music",
+      "description": "synopsis for a-clockwork-orange-a-play-with-music-regional-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/bro-8220-impact-outage",
+      "title": "Landing blocked: scripts-lib-tests red on land/bro-8220-impact-outage",
+      "description": "land.yml did not land land/bro-8220-impact-outage: the scripts-lib-tests gate went red at dceef96484. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45300170931",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-8220-impact-outage"
+        },
+        {
+          "name": "gate",
+          "value": "scripts-lib-tests"
+        },
+        {
+          "name": "tip",
+          "value": "dceef964845a8cb311a41a0447f47a9e861981a3"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45300170931"
+        }
+      ]
+    },
+    {
+      "conditionKey": "t1-gaps:needs-manual-recovery",
+      "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-24.",
+      "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+      "severity": "info",
+      "url": null,
+      "decision": false,
+      "info": true,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "live-data-test:tests/unit/compute-critic-score.test.mjs::real-data smoke test — a Gold-List-worthy show produces a plausible score",
+      "title": "Live-data test failing: real-data smoke test — a Gold-List-worthy show produces a plausible score (tests/unit/compute-critic-score.test.mjs)",
+      "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real-data smoke test — a Gold-List-worthy show produces a plausible score\" in tests/unit/compute-critic-score.test.mjs is red against the live corpus.\n\nparity drift: gold-list has 87 but compute now gives 86.48 for downstate-2026",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
     }
   ],
-  "autoFixedCount": 2,
-  "passedCount": 122,
+  "autoFixedCount": 1,
+  "passedCount": 124,
   "totalCount": 158
 }
