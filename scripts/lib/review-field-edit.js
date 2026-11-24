@@ -390,6 +390,8 @@ const FIELD_VALUE_CHECKS = {
       || (current && !!listingPageUrlReason(current))
       || ctx.currentUrlOwnedByOtherCritic === true
       || ctx.currentUrlOwnedByOtherShow === true
+      // BRO-8209: a Talkin' Broadway dated page two shows both hold; only the same-day a/b/c repair is allowed.
+      || (ctx.currentUrlSharedTbDatedPage === true && require('./review-slot-guards').isTbSameDaySuffixRepair(current, v))
       || unverifiedSearchUrl
       || verifiedNonReviewSameHost(record, v);
     if (!currentWrong) return 'url: the current url is not provably wrong (aggregator, non-review page, another critic\'s review, another show\'s review, or an unverified legacy web-search url)';
@@ -837,6 +839,11 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
       ctx.currentUrlOwnedByOtherShow = !!urlOwnedByOtherShow({
         reviewTextsDir, folder: ctx.folder, url: record.url, publishDate: record.publishDate,
       });
+      if (!ctx.currentUrlOwnedByOtherShow) {
+        ctx.currentUrlSharedTbDatedPage = !!require('./review-slot-guards').tbDatedPageHeldByOtherShow({
+          reviewTextsDir, folder: ctx.folder, url: record.url,
+        });
+      }
     }
   }
   if ((action.field === 'isSyndicatedDuplicate' || action.field === 'syndicatedPrimaryFile')

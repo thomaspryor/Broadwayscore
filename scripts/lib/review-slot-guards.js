@@ -263,6 +263,54 @@ function urlOwnedByOtherShow({ reviewTextsDir, folder, url, publishDate, detect,
   return null;
 }
 
+// BRO-8209: a Talkin' Broadway Off Broadway review page is one review per dated url
+// (/page/ob/MM_DD_YY.html; a second review the same day is MM_DD_YYa/b/c.html, see
+// tb-direct-url buildTbObCandidateUrls). Two shows' reviews stored at the same dated url
+// mean one of them points at the other's page. The url has no show slug, so
+// detectCrossShowUrlMismatch cannot see it. Falls for Jodie's Michael Dale review sat on
+// The Hairy Ape's page 10_05_26.html while TB's own index lists it at 10_05_26b.html.
+const TB_DATED_PAGE_RE = /^https?:\/\/(?:www\.)?talkinbroadway\.com\/page\/ob\/(\d{1,2})_(\d{2})_(\d{2})([a-c]?)\.html?$/i;
+
+function tbDatedPage(url) {
+  const m = TB_DATED_PAGE_RE.exec(String(url || '').trim());
+  return m ? { date: `${Number(m[1])}_${m[2]}_${m[3]}`, suffix: m[4].toLowerCase() } : null;
+}
+
+/**
+ * The other show's unflagged Talkin' Broadway review file that holds this same dated page, or null.
+ * @param {{reviewTextsDir: string, folder: string, url: string, fs?: object}} args
+ * @returns {{showId: string, filename: string}|null}
+ */
+function tbDatedPageHeldByOtherShow({ reviewTextsDir, folder, url, fs: fsImpl } = {}) {
+  if (!reviewTextsDir || !folder || !tbDatedPage(url)) return null;
+  const fs = fsImpl || require('fs');
+  const path = require('path');
+  const want = tbDatedPage(url);
+  let shows;
+  try { shows = fs.readdirSync(reviewTextsDir); } catch { return null; }
+  for (const showId of shows) {
+    if (showId === folder || showId.startsWith('.')) continue;
+    let files;
+    try { files = fs.readdirSync(path.join(reviewTextsDir, showId)).filter((f) => f.startsWith('talkinbroadway--') && isReviewTextFile(f)); } catch { continue; }
+    for (const file of files) {
+      let data;
+      try { data = JSON.parse(fs.readFileSync(path.join(reviewTextsDir, showId, file), 'utf8')); } catch { continue; }
+      const held = tbDatedPage(data && data.url);
+      if (!held || held.date !== want.date || held.suffix !== want.suffix) continue;
+      if (data.duplicateOf || data.wrongAttribution === true || data.wrongShow === true) continue;
+      return { showId, filename: file };
+    }
+  }
+  return null;
+}
+
+/** True when `next` is the same Talkin' Broadway dated page as `current` with a different a/b/c suffix. */
+function isTbSameDaySuffixRepair(current, next) {
+  const a = tbDatedPage(current);
+  const b = tbDatedPage(next);
+  return !!(a && b && a.date === b.date && a.suffix !== b.suffix);
+}
+
 /**
  * True when the record is held by the rebuild's dateless-revival guard
  * (rebuild-all-reviews.js, reason 'dateless-revival').
@@ -415,6 +463,9 @@ module.exports = {
   isInterviewSlotSupersededBy,
   flaggedSlotSupersededBy,
   urlOwnedByOtherCritic,
+  tbDatedPage,
+  tbDatedPageHeldByOtherShow,
+  isTbSameDaySuffixRepair,
   urlHeldBySibling,
   urlOwnedByOtherShow,
   isDatelessRevivalHold,

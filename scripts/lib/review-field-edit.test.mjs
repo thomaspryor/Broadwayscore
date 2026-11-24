@@ -1156,3 +1156,40 @@ test('excerpt clear uses a digest compare-and-set without exposing the text', ()
   assert.equal(applyReviewFieldEdit({ url: excerpt }, { ...action, field: 'url' }, stamp).ok, false);
   assert.equal(applyReviewFieldEdit({ westEndTheatreExcerpt: excerpt }, { ...action, newValue: 'replacement' }, stamp).ok, false);
 });
+
+// BRO-8209: two shows' Talkin' Broadway reviews at the same dated page (Falls for Jodie's Michael Dale
+// review on The Hairy Ape's 10_05_26.html; TB's index lists it at 10_05_26b.html). The url has no show
+// slug, so only the "page held by another show" proof can make the current url provably wrong.
+test('url repair: a TB dated page held by another show may move to the same-day a/b/c page, nothing else', async (t) => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const { isTbSameDaySuffixRepair, tbDatedPageHeldByOtherShow } = require('./review-slot-guards.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-tbdated-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const page = 'https://www.talkinbroadway.com/page/ob/10_05_26.html';
+  const put = (dir, file, rec) => {
+    fs.mkdirSync(path.join(root, dir), { recursive: true });
+    fs.writeFileSync(path.join(root, dir, file), JSON.stringify(rec));
+  };
+  put('falls-for-jodie-off-broadway-2026', 'talkinbroadway--michael-dale.json', { showId: 'falls-for-jodie-off-broadway-2026', outletId: 'talkinbroadway', criticName: 'Michael Dale', url: page });
+  const edit = (newValue, file = 'falls-for-jodie-off-broadway-2026/talkinbroadway--michael-dale.json') =>
+    executeReviewFieldEditIn(root, { file, field: 'url', oldValue: page, newValue }, stamp);
+  // no other show holds the page: not provably wrong
+  assert.equal(edit(page.replace('.html', 'b.html')).ok, false);
+  put('the-hairy-ape-irish-repertory-theatre-off-broadway-2026', 'talkinbroadway--marc-miller.json', { outletId: 'talkinbroadway', criticName: 'Marc Miller', url: page });
+  assert.deepEqual(tbDatedPageHeldByOtherShow({ reviewTextsDir: root, folder: 'falls-for-jodie-off-broadway-2026', url: page }),
+    { showId: 'the-hairy-ape-irish-repertory-theatre-off-broadway-2026', filename: 'talkinbroadway--marc-miller.json' });
+  // a different date, or the same page, is refused even with the proof
+  assert.equal(edit('https://www.talkinbroadway.com/page/ob/10_06_26.html').ok, false);
+  assert.equal(edit(page).ok, false);
+  assert.equal(isTbSameDaySuffixRepair(page, page.replace('.html', 'b.html')), true);
+  assert.equal(isTbSameDaySuffixRepair(page, page), false);
+  // the holder already flagged wrongShow: no proof
+  put('the-hairy-ape-irish-repertory-theatre-off-broadway-2026', 'talkinbroadway--marc-miller.json', { outletId: 'talkinbroadway', url: page, wrongShow: true });
+  assert.equal(edit(page.replace('.html', 'b.html')).ok, false);
+  // with the proof back, the same-day suffix repair applies
+  put('the-hairy-ape-irish-repertory-theatre-off-broadway-2026', 'talkinbroadway--marc-miller.json', { outletId: 'talkinbroadway', criticName: 'Marc Miller', url: page });
+  const res = edit(page.replace('.html', 'b.html'));
+  assert.equal(res.ok, true, res.reason);
+});
