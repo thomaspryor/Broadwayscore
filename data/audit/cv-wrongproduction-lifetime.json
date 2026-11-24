@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-11-24T01:14:54.801Z",
-  "scanned": 4949,
+  "updatedAt": "2026-11-24T04:18:03.653Z",
+  "scanned": 4954,
   "showsWithViolations": 125,
   "totalViolations": 155,
   "newSinceLastRun": 0,
@@ -863,7 +863,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of Chichester Festival Theatre's 2019 production, explicitly named as the source, not a review of the W — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of genuine quality, but it reviews the Chichester Festival Theatre's 2019 production of Shadowlands in  — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -872,10 +872,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a review of Chichester Festival Theatre's 2019 production, explicitly named as the source, not a review of the W",
+          "cvReasoning": "This is a review of genuine quality, but it reviews the Chichester Festival Theatre's 2019 production of Shadowlands in ",
           "cvIssues": [
-            "Review evaluates the Chichester Festival Theatre 2019 production, not the West End run",
-            "Opening sentence dates the review as Friday, 27th February, but the expected West End opening is 2026-02-12 (a Thursday)"
+            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End production opening 2026-02-12",
+            "Opening sentence explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — the critic is reviewing the transferred Chichester production"
           ]
         }
       ]

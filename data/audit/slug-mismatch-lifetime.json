@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-11-24T01:17:48.898Z",
-  "scanned": 4949,
-  "showsWithViolations": 201,
-  "totalViolations": 229,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-11-24T04:20:36.575Z",
+  "scanned": 4954,
+  "showsWithViolations": 202,
+  "totalViolations": 230,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "les-miserables-regional-2026::https://morristheatredc.com/reviews/les-miz-olney"
+  ],
   "actionableViolations": 3,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
@@ -244,7 +246,8 @@
     "dial-m-for-murder-regional-2023::https://www.chicagotheatrereview.com/2023/12/teeming-with-twists-and-turns/",
     "night-watch-regional-2023::https://www.chicagotheatrereview.com/2023/10/a-gruesome-sight/",
     "motherfreakinghood-regional-2023::https://www.chicagotheatrereview.com/2023/05/from-baby-phase-to-empty-nest/",
-    "purpose-lajolla-regional-2026::https://www.sandiegoreader.com/news/2026/may/21/theater-review-empurposeem-at-la-jolla-playhouse/"
+    "purpose-lajolla-regional-2026::https://www.sandiegoreader.com/news/2026/may/21/theater-review-empurposeem-at-la-jolla-playhouse/",
+    "les-miserables-regional-2026::https://morristheatredc.com/reviews/les-miz-olney"
   ],
   "hits": [
     {
@@ -3454,6 +3457,21 @@
           "criticName": "Matthew Lickona",
           "url": "https://www.sandiegoreader.com/news/2026/may/21/theater-review-empurposeem-at-la-jolla-playhouse/",
           "urlSlug": "news 2026 may 21 theater-review-empurposeem-at-la-jolla-playhouse",
+          "namesOtherShow": null
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-regional-2026",
+      "title": "Les Miserables",
+      "openingDate": "2026-11-10",
+      "message": "Review URL for morris-theatre-dc/Drew Morris does not mention show slug (checked: les-miserables-regional-2026, les-miserables, les-miserables-regional, miserables, lesmiserables): https://morristheatredc.com/reviews/les-miz-olney",
+      "violations": [
+        {
+          "outletId": "morris-theatre-dc",
+          "criticName": "Drew Morris",
+          "url": "https://morristheatredc.com/reviews/les-miz-olney",
+          "urlSlug": "reviews les-miz-olney",
           "namesOtherShow": null
         }
       ]
