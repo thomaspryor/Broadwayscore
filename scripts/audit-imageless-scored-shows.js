@@ -97,7 +97,7 @@ async function main() {
   if (marked.length) console.log(`${marked.length} imageless show(s) are marked noReliableArt and are not re-dispatched.`);
   const flagged = findImagelessScoredShows(normalized.filter((s) => !s.noReliableArt), { nowMs, thresholdHours: DEFAULT_THRESHOLD_HOURS });
 
-  console.log(`${flagged.length} show(s) have reviews but no image on disk after ${DEFAULT_THRESHOLD_HOURS}h.`);
+  console.log(`${flagged.length} show(s) have reviews but no usable image recorded in shows.json after ${DEFAULT_THRESHOLD_HOURS}h.`);
   if (dryRun) {
     for (const f of flagged) console.log(`  - ${f.id} (${f.title}), reviewCount=${f.reviewCount}`);
     return;

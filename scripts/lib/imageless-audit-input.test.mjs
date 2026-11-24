@@ -83,3 +83,44 @@ test('missing or malformed core data cannot produce a green coverage check', () 
     assert.throws(() => normalizeImageAuditInputs(shows, bad), /reviews/);
   }
 });
+
+// BRO-7560: noises-off-west-end-2019 had poster.jpg + thumbnail.jpg on disk while
+// shows.json images were all null. Those files came from sources the show rejects
+// (sfplayhouse.org, an Amazon Broadway poster: rejectedImageUrls), and bandstand-2017 /
+// rocky-2014 hold the same shape for fact-checked wrong-production art. A file in the
+// show's directory is therefore NOT coverage: only a usable path in shows.json is.
+// Falling back to the directory (hasArchivedShowImages) would silently count wrong art.
+test('rejected art left on disk with null shows.json images is not coverage (noises-off shape)', t => {
+  const publicDir = fs.mkdtempSync(path.join(os.tmpdir(), 'imageless-leftover-'));
+  t.after(() => fs.rmSync(publicDir, { recursive: true, force: true }));
+  const dir = path.join(publicDir, 'images', 'shows', 'noises-off-west-end-2019');
+  fs.mkdirSync(path.join(dir, 'sm'), { recursive: true });
+  for (const f of ['poster.jpg', 'thumbnail.jpg', 'sm/poster.jpg.webp', 'sm/thumbnail.jpg.webp']) {
+    fs.writeFileSync(path.join(dir, f), Buffer.alloc(11321, 1));
+  }
+  const noisesOff = {
+    id: 'noises-off-west-end-2019', title: 'Noises Off', category: 'west-end', status: 'closed',
+    venue: 'Garrick Theatre', openingDate: '2019-10-03', previewsStartDate: '2019-09-27',
+    images: { thumbnail: null, poster: null, hero: null },
+    rejectedImageUrls: [
+      'google-images:https://sfplayhouse.org/2025-2026-season/noises-off/',
+      'google-images:https://www.amazon.com/Noises-Off-Broadway-Poster-Style/dp/B003SIDESG',
+    ],
+  };
+  const recorded = { ...noisesOff, id: 'old-times-west-end-2013',
+    images: { thumbnail: '/images/shows/old-times-west-end-2013/thumbnail.jpg', poster: null, hero: null } };
+  const recordedDir = path.join(publicDir, 'images', 'shows', recorded.id);
+  fs.mkdirSync(recordedDir, { recursive: true });
+  fs.writeFileSync(path.join(recordedDir, 'thumbnail.jpg'), Buffer.alloc(16070, 1));
+
+  const normalized = normalize([noisesOff, recorded], { imageOptions: { publicDir } });
+  assert.equal(normalized[0].hasImages, false, 'leftover files must not count when shows.json images are null');
+  assert.equal(normalized[1].hasImages, true, 'a recorded path with a real file is coverage');
+  assert.deepEqual(findImagelessScoredShows(normalized, { nowMs }).map(s => s.id), ['noises-off-west-end-2019']);
+
+  // A noReliableArt marker is what settles such a row (BRO-6703), not the files.
+  const marked = { ...noisesOff, noReliableArt: buildNoReliableArtMarker(noisesOff, { now: nowMs, reason: 'self-heal searches found no matching art' }) };
+  const [m] = normalize([marked], { imageOptions: { publicDir } });
+  assert.equal(m.hasImages, false);
+  assert.equal(m.noReliableArt, true);
+});
