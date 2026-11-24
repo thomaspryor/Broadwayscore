@@ -953,6 +953,20 @@ async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId, 
  * Try to find show on Did They Like It
  * Revival shows often use -bway or -broadway suffixes
  */
+// DTLI page gate (BRO-8266): the title check reads headings only and a DTLI
+// page's headings carry no year, so a same-title older production passed.
+// Also rejects a page whose dated review items ALL predate the show's year.
+function dtliPageAccepted(html, show) {
+  if (!quickTitleCheck(html, show.title, { showId: show.id })) return false;
+  const { dtliPageWrongProduction } = require('./lib/dtli-page-year-gate');
+  const g = dtliPageWrongProduction(html, show);
+  if (g.wrong) {
+    console.log(`    ✗ DTLI page rejected: review years ${[...new Set(g.years)].join('/')} all predate ${show.id} (${g.showYear}), a different production's page`);
+    return false;
+  }
+  return true;
+}
+
 async function searchDTLI(show) {
   // Try slug map first (most reliable — discovered from DTLI sitemaps)
   const dtliSlugMap = getDtliSlugMap();
@@ -965,7 +979,7 @@ async function searchDTLI(show) {
     console.log(`  Searching Did They Like It (mapped: ${mappedSlug})...`);
     const result = await searchAggregator('DTLI', url);
     if (result.found && result.html && result.html.includes('review-item') &&
-        quickTitleCheck(result.html, show.title, { showId: show.id })) {
+        dtliPageAccepted(result.html, show)) {
       console.log(`    ✓ Found via slug map: ${url}`);
       return { url, html: result.html };
     }
@@ -987,7 +1001,7 @@ async function searchDTLI(show) {
         console.log(`    homepage match: ${homeUrl}`);
         const showResult = await searchAggregator('DTLI', homeUrl);
         if (showResult.found && showResult.html && showResult.html.includes('review-item') &&
-            quickTitleCheck(showResult.html, show.title, { showId: show.id })) {
+            dtliPageAccepted(showResult.html, show)) {
           console.log(`    ✓ Found via homepage scan: ${homeUrl}`);
           return { url: homeUrl, html: showResult.html };
         }
@@ -1016,7 +1030,7 @@ async function searchDTLI(show) {
       console.log(`    sitemap found: ${discovery.slug} (score ${discovery.candidates[0].score})`);
       const sitemapResult = await searchAggregator('DTLI', discovery.url);
       if (sitemapResult.found && sitemapResult.html && sitemapResult.html.includes('review-item') &&
-          quickTitleCheck(sitemapResult.html, show.title, { showId: show.id })) {
+          dtliPageAccepted(sitemapResult.html, show)) {
         console.log(`    ✓ Found via sitemap discovery: ${discovery.url}`);
         return { url: discovery.url, html: sitemapResult.html };
       }
@@ -1155,7 +1169,7 @@ async function searchDTLI(show) {
     const result = await searchAggregator('DTLI', url);
     if (result.fetchAnswered || result.found) answeredProbes++;
     if (result.found && result.html && result.html.includes('review-item') &&
-        quickTitleCheck(result.html, show.title, { showId: show.id })) {
+        dtliPageAccepted(result.html, show)) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
     }
@@ -3329,9 +3343,9 @@ function createReviewFile(showId, reviewData, options = {}) {
   // exempts declared earlier runs. Scoped to NYC/London shows.
   {
     const _opShow = getShowData(showId);
-    const { otherProductionSignal, showMarket, URL_SIGNALS } = require('./lib/other-production-signal');
+    const { otherProductionSignal, showMarket, INGEST_SIGNALS, INGEST_DATE_GAP_DAYS } = require('./lib/other-production-signal');
     if (_opShow && showMarket(_opShow)) {
-      const op = otherProductionSignal({ ...reviewData, outletId: normalizedOutletId }, _opShow, { only: URL_SIGNALS });
+      const op = otherProductionSignal({ ...reviewData, outletId: normalizedOutletId }, _opShow, { only: INGEST_SIGNALS, minDateGapDays: INGEST_DATE_GAP_DAYS });
       if (op) {
         console.log(`    ✗ Skipping ${filename}: other production (${op.signal}: ${op.detail})`);
         return 'otherProduction';

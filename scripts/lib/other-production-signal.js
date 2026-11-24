@@ -201,7 +201,9 @@ function otherProductionSignal(review, show, opts = {}) {
     // 4. stored publishDate well before the production started.
     if (want('date-before-production') && !opts.skipDate && review.publishDate) {
       const pd = require('./date-utils').toDateMs(review.publishDate);
-      const grace = (start.fromPreviews ? PRE_PREVIEW_GRACE_DAYS : PRE_OPENING_GRACE_DAYS) * DAY_MS;
+      // opts.minDateGapDays (BRO-8266): a caller that DROPS rather than flags asks for a
+      // gap this large (days) before trusting a stored date; never below the grace window.
+      const grace = Math.max(start.fromPreviews ? PRE_PREVIEW_GRACE_DAYS : PRE_OPENING_GRACE_DAYS, opts.minDateGapDays || 0) * DAY_MS;
       if (Number.isFinite(pd) && pd < start.ms - grace && !priorRunCoversDate(show, review.publishDate)) {
         const days = Math.round((start.ms - pd) / DAY_MS);
         return { signal: 'date-before-production', detail: `published ${review.publishDate}, ${days}d before ${start.fromPreviews ? 'first preview' : 'opening'}` };
@@ -234,6 +236,13 @@ function londonAggregatorCandidates(shows) {
 // ingest, before anything is written (measured 2026-09-29 over 21,054
 // included reviews: every remaining hit was a real other-production review).
 const URL_SIGNALS = Object.freeze(['url-edition-market', 'url-year']);
+
+// Ingest gate (BRO-8266): URL signals plus a stored publishDate that is years, not
+// weeks, before the production. A timeout.com URL has no year and the aggregator date
+// is all that says a review is from 2012; two years clear of the grace window keeps
+// a wrong-by-months stored date from dropping a real review (those are flagged later).
+const INGEST_SIGNALS = Object.freeze([...URL_SIGNALS, 'date-before-production']);
+const INGEST_DATE_GAP_DAYS = 730;
 
 /**
  * Audit the live corpus: included reviews (data/reviews.json) whose URL proves
@@ -309,6 +318,8 @@ module.exports = {
   auditIncludedReviews,
   otherProductionSignal,
   URL_SIGNALS,
+  INGEST_SIGNALS,
+  INGEST_DATE_GAP_DAYS,
   urlPathYear,
   urlEditionMarket,
   showMarket,

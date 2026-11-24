@@ -1631,6 +1631,18 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
     }
 
     if (DRY_RUN) {
+      // BRO-8266: a dry run that skips createReviewFile's ingest gate reports
+      // reviews it would in fact refuse (and hid that a 2012 page was being read).
+      const _opShow = require('./lib/production-verifier').getShowData(showId);
+      const _op = require('./lib/other-production-signal');
+      const _sig = _opShow && _op.showMarket(_opShow)
+        ? _op.otherProductionSignal(review, _opShow, { only: _op.INGEST_SIGNALS, minDateGapDays: _op.INGEST_DATE_GAP_DAYS })
+        : null;
+      if (_sig) {
+        console.log(`  [DRY RUN] Would REJECT (other production, ${_sig.signal}: ${_sig.detail}): ${review.outletId || review.outlet} — ${review.url}`);
+        skipped++;
+        continue;
+      }
       console.log(`  [DRY RUN] Would create: ${review.outletId || review.outlet} — ${review.url}`);
       created++;
       continue;

@@ -34,6 +34,7 @@ const { cronHttpRequest } = require('./lib/cron-http-request');
 const { createRunBudget, parseTimeBudgetMin } = require('./lib/run-budget');
 const { pickBestDtliSlug, dtliSlugPredatesShow, extractDtliReviewYears, dtliShowYear } = require('./lib/review-guards');
 const { applyAssignmentsWithoutCollisions } = require('./lib/cache-collision');
+const { findWrongYearMappings, isLiveWindowShow } = require('./lib/dtli-slug-revalidate');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
@@ -407,6 +408,30 @@ async function main() {
   const unmatchedSlugs = [];
   const allMatches = {};
 
+  // BRO-8266: the year rule below only ever saw NEW candidates, so a mapping
+  // written before the rule (galileo-2026 -> the 2012 Classic Stage page) was
+  // never looked at again outside --force. Re-probe the current slug of every
+  // not-closed show on every run and unmap the ones whose dated reviews all
+  // predate the production. Unmapped here, the slug is free again, so the
+  // candidate loop below re-matches the show and the year rule picks the right
+  // page (or leaves it unmapped). --force already re-probes everything.
+  const unmappedByYear = {}; // showId → rejected slug
+  if (!FORCE) {
+    const showsForRevalidate = new Map(shows.map(s => [s.id, s]));
+    const rv = await findWrongYearMappings(
+      slugMap.shows,
+      showsForRevalidate,
+      async (slug) => httpGet(`https://didtheylikeit.com/shows/${slug}/`),
+      { include: (s) => isLiveWindowShow(s) && (!SHOW_FILTER || SHOW_FILTER.has(s.id)), exceeded: () => budget.exceeded() }
+    );
+    console.log(`\nRe-validated ${rv.checked} existing mapping(s) of not-closed shows: ${rv.wrong.length} wrong-production, ${rv.unprobed.length} unprobed`);
+    for (const w of rv.wrong) {
+      unmappedByYear[w.showId] = w.slug;
+      console.log(`  ✗ ${w.showId} (${w.showYear}) mapped to ${w.slug}: review years ${[...new Set(w.years)].join('/')} all predate it — unmapping`);
+      delete slugMap.shows[w.showId];
+    }
+  }
+
   // Build reverse map: showId → dtliSlug (from existing map)
   const existingReverse = new Map();
   for (const [showId, dtliSlug] of Object.entries(slugMap.shows)) {
@@ -460,7 +485,6 @@ async function main() {
   // probed first and a page whose dated reviews all predate the show is
   // rejected — see the header. `unmappedByYear` collects mapped ids whose
   // current slug failed under --force; they are removed at write time.
-  const unmappedByYear = {}; // showId → rejected slug
   let yearRuleRejections = 0;
   const probeTargets = Object.entries(candidatesByShow).filter(([showId]) => !(existingReverse.has(showId) && !FORCE));
   const probeCount = probeTargets.reduce((n, [showId, candidates]) => n + (dtliShowYear(showsById.get(showId) || { id: showId }) ? candidates.length : 0), 0);
