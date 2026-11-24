@@ -1,23 +1,36 @@
 {
   "processed": [
-    "a-clockwork-orange-a-play-with-music-regional-2026/broadwayworld--richard-sasanow.json"
+    "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "a-clockwork-orange-a-play-with-music-regional-2026/broadwayworld--richard-sasanow.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-24T11:31:04.747Z",
-  "lastProcessed": "a-clockwork-orange-a-play-with-music-regional-2026/broadwayworld--richard-sasanow.json",
-  "log": []
+  "startTime": "2026-11-24T12:03:38.698Z",
+  "lastProcessed": "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+  "log": [
+    {
+      "t": "2026-11-24T12:04:05.122Z",
+      "event": "bb-session",
+      "session": "a46527b5",
+      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago"
+    },
+    {
+      "t": "2026-11-24T12:04:05.636Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
