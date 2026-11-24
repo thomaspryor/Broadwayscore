@@ -403,33 +403,6 @@
     "queuedAt": "2026-11-24T15:14:59.749Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red:validate-review-text-files",
-    "title": "Data audit failing: Validate review-text files",
-    "description": "The \"Validate review-text files\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
-    "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45431478267",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Job",
-        "value": "Data Validation"
-      },
-      {
-        "name": "Step",
-        "value": "Validate review-text files"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45431478267)"
-      }
-    ],
-    "queuedAt": "2026-11-24T16:06:22.497Z"
-  },
-  {
     "conditionKey": "t1-gaps:needs-manual-recovery",
     "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-24.",
     "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
@@ -473,6 +446,33 @@
       }
     ],
     "queuedAt": "2026-11-24T16:48:01.687Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:validate-review-text-files",
+    "title": "Data audit failing: Validate review-text files — still happening after 1 days",
+    "description": "Filed BRO-8263: this has been happening for 1+ days without clearing.\n\nThe \"Validate review-text files\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45441932422",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8263",
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Validate review-text files"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45441932422)"
+      }
+    ],
+    "queuedAt": "2026-11-24T17:03:00.642Z"
   },
   {
     "conditionKey": "land:land/bro-6866-push-contention",
