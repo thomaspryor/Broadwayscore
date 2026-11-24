@@ -1,30 +1,46 @@
 {
-  "generatedAt": "2026-11-24T23:11:33.965Z",
+  "generatedAt": "2026-11-24T23:47:41.205Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 378,
-  "clean": 377,
-  "defective": 1,
+  "clean": 376,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "pride-bridge-theatre-off-west-end-2026",
-      "title": "Pride - Bridge Theatre",
-      "openingDate": "2026-11-14",
+      "showId": "the-afronauts-west-end-2026",
+      "title": "The Afronauts",
+      "openingDate": "2026-11-23",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 80.63 vs local 82.31 (Δ1.68)"
+          "detail": "deployed cs 61.06 vs local 61.45 (Δ0.39)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-24T23:11:29.670Z"
+      "localCount": 9,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-24T23:47:33.874Z"
+    },
+    {
+      "showId": "all-the-world-regional-2026",
+      "title": "All the World",
+      "openingDate": "2026-11-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.29 vs local 84.54 (Δ0.75)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-11-24T23:47:33.874Z"
     }
   ],
   "persistentDefective": 0,
