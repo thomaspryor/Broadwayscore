@@ -177,4 +177,6 @@ test('hero date year before "Critic reviews" is not a review count (BRO-8227)', 
   assert.deepEqual(readPage(hero('<p>Critic reviews after opening night</p>')), { score: null, reviewCount: 0 });
   assert.deepEqual(readPage(hero('<span>Critic reviews after opening night</span>')), { score: null, reviewCount: 0 });
   assert.deepEqual(readPage(hero('<p>12 Critic Reviews</p>')), { score: null, reviewCount: 12 });
+  assert.deepEqual(readPage(hero('<p>Updated today, 12 Critic Reviews</p>')), { score: null, reviewCount: 12 });
+  assert.deepEqual(readPage(hero('<p>1,234 Critic Reviews</p>')), { score: null, reviewCount: 1234 });
 });
