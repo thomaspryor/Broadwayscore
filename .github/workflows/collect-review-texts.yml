@@ -421,6 +421,8 @@ jobs:
           INPUT_CONTENT_TIER: ${{ inputs.content_tier }}
         run: |
           git add data/audit/ data/collection-state/ || true
+          # BRO-6866: keep the data commit eligible for the Git Data API push fallback.
+          node scripts/lib/unstage-api-fallback-disqualifiers.js || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -434,6 +436,15 @@ jobs:
             bash scripts/lib/push-with-retry.sh
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
+
+      # BRO-6866: stage-latency.jsonl is unstaged from the data commit above (it
+      # disqualifies the API push fallback); it goes out here, non-fatally.
+      - name: Commit stage-latency log
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-stage-latency
+        with:
+          workflow-name: collect-review-texts
 
       # Belt-and-suspenders: explicitly dispatch rebuild since workflow_run events
       # can be silently dropped by GitHub during high-activity periods.
@@ -861,6 +872,8 @@ jobs:
           # written by scripts/lib/provider-telemetry.js during collect-review-texts.js
           # were silently dropped on every parallel bulk-backfill run.
           git add data/audit/ data/collection-state/ || true
+          # BRO-6866: keep the data commit eligible for the Git Data API push fallback.
+          node scripts/lib/unstage-api-fallback-disqualifiers.js || true
           if git diff --staged --quiet; then
             echo "No changes to commit for ${{ matrix.outlet_tier }}"
           else
