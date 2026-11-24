@@ -6,11 +6,13 @@ name: Publish Show Refresh
 # score without a full deploy. While the reader is off nothing reads what this
 # writes: it is invisible on the site.
 #
-# Modes: dry-run by default (computes and reports, writes nothing). Writes only
-# when repo variable SHOW_REFRESH_PUBLISH_WRITES == 'on', or a manual dispatch
-# with write: true. Off switch: repo variable SHOW_REFRESH_PUBLISH_DISABLED=true
-# (skips every run). The store's kill row (Show Refresh Kill Switch workflow)
-# also stops a run before any write.
+# Modes: scheduled and workflow_run runs write unless repo variable
+# SHOW_REFRESH_PUBLISH_WRITES is 'off' (only 'off' turns writes off; 'false' or
+# '0' do not). A manual dispatch obeys its own `write` input only (default
+# dry-run). Off switches: SHOW_REFRESH_PUBLISH_WRITES=off (dry-run),
+# SHOW_REFRESH_PUBLISH_DISABLED=true (skips every run), or the store's kill row
+# (Show Refresh Kill Switch workflow, no variable needed) which stops a run
+# before any write.
 #
 # Triggers: after a data rebuild or deploy (completed, any conclusion: a rebuild
 # can push core data and then fail a later step), plus a 10-minute backstop.
@@ -66,7 +68,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SHOW_REFRESH_REVALIDATE_SECRET: ${{ secrets.SHOW_REFRESH_REVALIDATE_SECRET }}
-          WRITE: ${{ (vars.SHOW_REFRESH_PUBLISH_WRITES == 'on' || inputs.write == true) && 'true' || 'false' }}
+          WRITE: ${{ ((github.event_name == 'workflow_dispatch' && inputs.write == true) || (github.event_name != 'workflow_dispatch' && vars.SHOW_REFRESH_PUBLISH_WRITES != 'off')) && 'true' || 'false' }}
           TRIGGER: ${{ github.event_name }}:${{ github.event.workflow_run.name || '' }}
         run: |
           set -o pipefail

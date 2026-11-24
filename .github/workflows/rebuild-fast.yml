@@ -740,7 +740,7 @@ jobs:
         # publish a changed review list, because this rebuild just scored it and
         # the staleness guard passed); the CLI also refuses it without
         # SHOW_REFRESH_SAFE=true. publish-show-refresh.yml is the backstop for
-        # everything else. Dry-run unless repo var SHOW_REFRESH_PUBLISH_WRITES=on.
+        # everything else. Writes unless repo var SHOW_REFRESH_PUBLISH_WRITES=off.
         # The home write is a CAS: a run that loses to the backstop replans
         # (up to 3 tries, ~3s each). PUBLISH_CODE_FETCH=0: never deepen this push
         # clone; a deployed commit outside its history is just code-mismatch.
@@ -755,7 +755,7 @@ jobs:
           SHOW_REFRESH_REVALIDATE_SECRET: ${{ secrets.SHOW_REFRESH_REVALIDATE_SECRET }}
           SHOW_REFRESH_SAFE: ${{ steps.staleness.outputs.safe_to_publish }}
           PUBLISH_CODE_FETCH: '0'
-          WRITE: ${{ vars.SHOW_REFRESH_PUBLISH_WRITES == 'on' && 'true' || 'false' }}
+          WRITE: ${{ vars.SHOW_REFRESH_PUBLISH_WRITES != 'off' && 'true' || 'false' }}
         run: |
           set -o pipefail
           MODE=--dry-run

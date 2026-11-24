@@ -153,6 +153,20 @@ test('workflows: only rebuild-fast passes --rebuild-step, in a step gated on the
   assert.equal(step['continue-on-error'], true);
 });
 
+test('workflows: writes are on unless SHOW_REFRESH_PUBLISH_WRITES=off; a manual dispatch obeys its write input only', async () => {
+  const yaml = (await import('js-yaml')).default;
+  const dir = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '.github', 'workflows');
+  const writeEnv = (f, pred) => {
+    const wf = yaml.load(fs.readFileSync(path.join(dir, f), 'utf8'));
+    const steps = Object.values(wf.jobs).flatMap((j) => j.steps || []).filter((st) => typeof st.run === 'string' && st.run.includes('publish-show-refresh.ts') && pred(st));
+    assert.equal(steps.length, 1, `${f}: one publish step`);
+    return steps[0].env.WRITE;
+  };
+  assert.equal(writeEnv('rebuild-fast.yml', (st) => st.run.includes('--rebuild-step')), "${{ vars.SHOW_REFRESH_PUBLISH_WRITES != 'off' && 'true' || 'false' }}");
+  assert.equal(writeEnv('publish-show-refresh.yml', () => true),
+    "${{ ((github.event_name == 'workflow_dispatch' && inputs.write == true) || (github.event_name != 'workflow_dispatch' && vars.SHOW_REFRESH_PUBLISH_WRITES != 'off')) && 'true' || 'false' }}");
+});
+
 test('sliceCodeClosure: the slice computation\'s own imports, not every script; none in a dir without the code', (t) => {
   const c = sliceCodeClosure();
   assert.ok(Array.isArray(c), 'closure computed in the repo');
