@@ -626,6 +626,9 @@ jobs:
           # never make it back to main and the broadcast gate stays permanently
           # blocked even after the LLM ensemble resolves the orphan(s).
           git add -u data/audit/ 2>/dev/null || true
+          # BRO-6866: keep the data commit eligible for the Git Data API push fallback.
+          # lint-allow-swallow: the helper only UNSTAGES regenerable diagnostics (it writes nothing); if it crashes the commit proceeds exactly as before, so failing the push over it would be worse
+          node scripts/lib/unstage-api-fallback-disqualifiers.js || true
           bash scripts/lib/git-add-existing.sh public/opening-night-status.json public/status.html
           git add public/data/shows/ 2>/dev/null || true
           # Mobile index — keep it committed in lockstep with the detail JSONs above

@@ -31,11 +31,16 @@ test('helper unstages disqualifying audit paths and keeps fallback-safe ledgers 
   assert.equal(out.split('\n').filter(Boolean).length, 4);
 });
 
-test('every data/audit sweep in collect-review-texts.yml is followed by the helper', () => {
-  const lines = fs.readFileSync(path.join(repo, '.github/workflows/collect-review-texts.yml'), 'utf8').split('\n');
-  const sweeps = lines.map((l, i) => [l, i]).filter(([l]) => /git add data\/audit\/ /.test(l));
-  assert.ok(sweeps.length >= 2);
-  for (const [, i] of sweeps) {
-    assert.match(lines.slice(i + 1, i + 6).join('\n'), /unstage-api-fallback-disqualifiers\.js/, `sweep at line ${i + 1}`);
+test('every whole-directory data/audit sweep in any workflow is followed by the helper', () => {
+  const dir = path.join(repo, '.github/workflows');
+  let total = 0;
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.yml'))) {
+    const lines = fs.readFileSync(path.join(dir, f), 'utf8').split('\n');
+    lines.forEach((l, i) => {
+      if (!/^\s*git add (-u )?.*\bdata\/audit\/ /.test(l)) return;
+      total++;
+      assert.match(lines.slice(i + 1, i + 6).join('\n'), /unstage-api-fallback-disqualifiers\.js/, `${f} line ${i + 1}`);
+    });
   }
+  assert.ok(total >= 8, `expected >=8 sweeps, found ${total}`);
 });

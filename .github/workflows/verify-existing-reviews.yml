@@ -277,6 +277,9 @@ jobs:
           INPUT_CURRENT_ROUND: ${{ inputs.current_round }}
         run: |
           git add data/audit/ || true
+          # BRO-6866: keep the data commit eligible for the Git Data API push fallback.
+          # lint-allow-swallow: the helper only UNSTAGES regenerable diagnostics (it writes nothing); if it crashes the commit proceeds exactly as before, so failing the push over it would be worse
+          node scripts/lib/unstage-api-fallback-disqualifiers.js || true
           if git diff --staged --quiet; then
             echo "No changes to commit for partition ${{ matrix.partition }}"
           else
@@ -423,6 +426,9 @@ jobs:
           # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
           . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
           git add data/audit/
+          # BRO-6866: keep the data commit eligible for the Git Data API push fallback.
+          # lint-allow-swallow: the helper only UNSTAGES regenerable diagnostics (it writes nothing); if it crashes the commit proceeds exactly as before, so failing the push over it would be worse
+          node scripts/lib/unstage-api-fallback-disqualifiers.js || true
           if git diff --staged --quiet; then
             echo "No changes to reviews.json"
           else

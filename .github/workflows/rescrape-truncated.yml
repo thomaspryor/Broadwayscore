@@ -311,6 +311,9 @@ jobs:
         if: always()
         run: |
           git add data/archives/reviews/ data/audit/ data/collection-state/ || true
+          # BRO-6866: keep the data commit eligible for the Git Data API push fallback.
+          # lint-allow-swallow: the helper only UNSTAGES regenerable diagnostics (it writes nothing); if it crashes the commit proceeds exactly as before, so failing the push over it would be worse
+          node scripts/lib/unstage-api-fallback-disqualifiers.js || true
           if git diff --staged --quiet; then
             echo "No changes to commit for partition ${{ matrix.partition }}"
           else
