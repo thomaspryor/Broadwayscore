@@ -63,7 +63,9 @@ test('bare ask rule: "add <title>" closes, change wording and other productions 
   assert.equal(isBareAskForExisting('Is X Show on here?', undefined, BWAY, o), true);
   assert.equal(isBareAskForExisting('Please add the cast for X Show', undefined, BWAY, o), false);
   assert.equal(isBareAskForExisting('Please add the new production of X Show', undefined, BWAY, o), false);
-  assert.equal(isBareAskForExisting('Please add the Toronto run of X Show', 'place', TORONTO, o), true);
+  assert.equal(isBareAskForExisting('X Show has a Toronto run coming up, can you add it?', 'place', TORONTO, o), true);
+  // "add the <anything>" stays a change request even when pinned: parked for a human, never a wrong close.
+  assert.equal(isBareAskForExisting('Please add the Toronto run of X Show', 'place', TORONTO, o), false);
   assert.equal(isBareAskForExisting('Please add X Show', 'place', CHICAGO, o), false, 'closed production never closes');
   assert.equal(isBareAskForExisting('Please add X Show', undefined, CHECK_CLOSED(), o), false);
 });
