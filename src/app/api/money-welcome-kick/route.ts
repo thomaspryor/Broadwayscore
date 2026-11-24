@@ -3,7 +3,7 @@ import * as wake from '@/lib/money-welcome-wake';
 import * as kick from '@/lib/money-welcome-kick';
 
 // BRO-7704: called by the Supabase pg_net trigger money_scorecard_signups_kick (insert on
-// money_scorecard_signups) with the shared secret in x-kick-secret. Dispatches money-welcome.yml now
+// money_scorecard_signups) with the shared secret in x-kick-secret (read from money_welcome_kick_config). Dispatches money-welcome.yml now
 // instead of waiting for GitHub's throttled hourly cron. The trigger is the proof a sign-up exists, so
 // no table read here. Skips when a run is already queued/pending (it will read the new row). The
 // workflow's welcomed_at claim keeps the send once-only; the hourly cron stays as the backstop.
@@ -24,14 +24,29 @@ function ok(body: Record<string, unknown>, status = 200) {
 }
 
 export async function POST(req: NextRequest) {
-  const secret = process.env.MONEY_WELCOME_KICK_SECRET;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const svc = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const ghToken = process.env.GH_DISPATCH_TOKEN;
-  // Secret first: an unauthenticated caller must not learn whether the route is configured.
-  if (!secret || !k.isAuthorized(req.headers.get('x-kick-secret'), secret)) return ok({ ok: false, reason: 'unauthorized' }, 401);
-  if (!ghToken) {
-    console.error('[money-welcome-kick] not configured (GH_DISPATCH_TOKEN missing)');
+  if (!url || !svc || !ghToken) {
+    // Same 401 as a bad secret would be a lie; 503 only reveals "this deployment is unconfigured", which carries no secret.
+    console.error('[money-welcome-kick] not configured (Supabase url, service key or GH_DISPATCH_TOKEN missing)');
     return ok({ ok: false, reason: 'not-configured' }, 503);
   }
+  // The shared secret is generated inside the database by the migration (money_welcome_kick_config), so it is
+  // never in git or a hand-copied env var. The route reads it with the service key and compares in constant time.
+  let secret: string | undefined;
+  try {
+    const r = await fetch(`${url}/rest/v1/money_welcome_kick_config?select=secret&limit=1`, {
+      headers: { apikey: svc, Authorization: `Bearer ${svc}` }, cache: 'no-store', signal: AbortSignal.timeout(8000),
+    });
+    if (!r.ok) { console.error('[money-welcome-kick] config read failed', r.status); return ok({ ok: false, reason: `supabase-${r.status}` }, 502); }
+    const rows = await r.json();
+    secret = Array.isArray(rows) && rows[0] && typeof rows[0].secret === 'string' ? rows[0].secret : undefined;
+  } catch (e) {
+    console.error('[money-welcome-kick] config read error', e instanceof Error ? e.message : e);
+    return ok({ ok: false, reason: 'error' }, 502);
+  }
+  if (!secret || !k.isAuthorized(req.headers.get('x-kick-secret'), secret)) return ok({ ok: false, reason: 'unauthorized' }, 401);
   const cooldown = process.env.MONEY_WELCOME_KICK_COOLDOWN_MS === undefined ? COOLDOWN_MS : Number(process.env.MONEY_WELCOME_KICK_COOLDOWN_MS) || 0;
   if (Date.now() - lastActAt < cooldown) return ok({ ok: true, acted: false, reason: 'cooldown' });
   const prevActAt = lastActAt;

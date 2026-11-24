@@ -7,15 +7,16 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 register('./next-subpath-loader.mjs', import.meta.url);
 
-async function callRoute({ secret = 'sek', queued = 0, pending = 0, dispatchStatus = 204, env = {} }) {
+async function callRoute({ secret = 'sek', dbSecret = 'sek', cfgStatus = 200, queued = 0, pending = 0, dispatchStatus = 204, env = {} }) {
   const saved = { ...process.env };
-  Object.assign(process.env, { MONEY_WELCOME_KICK_SECRET: 'sek', GH_DISPATCH_TOKEN: 'gh', MONEY_WELCOME_KICK_COOLDOWN_MS: '0', ...env });
+  Object.assign(process.env, { NEXT_PUBLIC_SUPABASE_URL: 'https://db.test', SUPABASE_SERVICE_ROLE_KEY: 'svc', GH_DISPATCH_TOKEN: 'gh', MONEY_WELCOME_KICK_COOLDOWN_MS: '0', ...env });
   for (const k of Object.keys(env)) if (env[k] === null) delete process.env[k];
   const realFetch = globalThis.fetch;
   const calls = [];
   globalThis.fetch = async (url, init = {}) => {
     const u = String(url);
     calls.push({ url: u, body: init.body });
+    if (u.includes('/rest/v1/money_welcome_kick_config')) return new Response(JSON.stringify(dbSecret === null ? [] : [{ secret: dbSecret }]), { status: cfgStatus });
     if (u.includes('status=queued')) return new Response(JSON.stringify({ total_count: queued }), { status: 200 });
     if (u.includes('status=pending')) return new Response(JSON.stringify({ total_count: pending }), { status: 200 });
     if (u.endsWith('/dispatches')) return new Response(null, { status: dispatchStatus });
@@ -48,7 +49,7 @@ test('wrong or missing secret is 401 and touches nothing', async () => {
   for (const secret of ['nope', '', null]) {
     const r = await callRoute({ secret });
     assert.equal(r.status, 401);
-    assert.equal(r.calls.length, 0);
+    assert.equal(dispatches(r).length, 0);
   }
 });
 
@@ -57,7 +58,8 @@ test('queued/pending run skips; GitHub failure is 502; unconfigured is 503', asy
   assert.equal(dispatches(await callRoute({ pending: 1 })).length, 0);
   assert.equal((await callRoute({ dispatchStatus: 403 })).status, 502);
   assert.equal((await callRoute({ env: { GH_DISPATCH_TOKEN: null } })).status, 503);
-  assert.equal((await callRoute({ env: { MONEY_WELCOME_KICK_SECRET: null } })).status, 401, 'secret checked before config reveal');
+  assert.equal((await callRoute({ dbSecret: null })).status, 401, 'no secret row: nobody authorizes');
+  assert.equal((await callRoute({ cfgStatus: 500 })).status, 502);
 });
 
 test('cooldown: a second authorized kick inside the window dispatches nothing', async () => {

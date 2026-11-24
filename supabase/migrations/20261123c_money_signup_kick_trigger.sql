@@ -4,10 +4,9 @@
 -- hourly cron plus the welcomed_at claim remain the backstop. The URL and secret live in a private table
 -- (RLS on, no policies, no grants), readable only by the SECURITY DEFINER trigger function.
 --
--- AFTER APPLYING (one time, service role / SQL editor; the secret must equal Vercel MONEY_WELCOME_KICK_SECRET):
---   INSERT INTO public.money_welcome_kick_config (id, url, secret)
---   VALUES (true, 'https://broadwayscorecard.com/api/money-welcome-kick', '<secret>')
---   ON CONFLICT (id) DO UPDATE SET url = excluded.url, secret = excluded.secret;
+-- The shared secret is generated here, in the database, on first apply (never in git). The route
+-- /api/money-welcome-kick reads it back with the service key, so there is no env var to copy by hand.
+-- Rotate: UPDATE public.money_welcome_kick_config SET secret = replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', '');
 --
 -- ROLLBACK:
 --   DROP TRIGGER IF EXISTS money_scorecard_signups_kick ON public.money_scorecard_signups;
@@ -21,8 +20,12 @@ CREATE TABLE IF NOT EXISTS public.money_welcome_kick_config (
   url    TEXT NOT NULL,
   secret TEXT NOT NULL
 );
+INSERT INTO public.money_welcome_kick_config (id, url, secret)
+VALUES (TRUE, 'https://broadwayscorecard.com/api/money-welcome-kick', replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''))
+ON CONFLICT (id) DO NOTHING;
 ALTER TABLE public.money_welcome_kick_config ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON public.money_welcome_kick_config FROM PUBLIC, anon, authenticated;
+GRANT SELECT ON public.money_welcome_kick_config TO service_role;
 
 CREATE OR REPLACE FUNCTION public.money_welcome_kick()
 RETURNS TRIGGER

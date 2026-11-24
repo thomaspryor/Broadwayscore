@@ -24,7 +24,9 @@ test('migration: AFTER INSERT trigger posts the secret header to /api/money-welc
   assert.match(mig, /EXCEPTION WHEN OTHERS/, 'a failed kick must not roll back the sign-up');
   assert.match(mig, /ENABLE ROW LEVEL SECURITY/);
   assert.match(mig, /REVOKE ALL ON public\.money_welcome_kick_config FROM PUBLIC, anon, authenticated/);
-  assert.doesNotMatch(mig, /INSERT INTO public\.money_welcome_kick_config[^\n]*'[0-9a-f]{20,}'/, 'no real secret committed');
+  assert.match(mig, /gen_random_uuid\(\)/, 'secret generated in the database, not committed');
+  assert.doesNotMatch(mig, /'[0-9a-f]{32,}'/, 'no literal secret committed');
+  assert.match(mig, /GRANT SELECT ON public\.money_welcome_kick_config TO service_role/);
 });
 
 test('workflow keeps the hourly cron backstop and the welcomed_at claim', () => {
