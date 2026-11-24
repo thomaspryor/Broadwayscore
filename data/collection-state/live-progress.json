@@ -1,19 +1,26 @@
 {
-  "updatedAt": "2026-11-24T16:22:18.929Z",
-  "processed": 1,
-  "failed": 2,
-  "successRate": "33.3%",
+  "updatedAt": "2026-11-24T16:37:26.370Z",
+  "processed": 12,
+  "failed": 14,
+  "successRate": "46.2%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 9,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 2,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 46
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-11-24T16:29:44.570Z",
+      "event": "bb-session",
+      "session": "d35ce291",
+      "url": "https://concerts.consequence.net/events/the-afronauts-at-royal-court-jerwood-the"
+    }
+  ]
 }

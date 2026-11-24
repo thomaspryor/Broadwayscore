@@ -1,9 +1,12 @@
 {
   "issueNumber": "bro-8257",
   "planId": "8257a5c1-6b1e-4d0a-9c57-3f2e8a1b7d01",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T16:00:00.000Z",
-  "submitter": { "name": null, "email": null },
+  "submitter": {
+    "name": null,
+    "email": null
+  },
   "plan": {
     "summary": "BRO-8257: flag two wrong-production reviews on LA hub regional shows (2017 Broadway Dear Evan Hansen review; 2016 Goodman Destiny of Desire review)",
     "steps": [
@@ -12,10 +15,62 @@
     ],
     "riskLevel": "low",
     "actions": [
-      { "type": "review-field-edit", "file": "dear-evan-hansen-la-regional-2026/nytg--margret-echeverria.json", "field": "wrongProduction", "oldValue": false, "newValue": true, "description": "BRO-8257: text reviews the 2017 Broadway Music Box production starring Ben Platt, not La Mirada 2026" },
-      { "type": "review-field-edit", "file": "dear-evan-hansen-la-regional-2026/nytg--margret-echeverria.json", "field": "wrongProductionReason", "oldValue": "superseded: ingest: body replaced (empty/short -> substantial), was: ambiguous-production", "newValue": "BRO-8257: 2017 Broadway Music Box Theatre production review, not the 2026 La Mirada production", "description": "Record why" },
-      { "type": "review-field-edit", "file": "destiny-of-desire-regional-2026/around-the-town-chicago--unknown.json", "field": "wrongProduction", "oldValue": null, "newValue": true, "description": "BRO-8257: text reviews the 2016 Goodman Theatre (Chicago) premiere, not the 2026 Mark Taper Forum production" },
-      { "type": "review-field-edit", "file": "destiny-of-desire-regional-2026/around-the-town-chicago--unknown.json", "field": "wrongProductionReason", "oldValue": null, "newValue": "BRO-8257: 2016 Goodman Theatre Chicago production review, not the 2026 Mark Taper Forum production", "description": "Record why" }
+      {
+        "type": "review-field-edit",
+        "file": "dear-evan-hansen-la-regional-2026/nytg--margret-echeverria.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "BRO-8257: text reviews the 2017 Broadway Music Box production starring Ben Platt, not La Mirada 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dear-evan-hansen-la-regional-2026/nytg--margret-echeverria.json",
+        "field": "wrongProductionReason",
+        "oldValue": "superseded: ingest: body replaced (empty/short -> substantial), was: ambiguous-production",
+        "newValue": "BRO-8257: 2017 Broadway Music Box Theatre production review, not the 2026 La Mirada production",
+        "description": "Record why"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "destiny-of-desire-regional-2026/around-the-town-chicago--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-8257: text reviews the 2016 Goodman Theatre (Chicago) premiere, not the 2026 Mark Taper Forum production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "destiny-of-desire-regional-2026/around-the-town-chicago--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-8257: 2016 Goodman Theatre Chicago production review, not the 2026 Mark Taper Forum production",
+        "description": "Record why"
+      }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T16:37:56.424Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dear-evan-hansen-la-regional-2026/nytg--margret-echeverria.json wrongProduction: false -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dear-evan-hansen-la-regional-2026/nytg--margret-echeverria.json wrongProductionReason: \"superseded: ingest: body replaced (empty/short -> substantial), was: ambiguous-production\" -> \"BRO-8257: 2017 Broadway Music Box Theatre production review, not the 2026 La Mirada production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "destiny-of-desire-regional-2026/around-the-town-chicago--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "destiny-of-desire-regional-2026/around-the-town-chicago--unknown.json wrongProductionReason: null -> \"BRO-8257: 2016 Goodman Theatre Chicago production review, not the 2026 Mark Taper Forum production\""
+    }
+  ],
+  "executedIn": "ci"
 }
