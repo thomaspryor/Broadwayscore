@@ -1,0 +1,28 @@
+{
+  "issueNumber": "bro-8209-f",
+  "planId": "f1c8a2d4-6e93-4b70-9d15-3a7e0c5b2f86",
+  "status": "pending",
+  "createdAt": "2026-11-24T22:33:32.498Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Leopoldstadt (2022) has a Marc Miller Talkin' Broadway record at page/ob/02_16_23.html, the same Off Broadway page The Wanderers (2023) holds. The stored text is one Marc Miller review of The Wanderers (Laura Pels, Anna Ziegler) that mentions Leopoldstadt only as a comparison. The multi-show splitter wrongly made a Leopoldstadt child from it (scored 42). Flag the Leopoldstadt copy as the wrong show; The Wanderers keeps the page.",
+    "steps": [
+      "Both files carry url page/ob/02_16_23.html and publishDate February 16th, 2023, which is Off Broadway, not Leopoldstadt's 2022 Broadway run.",
+      "The Leopoldstadt file is a multiShowSplitChild of the-wanderers-off-broadway-2023 (anchor kind joint). Its 3809-character text opens 'The Wanderers, Anna Ziegler's new drama at the Laura Pels, shares much with ... Leopoldstadt' and names Leopoldstadt twice against The Wanderers twice and Ziegler three times: a review of The Wanderers."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "leopoldstadt-2022/talkinbroadway--marc-miller.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The page is Marc Miller's review of The Wanderers; this Leopoldstadt copy is a wrong multi-show split child (BRO-8209 cousin)."
+      }
+    ]
+  }
+}
