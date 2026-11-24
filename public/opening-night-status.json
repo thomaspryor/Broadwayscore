@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T10:28:27.441Z",
+  "generatedAt": "2026-11-24T10:57:26.642Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1515,27 +1515,27 @@
       "slug": "the-afronauts-west-end",
       "thumbnail": "/images/shows/the-afronauts-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 72,
+      "liveScore": 75,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 6,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 1,
-      "positive": 1,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:1/6"
+          "T2:1/2",
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1645,10 +1645,6 @@
         {
           "name": "LondonTheatre1",
           "isDualMarket": false
-        },
-        {
-          "name": "London Box Office",
-          "isDualMarket": false
         }
       ],
       "timeline": [
@@ -1660,6 +1656,18 @@
           "t2": 0,
           "t3": 1,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-24T10:57:26.642Z",
+          "rc": 2,
+          "s": 75,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 2,
           "m": 0,
           "n": 0,
           "bc": "waiting"

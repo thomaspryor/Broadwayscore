@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T10:28:12.398Z",
+  "timestamp": "2026-11-24T10:57:09.044Z",
   "stats": {
-    "totalReviews": 84571,
+    "totalReviews": 84576,
     "alreadyFlagged": 22564,
     "dateGuardCatches": 244,
     "directorMismatch": 3888,
     "tvFilmSignals": 2438,
-    "londonSignals": 3999,
+    "londonSignals": 4001,
     "offBroadwaySignals": 790,
     "yearMismatch": 398,
-    "noPublishDate": 8240
+    "noPublishDate": 8241
   },
   "findings": [
     {
@@ -96959,6 +96959,20 @@
       ]
     },
     {
+      "showId": "attention-off-west-end-2026",
+      "file": "revstanstheatreblog--rightrevstan.json",
+      "score": 55,
+      "publishDate": "2026-11-24",
+      "url": "https://revstanstheatreblog.co.uk/2026/11/24/review-attention-bush-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "avenue-q-west-end-2026",
       "file": "radio-times--joanna-magill.json",
       "score": 77,
@@ -136180,6 +136194,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-afronauts-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 76,
+      "publishDate": "2026-11-24",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-afronauts-royal-court-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
