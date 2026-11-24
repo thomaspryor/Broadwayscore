@@ -73,3 +73,21 @@ test('URL-less canonical: no duplicateOf link, other byline, or flagged twin -> 
     assert.equal(pick('a.json', a, Object.keys(f2), (n) => f2[n]), null);
   }
 });
+
+// BRO-8245 class guard: the clamp and the published-score audit must agree on which twin ratings bind. Before, the
+// clamp skipped every percentage twin while the audit banded a corroborated one (Reviews Hub 100% = 95-100), so a
+// published 88 was flagged daily and never corrected (BRO-8039 Eurotrash; BRO-5927/7407 were the same disagreement).
+test('corroborated percentage twin (Reviews Hub 100%) binds the clamp, in agreement with the audit predicate', () => {
+  const { publishedScoreViolation } = require('../../scripts/lib/published-score-star-band.js');
+  const rh = { url: 'https://www.thereviewshub.com/eurotrash/', outletId: 'thereviewshub', criticName: 'Richard Maguire', llmScore: { score: 88, confidence: 'high' }, scoreSource: 'llm-v6' };
+  const twin = { url: rh.url, outletId: 'thereviewshub', criticName: 'Unknown', originalScore: '100%', originalScoreSource: 'reviewshub-percentage', duplicateOf: 'c.json' };
+  const f = { 'c.json': rh, 'd.json': twin };
+  const sib = pick('c.json', rh, Object.keys(f), (n) => f[n] || null);
+  assert.ok(sib, 'twin 100% must bind the clamp');
+  const audit = publishedScoreViolation({ ...twin }, 88);
+  assert.ok(audit, 'audit flags the unclamped 88');
+  assert.equal(sib.data.originalScore, '100%');
+  assert.ok(audit.floor <= 95 && audit.ceiling === 100);
+  const clamped = getBestScore({ ...rh }, { siblingRating: sib });
+  assert.ok(clamped && clamped.score >= 95, `clamped score ${JSON.stringify(clamped)}`);
+});

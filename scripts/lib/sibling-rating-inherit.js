@@ -64,7 +64,10 @@ function siblingRatingForClamp(file, data, siblingFiles, load, canonicalUrl, det
     if (d.wrongShow || d.wrongProduction || d.isRoundupArticle || d.originalScoreCleared) continue;
     if (!isTwin(file, data, name, d, sameCriticFuzzy)) continue;
     const rating = ownRatingField(d);
-    if (rating === null || /%/.test(String(rating))) continue; // a percentage is not a star/grade band
+    // BRO-8245: no blanket percentage skip. detectBand on the donor's own record decides (highReliability); the audit's
+    // predicate (published-score-star-band) bands a corroborated percentage (Reviews Hub 100% = 95-100), so skipping it
+    // here left a published score the audit flags but the clamp never corrects (BRO-8039 Eurotrash, 88 vs a 100% twin).
+    if (rating === null) continue;
     const det = detectBand(ownRatingOnly(d)); // the donor's own record: outlet/text corroboration decide reliability
     if (!det || !det.band || !det.highReliability) continue;
     if (!found.has(`${det.band.floor}-${det.band.ceiling}`)) found.set(`${det.band.floor}-${det.band.ceiling}`, { file: name, data: ownRatingOnly(d) });
