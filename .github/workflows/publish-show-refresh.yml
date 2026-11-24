@@ -1,0 +1,89 @@
+name: Publish Show Refresh
+
+# BRO-8214 (BRO-8056 phase 1d/3a): publishes changed show slices to the
+# show-refresh store (Supabase bucket show-refresh + the `home` pointer row) so
+# the reader, once SHOW_REFRESH_READER=on, can serve a show's new reviews or
+# score without a full deploy. While the reader is off nothing reads what this
+# writes: it is invisible on the site.
+#
+# Modes: dry-run by default (computes and reports, writes nothing). Writes only
+# when repo variable SHOW_REFRESH_PUBLISH_WRITES == 'on', or a manual dispatch
+# with write: true. Off switch: repo variable SHOW_REFRESH_PUBLISH_DISABLED=true
+# (skips every run). The store's kill row (Show Refresh Kill Switch workflow)
+# also stops a run before any write.
+#
+# Triggers: after a data rebuild or deploy (completed, any conclusion: a rebuild
+# can push core data and then fail a later step), plus a 10-minute backstop.
+# One run at a time (concurrency group, no cancel), so there is a single writer;
+# the pointer write is also a compare-and-swap on home.generation.
+
+on:
+  workflow_run:
+    workflows: ["Rebuild Reviews (Fast)", "Rebuild Reviews Data", "Deploy to Vercel"]
+    types: [completed]
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      write:
+        description: 'Write to the store (otherwise dry-run)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: show-refresh-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Publish
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SHOW_REFRESH_REVALIDATE_SECRET: ${{ secrets.SHOW_REFRESH_REVALIDATE_SECRET }}
+          WRITE: ${{ (vars.SHOW_REFRESH_PUBLISH_WRITES == 'on' || inputs.write == true) && 'true' || 'false' }}
+          TRIGGER: ${{ github.event_name }}:${{ github.event.workflow_run.name || '' }}
+        run: |
+          set -o pipefail
+          MODE=--dry-run
+          [ "$WRITE" = "true" ] && MODE=--write
+          echo "trigger=$TRIGGER mode=$MODE" | tee -a "$GITHUB_STEP_SUMMARY"
+          npx tsx scripts/publish-show-refresh.ts "$MODE" --report="$RUNNER_TEMP/show-refresh-report.json" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: show-refresh-report
+          path: ${{ runner.temp }}/show-refresh-report.json
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Publish Show Refresh Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
