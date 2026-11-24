@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8209-e",
   "planId": "e5a93c70-4d1b-4a6e-8c2f-91b7d3e60a48",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T20:03:42.107Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "Dale's review lives at the b page; the current url is Human Things' page (same class as feedback #1203)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T21:24:21.038Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "very-blue-light-off-broadway-2026/talkinbroadway--michael-dale.json url: \"https://www.talkinbroadway.com/page/ob/09_25_26.html\" -> \"https://www.talkinbroadway.com/page/ob/09_25_26b.html\""
+    }
+  ],
+  "executedIn": "ci"
 }
