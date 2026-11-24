@@ -106,6 +106,8 @@ function gitHead(cwd: string): string | null {
  * deliberately absent: HEAD data moving past the deploy is the point.
  */
 export const CODE_PATHS = ['src', 'scripts', 'package.json', 'package-lock.json', 'next.config.js', 'tsconfig.json'];
+/** Data files that live under src/ and that bots commit (rebuild-fast, fetch-tour-schedules): data, not code. */
+export const CODE_PATH_DATA_EXCLUDES = ['src/config/genre-tags.json', 'src/config/onboarding-tour-art.json'];
 
 /**
  * Whether the checked-out code computes slices the way the deployed commit
@@ -126,10 +128,15 @@ export function codeMatchOf(env: NodeJS.ProcessEnv, publicSha: string | null | u
   if (git(['cat-file', '-e', `${publicSha}^{commit}`]).status !== 0 && env.PUBLISH_CODE_FETCH !== '0') {
     git(['fetch', '--no-tags', '--depth=1', 'origin', publicSha]);
   }
-  const d = git(['diff', '--quiet', publicSha, 'HEAD', '--', ...CODE_PATHS]);
+  const d = git(['diff', '--quiet', publicSha, 'HEAD', '--', ...CODE_PATHS, ...CODE_PATH_DATA_EXCLUDES.map((f) => `:(exclude)${f}`)]);
   if (d.status === 0) return { codeSha, match: true, how: 'no code change since the deployed commit' };
   if (d.status === 1) return { codeSha, match: false, how: 'code changed since the deployed commit' };
   return { codeSha, match: false, how: `cannot compare with the deployed commit (${(d.stderr || '').trim().split('\n')[0] || 'git failed'})` };
+}
+
+/** --rebuild-step counts only with the rebuild's staleness verdict: SHOW_REFRESH_SAFE=true. */
+export function rebuildStepAllowed(env: NodeJS.ProcessEnv): boolean {
+  return env.SHOW_REFRESH_SAFE === 'true';
 }
 
 /** Whitespace-separated ids (the --flagged-file format publish-live-scores.ts reads). */
@@ -283,6 +290,13 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
 
   const { prevHome, kill, storeNote } = await readStore(env, write);
   const flagged = readFlagged(args.flaggedFile);
+  // --rebuild-step vouches for changed review lists, so it needs the rebuild's
+  // staleness verdict (as publish-live-scores needs LIVE_SCORES_SAFE). Without it
+  // the run still publishes, as a backstop run would.
+  if (args.rebuildStep && !rebuildStepAllowed(env)) {
+    console.log(`::warning::show-refresh: --rebuild-step without SHOW_REFRESH_SAFE=true (got ${env.SHOW_REFRESH_SAFE ?? 'unset'}); review-list changes are not published this run`);
+    args.rebuildStep = false;
+  }
   const plan = planPublish({ manifest: m, head, prevHome, flagged, rebuildStep: args.rebuildStep, cap: args.cap, now: Date.now() });
   let outcome: string = plan.outcome;
   if (kill && kill.killed) outcome = OUTCOMES.KILLED;

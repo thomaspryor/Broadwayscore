@@ -189,3 +189,16 @@ test('a backstop run never reverts what a rebuild step published for a review-li
   // The next rebuild step vets the new list and publishes it.
   assert.deepEqual(plan({ manifest: m, head: head({ x: hshow({ hash: h('c'), reviewCount: 3, reviewsSig: 'other' }) }), prevHome, rebuildStep: true }).targets, [{ id: 'x', hash: h('c') }]);
 });
+
+test('registry mismatch / cap drop a kept entry back to the build (carry nothing new)', () => {
+  const m = manifest();
+  const prevHome = { manifestId: 'm1', shows: { x: { hash: h('b') } }, pending: {} };
+  const moved = head({ x: hshow({ hash: h('c'), reviewCount: 3, reviewsSig: 'other' }) });
+  const reg = plan({ manifest: m, head: { ...moved, registrySha: 'other' }, prevHome });
+  assert.equal(reg.outcome, OUTCOMES.REGISTRY_MISMATCH);
+  assert.deepEqual(reg.nextHome.shows, {});
+  assert.equal(reg.nextHome.pending.x.expect, 'base');
+  const cap = plan({ manifest: manifest({ x: mshow(), y: mshow() }), head: head({ x: moved.shows.x, y: hshow({ hash: h('d') }) }), prevHome, cap: 0 });
+  assert.equal(cap.outcome, OUTCOMES.CAP);
+  assert.deepEqual(cap.nextHome.shows, {});
+});

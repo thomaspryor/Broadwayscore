@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { parseArgs, readFlagged, loadManifest, main, codeMatchOf, DEFAULT_MANIFEST_URL } from './publish-show-refresh.ts';
+import { parseArgs, readFlagged, loadManifest, main, codeMatchOf, rebuildStepAllowed, DEFAULT_MANIFEST_URL } from './publish-show-refresh.ts';
 
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'publish-show-refresh-'));
 const quiet = async (fn) => {
@@ -108,6 +108,10 @@ test('codeMatchOf: data-only commits since the deploy match; a code change or an
   const dataOnly = codeMatchOf(env, deployed, dir);
   assert.equal(dataOnly.match, true);
   assert.match(dataOnly.how, /no code change/);
+  // Bot-committed data under src/ is data, not code.
+  commit('src/config/genre-tags.json', '{}');
+  commit('src/config/onboarding-tour-art.json', '{}');
+  assert.equal(codeMatchOf(env, deployed, dir).match, true);
   commit('src/page.tsx', 'x');
   const changed = codeMatchOf(env, deployed, dir);
   assert.equal(changed.match, false);
@@ -119,4 +123,32 @@ test('codeMatchOf: data-only commits since the deploy match; a code change or an
   assert.equal(codeMatchOf(env, 'not-a-sha', dir).match, false);
   // A pinned HEAD never shells out.
   assert.equal(codeMatchOf({ PUBLISH_CODE_SHA: 'b'.repeat(40) }, deployed, dir).match, false);
+});
+
+test('--rebuild-step needs SHOW_REFRESH_SAFE=true (the staleness verdict)', () => {
+  assert.equal(rebuildStepAllowed({ SHOW_REFRESH_SAFE: 'true' }), true);
+  for (const v of [undefined, '', 'false', 'TRUE', '1']) assert.equal(rebuildStepAllowed({ SHOW_REFRESH_SAFE: v }), false);
+});
+
+test('workflows: only rebuild-fast passes --rebuild-step, in a step gated on the rebuild, the staleness verdict and the push', async () => {
+  const yaml = (await import('js-yaml')).default;
+  const dir = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '.github', 'workflows');
+  const hits = [];
+  for (const f of fs.readdirSync(dir).filter((n) => /\.ya?ml$/.test(n))) {
+    const text = fs.readFileSync(path.join(dir, f), 'utf8');
+    if (!text.includes('publish-show-refresh.ts')) continue;
+    const wf = yaml.load(text);
+    for (const job of Object.values(wf.jobs || {})) {
+      for (const step of job.steps || []) {
+        if (typeof step.run === 'string' && step.run.includes('publish-show-refresh.ts') && step.run.includes('--rebuild-step')) hits.push({ f, step });
+      }
+    }
+  }
+  assert.deepEqual(hits.map((h) => h.f), ['rebuild-fast.yml']);
+  const { step } = hits[0];
+  for (const cond of ["steps.rebuild.outcome == 'success'", "steps.staleness.outputs.safe_to_publish == 'true'", "steps.push-core-data.outcome == 'success'"]) {
+    assert.ok(String(step.if).includes(cond), `gate missing ${cond}`);
+  }
+  assert.equal(step.env.SHOW_REFRESH_SAFE, '${{ steps.staleness.outputs.safe_to_publish }}');
+  assert.equal(step['continue-on-error'], true);
 });
