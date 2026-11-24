@@ -788,7 +788,8 @@
     "grey-house-2023/hollywood-reporter--caitlin-huston.json",
     "grey-house-2023/newyorker--dan-stahl.json",
     "grey-house-2023/cititour--unknown.json",
-    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json"
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "the-bands-visit-2017/wnyc--jennifer-vanasco.json",
@@ -1169,7 +1170,15 @@
     "nine-night-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
     "relative-motion-off-west-end-2026/reviewsgate--william-russell.json",
     "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
-    "dogstar-off-west-end-2026/reviewsgate--william-russell.json"
+    "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+    "much-ado-about-nothing-2026/timeout--unknown.json",
+    "much-ado-about-nothing-2026/columbiaspectator-com--light-dohrne.json",
+    "la-distance-bam-off-broadway-2026/consequence--paolo-ragusa.json",
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-fantasticks-2026/nytimes--maya-phillips.json",
+    "the-fantasticks-2026/bobs-theater-blog--unknown.json",
+    "downstate-2026/nytimes--unknown.json",
+    "downstate-2026/nydailynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1535,7 +1544,8 @@
       "teeth-playwrights-horizons-off-broadway-2024/theater-life--david-sheward.json",
       "macbeth-leeds-regional-2024/third-coast-review--devony-hof.json",
       "pippin-regional-2023/new-city-stage--dennis-polkow.json",
-      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json"
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [
       "data/review-texts/brief-encounter-2010/variety--steven-suskin.json"
@@ -1565,7 +1575,8 @@
       "data/review-texts/the-bakers-wife-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
       "the-bakers-wife-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
       "data/review-texts/wet-brain-off-broadway-2023/nytimes--laura-collins-hughes.json",
-      "wet-brain-off-broadway-2023/nytimes--laura-collins-hughes.json"
+      "wet-brain-off-broadway-2023/nytimes--laura-collins-hughes.json",
+      "data/review-texts/the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "directCookies": [
       "wet-brain-off-broadway-2023/newyorker--conde-nast.json",
@@ -1992,7 +2003,7 @@
     ]
   },
   "startTime": "2026-11-24T00:20:31.199Z",
-  "lastProcessed": "dogstar-off-west-end-2026/reviewsgate--william-russell.json",
+  "lastProcessed": "downstate-2026/nydailynews--unknown.json",
   "log": [
     {
       "t": "2026-11-24T00:38:45.344Z",
@@ -2353,6 +2364,83 @@
       "event": "bb-session",
       "session": "f61a594f",
       "url": "https://bachtrack.com/review-my-first-ballet-cinderella-williamson-english-natio"
+    },
+    {
+      "t": "2026-11-24T08:47:38.039Z",
+      "event": "bb-session",
+      "session": "d9da2b99",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+    },
+    {
+      "t": "2026-11-24T08:47:38.978Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T08:48:52.176Z",
+      "event": "bb-session",
+      "session": "b5502748",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-24T08:48:53.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T08:51:43.576Z",
+      "event": "bb-session",
+      "session": "2528007b",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-24T08:51:44.455Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T08:51:51.323Z",
+      "event": "bb-session",
+      "session": "4c6fb7b2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655953"
+    },
+    {
+      "t": "2026-11-24T08:51:52.191Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T08:52:01.694Z",
+      "event": "bb-session",
+      "session": "0f76154c",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-24T08:52:02.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T08:53:32.277Z",
+      "event": "bb-session",
+      "session": "654f149a",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-24T08:53:33.108Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T08:53:50.441Z",
+      "event": "bb-session",
+      "session": "72da3753",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-24T08:53:51.331Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
