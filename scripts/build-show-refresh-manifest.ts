@@ -16,16 +16,11 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { execFileSync } from 'child_process';
-import { computeOneShow } from '../src/lib/compute-one-show';
-import { computeShowTBD } from '../src/lib/show-score-tbd';
-import type { RawShow, RawReview, RawAudience, RawBuzzThread } from '../src/lib/engine';
+import { computeShowStates } from './lib/show-refresh/compute-show-states';
 
 /* eslint-disable @typescript-eslint/no-require-imports */
-const { buildShowInputs, computableShows } = require('./lib/show-refresh/inputs');
-const { indexForSlices, sliceFor, sliceHash } = require('./lib/show-refresh/slice');
 const manifestLib = require('./lib/show-refresh/manifest');
 const { buildManifest, MANIFEST_FILE } = manifestLib;
-const { readCoverageFloorInputs } = require('./lib/coverage-floor-inputs');
 const { writeSiteImageVersions } = require('./lib/site-image-versions');
 /* eslint-enable @typescript-eslint/no-require-imports */
 
@@ -45,21 +40,6 @@ export function resolvePublicSha(env: NodeJS.ProcessEnv = process.env, cwd = ROO
   return env.VERCEL_GIT_COMMIT_SHA || env.GITHUB_SHA || null;
 }
 
-function readDataFiles(dataDir: string): { files: Record<string, Buffer>; absent: string[] } {
-  const files: Record<string, Buffer> = {};
-  const absent: string[] = [];
-  for (const name of SLICE_INPUT_FILES) {
-    const file = path.join(dataDir, name);
-    if (!fs.existsSync(file)) {
-      if (SLICE_REQUIRED_FILES.includes(name)) throw new Error(`required data file missing: data/${name}`);
-      absent.push(name);
-      continue;
-    }
-    files[name] = fs.readFileSync(file);
-  }
-  return { files, absent };
-}
-
 function writeAtomic(file: string, text: string) {
   const tmp = `${file}.${process.pid}.tmp`;
   fs.writeFileSync(tmp, text);
@@ -77,61 +57,19 @@ export function main(argv = process.argv.slice(2)) {
   // image paths below match the ones this build's pages render, and before the
   // data read so its hash is in dataShas.
   const imageVersions: Record<string, unknown> = writeSiteImageVersions();
-  const { files: dataFiles, absent: absentFiles } = readDataFiles(dataDir);
-  const json = (name: string) => JSON.parse(dataFiles[name].toString('utf8'));
-
-  const inputs = buildShowInputs({
-    showsData: json('shows.json'),
-    reviews: json('reviews.json').reviews,
-    blogReviews: json('blog-reviews-for-scoring.json').reviews,
-    audience: json('audience.json').audience,
-    buzz: json('buzz.json').threads,
-  });
-  const registryFile = json('outlet-registry.json');
-  const coverageFiles = {
-    gapAudit: path.join(dataDir, 'audit', 'show-review-gap.json'),
-    stamps: path.join(dataDir, 'audit', 'score-public-since.json'),
-    acks: path.join(dataDir, 'audit', 't1-coverage-ack.json'),
-    snapshot: path.join(dataDir, 'coverage-floor-snapshot.json'),
-  };
-  // As built (COVERAGE_GATE_DISABLED applied), for this build's held verdicts.
-  const coverageFloorInputs = readCoverageFloorInputs(coverageFiles);
-  const index = indexForSlices(inputs, {
-    consensusById: json('critic-consensus.json').shows,
-    audienceBuzzById: json('audience-buzz.json').shows,
-    // Slices carry coverage with the kill switch ignored ({} env), like the
-    // coverage-floor snapshot: slice.js applies it at render time, so slice
-    // hashes do not depend on the environment.
-    coverageFloorInputs: readCoverageFloorInputs(coverageFiles, {}),
-  });
-
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { versionedImagePath } = require('../src/lib/versioned-image-path');
-  // The shows the show page prerenders (generateStaticParams), by the same
-  // function, so the manifest names exactly what this build rendered.
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { getRecentShowSlugs } = require('../src/lib/data-core');
-  const prerendered = new Set<string>(getRecentShowSlugs());
+  // The per-show compute (slice hash, held verdict, images, review meta) is
+  // shared with the publisher (BRO-8214), so both name a show the same way.
+  const states = computeShowStates({ dataDir, now: buildInstant });
+  const { dataFiles, absentFiles, registryFile } = states;
 
   const shows: Array<{ id: string; slug: string; images?: object }> = [];
   const sliceHashById = new Map<string, string>();
   const heldById = new Map<string, boolean>();
-  for (const row of computableShows(inputs) as RawShow[]) {
-    if (!prerendered.has(row.slug)) continue;
-    const computed = computeOneShow(row, (inputs.reviewsByShowId.get(row.id) || []) as RawReview[], {
-      blogReviews: (inputs.blogReviewsByShowId.get(row.id) || []) as RawReview[],
-      audience: inputs.audience as RawAudience[],
-      buzz: inputs.buzz as RawBuzzThread[],
-      coverageFloorInputs,
-      versionImage: versionedImagePath,
-      now: buildInstant,
-      registry: registryFile.outlets,
-    });
-    const slice = sliceFor(row.id, index);
-    if (!slice) continue;
-    shows.push({ id: computed.id, slug: computed.slug, images: computed.images });
-    sliceHashById.set(row.id, sliceHash(slice));
-    heldById.set(row.id, computeShowTBD(computed, buildInstant));
+  for (const id of states.order) {
+    const st = states.perShow[id];
+    shows.push({ id, slug: st.slug, images: st.images });
+    sliceHashById.set(id, st.hash as string);
+    heldById.set(id, st.held === true);
   }
 
   const coreShaFile = path.join(dataDir, '.core-data-sha');

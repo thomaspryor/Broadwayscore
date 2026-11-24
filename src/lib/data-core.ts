@@ -626,8 +626,16 @@ const BUILD_TIME_NOW = Date.now();
  * from a request handler would return a result based on the build clock, not now.
  */
 export function getRecentShowSlugs(windowDays = 180): string[] {
-  const cutoff = BUILD_TIME_NOW - windowDays * 86400000;
-  return shows
+  return recentShowSlugsFrom(shows, BUILD_TIME_NOW, windowDays);
+}
+
+/**
+ * Pure form of getRecentShowSlugs over any rows and clock: the show-refresh
+ * publisher (BRO-8214) applies it to HEAD rows at the build's instant.
+ */
+export function recentShowSlugsFrom(rows: readonly any[], nowMs: number, windowDays = 180): string[] {
+  const cutoff = nowMs - windowDays * 86400000;
+  return rows
     .filter((s: any) =>
       !s._devOnly && regionalSlugAllowed(s) && (
         s.status === 'open' || s.status === 'previews' ||

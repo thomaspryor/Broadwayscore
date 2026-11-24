@@ -24,8 +24,11 @@ test('publicSha prefers git HEAD, then VERCEL_GIT_COMMIT_SHA, then GITHUB_SHA', 
 });
 
 test('slice coverage ignores COVERAGE_GATE_DISABLED so slice hashes do not depend on the environment', async () => {
-  const src = (await import('node:fs')).readFileSync(new URL('./build-show-refresh-manifest.ts', import.meta.url), 'utf8');
-  assert.match(src, /coverageFloorInputs: readCoverageFloorInputs\(coverageFiles, \{\}\)/);
-  // image versions are written before the data read, so their hash is in dataShas
-  assert.ok(src.indexOf('writeSiteImageVersions()') < src.indexOf('readDataFiles(dataDir)'));
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./build-show-refresh-manifest.ts', import.meta.url), 'utf8');
+  const compute = fs.readFileSync(new URL('./lib/show-refresh/compute-show-states.ts', import.meta.url), 'utf8');
+  assert.match(compute, /coverageFloorInputs: readCoverageFloorInputs\(coverageFiles, \{\}\)/);
+  // image versions are written before the data read (computeShowStates), so their hash is in dataShas
+  assert.ok(src.indexOf('writeSiteImageVersions()') > 0);
+  assert.ok(src.indexOf('writeSiteImageVersions()') < src.indexOf('computeShowStates({'));
 });
