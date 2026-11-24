@@ -1,0 +1,28 @@
+{
+  "issueNumber": "bro-8209-e",
+  "planId": "e5a93c70-4d1b-4a6e-8c2f-91b7d3e60a48",
+  "status": "pending",
+  "createdAt": "2026-11-24T20:03:42.107Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Very Blue Light: Michael Dale's Talkin' Broadway review is stored at page/ob/09_25_26.html, which is the Human Things page. Talkin' Broadway's own Off Broadway index lists Very Blue Light at 09_25_26b.html and Human Things at 09_25_26.html. Point Dale's file at the b page (same class as feedback #1203).",
+    "steps": [
+      "Talkin' Broadway Off Broadway index (collector run 45438285573, read 2026-11-24): 'Very Blue Light' -> 09_25_26b.html, 'Human Things' -> 09_25_26.html.",
+      "Dale's current url equals the url stored on the Human Things Moshe A. Bloxenheim file, so it is another show's page."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "very-blue-light-off-broadway-2026/talkinbroadway--michael-dale.json",
+        "field": "url",
+        "oldValue": "https://www.talkinbroadway.com/page/ob/09_25_26.html",
+        "newValue": "https://www.talkinbroadway.com/page/ob/09_25_26b.html",
+        "description": "Dale's review lives at the b page; the current url is Human Things' page (same class as feedback #1203)."
+      }
+    ]
+  }
+}
