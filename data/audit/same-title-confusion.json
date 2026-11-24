@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-15T19:37:04.493Z",
-  "totalFindings": 67,
+  "generatedAt": "2026-11-24T03:44:34.568Z",
+  "totalFindings": 71,
   "findings": [
     {
       "currentShowId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
@@ -64,6 +64,19 @@
       ],
       "reviewFile": "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-tour-2024/syracuse-herald-journal--len-fonte.json",
       "url": "https://www.syracuse.com/entertainment/2026/06/landmark-theatres-a-beautiful-noi",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "american-psycho-2016",
+      "suggestedShowId": "american-psycho-off-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:3639",
+        "days-from-closer:68"
+      ],
+      "reviewFile": "data/review-texts/american-psycho-2016/newsday--linda-winer.json",
+      "url": "https://www.newsday.com/entertainment/theater/american-psycho-review-benjamin-wa",
       "reason": "publish-date"
     },
     {
@@ -486,6 +499,19 @@
       "reason": "publish-date"
     },
     {
+      "currentShowId": "matilda-the-musical-west-end-2021",
+      "suggestedShowId": "matilda-the-musical-theatre-row-off-broadway-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:5475",
+        "days-from-closer:106"
+      ],
+      "reviewFile": "data/review-texts/matilda-the-musical-west-end-2021/thereviewshub--unknown.json",
+      "url": "https://www.thereviewshub.com/matilda-the-musical-theatre-royal-glasgow/",
+      "reason": "publish-date"
+    },
+    {
       "currentShowId": "maybe-happy-ending-2024",
       "suggestedShowId": "maybe-happy-ending-tour-2026",
       "confidence": "high",
@@ -671,6 +697,18 @@
       "reason": "publish-date"
     },
     {
+      "currentShowId": "oh-mary-2024",
+      "suggestedShowId": "oh-mary-west-end-2025",
+      "confidence": "high",
+      "signals": [
+        "url-year-match",
+        "url-year:2026"
+      ],
+      "reviewFile": "data/review-texts/oh-mary-2024/stagescenela--unknown.json",
+      "url": "https://stagescenela.com/2026/11/oh-mary/",
+      "reason": "url-year"
+    },
+    {
       "currentShowId": "operation-mincemeat-west-end-2024",
       "suggestedShowId": "operation-mincemeat-tour-2026",
       "confidence": "high",
@@ -679,7 +717,7 @@
         "days-from-own:1274",
         "days-from-closer:44"
       ],
-      "reviewFile": "data/review-texts/operation-mincemeat-west-end-2024/the-recs--unknown.json",
+      "reviewFile": "data/review-texts/operation-mincemeat-west-end-2024/the-recs--alexandra-taylor.json",
       "url": "https://therecs.co.uk/operation-mincemeat-touring/",
       "reason": "publish-date"
     },
@@ -799,6 +837,19 @@
       ],
       "reviewFile": "data/review-texts/the-sound-of-music-tour-2025/minnesota-monthly--jerrod-sumner.json",
       "url": "https://www.minnesotamonthly.com/general/the-sound-of-music-still-soars/",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "the-sound-of-music-tour-2025",
+      "suggestedShowId": "the-sound-of-music-2027",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:439",
+        "days-from-closer:148"
+      ],
+      "reviewFile": "data/review-texts/the-sound-of-music-tour-2025/stageandcinema--diana-lu.json",
+      "url": "https://stageandcinema.com/2026/11/18/the-sound-of-music-national-tour-review/",
       "reason": "publish-date"
     },
     {
