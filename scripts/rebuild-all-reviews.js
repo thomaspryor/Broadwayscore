@@ -1757,7 +1757,7 @@ const crossShowFingerprints = new Map();
           const fp = path.join(obDir, f);
           const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
           const norm = d.url ? normalizeUrlForDedup(d.url) : null;
-          if (!shouldClearStaleObTransfer(d, !!(norm && allValidBwUrls.has(norm)), ob)) continue;
+          if (!shouldClearStaleObTransfer(d, !!(norm && allValidBwUrls.has(norm)), ob) || isClassAContaminated(d, ob)) continue; // BRO-8231
           const wasNote = d.wrongProductionNote || d.wrongProductionReason;
           d.wrongProduction = false;
           d.wrongProductionAutoCleared = `rebuild: ob-broadway-transfer released — no valid Broadway copy shares the URL and the review is dated inside ${ob.id}'s run (was: ${wasNote})`;
@@ -1932,7 +1932,7 @@ const crossShowFingerprints = new Map();
         // Also strips the auto-set wrongProductionReason values written by date
         // setters (e.g. collect-review-texts.js anticipatory gate's
         // "anticipatory_pre_opening_post"); ALL operator-set reasons are protected.
-        if (shouldAutoClearWrongProductionPriorRun(d, showRecord) || shouldAutoClearWrongProductionTourLeg(d, showRecord)) {
+        if ((shouldAutoClearWrongProductionPriorRun(d, showRecord) || shouldAutoClearWrongProductionTourLeg(d, showRecord)) && !isClassAContaminated(d, showRecord)) { // BRO-8231
           const wasNote = d.wrongProductionNote || d.wrongProductionReason || '(no marker)';
           // BRO-2841: read BEFORE the note is deleted below (the predicate keys on it).
           const wasAdjudicatedTour = isAdjudicatedTourVerdict(d);
@@ -1989,7 +1989,7 @@ const crossShowFingerprints = new Map();
           // Belt and braces: a priorRuns window marked inheritReviews:false is
           // never a reason to clear (BRO-5285).
           const nowInWindow = dgDecision.flag === false && !isWithinOptOutPriorRun(reviewDate, showRecord?.priorRuns);
-          if (shouldAutoClearStaleDateGuard(d, { nowInWindow })) {
+          if (shouldAutoClearStaleDateGuard(d, { nowInWindow }) && !isClassAContaminated(d, showRecord)) { // BRO-8231
             const wasNote = d.wrongProductionNote;
             d.wrongProduction = false;
             d.wrongProductionAutoCleared = `rebuild: dated pre-opening guard re-evaluated in-window (was: ${wasNote})`;
@@ -2040,7 +2040,7 @@ const crossShowFingerprints = new Map();
               humanReviewedEarlyPublish: d.humanReviewedEarlyPublish === true,
             }
           );
-          if (shouldAutoClearAnticipatoryGrace(d, { stillRejected: anticipRecheck.rejected })) {
+          if (shouldAutoClearAnticipatoryGrace(d, { stillRejected: anticipRecheck.rejected }) && !isClassAContaminated(d, showRecord)) { // BRO-8231
             const wasDetail = d.wrongProductionDetail || '(no detail)';
             d.wrongProduction = false;
             d.wrongProductionAutoCleared = `rebuild: anticipatory gate re-evaluated in-grace (was: ${wasDetail})`;
@@ -2062,7 +2062,7 @@ const crossShowFingerprints = new Map();
         // Prior-run republish self-release (BRO-4641): our flag is body-text-derived, so it
         // lifts when the detector no longer matches (refetched body, or the show gained
         // a declared priorRuns window). Manual/human decisions are never touched.
-        if (shouldReleasePriorRunRepublish(d, showRecord)) {
+        if (shouldReleasePriorRunRepublish(d, showRecord) && !isClassAContaminated(d, showRecord)) { // BRO-8231
           const wasNote = d.wrongProductionNote;
           d.wrongProduction = false;
           d.wrongProductionAutoCleared = `rebuild: prior-run republish no longer detected (was: ${wasNote})`;
@@ -2074,7 +2074,7 @@ const crossShowFingerprints = new Map();
           console.log(`  [PRIOR-RUN-REPUBLISH-RELEASED] ${sid}/${f}`);
         }
         // Other-production url self-release (BRO-5015): same contract as above.
-        if (shouldReleaseOtherProductionUrl(d, showRecord)) {
+        if (shouldReleaseOtherProductionUrl(d, showRecord) && !isClassAContaminated(d, showRecord)) { // BRO-8231
           const wasNote = d.wrongProductionNote;
           d.wrongProduction = false;
           d.wrongProductionAutoCleared = `rebuild: other-production url no longer detected (was: ${wasNote})`;
@@ -3842,6 +3842,7 @@ showDirs.forEach(showId => {
           const healMarket = data.wrongProductionNote.includes('London indicator') ? 'uk' : 'us';
           const healTitle = showById[showId] && showById[showId].title;
           if (healTitle
+              && !isClassAContaminated(data, showById[showId]) // BRO-8231
               && urlPathOppositeMarketIndicator({ urlPath: healPath, oppositeMarket: healMarket })
               && !urlPathOppositeMarketIndicator({ urlPath: healPath, oppositeMarket: healMarket, showTitle: healTitle })) {
             const wasNote = data.wrongProductionNote;
@@ -4267,7 +4268,7 @@ showDirs.forEach(showId => {
           if (urlPath.startsWith('/london') || urlHost.endsWith('.co.uk')) {
             data.outletId = 'timeout-london';
             data.outlet = 'Time Out London';
-            if (data.wrongProduction && data.wrongProductionNote && data.wrongProductionNote.includes('US outlet "timeout"')) {
+            if (data.wrongProduction && data.wrongProductionNote && data.wrongProductionNote.includes('US outlet "timeout"') && !isClassAContaminated(data, showById[showId])) { // BRO-8231
               delete data.wrongProduction;
               delete data.wrongProductionNote;
               dropWrongProductionProvenance(data);

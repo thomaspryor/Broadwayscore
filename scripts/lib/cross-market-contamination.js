@@ -137,6 +137,7 @@ module.exports = {
   classAApplies,
   classifyClassAContamination,
   normalizeShowTitle,
+  toEpoch,
   buildSiblingOpeningsMap,
   NEAR_SIBLING_DAYS,
   FAR_OWN_SHOW_DAYS,

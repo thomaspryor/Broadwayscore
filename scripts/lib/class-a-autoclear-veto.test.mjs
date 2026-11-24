@@ -128,3 +128,24 @@ test('scoring-delta guard identity hashes the class-A classifier, not just the a
     assert.match(deltaSrc, new RegExp(`__classALib\\?\\.${f}\\?\\.toString`), f);
   }
 });
+
+// Class guard (BRO-8231): any NEW rebuild site that strips wrongProduction must either sit behind the
+// class-A veto (within 14 lines above) or be a human override (manual clear / override / human review).
+test('class guard: every wrongProduction clear in rebuild-all-reviews.js is vetoed or a human override', () => {
+  const lines = rebuildSrc.split('\n');
+  const bad = [];
+  lines.forEach((ln, i) => {
+    if (!/\.wrongProduction = false\b|delete \w+\.wrongProduction;/.test(ln)) return;
+    const ctx = lines.slice(Math.max(0, i - 14), i + 1).join('\n');
+    if (/isClassAContaminated|classA/.test(ctx)) return;
+    if (/wrongProductionManualClear|wrongProductionOverride|humanReviewedWrongProduction/.test(ctx)) return;
+    bad.push(`${i + 1}: ${ln.trim()}`);
+  });
+  assert.deepEqual(bad, [], 'unvetoed wrongProduction clear(s): add && !isClassAContaminated(...) or document a human override');
+});
+
+test('scoring-delta builds the class-A veto per side from that side\'s classifier', () => {
+  assert.match(deltaSrc, /classAVeto\(guards\)\(review, show\)/);
+  assert.doesNotMatch(deltaSrc, /classAVeto\(\)\(/);
+  assert.match(deltaSrc, /classALibFingerprint\(baseline\.__classALib\)/);
+});

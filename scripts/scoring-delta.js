@@ -914,10 +914,21 @@ function listingPatternsKey(guards) {
 }
 
 // BRO-8229: mirrors rebuild-all-reviews.js's class-A veto on the allowCrossMarket auto-clear.
-let _classAVeto = null;
-function classAVeto() {
-  if (!_classAVeto) _classAVeto = require('./lib/cross-market-contamination').makeClassAVeto(ALL_SHOWS_RAW || [], parseDate);
-  return _classAVeto;
+// BRO-8231: one veto per side, built from THAT side's classifier (guards.__classALib), so a
+// classifier-only edit shows up as a flip instead of both replays using the new code.
+const _classAVetoBySide = new Map();
+function classAVeto(guards) {
+  const lib = (guards && guards.__classALib && guards.__classALib.makeClassAVeto) ? guards.__classALib : require('./lib/cross-market-contamination');
+  if (!_classAVetoBySide.has(lib)) _classAVetoBySide.set(lib, lib.makeClassAVeto(ALL_SHOWS_RAW || [], parseDate));
+  return _classAVetoBySide.get(lib);
+}
+
+// BRO-8231: thresholds + title normaliser the classifier reads are module constants/helpers, so
+// function toString() alone misses a NEAR_SIBLING_DAYS / FAR_OWN_SHOW_DAYS edit.
+function classALibFingerprint(lib) {
+  if (!lib) return '';
+  return JSON.stringify(Object.keys(lib).sort().map(k => [k, typeof lib[k] === 'function' ? lib[k].toString() : lib[k]]))
+    + String(lib.NEAR_SIBLING_DAYS) + String(lib.FAR_OWN_SHOW_DAYS);
 }
 
 function decideInclusion(review, show, guards, filePath) {
@@ -1007,7 +1018,7 @@ function decideInclusion(review, show, guards, filePath) {
         && autoClear.shouldAutoClearWrongProductionPriorRun(review, show);
       const tourLegClear = typeof autoClear.shouldAutoClearWrongProductionTourLeg === 'function'
         && autoClear.shouldAutoClearWrongProductionTourLeg(review, show);
-      if (priorRunClear || tourLegClear) wrongProductionCleared = true;
+      if ((priorRunClear || tourLegClear) && !classAVeto(guards)(review, show)) wrongProductionCleared = true; // BRO-8231
     }
 
     // Dateless-revival auto-clear — mirrors rebuild-all-reviews.js:1393's
@@ -1016,7 +1027,7 @@ function decideInclusion(review, show, guards, filePath) {
     if (!wrongProductionCleared && review.wrongProduction === true
         && typeof autoClear.shouldAutoClearDatelessRevival === 'function') {
       const reviewDate = resolveReviewDate(review);
-      wrongProductionCleared = autoClear.shouldAutoClearDatelessRevival(review, { hasUsableDate: !!reviewDate, classA: classAVeto()(review, show) });
+      wrongProductionCleared = autoClear.shouldAutoClearDatelessRevival(review, { hasUsableDate: !!reviewDate, classA: classAVeto(guards)(review, show) });
     }
 
     // Collected-before-previews auto-clear (BRO-4855) — mirrors the rebuild's
@@ -1028,7 +1039,7 @@ function decideInclusion(review, show, guards, filePath) {
       // url date): resolveGuardReviewDate is the rebuild's own resolver.
       wrongProductionCleared = autoClear.shouldAutoClearCollectedBeforePreviews(review, {
         hasUsableDate: !!resolveGuardReviewDate(review, show?.raw || show), show,
-        classA: classAVeto()(review, show),
+        classA: classAVeto(guards)(review, show),
       });
     }
 
@@ -1052,7 +1063,7 @@ function decideInclusion(review, show, guards, filePath) {
         const dgDecision = guards.__dateGuard.evaluateDateGuard({ pubDate: reviewDate, show, outletId: review.outletId, priorRuns: null, tourLegs: null });
         const optOutRun = typeof autoClear.isWithinOptOutPriorRun === 'function'
           && autoClear.isWithinOptOutPriorRun(reviewDate, show?.priorRuns);
-        wrongProductionCleared = autoClear.shouldAutoClearStaleDateGuard(review, { nowInWindow: dgDecision.flag === false && !optOutRun });
+        wrongProductionCleared = autoClear.shouldAutoClearStaleDateGuard(review, { nowInWindow: dgDecision.flag === false && !optOutRun }) && !classAVeto(guards)(review, show); // BRO-8231
       }
     }
 
@@ -1077,7 +1088,7 @@ function decideInclusion(review, show, guards, filePath) {
             humanReviewedEarlyPublish: review.humanReviewedEarlyPublish === true,
           }
         ).rejected;
-        wrongProductionCleared = autoClear.shouldAutoClearAnticipatoryGrace(review, { stillRejected });
+        wrongProductionCleared = autoClear.shouldAutoClearAnticipatoryGrace(review, { stillRejected }) && !classAVeto(guards)(review, show); // BRO-8231
       }
     }
   }
@@ -1100,12 +1111,12 @@ function decideInclusion(review, show, guards, filePath) {
       isLondonOrOffBroadway: isLondonMarket(show?.category) || show?.category === 'off-broadway',
       cvBlocksClear,
       isShowListingUrl,
-      classA: classAVeto()(review, show),
+      classA: classAVeto(guards)(review, show),
     });
   }
 
   if (review.wrongProduction === true && typeof autoClear.shouldAutoClearWrongProduction === 'function') {
-    wrongProductionCleared = wrongProductionCleared || autoClear.shouldAutoClearWrongProduction(review, { classA: classAVeto()(review, show) });
+    wrongProductionCleared = wrongProductionCleared || autoClear.shouldAutoClearWrongProduction(review, { classA: classAVeto(guards)(review, show) });
   }
   // UK/dual-market auto-clear (task #1190) — mirrors rebuild-all-reviews.js:2608-2687's
   // ctx computation exactly, including its outer short-circuit (isStructuralFlag ||
@@ -1168,7 +1179,7 @@ function decideInclusion(review, show, guards, filePath) {
           isDateMismatch,
           isShowListingUrl,
           cvBlocksClear,
-          classA: classAVeto()(review, show),
+          classA: classAVeto(guards)(review, show),
         });
       } catch {}
     }
@@ -1245,7 +1256,7 @@ function decideInclusion(review, show, guards, filePath) {
         cvBlocksClear: typeof guards.cvBlocksUkWrongProductionAutoClear === 'function'
           ? guards.cvBlocksUkWrongProductionAutoClear(review.contentVerification)
           : false,
-        classA: classAVeto()(review, show),
+        classA: classAVeto(guards)(review, show),
         inOwnProductionWindow: typeof guards.isReviewWithinOwnProductionWindow === 'function'
           ? guards.isReviewWithinOwnProductionWindow(show, review.publishDate)
           : false,
@@ -1869,6 +1880,7 @@ function main() {
         && (baseline.__classALib?.classifyClassAContamination?.toString() || '') === (working.__classALib?.classifyClassAContamination?.toString() || '')
         && (baseline.__classALib?.classAApplies?.toString() || '') === (working.__classALib?.classAApplies?.toString() || '')
         && (baseline.__classALib?.buildSiblingOpeningsMap?.toString() || '') === (working.__classALib?.buildSiblingOpeningsMap?.toString() || '')
+        && classALibFingerprint(baseline.__classALib) === classALibFingerprint(working.__classALib)
         // BRO-4476: helpers the predicate calls (14d window, city regex) — a constant/regex-only edit leaves the predicate source identical.
         && (baseline.__priorRunLib?.isPreRunForUkClear?.toString() || '') === (working.__priorRunLib?.isPreRunForUkClear?.toString() || '')
         && (baseline.__priorRunLib?.namesNonLondonCity?.toString() || '') === (working.__priorRunLib?.namesNonLondonCity?.toString() || '')
