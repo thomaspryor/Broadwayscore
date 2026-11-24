@@ -543,3 +543,14 @@ test('a ref with no push run resolves a bounded number of hand dispatches, not a
   assert.equal(got, null);
   assert.equal(resolves, 25, `expected exactly 25 job lookups, made ${resolves}`);
 });
+
+test('BRO-8237: an unstarted marked tip explains why Land did not start', () => {
+  for (const marker of ['[skip ci]', '[CI SKIP]', '[no ci]', '[skip actions]', '[actions skip]', 'skip-checks: true']) {
+    const v = landVerdict({ refSha: 'abc', run: null, nowMs: Date.now(), commitMessage: `audit\n\n${marker}` });
+    assert.equal(v.verdict, 'refused', marker);
+    assert.match(v.why, /trigger land\.yml/);
+  }
+  assert.equal(landVerdict({ refSha: 'abc', run: null, nowMs: Date.now(), commitMessage: 'ordinary commit' }).verdict, 'waiting');
+  assert.equal(landVerdict({ refSha: 'abc', run: { head_sha: 'abc', status: 'in_progress', id: 1 }, nowMs: Date.now(), commitMessage: '[skip ci]' }).verdict, 'waiting');
+  assert.equal(landVerdict({ refSha: 'abc', run: { identityPending: true, status: 'in_progress', id: 2 }, nowMs: Date.now(), commitMessage: '[skip ci]' }).verdict, 'waiting');
+});

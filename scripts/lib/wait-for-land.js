@@ -55,6 +55,7 @@ const { readLatestLandRun } = require('./land-run-identity');
 const { SITE_PATHS } = require('./should-deploy-gate');
 const { repoDepthArgs } = require('./shallow-fetch-args');
 const { runGitOrThrow } = require('./git-proc-guard');
+const { hasSkipCiMarker } = require('./skip-ci-marker');
 
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 // BRO-6015: past this, a parked run likely means the sweep itself is down.
@@ -92,7 +93,7 @@ function lastLine(value) {
  * after a red run was not landed, and a ref missing from the first poll needs
  * a recent green run (a typo'd or never-pushed name may share an old run).
  */
-function landVerdict({ refSha, lastSha = null, run, nowMs }) {
+function landVerdict({ refSha, lastSha = null, run, nowMs, commitMessage = '' }) {
   const ageMs = run && run.updated_at ? nowMs - Date.parse(run.updated_at) : Infinity;
   const cancelledFailure = run && run.conclusion === 'cancelled'
     && ['timeout', 'other'].includes(run.cancellation?.kind);
@@ -112,8 +113,11 @@ function landVerdict({ refSha, lastSha = null, run, nowMs }) {
     if (run && run.conclusion === 'success' && ageMs < RECENT_LANDING_MS) return { verdict: 'landed', before: true };
     return { verdict: 'unknown', why: 'not on origin and no recent green land run for it (typo, or the push never reached origin?)' };
   }
+  if (run && run.identityPending && run.status !== 'completed') return { verdict: 'waiting', why: `run ${run.id} (hand dispatch) ${run.status}, verified tip not readable yet` };
+  if ((!run || run.head_sha !== refSha) && hasSkipCiMarker(commitMessage)) {
+    return { verdict: 'refused', why: 'the tip has a CI-skip marker, so a push will not start land.yml. Add an empty commit with git commit --allow-empty -m "chore(land): trigger land.yml" and push the same ref, or dispatch land.yml manually' };
+  }
   if (!run) return { verdict: 'waiting', why: 'no land run identified for this ref yet (hand dispatches become identifiable when Checks logs are available)' };
-  if (run.identityPending && run.status !== 'completed') return { verdict: 'waiting', why: `run ${run.id} (hand dispatch) ${run.status}, verified tip not readable yet` };
   if (run.head_sha !== refSha) {
     return { verdict: 'waiting', why: `latest run ${run.id} is for an older tip; the run for ${refSha.slice(0, 9)} has not registered yet` };
   }
@@ -485,6 +489,7 @@ async function waitLoop(args, deadline) {
   let errors = 0;
   let lastLine = '';
   let lastSha = null;
+  const messages = new Map();
   for (;;) {
     let v;
     let run = null;
@@ -497,7 +502,16 @@ async function waitLoop(args, deadline) {
         lastSha = refSha;
       }
       run = readLatestRun(args.ref);
-      v = landVerdict({ refSha, lastSha, run, nowMs: Date.now() });
+      let commitMessage = '';
+      if (refSha && (!run || (run.head_sha !== refSha && !run.identityPending))) {
+        if (!messages.has(refSha)) {
+          const commit = readGhJson(`repos/${repo}/commits/${refSha}`);
+          if (typeof commit?.commit?.message !== 'string') throw new Error(`commit message unavailable for ${refSha}`);
+          messages.set(refSha, commit.commit.message);
+        }
+        commitMessage = messages.get(refSha);
+      }
+      v = landVerdict({ refSha, lastSha, run, nowMs: Date.now(), commitMessage });
       errors = 0;
     } catch (err) {
       errors += 1;
