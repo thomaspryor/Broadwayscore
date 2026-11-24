@@ -1,0 +1,28 @@
+{
+  "issueNumber": "bro-8253",
+  "planId": "3a69fc54-e125-405a-ad09-20a0b80a13d8",
+  "status": "pending",
+  "createdAt": "2026-11-24T15:26:35.210Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8253: demote chicagotribune from Broadway standingCoverage (14% coverage, audit lists it under demote)",
+    "steps": [
+      "Demote chicagotribune from Broadway standingCoverage"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "outlet-registry-flag",
+        "description": "Demote chicagotribune from Broadway standingCoverage",
+        "outletId": "chicagotribune",
+        "flag": "standingCoverage",
+        "value": false,
+        "market": "broadway",
+        "reason": "audit-standing-coverage --market=broadway lists chicagotribune under demote (14% overall, floor not met); a Chicago outlet that covers Broadway openings rarely"
+      }
+    ]
+  }
+}
