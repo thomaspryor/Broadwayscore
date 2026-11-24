@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-24T14:37:13.703Z",
+  "timestamp": "2026-11-24T15:01:18.229Z",
   "stats": {
-    "totalReviews": 84584,
-    "alreadyFlagged": 22565,
+    "totalReviews": 84590,
+    "alreadyFlagged": 22566,
     "dateGuardCatches": 244,
     "directorMismatch": 3888,
     "tvFilmSignals": 2439,
     "londonSignals": 4001,
     "offBroadwaySignals": 790,
-    "yearMismatch": 398,
+    "yearMismatch": 402,
     "noPublishDate": 8239
   },
   "findings": [
@@ -1299,6 +1299,19 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "gephardt-daily--nancy-van-valkenburg.json",
+      "publishDate": "2026-01-23",
+      "url": "https://gephardtdaily.com/local/review-the-neil-diamond-musical-a-beautiful-noise-delivers-hit-songs-saga-of-troubled-troubadour/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "hotchka--chuck-duncan.json",
       "score": 91,
       "publishDate": "2026-06-24",
@@ -1364,6 +1377,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "palm-beach-daily-news--mary-damiano.json",
+      "publishDate": "2026-04-09",
+      "url": "https://www.palmbeachdailynews.com/story/entertainment/theater/2026/04/09/a-beautiful-noise-at-the-kravis-center-in-west-palm-beach-is-a-celebration-of-neil-diamond/89537691007/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -1533,6 +1559,19 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "the-journal-record--lillie-beth-brinkman.json",
+      "publishDate": "2026-03-05",
+      "url": "https://journalrecord.com/2026/03/05/neil-diamond-beautiful-noise-okc/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (7x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "the-show-report--theshowreport.json",
       "score": 79,
       "publishDate": "2025-07-30",
@@ -1542,6 +1581,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "tulsa-people--allyssa-reeder.json",
+      "publishDate": "2026-02-20",
+      "url": "https://www.tulsapeople.com/about-town/review-a-beautiful-noise-the-neil-diamond-musical-at-the-tulsa-pac-through-feb-22/article_5aca618d-db5d-4660-a616-ffc4d144eb10.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -58081,7 +58133,7 @@
     },
     {
       "showId": "promises-promises-2010",
-      "file": "dctheatrescene--unknown.json",
+      "file": "dctheatrescene--richard-seff.json",
       "score": null,
       "publishDate": null,
       "url": "https://dctheatrescene.com/2010/04/26/promises-promises/",
