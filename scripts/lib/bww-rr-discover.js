@@ -577,6 +577,7 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
     // and it is the second look the pre-gate code got for free.
     const cachedPaid = (opts.fetchAnchors || opts.fetchPaidAnchors) ? null : _anchorCache.get('reviews.php');
     if (Array.isArray(cachedPaid) && cachedPaid.length > 0) {
+      console.log(`  bww-rr-discover: consulted cached paid /reviews/ listing (${cachedPaid.length} roundups, no new session)`);
       const paidCandidates = score(cachedPaid);
       if (paidCandidates.length > 0) {
         return { url: paidCandidates[0].url, candidates: paidCandidates, via: 'reviews.php' };
