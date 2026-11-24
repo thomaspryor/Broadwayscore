@@ -1,23 +1,34 @@
 {
-  "totalCandidates": 7,
-  "cdxFound": 2,
-  "cdxNotFound": 4,
-  "recovered": 2,
+  "totalCandidates": 42,
+  "cdxFound": 18,
+  "cdxNotFound": 8,
+  "recovered": 17,
   "recoveredByTier": {
-    "1": 0,
+    "1": 1,
     "2": 0,
-    "3": 2
+    "3": 16
   },
   "recoveredByDomain": {
-    "thetimes.com": 1,
-    "bam.org": 1
+    "nytimes.com": 1,
+    "talkinbroadway.com": 1,
+    "theaterlife.com": 2,
+    "thestage.co.uk": 1,
+    "thewrap.com": 1,
+    "archive.nytimes.com": 2,
+    "leisureblogs.chicagotribune.com": 1,
+    "dctheatrescene.com": 2,
+    "artsfuse.org": 1,
+    "musicaltheatrereview.com": 1,
+    "theglobeandmail.com": 1,
+    "whatsonstage.com": 2,
+    "sfgate.com": 1
   },
-  "tooShort": 0,
+  "tooShort": 1,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 1,
-  "notInArchive": 4,
+  "errors": 16,
+  "notInArchive": 8,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
