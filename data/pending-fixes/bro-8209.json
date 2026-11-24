@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8209",
   "planId": "3ad34edc-339f-4577-b8fa-a48c7d60d8e1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-23T23:36:10.985Z",
   "submitter": {
     "name": null,
@@ -22,5 +22,13 @@
       }
     ]
   },
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "executedAt": "2026-11-24T01:33:47.146Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json"
+    }
+  ]
 }
