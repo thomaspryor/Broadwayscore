@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-23T23:33:06.193Z",
+    "lastUpdated": "2026-11-24T02:53:16.319Z",
     "version": "2.1.0",
     "lastChange": "BRO-8210: register New York Theatre Review (newyorktheatrereview.blogspot.com)"
   },
@@ -15882,6 +15882,28 @@
       "domain": "newyorktheatrereview.blogspot.com",
       "accessModel": "free",
       "region": "us"
+    },
+    "thingsforkidsinkent": {
+      "displayName": "Things for kids in Kent",
+      "tier": 3,
+      "aliases": [
+        "thingsforkidsinkent"
+      ],
+      "domain": "thingsforkidsinkent.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-11-24T02:53:16.318Z"
+    },
+    "rocknrollerbaby": {
+      "displayName": "RocknRollerBaby",
+      "tier": 3,
+      "aliases": [
+        "rocknrollerbaby"
+      ],
+      "domain": "rocknrollerbaby.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-11-24T02:53:16.318Z"
     }
   },
   "_aliasIndex": {
