@@ -33,6 +33,7 @@ const RATE_BUMP_DATE = new Date('2026-04-07T00:00:00Z'); // TodayTix 2% -> 5% cu
 // StubHub case (links hidden 2026-04-11, historical clicks still affiliate).
 const AFFILIATE_PLATFORM_CONFIG = require('../../src/config/affiliate-platforms.json').platforms;
 const { isPromoCodeZeroPayout } = require('./affiliate-anomaly');
+const { fetchWithOneRetry } = require('./provider-fetch-retry');
 const AFFILIATE_PLATFORMS = new Set(
   Object.entries(AFFILIATE_PLATFORM_CONFIG)
     .filter(([, cfg]) => cfg.revenueReporting)
@@ -498,14 +499,22 @@ function buildWindow(days, { completeDays = false, now = new Date() } = {}) {
  * @param {Date} [opts.now] - Injectable clock
  * @returns {Promise<object>} stats
  */
-async function getAffiliateStats({ days = 7, includeWoW = false, completeDays = false, now } = {}) {
+async function getAffiliateStats({ days = 7, includeWoW = false, completeDays = false, now, retry = false, sleep } = {}) {
   const clampedDays = clampDays(days);
+  // retry: one retry on a transient provider error (5xx/429/timeout/network).
+  // Off by default: the admin API route runs under Vercel's 10s cap and a
+  // 15s retry delay would blow it. The weekly report (a CI job) turns it on,
+  // because a short Impact outage on 2026-11-22 otherwise blanked the
+  // report's baseline context box (BRO-8220).
+  const withRetry = retry
+    ? (fn, label) => fetchWithOneRetry(fn, label, { logPrefix: '[affiliate-stats]', ...(sleep ? { sleep } : {}) })
+    : (fn) => fn();
   const window = buildWindow(clampedDays, { completeDays, now });
 
   const results = await Promise.allSettled([
-    fetchImpact(window.start, window.endBuffered),
+    withRetry(() => fetchImpact(window.start, window.endBuffered), 'impact'),
     fetchPartnerize(window.start, window.end),
-    fetchPosthog(window.start, window.end),
+    withRetry(() => fetchPosthog(window.start, window.end), 'posthog'),
   ]);
 
   const errors = [];
@@ -640,7 +649,7 @@ async function getAffiliateStats({ days = 7, includeWoW = false, completeDays = 
     const priorWin = completeDays ? buildWindow(clampedDays, { completeDays, now: priorEnd }) : null;
     const priorStart = priorWin ? priorWin.start : new Date(priorEnd.getTime() - clampedDays * DAY_MS);
     try {
-      const prior = await fetchImpact(priorStart, priorEnd);
+      const prior = await withRetry(() => fetchImpact(priorStart, priorEnd), 'impact-prior');
       if (!prior.skipped) {
         const priorSummary = summarizeImpact(prior.actions);
         const priorCommission = priorSummary.totalPayout;
@@ -709,7 +718,7 @@ async function getAffiliateStats({ days = 7, includeWoW = false, completeDays = 
         context.partial = true;
       }
       const baselineSpan = Math.min(clampedDays + 28, IMPACT_MAX_DAYS);
-      const dailyPerf = await fetchImpactDaily(baselineSpan, { now: window.end });
+      const dailyPerf = await withRetry(() => fetchImpactDaily(baselineSpan, { now: window.end }), 'impact-baseline');
       context.baseline = baselineComparison(dailyPerf, {
         asOf,
         windowDays: clampedDays,

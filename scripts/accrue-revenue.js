@@ -44,7 +44,7 @@ async function main() {
   const todayIso = args.today || new Date().toISOString().slice(0, 10);
   const dom = Number(todayIso.slice(8, 10));
 
-  const mtdStats = await getAffiliateStats({ days: Math.max(dom, 1) });
+  const mtdStats = await getAffiliateStats({ days: Math.max(dom, 1), retry: true });
   if (!impactHealthy(mtdStats)) {
     console.error('Impact unavailable — refusing to accrue partial revenue.',
       JSON.stringify(mtdStats.errors || []), mtdStats.impact && mtdStats.impact.reason || '');
@@ -54,7 +54,7 @@ async function main() {
 
   let priorWindowCommission = null;
   if (dom <= 12) {
-    const priorStats = await getAffiliateStats({ days: dom + daysInPriorMonth(todayIso) });
+    const priorStats = await getAffiliateStats({ days: dom + daysInPriorMonth(todayIso), retry: true });
     if (impactHealthy(priorStats))
 
       priorWindowCommission = priorStats.totals.commission;

@@ -72,3 +72,61 @@ test('every PostHog query applies the shared Real Users filter', async () => {
   assert.equal((src.match(/\$\{REAL_USERS_WHERE\}/g) || []).length, queries,
     'a query on events is missing ${REAL_USERS_WHERE}, so bots/owner leak into the funnel');
 });
+
+// BRO-8220: the 2026-11-22 Impact 503 hit the weekly report's baseline fetch,
+// which had no retry, so the report went out with a PARTIAL DATA banner and
+// no context box. With retry:true a single transient failure is retried.
+async function runWithFlakyImpact({ retry, failStatus }) {
+  const saved = { fetch: globalThis.fetch, env: { ...process.env } };
+  process.env.IMPACT_ACCOUNT_SID = 'sid';
+  process.env.IMPACT_AUTH_TOKEN = 'tok';
+  for (const k of ['POSTHOG_PERSONAL_API_KEY', 'POSTHOG_PROJECT_ID', 'PARTNERIZE_APP_KEY', 'PARTNERIZE_USER_API_KEY']) delete process.env[k];
+  let dailyCalls = 0;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    const json = (status, body) => ({ ok: status < 400, status, text: async () => JSON.stringify(body) });
+    if (/Reports\//.test(u)) {
+      dailyCalls += 1;
+      if (dailyCalls === 1) return { ok: false, status: failStatus, text: async () => '<html>Service Unavailable</html>' };
+      return json(200, { Records: [{ date_display: 'Nov 10, 2026', Clicks: '10', Actions: '1', Action_Cost: '5', Sale_zzzAmount: '50' }] });
+    }
+    if (/Actions\.json/.test(u)) return json(200, { Actions: [] });
+    throw new Error(`unexpected fetch ${u}`);
+  };
+  const slept = [];
+  try {
+    const { getAffiliateStats } = require('./affiliate-stats.js');
+    const stats = await getAffiliateStats({
+      days: 7, includeWoW: true, completeDays: true, now: new Date('2026-11-23T15:00:00Z'),
+      retry, sleep: async (ms) => { slept.push(ms); },
+    });
+    return { stats, dailyCalls, slept };
+  } finally {
+    globalThis.fetch = saved.fetch;
+    process.env = saved.env;
+  }
+}
+
+test('weekly report: one Impact 503 on the baseline fetch is retried, context stays complete', async () => {
+  const { stats, dailyCalls, slept } = await runWithFlakyImpact({ retry: true, failStatus: 503 });
+  assert.equal(dailyCalls, 2);
+  assert.deepEqual(slept, [15000]);
+  assert.ok(stats.context, 'context box present');
+  assert.notEqual(stats.context.partial, true, 'a retried 503 must not mark the report partial');
+  assert.ok(stats.context.baseline, 'baseline comparison computed');
+  assert.ok(!(stats.errors || []).some((e) => e.provider === 'impact-baseline'));
+});
+
+test('dashboard default (retry off) keeps single-attempt behaviour: 503 marks context partial', async () => {
+  const { stats, dailyCalls, slept } = await runWithFlakyImpact({ retry: false, failStatus: 503 });
+  assert.equal(dailyCalls, 1);
+  assert.deepEqual(slept, []);
+  assert.equal(stats.context.partial, true);
+});
+
+test('an auth failure is never retried, even with retry on', async () => {
+  const { stats, dailyCalls, slept } = await runWithFlakyImpact({ retry: true, failStatus: 401 });
+  assert.equal(dailyCalls, 1);
+  assert.deepEqual(slept, []);
+  assert.equal(stats.context.partial, true);
+});

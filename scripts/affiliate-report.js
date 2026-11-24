@@ -33,7 +33,7 @@ const HTML_MODE = args.includes('--html');
 async function main() {
   // Whole Pacific days so the totals, WoW and trailing baseline cover the
   // same week no matter when the cron fires (BRO-6379).
-  const stats = await getAffiliateStats({ days: DAYS, includeWoW: true, completeDays: true });
+  const stats = await getAffiliateStats({ days: DAYS, includeWoW: true, completeDays: true, retry: true });
 
   if (JSON_MODE) {
     console.log(JSON.stringify(stats, null, 2));
