@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-23T23:58:45.815Z",
+  "timestamp": "2026-11-24T00:31:54.855Z",
   "stats": {
-    "totalReviews": 84477,
+    "totalReviews": 84484,
     "alreadyFlagged": 22529,
     "dateGuardCatches": 242,
     "directorMismatch": 3887,
     "tvFilmSignals": 2426,
-    "londonSignals": 3989,
+    "londonSignals": 3991,
     "offBroadwaySignals": 789,
     "yearMismatch": 395,
     "noPublishDate": 8274
@@ -20362,6 +20362,7 @@
     {
       "showId": "downstate-2026",
       "file": "theater-pizzazz--unknown.json",
+      "score": 94,
       "publishDate": "2026-11-23",
       "url": "https://theaterpizzazz.com/bruce-norris-pokes-provokes-and-devastates-in-downstate/",
       "findings": [
@@ -82863,6 +82864,7 @@
     {
       "showId": "the-unbelievers-off-broadway-2026",
       "file": "josh-at-the-movies--unknown.json",
+      "score": 75,
       "publishDate": "2026-11-23",
       "url": "https://joshatthemovies.com/2026/11/23/theater-review-the-unbelievers/",
       "findings": [
@@ -104457,6 +104459,19 @@
     },
     {
       "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "firstnightmagazine--guillermonazarareverter.json",
+      "publishDate": "2026-11-23",
+      "url": "https://firstnightmagazine.com/2026/11/23/review-of-desire-under-the-elms-almeida-2026-well-acted-revival-fails-to-compel/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 80,
       "publishDate": "2026-11-18",
@@ -104656,6 +104671,19 @@
       "score": 97,
       "publishDate": "2026-11-18",
       "url": "https://therecs.co.uk/desire-under-the-elms-almeida-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "theartsdispatch--jim-keaveney.json",
+      "publishDate": "2026-11-22",
+      "url": "https://www.theartsdispatch.com/p/desire-under-the-elms-review-almeida",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
