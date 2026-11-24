@@ -1,13 +1,8 @@
 {
-  "generatedAt": "2026-11-23T23:39:41.756Z",
+  "generatedAt": "2026-11-24T00:41:59.453Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
-    {
-      "id": "the-good-thief-off-broadway-2026",
-      "title": "The Good Thief",
-      "openingDate": "2026-11-17"
-    },
     {
       "id": "the-dead-1904-off-broadway-2026",
       "title": "The Dead, 1904",
@@ -34,11 +29,6 @@
       "openingDate": "2026-11-24"
     },
     {
-      "id": "eurotrash-off-west-end-2026",
-      "title": "Eurotrash",
-      "openingDate": "2026-11-17"
-    },
-    {
       "id": "seven-guitars-off-broadway-2026",
       "title": "Seven Guitars",
       "openingDate": "2026-11-23"
@@ -62,11 +52,6 @@
       "id": "bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026",
       "title": "Bigfoot Ripped My Dog In Half I Saw It",
       "openingDate": "2026-11-20"
-    },
-    {
-      "id": "blue-man-group-a-new-holiday-surprise-2026",
-      "title": "Blue Man Group “A New Holiday Surprise”",
-      "openingDate": "2026-11-17"
     },
     {
       "id": "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
@@ -97,11 +82,6 @@
       "id": "its-a-wonderful-life-a-live-radio-play-2026",
       "title": "It’s A Wonderful Life: A Live Radio Play",
       "openingDate": "2026-11-23"
-    },
-    {
-      "id": "a-christmas-story-the-musical-tour-2026",
-      "title": "A Christmas Story The Musical",
-      "openingDate": "2026-11-17"
     },
     {
       "id": "arrowhead-regional-2026",
@@ -138,6 +118,10 @@
   "feedsChecked": 86,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -158,7 +142,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 910,
+  "itemsScanned": 899,
   "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [

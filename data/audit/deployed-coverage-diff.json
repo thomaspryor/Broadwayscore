@@ -1,30 +1,46 @@
 {
-  "generatedAt": "2026-11-23T23:39:41.311Z",
+  "generatedAt": "2026-11-24T00:41:59.022Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 365,
-  "clean": 364,
-  "defective": 1,
+  "checked": 363,
+  "clean": 361,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
-      "title": "It’s A Wonderful Life: A Live Radio Play",
-      "openingDate": "2026-11-23",
+      "showId": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
+      "openingDate": "2026-11-16",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 68.52 vs local 69.86 (Δ1.34)"
+          "detail": "deployed cs 61.63 vs local 60.82 (Δ0.81)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-11-23T23:39:35.727Z"
+      "localCount": 9,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-11-24T00:41:52.173Z"
+    },
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.83 vs local 68.3 (Δ0.53)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 19,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-11-24T00:41:52.173Z"
     }
   ],
   "persistentDefective": 0,
