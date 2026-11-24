@@ -218,10 +218,24 @@ jobs:
           if [ -n "$BROWSERBASE_API_KEY" ] && [ -n "$BROWSERBASE_PROJECT_ID" ]; then
             BB_HTTP_CODE=$(curl -s -o /tmp/bb_raw.json -w "%{http_code}" -H "X-BB-API-Key: $BROWSERBASE_API_KEY" "https://api.browserbase.com/v1/sessions?projectId=$BROWSERBASE_PROJECT_ID" 2>/dev/null || echo "000")
             if [ "$BB_HTTP_CODE" = "200" ]; then
-              BB_PARSED=$(python3 -c "import sys,json; from datetime import datetime,timedelta,timezone; d=json.load(open('/tmp/bb_raw.json')); items=d if isinstance(d,list) else d.get('data',[]); cutoff=(datetime.now(timezone.utc)-timedelta(days=7)).isoformat(); recent=sum(1 for s in items if s.get('createdAt','')>=cutoff); print(f'{recent}|{len(items)}')" 2>/dev/null || echo "0|0")
+              # Prints recent|total|covered. covered=1 when the list reaches back past the
+              # 7-day cutoff, so a truncated list (newest N only) is visible as an undercount.
+              # A parse failure prints ERR: never a silent 0 (BRO-8268 ship-check).
+              BB_PARSED=$(python3 -c "import json; from datetime import datetime,timedelta,timezone; d=json.load(open('/tmp/bb_raw.json')); items=d if isinstance(d,list) else d.get('data',[]); cutoff=(datetime.now(timezone.utc)-timedelta(days=7)).isoformat(); ts=[str(s.get('createdAt') or '') for s in items if isinstance(s,dict)]; recent=sum(1 for t in ts if t>=cutoff); covered=1 if any(t and t<cutoff for t in ts) else 0; print(f'{recent}|{len(items)}|{covered}')" 2>/dev/null || echo "ERR|0|0")
               BB_SESSIONS=$(echo "$BB_PARSED" | cut -d'|' -f1)
               BB_TOTAL_ITEMS=$(echo "$BB_PARSED" | cut -d'|' -f2)
-              BB_SESSIONS_KNOWN=1
+              BB_COVERED=$(echo "$BB_PARSED" | cut -d'|' -f3)
+              case "$BB_SESSIONS" in
+                ''|*[!0-9]*)
+                  BB_SESSIONS=0
+                  API_DEGRADED="$API_DEGRADED Browserbase session list unreadable — session count unknown. ";;
+                *)
+                  BB_SESSIONS_KNOWN=1
+                  if [ "$BB_COVERED" != "1" ] && [ "$BB_TOTAL_ITEMS" -gt 0 ]; then
+                    BB_SESSIONS_KNOWN=partial
+                    API_DEGRADED="$API_DEGRADED Browserbase session list does not reach back 7 days — count may be low. "
+                  fi;;
+              esac
               # Suspicious-pagination check: if total items returned is suspiciously
               # round (100, 500, 1000, 10000) AND we have any sessions in window,
               # treat as possible pagination cap.
@@ -237,8 +251,15 @@ jobs:
           BB_WEEK=$(node scripts/lib/browserbase-week-cost.js --sessions="$BB_SESSIONS" 2>/dev/null || echo "0.00|estimate|0")
           BB_COST=$(echo "$BB_WEEK" | cut -d'|' -f1)
           BB_COST_SOURCE=$(echo "$BB_WEEK" | cut -d'|' -f2)
-          if [ "$BB_COST_SOURCE" = "billed" ]; then BB_COST_LABEL="billed, 7 full UTC days"; else BB_COST_LABEL="est. \$0.10/session, billed rows missing"; fi
-          if [ -n "$BB_SESSIONS_KNOWN" ]; then BB_SESSIONS_TEXT="$BB_SESSIONS sessions"; else BB_SESSIONS_TEXT="sessions unknown"; fi
+          BB_DAYS=$(echo "$BB_WEEK" | cut -d'|' -f3)
+          if [ "$BB_COST_SOURCE" = "billed" ] && [ "$BB_DAYS" = "7" ]; then BB_COST_LABEL="billed, 7 full UTC days"
+          elif [ "$BB_COST_SOURCE" = "billed" ]; then BB_COST_LABEL="billed, $BB_DAYS of 7 days, scaled to a week"
+          else BB_COST_LABEL="est. \$0.10/session, billed rows missing"; fi
+          case "$BB_SESSIONS_KNOWN" in
+            1) BB_SESSIONS_TEXT="$BB_SESSIONS sessions";;
+            partial) BB_SESSIONS_TEXT="at least $BB_SESSIONS sessions";;
+            *) BB_SESSIONS_TEXT="sessions unknown";;
+          esac
 
           # --- ScrapingBee cap % direct from API (replaces log-scraping) ---
           # Outputs: pct_used | proj_pct_of_current_cap | used | cap | projected_absolute

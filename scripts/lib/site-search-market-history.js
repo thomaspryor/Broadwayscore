@@ -4,32 +4,41 @@
  *
  * The JS site-search tier (deadline, THR, ew, timeout, ...) pays a ScrapingBee
  * render (5 credits; ew tries 1 Scrapingdog credit first) for every missing
- * outlet on every poll tick, in every market. Ledger 2026-11-22..24: 420 of
- * 1,811 such renders (2,100 credits, ~9% of all ScrapingBee use) were for an
- * outlet website with ZERO reviews in that show category across all of
- * reviews.json: deadline.com on West End shows (126), ew.com on West End,
- * off-West-End, regional and tour shows (132), hollywoodreporter.com on
- * regional, tour and off-West-End shows (72), timeout.com on tours (11). The
- * ScrapingBee plan ($49.99 / 250k) ran out after 18 days that cycle and
- * auto-renewed early, so these credits cost real money.
+ * outlet on every poll tick, in every market. Ledger 2026-11-22..24: 906 paid
+ * site-search renders (poller, gather-reviews, express) were for an outlet
+ * website with ZERO reviews in that show category across all of reviews.json,
+ * e.g. deadline.com on West End shows, ew.com on West End / off-West-End /
+ * regional / tour shows, hollywoodreporter.com on regional / tour shows,
+ * timeout.com on tours. About 630 were inside the opening window (or for a
+ * show with no openingDate), where the poller's JS give-up does not apply;
+ * the rest were outside it. The ScrapingBee plan ($49.99 / 250k) ran out after
+ * 18 days that cycle and auto-renewed early, so these credits cost real money.
+ * Expected saving at the audit rates below: about 80% of those renders
+ * (75% inside the window, 95% outside).
  *
  * Rule: skip the PAID render when the endpoint's website has no review at all
  * in the show's category, and the category is big enough for "none" to mean
  * something. Counted by review URL hostname, not outletId, because one search
  * page can serve two outlet ids (timeout.com is Time Out New York and Time Out
  * London). The free WordPress search still runs, SERP discovery still covers
- * the outlet, and a small random audit sample still pays for the render, so a
- * first-ever review in a new market is still found and opens the gate.
+ * the outlet, and a random audit sample still pays for the render, so a
+ * first-ever review in a new market is still found and opens the gate. The
+ * audit rate is 25% inside the opening window (openingDate -1d..+3d, or no
+ * openingDate; scripts/lib/opening-window-backoff.js) so a first-ever review on
+ * press night is found within a few polls, and 5% outside it.
  *
  * Fails open: unreadable data, unknown category, small category, or a domain
  * we cannot normalise all mean "render as before".
- * Kill switch: SITE_SEARCH_MARKET_HISTORY_GATE=0.
+ * Kill switch: SITE_SEARCH_MARKET_HISTORY_GATE=0 (repo variable, wired into the
+ * poller, gather-reviews and express workflows). Rates:
+ * SITE_SEARCH_MARKET_HISTORY_AUDIT (outside window), SITE_SEARCH_MARKET_HISTORY_AUDIT_WINDOW.
  */
 const fs = require('fs');
 const path = require('path');
 
 const DEFAULT_MIN_CATEGORY_REVIEWS = 500;
 const DEFAULT_AUDIT_RATE = 0.05;
+const DEFAULT_WINDOW_AUDIT_RATE = 0.25;
 const DATA_DIR = path.join(__dirname, '..', '..', 'data');
 
 function normaliseHost(h) {
@@ -89,12 +98,18 @@ function neverCoveredMarketDecision({ domain, category, counts, minCategoryRevie
     : { skip: false, reason: 'covered', count };
 }
 
-/** SITE_SEARCH_MARKET_HISTORY_AUDIT: share of skips that still render (0..1). */
-function resolveAuditRate(env = process.env) {
-  const v = env && env.SITE_SEARCH_MARKET_HISTORY_AUDIT;
-  if (v === undefined || v === '') return DEFAULT_AUDIT_RATE;
+/**
+ * Share of skips that still render (0..1). Inside the opening window:
+ * SITE_SEARCH_MARKET_HISTORY_AUDIT_WINDOW (default 0.25); outside:
+ * SITE_SEARCH_MARKET_HISTORY_AUDIT (default 0.05). Junk values fall back.
+ */
+function resolveAuditRate(env = process.env, inOpeningWindow = false) {
+  const key = inOpeningWindow ? 'SITE_SEARCH_MARKET_HISTORY_AUDIT_WINDOW' : 'SITE_SEARCH_MARKET_HISTORY_AUDIT';
+  const fallback = inOpeningWindow ? DEFAULT_WINDOW_AUDIT_RATE : DEFAULT_AUDIT_RATE;
+  const v = env && env[key];
+  if (v === undefined || v === '') return fallback;
   const n = Number(v);
-  return Number.isFinite(n) && n >= 0 && n <= 1 ? n : DEFAULT_AUDIT_RATE;
+  return Number.isFinite(n) && n >= 0 && n <= 1 ? n : fallback;
 }
 
 let _cache; // undefined = not loaded yet, null = unavailable (fail open)
@@ -123,6 +138,7 @@ function _resetCacheForTests() { _cache = undefined; }
 module.exports = {
   DEFAULT_MIN_CATEGORY_REVIEWS,
   DEFAULT_AUDIT_RATE,
+  DEFAULT_WINDOW_AUDIT_RATE,
   buildDomainCategoryCounts,
   domainCount,
   neverCoveredMarketDecision,

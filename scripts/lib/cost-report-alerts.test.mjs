@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const { evaluateCostReport, parseFailedByWorkflow, KEYS, CARD_KEYS } = require('./cost-report-alerts.js');
 const { renderActionHtml } = require('../route-cost-report-alerts.js');
 
-const QUIET = { totalFailed: 0, totalCancelled: 0, bbCost: '0.00', bbSessions: 0, sbProjected: 1000, sbCap: 1000000, sbStatus: 'ok', sbCreditsTotal: 1761, apiDegraded: '' };
+const QUIET = { totalFailed: 0, totalCancelled: 0, bbCost: '0.00', bbCostSource: 'billed', bbSessions: 0, sbProjected: 1000, sbCap: 1000000, sbStatus: 'ok', sbCreditsTotal: 1761, apiDegraded: '' };
 
 test('the Oct 19-26 report: failures and the Browserbase spike each get a card', () => {
   const { lines, resolvableKeys } = evaluateCostReport({
@@ -70,6 +70,15 @@ test('ScrapingBee over-cap and exhausted are separate cards; high credits stays 
 
 test('non-numeric projection never fires (old bash numeric guard)', () => {
   assert.equal(evaluateCostReport({ ...QUIET, sbProjected: '?' }).lines.length, 0);
+});
+
+test('an estimate week never resolves the Browserbase spike card (billed data missing is not a fix)', () => {
+  for (const bbCostSource of ['estimate', undefined]) {
+    const { resolvableKeys } = evaluateCostReport({ ...QUIET, bbCost: '0.00', bbSessions: 900, bbCostSource });
+    assert.ok(!resolvableKeys.includes(KEYS.browserbaseSpike), String(bbCostSource));
+    assert.ok(resolvableKeys.includes(KEYS.workflowFailures), 'other cards still resolve');
+  }
+  assert.ok(evaluateCostReport({ ...QUIET, bbCost: '6.72', bbSessions: 971 }).resolvableKeys.includes(KEYS.browserbaseSpike));
 });
 
 test('degraded provider data resolves nothing (a missing number is not a fix)', () => {

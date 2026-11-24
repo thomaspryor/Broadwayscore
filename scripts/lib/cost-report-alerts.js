@@ -166,6 +166,9 @@ function evaluateCostReport(m = {}) {
   const firing = new Set(lines.map((l) => l.conditionKey).filter(Boolean));
   // An undercounted failure total is not a clear week for the failures card.
   const unknown = new Set(runsQueryFailed ? [KEYS.workflowFailures] : []);
+  // BRO-8268: without billed rows the dollar half of the Browserbase rule is
+  // unknown, so an estimate week must not close an open spike card.
+  if (!bbBilled) unknown.add(KEYS.browserbaseSpike);
   const resolvableKeys = degraded ? [] : CARD_KEYS.filter((k) => !firing.has(k) && !unknown.has(k));
   return { lines, resolvableKeys };
 }

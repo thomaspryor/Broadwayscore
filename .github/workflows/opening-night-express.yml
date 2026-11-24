@@ -271,6 +271,8 @@ jobs:
           BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
           BROWSERBASE_USE_RESERVE: 'true' # opening night may use the recovery reserve (BRO-5222)
           BROWSERBASE_ENABLED: 'true'
+          # BRO-8268: never-covered-market site-search gate; variable 0 turns it off.
+          SITE_SEARCH_MARKET_HISTORY_GATE: ${{ vars.SITE_SEARCH_MARKET_HISTORY_GATE }}
           INPUT_BWW_ROUNDUP_URL: ${{ inputs.bww_roundup_url }}
           INPUT_SHOW_ID: ${{ inputs.show_id }}
         run: |

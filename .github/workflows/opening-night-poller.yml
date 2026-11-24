@@ -206,6 +206,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           # Kill switch: gh variable set POLLER_TARGETED_YIELD_DISABLED --body true
           POLLER_TARGETED_YIELD_DISABLED: ${{ vars.POLLER_TARGETED_YIELD_DISABLED }}
+          # BRO-8268 kill switch: gh variable set SITE_SEARCH_MARKET_HISTORY_GATE --body 0
+          SITE_SEARCH_MARKET_HISTORY_GATE: ${{ vars.SITE_SEARCH_MARKET_HISTORY_GATE }}
         run: |
           # WE reviews publish 12-48h after press night; use longer window
           DEFAULT_LOOKBACK=2
@@ -391,6 +393,8 @@ jobs:
           # BRO-7117: owned_elsewhere() lists active targeted poller runs.
           GH_TOKEN: ${{ github.token }}
           POLLER_TARGETED_YIELD_DISABLED: ${{ vars.POLLER_TARGETED_YIELD_DISABLED }}
+          # BRO-8268 kill switch: gh variable set SITE_SEARCH_MARKET_HISTORY_GATE --body 0
+          SITE_SEARCH_MARKET_HISTORY_GATE: ${{ vars.SITE_SEARCH_MARKET_HISTORY_GATE }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -878,6 +882,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           POLLER_TARGETED_YIELD_DISABLED: ${{ vars.POLLER_TARGETED_YIELD_DISABLED }}
+          # BRO-8268 kill switch: gh variable set SITE_SEARCH_MARKET_HISTORY_GATE --body 0
+          SITE_SEARCH_MARKET_HISTORY_GATE: ${{ vars.SITE_SEARCH_MARKET_HISTORY_GATE }}
           INPUT_SHOW_ID: ${{ inputs.show_id }}
           FIND_SHOWS: ${{ steps.find.outputs.shows }}
         run: |

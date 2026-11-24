@@ -243,7 +243,7 @@ test('BRO-7532: free WP search hit skips the paid render; empty, blocked, junk, 
     const outcomes = {};
     const urls = (await searchOutletSite('deadline', 'Ragtime', {
       openingDate: opening, outcomes,
-      _deps: { freeFetch, sbFetch: async () => { paid++; return paidHtml; } },
+      _deps: { freeFetch, sbFetch: async () => { paid++; return paidHtml; }, marketHistoryCounts: null }, // BRO-8268 gate off: hermetic
     })).map(r => r.url);
     return { urls, paid, outcomes };
   };
@@ -294,7 +294,7 @@ test('BRO-7531: a clean free no-match skips the paid render for off-Broadway / o
     const asked = [];
     const urls = (await searchOutletSite('deadline', 'Petra', {
       openingDate: opening, outcomes, show,
-      _deps: { freeFetch: async (u) => { asked.push(u); return canary(u) ? canaryAnswer : freeFetch(u); }, sbFetch: async () => { paid++; return paidHtml; }, random },
+      _deps: { freeFetch: async (u) => { asked.push(u); return canary(u) ? canaryAnswer : freeFetch(u); }, sbFetch: async () => { paid++; return paidHtml; }, random, marketHistoryCounts: null }, // BRO-8268 gate off: this test is about BRO-7531
     })).map(r => r.url);
     return { urls, paid, outcomes, asked };
   };

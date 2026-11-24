@@ -3,6 +3,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const mh = require('../../scripts/lib/site-search-market-history.js');
 const ss = require('../../scripts/lib/site-search-discovery.js');
@@ -62,10 +65,18 @@ test('audit rate: default, valid override, junk falls back', () => {
   assert.equal(mh.resolveAuditRate({ SITE_SEARCH_MARKET_HISTORY_AUDIT: 'abc' }), 0.05);
 });
 
-test('real data loads and gives the expected answers for the four JS outlets', () => {
-  mh._resetCacheForTests();
-  const counts = mh.loadDomainCategoryCounts();
-  if (!counts) return; // data not present in this checkout: fail-open path, nothing to assert
+test('audit rate inside the opening window: 25% default, its own override, junk falls back', () => {
+  assert.equal(mh.resolveAuditRate({}, true), 0.25);
+  assert.equal(mh.resolveAuditRate({ SITE_SEARCH_MARKET_HISTORY_AUDIT: '0.2' }, true), 0.25, 'outside-window knob does not leak in');
+  assert.equal(mh.resolveAuditRate({ SITE_SEARCH_MARKET_HISTORY_AUDIT_WINDOW: '1' }, true), 1);
+  assert.equal(mh.resolveAuditRate({ SITE_SEARCH_MARKET_HISTORY_AUDIT_WINDOW: '-1' }, true), 0.25);
+});
+
+mh._resetCacheForTests();
+const REAL_COUNTS = mh.loadDomainCategoryCounts();
+test('real data loads and gives the expected answers for the four JS outlets',
+  { skip: !REAL_COUNTS && 'no data/reviews.json + shows.json in this checkout (CI checks out core data)' }, () => {
+  const counts = REAL_COUNTS;
   const d = (domain, category) => mh.neverCoveredMarketDecision({ domain, category, counts, env: {} }).reason;
   assert.equal(d('deadline.com', 'broadway'), 'covered');
   assert.equal(d('ew.com', 'broadway'), 'covered');
@@ -123,3 +134,46 @@ test('covered market and missing data both render as before', () => withEndpoint
     assert.equal(res.length, 1);
   }
 }));
+
+test('opening window raises the audit rate: same draw renders on press night, skips a month later', () => withEndpoint(async () => {
+  const now = new Date('2026-11-24T20:00:00Z');
+  const cases = [
+    ['2026-11-24', 1], // opening tonight: 0.10 < 0.25, audit renders
+    ['2026-10-01', 0], // long open: 0.10 >= 0.05, skipped
+  ];
+  for (const [openingDate, expected] of cases) {
+    let calls = 0;
+    const outcomes = {};
+    await ss.searchOutletSite('__t_js', 'The Show', {
+      show: { id: 'w1', title: 'The Show', category: 'west-end', openingDate }, market: 'west-end', outcomes,
+      _deps: { sbFetch: async () => { calls++; return HTML; }, random: () => 0.10, now, marketHistoryCounts: fixtureCounts() },
+    });
+    assert.equal(calls, expected, openingDate);
+    if (!expected) assert.equal(outcomes.__t_js, 'not-attempted');
+  }
+}));
+
+// Class guard: a test that injects a paid fetch into searchOutletSite must say
+// what the market-history gate sees. Otherwise it reads data/reviews.json from
+// disk and passes or fails depending on whether core data is checked out
+// (the BRO-7531 test did exactly that when this gate landed).
+test('every searchOutletSite test with a mocked paid fetch pins marketHistoryCounts', () => {
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const files = [];
+  const walk = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.name === 'node_modules' || e.name.startsWith('.')) continue;
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (/\.test\.m?js$/.test(e.name)) files.push(p);
+    }
+  };
+  walk(path.join(root, 'tests')); walk(path.join(root, 'scripts'));
+  const offenders = [];
+  for (const f of files) {
+    fs.readFileSync(f, 'utf8').split('\n').forEach((line, i) => {
+      if (/_deps:\s*\{[^}]*\bsbFetch\b/.test(line) && !/marketHistoryCounts/.test(line)) offenders.push(`${path.relative(root, f)}:${i + 1}`);
+    });
+  }
+  assert.deepEqual(offenders, [], 'add marketHistoryCounts (null = gate off, or a fixture) to these _deps');
+});

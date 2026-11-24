@@ -64,6 +64,8 @@ env:
   # BRO-4146: dispatch-level spend tag (historical-backfill.yml sets it), so the
   # whole run's ledger rows are excluded from the gather-reviews credit probe.
   SCRAPER_SPEND_PURPOSE: ${{ inputs.spend_purpose }}
+  # BRO-8268: never-covered-market site-search gate; set the variable to 0 to turn it off.
+  SITE_SEARCH_MARKET_HISTORY_GATE: ${{ vars.SITE_SEARCH_MARKET_HISTORY_GATE }}
 
 concurrency:
   # per-run group intended (BRO-4859): the old shared `review-texts-backfill-write`

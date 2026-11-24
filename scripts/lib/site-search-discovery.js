@@ -1700,7 +1700,9 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
           counts: Object.prototype.hasOwnProperty.call(_d, 'marketHistoryCounts') ? _d.marketHistoryCounts : _mh.loadDomainCategoryCounts(),
         });
         if (gate.skip) {
-          marketGateAudited = (_d.random || Math.random)() < _mh.resolveAuditRate();
+          // Higher audit rate on press night: a first-ever review there must not wait hours.
+          const inWindow = require('./opening-window-backoff').isInOpeningWindow(show, _d.now || new Date());
+          marketGateAudited = (_d.random || Math.random)() < _mh.resolveAuditRate(process.env, inWindow);
           skipNeverCovered = !marketGateAudited;
           if (verbose) console.log(`    Site search [${config.name}]: ${config.domain} has no ${show.category} reviews on record; ${marketGateAudited ? 'audit sample, rendering anyway' : 'paid render skipped'}`);
         }
