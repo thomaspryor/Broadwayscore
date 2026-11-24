@@ -1,19 +1,37 @@
 {
-  "updatedAt": "2026-11-24T23:17:24.368Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-24T23:20:28.324Z",
+  "processed": 53,
+  "failed": 10,
+  "successRate": "84.1%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 38,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 5,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 5
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-11-24T22:59:47.440Z",
+      "event": "bb-session",
+      "session": "b4666ce1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+    },
+    {
+      "t": "2026-11-24T22:59:48.443Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T23:03:46.479Z",
+      "event": "bb-session",
+      "session": "6e86f4e0",
+      "url": "https://deadline.com/2026/11/daredevil-charlie-cox-audition-james-bond-robert-pa"
+    }
+  ]
 }
