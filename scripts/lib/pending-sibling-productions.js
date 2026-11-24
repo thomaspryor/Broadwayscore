@@ -225,7 +225,7 @@ function siblingRehomeBlocker(stub, show, sib, allShows, publishDate) {
   return siblingTriageJunk(stub, sib, publishDate, allShows);
 }
 
-function resolveOutOfWindowStub({ show, allShows, publishDate, stub, hasCopy = () => false, holdsUrl = () => false }) {
+function resolveOutOfWindowStub({ show, allShows, publishDate, stub, hasCopy = () => false, holdsUrl = () => false, corroborated = false }) {
   const fitByDate = fittingSiblings(show, allShows, publishDate);
   if (fitByDate.length === 0) return { kind: 'outside-all', sibling: null };
   // A url that names a market rules out a sibling in the other one ("oedipus-broadway-..." is not the West End run).
@@ -246,7 +246,9 @@ function resolveOutOfWindowStub({ show, allShows, publishDate, stub, hasCopy = (
   // any later date, so it needs the same corroboration. 2+ fitting siblings are told apart the same way
   // (Operation Mincemeat Broadway vs West End: "operation-mincemeat-broadway-review").
   const family = (allShows || []).filter((s) => s && s.id !== show.id && normalizeTitle(s.title || '') === normalizeTitle(show.title || '')).length;
-  const needsCorroboration = (s) => fit.length > 1 || family >= FAMILY_NEEDS_VENUE || !s.closingDate || !(s.previewsStartDate || s.openingDate);
+  // corroborated (BRO-8221): the caller holds evidence the stub's date and market are right (a Theatre Record
+  // archive page whose link year matches its date); it settles the family/open-ended doubt for ONE fitting sibling.
+  const needsCorroboration = (s) => !(corroborated && fit.length === 1) && (fit.length > 1 || family >= FAMILY_NEEDS_VENUE || !s.closingDate || !(s.previewsStartDate || s.openingDate));
   let sib = fit[0];
   if (needsCorroboration(sib)) {
     const named = fit.filter((s) => stubCorroboratesSibling(stub, s, show));

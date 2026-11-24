@@ -475,7 +475,15 @@ function noUrlStubVerdict(data, ctx = {}) {
     return { verdict: 'junk', reason: `url-less stub; this show already files ${ctx.file} (same outlet and critic)` };
   }
   if (outside) {
-    const r = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has });
+    // BRO-8221: a Theatre Record stub whose archive-link year matches its date, in the same market group as its
+    // show, needs no venue words to pick its one fitting sibling (TR text names no venue; Into the Woods, 9 family
+    // entries, stayed open forever). resolveOutOfWindowStub still applies every contradiction/junk check.
+    const mg = { broadway: 'us', 'off-broadway': 'us', 'west-end': 'uk', 'off-west-end': 'uk' };
+    const corroborated = data.source === 'theatre-record' && !!trYear && trYear === pdIso.slice(0, 4);
+    const r0 = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has });
+    const cand = r0.kind === 'unverified-family' && r0.candidates && r0.candidates.length === 1 && (ctx.allShows || []).find((x) => x.id === r0.candidates[0]);
+    const r = corroborated && cand && mg[cand.category] && mg[cand.category] === mg[ctx.show.category]
+      ? resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has, corroborated: true }) : r0;
     if (r.kind === 'rehome') return { verdict: 'rehome', reason: `url-less stub published ${pdIso} belongs to same-title production ${r.sibling}`, sibling: r.sibling, publishDate: pdIso };
     // No tracked production's window holds the date (Jamie 2024 stubs dated 2017, the untracked Sheffield run):
     // the same settle the url triage gives a dated stub outside every window.

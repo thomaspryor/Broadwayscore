@@ -1863,3 +1863,25 @@ test('BRO-8195: drain names the critic from the stub text when the page has no b
   assert.equal(JSON.parse(fs.readFileSync(promoted, 'utf8')).bylineSource, 'replay-pending-bylines:stub-text');
   fs.rmSync(root, { recursive: true, force: true });
 });
+
+describe('BRO-8221: url-less Theatre Record stub in a 3+ entry title family rehomes to its one fitting sibling', () => {
+  const mk = (id, category, venue, o, c, extra = {}) => ({ id, title: 'Into the Woods', category, venue, previewsStartDate: o, openingDate: o, closingDate: c, ...extra });
+  const NC = mk('into-the-woods-noel-coward-west-end-2026', 'west-end', 'Noël Coward Theatre', '2026-10-07', '2027-01-09');
+  const BR = mk('into-the-woods-off-west-end-2025', 'off-west-end', 'Bridge Theatre', '2025-12-11', '2026-05-30');
+  const fam = [NC, BR, mk('into-the-woods-2022', 'broadway', 'St. James Theatre', '2022-07-10', '2023-01-08'), mk('into-the-woods-1987', 'broadway', 'Al Hirschfeld Theatre', '1987-11-05', '1989-09-03')];
+  const stub = { outletId: 'mail-on-sunday', criticName: 'Mark Cook', url: null, publishDate: '2025-12-21', source: 'theatre-record', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2025/christmas/33970-into-the-woods', fullText: 'Into The Woods, Sondheim. '.repeat(20) };
+  const ctx = (o = {}) => ({ show: NC, allShows: fam, file: 'mail-on-sunday--mark-cook.json', showHasFile: () => false, siblingHasFile: () => false, ...o });
+
+  test('rehomes to the Bridge run (was null: unverified-family)', () => {
+    const v = T.noUrlStubVerdict(stub, ctx());
+    assert.equal(v && v.verdict, 'rehome');
+    assert.equal(v.sibling, BR.id);
+  });
+  test('no archive-year corroboration (non Theatre Record) stays open', () => {
+    assert.equal(T.noUrlStubVerdict({ ...stub, source: 'westendtheatre', theatreRecordUrl: undefined }, ctx()), null);
+  });
+  test('a different-market sibling is not corroborated by the archive year', () => {
+    const us = { ...BR, category: 'broadway' };
+    assert.equal(T.noUrlStubVerdict(stub, ctx({ allShows: [NC, us, fam[2], fam[3]] })), null);
+  });
+});
