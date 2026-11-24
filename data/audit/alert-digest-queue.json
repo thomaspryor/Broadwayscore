@@ -1984,7 +1984,7 @@
     "title": "Data audit failing: Run data validation — already tracked at BRO-8225",
     "description": "This condition already has an open tracker (BRO-8225); not filing a duplicate. It will go quiet in the digest from here.\n\nThe \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45303344144",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45304875732",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -2001,10 +2001,10 @@
       },
       {
         "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45303344144)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45304875732)"
       }
     ],
-    "queuedAt": "2026-11-24T02:40:38.105Z"
+    "queuedAt": "2026-11-24T02:53:06.794Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-8218-mwtyigms",
