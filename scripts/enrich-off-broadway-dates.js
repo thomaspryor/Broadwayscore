@@ -78,6 +78,7 @@ const cheerio = require('cheerio');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
 const { fetchPage } = require('./lib/scraper');
+const { isAnnouncedPastRunCandidate, pastRunChanges } = require('./lib/ob-announced-past-run');
 const { matchTitleToShow, titleWordsMatch } = require('./lib/show-matching');
 const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
 const { crossCheckOpeningDate, mergePressNightChanges } = require('./lib/press-night-cross-check');
@@ -494,7 +495,7 @@ function extractDatesFromProductionPage(html) {
   // Tight regex: pair the label with the FIRST info-circular block that
   // follows within ~2000 chars. The Playbill template puts each label and
   // its date in the same UL/LI, so this proximity bound is safe.
-  const re = /<div class="bsp-list-promo-title">([^<]+)<\/div>([\s\S]{0,2000}?)<div class="info-circular">([\s\S]{0,500}?)<\/div>/g;
+  const re = /<div class="bsp-list-promo-title">([^<]+)<\/div>((?:(?!<div class="bsp-list-promo-title">)[\s\S]){0,2000}?)<div class="info-circular">([\s\S]{0,500}?)<\/div>/g;
   let m;
   while ((m = re.exec(html)) !== null) {
     const label = m[1].trim().toLowerCase();
@@ -507,7 +508,7 @@ function extractDatesFromProductionPage(html) {
     if (!iso) continue;
     if (label.includes('first preview')) dates.firstPreview = iso;
     else if (label.includes('opening')) dates.opening = iso;
-    // ignore "Closing Date" — out of scope for this script
+    else if (label.includes('closing')) dates.closing = iso;
   }
   return (dates.firstPreview || dates.opening) ? dates : null;
 }
@@ -575,7 +576,7 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
   const queue = candidateShows.filter(s => {
     if (alreadyMatchedShowIds.has(s.id)) return false;
     if (broad) return true;
-    return isPhase3DefaultCandidate(s, today, { includeClosed: !!opts.includeClosed });
+    return opts.pastRunIds?.has(s.id) || isPhase3DefaultCandidate(s, today, { includeClosed: !!opts.includeClosed });
   });
   console.log(`Queue: ${queue.length} candidate shows not covered by schedule article` +
     (broad ? ' [broad]' : ' [same-date-only — pass --phase3-broad to widen]'));
@@ -692,6 +693,7 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
       showId: show.id, // explicit ID — bypasses fuzzy title-match in Phase 4 for diacritics
       firstPreview: dates.firstPreview,
       opening: dates.opening,
+      closing: dates.closing,
       source: 'playbill-production-page',
       url,
       playbillYear,
@@ -1049,7 +1051,14 @@ async function main() {
   // a Playbill production page whose year equals the row's own — checked per
   // match in Phase 4 via isEligibleForDateFix. The allowlist itself lives in
   // scripts/lib/ob-date-fix-eligibility.js (shared with the unit test).
-  let obShows = allShows.filter(s => s.category === 'off-broadway' && isStatusEligibleForDateFix(s, { includeClosedWhenYearMatches }));
+  const reviews = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/reviews.json'), 'utf8')).reviews || [];
+  const reviewsByShow = new Map();
+  for (const review of reviews) {
+    if (!reviewsByShow.has(review.showId)) reviewsByShow.set(review.showId, []);
+    reviewsByShow.get(review.showId).push(review);
+  }
+  const pastRunIds = new Set(allShows.filter(s => isAnnouncedPastRunCandidate(s, reviewsByShow.get(s.id) || [])).map(s => s.id));
+  let obShows = allShows.filter(s => s.category === 'off-broadway' && (isStatusEligibleForDateFix(s, { includeClosedWhenYearMatches }) || pastRunIds.has(s.id)));
   console.log(`Off-Broadway shows in shows.json: ${obShows.length}`);
   if (showFilter) {
     obShows = obShows.filter(s => s.id === showFilter || s.slug === showFilter);
@@ -1077,8 +1086,8 @@ async function main() {
   // Phase 3 production-page probe, the only source that carries a year. They
   // are reached by Phase 3 and matched by explicit id in Phase 4. No-ops
   // without the flag (the pool then holds no closed rows).
-  const titleMatchShows = obShows.filter(s => s.status !== 'closed');
-  const titleMatchCandidates = candidateShows.filter(s => s.status !== 'closed');
+  const titleMatchShows = obShows.filter(s => s.status !== 'closed' && !pastRunIds.has(s.id));
+  const titleMatchCandidates = candidateShows.filter(s => s.status !== 'closed' && !pastRunIds.has(s.id));
 
   // Phase 1: Playbill OB schedule (primary source).
   const playbillEntries = await scrapePlaybillOB();
@@ -1115,6 +1124,7 @@ async function main() {
     // BRO-3528: prior runs' outcomes, for the SERP miss backoff. Off for --show.
     serpBackoffRuns: showFilter ? null : loadAuditRuns(),
     broad: phase3Broad,
+    pastRunIds,
     includeClosed: includeClosedWhenYearMatches,
   });
   for (const e of phase3.entries) {
@@ -1126,6 +1136,7 @@ async function main() {
       showId: e.showId, // surfaces in Phase 4 as a direct-match shortcut
       firstPreview: e.firstPreview,
       opening: e.opening,
+      closing: e.closing,
       productionPageYear: playbillYear,
       sources: ['playbill-production-page'],
       confidence: 'single-source',
@@ -1219,6 +1230,14 @@ async function main() {
       const result = matchTitleToShow(entry.title, titleMatchShows, { market: 'off-broadway' });
       if (!acceptScheduleMatch(result, entry)) continue;
       show = result.show;
+    }
+
+    if (pastRunIds.has(show.id)) {
+      const proposed = pastRunChanges(show, { ...entry, source: entry.sources?.[0] }, today);
+      if (proposed && candidateShows.some(s => s.id === show.id)) {
+        changes.push({ id: show.id, title: show.title, slug: show.slug, changes: proposed });
+      }
+      continue;
     }
 
     // Closed rows (pool-admitted only by --include-closed-when-year-matches)

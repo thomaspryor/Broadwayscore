@@ -12,6 +12,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+const { isAnnouncedPastRunCandidate, pastRunChanges } = require('./lib/ob-announced-past-run');
 const {
   parseUSDate,
   extractDatesFromProductionPage,
@@ -146,32 +147,35 @@ test('mergeSources — opening agrees but only one source has a preview date is 
   assert.equal(merged[0].confidence, 'single-source');
 });
 
-test('extractDatesFromProductionPage — KNOWN LIMITATION: a label with no date block steals the next label\'s date', () => {
-  // scripts/enrich-off-broadway-dates.js's extractDatesFromProductionPage regex
-  // pairs each bsp-list-promo-title label with the NEXT info-circular block it
-  // finds within a bounded scan — it doesn't verify that block actually belongs
-  // to that label. If "First Preview" renders with no date (has never been
-  // observed on a real Playbill page across 53 logged production-page
-  // extractions, but isn't structurally impossible), it silently claims
-  // "Opening Date"'s block instead, and "Opening Date" gets nothing.
-  //
-  // Pinning this as documented CURRENT behavior (not desired behavior) so a
-  // future regex change is a deliberate decision, not a silent regression in
-  // either direction. Flagged by Codex adversarial review during BRO-1108
-  // ship-check; not fixed here because it requires a malformed-page condition
-  // never seen in production and touches a script with live daily writes to
-  // shows.json — out of scope for a test-coverage-only change.
-  const html = `<!DOCTYPE html><html><head><title>Kenrex (Off-Broadway, Venue, 2026) | Playbill</title></head><body>
-    <div class="bsp-list-promo-title">First Preview</div>
-    <div class="bsp-list-promo-title">Opening Date</div>
-    <div class="info-circular">
-      <span class="info-circular-pre-text">Apr</span>
-      <span class="info-circular-text">26</span>
-      <span class="info-circular-post-text">2026</span>
-    </div>
-  </body></html>`;
-  const dates = extractDatesFromProductionPage(html);
-  assert.deepEqual(dates, { firstPreview: '2026-04-26', opening: null });
+test('production page does not borrow the next label date', () => {
+  const html = `<div class="bsp-list-promo-title">First Preview</div>
+    <div class="bsp-list-promo-title">Opening Date</div><div class="info-circular">
+    <span class="info-circular-pre-text">Apr</span><span class="info-circular-text">26</span>
+    <span class="info-circular-post-text">2026</span></div>`;
+  assert.deepEqual(extractDatesFromProductionPage(html), { firstPreview: null, opening: '2026-04-26' });
+});
+
+test('production page extracts closing dates', () => {
+  const html = productionPageFixture({ opening: { pre: 'Apr', day: '1', post: '2026' } }) +
+    `<div class="bsp-list-promo-title">Closing Date</div><div class="info-circular">
+    <span class="info-circular-pre-text">May</span><span class="info-circular-text">1</span>
+    <span class="info-circular-post-text">2026</span></div>`;
+  assert.equal(extractDatesFromProductionPage(html).closing, '2026-05-01');
+});
+
+test('announced past runs require clean reviews and complete past source dates', () => {
+  const show = { id: 'sample-off-broadway-2026', category: 'off-broadway', status: 'announced' };
+  const review = { showId: show.id, publishDate: '2026-04-02' };
+  const entry = { source: 'playbill-production-page', opening: '2026-04-01', closing: '2026-05-01', firstPreview: '2026-03-30' };
+  assert.equal(isAnnouncedPastRunCandidate(show, [review]), true);
+  for (const flag of ['wrongShow', 'wrongProduction', 'isRoundupArticle'])
+    assert.equal(isAnnouncedPastRunCandidate(show, [{ ...review, [flag]: true }]), false);
+  assert.equal(isAnnouncedPastRunCandidate(show, [{ ...review, publishDate: '2025-04-02' }]), false);
+  assert.equal(isAnnouncedPastRunCandidate(show, [{ ...review, publishDate: null }]), true);
+  assert.equal(pastRunChanges(show, entry, '2026-11-24').find(c => c.field === 'status').new, 'closed');
+  assert.equal(pastRunChanges(show, { ...entry, opening: '2025-04-01' }, '2026-11-24'), null);
+  assert.equal(pastRunChanges(show, { ...entry, closing: '2027-01-01' }, '2026-11-24'), null);
+  assert.equal(pastRunChanges(show, { ...entry, closing: null }, '2026-11-24'), null);
 });
 
 // BRO-1108 regression: The Ford/Hill Project (BAM Fisher, opened 2026-09-08
