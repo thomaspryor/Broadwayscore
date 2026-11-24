@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7250-d261124-r15",
   "planId": "e800aef0-e9d3-4507-86f0-af734ef1fbbc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T00:30:29.362Z",
   "submitter": {
     "name": null,
@@ -45,5 +45,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T00:35:58.056Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added teatro-la-plazas-hamlet-regional-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
