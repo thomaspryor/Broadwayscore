@@ -1885,3 +1885,22 @@ describe('BRO-8221: url-less Theatre Record stub in a 3+ entry title family reho
     assert.equal(T.noUrlStubVerdict(stub, ctx({ allShows: [NC, us, fam[2], fam[3]] })), null);
   });
 });
+
+describe('BRO-8221 review hardening: archive year is not production identity', () => {
+  const mk = (id, category, o, c) => ({ id, title: 'Into the Woods', category, venue: id, previewsStartDate: o, openingDate: o, closingDate: c });
+  const NC = mk('nc', 'west-end', '2026-10-07', '2027-01-09');
+  const BR = mk('br', 'off-west-end', '2025-12-11', '2026-05-30');
+  const stub = { outletId: 'mail-on-sunday', criticName: 'X', url: null, publishDate: '2025-12-21', source: 'theatre-record', theatreRecordUrl: 'https://www.theatrerecord.com/archive/2025/christmas/1-x', fullText: 'Into The Woods, Sondheim. '.repeat(20) };
+  const c = (all, show = NC) => ({ show, allShows: all, file: 'a--b.json', showHasFile: () => false, siblingHasFile: () => false });
+  const fam = [mk('us1', 'broadway', '2022-07-10', '2023-01-08'), mk('us2', 'broadway', '1987-11-05', '1989-09-03')];
+  test('a second UK same-title production keeps it open', () => {
+    assert.equal(T.noUrlStubVerdict(stub, c([NC, BR, mk('uk3', 'west-end', '2012-01-01', '2012-06-01'), ...fam])), null);
+  });
+  test('open-ended sibling keeps it open', () => {
+    assert.equal(T.noUrlStubVerdict(stub, c([NC, { ...BR, closingDate: null }, ...fam])), null);
+  });
+  test('Broadway-to-Broadway never corroborated by a UK archive', () => {
+    const B1 = mk('b1', 'broadway', '2026-10-07', '2027-01-09'), B2 = mk('b2', 'broadway', '2025-12-11', '2026-05-30');
+    assert.equal(T.noUrlStubVerdict(stub, c([B1, B2, ...fam], B1)), null);
+  });
+});

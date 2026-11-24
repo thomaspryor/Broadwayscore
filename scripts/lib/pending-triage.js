@@ -482,7 +482,11 @@ function noUrlStubVerdict(data, ctx = {}) {
     const corroborated = data.source === 'theatre-record' && !!trYear && trYear === pdIso.slice(0, 4);
     const r0 = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has });
     const cand = r0.kind === 'unverified-family' && r0.candidates && r0.candidates.length === 1 && (ctx.allShows || []).find((x) => x.id === r0.candidates[0]);
-    const r = corroborated && cand && mg[cand.category] && mg[cand.category] === mg[ctx.show.category]
+    // Theatre Record is a UK archive and the sibling must be the ONLY UK-market same-title production besides this
+    // show (BRO-8221 review: a regional/other-UK review dated in one tracked window is not evidence of that run).
+    const key = require('./title-match').normalizeTitle(ctx.show.title || '');
+    const ukSibs = (ctx.allShows || []).filter((x) => x && x.id !== ctx.show.id && mg[x.category] === 'uk' && require('./title-match').normalizeTitle(x.title || '') === key);
+    const r = corroborated && cand && mg[cand.category] === 'uk' && mg[ctx.show.category] === 'uk' && ukSibs.length === 1
       ? resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has, corroborated: true }) : r0;
     if (r.kind === 'rehome') return { verdict: 'rehome', reason: `url-less stub published ${pdIso} belongs to same-title production ${r.sibling}`, sibling: r.sibling, publishDate: pdIso };
     // No tracked production's window holds the date (Jamie 2024 stubs dated 2017, the untracked Sheffield run):

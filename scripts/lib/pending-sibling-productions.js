@@ -248,7 +248,7 @@ function resolveOutOfWindowStub({ show, allShows, publishDate, stub, hasCopy = (
   const family = (allShows || []).filter((s) => s && s.id !== show.id && normalizeTitle(s.title || '') === normalizeTitle(show.title || '')).length;
   // corroborated (BRO-8221): the caller holds evidence the stub's date and market are right (a Theatre Record
   // archive page whose link year matches its date); it settles the family/open-ended doubt for ONE fitting sibling.
-  const needsCorroboration = (s) => !(corroborated && fit.length === 1) && (fit.length > 1 || family >= FAMILY_NEEDS_VENUE || !s.closingDate || !(s.previewsStartDate || s.openingDate));
+  const needsCorroboration = (s) => !(corroborated && fit.length === 1 && s.closingDate) && (fit.length > 1 || family >= FAMILY_NEEDS_VENUE || !s.closingDate || !(s.previewsStartDate || s.openingDate));
   let sib = fit[0];
   if (needsCorroboration(sib)) {
     const named = fit.filter((s) => stubCorroboratesSibling(stub, s, show));
