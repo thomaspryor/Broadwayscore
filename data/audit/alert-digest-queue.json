@@ -1499,5 +1499,20 @@
       }
     ],
     "queuedAt": "2026-11-24T07:28:53.021Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception",
+    "title": "Live-data test failing: the same week in the Broadway edition does not get the West End exception (scripts/newsletter/editorial-overrides.generate.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the same week in the Broadway edition does not get the West End exception\" in scripts/newsletter/editorial-overrides.generate.test.mjs is red against the live corpus.\n\nThe expression evaluated to a falsy value:\n\nassert.ok(!meta.openingShows.some((s) => s.id === PRIDE))\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception",
+    "fields": [],
+    "queuedAt": "2026-11-24T07:48:45.484Z"
   }
 ]
