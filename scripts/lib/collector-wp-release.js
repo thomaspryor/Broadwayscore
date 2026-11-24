@@ -144,7 +144,12 @@ function stampCollectorWpRejection(data, nowIso, text, hash) {
 function priorRunVerdictHash(text, show) {
   // Only the fields the prompt's verdict rests on, so a cosmetic shows.json
   // edit (a note, a source url, key order) does not re-open settled verdicts.
-  const pick = (r) => [r && r.venue, r && (r.openingDate || r.startDate), r && (r.closingDate || r.endDate)];
+  // BRO-8133: previewsStartDate opens a prior run's review window, so it is verdict-relevant.
+  // Appended only when set, so existing hashes (no previews date) are unchanged.
+  const pick = (r) => {
+    const base = [r && r.venue, r && (r.openingDate || r.startDate), r && (r.closingDate || r.endDate)];
+    return r && r.previewsStartDate ? [...base, r.previewsStartDate] : base;
+  };
   const runs = JSON.stringify({
     priorRuns: ((show && show.priorRuns) || []).map(pick),
     tourLegs: ((show && show.tourLegs) || []).map(pick),

@@ -166,23 +166,29 @@ test('main refuses a half or reversed window (exit 2) before reading data', () =
 // BRO-8133: an audit row is a snapshot; a review that went live after the audit
 // ran is not a gap (nine-night / the-unbelievers FAILed the 2026-11-23 recheck
 // on rows already live in reviews.json).
-test('gradeShow: re-verify / cited rows already live in reviews.json do not FAIL (BRO-8133)', () => {
+test('gradeShow: rows live in a NEWER reviews.json do not FAIL; an older one cannot hide a gap (BRO-8133)', () => {
   const url = 'https://www.thetimes.com/culture/theatre-dance/article/nine-night-review-a-family-drama-xzn0lqzxj';
   const row = {
     showId: 'x', computedAt: '2026-11-23T14:44:23Z',
     flaggedMisses: [{ url, exclusion: 'automatedExcluded', reverify: true }],
     missing: [{ url: 'https://example.com/cited-review', host: 'example.com' }],
   };
+  const newer = '2026-11-24T00:48:40Z';
   assert.equal(gradeShow(row, 3).grade, 'FAIL');
   assert.equal(gradeShow(row, 3).reverify, 1);
-  const g = gradeShow(row, 3, null, NOW, { liveUrls: new Set([url, 'https://example.com/cited-review']) });
+  // Same article, scheme/www/trailing-slash variants (the audit's gapUrlIdentity).
+  const live = new Set(['thetimes.com/culture/theatre-dance/article/nine-night-review-a-family-drama-xzn0lqzxj', 'example.com/cited-review']);
+  const g = gradeShow(row, 3, null, NOW, { liveUrls: live, reviewsBuiltAt: newer });
   assert.equal(g.reverify, 0);
   assert.equal(g.cited, 0);
   assert.notEqual(g.grade, 'FAIL');
   // A still-missing row keeps the FAIL.
-  const g2 = gradeShow(row, 3, null, NOW, { liveUrls: new Set([url]) });
+  const g2 = gradeShow(row, 3, null, NOW, { liveUrls: new Set([live.values().next().value]), reviewsBuiltAt: newer });
   assert.equal(g2.grade, 'FAIL');
   assert.equal(g2.cited, 1);
   assert.equal(g2.reverify, 0);
   assert.deepEqual(g2.notLive, ['https://example.com/cited-review']);
+  // reviews.json older than the audit row (or undated) proves nothing: the audit wins.
+  assert.equal(gradeShow(row, 3, null, NOW, { liveUrls: live, reviewsBuiltAt: '2026-11-23T10:00:00Z' }).grade, 'FAIL');
+  assert.equal(gradeShow(row, 3, null, NOW, { liveUrls: live }).grade, 'FAIL');
 });

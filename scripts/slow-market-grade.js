@@ -52,7 +52,6 @@ const { isAggregatorBlind, majorOutletCountFor } = require('./lib/aggregator-bli
 const { readCrossShowUrlRows } = require('./lib/cross-show-url-ledger'); // BRO-6910
 const { currentRunOnly } = require('./lib/prior-production-citations');
 const { censusExclusionReason } = require('./lib/gap-census-noise');
-const { canonicalizeUrlForDedup } = require('./lib/review-guards'); // BRO-8133
 const { titleTokens } = require('./lib/show-title-tokens');
 const { computeSeasonWindows, measureOutletCoverage } = require('./audit-standing-coverage');
 
@@ -72,14 +71,22 @@ const ROOT = path.join(__dirname, '..');
 // rows) drops audit rows whose review went live AFTER the audit ran. The audit
 // row is a snapshot; a review ingested or un-flagged since is not a gap
 // (nine-night/the-unbelievers 2026-11-23: both FAILed on rows already live).
+// `reviewsBuiltAt` (reviews.json _meta.lastUpdated) must be NEWER than the row's
+// computedAt: an older reviews.json can still hold a review the audit has since
+// seen excluded, and must not hide that gap. URL identity is the audit's own
+// (gapUrlIdentity: scheme, www, comment-page and trailing slash ignored).
 function canonicalUrl(u) {
-  return canonicalizeUrlForDedup(u) || u;
+  // Lazy: the audit module is large; load it only when a grade needs it.
+  return require('./audit-show-review-gap').gapUrlIdentity(u);
 }
 
-function gradeShow(row, liveCount, show = null, nowMs = Date.now(), { majorOutletCount = 0, liveUrls = null } = {}) {
+function gradeShow(row, liveCount, show = null, nowMs = Date.now(), { majorOutletCount = 0, liveUrls = null, reviewsBuiltAt = null } = {}) {
   if (!row) return { grade: 'NO-AUDIT', live: liveCount, notLive: [], census: 0, hiddenAsNonReview: 0 };
   const g = slowMarketListedGap(row);
-  const isLiveNow = (m) => !!(liveUrls && m && m.url && liveUrls.has(canonicalUrl(m.url)));
+  const builtMs = Date.parse(reviewsBuiltAt || '');
+  const rowMs = Date.parse(row.computedAt || '');
+  const reviewsNewer = Number.isFinite(builtMs) && Number.isFinite(rowMs) && builtMs > rowMs;
+  const isLiveNow = (m) => !!(reviewsNewer && liveUrls && m && m.url && liveUrls.has(canonicalUrl(m.url)));
   const reverifyRows = g.rows.slice(g.rows.length - g.flaggedOut).filter((m) => !isLiveNow(m));
   const citedRows = g.rows.slice(0, g.rows.length - g.flaggedOut).filter((m) => !isLiveNow(m));
   const residual = citedRows.length + reverifyRows.length;
@@ -243,7 +250,9 @@ function main(argv = process.argv.slice(2)) {
   }
   const nowMs = Date.now();
   const audit = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'audit', 'show-review-gap.json'), 'utf8'));
-  const reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8')).reviews || [];
+  const reviewsDoc = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8'));
+  const reviews = reviewsDoc.reviews || [];
+  const reviewsBuiltAt = (reviewsDoc._meta && reviewsDoc._meta.lastUpdated) || null; // BRO-8133
   const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   const shows = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
   const showById = new Map(shows.map((s) => [s.id, s]));
@@ -284,7 +293,7 @@ function main(argv = process.argv.slice(2)) {
     const row = byId.get(id);
     const majorOutletCount = showById.get(id)?.category === 'off-broadway'
       ? majorOutletCountFor(id, { reviews, ledgerRows: readCrossShowUrlRows({ showId: id }) }) : 0;
-    const g = gradeShow(row, live.get(id) || 0, showById.get(id), nowMs, { majorOutletCount, liveUrls: liveUrlsByShow.get(id) || new Set() });
+    const g = gradeShow(row, live.get(id) || 0, showById.get(id), nowMs, { majorOutletCount, liveUrls: liveUrlsByShow.get(id) || new Set(), reviewsBuiltAt });
     const d = displayGrade(g, nowMs, maxAgeHours);
     const category = showById.get(id)?.category;
     if (category && !frequentByCategory.has(category)) frequentByCategory.set(category, frequentOutletsFor(category, shows, reviews, nowMs));

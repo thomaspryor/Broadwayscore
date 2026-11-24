@@ -189,6 +189,8 @@ function applyAddShow(shows, action, { isRetired, root } = {}) {
   if (prior) {
     const run = { id: prior.id, venue: sanitizeVenueForWrite(prior.venue), openingDate: prior.openingDate || null };
     if (prior.closingDate) run.closingDate = prior.closingDate;
+    // BRO-8133: previews open the prior run's review window (wrong-production-autoclear priorRunWindow).
+    if (prior.previewsStartDate) run.previewsStartDate = prior.previewsStartDate;
     // Opera (or an explicit action.inheritReviews:false): the earlier run is a separate past-run entry (BRO-6811).
     if (action.inheritReviews === false || added.type === 'opera') run.inheritReviews = false;
     added.priorRuns = [run];
@@ -199,6 +201,7 @@ function applyAddShow(shows, action, { isRetired, root } = {}) {
     if (!from.priorRuns.some(r => r.id === show.id)) {
       const run = { id: show.id, openingDate: show.openingDate };
       if (show.closingDate) run.closingDate = show.closingDate;
+      if (show.previewsStartDate) run.previewsStartDate = show.previewsStartDate; // BRO-8133
       run.venue = venueTbd ? null : sanitizeVenueForWrite(show.venue);
       // The new entry is the EARLIER run linked from a later one. For an opera revival it must stay a
       // separate past run: without inheritReviews:false the rebuild copies its reviews onto the revival
