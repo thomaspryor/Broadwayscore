@@ -3635,6 +3635,7 @@ on:
       - 'scripts/build-show-refresh-manifest.ts'
       # BRO-8214 show-refresh publisher CLI (scripts/publish-show-refresh.test.mjs); a solo edit would otherwise trigger zero CI.
       - 'scripts/publish-show-refresh.ts'
+      - 'scripts/publish-show-refresh.test.mjs'
       # BRO-8056 1c show-refresh store CLI (tests/unit/show-refresh-store.test.mjs); a solo edit would otherwise trigger zero CI.
       - 'scripts/show-refresh-store.js'
       # BRO-8170 kill-switch revalidate CLI (tests/unit/show-refresh-revalidate.test.ts).

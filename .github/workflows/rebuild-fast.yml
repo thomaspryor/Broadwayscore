@@ -734,6 +734,41 @@ jobs:
         run: npx tsx scripts/publish-live-scores.ts --flagged-file="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt"
         continue-on-error: true
 
+      - name: Publish show refresh (BRO-8214)
+        # BRO-8214 (BRO-8056 phase 3a): publish changed show slices to the
+        # show-refresh store. This is the ONLY run allowed --rebuild-step (it may
+        # publish a changed review list, because this rebuild just scored it and
+        # the staleness guard passed); the CLI also refuses it without
+        # SHOW_REFRESH_SAFE=true. publish-show-refresh.yml is the backstop for
+        # everything else. Dry-run unless repo var SHOW_REFRESH_PUBLISH_WRITES=on.
+        # The home write is a CAS: a run that loses to the backstop replans
+        # (up to 3 tries, ~3s each). PUBLISH_CODE_FETCH=0: never deepen this push
+        # clone; a deployed commit outside its history is just code-mismatch.
+        # Advisory: the reader is off, and nothing on the site reads the store.
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true' && steps.push-core-data.outcome == 'success' && vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
+        timeout-minutes: 5
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SHOW_REFRESH_REVALIDATE_SECRET: ${{ secrets.SHOW_REFRESH_REVALIDATE_SECRET }}
+          SHOW_REFRESH_SAFE: ${{ steps.staleness.outputs.safe_to_publish }}
+          PUBLISH_CODE_FETCH: '0'
+          WRITE: ${{ vars.SHOW_REFRESH_PUBLISH_WRITES == 'on' && 'true' || 'false' }}
+        run: |
+          set -o pipefail
+          MODE=--dry-run
+          [ "$WRITE" = "true" ] && MODE=--write
+          R="${RUNNER_TEMP:-/tmp}/show-refresh-report.json"
+          for attempt in 1 2 3; do
+            rm -f "$R"
+            echo "trigger=rebuild-fast mode=$MODE attempt=$attempt" | tee -a "$GITHUB_STEP_SUMMARY"
+            npx tsx scripts/publish-show-refresh.ts "$MODE" --rebuild-step --flagged-file="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt" --report="$R" | tee -a "$GITHUB_STEP_SUMMARY"
+            [ "$(jq -r .outcome "$R" 2>/dev/null)" = "cas-lost" ] || break
+          done
+        continue-on-error: true
+
       # BRO-7606: backfill a Linear card for any parked review submission
       # (needs-manual-review / scraping-failed) whose issue has no linear-card
       # label yet: Linear down when process-review-submission ran, or the

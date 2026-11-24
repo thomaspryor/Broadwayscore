@@ -14,8 +14,12 @@ name: Publish Show Refresh
 #
 # Triggers: after a data rebuild or deploy (completed, any conclusion: a rebuild
 # can push core data and then fail a later step), plus a 10-minute backstop.
-# One run at a time (concurrency group, no cancel), so there is a single writer;
-# the pointer write is also a compare-and-swap on home.generation.
+# One run at a time here (concurrency group, no cancel); the pointer write is a
+# compare-and-swap on home.generation, so rebuild-fast's own publish step (the
+# only run that passes --rebuild-step, i.e. may publish a changed review list)
+# can race this one safely. This backstop never passes --rebuild-step; it keeps
+# what that step published. Writes also need the checked-out code to match the
+# deployed commit's code (publish-show-refresh.ts codeMatchOf; data may differ).
 
 on:
   workflow_run:
