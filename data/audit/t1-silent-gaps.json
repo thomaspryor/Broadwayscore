@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T03:09:23.670Z",
+  "generatedAt": "2026-11-24T04:06:26.096Z",
   "windowDays": 45,
   "showsScanned": 299,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 356.099695,
+      "fileAgeHours": 357.0599794444444,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 333.57204722222224,
+      "nonTerminalAgeHours": 334.52272111111114,
       "needsManualRecovery": true
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 325.3316163888889,
+      "fileAgeHours": 326.29191555555553,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 324.20760222222225,
+      "nonTerminalAgeHours": 325.1582761111111,
       "needsManualRecovery": true
     },
     {
@@ -56,15 +56,15 @@
       "recovery": {
         "attempted": true,
         "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+        "reason": "⚠️  Bright Data failed: Bright Data HTTP 504: <html>\r\n<head><title>504 Gateway Time-out</title></head>\r\n<body>\r\n<center><h1>504 Gateway Time-out</h1></center>\r\n</body>\r\n</html>\r\n\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=constellations-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch952.html --outlet=talkinbroadway --critic=\"Christine Malcom\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-24T02:03:59.977Z",
-      "fileAgeHours": 1.0899144444444444,
+      "fileAgeHours": 2.0405883333333334,
       "gapSeenAt": "2026-11-24T03:09:23.670Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 0.9506738888888889,
       "needsManualRecovery": false
     }
   ],
