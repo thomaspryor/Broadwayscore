@@ -87,7 +87,19 @@ test('corroborated percentage twin (Reviews Hub 100%) binds the clamp, in agreem
   const audit = publishedScoreViolation({ ...twin }, 88);
   assert.ok(audit, 'audit flags the unclamped 88');
   assert.equal(sib.data.originalScore, '100%');
-  assert.ok(audit.floor <= 95 && audit.ceiling === 100);
+  assert.equal(audit.floor, 95); assert.equal(audit.ceiling, 100);
   const clamped = getBestScore({ ...rh }, { siblingRating: sib });
   assert.ok(clamped && clamped.score >= 95, `clamped score ${JSON.stringify(clamped)}`);
+});
+
+test('BRO-8245: uncorroborated or non-originalScore percentage twins never bind', () => {
+  const rh = { url: 'https://www.thereviewshub.com/x/', outletId: 'thereviewshub', criticName: 'A B', llmScore: { score: 88, confidence: 'high' }, scoreSource: 'llm-v6' };
+  for (const twin of [
+    { originalScore: '100%', scoreSource: 'llm-v6' },
+    { starRating: '40%', scoreSource: 'user-rating' },
+    { originalRating: '40%', scoreSource: 'user-rating' },
+  ]) {
+    const f = { 'c.json': rh, 'd.json': { url: rh.url, outletId: 'thereviewshub', criticName: 'Unknown', duplicateOf: 'c.json', ...twin } };
+    assert.equal(pick('c.json', rh, Object.keys(f), (n) => f[n] || null), null, JSON.stringify(twin));
+  }
 });

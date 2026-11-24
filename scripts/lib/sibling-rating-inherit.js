@@ -68,6 +68,8 @@ function siblingRatingForClamp(file, data, siblingFiles, load, canonicalUrl, det
     // predicate (published-score-star-band) bands a corroborated percentage (Reviews Hub 100% = 95-100), so skipping it
     // here left a published score the audit flags but the clamp never corrects (BRO-8039 Eurotrash, 88 vs a 100% twin).
     if (rating === null) continue;
+    // star-reliability only checks percentage provenance for originalScore; a percentage in starRating/originalRating is unvetted.
+    if (/%/.test(String(rating)) && !(typeof d.originalScore === 'string' && /%/.test(d.originalScore))) continue;
     const det = detectBand(ownRatingOnly(d)); // the donor's own record: outlet/text corroboration decide reliability
     if (!det || !det.band || !det.highReliability) continue;
     if (!found.has(`${det.band.floor}-${det.band.ceiling}`)) found.set(`${det.band.floor}-${det.band.ceiling}`, { file: name, data: ownRatingOnly(d) });
