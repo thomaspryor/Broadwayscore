@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8230",
   "planId": "19b7be75-aafe-49cf-998a-c6dacea1ec76",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T18:35:02.912Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,14 @@
         "description": "marie-and-rosetta-west-end-2025: key art from the production's own page (ETT production page, Rose Theatre Kingston 2-24 May 2025 listed; production gallery photo (Marc Brenner credit on gallery).), BRO-7265"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T20:34:45.656Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for marie-and-rosetta-west-end-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
