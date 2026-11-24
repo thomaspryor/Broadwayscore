@@ -49407,13 +49407,13 @@
       "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.296Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.296Z",
-      "lastSeen": "2026-11-24T06:03:17.091Z",
+      "lastSeen": "2026-11-24T06:05:52.001Z",
       "lastNotifiedAt": "2026-11-23T17:11:27.296Z",
       "lastSurfacedAt": "2026-11-23T17:11:27.296Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 52
+      "silentRefires": 53
     },
     "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c": {
       "status": "open",
@@ -49421,13 +49421,13 @@
       "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.324Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.324Z",
-      "lastSeen": "2026-11-24T06:03:17.112Z",
+      "lastSeen": "2026-11-24T06:05:52.032Z",
       "lastNotifiedAt": "2026-11-23T17:11:27.324Z",
       "lastSurfacedAt": "2026-11-23T17:11:27.324Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 52
+      "silentRefires": 53
     },
     "land:land/job/linear-BRO-8167-mwtgpag4": {
       "status": "resolved",
@@ -49942,6 +49942,19 @@
       "lastSeen": "2026-11-24T05:16:15.582Z",
       "lastNotifiedAt": "2026-11-24T05:16:15.582Z",
       "lastSurfacedAt": "2026-11-24T05:16:15.582Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-8232-vulture-page-tag": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-8232-vulture-page-tag",
+      "firstSeen": "2026-11-24T06:05:51.876Z",
+      "incidentOpenedAt": "2026-11-24T06:05:51.876Z",
+      "lastSeen": "2026-11-24T06:05:51.876Z",
+      "lastNotifiedAt": "2026-11-24T06:05:51.876Z",
+      "lastSurfacedAt": "2026-11-24T06:05:51.876Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
