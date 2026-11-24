@@ -104,6 +104,9 @@ function parseRunTimeDisplay(display) {
  *   Woman's page says 2hr 30min incl. intermission) (BRO-7594).
  * - 4hrs (inc two intervals): NYC default on 5 listings, incl. Awake and Sing! (TT 45488) before previews; we
  *   stored "4h" and the FAQ told Google "4 hours with no intermission" (BRO-7594).
+ * - 3hr 15min (incl. intermission): NYC default on 10 listings, page field null
+ *   (BRO-8271, 2026-11-24). Slanted Floors (85 min, Astor Place) was stored as
+ *   "3h 15m"; so were Scorched Earth, Burnout Paradise and The Maids.
  *
  * A real show can run 1h 35m, so the London filler is matched on its exact
  * display string ("mins (inc. interval)"), not on minutes alone.
@@ -113,6 +116,7 @@ const PLACEHOLDER_RUNNING_TIMES = [
   { minutes: 95, display: /^1\s*hr\s*35\s*mins\s*\(inc\.\s*interval\)$/i },
   { minutes: 95, display: /^1\s*hr\s*35\s*min\s*\(no\s*intermission\)$/i },
   { minutes: 240, display: /^4\s*hrs\s*\(inc\s*two\s*intervals\)$/i },
+  { minutes: 195, display: /^3\s*hr\s*15\s*min\s*\(incl\.\s*intermission\)$/i },
 ];
 
 /**
@@ -129,6 +133,24 @@ function isPlaceholderRunningTime(rt) {
     if (typeof rt === 'object' && rt.minutes != null && rt.minutes !== p.minutes) return false;
     return p.display.test(display);
   });
+}
+
+/**
+ * The run time a TodayTix enrichment may write, or null to leave the field empty.
+ *
+ * Only the show PAGE's run time is a source. The API runningTime is never one,
+ * whatever its value (BRO-8271): when the page shows none, the API value is the
+ * listing's default far more often than a measurement, and the filler list
+ * above only knows the defaults already seen. Slanted Floors (85 min) was
+ * stored as "3h 15m" through the old API fallback.
+ *
+ * @param {{minutes:number, runtime:string, intermissions:number|null}|null} pageRuntime - parseRunTimeDisplay() of the page
+ * @param {{minutes?:number, display?:string}|null} _apiRunningTime - deliberately unused
+ * @returns {{runtime:string, intermissions:number|null}|null}
+ */
+function todaytixRuntimeToWrite(pageRuntime, _apiRunningTime) {
+  if (!pageRuntime || !pageRuntime.runtime) return null;
+  return { runtime: pageRuntime.runtime, intermissions: pageRuntime.intermissions ?? null };
 }
 
 /**
@@ -158,7 +180,7 @@ function apiRuntimeTrusted(show, apiRunningTime) {
  * Value: true when the row is filler whatever its intermissions; false when only
  * a row with unknown intermissions is (writers dropped the filler's count).
  */
-const STORED_FILLER_RUNTIMES = { '3h 12m': true, '1h 35m': false, '4h': false };
+const STORED_FILLER_RUNTIMES = { '3h 12m': true, '1h 35m': false, '4h': false, '3h 15m': false };
 
 /**
  * Real run times that equal a stored filler. Each checked on the TodayTix page.
@@ -226,6 +248,7 @@ module.exports = {
   todaytixPageUrl,
   isPlaceholderRunningTime,
   apiRuntimeTrusted,
+  todaytixRuntimeToWrite,
   storedFillerRows,
   PRE_PERFORMANCE_STATUSES,
 };

@@ -183,3 +183,26 @@ test('storedFillerRows flags stored fillers with unknown intermissions only', ()
   ];
   assert.deepStrictEqual(fillerRows(rows), ['awake-and-sing-2026 (4h)', 'amadeus-west-end-2026 (1h 35m)', 'met (3h 12m)']);
 });
+
+// BRO-8271: Slanted Floors (85 min) was stored as "3h 15m" from the API default
+// "3hr 15min (incl. intermission)" when its page showed no run time.
+test('todaytixRuntimeToWrite: only the page is a source, never the API', () => {
+  const { todaytixRuntimeToWrite, parseRunTimeDisplay } = require('../../scripts/lib/todaytix-runtime.js');
+  const slantedApi = { id: 45979, minutes: 195, display: '3hr 15min (incl. intermission)' };
+  assert.strictEqual(todaytixRuntimeToWrite(null, slantedApi), null);
+  // a plausible, non-filler API value is still not a source when the page has none
+  assert.strictEqual(todaytixRuntimeToWrite(null, { minutes: 90, display: '1hr 30min (no intermission)' }), null);
+  assert.deepStrictEqual(
+    todaytixRuntimeToWrite(parseRunTimeDisplay('1hr 25min. No intermission.'), slantedApi),
+    { runtime: '1h 25m', intermissions: 0 });
+});
+
+test('isPlaceholderRunningTime: BRO-8271 "3hr 15min (incl. intermission)" filler', () => {
+  const { isPlaceholderRunningTime, storedFillerRows: fillerRows } = require('../../scripts/lib/todaytix-runtime.js');
+  assert.strictEqual(isPlaceholderRunningTime({ minutes: 195, display: '3hr 15min (incl. intermission)' }), true);
+  assert.strictEqual(isPlaceholderRunningTime('3hr 15min. Incl. 1 intermission.'), false);
+  assert.deepStrictEqual(fillerRows([
+    { id: 'slanted-floors-off-broadway-2026', todaytixId: 48361, runtime: '3h 15m', intermissions: null },
+    { id: 'cosi-fan-tutte-off-west-end-2027', todaytixId: 5, runtime: '3h 15m', intermissions: 1 },
+  ]), ['slanted-floors-off-broadway-2026 (3h 15m)']);
+});

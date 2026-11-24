@@ -5,8 +5,8 @@
  * Runtime source: the show PAGE's displayed run time (Contentful CMS field),
  * NOT the REST API's runningTime — the API can be stale (Birthright 2026-07:
  * API said 90 min, page said 3hr 30min). See scripts/lib/todaytix-runtime.js.
- * The API is still used for age recommendation and as a runtime fallback when
- * the page has no parseable run time.
+ * The API is used for age recommendation and (when it agrees with the stored
+ * runtime) intermission counts only. It is never a runtime source (BRO-8271).
  *
  * Usage: node scripts/enrich-todaytix-runtimes.js [--dry-run] [--category=off-broadway|west-end|broadway] [--limit=N]
  */
@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { fetchPage, cleanup } = require('./lib/scraper');
-const { extractRunTimeDisplay, parseRunTimeDisplay, todaytixPageUrl, isPlaceholderRunningTime, apiRuntimeTrusted, parseCompactRuntime } = require('./lib/todaytix-runtime');
+const { extractRunTimeDisplay, parseRunTimeDisplay, todaytixPageUrl, isPlaceholderRunningTime, apiRuntimeTrusted, parseCompactRuntime, todaytixRuntimeToWrite } = require('./lib/todaytix-runtime');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -46,16 +46,6 @@ function fetchJson(url) {
     req.on('error', reject);
     req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
-}
-
-/**
- * Convert minutes to display format: "2h 30m" or "1h 45m" or "90m"
- */
-function formatRuntime(minutes) {
-  if (minutes < 60) return minutes + 'm';
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-  return m > 0 ? `${h}h ${m}m` : `${h}h`;
 }
 
 /**
@@ -142,8 +132,8 @@ async function main() {
       const parts = [];
 
       // Runtime (only if show doesn't have one yet).
-      // Prefer the show PAGE's displayed run time — the API's runningTime is
-      // often stale. Fall back to the API only when the page yields nothing.
+      // Only the show PAGE's displayed run time is used. The API's runningTime
+      // is often stale or a listing default (BRO-8271), so it is never written.
       if (!show.runtime) {
         let pageRuntime = null;
         const pageUrl = todaytixPageUrl(show);
@@ -151,50 +141,29 @@ async function main() {
           const pageResult = await fetchPage(pageUrl, { renderJs: false, fast: true });
           const pageDisplay = extractRunTimeDisplay(pageResult && pageResult.content);
           if (!isPlaceholderRunningTime(pageDisplay)) pageRuntime = parseRunTimeDisplay(pageDisplay);
-        } catch { /* fall through to API */ }
+        } catch { /* no page value: the field stays empty (BRO-8271) */ }
 
-        if (pageRuntime) {
+        const toWrite = todaytixRuntimeToWrite(pageRuntime, ttShow.runningTime);
+        if (toWrite) {
           if (!DRY_RUN) {
-            show.runtime = pageRuntime.runtime;
-            if (pageRuntime.intermissions != null) show.intermissions = pageRuntime.intermissions;
+            show.runtime = toWrite.runtime;
+            if (toWrite.intermissions != null) show.intermissions = toWrite.intermissions;
           }
-          parts.push(`runtime=${pageRuntime.runtime} (page)`);
+          parts.push(`runtime=${toWrite.runtime} (page)`);
           runtimeEnriched++;
-        } else if (ttShow.runningTime && ttShow.runningTime.minutes && !apiRuntimeTrusted(show, ttShow.runningTime)) {
-          // TodayTix filler value (BRO-5860, BRO-7594), or a pre-previews show whose
-          // API value is a listing default: wait for the page to publish one.
+        } else if (ttShow.runningTime && ttShow.runningTime.minutes) {
+          // BRO-8271: never take the run time from the API. When the page shows
+          // none, the API runningTime is TodayTix's listing default far more often
+          // than a measurement: Slanted Floors (85 min) was stored as "3h 15m"
+          // from "3hr 15min (incl. intermission)", a default 10 of our listings
+          // carried. A filler blocklist only catches the defaults already seen,
+          // and a filler stored here is never revisited (audit-todaytix-runtimes.js
+          // corrects only against a page value). Leave the field empty so the page
+          // (next run) or another source (TheaterMania, Show Score) fills it.
           parts.push(isPlaceholderRunningTime(ttShow.runningTime)
             ? 'runtime skipped (TodayTix placeholder)'
-            : `runtime skipped (API only, show is ${show.status})`);
+            : 'runtime skipped (API only, page shows none)');
           noRuntime++;
-        } else if (ttShow.runningTime && ttShow.runningTime.minutes) {
-          const mins = ttShow.runningTime.minutes;
-          const display = ttShow.runningTime.display || '';
-
-          // Sanity checks: TodayTix data can be wrong (e.g., EBT listed as 2h30m)
-          let skip = false;
-          if (mins > 240) {
-            console.log(`  ⚠️  Skipping suspicious runtime: ${mins}min (>4h) — likely wrong`);
-            skip = true;
-          }
-          if (show.intermissions === 0 && mins > 150) {
-            console.log(`  ⚠️  Skipping suspicious runtime: ${mins}min with no intermission — likely wrong`);
-            skip = true;
-          }
-          if (/inc\.?\s*intermission/i.test(display) && show.intermissions === 0) {
-            console.log(`  ⚠️  Skipping runtime: TodayTix says "${display}" but show has 0 intermissions — mismatch`);
-            skip = true;
-          }
-
-          if (!skip) {
-            const runtime = formatRuntime(mins);
-            if (!DRY_RUN) show.runtime = runtime;
-            parts.push(`runtime=${runtime}`);
-            runtimeEnriched++;
-          } else {
-            parts.push('runtime skipped (suspicious)');
-            noRuntime++;
-          }
         } else {
           parts.push('no runtime');
           noRuntime++;
