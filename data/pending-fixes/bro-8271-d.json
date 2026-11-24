@@ -1,0 +1,268 @@
+{
+  "issueNumber": "bro-8271-d",
+  "planId": "6aa53c50-da4e-44cd-a857-07a3419ab3ad",
+  "status": "pending",
+  "createdAt": "2026-11-24T23:47:38.506Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Fix TodayTix API-default runtimes (BRO-8271): correct 51 to the TodayTix page, clear 36 unconfirmable defaults, set Slanted Floors to 1h 25m (part 4 of 5)",
+    "steps": [
+      "shows.json: glengarry-glen-ross-west-end-2026.runtime (TodayTix page: 1hr 30min. No Interval.)",
+      "shows.json: glengarry-glen-ross-west-end-2026.intermissions (TodayTix page)",
+      "shows.json: noda-map-320f-off-west-end-2026.runtime (TodayTix page: 2hr 20min. No interval.)",
+      "shows.json: noda-map-320f-off-west-end-2026.intermissions (TodayTix page)",
+      "shows.json: this-is-rambert-off-west-end-2026.runtime (TodayTix page: 1hr 35 min. Including one 20 min interval.)",
+      "shows.json: this-is-rambert-off-west-end-2026.intermissions (TodayTix page)",
+      "shows.json: downstate-2026.runtime cleared: TodayTix API default \"1hr 30min (no intermission)\" with no page value to confirm it",
+      "shows.json: whats-eating-gilbert-grape-off-broadway-2026.runtime cleared: TodayTix API default \"1hr 30min (no intermission)\" with no page value to confirm it",
+      "shows.json: lost-lear-2027.runtime cleared: TodayTix API default \"1hr 30min (no intermission)\" with no page value to confirm it",
+      "shows.json: rope-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 30min (Inc. Intermission)\" with no page value to confirm it",
+      "shows.json: gloria-2026.runtime cleared: TodayTix API default \"1hr 15min (No Intermission)\" with no page value to confirm it",
+      "shows.json: jerome-off-broadway-2025.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it",
+      "shows.json: wold-meteor-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it",
+      "shows.json: miss-step-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it",
+      "shows.json: the-annunciation-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it",
+      "shows.json: feast-of-rabbits-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it",
+      "shows.json: the-ripple-the-wave-that-carried-me-home-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it",
+      "shows.json: narcissister-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it",
+      "shows.json: untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it",
+      "shows.json: balkan-erotic-epic-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 45min (incl. intermission)\" with no page value to confirm it",
+      "shows.json: joy-guidry-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 45min (incl. intermission)\" with no page value to confirm it",
+      "shows.json: clinamen-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 45min (incl. intermission)\" with no page value to confirm it",
+      "shows.json: the-sound-of-music-2027.runtime cleared: TodayTix API default \"2hr 45min (incl. intermission)\" with no page value to confirm it",
+      "shows.json: grass-off-broadway-2027.runtime cleared: TodayTix API default \"2hr 45min (incl. intermission)\" with no page value to confirm it",
+      "shows.json: stephane-wrembels-django-a-gogo-off-broadway-2026.runtime cleared: TodayTix API default \"45 Minutes. Please allow extra time to enter the venue.\" with no page value to confirm it"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "glengarry-glen-ross-west-end-2026",
+        "field": "runtime",
+        "oldValue": "2h 30m",
+        "newValue": "1h 30m",
+        "description": "shows.json: glengarry-glen-ross-west-end-2026.runtime (TodayTix page: 1hr 30min. No Interval.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "glengarry-glen-ross-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: glengarry-glen-ross-west-end-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "noda-map-320f-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 55m",
+        "newValue": "2h 20m",
+        "description": "shows.json: noda-map-320f-off-west-end-2026.runtime (TodayTix page: 2hr 20min. No interval.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "noda-map-320f-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: noda-map-320f-off-west-end-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-is-rambert-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 55m",
+        "newValue": "1h 35m",
+        "description": "shows.json: this-is-rambert-off-west-end-2026.runtime (TodayTix page: 1hr 35 min. Including one 20 min interval.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-is-rambert-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: this-is-rambert-off-west-end-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "downstate-2026",
+        "field": "runtime",
+        "oldValue": "1h 30m",
+        "newValue": null,
+        "description": "shows.json: downstate-2026.runtime cleared: TodayTix API default \"1hr 30min (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whats-eating-gilbert-grape-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 30m",
+        "newValue": null,
+        "description": "shows.json: whats-eating-gilbert-grape-off-broadway-2026.runtime cleared: TodayTix API default \"1hr 30min (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lost-lear-2027",
+        "field": "runtime",
+        "oldValue": "1h 30m",
+        "newValue": null,
+        "description": "shows.json: lost-lear-2027.runtime cleared: TodayTix API default \"1hr 30min (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rope-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 30m",
+        "newValue": null,
+        "description": "shows.json: rope-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 30min (Inc. Intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gloria-2026",
+        "field": "runtime",
+        "oldValue": "1h 15m",
+        "newValue": null,
+        "description": "shows.json: gloria-2026.runtime cleared: TodayTix API default \"1hr 15min (No Intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jerome-off-broadway-2025",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: jerome-off-broadway-2025.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wold-meteor-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: wold-meteor-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miss-step-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: miss-step-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-annunciation-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: the-annunciation-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "feast-of-rabbits-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: feast-of-rabbits-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: the-ripple-the-wave-that-carried-me-home-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "narcissister-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: narcissister-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "balkan-erotic-epic-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": null,
+        "description": "shows.json: balkan-erotic-epic-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 45min (incl. intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "joy-guidry-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": null,
+        "description": "shows.json: joy-guidry-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 45min (incl. intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "clinamen-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": null,
+        "description": "shows.json: clinamen-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 45min (incl. intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-sound-of-music-2027",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": null,
+        "description": "shows.json: the-sound-of-music-2027.runtime cleared: TodayTix API default \"2hr 45min (incl. intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grass-off-broadway-2027",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": null,
+        "description": "shows.json: grass-off-broadway-2027.runtime cleared: TodayTix API default \"2hr 45min (incl. intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "stephane-wrembels-django-a-gogo-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "45m",
+        "newValue": null,
+        "description": "shows.json: stephane-wrembels-django-a-gogo-off-broadway-2026.runtime cleared: TodayTix API default \"45 Minutes. Please allow extra time to enter the venue.\" with no page value to confirm it"
+      }
+    ]
+  }
+}

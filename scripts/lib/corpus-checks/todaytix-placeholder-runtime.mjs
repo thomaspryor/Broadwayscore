@@ -6,6 +6,7 @@
  *   "1hr 35mins (inc. interval)"          -> stored "1h 35m"   (BRO-7594, London)
  *   "1hr 35min (no intermission)"         -> stored "1h 35m"   (BRO-7594, NYC)
  *   "4hrs (inc two intervals)"            -> stored "4h"       (BRO-7594, Awake and Sing!)
+ *   "3hr 15min (incl. intermission)"      -> stored "3h 15m"   (BRO-8271, Slanted Floors)
  * 78 rows carried one on 2026-11-16. This catches the stored value however it
  * gets back in (an older writer, a hand edit, a restored row). A real show
  * with that run time also trips it: check the TodayTix page, then add it to
