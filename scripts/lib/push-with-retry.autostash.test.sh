@@ -178,7 +178,7 @@ for mode in ci local off ours; do
   out=$( cd "$TMP/$n-work" && GITHUB_ACTIONS="$ga" PUSH_AUTOSTASH_REGENERATED_QUIET="$quiet" PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
   if [ "$rc" -ne 0 ]; then echo "FAIL[9 $mode]: rc=$rc"; echo "$out" | tail -5; fail=1
   elif ! grep -q t-upstream "$TMP/$n-work/gen/a.json" || ! grep -q t-upstream "$TMP/$n-work/gen/b.json"; then echo "FAIL[9 $mode]: upstream copy not on disk"; fail=1
-  elif [ "$mode" = ci ] && { grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null || grep -q '::error::.*autostash' <<<"$out" || [ "$(grep -c '::notice::.*is a regenerated or latest-wins snapshot' <<<"$out")" != "2" ]; }; then
+  elif [ "$mode" = ci ] && { grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null || grep -q '::error::.*autostash' <<<"$out" || [ "$(grep -c '::notice::.*is a regenerated snapshot' <<<"$out")" != "2" ]; }; then
     echo "FAIL[9 ci]: regenerated conflict should be one notice per file, no ledger row/error"; echo "$out" | grep autostash; fail=1
   elif [ "$mode" != ci ] && ! grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; then
     echo "FAIL[9 $mode]: this conflict must still be recorded"; fail=1
@@ -245,15 +245,15 @@ for mode in latest plain; do
   printf '{\n  "days": {\n    "d1": {"n":1}\n  }\n}\n' > "$TMP/$n-work/days.json"
   git -C "$TMP/$n-work" add -A; git -C "$TMP/$n-work" commit -q -m days; git -C "$TMP/$n-work" push -q origin HEAD:main
   git -C "$TMP/$n-racer" fetch -q origin && git -C "$TMP/$n-racer" reset -q --hard origin/main
-  printf '{\n  "days": {\n    "d1": {"n":1},\n    "d2": {"n":7}\n  }\n}\n' > "$TMP/$n-racer/days.json"
-  printf '{\n  "days": {\n    "d1": {"n":1},\n    "d2": {"n":5}\n  }\n}\n' > "$TMP/$n-work/days.json.new"
+  printf '{\n  "days": {\n    "d1": {"n":1},\n    "d2": {"n":7},\n    "d3": {"n":2}\n  }\n}\n' > "$TMP/$n-racer/days.json"
+  printf '{\n  "days": {\n    "d0": {"n":9},\n    "d1": {"n":1},\n    "d2": {"n":5}\n  }\n}\n' > "$TMP/$n-work/days.json.new"
   race "$n"
   printf 'local2\n' > "$TMP/$n-work/local2.txt"; git -C "$TMP/$n-work" add local2.txt; git -C "$TMP/$n-work" commit -q -m local2
   mv "$TMP/$n-work/days.json.new" "$TMP/$n-work/days.json"
   out=$( cd "$TMP/$n-work" && GITHUB_ACTIONS=true PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
   if [ "$rc" -ne 0 ]; then echo "FAIL[12 $mode]: rc=$rc"; echo "$out" | tail -5; fail=1
-  elif [ "$mode" = latest ] && { ! grep -q '"n":7' "$TMP/$n-work/days.json" || grep -q '"n":5' "$TMP/$n-work/days.json" || grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; }; then
-    echo "FAIL[12 latest]: same-day clash keeps upstream, no conflict row"; cat "$TMP/$n-work/days.json"; fail=1
+  elif [ "$mode" = latest ] && { ! grep -q '"n":5' "$TMP/$n-work/days.json" || grep -q '"n":7' "$TMP/$n-work/days.json" || ! grep -q '"d0"' "$TMP/$n-work/days.json" || ! grep -q '"d3"' "$TMP/$n-work/days.json" || grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; }; then
+    echo "FAIL[12 latest]: both sides' days survive, this run wins a shared day, no conflict row"; cat "$TMP/$n-work/days.json"; fail=1
   elif [ "$mode" = plain ] && ! grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; then
     echo "FAIL[12 plain]: without the attribute a same-day clash must still be recorded"; fail=1
   else echo "PASS[12 $mode]: per-day snapshot restore ($mode)"; fi
