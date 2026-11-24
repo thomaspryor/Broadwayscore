@@ -61,12 +61,17 @@ test('an unusable or unreachable manifest exits 0 with outcome manifest-unusable
   assert.equal(JSON.parse(fs.readFileSync(report, 'utf8')).outcome, 'manifest-unusable');
 });
 
-test('--write exits 2 in L1: refused outside CI, not enabled inside it', async () => {
+test('--write exits 2 outside CI or without the service key; unusable manifest in CI exits 0 with no write', async () => {
   const dir = tmp();
   const report = path.join(dir, 'r.json');
   assert.equal(await quiet(() => main(['--write', `--report=${report}`], {})), 2);
   assert.match(JSON.parse(fs.readFileSync(report, 'utf8')).reason, /outside GitHub Actions/);
   assert.equal(await quiet(() => main(['--write', `--report=${report}`], { GITHUB_ACTIONS: 'true' })), 2);
-  assert.match(JSON.parse(fs.readFileSync(report, 'utf8')).reason, /not enabled in L1/);
+  assert.match(JSON.parse(fs.readFileSync(report, 'utf8')).reason, /SUPABASE_SERVICE_ROLE_KEY/);
+  const ciEnv = { GITHUB_ACTIONS: 'true', SUPABASE_URL: 'http://127.0.0.1:9', SUPABASE_SERVICE_ROLE_KEY: 'x' };
+  assert.equal(await quiet(() => main(['--write', `--manifest=${path.join(dir, 'missing.json')}`, `--report=${report}`], ciEnv)), 0);
+  const r = JSON.parse(fs.readFileSync(report, 'utf8'));
+  assert.equal(r.outcome, 'manifest-unusable');
+  assert.equal(r.mode, 'write');
   assert.equal(await quiet(() => main(['--bogus'], {})), 2);
 });

@@ -1,9 +1,10 @@
 /**
- * BRO-8214 (BRO-8056 plan v14-final §1.5): the show-refresh publisher. L1 is
- * DRY-RUN ONLY: it plans what it would publish and writes a report; it never
- * writes to the store.
+ * BRO-8214 (BRO-8056 plan v14-final §1.5): the show-refresh publisher.
+ * --dry-run (default) plans what it would publish and writes a report; it
+ * never writes. --write (GitHub Actions only, service key) also uploads the
+ * target slices and swaps the home pointer (scripts/lib/show-refresh/publish-write.js).
  *
- *   npx tsx scripts/publish-show-refresh.ts [--dry-run] [--manifest=<file|url>]
+ *   npx tsx scripts/publish-show-refresh.ts [--dry-run|--write] [--manifest=<file|url>]
  *     [--report=<json>] [--flagged-file=<path>] [--rebuild-step] [--parity[=all]] [--cap=40]
  *
  * Steps: load the live build manifest (default: the deployed static route) ->
@@ -17,8 +18,12 @@
  * does and deep-compare it with the direct HEAD compute; the count of
  * differences goes in the report.
  *
- * --write exits 2: writes are not enabled in L1 (and are refused outside CI).
- * Every planned outcome, including an unreachable or unusable manifest, exits 0.
+ * --write: refused outside GitHub Actions (exit 2). Always checks parity on the
+ * targets and refuses to write if any differ (exit 1). Kill switch: the store's
+ * kill row stops the run before any write. Writes the pointer only when it
+ * changes, as a compare-and-swap on home.generation.
+ * Every planned outcome (including killed, cas-lost, an unreachable or
+ * unusable manifest) exits 0. A failed write exits 1 with the old pointer in place.
  */
 import fs from 'fs';
 import path from 'path';
@@ -32,6 +37,7 @@ const { planPublish, OUTCOMES, DEFAULT_CAP } = require('./lib/show-refresh/publi
 const { isUsableManifest } = require('./lib/show-refresh/manifest');
 const { coverageInputsFromSlice } = require('./lib/show-refresh/slice');
 const store = require('./lib/show-refresh/store');
+const { writePublish } = require('./lib/show-refresh/publish-write');
 const { healShows } = require('./lib/heal-shows');
 /* eslint-enable @typescript-eslint/no-require-imports */
 
@@ -121,13 +127,17 @@ function healedHeadShows(dataDir: string, today: string) {
   return { showsData, healChanged: heal.changed as boolean };
 }
 
-/** home + kill from the store when its env is present; never throws. */
-async function readStore(env: NodeJS.ProcessEnv) {
-  if (!(env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL) || !env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+/**
+ * home + kill from the store when its env is present; never throws. Write mode
+ * reads with the service key (the rows it will compare-and-swap).
+ */
+async function readStore(env: NodeJS.ProcessEnv, write = false) {
+  const keyName = write ? 'SUPABASE_SERVICE_ROLE_KEY' : 'NEXT_PUBLIC_SUPABASE_ANON_KEY';
+  if (!(env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL) || !env[keyName]) {
     return { prevHome: null, kill: null, storeNote: 'store env absent: no previous home read' };
   }
   try {
-    const st = store.readerStateFromEnv(env, { timeoutMs: 10000 });
+    const st = write ? store.stateFromEnv(env, { timeoutMs: 10000 }) : store.readerStateFromEnv(env, { timeoutMs: 10000 });
     const [home, kill] = await Promise.all([store.readJsonObject(st, store.PATHS.home), store.readJsonObject(st, store.PATHS.kill)]);
     return {
       prevHome: home.state === 'ok' ? home.value : null,
@@ -145,13 +155,13 @@ function writeReport(file: string | null, report: object) {
   fs.writeFileSync(file, JSON.stringify(report, null, 2) + '\n');
 }
 
-function summaryLine(r: { outcome: string; counts?: { targets?: number; changed?: number; removed?: number; dirty?: number; eligible?: number }; parity?: { checked: number; diffs: number } | null; ms?: number }) {
+function summaryLine(r: { mode?: string; outcome: string; counts?: { targets?: number; changed?: number; removed?: number; dirty?: number; eligible?: number }; parity?: { checked: number; diffs: number } | null; ms?: number }) {
   const c = r.counts || {};
   const parts = [`outcome=${r.outcome}`, `targets=${c.targets ?? 0}`];
   if (c.eligible != null) parts.push(`eligible=${c.eligible}`, `changed=${c.changed ?? 0}`, `removed=${c.removed ?? 0}`, `dirty=${c.dirty ?? 0}`);
   if (r.parity) parts.push(`parity=${r.parity.diffs}/${r.parity.checked} diffs`);
   if (r.ms != null) parts.push(`${r.ms}ms`);
-  return `[publish-show-refresh] dry-run ${parts.join(' ')}`;
+  return `[publish-show-refresh] ${r.mode || 'dry-run'} ${parts.join(' ')}`;
 }
 
 export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv = process.env): Promise<number> {
@@ -162,24 +172,31 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
     return 2;
   }
   if (args.help) {
-    console.log('Usage: npx tsx scripts/publish-show-refresh.ts [--dry-run] [--manifest=<file|url>] [--report=<json>] [--flagged-file=<path>] [--rebuild-step] [--parity[=all]] [--cap=N]');
+    console.log('Usage: npx tsx scripts/publish-show-refresh.ts [--dry-run|--write] [--manifest=<file|url>] [--report=<json>] [--flagged-file=<path>] [--rebuild-step] [--parity[=all]] [--cap=N]');
     return 0;
   }
-  if (args.mode === 'write') {
-    const why = env.GITHUB_ACTIONS === 'true' ? 'writes not enabled in L1' : '--write is refused outside GitHub Actions';
-    console.error(`[publish-show-refresh] ${why}`);
-    writeReport(args.report, { outcome: 'write-refused', reason: why });
-    return 2;
+  const write = args.mode === 'write';
+  if (write) {
+    let why: string | null = null;
+    if (env.GITHUB_ACTIONS !== 'true') why = '--write is refused outside GitHub Actions';
+    else if (!(env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL) || !env.SUPABASE_SERVICE_ROLE_KEY) why = '--write needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY';
+    if (why) {
+      console.error(`[publish-show-refresh] ${why}`);
+      writeReport(args.report, { outcome: 'write-refused', reason: why });
+      return 2;
+    }
+    // Write mode always proves the targets render like the build before uploading them.
+    if (!args.parity) args.parity = 'targets';
   }
 
   const { manifest, error: manifestError } = await loadManifest(args.manifest);
   if (!isUsableManifest(manifest)) {
-    const report = { outcome: OUTCOMES.MANIFEST_UNUSABLE, manifestSource: args.manifest, manifestError, counts: { targets: 0 } };
+    const report = { outcome: OUTCOMES.MANIFEST_UNUSABLE, mode: args.mode, manifestSource: args.manifest, manifestError, counts: { targets: 0 } };
     writeReport(args.report, report);
     console.log(`${summaryLine(report)} (${manifestError || 'manifest not usable'})`);
     return 0;
   }
-  const m = manifest as { manifestId: string; buildInstant: number; buildDate: string; coreSha: string | null; shows: Record<string, { hash: string; held: boolean }> };
+  const m = manifest as { manifestId: string; buildInstant: number; buildDate: string; coreSha: string | null; shows: Record<string, { hash: string; held: boolean; slug?: string }> };
   const now = m.buildInstant;
   const dataDir = path.join(ROOT, 'data');
 
@@ -207,7 +224,7 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
   }
   const head = { registrySha: states.registrySha, sliceVersion: states.sliceVersion, shows: headShows };
 
-  const { prevHome, kill, storeNote } = await readStore(env);
+  const { prevHome, kill, storeNote } = await readStore(env, write);
   const flagged = readFlagged(args.flaggedFile);
   const plan = planPublish({ manifest: m, head, prevHome, flagged, rebuildStep: args.rebuildStep, cap: args.cap, now: Date.now() });
   let outcome: string = plan.outcome;
@@ -256,11 +273,48 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
     }
   }
 
+  // Write step (phase 3a). Never on a kill, a parity difference or a plan with no home.
+  let writeResult: { outcome: string; uploaded: string[]; existing: string[]; homeWritten: boolean; generation: number | null; changedIds: string[]; log: string[] } | null = null;
+  let revalidate: string | null = null;
+  let exitCode = 0;
+  if (write && outcome !== OUTCOMES.KILLED && plan.nextHome) {
+    if (parity && parity.diffs > 0) {
+      outcome = 'parity-failed';
+      exitCode = 1;
+      console.error(`::error::show-refresh: ${parity.diffs} target(s) render differently from a full build (${parity.diffIds.join(', ')}); nothing written`);
+    } else {
+      try {
+        writeResult = await writePublish({
+          storage: store.storeFromEnv(env, { timeoutMs: 15000 }),
+          state: store.stateFromEnv(env, { timeoutMs: 10000 }),
+          plan,
+          manifest: m,
+          sliceFor: (id: string) => states.perShow[id],
+          expectGeneration: prevHome && Number.isInteger((prevHome as { generation?: unknown }).generation) ? (prevHome as { generation: number }).generation : null,
+          now: Date.now(),
+        });
+        outcome = writeResult!.outcome;
+        for (const line of writeResult!.log) console.log(`[publish-show-refresh] ${line}`);
+        if (outcome === OUTCOMES.CAS_LOST) console.log('::warning::show-refresh: another run moved the home pointer first; this run wrote no pointer');
+      } catch (e) {
+        outcome = 'write-failed';
+        exitCode = 1;
+        console.error(`::error::show-refresh write failed, old pointer left in place: ${e instanceof Error ? e.message : e}`);
+      }
+      if (writeResult && writeResult.homeWritten && writeResult.changedIds.length) {
+        revalidate = await revalidateSlugs(env, writeResult.changedIds.map((id) => m.shows[id] && m.shows[id].slug).filter(Boolean) as string[]);
+        console.log(`[publish-show-refresh] revalidate: ${revalidate}`);
+      }
+    }
+  }
+
   const ms = Date.now() - t0;
   const report = {
     outcome,
     plannedOutcome: plan.outcome,
-    mode: 'dry-run',
+    mode: args.mode,
+    write: writeResult,
+    revalidate,
     manifestSource: args.manifest,
     manifestId: m.manifestId,
     buildInstant: m.buildInstant,
@@ -282,8 +336,35 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
     headHashes,
   };
   writeReport(args.report, report);
-  console.log(summaryLine({ outcome, counts: plan.counts, parity, ms }));
-  return 0;
+  console.log(summaryLine({ mode: args.mode, outcome, counts: plan.counts, parity, ms }));
+  return exitCode;
+}
+
+/**
+ * Ask the site to re-render the changed shows' pages (plan §1.5 step 8). Never
+ * fails the run: the pointer is already right, and while the reader is off the
+ * route has nothing to refresh. No secret = skipped.
+ */
+async function revalidateSlugs(env: NodeJS.ProcessEnv, slugs: string[], fetchImpl: typeof fetch = fetch): Promise<string> {
+  const secret = env.SHOW_REFRESH_REVALIDATE_SECRET || '';
+  if (!secret) return 'skipped (SHOW_REFRESH_REVALIDATE_SECRET unset)';
+  if (!slugs.length) return 'skipped (no slugs)';
+  const base = env.SHOW_REFRESH_SITE || 'https://broadwayscorecard.com';
+  try {
+    const res = await fetchImpl(new URL('/api/show-refresh/revalidate', base).toString(), {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-show-refresh-secret': secret },
+      body: JSON.stringify({ slugs, home: true }),
+      signal: AbortSignal.timeout(60000),
+    });
+    const msg = `HTTP ${res.status} for ${slugs.length} show(s)`;
+    if (!res.ok) console.log(`::warning::show-refresh revalidate ${msg}`);
+    return msg;
+  } catch (e) {
+    const msg = `failed: ${e instanceof Error ? e.message : e}`;
+    console.log(`::warning::show-refresh revalidate ${msg}`);
+    return msg;
+  }
 }
 
 if (require.main === module) {
