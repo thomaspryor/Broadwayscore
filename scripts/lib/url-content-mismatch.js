@@ -154,7 +154,10 @@ function namesLongerTitle(norm, form, forms, catalogTitles) {
 // list items, one of them another catalog title.
 function namesSeveralShows(headSeg, forms, catalogTitles) {
   if (!catalogTitles) return false;
-  const items = headSeg.split(/\s*,\s*|\s+(?:and|&)\s+|\s+[-–—]\s+/)
+  // Only the list before a dash-separated standfirst/site suffix ("... - reviews",
+  // "... – Chicago"): catalog titles such as "Broadway", "News" and "Chicago" in
+  // a suffix must not make a single-show headline look like a list.
+  const items = headSeg.split(/\s+[-–—]\s+/)[0].split(/\s*,\s*|\s+(?:and|&)\s+/)
     .map((s) => normalizeForMention(s).replace(HEADLINE_PREFIX_RE, ''))
     .filter((s) => s.length >= 4);
   if (items.length < 2) return false;

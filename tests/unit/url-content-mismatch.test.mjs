@@ -155,6 +155,9 @@ describe('headlineProvesShow edge cases', () => {
     assert.equal(m.headlineProvesShow('Pity Party review – a riot', 'Pity', { catalogTitles: cat() }).ok, false);
     assert.equal(m.headlineProvesShow('Pity review – a riot', 'Pity', { catalogTitles: cat() }).ok, true);
   });
+  test('a catalog title in a dash suffix is not a second show ("Middlemarch review – Broadway")', () => {
+    assert.equal(m.headlineProvesShow('Middlemarch review – Broadway', 'Middlemarch', { catalogTitles: cat() }).ok, true);
+  });
   test('roundup headlines never prove a show', () => {
     assert.equal(m.headlineProvesShow('Middlemarch and more: 5 shows to see this week', 'Middlemarch', { catalogTitles: cat() }).ok, false);
   });
