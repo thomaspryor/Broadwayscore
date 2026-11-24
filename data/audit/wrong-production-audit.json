@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T10:57:09.044Z",
+  "timestamp": "2026-11-24T11:48:34.294Z",
   "stats": {
-    "totalReviews": 84576,
+    "totalReviews": 84577,
     "alreadyFlagged": 22564,
     "dateGuardCatches": 244,
     "directorMismatch": 3888,
-    "tvFilmSignals": 2438,
+    "tvFilmSignals": 2439,
     "londonSignals": 4001,
     "offBroadwaySignals": 790,
     "yearMismatch": 398,
-    "noPublishDate": 8241
+    "noPublishDate": 8240
   },
   "findings": [
     {
@@ -60725,6 +60725,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "seven-guitars-off-broadway-2026",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "score": 80,
+      "publishDate": "2026-11-24",
+      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago-hudson.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
