@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T18:12:31.049Z",
+  "timestamp": "2026-11-24T18:28:05.561Z",
   "stats": {
     "totalReviews": 84616,
     "alreadyFlagged": 22572,
     "dateGuardCatches": 244,
     "directorMismatch": 3887,
-    "tvFilmSignals": 2440,
+    "tvFilmSignals": 2441,
     "londonSignals": 4003,
     "offBroadwaySignals": 791,
     "yearMismatch": 402,
-    "noPublishDate": 8247
+    "noPublishDate": 8243
   },
   "findings": [
     {
@@ -37598,6 +37598,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 49,
+      "publishDate": "2026-11-24",
+      "url": "https://www.nysun.com/article/broadways-its-a-wonderful-life-is-festive-but-its-magic-is-muted",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -136275,7 +136289,7 @@
     {
       "showId": "the-afronauts-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-11-24",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-afronauts-royal-court-theatre-review",
       "findings": [
@@ -136316,7 +136330,7 @@
     {
       "showId": "the-afronauts-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": null,
+      "score": 15,
       "publishDate": "2026-11-24",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/afronauts-review-zambian-space-njtldhxts",
       "findings": [
