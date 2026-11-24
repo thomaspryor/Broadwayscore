@@ -1,18 +1,19 @@
 {
   "processed": [
-    "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
-    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+    "the-good-thief-off-broadway-2026/the-100-word-review--unknown.json",
+    "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
   ],
   "failed": [
-    "eurotrash-off-west-end-2026/partially-obstructed-view--unknown.json",
-    "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json"
+    "the-good-thief-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-good-thief-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
-      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json"
+      "the-good-thief-off-broadway-2026/the-100-word-review--unknown.json",
+      "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -23,7 +24,30 @@
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-24T05:00:20.374Z",
-  "lastProcessed": "eurotrash-off-west-end-2026/whatsonstage--alex-wood.json",
-  "log": []
+  "startTime": "2026-11-24T05:00:55.869Z",
+  "lastProcessed": "the-good-thief-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+  "log": [
+    {
+      "t": "2026-11-24T05:01:21.501Z",
+      "event": "bb-session",
+      "session": "0d5884c0",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-24T05:01:21.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T05:01:38.267Z",
+      "event": "bb-session",
+      "session": "bf136a07",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-24T05:01:38.543Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
