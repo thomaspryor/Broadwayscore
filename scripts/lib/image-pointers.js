@@ -9,11 +9,30 @@ const IMAGE_POINTER_BASELINE = require('./image-pointer-baseline.json');
  * repaired. Match the exact pointer and failure, so a baselined show cannot
  * acquire another broken image without failing validation.
  */
-function imagePointerSeverity(problem) {
-  return IMAGE_POINTER_BASELINE.some(entry =>
+function imagePointerSeverity(problem, { onMain = fileOnOriginMain } = {}) {
+  if (IMAGE_POINTER_BASELINE.some(entry =>
     entry.id === problem.id && entry.key === problem.key &&
     entry.value === problem.value && entry.reason === problem.reason
-  ) ? 'warn' : 'error';
+  )) return 'warn';
+  // BRO-8228: core data (shows.json) is cloned at its newest commit while code is checked out at the
+  // run's sha. A show promoted after that sha points at an image already pushed to main, so the file
+  // "does not exist" only in this stale checkout. That is a race, not a broken pointer: warn.
+  if (problem.reason === 'local image file does not exist' && onMain(problem.value)) return 'warn';
+  return 'error';
+}
+
+let _mainTree = null;
+/** True when the /images/... pointer's file is in origin/main's public/ tree. Fails closed (false) when unreadable. */
+function fileOnOriginMain(value, { cwd = path.join(__dirname, '..', '..') } = {}) {
+  try {
+    if (_mainTree === null) {
+      const cp = require('child_process');
+      cp.spawnSync('git', ['fetch', '--quiet', '--depth=1', 'origin', 'main'], { cwd, timeout: 60_000 });
+      const r = cp.spawnSync('git', ['ls-tree', '-r', '--name-only', 'FETCH_HEAD', 'public/images/shows/'], { cwd, encoding: 'utf8', timeout: 30_000, maxBuffer: 256 * 1024 * 1024 });
+      _mainTree = r.status === 0 ? new Set(r.stdout.split('\n').filter(Boolean)) : new Set();
+    }
+    return _mainTree.has('public' + decodeURIComponent(String(value).split(/[?#]/)[0]));
+  } catch { return false; }
 }
 
 /**
@@ -117,6 +136,6 @@ function danglingImageNullingActions(shows, dangling) {
 }
 
 module.exports = {
-  findImagePointerProblems, imagePointerSeverity, isSparseTree,
+  findImagePointerProblems, imagePointerSeverity, fileOnOriginMain, isSparseTree,
   findDanglingLocalImageRefs, danglingImageNullingActions, DANGLING_IMAGE_KEYS,
 };

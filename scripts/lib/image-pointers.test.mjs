@@ -12,6 +12,7 @@ after(() => fs.rmSync(publicDir, { recursive: true, force: true, maxRetries: 10,
 fs.mkdirSync(path.join(publicDir, 'images', 'shows', 'show'), { recursive: true });
 fs.writeFileSync(path.join(publicDir, 'images', 'shows', 'show', 'poster.jpg'), 'image');
 fs.writeFileSync(path.join(publicDir, 'outside.jpg'), 'image');
+const NO_MAIN = { onMain: () => false }; // hermetic: no git fetch in tests
 const poster = '/images/shows/show/poster.jpg';
 const options = { publicDir, remotePatterns: [{ protocol: 'https', hostname: 'images.ctfassets.net', pathname: '/our-space/**' }] };
 const check = images => findImagePointerProblems([{ id: 'show', images }], options);
@@ -57,14 +58,14 @@ test('an existing missing historical poster warns, but a new broken pointer erro
   const id = 'the-violet-hour-2003';
   const poster = `/images/shows/${id}/poster.jpg`;
   const [known] = findImagePointerProblems([{ id, images: { poster } }], options);
-  assert.equal(imagePointerSeverity(known), 'warn');
+  assert.equal(imagePointerSeverity(known, NO_MAIN), 'warn');
   const [newShow] = findImagePointerProblems([{ id: 'new-show', images: { poster } }], options);
-  assert.equal(imagePointerSeverity(newShow), 'error');
+  assert.equal(imagePointerSeverity(newShow, NO_MAIN), 'error');
   const [changedPointer] = findImagePointerProblems([{ id, images: { poster: `${poster}.jpg` } }], options);
-  assert.equal(imagePointerSeverity(changedPointer), 'error');
+  assert.equal(imagePointerSeverity(changedPointer, NO_MAIN), 'error');
   const [newHero] = findImagePointerProblems([{ id, images: { hero: poster } }], options);
-  assert.equal(imagePointerSeverity(newHero), 'error');
-  assert.equal(imagePointerSeverity({ ...known, reason: 'invalid or unreadable image pointer' }), 'error');
+  assert.equal(imagePointerSeverity(newHero, NO_MAIN), 'error');
+  assert.equal(imagePointerSeverity({ ...known, reason: 'invalid or unreadable image pointer' }, NO_MAIN), 'error');
 });
 
 test('the repaired Ford Hill hero exists and no longer has a baseline exception', () => {
@@ -74,7 +75,7 @@ test('the repaired Ford Hill hero exists and no longer has a baseline exception'
     publicDir: path.resolve(import.meta.dirname, '../../public'),
   }), []);
   assert.equal(imagePointerSeverity({ id, key: 'hero', value: hero,
-    reason: 'local image file does not exist' }), 'error');
+    reason: 'local image file does not exist' }, NO_MAIN), 'error');
 });
 
 test('a repaired baseline pointer stops producing warnings', () => {
@@ -152,4 +153,11 @@ test('slim sparse trees: image finders report nothing instead of flagging every 
     g('sparse-checkout', 'disable');
     assert.equal(mod.isSparseTree(publicDir), false);
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('BRO-8228: missing file already on origin/main warns (stale-checkout race); otherwise still errors', () => {
+  const problem = { id: 'new-show-2026', key: 'poster', value: '/images/shows/new-show-2026/poster.jpg', reason: 'local image file does not exist' };
+  assert.equal(imagePointerSeverity(problem, { onMain: () => true }), 'warn');
+  assert.equal(imagePointerSeverity(problem, { onMain: () => false }), 'error');
+  assert.equal(imagePointerSeverity({ ...problem, reason: 'remote image is not allowed by next.config.js images.remotePatterns' }, { onMain: () => true }), 'error');
 });
