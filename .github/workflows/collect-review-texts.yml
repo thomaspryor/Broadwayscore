@@ -897,6 +897,15 @@ jobs:
   # Rebuild also triggered via workflow_run as backup, but explicit dispatch above
   # is more reliable during high-activity periods.
 
+      # BRO-6866: the sweep above unstages stage-latency.jsonl (it disqualifies
+      # the API push fallback); it goes out here, non-fatally, as in the single job.
+      - name: Commit stage-latency log
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-stage-latency
+        with:
+          workflow-name: collect-review-texts-collect-reviews-parallel
+
       # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
       - name: Commit LLM usage ledger
         if: always()

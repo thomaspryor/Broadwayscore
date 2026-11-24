@@ -15,7 +15,9 @@
  * fallback disqualifier rejects, so the data commit stays fallback-eligible,
  * and prints the unstaged paths (one per line) on stdout. Those files stay in
  * the working tree: stage-latency goes out through the commit-stage-latency
- * action, the rest through a separate non-fatal commit.
+ * action. The rest (url-collision-report when the auto-fix did not stage it,
+ * validation-baseline, collection reports) are regenerable diagnostics and are
+ * not committed; the collection report is kept as a workflow artifact.
  *
  * Only data/audit/ is touched. A disqualifier elsewhere stays staged (it is
  * reported on stderr), because dropping core data silently would be worse
