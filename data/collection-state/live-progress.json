@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-24T02:42:25.866Z",
+  "updatedAt": "2026-11-24T02:50:29.022Z",
   "processed": 358,
-  "failed": 163,
-  "successRate": "68.7%",
+  "failed": 1,
+  "successRate": "99.7%",
   "tierBreakdown": {
     "playwright": 200,
-    "amp": 1,
-    "browserbase": 7,
+    "amp": 0,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 29,
     "scrapingbee": 23,
@@ -14,87 +14,89 @@
     "archiveToday": 0,
     "archive": 100
   },
-  "browserbaseSessions": 17,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
       "t": "2026-11-24T00:55:16.501Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T01:24:46.993Z",
+      "event": "bb-session",
+      "session": "0ed0451f",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-24T01:24:47.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T01:24:53.821Z",
+      "event": "bb-session",
+      "session": "a955f7e1",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-24T01:25:15.630Z",
+      "event": "bb-session",
+      "session": "f33b7f05",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-24T01:25:23.770Z",
+      "event": "bb-session",
+      "session": "d227d7ce",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-24T01:26:19.973Z",
+      "event": "bb-session",
+      "session": "6c762ddc",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-24T01:26:28.089Z",
+      "event": "bb-session",
+      "session": "a34edaa2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-24T01:32:03.229Z",
+      "event": "bb-session",
+      "session": "75996822",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-24T01:32:03.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-24T01:32:12.585Z",
+      "event": "bb-session",
+      "session": "4b9c3463",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-24T01:32:13.275Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-24T01:42:23.946Z",
+      "event": "bb-session",
+      "session": "cab1cb6c",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-24T01:42:24.644Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
     },
     {
       "t": "2026-11-24T01:57:42.906Z",
-      "event": "bb-session",
-      "session": "ea8861b7",
-      "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812"
-    },
-    {
-      "t": "2026-11-24T02:26:33.895Z",
-      "event": "bb-session",
-      "session": "39152abf",
-      "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html"
-    },
-    {
-      "t": "2026-11-24T02:26:34.222Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T02:26:50.501Z",
-      "event": "bb-session",
-      "session": "e17d0b94",
-      "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html"
-    },
-    {
-      "t": "2026-11-24T02:26:50.808Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T02:29:37.323Z",
-      "event": "bb-session",
-      "session": "05ccca50",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
-    },
-    {
-      "t": "2026-11-24T02:29:37.646Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-24T02:30:48.116Z",
-      "event": "bb-session",
-      "session": "f0c714a1",
-      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
-    },
-    {
-      "t": "2026-11-24T02:30:48.424Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T02:32:23.210Z",
-      "event": "bb-session",
-      "session": "83f9e615",
-      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
-    },
-    {
-      "t": "2026-11-24T02:32:23.508Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T02:35:07.879Z",
-      "event": "bb-session",
-      "session": "f9f9bae5",
-      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
-    },
-    {
-      "t": "2026-11-24T02:35:08.175Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-24T02:35:24.480Z",
       "event": "bb-session",
       "session": "ea8861b7",
       "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812"
