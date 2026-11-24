@@ -144,4 +144,18 @@ function changesBreakDateIntegrity(show, changes) {
   return previewsAfterOpening(projected) || excessivePreviewGap(projected) || closedBeforeOpening;
 }
 
-module.exports = { previewsAfterOpening, excessivePreviewGap, changesBreakDateIntegrity, longPreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle, DATE_CHECKED_STATUSES };
+/**
+ * Pure veto used by every date writer in the West End enricher (BRO-8234).
+ * Returns the changes to apply (all of them, or none when a date change would
+ * break the gates) plus the discrepancy rows for what was dropped.
+ * @returns {{changes: object[], vetoed: object[]}}
+ */
+function vetoBrokenDateChanges(show, changes, source) {
+  if (!changesBreakDateIntegrity(show, changes)) return { changes: changes || [], vetoed: [] };
+  const vetoed = changes
+    .filter((c) => c.field === 'openingDate' || c.field === 'previewsStartDate')
+    .map((c) => ({ field: c.field, current: c.old, external: c.new, source, reason: 'vetoed: breaks date-integrity gates' }));
+  return { changes: [], vetoed };
+}
+
+module.exports = { previewsAfterOpening, excessivePreviewGap, changesBreakDateIntegrity, vetoBrokenDateChanges, longPreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle, DATE_CHECKED_STATUSES };

@@ -38,7 +38,7 @@ const path = require('path');
 const cheerio = require('cheerio');
 const { matchTitleToShow } = require('./lib/show-matching');
 const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
-const { changesBreakDateIntegrity } = require('./lib/show-date-integrity');
+const { vetoBrokenDateChanges } = require('./lib/show-date-integrity');
 const { inferPressNightFromReviews } = require('./lib/infer-press-night-from-reviews');
 const { crossCheckOpeningDate, mergePressNightChanges, westEndOpeningSource } = require('./lib/press-night-cross-check');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -807,17 +807,13 @@ async function main() {
       }
     }
 
-    let checkedChanges = mergePressNightChanges(show, isCandidate ? showChanges : [], pressCheck);
     // BRO-8234: never write dates that validate-data.js would reject (wrong-production
     // match, e.g. a 2014 show given a 2027 opening). Report as a discrepancy instead.
-    if (changesBreakDateIntegrity(show, checkedChanges)) {
-      console.warn(`  VETO ${show.title}: ${checkedChanges.filter(c => c.field === 'openingDate' || c.field === 'previewsStartDate').map(c => `${c.field} ${c.old} -> ${c.new}`).join(', ')} would fail the date-integrity gates (likely a wrong-production match)`);
-      for (const c of checkedChanges) {
-        if (c.field === 'openingDate' || c.field === 'previewsStartDate') {
-          showDiscrepancies.push({ field: c.field, current: c.old, external: c.new, source: entry.source, reason: 'vetoed: breaks date-integrity gates' });
-        }
-      }
-      checkedChanges = [];
+    const veto = vetoBrokenDateChanges(show, mergePressNightChanges(show, isCandidate ? showChanges : [], pressCheck), entry.source);
+    const checkedChanges = veto.changes;
+    if (veto.vetoed.length) {
+      console.warn(`  VETO ${show.title}: ${veto.vetoed.map(v => `${v.field} ${v.current} -> ${v.external}`).join(', ')} would fail the date-integrity gates (likely a wrong-production match)`);
+      showDiscrepancies.push(...veto.vetoed);
     }
     if (checkedChanges.length > 0) {
       changes.push({ show: show.title, slug: show.slug, id: show.id, changes: checkedChanges });
@@ -852,6 +848,13 @@ async function main() {
       // so the gap has to be described in the right direction.
       const where = inf.direction === 'reverse' ? 'before' : 'after';
       console.log(`  INFER ${inf.title}: earliest review ${inf.earliestReviewIso} (${inf.clusterSize} within 3d) → press night ${pressNightIso} (${inf.gapDays}d ${where} stored ${oldOpening}${inf.direction === 'reverse' ? ', previewsStartDate cleared' : ''})`);
+      const infShow = candidateShows.find(s => s.id === inf.id);
+      const infVeto = vetoBrokenDateChanges(infShow, inf.changes, 'review-dates');
+      if (infVeto.vetoed.length) {
+        console.warn(`  VETO ${inf.title}: inferred ${infVeto.vetoed.map(v => `${v.field} ${v.current} -> ${v.external}`).join(', ')} would fail the date-integrity gates`);
+        discrepancies.push({ show: inf.title, slug: inf.slug, id: inf.id, discrepancies: infVeto.vetoed });
+        continue;
+      }
       changes.push({ show: inf.title, slug: inf.slug, id: inf.id, changes: inf.changes });
     }
     console.log(`Inferred ${inferences.length} press night(s) from review dates`);

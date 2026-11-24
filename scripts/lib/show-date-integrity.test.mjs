@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { changesBreakDateIntegrity, previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear } = require('./show-date-integrity.js');
+const { vetoBrokenDateChanges, changesBreakDateIntegrity, previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear } = require('./show-date-integrity.js');
 
 test('excessivePreviewGap: flags previews implausibly far before opening (wrong-production previews)', () => {
   // sunset-baby: 2013 original's previews on the 2024 revival.
@@ -125,4 +125,21 @@ test('changesBreakDateIntegrity: closing-date signal and cold opens', () => {
   assert.equal(changesBreakDateIntegrity(
     { previewsStartDate: '2026-05-01', openingDate: null },
     [{ field: 'openingDate', old: null, new: '2026-05-01' }]), false);
+});
+
+test('vetoBrokenDateChanges: drops the whole set and reports discrepancies; passes sane sets through', () => {
+  const show = { previewsStartDate: '2014-11-21', openingDate: '2014-12-01' };
+  const bad = [{ field: 'openingDate', old: '2014-12-01', new: '2027-07-01' }, { field: 'openingDateSource', old: null, new: 'theatremonkey' }];
+  const r = vetoBrokenDateChanges(show, bad, 'tm');
+  assert.deepEqual(r.changes, []);
+  assert.deepEqual(r.vetoed, [{ field: 'openingDate', current: '2014-12-01', external: '2027-07-01', source: 'tm', reason: 'vetoed: breaks date-integrity gates' }]);
+  const ok = [{ field: 'openingDate', old: null, new: '2026-12-02' }];
+  assert.deepEqual(vetoBrokenDateChanges({ previewsStartDate: '2026-11-12', openingDate: null }, ok, 'tm'), { changes: ok, vetoed: [] });
+});
+
+test('enrich-west-end-dates.js routes BOTH change writers through the veto (wiring guard)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../enrich-west-end-dates.js', import.meta.url), 'utf8');
+  assert.match(src, /vetoBrokenDateChanges\(show, mergePressNightChanges/);
+  assert.match(src, /vetoBrokenDateChanges\(infShow, inf\.changes/);
 });
