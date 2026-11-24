@@ -180,7 +180,12 @@ function loadCatalogTitles() {
       const n = normalizeForMention(s && s.title);
       if (n && n.length >= 4) { set.add(n); set.add(n.replace(/^the /, '')); }
     }
-  } catch { /* no catalog: the multi-show exclusion is skipped */ }
+  } catch {
+    // Unreadable/mid-write shows.json: return an empty set for this call but do
+    // not cache it, so one transient failure cannot disable the multi-show and
+    // other-show exclusions for the rest of the run.
+    return set;
+  }
   _catalog = set;
   _catalogPath = p;
   return set;
@@ -197,7 +202,36 @@ function loadCatalogTitles() {
 function dedicatedReviewHeadlineWaiver(sanity, text, showTitle, opts = {}) {
   if (!sanity || sanity.valid || sanity.htmlTitleMatch !== true || !sanity.htmlTitle) return false;
   if (typeof text !== 'string' || text.length < MIN_HEADLINE_ONLY_TEXT) return false;
-  return headlineProvesShow(sanity.htmlTitle, showTitle, opts).ok;
+  if (NEWS_HEADLINE_MARKERS.test(sanity.htmlTitle)) return false;
+  if (!headlineProvesShow(sanity.htmlTitle, showTitle, opts).ok) return false;
+  // A stale or wrong <title> over a misrouted body: the body of another show's
+  // review names THAT show repeatedly. Refuse when a multi-word catalog title
+  // appears 3+ times, and more often than this show. Measured on 5135 stored
+  // complete reviews whose body fails the count: refuses 107 (2%), mostly
+  // multi-review pages and comparison-heavy reviews, which stay rejected as before.
+  if (bodyNamesOtherShow(text, showTitle, opts.catalogTitles, Math.max(3, (sanity.mentionCount || 0) + 1))) return false;
+  return true;
+}
+
+// News, casting and listing headlines are about the show but are not reviews;
+// with no body mention there is nothing else to tell them from a review.
+const NEWS_HEADLINE_MARKERS = /\b(announce[sd]?|announcement|casting|cast (?:announced|revealed|set|change)|closing (?:date|notice)|to close|closes early|transfers?|transferring|extend(?:s|ed)?|extension|tickets?|on sale|trailer|interview|first look|in rehearsal|rehearsal (?:photos|images)|photos|video|tour dates|recoup\w*|grosses|box office|nominat\w*|award|awards|obituary|dies|to star|will star|joins?|set for|lottery)\b/i;
+
+function bodyNamesOtherShow(text, showTitle, catalogTitles, minHits = 3) {
+  if (!catalogTitles) return false;
+  const own = new Set(fullTitleForms(showTitle));
+  const body = ` ${normalizeForMention(text)} `;
+  for (const t of catalogTitles) {
+    if (own.has(t)) continue;
+    // Multi-word titles only: one-word titles ("Audience", "Performers",
+    // "Revolution", "Wonderland") occur in ordinary review prose.
+    if (!t.replace(/^the /, '').includes(' ')) continue;
+    if ([...own].some((o) => o.includes(t) || t.includes(o))) continue;
+    let n = 0;
+    for (let i = body.indexOf(` ${t} `); i !== -1 && n < minHits; i = body.indexOf(` ${t} `, i + t.length + 1)) n++;
+    if (n >= minHits) return true;
+  }
+  return false;
 }
 
 /**

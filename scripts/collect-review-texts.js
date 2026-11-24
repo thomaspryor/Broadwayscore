@@ -7822,7 +7822,9 @@ async function processReview(review) {
         result, showTitle: canonicalTitle, showId: review.showId, url: review.url, outletId: review.outletId,
       });
       if (sanity.waivedBy) logMentionWaiver(sanity, result);
-      review._showMentionProven = sanity.valid; // BRO-7041: the Time Out re-credit below needs a proven show
+      // BRO-7041: the Time Out re-credit below needs a proven show. A headline-only
+      // waiver (BRO-7060) is not strong enough proof to re-credit a critic.
+      review._showMentionProven = sanity.valid && sanity.waivedBy !== 'review-headline';
       if (!sanity.valid && !laneHeld(review, 'headlineBackstop')) {
         console.log(`  ✗ URL→CONTENT MISMATCH: ${sanity.reason}`);
         if (sanity.htmlTitle) console.log(`    HTML <title>: "${sanity.htmlTitle}"`);

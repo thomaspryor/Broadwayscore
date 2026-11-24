@@ -4082,7 +4082,10 @@ function extractHighConfidenceAuthor(html) {
 // (failed-fetch-policy.js shouldReopenStaleContentMismatch): the rule was
 // loosened repeatedly (diacritics, titleMatch, punctuation) but abandoned
 // ledger entries were never re-examined (BRO-4185 H).
-const URL_CONTENT_CHECK_VERSION = 2;
+// 3 (BRO-7060): collect-review-texts.js now decides through
+// url-content-mismatch.js, which waives dedicated review headlines. Reopens
+// are capped at MISMATCH_REOPEN_PER_RUN (20) per collector run.
+const URL_CONTENT_CHECK_VERSION = 3;
 
 function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   const minLong = opts.minMentionsLong != null ? opts.minMentionsLong : 3;

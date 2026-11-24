@@ -138,6 +138,18 @@ describe('legitimate mismatches stay rejected', () => {
     assert.equal(r.waivedBy, null);
   });
 
+  test('news headline about the show is not a review ("Middlemarch announces its closing date")', () => {
+    assert.equal(check('Middlemarch', 'Middlemarch announces its closing date', body(3000)).valid, false);
+    assert.equal(check("Standing at the Sky's Edge", "Cast announced for Standing at the Sky's Edge", body(3000)).valid, false);
+  });
+
+  test('stale/right <title> over a misrouted body that reviews another show', () => {
+    const other = `${body(1600)} Bleak Expectations opens well. Bleak Expectations sags later. Bleak Expectations ends strong.`;
+    const r = check('Middlemarch', 'Middlemarch review: a triumph', other);
+    assert.equal(r.valid, false);
+    assert.equal(r.waivedBy, null);
+  });
+
   test('section front / homepage title', () => {
     assert.equal(check('Bleak Expectations', 'Theater - The New York Times', body(3800)).valid, false);
   });
