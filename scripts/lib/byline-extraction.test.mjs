@@ -220,12 +220,22 @@ test('one-word capture before a comma is a sort widget, not a byline', () => {
   assert.equal(extractByline('<p>By Meg Masseron, Logan Culwell-Block</p>'), 'Meg Masseron');
 });
 
-test('a paragraph that is only "Review by Name . . ." is the byline (Theater Pizzazz, Seven Guitars 2026-11-23)', () => {
-  const page = (p) => `<meta property="og:site_name" content="Theater Pizzazz"><div class="post-content entry-content"><p class="wp-block-paragraph">${p}</p><p>For the third time in thirty years, the director returned.</p></div>`;
-  assert.equal(extractByline(page('Review by Stuart Miller . . .')), 'Stuart Miller');
-  assert.equal(extractByline(page('Review by Stuart Miller&#8230;')), 'Stuart Miller');
-  assert.equal(extractByline(page('Review by Stuart Miller')), 'Stuart Miller');
+test('a paragraph that is only "Review by Name . . ." is the byline on Theater Pizzazz (Seven Guitars 2026-11-23)', () => {
+  const page = (p) => `<div class="post-content entry-content"><p class="wp-block-paragraph">${p}</p><p>For the third time in thirty years, the director returned.</p></div>`;
+  const tp = (p) => extractByline(page(p), { outletId: 'theater-pizzazz' });
+  assert.equal(tp('Review by Stuart Miller . . .'), 'Stuart Miller');
+  assert.equal(tp('Review by Stuart Miller&#8230;'), 'Stuart Miller');
+  assert.equal(tp('Review by Stuart Miller...'), 'Stuart Miller');
+  assert.equal(tp('Review by Stuart Miller.'), 'Stuart Miller');
+  assert.equal(tp('Review by Stuart Miller'), 'Stuart Miller');
+  assert.equal(tp('Review by Mary O&#8217;Hara . . .'), 'Mary O’Hara');
+  assert.equal(tp('Review by J. K. Clarke'), 'J. K. Clarke');
+  assert.equal(tp('Review by JK Clarke . . .'), 'JK Clarke');
+  assert.equal(tp('Review by Mary Kate O\'Neill'), "Mary Kate O'Neill");
   // Mid-sentence mentions and non-names stay out.
-  assert.equal(extractByline(page('I read the review by Ben Brantley yesterday')), null);
-  assert.equal(extractByline(page('Review by The Numbers')), null);
+  assert.equal(tp('I read the review by Ben Brantley yesterday'), null);
+  assert.equal(tp('Review by The Numbers'), null);
+  // Other outlets: a "Review by X" teaser is not the page's byline.
+  assert.equal(extractByline(page('Review by Ken Ludwig')), null);
+  assert.equal(extractByline(page('Review by Ken Ludwig'), { outletId: 'broadwayworld' }), null);
 });
