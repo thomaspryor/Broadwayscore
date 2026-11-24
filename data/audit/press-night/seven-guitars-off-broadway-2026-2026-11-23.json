@@ -1,0 +1,341 @@
+{
+  "schemaVersion": 1,
+  "showId": "seven-guitars-off-broadway-2026",
+  "night": "2026-11-23",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-24T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-24T02:30:05.108Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-24T04:55:14.543Z",
+    "lastOkSampleAt": "2026-11-24T04:55:14.543Z"
+  },
+  "firstLiveAt": "2026-11-24T04:55:14.543Z",
+  "firstLiveBaseline": false,
+  "lastLiveAt": "2026-11-24T04:55:14.543Z",
+  "liveCount": 8,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-24T04:00:10.936Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-23",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "vulture|sara holdren",
+      "outlet": "Vulture",
+      "critic": "Sara Holdren",
+      "tier": 1,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T04:55:14.543Z",
+      "prevOkSampleAt": "2026-11-24T04:50:14.308Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|roma torre",
+      "outlet": "New York Stage Review",
+      "critic": "Roma Torre",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T04:55:14.543Z",
+      "prevOkSampleAt": "2026-11-24T04:50:14.308Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york theatre guide|austin fimmano",
+      "outlet": "New York Theatre Guide",
+      "critic": "Austin Fimmano",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T04:55:14.543Z",
+      "prevOkSampleAt": "2026-11-24T04:50:14.308Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|melissa rose bernardo",
+      "outlet": "New York Stage Review",
+      "critic": "Melissa Rose Bernardo",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T04:55:14.543Z",
+      "prevOkSampleAt": "2026-11-24T04:50:14.308Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "theatermania|kenji fujishima",
+      "outlet": "TheaterMania",
+      "critic": "Kenji Fujishima",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T04:55:14.543Z",
+      "prevOkSampleAt": "2026-11-24T04:50:14.308Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york theater|jonathan mandell",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T04:55:14.543Z",
+      "prevOkSampleAt": "2026-11-24T04:50:14.308Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T04:55:14.543Z",
+      "prevOkSampleAt": "2026-11-24T04:50:14.308Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "1 minute critic|kelsey minor",
+      "outlet": "1 Minute Critic",
+      "critic": "Kelsey Minor",
+      "tier": 3,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T04:55:14.543Z",
+      "prevOkSampleAt": "2026-11-24T04:50:14.308Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "incomplete",
+      "source": [
+        "bww-roundup-live"
+      ],
+      "count": 8,
+      "covered": 7,
+      "coverage": 0.875,
+      "missing": [
+        "talkinbroadway"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 8,
+      "fetchedAt": "2026-11-24T05:00:28.427Z",
+      "censusNote": "archive + live BWW roundup (9 rows): https://www.broadwayworld.com/article/Review-Roundup-August-Wilsons-SEVEN-GUITARS-Opens-at-Lincoln-Center-Theater-20261123"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-24T05:00:28.519Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-24T05:00:34.146Z",
+    "files": [
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-24T04:27:30.068Z",
+        "scoredAt": "2026-11-24T04:32:17.150Z",
+        "publishDate": "2026-11-23",
+        "url": "culturesauce.com/seven-guitars-august-wilson-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "front-row-center--unknown.json",
+        "outletId": "front-row-center",
+        "outlet": "Front Row Center",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-24T04:53:16.981Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-23",
+        "url": "thefrontrowcenter.com/2026/11/august-wilsons-seven-guitars-a-revival-at-lincoln-center",
+        "includable": false,
+        "reason": "noTextOrScoreSignal",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--melissa-rose-bernardo.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Melissa Rose Bernardo",
+        "firstSeenAt": "2026-11-24T04:27:29.772Z",
+        "scoredAt": "2026-11-24T04:32:22.680Z",
+        "publishDate": "2026-11-23",
+        "url": "nystagereview.com/2026/11/23/seven-guitars-august-wilson-revived-through-expert-eyes",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--roma-torre.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Roma Torre",
+        "firstSeenAt": "2026-11-24T04:27:29.398Z",
+        "scoredAt": "2026-11-24T04:32:29.232Z",
+        "publishDate": "2026-11-23",
+        "url": "nystagereview.com/2026/11/23/seven-guitars-another-wilson-masterpiece-strikes-every-chord",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outletId": "nyt-theater",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell",
+        "firstSeenAt": "2026-11-24T04:27:13.563Z",
+        "scoredAt": "2026-11-24T04:32:33.589Z",
+        "publishDate": "2026-11-23",
+        "url": "newyorktheater.me/2026/11/23/seven-guitars-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytg--austin-fimmano.json",
+        "outletId": "nytg",
+        "outlet": "New York Theatre Guide",
+        "critic": "Austin Fimmano",
+        "firstSeenAt": "2026-11-24T04:27:29.097Z",
+        "scoredAt": "2026-11-24T04:32:38.276Z",
+        "publishDate": "2026-11-23",
+        "url": "newyorktheatreguide.com/reviews/seven-guitars-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "one-minute-critic--kelsey-minor.json",
+        "outletId": "one-minute-critic",
+        "outlet": "1 Minute Critic",
+        "critic": "Kelsey Minor",
+        "firstSeenAt": "2026-11-24T04:27:06.875Z",
+        "scoredAt": "2026-11-24T04:32:42.415Z",
+        "publishDate": "2026-11-23",
+        "url": "1minutecritic.com/august-wilson-seven-guitars-lincoln-center-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "pages-on-stages--unknown.json",
+        "outletId": "pages-on-stages",
+        "outlet": "Pages on Stages",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-24T04:53:59.696Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-23",
+        "url": "pagesonstages.com/2026/11/23/seven-guitars",
+        "includable": false,
+        "reason": "noTextOrScoreSignal",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "picture-this-post--unknown.json",
+        "outletId": "picture-this-post",
+        "outlet": "Picture This Post",
+        "critic": "Staff Writer",
+        "firstSeenAt": "2026-11-23T21:52:34.582Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-02",
+        "url": "picturethispost.com/lincoln-center-theater-presents-seven-guitars-preview",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "talkinbroadway--howard-miller.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "Howard Miller",
+        "firstSeenAt": "2026-11-24T04:56:28.983Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-23T00:00:00-05:00",
+        "url": "talkinbroadway.com/page/ob/11_23_26b.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theater-pizzazz--unknown.json",
+        "outletId": "theater-pizzazz",
+        "outlet": "Theater Pizzazz",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-24T04:53:35.532Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-23",
+        "url": "theaterpizzazz.com/seven-guitars-sings-a-brilliant-blues",
+        "includable": false,
+        "reason": "noTextOrScoreSignal",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--kenji-fujishima.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Kenji Fujishima",
+        "firstSeenAt": "2026-11-24T04:27:14.107Z",
+        "scoredAt": "2026-11-24T04:32:47.451Z",
+        "publishDate": "2026-11-23",
+        "url": "theatermania.com/news/review-new-revival-of-seven-guitars-elevates-a-lesser-august-wilson-play_1860613",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "vulture--sara-holdren.json",
+        "outletId": "vulture",
+        "outlet": "Vulture",
+        "critic": "Sara Holdren",
+        "firstSeenAt": "2026-11-24T04:27:28.802Z",
+        "scoredAt": "2026-11-24T04:32:52.857Z",
+        "publishDate": "2026-11-23",
+        "url": "vulture.com/article/theater-review-lincoln-center-august-wilson-seven-guitars-santiago-hudson.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
