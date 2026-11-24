@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8209-f",
   "planId": "f1c8a2d4-6e93-4b70-9d15-3a7e0c5b2f86",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T22:33:32.498Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "The page is Marc Miller's review of The Wanderers; this Leopoldstadt copy is a wrong multi-show split child (BRO-8209 cousin)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T23:08:55.563Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leopoldstadt-2022/talkinbroadway--marc-miller.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
