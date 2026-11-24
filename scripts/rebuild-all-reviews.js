@@ -3857,6 +3857,9 @@ showDirs.forEach(showId => {
       // OR contentVerification confirms wrongProduction with high confidence, keep the flag. Cross-market
       // contamination flags set by audit-review-contamination.js were getting stripped here, leaving
       // contamination unflagged on the next rebuild. See scripts/lib/wrong-production-autoclear.js.
+      if (data.wrongProduction === true && (data.allowCrossMarket || data.allowEarlyDate) && isClassAContaminated(data, showById[showId])) {
+        stats.classAVetoedAutoClear = (stats.classAVetoedAutoClear || 0) + 1; // BRO-8229: bypass flag kept off a sibling-run leak
+      }
       if (shouldAutoClearWrongProduction(data, { classA: isClassAContaminated(data, showById[showId]) })) {
         delete data.wrongProduction;
         delete data.wrongProductionNote;
