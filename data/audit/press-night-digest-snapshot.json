@@ -1,16 +1,24 @@
 {
-  "generatedAt": "2026-11-23T19:42:44.159Z",
-  "night": "2026-11-22",
+  "generatedAt": "2026-11-24T07:52:48.461Z",
+  "night": "2026-11-23",
   "counts": {
-    "total": 1,
+    "total": 3,
     "passed": 0,
-    "failed": 1,
-    "notGraded": 0
+    "failed": 2,
+    "notGraded": 1
   },
   "lines": [
     {
       "verdict": "FAIL",
-      "line": "Fantasma: published by the regular pipeline; 1 of 2 reviews live by 12:00am; Talkin' Broadway went live at 12:21am (late); emails ready. Failed."
+      "line": "It’s A Wonderful Life: A Live Radio Play: reviews not graded yet, still being checked; Reddit draft emailed to you is out of date (score 65 from 17 reviews, the site shows score 67 from 19 reviews). Failed."
+    },
+    {
+      "verdict": "FAIL",
+      "line": "Seven Guitars: reviews not graded yet, still being checked; Reddit draft emailed to you is out of date (score 81 from 9 reviews, the site shows score 83 from 12 reviews). Failed."
+    },
+    {
+      "verdict": "UNKNOWN",
+      "line": "The Afronauts: published by the regular pipeline; opening-night email draft not due until 9:00am. Not graded: no reviews were published overnight."
     }
   ],
   "scoreboard": {
@@ -19,6 +27,7 @@
     "passedOnOwn": 3
   },
   "missFirstSeen": {
-    "fantasma-off-broadway-2026|2026-11-22|review:talkinbroadway:Moshe Bloxenheim": "2026-11-23T12:59:08.648Z"
+    "its-a-wonderful-life-a-live-radio-play-2026|2026-11-23|email:reddit:stale": "2026-11-24T07:52:48.461Z",
+    "seven-guitars-off-broadway-2026|2026-11-23|email:reddit:stale": "2026-11-24T07:52:48.461Z"
   }
 }
