@@ -53,3 +53,17 @@ test('opening-night status readiness reads the same floors (no second copy)', ()
     assert.deepEqual(getThresholds(m), { MIN_REVIEWS: f.total, MIN_T1_REVIEWS: f.t1, MIN_T2_REVIEWS: f.t2, MIN_HIGH_CONFIDENCE: f.highConfidence }, m);
   }
 });
+
+// BRO-8188 (owner 2026-11-24): floors no longer hold back the draft, except a returning production's this-run check.
+test('draftMayProceed: floor shortfalls make the draft, this-run shortfall waits', () => {
+  const { draftMayProceed } = require('./score-confidence-gate.js');
+  // Wonderful Life, 2026-11-23: 16 scored, T1 2/3.
+  const wl = evaluateScoreConfidence({ showReviews: [...many(1, 2), ...many(2, 4), ...many(3, 10)], category: 'broadway', getOutletTier });
+  assert.equal(wl.ok, false);
+  assert.equal(draftMayProceed(wl), true);
+  const ret = evaluateScoreConfidence({ showReviews: [...many(1, 3), ...many(2, 3), ...many(3, 8)], category: 'broadway', getOutletTier, newReviewCount: 2 });
+  assert.ok(ret.reasons.some(r => r.startsWith('this-run:')));
+  assert.equal(draftMayProceed(ret), false);
+  assert.equal(draftMayProceed(evaluateScoreConfidence({ showReviews: [...many(1, 3), ...many(2, 3), ...many(3, 6)], category: 'broadway', getOutletTier })), true);
+  assert.equal(draftMayProceed(null), false);
+});

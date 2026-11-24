@@ -64,4 +64,17 @@ function evaluateScoreConfidence({ showReviews, category, getOutletTier, newRevi
   return { ok: reasons.length === 0, reasons, counts, floors: { ...floors, newReturning: minNewReturning } };
 }
 
-module.exports = { evaluateScoreConfidence, getConfidenceFloors, rowConfidence, BROADWAY_FLOORS, LONDON_FLOORS };
+// Owner decision 2026-11-24 (BRO-8188, option A): the opening-night Resend draft is
+// made as soon as the workflow's readiness gate (scripts/lib/broadcast-readiness.js)
+// passes. The floors above no longer hold the DRAFT back: it updates itself in place
+// as reviews land (--update-unsent-draft) and the owner reviews it before sending.
+// One exception stays: a returning production whose count is mostly its earlier run
+// (the this-run reason, BRO-4954) still waits for this run's reviews.
+// The social autopost does not use this; its posts go out unreviewed.
+function draftMayProceed(gate) {
+  if (!gate) return false;
+  if (gate.ok) return true;
+  return !(gate.reasons || []).some(r => String(r).startsWith('this-run:'));
+}
+
+module.exports = { evaluateScoreConfidence, getConfidenceFloors, rowConfidence, draftMayProceed, BROADWAY_FLOORS, LONDON_FLOORS };
