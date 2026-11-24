@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-24T06:32:25.171Z",
-  "processed": 775,
-  "failed": 367,
+  "updatedAt": "2026-11-24T06:33:27.571Z",
+  "processed": 771,
+  "failed": 365,
   "successRate": "67.9%",
   "tierBreakdown": {
     "playwright": 353,
@@ -14,8 +14,13 @@
     "archiveToday": 0,
     "archive": 283
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-11-24T03:44:00.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
     {
       "t": "2026-11-24T03:45:03.608Z",
       "event": "bb-session",
