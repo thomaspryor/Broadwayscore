@@ -816,13 +816,13 @@
       "firstSeen": "2026-08-09T07:42:46.513Z",
       "incidentOpenedAt": "2026-11-23T10:54:33.327Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T20:39:12.813Z",
+      "lastSeen": "2026-11-24T00:27:21.612Z",
       "lastNotifiedAt": "2026-11-23T10:54:33.327Z",
       "lastSurfacedAt": "2026-11-23T10:54:33.327Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Cron failed: Reverse Discovery": {
       "status": "resolved",
@@ -1248,16 +1248,17 @@
       "resolvedAt": "2026-08-26T18:50:49.037Z"
     },
     "affiliate:provider-auth:impact": {
-      "status": "resolved",
-      "disposition": "digest",
-      "title": "Affiliate revenue: impact API — BROKEN [shadow]",
+      "status": "open",
+      "disposition": "human",
+      "title": "Affiliate revenue: impact API — BROKEN",
       "firstSeen": "2026-08-14T08:03:42.012Z",
-      "lastSeen": "2026-08-14T08:03:42.012Z",
-      "lastNotifiedAt": "2026-08-14T08:03:42.012Z",
-      "notifyCount": 1,
+      "incidentOpenedAt": "2026-11-24T00:20:33.805Z",
+      "lastSeen": "2026-11-24T00:20:33.805Z",
+      "lastNotifiedAt": "2026-11-24T00:20:33.805Z",
+      "lastSurfacedAt": "2026-11-24T00:20:33.805Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-08-15T01:33:42.978Z"
+      "linearIdentifier": null
     },
     "gap:an-american-daughter-off-broadway-2026/nytimes--laura-collins-hughes.json": {
       "status": "resolved",
@@ -17056,13 +17057,13 @@
       "firstSeen": "2026-10-13T09:28:34.752Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.752Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T20:39:13.346Z",
+      "lastSeen": "2026-11-24T00:27:22.521Z",
       "lastNotifiedAt": "2026-11-21T09:57:00.461Z",
       "lastSurfacedAt": "2026-11-21T09:57:00.461Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-3634",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Data quality: slug-mismatch lifetime sweep": {
       "status": "open",
@@ -17085,12 +17086,13 @@
       "firstSeen": "2026-10-13T09:28:34.767Z",
       "incidentOpenedAt": "2026-11-23T20:39:13.500Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T20:39:13.500Z",
+      "lastSeen": "2026-11-24T00:27:22.752Z",
       "lastNotifiedAt": "2026-11-23T20:39:13.500Z",
       "lastSurfacedAt": "2026-11-23T20:39:13.500Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Data quality: missed opening-night broadcasts": {
       "status": "open",
@@ -17229,30 +17231,27 @@
       "firstSeen": "2026-10-13T09:28:34.841Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.841Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T20:39:13.838Z",
+      "lastSeen": "2026-11-24T00:27:22.791Z",
       "lastNotifiedAt": "2026-11-21T09:57:01.314Z",
       "lastSurfacedAt": "2026-11-21T09:57:01.314Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-5455",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Feedback: needs-manual-review backlog": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "BSC Daily: Feedback: needs-manual-review backlog",
       "firstSeen": "2026-10-13T09:28:34.851Z",
-      "incidentOpenedAt": "2026-10-13T09:28:34.851Z",
+      "incidentOpenedAt": "2026-11-24T00:27:23.003Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-16T09:47:28.428Z",
-      "lastNotifiedAt": "2026-11-14T09:07:40.859Z",
-      "lastSurfacedAt": "2026-11-14T09:07:40.859Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-11-24T00:27:23.003Z",
+      "lastNotifiedAt": "2026-11-24T00:27:23.003Z",
+      "lastSurfacedAt": "2026-11-24T00:27:23.003Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-4103",
-      "silentRefires": 3,
-      "resolvedAt": "2026-11-20T10:11:02.592Z",
-      "resolveReason": "health-check row passing"
+      "linearIdentifier": null
     },
     "health-check:Data: T1/T2 silent review gaps": {
       "status": "resolved",
@@ -17751,13 +17750,13 @@
       "firstSeen": "2026-10-14T02:45:33.530Z",
       "incidentOpenedAt": "2026-11-19T10:27:03.058Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-20T10:11:02.623Z",
+      "lastSeen": "2026-11-24T00:27:21.631Z",
       "lastNotifiedAt": "2026-11-19T10:27:03.058Z",
       "lastSurfacedAt": "2026-11-19T10:27:03.058Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-7823",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: standingCoverage drift": {
       "status": "open",
@@ -17766,13 +17765,13 @@
       "firstSeen": "2026-10-14T02:45:34.129Z",
       "incidentOpenedAt": "2026-11-22T09:54:52.017Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T20:39:12.827Z",
+      "lastSeen": "2026-11-24T00:27:21.933Z",
       "lastNotifiedAt": "2026-11-22T09:54:52.017Z",
       "lastSurfacedAt": "2026-11-22T09:54:52.017Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Commercial model: stored vs fresh run": {
       "status": "resolved",
@@ -17799,13 +17798,13 @@
       "firstSeen": "2026-10-14T02:45:34.242Z",
       "incidentOpenedAt": "2026-11-19T10:31:19.049Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T20:39:13.197Z",
+      "lastSeen": "2026-11-24T00:27:22.298Z",
       "lastNotifiedAt": "2026-11-22T09:55:54.680Z",
       "lastSurfacedAt": "2026-11-22T09:55:54.680Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-8038",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "guard-audit:bd-serp_api1": {
       "status": "resolved",
@@ -27457,12 +27456,13 @@
       "firstSeen": "2026-10-25T23:39:15.843Z",
       "incidentOpenedAt": "2026-11-23T20:39:13.169Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T20:39:13.169Z",
+      "lastSeen": "2026-11-24T00:27:22.262Z",
       "lastNotifiedAt": "2026-11-23T20:39:13.169Z",
       "lastSurfacedAt": "2026-11-23T20:39:13.169Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-6242-social-autopost": {
       "status": "resolved",
@@ -35131,13 +35131,13 @@
       "firstSeen": "2026-11-01T09:17:31.009Z",
       "incidentOpenedAt": "2026-11-22T09:55:54.653Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T20:39:13.184Z",
+      "lastSeen": "2026-11-24T00:27:22.280Z",
       "lastNotifiedAt": "2026-11-22T09:55:54.653Z",
       "lastSurfacedAt": "2026-11-22T09:55:54.653Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "coverage-holes:a-few-good-men-2026": {
       "status": "open",
@@ -40255,13 +40255,13 @@
       "firstSeen": "2026-11-09T09:53:13.560Z",
       "incidentOpenedAt": "2026-11-19T10:30:07.907Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T20:39:12.841Z",
+      "lastSeen": "2026-11-24T00:27:21.951Z",
       "lastNotifiedAt": "2026-11-19T10:30:07.907Z",
       "lastSurfacedAt": "2026-11-19T10:30:07.907Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-7824",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Commercial: rows held for a person": {
       "status": "open",
@@ -40284,13 +40284,13 @@
       "firstSeen": "2026-11-09T09:53:17.007Z",
       "incidentOpenedAt": "2026-11-22T10:01:06.858Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-23T20:39:13.996Z",
+      "lastSeen": "2026-11-24T00:27:23.023Z",
       "lastNotifiedAt": "2026-11-22T10:01:06.858Z",
       "lastSurfacedAt": "2026-11-22T10:01:06.858Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "coverage-holes:dogstar-off-west-end-2026": {
       "status": "open",
@@ -43861,21 +43861,19 @@
       "notifyCountAtRelease": 1
     },
     "prod-data-parity:mismatch": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "Production show pages disagree with deployed critic data",
       "firstSeen": "2026-11-15T09:24:31.409Z",
-      "incidentOpenedAt": "2026-11-22T09:53:32.980Z",
-      "lastSeen": "2026-11-22T09:53:32.980Z",
-      "lastNotifiedAt": "2026-11-22T09:53:32.980Z",
+      "incidentOpenedAt": "2026-11-24T00:26:45.225Z",
+      "lastSeen": "2026-11-24T00:26:45.225Z",
+      "lastNotifiedAt": "2026-11-24T00:26:45.225Z",
       "lastSurfacedAt": null,
-      "notifyCount": 4,
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null,
+      "linearIdentifier": "BRO-8219",
       "notifyCountAtRelease": 4,
-      "sweptTracker": "BRO-8037",
-      "resolvedAt": "2026-11-23T10:53:54.223Z",
-      "resolveReason": "All sampled production pages match their deployed data"
+      "sweptTracker": "BRO-8037"
     },
     "anthropic-retirement:unregistered": {
       "status": "resolved",
@@ -44411,7 +44409,7 @@
       "resolvedAt": "2026-11-16T04:22:52.944Z"
     },
     "opening-night-cv-wrongproduction-unhandled-downstate-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on Downstate",
       "firstSeen": "2026-11-16T06:14:33.719Z",
@@ -44422,7 +44420,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 14,
+      "resolvedAt": "2026-11-24T00:27:23.037Z",
+      "resolveReason": "absent"
     },
     "feedback-outcomes:2026-11-16T06:04:18.227819+00:00": {
       "status": "resolved",
@@ -44441,7 +44441,7 @@
       "resolveReason": "absent"
     },
     "opening-night-revival-unverified-downstate-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Unverified revival on Downstate",
       "firstSeen": "2026-11-16T10:04:16.608Z",
@@ -44452,10 +44452,12 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 13,
+      "resolvedAt": "2026-11-24T00:27:23.037Z",
+      "resolveReason": "absent"
     },
     "opening-night-remediation-exhausted-t1-missing:downstate-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Auto-remediation gave up on downstate-2026",
       "firstSeen": "2026-11-16T11:20:17.571Z",
@@ -44466,7 +44468,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 12,
+      "resolvedAt": "2026-11-24T00:27:23.037Z",
+      "resolveReason": "absent"
     },
     "broadcast-gate:checklist:cloud-9-west-end-2026,downstate-2026": {
       "status": "resolved",
@@ -44657,7 +44661,7 @@
       "resolveReason": "absent"
     },
     "ob-venue-go-live:jimi-darkness-alcoholic-superhero-off-broadway-2027": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Jimi Darkness: Alcoholic Superhero @ Soho Playhouse — off-Broadway show added",
       "firstSeen": "2026-11-16T23:18:26.410Z",
@@ -44667,10 +44671,12 @@
       "lastSurfacedAt": "2026-11-16T23:18:26.410Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-24T00:27:23.037Z",
+      "resolveReason": "absent"
     },
     "ob-venue-go-live:tenderly-the-life-times-of-nat-king-cole-off-broadway-2027": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Tenderly: The Life & Times of Nat King Cole @ Soho Playhouse — off-Broadway show added",
       "firstSeen": "2026-11-16T23:18:26.438Z",
@@ -44680,10 +44686,12 @@
       "lastSurfacedAt": "2026-11-16T23:18:26.438Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-24T00:27:23.037Z",
+      "resolveReason": "absent"
     },
     "ob-venue-go-live:foriegner-off-broadway-2027": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "FORIEGNER @ Soho Playhouse — off-Broadway show added",
       "firstSeen": "2026-11-16T23:18:26.459Z",
@@ -44693,10 +44701,12 @@
       "lastSurfacedAt": "2026-11-16T23:18:26.459Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-24T00:27:23.037Z",
+      "resolveReason": "absent"
     },
     "ob-venue-go-live:untold-stories-off-broadway-2027": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "UNTOLD STORIES @ Soho Playhouse — off-Broadway show added",
       "firstSeen": "2026-11-16T23:18:26.481Z",
@@ -44706,7 +44716,9 @@
       "lastSurfacedAt": "2026-11-16T23:18:26.481Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-24T00:27:23.037Z",
+      "resolveReason": "absent"
     },
     "land:land/seen-without-rating": {
       "status": "resolved",
@@ -49784,6 +49796,20 @@
       "lastSeen": "2026-11-24T00:07:52.303Z",
       "lastNotifiedAt": "2026-11-24T00:07:52.303Z",
       "lastSurfacedAt": "2026-11-24T00:07:52.303Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "health-check:Data: tour automation stopped reporting": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "BSC Daily: Data: tour automation stopped reporting",
+      "firstSeen": "2026-11-24T00:27:22.771Z",
+      "incidentOpenedAt": "2026-11-24T00:27:22.771Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-24T00:27:22.771Z",
+      "lastNotifiedAt": "2026-11-24T00:27:22.771Z",
+      "lastSurfacedAt": "2026-11-24T00:27:22.771Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

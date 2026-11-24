@@ -1,12 +1,17 @@
 {
-  "generatedAt": "2026-11-23T20:39:17.401Z",
-  "subject": "BSC Daily: 1 internal issue, no visitor-facing errors (day 116)",
-  "bannerText": "1 error, 26 warnings",
-  "consecutiveErrorDays": 116,
+  "generatedAt": "2026-11-24T00:27:23.035Z",
+  "subject": "BSC URGENT (day 117): 2 unresolved errors",
+  "bannerText": "2 errors, 29 warnings",
+  "consecutiveErrorDays": 117,
   "errors": [
     {
+      "name": "Revenue: affiliate health",
+      "message": "1 critical: impact API",
+      "firstSeen": "2026-11-23T10:54:31.404Z"
+    },
+    {
       "name": "Push-retry deadman",
-      "message": "49 push-retry failure(s) in the last 7d across Broadwayscore:main [Opening Night Poller x14, Collect Review Texts x11, LLM Ensemble Score Reviews x10, Scoring Experiment x8, Land x2, Rebuild Reviews (Fast) x1, Rebuild Reviews Data x1, Gather Review Data x1, Scrape New Aggregators x1]. Most recent reason: api-fallback-exhausted(race-or-other,early-fallback). 236 committed file(s) discarded across 41 run(s). 219 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line).",
+      "message": "55 push-retry failure(s) in the last 7d across Broadwayscore:main [Opening Night Poller x19, Collect Review Texts x11, LLM Ensemble Score Reviews x10, Scoring Experiment x8, Land x2, Rebuild Reviews (Fast) x1, Rebuild Reviews Data x1, Gather Review Data x1, Scrape New Aggregators x1, Collect WE/OB Review Texts x1]. Most recent reason: retries-exhausted(deadline). 271 committed file(s) discarded across 47 run(s). 225 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line).",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     }
   ],
@@ -17,29 +22,29 @@
       "firstSeen": "2026-11-22T09:54:48.949Z"
     },
     {
-      "name": "Revenue: affiliate health",
-      "message": "1 anomaly: Bot click divergence",
-      "firstSeen": "2026-11-23T10:54:31.404Z"
+      "name": "Quality: opening date vs review dates",
+      "message": "1 show(s) store an opening date later than their reviews: a-midsummer-nights-dream-jentes-regional-2026 (stored 2026-11-21, reviews 2026-11-15)",
+      "firstSeen": "2026-11-11T23:31:10.176Z"
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (9h ago)",
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (3h ago)",
       "firstSeen": "2026-11-19T10:27:03.024Z"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "message": "1 unmatched review(s) with contamination evidence open (0 new since last run; 862 total across 612 show(s), 9h ago)",
+      "message": "1 unmatched review(s) with contamination evidence open (0 new since last run; 868 total across 614 show(s), 3h ago)",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
-      "message": "1 unverified revival flag(s) with a same-title earlier production open (1 new since last run; 5 total across 5 show(s), 9h ago)",
+      "message": "1 unverified revival flag(s) with a same-title earlier production open (0 new since last run; 5 total across 5 show(s), 3h ago)",
       "firstSeen": "2026-11-23T20:39:11.051Z"
     },
     {
-      "name": "Data quality: missed opening-night broadcasts",
-      "message": "1 show(s) opened and qualified but never emailed subscribers (0 still alertable, 1 aged out past the paging window; 6 more were covered by a weekly round-up, 9h ago)",
-      "firstSeen": "2026-11-14T09:07:36.576Z"
+      "name": "Data: tour automation stopped reporting",
+      "message": "A national-tour job has not run on schedule: daily new-tour check (scrape-new-aggregators.yml, BWW landing job): last report 2 day(s) ago.",
+      "firstSeen": "2026-11-24T00:27:18.079Z"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -48,7 +53,7 @@
     },
     {
       "name": "Quality: expected critics missing",
-      "message": "6 usual-critic review(s) the automatic search could not settle (52 more still being searched for automatically): Talkin' Broadway on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Theater Scene on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Theatrely on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. TheWrap on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Time Out New York on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Variety on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running.",
+      "message": "4 usual-critic review(s) the automatic search could not settle (36 more still being searched for automatically): Theatrely on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. TheWrap on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Time Out New York on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Variety on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running.",
       "firstSeen": "2026-11-09T09:53:09.444Z"
     },
     {
@@ -58,12 +63,22 @@
     },
     {
       "name": "Credits: ScrapingBee",
-      "message": "8k credits left (3%) · 13k/day burn · exhausts in ~1d (renews Dec 5) — acknowledged: ScrapingBee is a fallback; ride out until renewal (owner rule 2026-08-03) [expires 2026-11-26]",
+      "message": "6k credits left (3%) · 13k/day burn · exhausts in ~0d (renews Dec 5) — acknowledged: ScrapingBee is a fallback; ride out until renewal (owner rule 2026-08-03) [expires 2026-11-27]",
       "firstSeen": "2026-11-20T10:11:00.929Z"
+    },
+    {
+      "name": "Autofix: persistent visitor rows with no open card",
+      "message": "1 visitor-facing row(s) red for 4+ days with no open card: Press night: score gate undecided (5d, BRO-7980 closed)",
+      "firstSeen": "2026-11-23T10:54:31.404Z"
     },
     {
       "name": "Data freshness: shows missing poster/synopsis/tickets",
       "message": "76 open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.",
+      "firstSeen": "1970-01-01T00:00:00.000Z"
+    },
+    {
+      "name": "Feedback: needs-manual-review backlog",
+      "message": "2 open user-feedback issue(s) awaiting manual review (oldest 0d). Newest: #1203 Bug Diagnosis: Two attribution errors reported for 'Falls for Jodie': ",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     },
     {
@@ -78,21 +93,26 @@
     },
     {
       "name": "Data: review coverage holes",
-      "message": "81 review(s) with no usable text, 67 rejected although verified as a review, 23 never scored, 15 with a blocked URL (0 published on the site), across 759 current shows",
+      "message": "82 review(s) with no usable text, 68 rejected although verified as a review, 30 never scored, 15 with a blocked URL (0 published on the site), across 775 current shows",
       "firstSeen": "1970-01-01T00:00:00.000Z"
     },
     {
       "name": "Data: approved-fix drift",
-      "message": "4 unexplained approved-fix drift(s) across 3964 files with approvals",
+      "message": "4 unexplained approved-fix drift(s) across 3965 files with approvals",
       "firstSeen": "2026-11-22T09:54:48.949Z"
-    },
-    {
-      "name": "Data: BWW roundup discovery misses near opening",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: its-a-wonderful-life-a-live-radio-play-2026 (5 misses, last 2026-11-23T08:37:58.340Z).",
-      "firstSeen": "2026-11-13T09:36:20.750Z"
     }
   ],
   "cleared": {
+    "Data quality: missed opening-night broadcasts": {
+      "at": "2026-11-24T00:27:18.079Z",
+      "firstSeen": "2026-11-14T09:07:36.576Z",
+      "status": "warn"
+    },
+    "Data: BWW roundup discovery misses near opening": {
+      "at": "2026-11-24T00:27:18.079Z",
+      "firstSeen": "2026-11-13T09:36:20.750Z",
+      "status": "warn"
+    },
     "Data quality: cv-wrongproduction lifetime sweep": {
       "at": "2026-11-23T20:39:11.051Z",
       "firstSeen": "1970-01-01T00:00:00.000Z",
@@ -106,11 +126,6 @@
     "Commercial: rows held for a person": {
       "at": "2026-11-23T20:39:11.051Z",
       "firstSeen": "2026-11-20T10:11:00.929Z",
-      "status": "warn"
-    },
-    "Autofix: persistent visitor rows with no open card": {
-      "at": "2026-11-23T20:39:11.051Z",
-      "firstSeen": "2026-11-23T10:54:31.404Z",
       "status": "warn"
     },
     "Press night: openings not watched": {
@@ -203,11 +218,6 @@
       "firstSeen": "2026-11-18T10:17:10.370Z",
       "status": "warn"
     },
-    "Quality: opening date vs review dates": {
-      "at": "2026-11-21T09:56:54.807Z",
-      "firstSeen": "2026-11-11T23:31:10.176Z",
-      "status": "warn"
-    },
     "Codex runner: landing cards": {
       "at": "2026-11-21T09:56:54.807Z",
       "firstSeen": "1970-01-01T00:00:00.000Z",
@@ -288,16 +298,6 @@
       "firstSeen": "2026-11-17T10:48:55.951Z",
       "status": "warn"
     },
-    "Cron: Collect Review Texts": {
-      "at": "2026-11-17T10:48:55.951Z",
-      "firstSeen": "2026-11-08T09:07:13.279Z",
-      "status": "warn"
-    },
-    "Feedback: needs-manual-review backlog": {
-      "at": "2026-11-17T10:48:55.951Z",
-      "firstSeen": "1970-01-01T00:00:00.000Z",
-      "status": "warn"
-    },
     "Autofix: digest rows listed 4+ days with no card": {
       "at": "2026-11-17T10:48:55.951Z",
       "firstSeen": "2026-11-15T09:26:50.133Z",
@@ -305,6 +305,19 @@
     }
   },
   "queued": [
+    {
+      "conditionKey": "coverage-holes:nine-night-off-west-end-2026",
+      "title": "nine-night-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+      "description": "- teaser pointing to the same critic's full review, both counted: nine-night-off-west-end-2026/cherylmarkosky--cherylmarkosky.json (full review: broadwayworld--cheryl-markosky.json)\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
     {
       "conditionKey": "coverage-holes:jenufa-off-broadway-2026",
       "title": "jenufa-off-broadway-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
@@ -1451,9 +1464,78 @@
       ]
     },
     {
-      "conditionKey": "review-gap:opening-window:its-a-wonderful-life-a-live-radio-play-2026",
-      "title": "Review gap — \"It’s A Wonderful Life: A Live Radio Play\" missing 6 cited review(s)",
-      "description": "It’s A Wonderful Life: A Live Radio Play (its-a-wonderful-life-a-live-radio-play-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=its-a-wonderful-life-a-live-radio-play-2026 --checkpoint --ingest-missing",
+      "conditionKey": "corpus-drift:monitor-only",
+      "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +18 more). Checked 2026-11-23.",
+      "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+      "severity": "info",
+      "url": null,
+      "decision": false,
+      "info": true,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "traffic:ga4-engaged-sessions",
+      "title": "Traffic (7d): 5,578 engaged sessions; 10.8x raw-session inflation (59,993 raw sessions). Weekly update 2026-11-23.",
+      "description": "GA4 engaged sessions across all channels for the seven completed days ending yesterday. Inflation is raw sessions divided by engaged sessions.",
+      "severity": "info",
+      "url": null,
+      "decision": false,
+      "info": true,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "geo-bots:Mexico",
+      "title": "New bot country detected: Mexico — still happening after 7 days",
+      "description": "Filed BRO-8197: this has been happening for 7+ days without clearing.\n\nWeekly geo audit found Mexico matching the bot signature in PostHog. PostHog: [MX] 101 PostHog sessions • 101 users (1.00 users/session) • 1.05 pageviews/session (thresholds: ≥100 sessions, ≥0.98 users/session, ≤1.05 pageviews/session) Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md + REAL_USERS_WHERE in scripts/lib/posthog-query.js (by ISO code) + the 3 PostHog Real Users insights + the GA4 Real Users comparison.",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": "BRO-8197",
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/job/linear-BRO-8178-mwtmn2tj",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-8178-mwtmn2tj",
+      "description": "land.yml did not land land/job/linear-BRO-8178-mwtmn2tj: the unit-tests-node gate went red at 51be0eb4d4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45259987359",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/job/linear-BRO-8178-mwtmn2tj"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "51be0eb4d4d11ccd60423c22f040763f89288572"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45259987359"
+        }
+      ]
+    },
+    {
+      "conditionKey": "pending-unrecoverable:a-round-heeled-woman-west-end-2011",
+      "title": "1 review(s) for a-round-heeled-woman-west-end-2011 stuck in _pending with no text and no byline",
+      "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- times-uk--4fe08d73.json (times-uk): no byline in page and no recoverable body https://www.thetimes.com/culture/theatre-dance/article/a-round-heeled-woman-at-the-riverside-london-nzwbzxt062l",
       "severity": "warning",
       "url": null,
       "decision": false,
@@ -1462,6 +1544,221 @@
       "model": null,
       "tracked": null,
       "fields": []
+    },
+    {
+      "conditionKey": "land:land/job/linear-BRO-8179-mwto8dhi",
+      "title": "Landing blocked: scripts-lib-tests red on land/job/linear-BRO-8179-mwto8dhi",
+      "description": "land.yml did not land land/job/linear-BRO-8179-mwto8dhi: the scripts-lib-tests gate went red at 7850e5066c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45265643963",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/job/linear-BRO-8179-mwto8dhi"
+        },
+        {
+          "name": "gate",
+          "value": "scripts-lib-tests"
+        },
+        {
+          "name": "tip",
+          "value": "7850e5066c4146205c17e2d6a708944ceff46369"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45265643963"
+        }
+      ]
+    },
+    {
+      "conditionKey": "watchdog-park:linear:BRO-8191",
+      "title": "Watchdog parked #linear:BRO-8191 — redispatch never produced a launch",
+      "description": "Watchdog: card \"Root cause: \"Press night: score gate undecided\" keeps coming back (5 cards in 30 days)\" was claimed for redispatch at 2026-11-23T20:58:56.736Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-8191), then re-arm with node scripts/linear-next.js --id BRO-8191 --force once fixed.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "land:land/job/linear-BRO-8190-mwtqk59p",
+      "title": "Landing blocked: lint-workflows red on land/job/linear-BRO-8190-mwtqk59p",
+      "description": "land.yml did not land land/job/linear-BRO-8190-mwtqk59p: the lint-workflows gate went red at 1ef7d925a0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45267422706",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/job/linear-BRO-8190-mwtqk59p"
+        },
+        {
+          "name": "gate",
+          "value": "lint-workflows"
+        },
+        {
+          "name": "tip",
+          "value": "1ef7d925a08c36c024ad7002f093f26e45de7a0c"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45267422706"
+        }
+      ]
+    },
+    {
+      "conditionKey": "land:land/job/linear-BRO-8195-mwtqkx9v",
+      "title": "Landing blocked: rebase red on land/job/linear-BRO-8195-mwtqkx9v",
+      "description": "land.yml did not land land/job/linear-BRO-8195-mwtqkx9v: the rebase gate went red at fc434eb262. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-8195-mwtqkx9v @ fc434eb262 (origin/land/job/linear-BRO-8195-mwtqkx9v) → origin/main @ e985e3969d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ e985e3969d: Rebasing (1/7) error: could not apply bbe02d39a26... feat(BRO-8195): browser recovery lists paywalled _pending stubs and promotes them through the drain hint: Resolve all conflicts manually, mark  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45270592084",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/job/linear-BRO-8195-mwtqkx9v"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "fc434eb262f5bdce295ae32dcb248f42f3c38e00"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45270592084"
+        }
+      ]
+    },
+    {
+      "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
+      "title": "Data audit failing: Audit outlet-registry gaps",
+      "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+      "severity": "warning",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45278019801",
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Job",
+          "value": "Data Validation"
+        },
+        {
+          "name": "Step",
+          "value": "Audit outlet-registry gaps"
+        },
+        {
+          "name": "Run",
+          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45278019801)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "land:land/bro-8198-backstop-3h",
+      "title": "Landing blocked: unit-tests-node red on land/bro-8198-backstop-3h",
+      "description": "land.yml did not land land/bro-8198-backstop-3h: the unit-tests-node gate went red at 9cf185cd06. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45273794319",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-8198-backstop-3h"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "9cf185cd06bf0390010359c540c6770acd8e4f93"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45273794319"
+        }
+      ]
+    },
+    {
+      "conditionKey": "land:land/bro-8188-force-draft",
+      "title": "Landing blocked: unit-tests-node red on land/bro-8188-force-draft",
+      "description": "land.yml did not land land/bro-8188-force-draft: the unit-tests-node gate went red at 667c8bcfaf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45275096249",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-8188-force-draft"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "667c8bcfaf46366c0801e82b0fa9dd03d28019a2"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45275096249"
+        }
+      ]
+    },
+    {
+      "conditionKey": "feedback-outcomes:2026-11-23T22:32:39.613906+00:00",
+      "title": "Feedback: 1 submission(s), all handled automatically",
+      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nFalls for Jodie — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"The link attributed to Michael Dale of Talkin Broadway leads to a review for the Harry Ape. \r\n\r\nAlix Cohen doesn't review for Talkin' Broadway she reviews for Theatre Pizzaz. The link leads to Michale Dale's review of Falls for Jodie for Talkin' Broadway. I submitted Alix' review again with the correct link. \r\n\r\nJust submitted many more reviews to show as well. \"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1203",
+      "severity": "info",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45280685480",
+      "decision": false,
+      "info": true,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Submissions",
+          "value": "1"
+        },
+        {
+          "name": "Need you",
+          "value": "0"
+        },
+        {
+          "name": "Pipeline status",
+          "value": "success"
+        }
+      ]
     },
     {
       "conditionKey": "t1-gaps:needs-manual-recovery",
@@ -1477,20 +1774,456 @@
       "fields": []
     },
     {
-      "conditionKey": "corpus-drift:monitor-only",
-      "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +18 more). Checked 2026-11-23.",
-      "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-      "severity": "info",
+      "conditionKey": "red-first-skip:BRO-6866",
+      "title": "Red-first dispatch skipped BRO-6866 — no job spawned (human-gated:[object Object]) — still happening after 7 days",
+      "description": "Filed BRO-8207: this has been happening for 7+ days without clearing.\n\nThe BRO-4054 red-first pass skipped \"Scraper workflows failed 21 times this week, find and fix the cause\" (BRO-6866) this tick with reason \"human-gated:[object Object]\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
+      "severity": "warning",
       "url": null,
       "decision": false,
-      "info": true,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": "BRO-8207",
+      "fields": [
+        {
+          "name": "Card",
+          "value": "BRO-6866"
+        },
+        {
+          "name": "Skip reason",
+          "value": "human-gated:[object Object]"
+        }
+      ]
+    },
+    {
+      "conditionKey": "red-first-skip:BRO-6867",
+      "title": "Red-first dispatch skipped BRO-6867 — no job spawned (human-gated:[object Object]) — still happening after 7 days",
+      "description": "Filed BRO-8208: this has been happening for 7+ days without clearing.\n\nThe BRO-4054 red-first pass skipped \"Browserbase cost $89.80 this week (898 sessions), find what drove it\" (BRO-6867) this tick with reason \"human-gated:[object Object]\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": "BRO-8208",
+      "fields": [
+        {
+          "name": "Card",
+          "value": "BRO-6867"
+        },
+        {
+          "name": "Skip reason",
+          "value": "human-gated:[object Object]"
+        }
+      ]
+    },
+    {
+      "conditionKey": "pending-unrecoverable:the-house-of-blue-leaves-2011",
+      "title": "1 review(s) for the-house-of-blue-leaves-2011 stuck in _pending with no text and no byline",
+      "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- chicagotribune--unknown.json (chicagotribune): no byline in page and no recoverable body http://leisureblogs.chicagotribune.com/the_theater_loop/2011/04/house-of-blue-leaves-broadway-ben-stiller-edie-falco-director-david-cromer-broadway-review.html",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "bd-circuit-breaker-web_unlocker2",
+      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2683/1750 reqs)",
+      "description": "Zone web_unlocker2 billed 2683 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n26 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: audit-show-review-gap.js (518), opening-night-poller.js (357), collect-review-texts.js (307).",
+      "severity": "critical",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "arm-yield:workflow:opening-night-stage-alert",
+      "title": "opening-night-stage-alert has stopped updating (4 days)",
+      "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-11-20, 4 days ago. It has never before gone quiet for more than 1 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 3d, from 28 productive day(s) / 28 item(s) between 2026-10-22 and 2026-11-20.)",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Last yield",
+          "value": "2026-11-20"
+        },
+        {
+          "name": "Silent for",
+          "value": "4 days (threshold 3)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "arm-yield:workflow:collect-talkinbroadway-index",
+      "title": "collect-talkinbroadway-index has stopped updating (4 days)",
+      "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-11-20, 4 days ago. It has never before gone quiet for more than 0 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 3d, from 29 productive day(s) / 29 item(s) between 2026-10-22 and 2026-11-20.)",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Last yield",
+          "value": "2026-11-20"
+        },
+        {
+          "name": "Silent for",
+          "value": "4 days (threshold 3)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "arm-yield:workflow:scrape-dtli-show-score",
+      "title": "scrape-dtli-show-score has stopped updating (9 days)",
+      "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-11-15, 9 days ago. It has never before gone quiet for more than 6 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 8d, from 4 productive day(s) / 4 item(s) between 2026-10-17 and 2026-11-15.)",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Last yield",
+          "value": "2026-11-15"
+        },
+        {
+          "name": "Silent for",
+          "value": "9 days (threshold 8)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "arm-yield:workflow:promote-we-aggregator",
+      "title": "promote-we-aggregator has stopped updating (4 days)",
+      "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-11-20, 4 days ago. It has never before gone quiet for more than 1 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 3d, from 27 productive day(s) / 27 item(s) between 2026-10-22 and 2026-11-20.)",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Last yield",
+          "value": "2026-11-20"
+        },
+        {
+          "name": "Silent for",
+          "value": "4 days (threshold 3)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "arm-yield:workflow:discover-opera-shows",
+      "title": "discover-opera-shows has stopped updating (8 days)",
+      "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-11-16, 8 days ago. It has never before gone quiet for more than 6 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 8d, from 3 productive day(s) / 3 item(s) between 2026-10-18 and 2026-11-16.)",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Last yield",
+          "value": "2026-11-16"
+        },
+        {
+          "name": "Silent for",
+          "value": "8 days (threshold 8)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "arm-yield:workflow:discover-regional-serp-reviews",
+      "title": "discover-regional-serp-reviews has stopped updating (8 days)",
+      "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-11-16, 8 days ago. It has never before gone quiet for more than 6 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 8d, from 3 productive day(s) / 3 item(s) between 2026-10-18 and 2026-11-16.)",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Last yield",
+          "value": "2026-11-16"
+        },
+        {
+          "name": "Silent for",
+          "value": "8 days (threshold 8)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:process-feedback.yml",
+      "title": "process-feedback.yml is running 3% of the time it should",
+      "description": "In the last 14 days GitHub started 51 scheduled runs of process-feedback.yml where its cron (*/10 * * * *) calls for 2016. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "51 / 2016 (3%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:send-welcome-emails.yml",
+      "title": "send-welcome-emails.yml is running 4% of the time it should",
+      "description": "In the last 14 days GitHub started 50 scheduled runs of send-welcome-emails.yml where its cron (7,22,37,52 * * * *) calls for 1344. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "50 / 1344 (4%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:replay-push-rescue.yml",
+      "title": "replay-push-rescue.yml is running 14% of the time it should",
+      "description": "In the last 14 days GitHub started 47 scheduled runs of replay-push-rescue.yml where its cron (41 * * * *) calls for 336. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "47 / 336 (14%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:opening-night-completeness-check.yml",
+      "title": "opening-night-completeness-check.yml is running 17% of the time it should",
+      "description": "In the last 14 days GitHub started 111 scheduled runs of opening-night-completeness-check.yml where its cron (*/15 * * * *) calls for 672. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "111 / 672 (17%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:evidence-review-catchup.yml",
+      "title": "evidence-review-catchup.yml is running 24% of the time it should",
+      "description": "In the last 14 days GitHub started 41 scheduled runs of evidence-review-catchup.yml where its cron (17 */2 * * *) calls for 168. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "41 / 168 (24%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:opening-night-broadcast.yml",
+      "title": "opening-night-broadcast.yml is running 25% of the time it should",
+      "description": "In the last 14 days GitHub started 42 scheduled runs of opening-night-broadcast.yml where its cron (30 12 * * *, 41 13-23 * * *) calls for 168. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "42 / 168 (25%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:opening-night-reviews.yml",
+      "title": "opening-night-reviews.yml is running 60% of the time it should",
+      "description": "In the last 14 days GitHub started 67 scheduled runs of opening-night-reviews.yml where its cron (0 5 * * *, 0 17 * * *, 0 2,8,11,14,20,23 * * *) calls for 112. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "67 / 112 (60%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:audit-reverse-discovery.yml",
+      "title": "audit-reverse-discovery.yml is running 63% of the time it should",
+      "description": "In the last 14 days GitHub started 35 scheduled runs of audit-reverse-discovery.yml where its cron (25 4,10,16,22 * * *) calls for 56. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "35 / 56 (63%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:enrich-reviews.yml",
+      "title": "enrich-reviews.yml is running 64% of the time it should",
+      "description": "In the last 14 days GitHub started 37 scheduled runs of enrich-reviews.yml where its cron (30 4,10,16,22 * * *, 30 1 * * 0) calls for 58. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "37 / 58 (64%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:mirror-to-gitlab.yml",
+      "title": "mirror-to-gitlab.yml is running 68% of the time it should",
+      "description": "In the last 14 days GitHub started 38 scheduled runs of mirror-to-gitlab.yml where its cron (0 */6 * * *) calls for 56. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "38 / 56 (68%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-fire-rate:collect-review-texts.yml",
+      "title": "collect-review-texts.yml is running 68% of the time it should",
+      "description": "In the last 14 days GitHub started 30 scheduled runs of collect-review-texts.yml where its cron (30 4,10,18 * * *, 0 0 * * 0) calls for 44. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Fired / expected",
+          "value": "30 / 44 (68%)"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-cancelled:scrape-new-aggregators.yml",
+      "title": "scrape-new-aggregators.yml: 6 of its 13 scheduled runs were cancelled",
+      "description": "Cancelled runs skip failure notification (`if: always()` does not run on cancel), so a workflow killed at its timeout cap or by a concurrency group is silent. 6 of 13 scheduled runs in the last 14 days were cancelled.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Cancelled / scheduled runs",
+          "value": "6 / 13"
+        }
+      ]
+    },
+    {
+      "conditionKey": "cron-cancelled:opening-night-orchestrator.yml",
+      "title": "opening-night-orchestrator.yml: 32 of its 95 scheduled runs were cancelled",
+      "description": "Cancelled runs skip failure notification (`if: always()` does not run on cancel), so a workflow killed at its timeout cap or by a concurrency group is silent. 32 of 95 scheduled runs in the last 14 days were cancelled.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": [
+        {
+          "name": "Cancelled / scheduled runs",
+          "value": "32 / 95"
+        }
+      ]
+    },
+    {
+      "conditionKey": "discovery-caller-missing",
+      "title": "149 review files were ingested with no caller recorded",
+      "description": "Every ingest must name its pipeline; 149 files stamped since 2026-11-22 have source submit-review-form (or similar) and no ingestSource, so the discovery-share report cannot say who found them.",
+      "severity": "error",
+      "url": null,
+      "decision": false,
+      "info": false,
       "decisionPrompt": null,
       "model": null,
       "tracked": null,
       "fields": []
     }
   ],
-  "autoFixedCount": 1,
-  "passedCount": 127,
-  "totalCount": 159
+  "autoFixedCount": 2,
+  "passedCount": 122,
+  "totalCount": 158
 }
