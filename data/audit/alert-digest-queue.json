@@ -1,1 +1,58 @@
-[]
+[
+  {
+    "conditionKey": "priority-queue:overdue",
+    "title": "Overdue P0/P1 queue: 14 P0 older than 24h, 69 P1 older than 7d (still open — BRO-5613)",
+    "description": "Still firing after 52 notifications since it was filed. Tracked at BRO-5613.\n\n15 P0 open (14 older than 24h, oldest 24d); 136 P1 open (69 older than 7d); 490 open issues of any priority.\n\nOldest overdue P0s:\n- BRO-6716 (24d): Every-review backfill: resolve 175 aggregator-cited reviews not live across 1,007 shows opened in the last year, plus 397 shows never gap-audited\n- BRO-6751 (23d): Gap audit runs ~4-8x/day, not hourly: daily slow-market rechecks and the 30-day cap can't hold at ~13 shows/run\n- BRO-7081 (17d): Opening retro: aggregator-cited reviews never discovered cannot recur\n- BRO-7102 (17d): Main stays red too long: escalation that dispatches, auto-revert of breaking landings, per-spec E2E signatures, deduped filing, cause tags\n- BRO-7103 (17d): Continuous improvement loop: detect recurring problem classes, escalate the class to one root-cause card, gate instance closes, check PREVENTION claims\n- BRO-7138 (16d): Done claims that do not hold: prove the effect at close, honest recheck, route failed rechecks back to work\n- BRO-7139 (16d): Board invariant sweep: every open card is ready, machine-rechecked, asked where the owner sees it (with a default), or closed\n- BRO-7150 (16d): Small changes take hours to land: refusals arrive after 20-30 min, catch them locally in seconds\n- BRO-7167 (16d): Opening-night test bench: audit last 20 Broadway openings + sandboxed and time-causal redos with the new lane (plan for owner approval)\n- BRO-7312 (14d): Expected-critics gaps: auto-search and fix before ever telling the owner",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5613",
+    "fields": [],
+    "queuedAt": "2026-11-24T12:35:08.531Z"
+  },
+  {
+    "conditionKey": "coverage-holes:jenufa-off-broadway-2026",
+    "title": "jenufa-off-broadway-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: jenufa-off-broadway-2026/wsj--richard-sasanow.json (stored URL looks like another show: repair the URL)\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T12:35:22.409Z"
+  },
+  {
+    "conditionKey": "coverage-holes:much-ado-about-nothing-2026",
+    "title": "much-ado-about-nothing-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: much-ado-about-nothing-2026/whatsonstage--sarah-crompton.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T12:35:22.519Z"
+  },
+  {
+    "conditionKey": "coverage-holes:hamlet-hail-to-the-thief-off-west-end-2026",
+    "title": "hamlet-hail-to-the-thief-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic) — still happening after 7 days",
+    "description": "Filed BRO-8250: this has been happening for 7+ days without clearing.\n\n- rejected as not-a-review, verification says review: hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8250",
+    "fields": [],
+    "queuedAt": "2026-11-24T12:35:25.144Z"
+  }
+]
