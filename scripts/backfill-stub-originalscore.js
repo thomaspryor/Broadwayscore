@@ -13,9 +13,10 @@ const dry = process.argv.includes('--dry-run');
 const RE = /same article as (\S+\.json) .*carries originalScore the primary lacks/;
 let merged = 0, already = 0, missing = 0, guardRejected = 0;
 const pdir = path.join(ROOT, '_pending');
-for (const showId of fs.readdirSync(pdir)) {
+for (const ent of fs.readdirSync(pdir, { withFileTypes: true })) {
+  if (!ent.isDirectory()) continue;
+  const showId = ent.name;
   const sd = path.join(pdir, showId);
-  if (!fs.statSync(sd).isDirectory()) continue;
   for (const f of fs.readdirSync(sd).filter((x) => x.endsWith('.json'))) {
     let stub; try { stub = JSON.parse(fs.readFileSync(path.join(sd, f), 'utf8')); } catch { continue; }
     const m = RE.exec(String(stub.promoteSkippedReason || ''));
