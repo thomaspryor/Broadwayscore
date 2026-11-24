@@ -5,6 +5,8 @@
  * the primary X (only when it has none) via safeWriteReview. Going forward replay-pending-bylines.js
  * does this merge itself. Usage: node scripts/backfill-stub-originalscore.js [--dry-run]
  */
+const { hasHelpFlag } = require('./lib/cli-help');
+if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/backfill-stub-originalscore.js [--dry-run]  (env REVIEW_TEXTS_DIR overrides the corpus path)'); process.exit(0); }
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
