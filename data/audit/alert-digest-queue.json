@@ -741,18 +741,18 @@
     "queuedAt": "2026-11-24T21:29:11.295Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +18 more). Checked 2026-11-24.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
+    "conditionKey": "express-retry-still-thin:a-christmas-carol-west-end-2026",
+    "title": "Opening Night Express retry still found thin review coverage for a-christmas-carol-west-end-2026",
+    "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — 1/4 scoreable reviews have real text (25%)) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
+    "severity": "warn",
     "url": null,
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-24T22:02:47.150Z"
+    "queuedAt": "2026-11-24T22:10:37.428Z"
   },
   {
     "conditionKey": "t1-gaps:needs-manual-recovery",
