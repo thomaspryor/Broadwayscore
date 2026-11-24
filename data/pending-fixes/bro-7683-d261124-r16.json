@@ -1,0 +1,108 @@
+{
+  "issueNumber": "bro-7683-d261124-r16",
+  "planId": "9646205d-9aff-4314-bab2-57016a295bf8",
+  "status": "pending",
+  "createdAt": "2026-11-24T23:15:29.148Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7683: 3 hub productions reviewed on BroadwayWorld",
+    "steps": [
+      "add hanukkah-spectacular-regional-2026 (BroadwayWorld review 2026-11-23)",
+      "add purpose-geffen-regional-2026 (BroadwayWorld review 2026-11-23)",
+      "add bat-boy-the-musical-regional-2026 (BroadwayWorld review 2026-10-13)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add hanukkah-spectacular-regional-2026 (BroadwayWorld review 2026-11-23)",
+        "show": {
+          "id": "hanukkah-spectacular-regional-2026",
+          "title": "Hanukkah Spectacular",
+          "slug": "hanukkah-spectacular-regional-2026",
+          "venue": "Woolly Mammoth, Washington, DC",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-23",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2026-12-13",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "washington-dc",
+          "discoveredAt": "2026-11-24",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/washington-dc/article/Review-HANUKKAH-SPECTACULAR-at-Woolly-Mammoth-20261123"
+          ],
+          "images": {
+            "poster": "/images/shows/hanukkah-spectacular-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/hanukkah-spectacular-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add purpose-geffen-regional-2026 (BroadwayWorld review 2026-11-23)",
+        "show": {
+          "id": "purpose-geffen-regional-2026",
+          "title": "Purpose",
+          "slug": "purpose-geffen-regional-2026",
+          "venue": "The Geffen Playhouse, Los Angeles, CA",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-23",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2026-12-20",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "los-angeles-ca",
+          "discoveredAt": "2026-11-24",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/los-angeles/article/Review-PURPOSE-at-Geffen-Playhouse-20261123"
+          ],
+          "images": {
+            "poster": "/images/shows/purpose-geffen-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/purpose-geffen-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add bat-boy-the-musical-regional-2026 (BroadwayWorld review 2026-10-13)",
+        "show": {
+          "id": "bat-boy-the-musical-regional-2026",
+          "title": "Bat Boy: The Musical",
+          "slug": "bat-boy-the-musical-regional-2026",
+          "venue": "Umbrella Arts, Concord, MA",
+          "status": "closed",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-13",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2026-11-08",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-24",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/boston/article/Review-An-Uneven-Flight-for-BAT-BOY-THE-MUSICAL-at-Umbrella-Arts-20261013"
+          ],
+          "images": {
+            "poster": "/images/shows/bat-boy-the-musical-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/bat-boy-the-musical-regional-2026/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  }
+}
