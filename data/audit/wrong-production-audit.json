@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T00:31:54.855Z",
+  "timestamp": "2026-11-24T00:47:24.720Z",
   "stats": {
     "totalReviews": 84484,
     "alreadyFlagged": 22529,
     "dateGuardCatches": 242,
-    "directorMismatch": 3887,
+    "directorMismatch": 3888,
     "tvFilmSignals": 2426,
     "londonSignals": 3991,
     "offBroadwaySignals": 789,
     "yearMismatch": 395,
-    "noPublishDate": 8274
+    "noPublishDate": 8275
   },
   "findings": [
     {
@@ -20641,7 +20641,7 @@
       "file": "whatsonstage--alison-brinkworth.json",
       "score": 74,
       "publishDate": "2026-04-29",
-      "url": null,
+      "url": "https://www.whatsonstage.com/news/driftwood-at-the-rscs-the-other-place-review_1719791/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -67596,6 +67596,20 @@
     },
     {
       "showId": "sweet-charity-off-broadway-2016",
+      "file": "cervelli-on-stage--joseph-cervelli.json",
+      "score": 85,
+      "publishDate": "November 25th, 2016",
+      "url": "http://cervellionstage.blogspot.com/2016/11/sweet-charity-sutton-foster-ray-of.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
       "file": "cititour--brian-scott-lipton.json",
       "score": 82,
       "publishDate": "November 20th, 2016",
@@ -107948,7 +107962,7 @@
       "file": "whatsonstage--alex-wood.json",
       "score": 90,
       "publishDate": "2025-06-04",
-      "url": null,
+      "url": "https://www.whatsonstage.com/news/fiddler-on-the-roof-at-the-barbican-theatre-review_1681196/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
