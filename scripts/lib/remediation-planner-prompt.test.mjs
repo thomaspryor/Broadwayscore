@@ -87,3 +87,19 @@ test('verifier context keeps review records', () => {
   const src = fs.readFileSync(path.join(here, '..', 'generate-remediation-plan.js'), 'utf8');
   assert.match(src, /startsWith\('## Review Records'\)/);
 });
+
+// BRO-8209: the "could not plan" email path referenced an undefined `issueUrl`, so the script died
+// with a ReferenceError right after the planner said it could not plan (feedback #1203 replay).
+// node --check cannot see that; eslint's no-undef can.
+test('generate-remediation-plan.js has no undefined identifiers (no-undef)', async () => {
+  const { Linter } = await import('eslint');
+  const src = fs.readFileSync(path.join(here, '..', 'generate-remediation-plan.js'), 'utf8');
+  const linter = new Linter();
+  const nodeGlobals = Object.fromEntries(['require', 'module', 'process', 'console', '__dirname', '__filename', 'Buffer', 'setTimeout', 'clearTimeout', 'fetch', 'URL', 'AbortController'].map((g) => [g, 'readonly']));
+  const messages = linter.verify(src, [{
+    files: ['**/*.js'],
+    languageOptions: { ecmaVersion: 2022, sourceType: 'module', globals: nodeGlobals },
+    rules: { 'no-undef': 'error' },
+  }], { filename: 'generate-remediation-plan.js' });
+  assert.deepEqual(messages.map((m) => `${m.line}: ${m.message}`), []);
+});

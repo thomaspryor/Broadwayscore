@@ -266,6 +266,7 @@ function loadAllShowData(showsArray, title) {
 async function main() {
   const issueBody = process.env.ISSUE_BODY;
   const issueNumber = process.env.ISSUE_NUMBER;
+  const issueUrl = `https://github.com/${process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore'}/issues/${issueNumber}`;
   const fixAction = process.env.FIX_ACTION || 'skipped';
 
   if (!issueBody || !issueNumber) {
