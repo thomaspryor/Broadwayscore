@@ -168,17 +168,20 @@ function buildRegistry(shows) {
   }
   return { akaByTitle, venueByTitle, peopleByTitle, ownersByTitle, openTitles, marketsByTitle, titles, homeVenues, entries };
 }
+// Read through showsJsonPath (BRO-8107) so a test's SHOWS_JSON_PATH fixture is honoured; cached per path.
+let _registryPath; // null while setPressNameShows' injected list is in force
 function registry() {
-  if (!_registry) {
+  const showsPath = require('./shows-json-path').showsJsonPath();
+  if (!_registry || (_registryPath !== null && _registryPath !== showsPath)) {
+    _registryPath = showsPath;
     try {
-      const raw = require(path.join(__dirname, '..', '..', 'data', 'shows.json'));
-      _registry = buildRegistry(Array.isArray(raw) ? raw : raw.shows || []);
+      _registry = buildRegistry(require('./shows-json-path').readShowsList(showsPath));
     } catch (_) { _registry = buildRegistry([]); }
   }
   return _registry;
 }
 /** Tests (or a caller holding its own list) set the registry; null resets it to data/shows.json, read lazily. */
-function setPressNameShows(shows) { _registry = shows ? buildRegistry(shows) : null; }
+function setPressNameShows(shows) { _registry = shows ? buildRegistry(shows) : null; _registryPath = null; }
 /** akaTitles for a billed title (union over shows billed the same). Read once per process. */
 function pressAkaForTitle(title) { return registry().akaByTitle.get(normTitle(title)) || []; }
 /** Venues of the shows billed with this title (for otherProductionCue). */

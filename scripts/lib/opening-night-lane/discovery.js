@@ -27,6 +27,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { showsJsonPath, readShowsList } = require('../shows-json-path');
 const { NOOP_HEALTH, indexBodyProblem, feedBodyProblem } = require('./source-health');
 const { findBWWRoundupLinkOnHomepage } = require('../bww-homepage-scan');
 const { findDTLIShowLinkOnHomepage } = require('../dtli-homepage-scan');
@@ -40,12 +41,15 @@ const HOST_ALIAS = new Map(URL_HOST_ALIASES);
 // BRO-7739: opt-in main-title matching for shows titled with a quoted subtitle ('Blue Man Group “A New Holiday
 // Surprise”': TheaterMania's headline names only 'Blue Man Group'). The matcher needs every show title (closed too) to
 // prove the main title is unique; read once per process. Without data/shows.json the fallback stays off.
+// Read through showsJsonPath (BRO-8107) so a test's SHOWS_JSON_PATH fixture is honoured; cached per path.
 let allShowTitlesCache;
+let allShowTitlesPath;
 function laneMatchOpts() {
-  if (allShowTitlesCache === undefined) {
+  const showsPath = showsJsonPath();
+  if (allShowTitlesCache === undefined || allShowTitlesPath !== showsPath) {
+    allShowTitlesPath = showsPath;
     try {
-      const d = JSON.parse(fs.readFileSync(path.join(__dirname, '../../../data/shows.json'), 'utf8'));
-      allShowTitlesCache = (Array.isArray(d) ? d : d.shows || []).map((x) => x && x.title).filter(Boolean);
+      allShowTitlesCache = readShowsList(showsPath).map((x) => x && x.title).filter(Boolean);
     } catch { allShowTitlesCache = null; }
   }
   return allShowTitlesCache ? { fuzzy: true, mainTitle: true, allShowTitles: allShowTitlesCache } : { fuzzy: true };
@@ -265,8 +269,10 @@ const REVIEW_WITHOUT_WORD_HOSTS = ['theaterpizzazz.com', 'nystagereview.com', 'o
 const PAGE_TAGGED_REVIEW_HOSTS = ['vulture.com'];
 // Whole tags only, and never a bare "review": a page tagged "movie review" or a generic "review" keyword is not a theater review.
 const PAGE_REVIEW_TAG = /^(?:theater review|theatre review|featuretype:review)$/i;
-const decodeTagEntities = (t) => t.replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
-  .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n))).replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&');
+// A code point past 0x10FFFF makes String.fromCodePoint throw RangeError (BRO-5261 S12): keep such an entity as-is.
+const codePointOr = (cp, raw) => (Number.isInteger(cp) && cp >= 0 && cp <= 0x10ffff ? String.fromCodePoint(cp) : raw);
+const decodeTagEntities = (t) => t.replace(/&#x([0-9a-f]+);/gi, (m, h) => codePointOr(parseInt(h, 16), m))
+  .replace(/&#(\d+);/g, (m, n) => codePointOr(Number(n), m)).replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&');
 
 /** True when the article page's own tag metadata (article:tag, parsely-tags, keywords) names it a review. */
 function pageTagsSayReview(html) {

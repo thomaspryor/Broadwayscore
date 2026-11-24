@@ -7,7 +7,9 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const d = require('../../scripts/lib/opening-night-lane/discovery.js');
 
-const SHOW = { id: 'its-a-wonderful-life-a-live-radio-play-2026', title: "It's a Wonderful Life: A Live Radio Play", category: 'broadway' };
+const SHOW = { id: 'its-a-wonderful-life-a-live-radio-play-2026', title: "It's a Wonderful Life: A Live Radio Play", category: 'broadway', akaTitles: ["It's a Wonderful Life"] };
+// Fixture shows.json so this blocking test never reads live core data (BRO-7101 live-data-lane gate).
+process.on('exit', require('../../scripts/lib/shows-json-fixture.js').useShowsFixture([SHOW]));
 const NIGHT = '2026-11-23';
 const INDEX = 'https://www.vulture.com/theater/';
 const REVIEW = 'https://www.vulture.com/article/its-a-wonderful-life-on-broadway-god-help-us-every-one.html';
@@ -121,4 +123,9 @@ test('a redirected page, or a direct-only page with no date, is never a tag verd
   const directOnly = await withPage({ content: '<html>Just a moment...</html>', finalUrl: REVIEW, laneDirectOnly: true });
   assert.equal(directOnly.admitted.length, 0);
   assert.ok(directOnly.deferredDateChecks.includes(REVIEW) || directOnly.deferredDateChecks.includes(d.canonicalUrl(REVIEW)));
+});
+
+test('an out-of-range numeric entity in a tag is kept as text, never a RangeError', () => {
+  assert.equal(d.pageTagsSayReview('<meta property="article:tag" content="&#99999999;, Theater Review">'), true);
+  assert.equal(d.pageTagsSayReview('<meta property="article:tag" content="&#x110000;">'), false);
 });
