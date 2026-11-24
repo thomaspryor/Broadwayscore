@@ -247,7 +247,7 @@ function extractByline(html, { outletId, text } = {}) {
         if (!/\s/.test(name) && /^\s*[,&]/.test(html.slice(m.index + m[0].length))) continue;
       }
       // "Review by Stuart Miller..." leaves the first dot on the last word; an initial ("J.") keeps it.
-      if (re === REVIEW_BY_PARA_RE) name = name.replace(/([A-Za-z'’-]{2,})\.$/, (m, w) => (/^(?:Jr|Sr)$/.test(w) ? m : w));
+      if (re === REVIEW_BY_PARA_RE) name = name.replace(/([A-Za-z\u00C0-\u024F'’-]{2,})\.$/, (m, w) => (/^(?:Jr|Sr)$/.test(w) ? m : w));
       if ((re === INLINE_BY_RE || re === SIGN_OFF_RE || re === REVIEW_BY_PARA_RE) && !looksLikeProseName(name)) continue;
       // Capitalize lowercase author slugs from class="author-name" (e.g. "ross" → "Ross").
       if (/^[a-z][a-z\s.'’-]*$/.test(name)) {

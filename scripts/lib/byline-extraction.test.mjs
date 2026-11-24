@@ -235,6 +235,7 @@ test('a paragraph that is only "Review by Name . . ." is the byline on Theater P
   assert.equal(tp('Review by Mary O&#x2019;Hara'), 'Mary O’Hara');
   assert.equal(extractByline(page('Review by Stuart Miller'), { outletId: 'theatre-pizzazz' }), 'Stuart Miller');
   assert.equal(tp('Review by José Rivera . . .'), 'José Rivera');
+  assert.equal(tp('Review by Ana Peña.'), 'Ana Peña');
   assert.equal(tp('Review by Mary Ann Jane Smith'), 'Mary Ann Jane Smith');
   // A related-posts teaser on Theater Pizzazz itself is not the byline: the credit must be a <p>.
   assert.equal(extractByline('<div><a href="/x">Review by Jane Smith</a></div>' + page('Review by Stuart Miller'), { outletId: 'theater-pizzazz' }), 'Stuart Miller');
