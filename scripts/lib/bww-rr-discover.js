@@ -319,6 +319,7 @@ async function _fetchReviewsPageAnchorsUncached() {
       caller: 'bww-rr-discover.js',
       purpose: 'BWW reviews.php Cloudflare bypass',
       host: 'broadwayworld.com',
+      url: REVIEWS_PAGE_URL,
       category: 'discovery',
       body: { browserSettings: { solveCaptchas: true, fingerprint: { locales: ['en-US'], operatingSystems: ['macos'] } } },
     });
