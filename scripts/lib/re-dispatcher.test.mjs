@@ -35,7 +35,8 @@ test('BRO-3867/BRO-6751: workflows with a tighter re-dispatch band declare it', 
   const byWf = Object.fromEntries(parseCriticalCronEntries(yaml).map((e) => [e.workflow, e]));
   const want = { 'audit-aggregator-gap.yml': 1, // BRO-6751: throughput band, see the yml
      'check-opening-night-drift.yml': 2, 'opening-night-checklist.yml': 3, 'opening-night-express-retry-check.yml': 3, 'social-autopost.yml': 1,
-     'reconcile-broadcast-state.yml': 6 }; // BRO-7623
+     'reconcile-broadcast-state.yml': 6, // BRO-7623
+     'publish-show-refresh.yml': 0.5 }; // BRO-8233
   for (const [wf, h] of Object.entries(want)) {
     const text = fs.readFileSync(path.join(ROOT, '.github/workflows', wf), 'utf8');
     assert.ok(acceptsRedispatch(text), `${wf} must accept redispatch`);
@@ -124,6 +125,17 @@ test('a schedule with no scheduled run in 7 days is flagged dead', () => {
   assert.equal(isScheduleDead(null, NOW), true);
   assert.equal(isScheduleDead(hoursAgo(24 * 8), NOW), true);
   assert.equal(isScheduleDead(hoursAgo(30), NOW), false);
+});
+
+test('BRO-8233: a never-fired schedule is not dead while the workflow is under 7 days old', () => {
+  assert.equal(isScheduleDead(null, NOW, hoursAgo(4)), false);
+  assert.equal(isScheduleDead(null, NOW, hoursAgo(24 * 2)), false);
+  assert.equal(isScheduleDead(null, NOW, hoursAgo(24 * 8)), true);
+  // created_at unknown (workflow listing failed) or unparseable: still dead, never silently healthy.
+  assert.equal(isScheduleDead(null, NOW, undefined), true);
+  assert.equal(isScheduleDead(null, NOW, 'not-a-date'), true);
+  // The grace never covers a schedule that did fire and then stopped.
+  assert.equal(isScheduleDead(hoursAgo(24 * 8), NOW, hoursAgo(4)), true);
 });
 
 test('every live opted-in workflow treats redispatched=true as its scheduled run', () => {

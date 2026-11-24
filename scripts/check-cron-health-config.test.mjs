@@ -21,7 +21,7 @@ const entries = new Map(rows);
 // BRO-3867 (2026-10-22) widened both to 12h after measuring the throttled real
 // cadence (success-run gap max 12.1h / 11.4h over 21 days). Still well under the
 // 36h generic daily band, so a dead carrier is caught at the next daily check.
-const EXPECTED = { 'audit-aggregator-gap.yml': [12, 12], 'opening-night-reviews.yml': [12, 12], 'owner-decision-emails.yml': [13, 13], 'visual-approval-land.yml': [13, 13] };
+const EXPECTED = { 'audit-aggregator-gap.yml': [12, 12], 'opening-night-reviews.yml': [12, 12], 'owner-decision-emails.yml': [13, 13], 'visual-approval-land.yml': [13, 13], 'publish-show-refresh.yml': [13, 13] };
 
 for (const [wf, [lo, hi]] of Object.entries(EXPECTED)) {
   test(`${wf} is in CRITICAL_CRONS with sane max_hours`, () => {
@@ -36,3 +36,12 @@ for (const [wf, [lo, hi]] of Object.entries(EXPECTED)) {
     assert.ok(!parseExemptList(exempt).has(wf));
   });
 }
+
+// BRO-8233: the coverage audit only WARNS on an exempt entry that is also in CRITICAL_CRONS, and
+// opening-night-completeness-check.yml sat in both for weeks after BRO-7934. Every entry, not only
+// the pinned ones above, must leave the exempt list when it joins CRITICAL_CRONS.
+test('no CRITICAL_CRONS entry is also in .cron-health-exempt.txt', () => {
+  const ex = parseExemptList(exempt);
+  const both = rows.map(([wf]) => wf).filter((wf) => ex.has(wf));
+  assert.deepEqual(both, [], `remove from .cron-health-exempt.txt: ${both.join(', ')}`);
+});

@@ -55,14 +55,20 @@ function sweepTimes() {
   return { myCreatedAt: runs[idx].created_at, prevRunCreatedAt: prev ? prev.created_at : null };
 }
 
-function workflowStates() {
-  const out = {};
+// state ('active', 'disabled_manually', ...) and created_at (when GitHub first
+// registered the file; isScheduleDead's grace for a brand-new cron) per file.
+function workflowRecords() {
+  const states = {};
+  const createdAt = {};
   for (let page = 1; page <= 10; page++) {
     const rows = ghJson(`repos/${repo}/actions/workflows?per_page=100&page=${page}`).workflows || [];
-    for (const w of rows) out[path.basename(w.path)] = w.state;
+    for (const w of rows) {
+      states[path.basename(w.path)] = w.state;
+      createdAt[path.basename(w.path)] = w.created_at || null;
+    }
     if (rows.length < 100) break;
   }
-  return out;
+  return { states, createdAt };
 }
 
 function main() {
@@ -82,7 +88,8 @@ function main() {
     if (fs.existsSync(p)) workflowYaml[e.workflow] = fs.readFileSync(p, 'utf8');
   }
   let states = {};
-  try { states = workflowStates(); } catch (e) { console.log(`state query failed: ${e.message.split('\n')[0]}`); }
+  let createdAt = {};
+  try { ({ states, createdAt } = workflowRecords()); } catch (e) { console.log(`state query failed: ${e.message.split('\n')[0]}`); }
 
   const lastRuns = {};
   for (const e of entries) {
@@ -115,7 +122,7 @@ function main() {
     }
     try {
       const sr = ghJson(`repos/${repo}/actions/workflows/${d.workflow}/runs?event=schedule&branch=main&per_page=1`).workflow_runs || [];
-      if (isScheduleDead(sr[0] && sr[0].created_at)) {
+      if (isScheduleDead(sr[0] && sr[0].created_at, Date.now(), createdAt[d.workflow])) {
         dead.push(d.name);
         lines.push(`  - its schedule has not fired in ${SCHEDULE_DEAD_DAYS}d (last: ${sr[0] ? sr[0].created_at : 'never'}); kept alive only by re-dispatch`);
       }
