@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-24T10:40:21.804Z",
+  "generatedAt": "2026-11-24T12:53:43.648Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 374,
-  "clean": 374,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 373,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "seven-guitars-off-broadway-2026",
+      "title": "Seven Guitars",
+      "openingDate": "2026-11-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.04 vs local 82.99 (Δ1.05)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-11-24T12:53:33.255Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

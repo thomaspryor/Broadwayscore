@@ -54,5 +54,267 @@
     "tracked": "BRO-8250",
     "fields": [],
     "queuedAt": "2026-11-24T12:35:25.144Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8220-impact-outage",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8220-impact-outage",
+    "description": "land.yml did not land land/bro-8220-impact-outage: the scripts-lib-tests gate went red at dceef96484. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45300170931",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8220-impact-outage"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "dceef964845a8cb311a41a0447f47a9e861981a3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45300170931"
+      }
+    ],
+    "queuedAt": "2026-11-24T01:20:29.887Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/compute-critic-score.test.mjs::real-data smoke test — a Gold-List-worthy show produces a plausible score",
+    "title": "Live-data test failing: real-data smoke test — a Gold-List-worthy show produces a plausible score (tests/unit/compute-critic-score.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real-data smoke test — a Gold-List-worthy show produces a plausible score\" in tests/unit/compute-critic-score.test.mjs is red against the live corpus.\n\nparity drift: gold-list has 87 but compute now gives 86.48 for downstate-2026",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/compute-critic-score.test.mjs::real-data smoke test — a Gold-List-worthy show produces a plausible score",
+    "fields": [],
+    "queuedAt": "2026-11-24T03:14:14.398Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:a-clockwork-orange-a-play-with-music-regional-2026",
+    "title": "Shipped review missing publishDate on A Clockwork Orange: A Play with Music",
+    "description": "around-the-town-chicago/null SHIPPED with no publishDate — cannot confirm post-opening: https://aroundthetownchicago.com/theatre-reviews/a-clockwork-orange-a-play-with-music/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T04:16:12.284Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-8228-mwu5emsk",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-8228-mwu5emsk",
+    "description": "land.yml did not land land/job/linear-BRO-8228-mwu5emsk: the unit-tests-node gate went red at 84376dec2e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45322186471",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-8228-mwu5emsk"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "84376dec2eadc79f91c85f5609b7ce7260b58d88"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45322186471"
+      }
+    ],
+    "queuedAt": "2026-11-24T04:19:47.018Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-8230",
+    "title": "Watchdog parked #linear:BRO-8230 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Recheck 2026-11-24: 1 done claim no longer hold on main\" was claimed for redispatch at 2026-11-24T03:56:35.375Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-8230), then re-arm with node scripts/linear-next.js --id BRO-8230 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T04:13:01.750Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-8092",
+    "title": "Watchdog parked #linear:BRO-8092 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Root-cause audit, gap-recovery fixes from session 12bb3cbc: BRO-7171 7569 7702 7942 7943 7962 7986 7996 7997 8000 7922 7705\" was claimed for redispatch at 2026-11-24T04:01:49.765Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-8092), then re-arm with node scripts/linear-next.js --id BRO-8092 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T04:17:24.179Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8232-vulture-page-tag",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8232-vulture-page-tag",
+    "description": "land.yml did not land land/bro-8232-vulture-page-tag: the unit-tests-node gate went red at 6c3b699eba. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45335245379",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8232-vulture-page-tag"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6c3b699ebabd69632860d46f2e39eaf6a67bdcf7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45335245379"
+      }
+    ],
+    "queuedAt": "2026-11-24T06:05:51.877Z"
+  },
+  {
+    "conditionKey": "opening-night-lane-auto-fallback:its-a-wonderful-life-a-live-radio-play-2026:2026-11-23",
+    "title": "Opening-night lane died for its-a-wonderful-life-a-live-radio-play-2026 (2026-11-23); the old path took over",
+    "description": "The lane watchdog found the lane dead (lane run never claimed the lease within 30 min of its start). It released the dead lease (none was held) and dispatched the old path (opening-night-orchestrator.yml for this show) once. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45335813148",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45335813148",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T06:16:28.805Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-24.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T07:28:31.053Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does#54f27d9304",
+    "title": "Test red on main: the same week in the Broadway edition does not get the West End exception [testCodeFailure]",
+    "description": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8233-redispatch. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45344940667",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45344940667"
+      }
+    ],
+    "queuedAt": "2026-11-24T07:28:53.021Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception",
+    "title": "Live-data test failing: the same week in the Broadway edition does not get the West End exception (scripts/newsletter/editorial-overrides.generate.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the same week in the Broadway edition does not get the West End exception\" in scripts/newsletter/editorial-overrides.generate.test.mjs is red against the live corpus.\n\nThe expression evaluated to a falsy value:\n\nassert.ok(!meta.openingShows.some((s) => s.id === PRIDE))\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception",
+    "fields": [],
+    "queuedAt": "2026-11-24T07:48:45.484Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-afronauts-west-end-2026",
+    "title": "Auto-remediation gave up on the-afronauts-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-afronauts-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T11:02:18.918Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:a-clockwork-orange-a-play-with-music-regional-2026",
+    "title": "Auto-remediation gave up on a-clockwork-orange-a-play-with-music-regional-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"a-clockwork-orange-a-play-with-music-regional-2026\",\"category\":\"regional\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T11:02:19.006Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-24.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T12:53:15.969Z"
   }
 ]

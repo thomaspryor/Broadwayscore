@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T10:40:22.161Z",
+  "generatedAt": "2026-11-24T12:53:44.087Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -160,12 +160,25 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "the-knockturnal",
+      "error": "HTTP 403 for https://theknockturnal.com/feed/"
     }
   ],
-  "itemsScanned": 921,
-  "matchedGaps": 1,
+  "itemsScanned": 906,
+  "matchedGaps": 2,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "all-the-world-regional-2026",
+      "title": "All the World",
+      "level": "matched",
+      "outletId": "chicagotribune",
+      "url": "https://www.chicagotribune.com/2026/11/24/review-all-world-northlight-theatre/",
+      "headline": "Review: ‘All the World’ at Northlight Theatre is a sweet tribute to those on stage",
+      "publishDate": "2026-11-24"
+    },
     {
       "showId": "the-afronauts-west-end-2026",
       "title": "The Afronauts",
