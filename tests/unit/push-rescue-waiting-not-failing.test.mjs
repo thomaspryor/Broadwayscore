@@ -25,7 +25,7 @@ test('workflow reports waiting branches through a parked Linear card, not notify
   assert.match(wf, /id: prune/);
   assert.match(wf, /steps\.prune\.outputs\.waiting/);
   const step = wf.slice(wf.indexOf('Report branches waiting for a person'));
-  const body = step.slice(0, 1800);
+  const body = step.split('- name:')[0];
   assert.match(body, /linear-brain\.js create/);
   assert.match(body, /LINEAR_API_KEY/);
   assert.doesNotMatch(body, /uses:.*notify-failure/, 'notify-failure only delivers for severity=critical; a warning there is silent');
