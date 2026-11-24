@@ -1266,6 +1266,16 @@ autostash_is_regenerated() {
   return 1
 }
 
+# BRO-4688: autostash=latest-wins is for a per-day snapshot (exclusion-daily-totals.json):
+# past days are never recomputed so both sides carry them identically, and a
+# same-day clash is two equally fresh runs of today, so upstream's copy stands.
+# Unlike regenerated it still tries the key-wise merge first and is not read by merge-keep-run.sh.
+autostash_keeps_upstream() {
+  autostash_is_regenerated "$1" && return 0
+  case "$(git check-attr autostash -- "$1" 2>/dev/null)" in *": autostash: latest-wins") return 0 ;; esac
+  return 1
+}
+
 # Put the snapshot back onto whatever HEAD this run ended on. Per path:
 #  - someone else edited it on disk during the run (local sessions can share a
 #    worktree): leave theirs alone, keep the ref, say so;
@@ -1339,7 +1349,7 @@ restore_autostash() {
       # regenerations is a snapshot no generator wrote.
       merged=1; restored+=("$p")
     elif [ "${GITHUB_ACTIONS:-}" = "true" ] && [ "${PUSH_AUTOSTASH_REGENERATED_QUIET:-1}" != "0" ] \
-         && autostash_is_regenerated "$p"; then
+         && autostash_keeps_upstream "$p"; then
       # BRO-4688: upstream's copy is an equally fresh regeneration of a file the
       # CI caller either committed before pushing or never commits, so keeping
       # it loses nothing. Not a conflict row: these were ~90% of the ~100/day

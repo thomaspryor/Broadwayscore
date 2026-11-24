@@ -238,4 +238,25 @@ for mode in append plain; do
   else echo "PASS[11 $mode]: append-only array restore ($mode)"; fi
 done
 
+# ── Case 12: per-day snapshot (BRO-4688, autostash=latest-wins) ─────────────
+for mode in latest plain; do
+  n="c12$mode"; setup "$n"
+  [ "$mode" = latest ] && printf 'days.json autostash=latest-wins\n' > "$TMP/$n-work/.gitattributes"
+  printf '{\n  "days": {\n    "d1": {"n":1}\n  }\n}\n' > "$TMP/$n-work/days.json"
+  git -C "$TMP/$n-work" add -A; git -C "$TMP/$n-work" commit -q -m days; git -C "$TMP/$n-work" push -q origin HEAD:main
+  git -C "$TMP/$n-racer" fetch -q origin && git -C "$TMP/$n-racer" reset -q --hard origin/main
+  printf '{\n  "days": {\n    "d1": {"n":1},\n    "d2": {"n":7}\n  }\n}\n' > "$TMP/$n-racer/days.json"
+  printf '{\n  "days": {\n    "d1": {"n":1},\n    "d2": {"n":5}\n  }\n}\n' > "$TMP/$n-work/days.json.new"
+  race "$n"
+  printf 'local2\n' > "$TMP/$n-work/local2.txt"; git -C "$TMP/$n-work" add local2.txt; git -C "$TMP/$n-work" commit -q -m local2
+  mv "$TMP/$n-work/days.json.new" "$TMP/$n-work/days.json"
+  out=$( cd "$TMP/$n-work" && GITHUB_ACTIONS=true PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
+  if [ "$rc" -ne 0 ]; then echo "FAIL[12 $mode]: rc=$rc"; echo "$out" | tail -5; fail=1
+  elif [ "$mode" = latest ] && { ! grep -q '"n":7' "$TMP/$n-work/days.json" || grep -q '"n":5' "$TMP/$n-work/days.json" || grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; }; then
+    echo "FAIL[12 latest]: same-day clash keeps upstream, no conflict row"; cat "$TMP/$n-work/days.json"; fail=1
+  elif [ "$mode" = plain ] && ! grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; then
+    echo "FAIL[12 plain]: without the attribute a same-day clash must still be recorded"; fail=1
+  else echo "PASS[12 $mode]: per-day snapshot restore ($mode)"; fi
+done
+
 exit $fail
