@@ -1,39 +1,13 @@
 {
-  "generatedAt": "2026-11-24T18:16:12.412Z",
+  "generatedAt": "2026-11-24T19:25:26.261Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 378,
-  "clean": 377,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "openingDate": "2026-11-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: whatsonstage"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.22 vs local 81.74 (Δ0.48)"
-        }
-      ],
-      "missingFromProd": [
-        "whatsonstage"
-      ],
-      "localCount": 5,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-24T18:16:06.661Z"
-    }
-  ],
+  "clean": 378,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

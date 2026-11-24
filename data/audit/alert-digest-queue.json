@@ -532,20 +532,6 @@
     "queuedAt": "2026-11-24T17:22:45.993Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-24.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-24T18:15:50.661Z"
-  },
-  {
     "conditionKey": "opening-night-review-cards-complete-a-christmas-carol-west-end-2026",
     "title": "Review cards missing outlet name or quote on A Christmas Carol",
     "description": "2/5 review card(s) missing outlet name or quote (2 no outlet, 4 no criticName, 4 no publishDate)",
@@ -617,6 +603,20 @@
       }
     ],
     "queuedAt": "2026-11-24T18:11:19.064Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-24.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T19:25:04.596Z"
   },
   {
     "conditionKey": "corpus-drift:monitor-only",

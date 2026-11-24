@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T18:16:12.851Z",
+  "generatedAt": "2026-11-24T19:25:26.694Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -163,10 +163,6 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -187,26 +183,17 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 914,
-  "matchedGaps": 2,
+  "itemsScanned": 927,
+  "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
     {
-      "showId": "all-the-world-regional-2026",
-      "title": "All the World",
+      "showId": "attention-off-west-end-2026",
+      "title": "Attention",
       "level": "matched",
-      "outletId": "chicagotribune",
-      "url": "https://www.chicagotribune.com/2026/11/24/review-all-world-northlight-theatre/",
-      "headline": "Review: ‘All the World’ at Northlight Theatre is a sweet tribute to those on stage",
-      "publishDate": "2026-11-24"
-    },
-    {
-      "showId": "in-my-own-little-world-off-west-end-2026",
-      "title": "In My Own Little World",
-      "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-in-my-own-little-world-riverside-studios",
-      "headline": "Review: In My Own Little World (Riverside Studios)",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/attention-bush-theatre-london/",
+      "headline": "Attention- Bush Theatre, London",
       "publishDate": "2026-11-24"
     },
     {
