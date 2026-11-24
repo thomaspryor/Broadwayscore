@@ -66,7 +66,9 @@ jobs:
         with:
           ref: main
 
-      - uses: ./.github/actions/setup-node
+      - name: Setup node
+        if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
+        uses: ./.github/actions/setup-node
 
       - name: Checkout core data
         if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'

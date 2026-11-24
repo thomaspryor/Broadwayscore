@@ -190,7 +190,7 @@ test('publish-show-refresh.yml: the DISABLED switch gates work steps, not the jo
   const wf = yaml.load(fs.readFileSync(path.join(dir, 'publish-show-refresh.yml'), 'utf8'));
   const job = wf.jobs.publish;
   assert.equal(job.if, undefined, 'no job-level if: a run whose only job is skipped is not a success');
-  for (const name of ['Checkout core data', 'Publish', 'Upload report']) {
+  for (const name of ['Setup node', 'Checkout core data', 'Publish', 'Upload report']) {
     const st = job.steps.find((x) => x.name === name);
     assert.ok(st && String(st.if).includes("vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'"), `${name} gated on SHOW_REFRESH_PUBLISH_DISABLED`);
   }
