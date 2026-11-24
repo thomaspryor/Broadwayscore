@@ -5,7 +5,7 @@
  *
  * Run: npx tsx --test tests/unit/show-refresh-manifest-route.test.ts
  */
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'fs';
 import os from 'os';
@@ -24,9 +24,13 @@ const { buildManifest: buildManifestLib, invalidManifest } = require('../../scri
 const ROUTE = path.join(__dirname, '..', '..', 'src', 'app', 'api', 'show-refresh', 'manifest', 'route.ts');
 const LIB = path.join(__dirname, '..', '..', 'src', 'lib', 'show-refresh.ts');
 
+const tmpDirs: string[] = [];
+after(() => { for (const d of tmpDirs) fs.rmSync(d, { recursive: true, force: true }); });
+
 /** Load the route fresh (buildManifest memoizes per module instance) with cwd at a temp repo. */
 async function getWith(manifest: unknown) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sr-route-'));
+  tmpDirs.push(dir);
   fs.mkdirSync(path.join(dir, 'data'));
   if (manifest !== undefined) fs.writeFileSync(path.join(dir, 'data', 'show-refresh-manifest.json'), JSON.stringify(manifest));
   const cwd = process.cwd();

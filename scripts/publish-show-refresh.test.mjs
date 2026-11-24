@@ -4,12 +4,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { parseArgs, readFlagged, loadManifest, main, codeMatchOf, rebuildStepAllowed, DEFAULT_MANIFEST_URL } from './publish-show-refresh.ts';
 
-const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'publish-show-refresh-'));
+import tmpLib from './lib/tmpdir-for-tests.js';
+const tmp = (t) => tmpLib.makeTmpDir(t, 'publish-show-refresh-');
 const quiet = async (fn) => {
   const { log, error } = console;
   console.log = () => {}; console.error = () => {};
@@ -32,8 +32,8 @@ test('parseArgs: dry-run by default, the workflow flags, and typos refused', () 
   assert.throws(() => parseArgs(['--cap=-1']), /cap/);
 });
 
-test('readFlagged reads whitespace-separated ids; a missing file is no flags', () => {
-  const dir = tmp();
+test('readFlagged reads whitespace-separated ids; a missing file is no flags', (t) => {
+  const dir = tmp(t);
   const f = path.join(dir, 'flagged.txt');
   fs.writeFileSync(f, 'a b\nc\n\n');
   assert.deepEqual([...readFlagged(f)], ['a', 'b', 'c']);
@@ -50,8 +50,8 @@ test('loadManifest never throws: a 404 URL and a missing file come back as error
   assert.ok(missing.error);
 });
 
-test('an unusable or unreachable manifest exits 0 with outcome manifest-unusable', async () => {
-  const dir = tmp();
+test('an unusable or unreachable manifest exits 0 with outcome manifest-unusable', async (t) => {
+  const dir = tmp(t);
   const report = path.join(dir, 'r.json');
   const code = await quiet(() => main([`--manifest=${path.join(dir, 'missing.json')}`, `--report=${report}`], {}));
   assert.equal(code, 0);
@@ -62,8 +62,8 @@ test('an unusable or unreachable manifest exits 0 with outcome manifest-unusable
   assert.equal(JSON.parse(fs.readFileSync(report, 'utf8')).outcome, 'manifest-unusable');
 });
 
-test('--write exits 2 outside CI or without the service key; unusable manifest in CI exits 0 with no write', async () => {
-  const dir = tmp();
+test('--write exits 2 outside CI or without the service key; unusable manifest in CI exits 0 with no write', async (t) => {
+  const dir = tmp(t);
   const report = path.join(dir, 'r.json');
   assert.equal(await quiet(() => main(['--write', `--report=${report}`], {})), 2);
   assert.match(JSON.parse(fs.readFileSync(report, 'utf8')).reason, /outside GitHub Actions/);
@@ -77,8 +77,8 @@ test('--write exits 2 outside CI or without the service key; unusable manifest i
   assert.equal(await quiet(() => main(['--bogus'], {})), 2);
 });
 
-test('--write refuses (code-mismatch, exit 0, nothing written) unless the code is the deployed commit', async () => {
-  const dir = tmp();
+test('--write refuses (code-mismatch, exit 0, nothing written) unless the code is the deployed commit', async (t) => {
+  const dir = tmp(t);
   const report = path.join(dir, 'r.json');
   const man = path.join(dir, 'm.json');
   const shaA = 'a'.repeat(40);
@@ -95,8 +95,8 @@ test('--write refuses (code-mismatch, exit 0, nothing written) unless the code i
   assert.equal(r.outcome, 'code-mismatch');
 });
 
-test('codeMatchOf: data-only commits since the deploy match; a code change or an unknown commit does not', () => {
-  const dir = tmp();
+test('codeMatchOf: data-only commits since the deploy match; a code change or an unknown commit does not', (t) => {
+  const dir = tmp(t);
   const git = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
   git('init', '-q');
   git('config', 'user.email', 't@example.invalid'); git('config', 'user.name', 't');
