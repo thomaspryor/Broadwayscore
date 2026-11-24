@@ -1883,6 +1883,8 @@ describe('BRO-8221: url-less Theatre Record stub in a 3+ entry title family reho
   test('a different-market sibling is not corroborated by the archive year', () => {
     const us = { ...BR, category: 'broadway' };
     assert.equal(T.noUrlStubVerdict(stub, ctx({ allShows: [NC, us, fam[2], fam[3]] })), null);
+  });
+});
 
 // BRO-8218: a same-article url-variant stub's originalScore is merged onto the primary (only when it has none).
 describe('BRO-8218: same-article stub star rating merges into the primary', () => {
