@@ -40,7 +40,7 @@ BEGIN
         url := cfg.url,
         headers := jsonb_build_object('Content-Type', 'application/json', 'x-kick-secret', cfg.secret),
         body := '{}'::jsonb,
-        timeout_milliseconds := 5000
+        timeout_milliseconds := 20000
       );
     END IF;
   EXCEPTION WHEN OTHERS THEN

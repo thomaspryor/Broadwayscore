@@ -9,7 +9,7 @@ register('./next-subpath-loader.mjs', import.meta.url);
 
 async function callRoute({ secret = 'sek', queued = 0, pending = 0, dispatchStatus = 204, env = {} }) {
   const saved = { ...process.env };
-  Object.assign(process.env, { MONEY_WELCOME_KICK_SECRET: 'sek', GH_DISPATCH_TOKEN: 'gh', ...env });
+  Object.assign(process.env, { MONEY_WELCOME_KICK_SECRET: 'sek', GH_DISPATCH_TOKEN: 'gh', MONEY_WELCOME_KICK_COOLDOWN_MS: '0', ...env });
   for (const k of Object.keys(env)) if (env[k] === null) delete process.env[k];
   const realFetch = globalThis.fetch;
   const calls = [];
@@ -56,5 +56,13 @@ test('queued/pending run skips; GitHub failure is 502; unconfigured is 503', asy
   assert.equal(dispatches(await callRoute({ queued: 1 })).length, 0);
   assert.equal(dispatches(await callRoute({ pending: 1 })).length, 0);
   assert.equal((await callRoute({ dispatchStatus: 403 })).status, 502);
-  assert.equal((await callRoute({ env: { MONEY_WELCOME_KICK_SECRET: null } })).status, 503);
+  assert.equal((await callRoute({ env: { GH_DISPATCH_TOKEN: null } })).status, 503);
+  assert.equal((await callRoute({ env: { MONEY_WELCOME_KICK_SECRET: null } })).status, 401, 'secret checked before config reveal');
+});
+
+test('cooldown: a second authorized kick inside the window dispatches nothing', async () => {
+  const a = await callRoute({ env: { MONEY_WELCOME_KICK_COOLDOWN_MS: '60000' } });
+  const b = await callRoute({ env: { MONEY_WELCOME_KICK_COOLDOWN_MS: '60000' } });
+  assert.equal(a.json.acted, true);
+  assert.deepEqual([b.json.acted, b.json.reason, dispatches(b).length], [false, 'cooldown', 0]);
 });
