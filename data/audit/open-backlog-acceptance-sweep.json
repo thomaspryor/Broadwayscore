@@ -1,18 +1,42 @@
 {
-  "generatedAt": "2026-11-24T03:58:39.313Z",
+  "generatedAt": "2026-11-24T12:42:57.298Z",
   "shadow": true,
-  "checkoutSha": "1d59a6523d13e6b563efb15955880443d349d746",
-  "totalCandidates": 483,
-  "eligibleCandidates": 173,
+  "checkoutSha": "407048f78aa4d5061bb4478dfc78b071065aba61",
+  "totalCandidates": 487,
+  "eligibleCandidates": 184,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 14,
-    "fail": 11,
-    "unverifiable": 5
+    "pass": 11,
+    "fail": 16,
+    "unverifiable": 3
   },
   "alreadyDone": [
+    {
+      "id": "BRO-8237",
+      "name": "Land push with [skip ci] in the commit message never starts land.yml; wait-for-land waits silently",
+      "verifyCmd": "node --test scripts/lib/wait-for-land.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8235",
+      "name": "Move job-level vars.*_DISABLED kill switches to step level in 4 CRITICAL_CRONS workflows (skipped run reads as stale)",
+      "verifyCmd": "node --test scripts/check-cron-health-config.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8234",
+      "name": "check-cron-health red 3 runs running: Replay Push Rescue stale 98h + deploy-frequency 129/24h",
+      "verifyCmd": "node scripts/audit-cron-health-coverage.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-8233",
+      "name": "BRO-8056 phase 4 prereq: cron-redispatch coverage for publish-show-refresh + prove rebuild-fast publish path",
+      "verifyCmd": "node --test scripts/lib/re-dispatcher.test.mjs scripts/check-cron-health-config.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-8224",
       "name": "Blogger Dynamic Views fallback: wire into collector paths + guard BWW 'New York Theatre Review' typo label",
@@ -32,6 +56,12 @@
       "detail": null
     },
     {
+      "id": "BRO-8196",
+      "name": "Auto-date past-run 'announced' rows that have no dates but collected reviews (stale-announced subclass B)",
+      "verifyCmd": "node --test scripts/enrich-off-broadway-dates.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-8179",
       "name": "P1: /private/tmp fills ~20GB/day with test and session temp litter (384k items, 40GB) — nothing reaps it",
       "verifyCmd": "node --test scripts/lib/reap-temp-checkouts.test.mjs",
@@ -48,62 +78,44 @@
       "name": "Calibrate the function trace-size gate against packaged .func sizes, then arm it",
       "verifyCmd": "node --test scripts/lib/check-function-trace-size.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-8123",
-      "name": "Move shows.json-only LIVE-DATA-LANE tests back to the blocking lane via useShowsFixture",
-      "verifyCmd": "node --test tests/unit/live-data-lane.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8121",
-      "name": "Broadway houses: run the access facts through the same two-model quote gate",
-      "verifyCmd": "node --test tests/unit/venue-info-data.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8118",
-      "name": "Local live-data-lane floor misses CI-env-only live reads (alert ledger via GITHUB_ACTIONS); trace with CI env",
-      "verifyCmd": "node --test tests/unit/live-data-lane.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8116",
-      "name": "Alarm on daily reviewer (session LLM) spend, and fold Mac session rows too",
-      "verifyCmd": "node --test scripts/check-provider-spend.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8114",
-      "name": "Verify Newsday Private Lives quote is clean once BRO-8084 lands",
-      "verifyCmd": "node --test tests/unit/pull-quote-guards.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8111",
-      "name": "Flaky land gate: landed-change-proof.test.mjs CLI smoke failed once on a land run, passes locally and on re-run",
-      "verifyCmd": "node --test scripts/lib/landed-change-proof.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8106",
-      "name": "Replace raw command-regex splitters in dispatch-timeout-match, cmux-launch-guard, always-commit-after-validate, infra-review-scope, audit-workflow-hygiene-rules with scripts/lib/shell-split-unquoted.js",
-      "verifyCmd": "node --test scripts/lib/shell-split-unquoted.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8099",
-      "name": "Cookie probe and archive cousins from BRO-8092 audit (verify-cookie-login controls, cookie-health markers, URL_FIND Bright Data, untyped CDX 403)",
-      "verifyCmd": "node --test tests/unit/cookie-renew-outlets.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
     {
+      "id": "BRO-8245",
+      "name": "Root cause: \"Data: published scores outside the critic's rating\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class published-scores-outside-critic-rating --quiet",
+      "detail": "FAIL: last case 1d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8244",
+      "name": "Root cause: \"Cron stale + consecutive days: Replay Push Rescue\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class replay-push-rescue --quiet",
+      "detail": "FAIL: last case 1d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8243",
+      "name": "Root cause: \"Deploy to Vercel\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class deploy-vercel --quiet",
+      "detail": "FAIL: last case 1d ago, needs 21\n"
+    },
+    {
       "id": "BRO-8230",
       "name": "Recheck 2026-11-24: 1 done claim no longer hold on main",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 aW1hZ2VsZXNzLXNjb3JlZC1zaG93OnN0aWxsLWltYWdlbGVzczphbGw",
-      "detail": "[check-alert-condition-absent] FAIL: \"imageless-scored-show:still-imageless:all\" still firing — open, last fired 2026-11-23T19:40:28.572Z (8.3h ago, within 168h)"
+      "detail": "[check-alert-condition-absent] FAIL: \"imageless-scored-show:still-imageless:all\" still firing — open, last fired 2026-11-24T04:32:52.300Z (8.2h ago, within 168h)"
+    },
+    {
+      "id": "BRO-8229",
+      "name": "Root cause: \"Data audit failing: Audit review contamination\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class audit-review-contamination --quiet",
+      "detail": "FAIL: last case 0d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8228",
+      "name": "Root cause: \"Data audit failing: Run data validation\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class run-data-validation --quiet",
+      "detail": "FAIL: last case 0d ago, needs 21\n"
     },
     {
       "id": "BRO-8227",
@@ -136,6 +148,12 @@
       "detail": "FAIL: last case 0d ago, needs 21\n"
     },
     {
+      "id": "BRO-8190",
+      "name": "Root cause: first pass keeps missing theatermania reviews (all markets, 3 shows in 60 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-theatermania --quiet",
+      "detail": "FAIL: last case 6d ago, needs 21\n"
+    },
+    {
       "id": "BRO-8189",
       "name": "Root cause: first pass keeps missing new-york-sun reviews (all markets, 3 shows in 60 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-new-york-sun --quiet",
@@ -145,7 +163,7 @@
       "id": "BRO-8187",
       "name": "Opening-night readiness check failed for its-a-wonderful-life-a-live-radio-play-2026",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 b3BlbmluZy1yZWFkaW5lc3M6ZmFpbGVkOml0cy1hLXdvbmRlcmZ1bC1saWZlLWEtbGl2ZS1yYWRpby1wbGF5LTIwMjY",
-      "detail": "[check-alert-condition-absent] FAIL: \"opening-readiness:failed:its-a-wonderful-life-a-live-radio-play-2026\" still firing — open, last fired 2026-11-23T20:12:59.205Z (7.7h ago, within 168h)"
+      "detail": "[check-alert-condition-absent] FAIL: \"opening-readiness:failed:its-a-wonderful-life-a-live-radio-play-2026\" still firing — open, last fired 2026-11-23T20:12:59.205Z (16.5h ago, within 168h)"
     },
     {
       "id": "BRO-8127",
@@ -158,12 +176,6 @@
       "name": "Root cause: first pass keeps missing broadwayworld reviews (Off-West End, 3 shows in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-west-end-broadwayworld --quiet",
       "detail": "FAIL: last case 4d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-8125",
-      "name": "Root cause: first pass keeps missing nytimes reviews (all markets, 3 shows in 60 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-nytimes --quiet",
-      "detail": "FAIL: last case 15d ago, needs 21\n"
     }
   ],
   "unverifiable": [
@@ -184,21 +196,16 @@
       "name": "Code reviewer: send one packed bundle per review, size/risk-scaled allowance, soft wrap-up (cut Gemini review cost ~10x)",
       "verifyCmd": "node --test scripts/verify-bro-8160-recheck.test.mjs",
       "detail": "ran no passing tests (all skipped or none ran)"
-    },
-    {
-      "id": "BRO-8115",
-      "name": "Maestro tabs on the Mac: onboarding helper stuck on quiz step 1 (city, no Skip), all 5 tabs flows fail (run 45113209220)",
-      "verifyCmd": "node --test scripts/e2e-gate.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/e2e-gate.test.mjs"
-    },
-    {
-      "id": "BRO-8113",
-      "name": "Job worktrees weigh 1.8 GB each: check out without public/images (or APFS-clone it) so the Mac stops filling up",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 141194ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-8233",
+      "name": "BRO-8056 phase 4 prereq: cron-redispatch coverage for publish-show-refresh + prove rebuild-fast publish path",
+      "branch": "land/bro-8233-ledgers",
+      "sha": "51adb8667c023f5eecba56410eea661b2b7fd72c",
+      "landedAt": "2026-11-24T09:10:04.064Z"
+    },
     {
       "id": "BRO-8198",
       "name": "BRO-8056 phase 3b: 3h backstop for list pages, owner-approved lag (R8)",
@@ -207,11 +214,25 @@
       "landedAt": "2026-11-24T00:22:57.265Z"
     },
     {
+      "id": "BRO-8196",
+      "name": "Auto-date past-run 'announced' rows that have no dates but collected reviews (stale-announced subclass B)",
+      "branch": "land/codex-bro-8196",
+      "sha": "25a7bd297d23522047bec57d430bb3409bee5d4c",
+      "landedAt": "2026-11-24T04:09:20.761Z"
+    },
+    {
       "id": "BRO-8179",
       "name": "P1: /private/tmp fills ~20GB/day with test and session temp litter (384k items, 40GB) — nothing reaps it",
       "branch": "land/job/linear-BRO-8179-mwto8dhi",
       "sha": "843c2cf4217714343cc3571ec308049f7db6fc20",
       "landedAt": "2026-11-23T21:43:17.731Z"
+    },
+    {
+      "id": "BRO-8159",
+      "name": "Calibrate the function trace-size gate against packaged .func sizes, then arm it",
+      "branch": "land/codex-bro-8159",
+      "sha": "86bb9a4e6d908683c3b04e4612fa5d6bb407bb84",
+      "landedAt": "2026-11-24T11:51:38.754Z"
     }
   ]
 }
