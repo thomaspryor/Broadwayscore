@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T03:27:10.668Z",
+  "timestamp": "2026-11-24T04:20:10.815Z",
   "stats": {
-    "totalReviews": 84553,
-    "alreadyFlagged": 22551,
-    "dateGuardCatches": 243,
-    "directorMismatch": 3888,
-    "tvFilmSignals": 2429,
-    "londonSignals": 3994,
+    "totalReviews": 84539,
+    "alreadyFlagged": 22553,
+    "dateGuardCatches": 244,
+    "directorMismatch": 3886,
+    "tvFilmSignals": 2430,
+    "londonSignals": 3996,
     "offBroadwaySignals": 789,
-    "yearMismatch": 396,
-    "noPublishDate": 8273
+    "yearMismatch": 395,
+    "noPublishDate": 8258
   },
   "findings": [
     {
@@ -15829,6 +15829,19 @@
       ]
     },
     {
+      "showId": "cymbeline-west-end-2025",
+      "file": "times-uk--unknown.json",
+      "publishDate": "2025-01-24",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/cymbeline-review-shakespeare-globe-jmzsxm3jl",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "cyrano-de-bergerac-2007",
       "file": "whatsonstage--unknown.json",
       "score": 99,
@@ -28634,20 +28647,6 @@
       "score": 91,
       "publishDate": null,
       "url": "https://cititour.com/NYC_Broadway/Gypsy/1271",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
-        }
-      ]
-    },
-    {
-      "showId": "gypsy-2024",
-      "file": "culturesauce--thom-geier.json",
-      "score": 77,
-      "publishDate": "December 20th, 2024",
-      "url": "https://culturesauce.com/2024/12/20/gypsy-audra-mcdonald-broadway-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -49495,20 +49494,6 @@
     {
       "showId": "nine-night-off-west-end-2026",
       "file": "afridiziak-theatre-news--basil-g-lumsden.json",
-      "score": 79,
-      "publishDate": "2026-11-23",
-      "url": "https://www.afridiziak.com/reviews/nine-night-written-by-natasha-gordon/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2018 (2x) more than 2026 (1x). 2018 matches production: nine-night-west-end-2018"
-        }
-      ]
-    },
-    {
-      "showId": "nine-night-off-west-end-2026",
-      "file": "afridiziak-theatre-news--unknown.json",
       "score": 79,
       "publishDate": "2026-11-23",
       "url": "https://www.afridiziak.com/reviews/nine-night-written-by-natasha-gordon/",
@@ -71243,25 +71228,6 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2025",
-      "file": "thingsforkidsinkent--things-for-kids-in-kent.json",
-      "score": 96,
-      "publishDate": "2025-08-18",
-      "url": "https://www.thingsforkidsinkent.co.uk/theatre-reviews-show-reviews/comedy-about-spies",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2025",
       "file": "timeout-london--tom-wicker.json",
       "score": 79,
       "publishDate": "May 14th, 2025",
@@ -74531,20 +74497,6 @@
     },
     {
       "showId": "the-great-gatsby-west-end-2025",
-      "file": "londontheatredirect--hay-brunsdon.json",
-      "score": null,
-      "publishDate": "2025-04-30",
-      "url": "https://www.londontheatredirect.com/news/the-great-gatsby-review-roundup?srsltid=AU7gw4XQsEfC9oKtISUMHsMVub5TTkt7UjiI3P90KEm3hrMOMvcNgAtc",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
-        }
-      ]
-    },
-    {
-      "showId": "the-great-gatsby-west-end-2025",
       "file": "musical-theatre-review--ian-bowkett.json",
       "score": 82,
       "publishDate": null,
@@ -76847,6 +76799,24 @@
       "score": 49,
       "publishDate": "2024-12-12",
       "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-little-foxes-off-west-end-2024",
+      "file": "daily-mail--unknown.json",
+      "publishDate": "2024-12-12",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14187767/The-Little-Foxes-review-Just-time-Christmas-PATRICK-MARMION.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -81888,25 +81858,6 @@
     },
     {
       "showId": "the-seagull-west-end-2025",
-      "file": "guardian--arifa-akbar.json",
-      "score": 76,
-      "publishDate": "2025-03-07",
-      "url": "https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from the-seagull-west-end-2022"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "the-seagull-west-end-2025",
       "file": "guardian--susannah-clapp.json",
       "score": 77,
       "publishDate": "2025-03-07",
@@ -81930,6 +81881,32 @@
       "score": 79,
       "publishDate": "2025-03-07",
       "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/the-seagull-barbican-cate-blanchett-review-tom-burke-b2710342.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from the-seagull-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2025-03-07",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-seagull-barbican-theatre-review-cate-blanchett/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from the-seagull-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2025-03-07",
+      "url": "https://www.timeout.com/london/theatre/the-seagull-12-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -82895,20 +82872,6 @@
     {
       "showId": "the-unbelievers-off-broadway-2026",
       "file": "josh-at-the-movies--joshua-m-hayes.json",
-      "score": 75,
-      "publishDate": "2026-11-23",
-      "url": "https://joshatthemovies.com/2026/11/23/theater-review-the-unbelievers/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"apple tv\""
-        }
-      ]
-    },
-    {
-      "showId": "the-unbelievers-off-broadway-2026",
-      "file": "josh-at-the-movies--unknown.json",
       "score": 75,
       "publishDate": "2026-11-23",
       "url": "https://joshatthemovies.com/2026/11/23/theater-review-the-unbelievers/",
@@ -127290,6 +127253,20 @@
     },
     {
       "showId": "othello-bedlam-off-broadway-2026",
+      "file": "exeunt-magazine--patrick-maley.json",
+      "score": 70,
+      "publishDate": "2026-05-08T00:00:00-04:00",
+      "url": "https://exeuntnyc.com/reviews/review-othello-at-west-end-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 183d before show (2026-05-08T00:00:00-04:00 vs 2026-11-07)"
+        }
+      ]
+    },
+    {
+      "showId": "othello-bedlam-off-broadway-2026",
       "file": "nytimes--helen-shaw.json",
       "score": 87,
       "publishDate": "2026-05-08T00:00:00-04:00",
@@ -137909,10 +137886,10 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2025",
-      "file": "londontheatredirect--hay-brunsdon.json",
-      "score": null,
+      "file": "thelivereview--tanya-howard.json",
+      "score": 92,
       "publishDate": "2025-05-14",
-      "url": "https://www.londontheatredirect.com/news/the-comedy-about-spies-review-roundup?srsltid=AU7gw4X92ckqfhleHd4wUVjHz6oeuirgxdcbOy5sMwbKuCzboVYNfwl3",
+      "url": "https://thelivereview.co.uk/the-comedy-about-spies-review-noel-coward-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -137923,10 +137900,10 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2025",
-      "file": "thelivereview--tanya-howard.json",
-      "score": 92,
-      "publishDate": "2025-05-14",
-      "url": "https://thelivereview.co.uk/the-comedy-about-spies-review-noel-coward-theatre/",
+      "file": "thingsforkidsinkent--things-for-kids-in-kent.json",
+      "score": 96,
+      "publishDate": "2025-08-18",
+      "url": "https://www.thingsforkidsinkent.co.uk/theatre-reviews-show-reviews/comedy-about-spies",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -142485,6 +142462,20 @@
       ]
     },
     {
+      "showId": "the-little-foxes-off-west-end-2024",
+      "file": "theartsdispatch--natalie-evans.json",
+      "score": 76,
+      "publishDate": "2024-12-12",
+      "url": "https://www.theartsdispatch.com/the-little-foxes-review-young-vic-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",
       "file": "thestage--katie-chambers.json",
       "publishDate": null,
@@ -145929,6 +145920,33 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
+      "file": "broadwayworld--not-everyone-was-an-enthusiast.json",
+      "publishDate": "2025-03-06",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-SEAGULL-starring-Cate-Blanchett-Barbican-Theatre-20250306",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
+      "file": "guardian--arifa-akbar.json",
+      "score": 76,
+      "publishDate": "2025-03-06",
+      "url": "https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
