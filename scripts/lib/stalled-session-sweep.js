@@ -126,13 +126,13 @@ function localStallAction({ entry, hostNames, liveIds, liveCwds = [], psText = '
 
 /** The send_message text. Told not to reply, so a nudge never starts a conversation loop. */
 function buildStallNudgeMessage(entry) {
-  return `Automated stall check (BRO-7183): your card ${entry.card} has been idle ${entry.idleHours}h with no report. `
+  return `Automated coach message (CLAUDE.md section 6, BRO-7183): your card ${entry.card} has been idle ${entry.idleHours}h with no report. `
     + 'Read the card state before redoing anything. If the work is done, close the card; if it is blocked, report it with '
     + '`node scripts/linear-session.js report --status=paused` or move it to Paused. Do not reply to this message.';
 }
 
 function buildStallNudgeComment(entry, nowMs) {
-  return `${STALL_NUDGE_MARKER} ${new Date(nowMs).toISOString()} nudged ${entry.sessionId} (idle ${entry.idleHours}h, nudge ${entry.nudges + 1} of ${MAX_NUDGES}). `
+  return `${STALL_NUDGE_MARKER} Automated coach message (CLAUDE.md section 6, BRO-7183): ${new Date(nowMs).toISOString()} nudge for ${entry.sessionId} (idle ${entry.idleHours}h, nudge ${entry.nudges + 1} of ${MAX_NUDGES}). `
     + `After ${MAX_NUDGES} ignored nudges the stalled-session sweep moves the card back to Todo.`;
 }
 

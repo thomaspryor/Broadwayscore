@@ -33,6 +33,8 @@ test('BRO-6947 replay: cloud-held card idle 22h with an idle session gets one nu
   const msg = S.buildStallNudgeMessage(e);
   assert.match(msg, /BRO-6947/);
   assert.match(msg, /Do not reply/);
+  assert.match(msg, /Automated coach message.*CLAUDE\.md section 6/i);
+  assert.match(S.buildStallNudgeComment(e, NOW), /Automated coach message.*CLAUDE\.md section 6/i);
 });
 
 test('BRO-7074 replay: ScheduleWakeup-only session idle 34h is nudged, not left silent', () => {
