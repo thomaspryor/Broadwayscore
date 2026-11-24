@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T19:25:26.694Z",
+  "generatedAt": "2026-11-24T21:56:26.297Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -163,6 +163,10 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -183,19 +187,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 927,
-  "matchedGaps": 1,
-  "possibleGaps": 2,
+  "itemsScanned": 910,
+  "matchedGaps": 0,
+  "possibleGaps": 3,
   "gaps": [
-    {
-      "showId": "attention-off-west-end-2026",
-      "title": "Attention",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/attention-bush-theatre-london/",
-      "headline": "Attention- Bush Theatre, London",
-      "publishDate": "2026-11-24"
-    },
     {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
@@ -204,6 +199,15 @@
       "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
       "headline": "It’s a Wonderful Life: A Live Radio Play",
       "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "level": "possible",
+      "outletId": "stagebuddy",
+      "url": "https://stagebuddy.com/theater/theater-review/wonderful-life-live-radio-play",
+      "headline": "It&#8217;s A Wonderful Life: A Live Radio Play",
+      "publishDate": "2026-11-24"
     },
     {
       "showId": "much-ado-about-nothing-2026",
