@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T01:59:47.989Z",
+  "generatedAt": "2026-11-24T02:22:55.476Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -466,10 +466,6 @@
         },
         {
           "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
           "isDualMarket": false
         },
         {
@@ -2430,27 +2426,27 @@
       "slug": "a-clockwork-orange-a-play-with-music-regional-2026",
       "thumbnail": "/images/shows/a-clockwork-orange-a-play-with-music-regional-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 60,
+      "liveScore": 87,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 1,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 1,
+      "t3": 1,
+      "positive": 2,
+      "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "2/12 total",
           "T1:0/3",
           "T2:1/3",
-          "hi-conf:0/8"
+          "hi-conf:2/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2710,6 +2706,10 @@
           "isDualMarket": true
         },
         {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
           "name": "CBS News",
           "isDualMarket": false
         },
@@ -2796,6 +2796,18 @@
           "t3": 0,
           "p": 0,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-24T02:22:55.476Z",
+          "rc": 2,
+          "s": 87,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 2,
+          "m": 0,
           "n": 0,
           "bc": "waiting"
         }
@@ -3254,27 +3266,27 @@
       "slug": "candide-regional-2026",
       "thumbnail": "/images/shows/candide-regional-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 82,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 0,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "t2": 1,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "T2:1/3",
+          "hi-conf:2/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3612,6 +3624,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-24T02:22:55.476Z",
+          "rc": 2,
+          "s": 82,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },

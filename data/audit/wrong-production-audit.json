@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T01:59:28.927Z",
+  "timestamp": "2026-11-24T02:22:37.423Z",
   "stats": {
-    "totalReviews": 84509,
-    "alreadyFlagged": 22546,
-    "dateGuardCatches": 242,
+    "totalReviews": 84524,
+    "alreadyFlagged": 22548,
+    "dateGuardCatches": 243,
     "directorMismatch": 3888,
     "tvFilmSignals": 2428,
     "londonSignals": 3992,
     "offBroadwaySignals": 789,
     "yearMismatch": 395,
-    "noPublishDate": 8274
+    "noPublishDate": 8278
   },
   "findings": [
     {
@@ -92321,6 +92321,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "timeout-london--caroline-mcginn.json",
+      "score": null,
+      "publishDate": "2026-10-06",
+      "url": "https://www.timeout.com/london/theatre/a-christmas-carol-old-vic",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 37d before show (2026-10-06 vs 2026-11-12)"
         }
       ]
     },
