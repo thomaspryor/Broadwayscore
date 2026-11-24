@@ -50085,7 +50085,7 @@
       "linearIdentifier": null
     },
     "pending-drain-growth": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "_pending grew by 420 files over 4 sweeps",
       "firstSeen": "2026-11-24T14:40:05.916Z",
@@ -50093,6 +50093,21 @@
       "lastSeen": "2026-11-24T14:40:05.916Z",
       "lastNotifiedAt": "2026-11-24T14:40:05.916Z",
       "lastSurfacedAt": "2026-11-24T14:40:05.916Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-24T15:27:11.047Z",
+      "resolveReason": "drain healthy on the latest sweep"
+    },
+    "pending-drain-zero-promote": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "_pending drain resolved nothing for 4 sweeps in a row",
+      "firstSeen": "2026-11-24T15:27:11.030Z",
+      "incidentOpenedAt": "2026-11-24T15:27:11.030Z",
+      "lastSeen": "2026-11-24T15:27:11.030Z",
+      "lastNotifiedAt": "2026-11-24T15:27:11.030Z",
+      "lastSurfacedAt": "2026-11-24T15:27:11.030Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
