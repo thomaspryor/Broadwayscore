@@ -208,6 +208,26 @@ test('BRO-8261: every source the poller sends vercel-deploy.yml is urgent, none 
   }
 });
 
+// BRO-8261 cousin: express, broadcast, rebuild-fast, land and the gate's own
+// hand-offs dispatch vercel-deploy.yml too. A typo'd source (opening_night)
+// would silently become routine and wait out the min-interval, so every
+// literal source any workflow sends must be one the gate knows.
+test('BRO-8261: every literal vercel-deploy.yml source in any workflow is a known gate source', () => {
+  const KNOWN_ROUTINE = ['land', 'deferred'];
+  const dir = path.join(ROOT, '.github/workflows');
+  const seen = new Set();
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.yml'))) {
+    for (const l of fs.readFileSync(path.join(dir, f), 'utf8').split('\n')) {
+      if (/^\s*#/.test(l) || !/vercel-deploy\.yml/.test(l)) continue;
+      for (const m of l.matchAll(/-f source=([\w-]+)/g)) {
+        seen.add(m[1]);
+        assert.ok(URGENT_SOURCES.includes(m[1]) || KNOWN_ROUTINE.includes(m[1]), `${f}: unknown deploy source "${m[1]}"`);
+      }
+    }
+  }
+  for (const s of ['opening-night', 'opening-night-reveal', 'rebuild-fast', 'land']) assert.ok(seen.has(s), `expected a dispatch with source=${s}`);
+});
+
 test('BRO-8261: only public/data/shows/<id>.json counts as a show file', () => {
   assert.equal(isShowFile('public/data/shows/sweeney-todd-2026.json'), true);
   assert.equal(isShowFile('public/data/shows/sweeney-todd-2026.social.json'), false);
