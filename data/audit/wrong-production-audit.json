@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-24T06:35:54.579Z",
+  "timestamp": "2026-11-24T06:49:55.802Z",
   "stats": {
-    "totalReviews": 84560,
-    "alreadyFlagged": 22556,
+    "totalReviews": 84563,
+    "alreadyFlagged": 22559,
     "dateGuardCatches": 244,
     "directorMismatch": 3889,
-    "tvFilmSignals": 2435,
+    "tvFilmSignals": 2436,
     "londonSignals": 3997,
     "offBroadwaySignals": 790,
     "yearMismatch": 396,
@@ -34167,6 +34167,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
+      "file": "jonathan-baz--unknown.json",
+      "score": null,
+      "publishDate": "2023-06-15",
+      "url": "https://www.jonathanbaz.com/2023/06/idiots-assemble-spitting-image-musical.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
