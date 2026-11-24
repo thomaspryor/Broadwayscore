@@ -110,6 +110,36 @@ export const CODE_PATHS = ['src', 'scripts', 'package.json', 'package-lock.json'
 export const CODE_PATH_DATA_EXCLUDES = ['src/config/genre-tags.json', 'src/config/onboarding-tour-art.json'];
 
 /**
+ * Always compared when the closure is used: dependency versions, compile
+ * settings, and every JSON under the code dirs, because code reads config at
+ * runtime that no import graph shows (outlet-tiers.js reads
+ * src/config/outlet-tiers.json). Bot-written JSON stays excluded below.
+ */
+export const CLOSURE_ALWAYS = ['package.json', 'package-lock.json', 'tsconfig.json', ':(glob)src/**/*.json', ':(glob)scripts/**/*.json'];
+/** The slice computation's entry points: the publisher and the build-time manifest/slice writer. */
+export const SLICE_ENTRY_POINTS = ['scripts/publish-show-refresh.ts', 'scripts/build-show-refresh-manifest.ts'];
+
+/**
+ * Repo files (no node_modules, no data/) statically imported by the slice entry
+ * points, via esbuild's metafile. null when it cannot be computed (caller falls
+ * back to the coarse CODE_PATHS diff). Runtime fs reads are not in the graph:
+ * data/ ones are data by design, code-dir JSON is covered by CLOSURE_ALWAYS.
+ * The closure has no dynamic require/import (checked when this was written).
+ */
+export function sliceCodeClosure(cwd: string = ROOT): string[] | null {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const cp = require('child_process');
+    const prog = `require('esbuild').build({entryPoints:${JSON.stringify(SLICE_ENTRY_POINTS)},bundle:true,platform:'node',write:false,metafile:true,logLevel:'silent',packages:'external',format:'esm',outdir:'/tmp/show-refresh-closure',plugins:[{name:'data-external',setup(b){b.onResolve({filter:/(^|\\/)data\\//},a=>({path:a.path,external:true}))}}]}).then(r=>process.stdout.write(JSON.stringify(Object.keys(r.metafile.inputs))),e=>{process.stderr.write(String(e&&e.message));process.exit(1)})`;
+    const r = cp.spawnSync(process.execPath, ['-e', prog], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 60000 });
+    if (r.status !== 0) return null;
+    const files = (JSON.parse(r.stdout) as string[]).filter((f) => !f.startsWith('data/') && !f.includes('node_modules/') && !f.includes(':') && !f.startsWith('/') && !f.startsWith('..'));
+    if (!SLICE_ENTRY_POINTS.every((e) => files.includes(e))) return null;
+    return [...new Set(files)].sort();
+  } catch { return null; }
+}
+
+/**
  * Whether the checked-out code computes slices the way the deployed commit
  * does: the same commit, or no change under CODE_PATHS between the two
  * (data-only commits since the deploy are the normal case on main).
@@ -128,9 +158,15 @@ export function codeMatchOf(env: NodeJS.ProcessEnv, publicSha: string | null | u
   if (git(['cat-file', '-e', `${publicSha}^{commit}`]).status !== 0 && env.PUBLISH_CODE_FETCH !== '0') {
     git(['fetch', '--no-tags', '--depth=1', 'origin', publicSha]);
   }
-  const d = git(['diff', '--quiet', publicSha, 'HEAD', '--', ...CODE_PATHS, ...CODE_PATH_DATA_EXCLUDES.map((f) => `:(exclude)${f}`)]);
-  if (d.status === 0) return { codeSha, match: true, how: 'no code change since the deployed commit' };
-  if (d.status === 1) return { codeSha, match: false, how: 'code changed since the deployed commit' };
+  // Narrow to the files the slice computation actually imports (BRO-8214: any
+  // scripts/ change blocked every write until the next deploy). No closure =>
+  // the coarse CODE_PATHS diff, which is never looser.
+  const closure = env.PUBLISH_CODE_CLOSURE === '0' ? null : sliceCodeClosure(cwd);
+  const paths = closure ? [...closure, ...CLOSURE_ALWAYS] : CODE_PATHS;
+  const scope = closure ? `slice code (${closure.length} files)` : 'code';
+  const d = git(['diff', '--quiet', publicSha, 'HEAD', '--', ...paths, ...CODE_PATH_DATA_EXCLUDES.map((f) => `:(exclude)${f}`)]);
+  if (d.status === 0) return { codeSha, match: true, how: `no ${scope} change since the deployed commit` };
+  if (d.status === 1) return { codeSha, match: false, how: `${scope} changed since the deployed commit` };
   return { codeSha, match: false, how: `cannot compare with the deployed commit (${(d.stderr || '').trim().split('\n')[0] || 'git failed'})` };
 }
 
