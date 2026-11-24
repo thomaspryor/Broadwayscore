@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-24T00:27:18.082Z",
+  "lastChecked": "2026-11-24T03:41:10.301Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Quality: opening date vs review dates",
       "status": "warn",
-      "message": "1 show(s) store an opening date later than their reviews: a-midsummer-nights-dream-jentes-regional-2026 (stored 2026-11-21, reviews 2026-11-15)"
+      "message": "2 show(s) store an opening date later than their reviews: a-christmas-carol-west-end-2026 (stored 2026-11-24, reviews 2026-11-18); a-midsummer-nights-dream-jentes-regional-2026 (stored 2026-11-21, reviews 2026-11-15)"
     },
     {
       "name": "Quality: star-vs-score mismatch",
@@ -19,12 +19,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.1% scored (52837/53834)"
+      "message": "98.2% scored (52884/53878)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "32 audit(s) drifting, each reported on its own card or the digest FYI line (3h ago)"
+      "message": "33 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -43,18 +43,18 @@
     },
     {
       "name": "Quality: Show Score gap",
-      "status": "pass",
-      "message": "Every opened Broadway/off-Broadway show with a cached Show Score URL has a Show Score audience score"
+      "status": "warn",
+      "message": "1 opened show(s) have a cached Show Score URL but no Show Score audience score (the-holes-off-broadway-2026)"
     },
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1903 outlet(s), 84440 review(s)"
+      "message": "No broken-extractor signature in 1904 outlet(s), 84494 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1903 outlet(s), 84440 review(s)"
+      "message": "No broken-extractor signature in 1904 outlet(s), 84494 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -74,12 +74,12 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "152 outlet×market rows checked, none NEW silent 2+ consecutive weeks (15 known/baselined, 33 dormant 1y+, 3h ago)"
+      "message": "152 outlet×market rows checked, none NEW silent 2+ consecutive weeks (15 known/baselined, 33 dormant 1y+, 7h ago)"
     },
     {
       "name": "Quality: outlet feed staleness",
       "status": "pass",
-      "message": "88 feed(s) checked, none stale or failing"
+      "message": "89 feed(s) checked, none stale or failing"
     }
   ]
 }
