@@ -1,17 +1,12 @@
 {
-  "updatedAt": "2026-11-23T21:30:41.198Z",
-  "scanned": 4947,
-  "showsWithViolations": 614,
-  "totalViolations": 868,
-  "newSinceLastRun": 7,
+  "updatedAt": "2026-11-24T01:15:36.493Z",
+  "scanned": 4949,
+  "showsWithViolations": 615,
+  "totalViolations": 870,
+  "newSinceLastRun": 2,
   "newViolationKeys": [
-    "no-mans-land-2013::northjerseycom--robert-feldberg.json",
-    "scandalous-2012::northjerseycom--robert-feldberg.json",
-    "stick-fly-2011::timeout--david-cote.json",
-    "44-off-broadway-2025::nyt-theater--jonathan-mandell.json",
-    "44-off-broadway-2025::off-off-online--deirdre-donovan.json",
-    "44-off-broadway-2025::stageandcinema--gregory-bernard.json",
-    "44-off-broadway-2025::timeout--raven-snook.json"
+    "promises-promises-2010::toronto-star--richard-ouzounian.json",
+    "the-girls-west-end-2017::tnt-magazine--tnt-editorial-team.json"
   ],
   "actionableViolations": 9,
   "newActionableSinceLastRun": 0,
@@ -230,6 +225,7 @@
     "collected-stories-2010::variety--charles-isherwood.json",
     "enron-2010::bloomberg--john-simon.json",
     "promises-promises-2010::hollywood-reporter--frank-scheck.json",
+    "promises-promises-2010::toronto-star--richard-ouzounian.json",
     "promises-promises-2010::usatoday--elysa-gardner.json",
     "american-idiot-2010::hollywood-reporter--frank-scheck.json",
     "million-dollar-quartet-2010::ny1--roma-torre.json",
@@ -744,6 +740,7 @@
     "mr-footes-other-leg-west-end-2015::thestage--natasha-tripney.json",
     "mr-footes-other-leg-west-end-2015::times-uk--dominic-maxwell.json",
     "nos-knife-west-end-2016::telegraph--claire-allfree.json",
+    "the-girls-west-end-2017::tnt-magazine--tnt-editorial-team.json",
     "whos-afraid-of-virginia-woolf-west-end-2017::guardian--michael-billington.json",
     "whos-afraid-of-virginia-woolf-west-end-2017::sunday-times--dominic-maxwell.json",
     "a-profoundly-affectionate-passionate-devotion-to-someone-noun-west-end-2017::artsdesk--unknown.json",
@@ -5218,7 +5215,7 @@
       "showId": "promises-promises-2010",
       "title": "Promises, Promises",
       "openingDate": "2010-04-25",
-      "message": "hollywood-reporter/Frank Scheck (hollywood-reporter--frank-scheck.json) SHIPPED but fullText never mentions 'Promises, Promises' (281 chars): http://www.hollywoodreporter.com/hr/film-reviews/promises-promises-theater-review-1004086272.story\nusatoday/Elysa Gardner (usatoday--elysa-gardner.json) SHIPPED but fullText never mentions 'Promises, Promises' (303 chars): http://www.usatoday.com/life/theater/reviews/2010-04-26-promises26_ST_N.htm",
+      "message": "hollywood-reporter/Frank Scheck (hollywood-reporter--frank-scheck.json) SHIPPED but fullText never mentions 'Promises, Promises' (281 chars): http://www.hollywoodreporter.com/hr/film-reviews/promises-promises-theater-review-1004086272.story\ntoronto-star/Richard Ouzounian (toronto-star--richard-ouzounian.json) SHIPPED but fullText never mentions 'Promises, Promises' (157 chars, textIssues flag set): http://www.thestar.com/entertainment/theatre/article/800519--unfulfilled-promises\nusatoday/Elysa Gardner (usatoday--elysa-gardner.json) SHIPPED but fullText never mentions 'Promises, Promises' (303 chars): http://www.usatoday.com/life/theater/reviews/2010-04-26-promises26_ST_N.htm",
       "violations": [
         {
           "filename": "hollywood-reporter--frank-scheck.json",
@@ -5227,6 +5224,22 @@
           "criticName": "Frank Scheck",
           "haystackLength": 281,
           "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "toronto-star--richard-ouzounian.json",
+          "url": "http://www.thestar.com/entertainment/theatre/article/800519--unfulfilled-promises",
+          "outletId": "toronto-star",
+          "criticName": "Richard Ouzounian",
+          "haystackLength": 157,
+          "textIssuesFlag": true,
           "triage": {
             "bucket": "excerpt",
             "evidence": [
@@ -16151,6 +16164,30 @@
       ]
     },
     {
+      "showId": "the-girls-west-end-2017",
+      "title": "The Girls",
+      "openingDate": "2017-02-21",
+      "message": "tnt-magazine/TNT Editorial Team (tnt-magazine--tnt-editorial-team.json) SHIPPED but fullText never mentions 'The Girls' (1715 chars): https://www.tntmagazine.com/leisure-entertainment/stage-shows/theatre-review-the-girls/",
+      "violations": [
+        {
+          "filename": "tnt-magazine--tnt-editorial-team.json",
+          "url": "https://www.tntmagazine.com/leisure-entertainment/stage-shows/theatre-review-the-girls/",
+          "outletId": "tnt-magazine",
+          "criticName": "TNT Editorial Team",
+          "haystackLength": 1715,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2017",
       "title": "Who's Afraid of Virginia Woolf?",
       "openingDate": "2017-03-09",
@@ -19498,7 +19535,7 @@
       "showId": "cat-on-a-hot-tin-roof-off-west-end-2024",
       "title": "Cat on a Hot Tin Roof",
       "openingDate": "2024-12-16",
-      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Cat on a Hot Tin Roof' (4369 chars, textIssues flag set): https://www.theguardian.com/stage/2024/dec/18/cat-on-a-hot-tin-roof-review-daisy-edgar-jones-kingsley-ben-adir-almeida-london\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Cat on a Hot Tin Roof' (3836 chars): https://www.standard.co.uk/culture/theatre/cat-on-a-hot-tin-roof-almeida-review-daisy-edgar-jones-b1200657.html\nthestage/Siobhan Murphy (thestage--siobhan-murphy.json) SHIPPED but fullText never mentions 'Cat on a Hot Tin Roof' (3118 chars): https://www.thestage.co.uk/reviews/cat-on-a-hot-tin-roof-review-almeida-theatre-london-tennessee-williams-rebecca-frecknall-kingsley-ben-adir-daisy-edgar-jones\ntimes-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED but fullText never mentions 'Cat on a Hot Tin Roof' (3187 chars, textIssues flag set): https://www.thetimes.com/culture/theatre-dance/article/cat-on-a-hot-tin-roof-review-a-long-evening-of-mannered-excess-c9h6jdv9x\n⚠️  i-paper/Fiona Mountford (i-paper--fiona-mountford.json) also too short to assess (0 chars): https://inews.co.uk/culture/arts/daisy-edgar-jones-cat-hot-tin-roof-review-3438353",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Cat on a Hot Tin Roof' (4369 chars, textIssues flag set): https://www.theguardian.com/stage/2024/dec/18/cat-on-a-hot-tin-roof-review-daisy-edgar-jones-kingsley-ben-adir-almeida-london\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Cat on a Hot Tin Roof' (3836 chars): https://www.standard.co.uk/culture/theatre/cat-on-a-hot-tin-roof-almeida-review-daisy-edgar-jones-b1200657.html\nthestage/Siobhan Murphy (thestage--siobhan-murphy.json) SHIPPED but fullText never mentions 'Cat on a Hot Tin Roof' (3118 chars): https://www.thestage.co.uk/reviews/cat-on-a-hot-tin-roof-review-almeida-theatre-london-tennessee-williams-rebecca-frecknall-kingsley-ben-adir-daisy-edgar-jones\ntimes-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED but fullText never mentions 'Cat on a Hot Tin Roof' (3187 chars, textIssues flag set): https://www.thetimes.com/culture/theatre-dance/article/cat-on-a-hot-tin-roof-review-a-long-evening-of-mannered-excess-c9h6jdv9x\n⚠️  city-am/Unknown (city-am--unknown.json) also too short to assess (0 chars): https://www.cityam.com/cat-on-a-hot-tin-roof-review-daisy-edgar-jones-in-tennessee-williams-misfire/\n⚠️  i-paper/Fiona Mountford (i-paper--fiona-mountford.json) also too short to assess (0 chars): https://inews.co.uk/culture/arts/daisy-edgar-jones-cat-hot-tin-roof-review-3438353",
       "violations": [
         {
           "filename": "guardian--arifa-akbar.json",
@@ -19570,7 +19607,7 @@
       "showId": "the-little-foxes-off-west-end-2024",
       "title": "The Little Foxes",
       "openingDate": "2024-12-11",
-      "message": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Little Foxes' (3115 chars): https://www.thestage.co.uk/reviews/the-little-foxes-review-at-the-young-vic-london-by-lillian-hellman-directed-by-lyndsey-turner-starring-anne-marie-duff",
+      "message": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Little Foxes' (3115 chars): https://www.thestage.co.uk/reviews/the-little-foxes-review-at-the-young-vic-london-by-lillian-hellman-directed-by-lyndsey-turner-starring-anne-marie-duff\n⚠️  londontheatre1/Unknown (londontheatre1--unknown.json) also too short to assess (0 chars): https://www.londontheatre1.com/reviews/the-little-foxes-young-vic-review/\n⚠️  theartsdispatch/Unknown (theartsdispatch--unknown.json) also too short to assess (0 chars): https://www.theartsdispatch.com/the-little-foxes-review-young-vic-london/",
       "violations": [
         {
           "filename": "thestage--dave-fargnoli.json",
@@ -19594,7 +19631,7 @@
       "showId": "brigadoon-west-end-2025",
       "title": "Brigadoon",
       "openingDate": "2025-08-11",
-      "message": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED but fullText never mentions 'Brigadoon' (2745 chars): https://www.thetimes.com/culture/theatre-dance/article/brigadoon-review-a-rare-return-to-scotlands-shangri-la-wdk32388r",
+      "message": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED but fullText never mentions 'Brigadoon' (2745 chars): https://www.thetimes.com/culture/theatre-dance/article/brigadoon-review-a-rare-return-to-scotlands-shangri-la-wdk32388r\n⚠️  london-theatre/Marianka Swain (london-theatre--marianka-swain.json) also too short to assess (0 chars): https://www.londontheatre.co.uk/reviews/brigadoon-review-regents-park-open-air-theatre",
       "violations": [
         {
           "filename": "times-uk--clive-davis.json",
@@ -19618,7 +19655,7 @@
       "showId": "the-maids-west-end-2025",
       "title": "The Maids",
       "openingDate": "2025-10-21",
-      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'The Maids' (3510 chars): https://www.thestage.co.uk/reviews/the-maids-review-donmar-warehouse-london",
+      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'The Maids' (3510 chars): https://www.thestage.co.uk/reviews/the-maids-review-donmar-warehouse-london\n⚠️  london-theatre/Olivia Rook (london-theatre--olivia-rook.json) also too short to assess (0 chars): https://www.londontheatre.co.uk/reviews/the-maids-review-donmar-warehouse-kip-williams-yerin-ha",
       "violations": [
         {
           "filename": "thestage--sam-marlowe.json",
@@ -19704,12 +19741,12 @@
     }
   ],
   "triage": {
-    "total": 868,
+    "total": 870,
     "counts": {
-      "excerpt": 195,
+      "excerpt": 196,
       "wrong-production": 9,
       "unresolved": 608,
-      "truncated": 56
+      "truncated": 57
     },
     "outletPlans": [
       {
@@ -28074,6 +28111,44 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
+        "outletId": "tnt-magazine",
+        "total": 1,
+        "counts": {
+          "truncated": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "the-girls-west-end-2017/tnt-magazine--tnt-editorial-team.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
+        "outletId": "toronto-star",
+        "total": 1,
+        "counts": {
+          "excerpt": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "promises-promises-2010/toronto-star--richard-ouzounian.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         ]
