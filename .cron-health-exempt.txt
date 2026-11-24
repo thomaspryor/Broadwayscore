@@ -104,7 +104,6 @@ newsletter-draft.yml  # weekly newsletter draft for the owner to review; nothing
 newsletter-draft-refresh.yml
 newsletter-state-reconcile.yml  # daily dedup-state reconcile; a missed day is reconciled by the next
 opening-digest.yml  # daily opening digest; opening-night-broadcast.yml (paged) carries the subscriber email
-opening-night-completeness-check.yml  # every 15 min drop detector; the same check runs after every rebuild
 opening-night-stage-alert.yml  # daily stage alert; opening-night-checklist.yml (paged, 3h) covers the window
 poll-loureviews.yml  # daily blog poll; a missed day is caught up by the next
 posthog-monday.yml  # weekly analytics snapshot; a stale week delays analytics only
@@ -336,4 +335,3 @@ critic-reach.yml  # BRO-6984 owner-only reach count for claimed critic pages; lo
 social-video.yml  # BRO-7414 TikTok + YouTube Shorts lane; failure step alerts, one video per network per day so a missed run only delays a post
 landed-change-proof.yml  # BRO-7790 advisory daily proof audit; a missed run makes the digest line say "not measured this morning", notify-failure on error
 backfill-cast-web.yml  # BRO-7381 weekly cast fill, 25 shows; a missed week only delays cast data, no alert needed
-publish-show-refresh.yml  # BRO-8214: nothing reads its output while SHOW_REFRESH_READER is off; the phase-4 flip runbook (BRO-8056) moves it to CRITICAL_CRONS before the reader goes on

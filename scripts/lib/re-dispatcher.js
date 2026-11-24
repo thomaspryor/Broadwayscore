@@ -42,8 +42,9 @@ const AFTER_HOURS_RE = /^\s*#\s*redispatch-after-hours:\s*(\d+(?:\.\d+)?)\b/m;
 // 2026-11-01 11:28Z) and waited another bucket. re-dispatcher.test.mjs checks
 // the live registry against this rule. BRO-7402 widened the rule to bands <= 2h (the sort ranks by
 // overdue/band, so 2h bands take the same slots) when the opening-window outlet poller joined at 2h: 7 such
-// workflows (BRO-7934: the opening-night completeness check joined at 0.5h), so 8.
-const DEFAULT_MAX_PER_SWEEP = 8;
+// workflows (BRO-7934: the opening-night completeness check joined at 0.5h), so 8. BRO-8233: the
+// show-refresh publisher joined at 0.5h (8 such workflows), so 9.
+const DEFAULT_MAX_PER_SWEEP = 9;
 // The sweep runs on every main Test Suite completion (~100/day); at most one
 // sweep per fixed window of this many minutes.
 const DEFAULT_SWEEP_BUCKET_MIN = 30;
@@ -154,10 +155,17 @@ function shouldThrottle({ prevRunCreatedAt, myCreatedAt, bucketMin = DEFAULT_SWE
 
 // A workflow kept alive only by re-dispatch hides a dead schedule from
 // check-cron-health (it keys on last success). Flag it when its newest
-// event=schedule run is older than this, or it has none.
+// event=schedule run is older than this, or it has none. BRO-8233: "none" is
+// not dead yet while the workflow itself was registered under this many days
+// ago (workflowCreatedAt, the workflows API's created_at); a brand-new cron
+// would otherwise turn the first sweep that re-dispatches it red. Unknown
+// workflowCreatedAt (API failed) keeps the old answer: dead.
 const SCHEDULE_DEAD_DAYS = 7;
-function isScheduleDead(lastScheduleCreatedAt, now = Date.now()) {
-  if (!lastScheduleCreatedAt) return true;
+function isScheduleDead(lastScheduleCreatedAt, now = Date.now(), workflowCreatedAt = null) {
+  if (!lastScheduleCreatedAt) {
+    const born = workflowCreatedAt ? Date.parse(workflowCreatedAt) : NaN;
+    return !(Number.isFinite(born) && now - born <= SCHEDULE_DEAD_DAYS * 86400000);
+  }
   const t = Date.parse(lastScheduleCreatedAt);
   return !Number.isFinite(t) || now - t > SCHEDULE_DEAD_DAYS * 86400000;
 }
