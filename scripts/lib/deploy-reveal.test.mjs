@@ -7,10 +7,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { reviewProjection, classifyReveal, resolveUrgency, classifyRange, openingIdsFrom, nytPicksChanged, isShowFile, MAX_SHOW_FILES } = require('./deploy-reveal.js');
+const { reviewProjection, classifyReveal, resolveUrgency, classifyRange, openingIdsFrom, nytPicksChanged, isShowFile, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES } = require('./deploy-reveal.js');
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const { CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, isUrgent, isAlwaysShip, decide } = require('./should-deploy-gate.js');
 
@@ -119,9 +120,11 @@ test('NYT picks: only the url list counts, _meta timestamp churn does not', () =
 });
 
 test('classifyRange on real poller commit 15785a08d: sweeney-todd reveal is outside the opening window', (t) => {
+  // BRO-8261: skip visibly, and only when the commit is really absent (shallow
+  // CI checkout). Any other classify-error is a failure, not a skip.
+  const has = spawnSync('git', ['cat-file', '-e', '15785a08d~1^{commit}'], { cwd: ROOT }).status === 0;
+  if (!has) { t.skip('commit 15785a08d~1 not in this checkout (shallow history)'); return; }
   const r = classifyRange('15785a08d~1', '15785a08d', { codePaths: CODE_PATHS });
-  // BRO-8261: skip visibly (not a silent pass) on a shallow CI checkout.
-  if (/classify-error/.test(r.reason)) { t.skip(`history unavailable: ${r.reason}`); return; }
   assert.equal(r.reveal, false);
 });
 
@@ -189,7 +192,15 @@ test('BRO-8261: source=opening-night-reveal over a no-reveal range is routine (S
 
 test('BRO-8261: every source the poller sends vercel-deploy.yml is urgent, none always-ship', () => {
   const y = fs.readFileSync(path.join(ROOT, '.github/workflows/opening-night-poller.yml'), 'utf8');
-  const sources = [...y.matchAll(/gh workflow run vercel-deploy\.yml[^\n]*?-f source=([\w-]+)/g)].map((m) => m[1]);
+  // Every line that dispatches vercel-deploy.yml must name a literal source we
+  // can read (no --field/-F/quoted/$VAR forms slipping past the check).
+  const lines = y.split('\n').filter((l) => /gh workflow run vercel-deploy\.yml/.test(l));
+  assert.ok(lines.length >= 2, 'poller deploy dispatches not found');
+  const sources = lines.map((l) => {
+    const m = l.match(/gh workflow run vercel-deploy\.yml -f source=([\w-]+)(?=\s|$)/);
+    assert.ok(m, `unreadable vercel-deploy dispatch form: ${l.trim()}`);
+    return m[1];
+  });
   assert.deepEqual([...new Set(sources)].sort(), ['opening-night', 'opening-night-reveal']);
   for (const s of sources) {
     assert.ok(URGENT_SOURCES.includes(s), `${s} must be in URGENT_SOURCES`);
@@ -205,4 +216,12 @@ test('BRO-8261: only public/data/shows/<id>.json counts as a show file', () => {
   // A .social.json sibling never counts toward the show-file caps.
   const many = Array.from({ length: MAX_SHOW_FILES + 1 }, (_, i) => `public/data/shows/s${i}.social.json`);
   assert.equal(classifyReveal(many, () => ({ before: '{}', after: '{}' })).reveal, false);
+});
+
+test('BRO-8261: more show files than can be loaded fails open even with an opening show', () => {
+  const files = Array.from({ length: MAX_ANY_SHOW_FILES + 1 }, (_, i) => `public/data/shows/s${i}.json`);
+  // classifyRange loads no blobs past the cap: every read is null/null.
+  const r = classifyReveal(files, () => ({ before: null, after: null }), { openingIds: ['s0'] });
+  assert.equal(r.reveal, true);
+  assert.match(r.reason, /too-many-show-files/);
 });

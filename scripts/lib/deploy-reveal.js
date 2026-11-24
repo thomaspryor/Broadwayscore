@@ -129,8 +129,11 @@ function classifyReveal(files, read, { codePaths = [], maxShowFiles = MAX_SHOW_F
   // status file missed (e.g. a stuck preview with no opening date, which the
   // poller still polls): a reveal. Later reviews of other shows ride routine.
   if (opening) {
+    // BRO-8261: cap on ALL show files, the same bound classifyRange uses to
+    // decide whether to load blobs. Capping only `others` let 8000 others plus
+    // an opening show pass here with no blobs loaded, reading as unchanged.
+    if (allShows.length > MAX_ANY_SHOW_FILES) return { reveal: true, reason: `too-many-show-files(${allShows.length})`, file: null };
     const others = allShows.filter((f) => !opening.has(showIdOf(f)));
-    if (others.length > MAX_ANY_SHOW_FILES) return { reveal: true, reason: `too-many-show-files(${others.length})`, file: null };
     for (const f of others) {
       let pair;
       try { pair = read(f); } catch { return { reveal: true, reason: 'read-error', file: f }; }
