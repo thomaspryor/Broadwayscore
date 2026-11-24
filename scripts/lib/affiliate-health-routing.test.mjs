@@ -10,14 +10,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+const { makeTmpDir } = require('./tmpdir-for-tests.js');
 
-function loadWithFakes() {
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'affiliate-routing-test-'));
+function loadWithFakes(t) {
+  const tmp = makeTmpDir(t, 'affiliate-routing-test-');
   process.env.ALERT_LEDGER_PATH = path.join(tmp, 'ledger.json');
   // Pre-create it: with no file, loadLedger() seeds from the live tracked
   // ledger, which would make this test depend on bot-committed data.
@@ -58,8 +58,8 @@ const providerChecks = (runChecks, errors) =>
   runChecks({ impactDaily: [], posthogDaily: POSTHOG, actions: [], errors, asOf: '2026-11-22' })
     .filter((c) => c.key.startsWith('affiliate:provider'));
 
-test('REAL 2026-11-22 503: digest only, no email; a real 401 the next run still emails', async () => {
-  const { runChecks, routeResults, sent, ledger } = loadWithFakes();
+test('REAL 2026-11-22 503: digest only, no email; a real 401 the next run still emails', async (t) => {
+  const { runChecks, routeResults, sent, ledger } = loadWithFakes(t);
 
   // Day 1: the 2026-11-22 outage.
   await routeResults(providerChecks(runChecks, [{ provider: 'impact', message: 'Impact performance-by-day error: HTTP 503' }]), { asOf: '2026-11-22', shadow: false });
@@ -72,8 +72,8 @@ test('REAL 2026-11-22 503: digest only, no email; a real 401 the next run still 
   assert.equal(ledger()['affiliate:provider-auth:impact'].status, 'open');
 });
 
-test('an auth incident left open by the old single-key code resolves once a later run proves the login works', async () => {
-  const { runChecks, routeResults, sent, ledger } = loadWithFakes();
+test('an auth incident left open by the old single-key code resolves once a later run proves the login works', async (t) => {
+  const { runChecks, routeResults, sent, ledger } = loadWithFakes(t);
   // Old code paged the 503 on the auth key: seed that open incident.
   await routeResults([{ key: 'affiliate:provider-auth:impact', label: 'impact API', verdict: 'critical', reason: 'impact fetch failed: HTTP 503', wantsPage: true }], { asOf: '2026-11-22', shadow: false });
   assert.equal(ledger()['affiliate:provider-auth:impact'].status, 'open');
