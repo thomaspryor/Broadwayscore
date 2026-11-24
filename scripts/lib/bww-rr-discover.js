@@ -11,8 +11,9 @@
  * Strategy: scrape the /reviews.php listing directly. BWW updates this page within
  * minutes of publishing a Review Roundup article. No Google lag, no pattern guessing.
  *
- * Cost: 1 Browserbase session per discovery attempt (~$0.10). Cadence-gated at
- * the caller side — only call within the opening-night window.
+ * Cost: section page + cheap fetchPage scan first (~$0.005). A Browserbase
+ * session (~$0.10) runs only when the cheap scan is unusable or empty
+ * (BRO-8262). Cadence-gated at the caller side.
  *
  * Used by: scripts/opening-night-poller.js as primary BWW RR discovery path;
  * existing SERP search remains as a final fallback.
@@ -387,7 +388,8 @@ async function _fetchReviewsPageAnchorsUncached() {
  *
  * So category is NOT a proxy for "reviews.php can't help this show". It is only
  * a weak cost heuristic for whether a $0.10 session is worth spending when the
- * cheap tier has already come back empty.
+ * cheap tier came back unusable or empty (since BRO-8262 a non-empty cheap
+ * listing never reaches the paid tier, whatever the category).
  *
  * West End/off-West End are included in the skip set (#756 audit, 2026-08-02):
  * reviews.php is a BROADWAY listing page — the one confirmed WE match
@@ -459,6 +461,8 @@ async function _fetchSectionPageAnchorsUncached(url) {
  *
  * @param {object} show - shows.json record; needs { title, openingDate, category }
  * @param {object} [opts]
+ * @param {function} [opts.fetchPaidAnchors] - override the PAID fetch only; the
+ *   cheap tier and the BRO-8262 gate still run (testing).
  * @param {function} [opts.fetchAnchors] - override the PAID reviews.php fetch
  *   (testing). When supplied, the cheap tier is bypassed entirely so existing
  *   tests exercise the paid path deterministically.
@@ -533,21 +537,29 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
   if (skipReviewsPhp) {
     return { url: null, candidates: [], via: 'section-only' };
   }
-  // BRO-8262: a USABLE cheap scan (an array, which only comes back after the
-  // title + article-link structural guards pass) is the same /reviews/ listing
-  // the paid Browserbase tier would load: same page, no scroll, narrower href
-  // filter. So a show missing from it is missing from the paid render too.
+  // BRO-8262: a cheap scan that returned the real /reviews/ listing WITH roundup
+  // anchors is the same page the paid Browserbase tier would load (same URL, no
+  // scroll). A show missing from it is missing from the paid render too.
   // Measured 11-17..24: 80 poller runs, 223 discovery misses, 0 roundups found
   // by the paid tier, while broadwayworld.com took 311 Browserbase sessions
-  // (~$31/week). The paid tier now runs only when the cheap scan is UNUSABLE
-  // (null: blocked, interstitial, provider error), which is the case it exists
-  // for. Placed after the skip gate so shows the paid tier never probed keep
-  // 'section-only'; 'not-found' here matches what a paid miss returned, so
-  // downstream miss handling is unchanged. forceReviewsPhp (manual recovery)
-  // and BWW_PAID_AFTER_CHEAP_MISS=1 restore the paid probe.
-  if (Array.isArray(cheapAnchors) && opts.forceReviewsPhp !== true
+  // (~$31/week). So the paid tier is skipped after a non-empty cheap miss.
+  // It still runs when the cheap scan is unusable (null: blocked, interstitial,
+  // provider error) or returns [] (the live page normally lists ~6-12 roundups,
+  // so zero means the cheap regex may have drifted from BWW's markup; the paid
+  // DOM read is the guard for that). Placed after the skip gate so shows the
+  // paid tier never probed keep 'section-only'. Behavior note: this 'not-found'
+  // also covers cases where the paid tier used to return cap-exhausted /
+  // provider-error, so the poller now records those as misses (opening-window
+  // shows are exempt from the cooldown, bww-roundup-persistence.js).
+  // tier:'cheap-listing' marks gate hits so they can be counted.
+  // forceReviewsPhp and BWW_PAID_AFTER_CHEAP_MISS=1 restore the paid probe.
+  if (Array.isArray(cheapAnchors) && cheapAnchors.length > 0 && opts.forceReviewsPhp !== true
       && process.env.BWW_PAID_AFTER_CHEAP_MISS !== '1') {
-    return { url: null, candidates: [], via: 'not-found' };
+    console.log(`  bww-rr-discover: show not in cheap /reviews/ listing (${cheapAnchors.length} roundups); paid Browserbase probe skipped (BRO-8262)`);
+    return { url: null, candidates: [], via: 'not-found', tier: 'cheap-listing' };
+  }
+  if (Array.isArray(cheapAnchors) && cheapAnchors.length === 0) {
+    console.log('::warning::bww-rr-discover: cheap /reviews/ scan passed the structural guard but found 0 roundup anchors (parser drift?); falling back to the paid probe');
   }
   // opts.fetchPaidAnchors: test hook for the paid tier that, unlike fetchAnchors,
   // keeps the cheap tier running (BRO-8262 gate tests).

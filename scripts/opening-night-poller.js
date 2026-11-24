@@ -732,8 +732,9 @@ async function runAggregators(show) {
             const tried = (discovery.candidates || []).length;
             console.log(`  BWW discovery: no matching RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
             // Only record a cooldown-worthy miss on a confident negative
-            // (via==='not-found': both section scan AND reviews.php were
-            // tried, nothing matched). 'cap-exhausted'/'provider-error' are
+            // (via==='not-found': the section scan and the reviews listing
+            // were read and nothing matched; since BRO-8262 the listing may be
+            // the cheap scan alone, discovery.tier==='cheap-listing'). 'cap-exhausted'/'provider-error' are
             // transient — cooldown-ing those hides discovery for 24h after
             // a temporary Browserbase/SD outage. 'section-only' means
             // reviews.php was never even tried (skipReviewsPhp) — also not

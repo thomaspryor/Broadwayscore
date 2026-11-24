@@ -47,14 +47,16 @@ describe('BRO-8262 paid reviews.php gate', () => {
     const r = await discover(broadwayShow, { cheap: LISTING, paidSpy: paid });
     assert.strictEqual(paid.calls, 0, 'paid Browserbase fetch must not run after a usable cheap miss');
     assert.strictEqual(r.via, 'not-found');
+    assert.strictEqual(r.tier, 'cheap-listing');
     assert.strictEqual(r.url, null);
   });
 
-  it('a usable but empty cheap listing also skips the paid tier', async () => {
-    const paid = spyPaid(LISTING);
+  it('an empty cheap listing still reaches the paid tier (parser-drift guard)', async () => {
+    const hit = ['https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-SEVEN-GUITARS-20261120'];
+    const paid = spyPaid(hit);
     const r = await discover(broadwayShow, { cheap: [], paidSpy: paid });
-    assert.strictEqual(paid.calls, 0);
-    assert.strictEqual(r.via, 'not-found');
+    assert.strictEqual(paid.calls, 1, 'zero cheap roundups may mean the cheap regex drifted; paid DOM read must run');
+    assert.strictEqual(r.via, 'reviews.php');
   });
 
   it('still uses the paid tier when the cheap scan is unusable (null)', async () => {
