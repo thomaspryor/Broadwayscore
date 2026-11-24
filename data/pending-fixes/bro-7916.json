@@ -1,0 +1,54 @@
+{
+  "issueNumber": "bro-7916",
+  "planId": "cd931f0e-d7b0-4c31-ba3a-d0e60e2a1f6f",
+  "status": "pending",
+  "createdAt": "2026-11-24T04:55:28.209Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Triage two cross-outlet review attributions",
+    "steps": [
+      "wicked-2003/theatermania--david-gordon.json: crossOutletVerifiedNote",
+      "wicked-2003/theatermania--david-gordon.json: crossOutletVerified",
+      "romeo-and-juliet-2013/chicagotribune--marilyn-stasio.json: wrongAttributionReason",
+      "romeo-and-juliet-2013/chicagotribune--marilyn-stasio.json: wrongAttribution"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "wicked-2003/theatermania--david-gordon.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "TheaterMania article names Peter Filichia as its author: https://www.theatermania.com/news/wicked-good-or-wicked-bad_4041/",
+        "description": "wicked-2003/theatermania--david-gordon.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wicked-2003/theatermania--david-gordon.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "wicked-2003/theatermania--david-gordon.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-and-juliet-2013/chicagotribune--marilyn-stasio.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "Stored text matches the Variety review by Marilyn Stasio; Chicago Tribune attribution is unverified.",
+        "description": "romeo-and-juliet-2013/chicagotribune--marilyn-stasio.json: wrongAttributionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-and-juliet-2013/chicagotribune--marilyn-stasio.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "romeo-and-juliet-2013/chicagotribune--marilyn-stasio.json: wrongAttribution"
+      }
+    ]
+  }
+}
