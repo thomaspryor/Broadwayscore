@@ -6,13 +6,16 @@ name: Publish Show Refresh
 # score without a full deploy. While the reader is off nothing reads what this
 # writes: it is invisible on the site.
 #
-# Modes: scheduled and workflow_run runs write unless repo variable
-# SHOW_REFRESH_PUBLISH_WRITES is 'off' (only 'off' turns writes off; 'false' or
-# '0' do not). A manual dispatch obeys its own `write` input only (default
-# dry-run). Off switches: SHOW_REFRESH_PUBLISH_WRITES=off (dry-run),
-# SHOW_REFRESH_PUBLISH_DISABLED=true (skips every run), or the store's kill row
-# (Show Refresh Kill Switch workflow, no variable needed) which stops a run
-# before any write.
+# Modes: scheduled, workflow_run and re-dispatched runs (redispatched=true, set
+# by cron-redispatch.js and check-cron-health's self-heal when GitHub drops the
+# schedule, BRO-8233) write unless repo variable SHOW_REFRESH_PUBLISH_WRITES is
+# 'off' (only 'off' turns writes off; 'false' or '0' do not). A plain manual
+# dispatch obeys its own `write` input only (default dry-run). Off switches:
+# SHOW_REFRESH_PUBLISH_WRITES=off (dry-run), SHOW_REFRESH_PUBLISH_DISABLED=true
+# (every run skips its work steps and ends green, so the CRITICAL_CRONS entry
+# does not page while it is deliberately off), or the store's kill row (Show
+# Refresh Kill Switch workflow, no variable needed) which stops a run before any
+# write.
 #
 # Triggers: after a data rebuild or deploy (completed, any conclusion: a rebuild
 # can push core data and then fail a later step), plus a 10-minute backstop.
@@ -36,6 +39,14 @@ on:
         required: false
         type: boolean
         default: false
+      redispatched:
+        # redispatch-after-hours: 0.5  (BRO-8233: the */10 schedule had not fired in its first hours;
+        #   runs otherwise arrive only via workflow_run. cron-redispatch.js replaces a missing run after
+        #   0.5h. A redispatched run behaves exactly like the scheduled one: it writes unless
+        #   SHOW_REFRESH_PUBLISH_WRITES=off, the same rule as schedule and workflow_run.)
+        description: 'Set by scripts/cron-redispatch.js when GitHub dropped the schedule. Behaves like a scheduled run.'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -46,7 +57,8 @@ concurrency:
 
 jobs:
   publish:
-    if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
+    # SHOW_REFRESH_PUBLISH_DISABLED gates the work steps, not the job: a run whose
+    # only job is skipped is not a success, and check-cron-health would page.
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -57,19 +69,23 @@ jobs:
       - uses: ./.github/actions/setup-node
 
       - name: Checkout core data
+        if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Publish
+        if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
         env:
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SHOW_REFRESH_REVALIDATE_SECRET: ${{ secrets.SHOW_REFRESH_REVALIDATE_SECRET }}
-          WRITE: ${{ ((github.event_name == 'workflow_dispatch' && inputs.write == true) || (github.event_name != 'workflow_dispatch' && vars.SHOW_REFRESH_PUBLISH_WRITES != 'off')) && 'true' || 'false' }}
-          TRIGGER: ${{ github.event_name }}:${{ github.event.workflow_run.name || '' }}
+          # Plain manual dispatch: the `write` input decides. Schedule, workflow_run and a
+          # redispatched dispatch: write unless SHOW_REFRESH_PUBLISH_WRITES=off.
+          WRITE: ${{ ((github.event_name == 'workflow_dispatch' && inputs.redispatched != 'true' && inputs.write == true) || ((github.event_name != 'workflow_dispatch' || inputs.redispatched == 'true') && vars.SHOW_REFRESH_PUBLISH_WRITES != 'off')) && 'true' || 'false' }}
+          TRIGGER: ${{ github.event_name }}:${{ github.event.workflow_run.name || '' }}${{ inputs.redispatched == 'true' && ':redispatched' || '' }}
         run: |
           set -o pipefail
           MODE=--dry-run
@@ -78,7 +94,7 @@ jobs:
           npx tsx scripts/publish-show-refresh.ts "$MODE" --report="$RUNNER_TEMP/show-refresh-report.json" | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Upload report
-        if: always()
+        if: always() && vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: show-refresh-report

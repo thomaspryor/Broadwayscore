@@ -163,8 +163,38 @@ test('workflows: writes are on unless SHOW_REFRESH_PUBLISH_WRITES=off; a manual 
     return steps[0].env.WRITE;
   };
   assert.equal(writeEnv('rebuild-fast.yml', (st) => st.run.includes('--rebuild-step')), "${{ vars.SHOW_REFRESH_PUBLISH_WRITES != 'off' && 'true' || 'false' }}");
-  assert.equal(writeEnv('publish-show-refresh.yml', () => true),
-    "${{ ((github.event_name == 'workflow_dispatch' && inputs.write == true) || (github.event_name != 'workflow_dispatch' && vars.SHOW_REFRESH_PUBLISH_WRITES != 'off')) && 'true' || 'false' }}");
+  // BRO-8233: evaluate the backstop's WRITE expression over a truth table instead of pinning its text.
+  // GitHub's `&&`/`||`/`==` on these operands behave like JS (missing inputs are null, never 'true').
+  const expr = writeEnv('publish-show-refresh.yml', () => true).replace(/^\$\{\{\s*|\s*\}\}$/g, '');
+  const evalWrite = (ctx) => new Function('github', 'inputs', 'vars', `return (${expr});`)(
+    { event_name: ctx.event }, { write: ctx.write ?? null, redispatched: ctx.redispatched ?? null }, { SHOW_REFRESH_PUBLISH_WRITES: ctx.writesVar ?? '' });
+  const cases = [
+    [{ event: 'schedule' }, 'true'],
+    [{ event: 'workflow_run' }, 'true'],
+    [{ event: 'schedule', writesVar: 'off' }, 'false'],
+    [{ event: 'workflow_run', writesVar: 'false' }, 'true'],
+    [{ event: 'workflow_dispatch', write: false, redispatched: '' }, 'false'],
+    [{ event: 'workflow_dispatch', write: true, redispatched: '' }, 'true'],
+    [{ event: 'workflow_dispatch', write: true, redispatched: '', writesVar: 'off' }, 'true'],
+    // cron-redispatch.js / check-cron-health self-heal send only redispatched=true: behave like schedule.
+    [{ event: 'workflow_dispatch', write: false, redispatched: 'true' }, 'true'],
+    [{ event: 'workflow_dispatch', write: false, redispatched: 'true', writesVar: 'off' }, 'false'],
+    [{ event: 'workflow_dispatch', write: true, redispatched: 'true', writesVar: 'off' }, 'false'],
+  ];
+  for (const [ctx, want] of cases) assert.equal(evalWrite(ctx), want, JSON.stringify(ctx));
+});
+
+test('publish-show-refresh.yml: the DISABLED switch gates work steps, not the job, so a disabled run stays green for check-cron-health', async () => {
+  const yaml = (await import('js-yaml')).default;
+  const dir = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '.github', 'workflows');
+  const wf = yaml.load(fs.readFileSync(path.join(dir, 'publish-show-refresh.yml'), 'utf8'));
+  const job = wf.jobs.publish;
+  assert.equal(job.if, undefined, 'no job-level if: a run whose only job is skipped is not a success');
+  for (const name of ['Checkout core data', 'Publish', 'Upload report']) {
+    const st = job.steps.find((x) => x.name === name);
+    assert.ok(st && String(st.if).includes("vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'"), `${name} gated on SHOW_REFRESH_PUBLISH_DISABLED`);
+  }
+  assert.ok(wf.on.workflow_dispatch.inputs.redispatched, 'opted into cron-redispatch');
 });
 
 test('sliceCodeClosure: the slice computation\'s own imports, not every script; none in a dir without the code', (t) => {
