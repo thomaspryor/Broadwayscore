@@ -1,19 +1,130 @@
 {
-  "updatedAt": "2026-11-24T10:20:55.120Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-24T10:28:35.448Z",
+  "processed": 806,
+  "failed": 403,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 1,
-    "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "playwright": 370,
+    "amp": 1,
+    "browserbase": 26,
+    "directCookies": 2,
+    "scrapingdog": 40,
+    "scrapingbee": 74,
+    "brightdata": 14,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-11-24T08:51:44.455Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T08:51:51.323Z",
+      "event": "bb-session",
+      "session": "4c6fb7b2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655953"
+    },
+    {
+      "t": "2026-11-24T08:51:52.191Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T08:52:01.694Z",
+      "event": "bb-session",
+      "session": "0f76154c",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-24T08:52:02.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T08:53:32.277Z",
+      "event": "bb-session",
+      "session": "654f149a",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-24T08:53:33.108Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T08:53:50.441Z",
+      "event": "bb-session",
+      "session": "72da3753",
+      "url": "https://www.nytimes.com/theater/downstate-review-broadway-freeman-sadoski"
+    },
+    {
+      "t": "2026-11-24T08:53:51.331Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T09:42:06.491Z",
+      "event": "bb-session",
+      "session": "5229d664",
+      "url": "https://bachtrack.com/review-my-first-ballet-cinderella-williamson-english-natio"
+    },
+    {
+      "t": "2026-11-24T10:21:15.452Z",
+      "event": "bb-session",
+      "session": "47bb95d1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+    },
+    {
+      "t": "2026-11-24T10:21:16.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T10:23:04.085Z",
+      "event": "bb-session",
+      "session": "5fbe6d30",
+      "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
+    },
+    {
+      "t": "2026-11-24T10:23:04.754Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T10:25:39.400Z",
+      "event": "bb-session",
+      "session": "378f039f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655953"
+    },
+    {
+      "t": "2026-11-24T10:25:40.091Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-24T10:25:50.920Z",
+      "event": "bb-session",
+      "session": "aea001cd",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-24T10:25:51.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T10:26:08.294Z",
+      "event": "bb-session",
+      "session": "074902b2",
+      "url": "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
+    },
+    {
+      "t": "2026-11-24T10:26:08.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
