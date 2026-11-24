@@ -232,6 +232,16 @@ test('a paragraph that is only "Review by Name . . ." is the byline on Theater P
   assert.equal(tp('Review by J. K. Clarke'), 'J. K. Clarke');
   assert.equal(tp('Review by JK Clarke . . .'), 'JK Clarke');
   assert.equal(tp('Review by Mary Kate O\'Neill'), "Mary Kate O'Neill");
+  assert.equal(tp('Review by Mary O&#x2019;Hara'), 'Mary O’Hara');
+  assert.equal(extractByline(page('Review by Stuart Miller'), { outletId: 'theatre-pizzazz' }), 'Stuart Miller');
+  assert.equal(tp('Review by José Rivera . . .'), 'José Rivera');
+  assert.equal(tp('Review by Mary Ann Jane Smith'), 'Mary Ann Jane Smith');
+  // A related-posts teaser on Theater Pizzazz itself is not the byline: the credit must be a <p>.
+  assert.equal(extractByline('<div><a href="/x">Review by Jane Smith</a></div>' + page('Review by Stuart Miller'), { outletId: 'theater-pizzazz' }), 'Stuart Miller');
+  // Bounded whitespace: a huge run of spaces with no closing tag returns fast.
+  const t0 = Date.now();
+  assert.equal(extractByline('<p>Review by John Smith' + ' '.repeat(200000) + '!', { outletId: 'theater-pizzazz' }), null);
+  assert.ok(Date.now() - t0 < 500, 'no quadratic backtracking');
   // Mid-sentence mentions and non-names stay out.
   assert.equal(tp('I read the review by Ben Brantley yesterday'), null);
   assert.equal(tp('Review by The Numbers'), null);

@@ -68,7 +68,7 @@ async function prefetchDiscoveredArticle(url, opts = {}) {
   let publishDate = null;
   try { publishDate = extractPublishDate(html, url) || null; } catch { publishDate = null; }
   let byline = null;
-  try { byline = extractByline(html) || null; } catch { byline = null; }
+  try { byline = extractByline(html, { outletId: opts.outletId }) || null; } catch { byline = null; }
 
   const hasBody = text.length >= MIN_BODY_CHARS;
   const serpName = opts.criticName && opts.criticName !== 'Unknown' ? opts.criticName : null;

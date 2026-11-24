@@ -89,8 +89,10 @@ const INLINE_BY_RE = />[Bb]y:?\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217
 // Seven Guitars 2026-11-23: meta and RSS name the site account, so the record said Unknown). The
 // whole element must be the credit (optional trailing ". . ." / "…"), so body prose that mentions
 // "a review by X" mid-sentence never matches.
-const REVIEW_BY_NAME_WORD = String.raw`[A-Z](?:[A-Za-z'’-]|&#8217;|&rsquo;|\.(?=[A-Z]))*\.?`;
-const REVIEW_BY_PARA_RE = new RegExp(String.raw`>\s*Review by\s+(${REVIEW_BY_NAME_WORD}(?:\s+${REVIEW_BY_NAME_WORD}){1,2}?)\s*(?:(?:\.\s*){2,}|…|&#8230;|&hellip;)?\s*<`);
+// Must open a <p> (a sidebar teaser is an <a>/<h3>), and every whitespace run is bounded so a long
+// run of spaces with no closing tag cannot backtrack quadratically (ship-check of BRO-8242).
+const REVIEW_BY_NAME_WORD = String.raw`[A-ZÀ-Þ](?:[A-Za-zÀ-ɏ'’-]|&#8217;|&#x2019;|&rsquo;|&#39;|\.(?=[A-Z]))*\.?`;
+const REVIEW_BY_PARA_RE = new RegExp(String.raw`<p\b[^>]*>[ \t\n]{0,10}Review by[ \t\n]{1,5}(${REVIEW_BY_NAME_WORD}(?:[ \t\n]{1,5}${REVIEW_BY_NAME_WORD}){1,3}?)[ \t\n]{0,5}(?:(?:\.[ \t]{0,3}){2,5}|…|&#8230;|&hellip;)?[ \t\n]{0,10}<`);
 const SIGN_OFF_RE = /<b>\s*(?:--|—)\s*([A-Z][A-Za-z.'’ -]{3,40}?)\s*<\/b>/;
 const PROSE_NOT_A_NAME_RE = /\b(?:date|dates|numbers?|name|title|category|categories|price|popularity|rating|ratings|recommended|highly|stars?|sunday|monday|tuesday|wednesday|thursday|friday|saturday|january|february|march|april|june|july|august|september|october|november|december)\b/i;
 function looksLikeProseName(name) {
@@ -197,7 +199,7 @@ function extractByline(html, { outletId, text } = {}) {
     INLINE_BY_RE,
     // Scoped like the artsdesk rule: unscoped, a sidebar teaser "<a>Review by X</a>" on any outlet would
     // read as the byline (second-opinion review of BRO-8242).
-    outletId === 'theater-pizzazz' && REVIEW_BY_PARA_RE,
+    (outletId === 'theater-pizzazz' || outletId === 'theatre-pizzazz') && REVIEW_BY_PARA_RE,
     // <a rel="author"> — before the nested-author-name fallback below because
     // an explicit rel="author" is a stronger signal than a bare class name.
     /<a[^>]+rel=["']author["'][^>]*>([^<]+)<\/a>/i,
