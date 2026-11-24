@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T04:57:29.174Z",
+  "timestamp": "2026-11-24T05:23:55.322Z",
   "stats": {
-    "totalReviews": 84547,
+    "totalReviews": 84553,
     "alreadyFlagged": 22554,
     "dateGuardCatches": 244,
     "directorMismatch": 3886,
-    "tvFilmSignals": 2431,
-    "londonSignals": 3996,
+    "tvFilmSignals": 2432,
+    "londonSignals": 3997,
     "offBroadwaySignals": 789,
     "yearMismatch": 395,
-    "noPublishDate": 8258
+    "noPublishDate": 8257
   },
   "findings": [
     {
@@ -11481,6 +11481,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "bullets-over-broadway-2014",
+      "file": "thewrap--robert-hofler.json",
+      "score": 47,
+      "publishDate": "2014-04-10T20:15:36-04:00",
+      "url": "http://www.thewrap.com/bullets-broadway-theater-review-zach-braff-guys-dolls-reinvention-susan-stroman",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -103787,6 +103801,19 @@
       ]
     },
     {
+      "showId": "death-and-the-maiden-regional-2026",
+      "file": "stage-raw--lovell-estell-iii.json",
+      "publishDate": "2026-11-16",
+      "url": "https://stageraw.com/stage-raw-review-death-and-the-maiden",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "death-note-the-musical-off-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 60,
@@ -127269,13 +127296,13 @@
       "showId": "othello-bedlam-off-broadway-2026",
       "file": "exeunt-magazine--patrick-maley.json",
       "score": 70,
-      "publishDate": "2026-05-08T00:00:00-04:00",
+      "publishDate": "2026-05-05",
       "url": "https://exeuntnyc.com/reviews/review-othello-at-west-end-theatre/",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Published 183d before show (2026-05-08T00:00:00-04:00 vs 2026-11-07)"
+          "detail": "Published 186d before show (2026-05-05 vs 2026-11-07)"
         }
       ]
     },
