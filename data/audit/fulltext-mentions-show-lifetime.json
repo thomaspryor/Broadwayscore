@@ -1,12 +1,11 @@
 {
-  "updatedAt": "2026-11-24T01:15:36.493Z",
-  "scanned": 4949,
-  "showsWithViolations": 615,
-  "totalViolations": 870,
-  "newSinceLastRun": 2,
+  "updatedAt": "2026-11-24T04:18:43.143Z",
+  "scanned": 4954,
+  "showsWithViolations": 614,
+  "totalViolations": 869,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "promises-promises-2010::toronto-star--richard-ouzounian.json",
-    "the-girls-west-end-2017::tnt-magazine--tnt-editorial-team.json"
+    "hay-fever-west-end-2026::littlelondonwhispers--little-london-whispers.json"
   ],
   "actionableViolations": 9,
   "newActionableSinceLastRun": 0,
@@ -74,7 +73,6 @@
     "betrayal-2019::washpost--peter-marks.json",
     "beetlejuice-2019::newsday--barbara-schuler.json",
     "ink-2019::vulture--jesse-green.json",
-    "tootsie-2019::variety--marilyn-stasio.json",
     "burn-this-2019::front-row-center--sarah-downs.json",
     "oklahoma-2019::broadwaynews--charles-isherwood.json",
     "network-2018::thestage--mark-shenton.json",
@@ -216,7 +214,6 @@
     "a-life-in-the-theatre-2010::village-voice--michael-feingold.json",
     "the-pitmen-painters-2010::village-voice--michael-feingold.json",
     "brief-encounter-2010::newyorker--uncredited.json",
-    "brief-encounter-2010::nydailynews--joe-neumaier.json",
     "brief-encounter-2010::variety--steven-suskin.json",
     "everyday-rapture-2010::backstage--david-sheward.json",
     "everyday-rapture-2010::new-jersey-newsroom--michael-sommers.json",
@@ -369,6 +366,7 @@
     "360-allstars-off-west-end-2026::thestage--siobhan-murphy.json",
     "glengarry-glen-ross-west-end-2026::thestage--sam-marlowe.json",
     "glengarry-glen-ross-west-end-2026::whatsonstage--sarah-crompton.json",
+    "hay-fever-west-end-2026::littlelondonwhispers--little-london-whispers.json",
     "hay-fever-west-end-2026::thestage--the-stage.json",
     "hay-fever-west-end-2026::times-uk--dominic-maxwell.json",
     "the-last-man-off-west-end-2026::thestage--paul-vale.json",
@@ -1928,30 +1926,6 @@
           "criticName": "Jesse Green",
           "haystackLength": 303,
           "textIssuesFlag": true,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
-      "showId": "tootsie-2019",
-      "title": "Tootsie",
-      "openingDate": "2019-04-23",
-      "message": "variety/Marilyn Stasio (variety--marilyn-stasio.json) SHIPPED but fullText never mentions 'Tootsie' (303 chars): https://variety.com/2019/music/reviews/tootsie-review-broadway-musical-1203194758/",
-      "violations": [
-        {
-          "filename": "variety--marilyn-stasio.json",
-          "url": "https://variety.com/2019/music/reviews/tootsie-review-broadway-musical-1203194758/",
-          "outletId": "variety",
-          "criticName": "Marilyn Stasio",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
             "evidence": [
@@ -5039,7 +5013,7 @@
       "showId": "brief-encounter-2010",
       "title": "Brief Encounter",
       "openingDate": "2010-09-28",
-      "message": "newyorker/Uncredited (newyorker--uncredited.json) SHIPPED but fullText never mentions 'Brief Encounter' (201 chars, textIssues flag set): https://www.newyorker.com/arts/events/theatre/brief-encounter-studio-54\nnydailynews/Joe Neumaier (nydailynews--joe-neumaier.json) SHIPPED but fullText never mentions 'Brief Encounter' (139 chars): http://www.nydailynews.com/entertainment/arts/2010/09/29/2010-09-29_brief_encounter_review_surprise_is_lost_in_overly_lengthy_romance.html\nvariety/Steven Suskin (variety--steven-suskin.json) SHIPPED but fullText never mentions 'Brief Encounter' (303 chars): http://www.variety.com/review/VE1117943746.html?categoryid=33&cs=1&nid=2580\n⚠️  newsday/Linda Winer (newsday--linda-winer.json) also too short to assess (0 chars): http://www.newsday.com/columnists/linda-winer/falling-in-love-all-over-again-in-brief-encounter-1.2321496",
+      "message": "newyorker/Uncredited (newyorker--uncredited.json) SHIPPED but fullText never mentions 'Brief Encounter' (201 chars, textIssues flag set): https://www.newyorker.com/arts/events/theatre/brief-encounter-studio-54\nvariety/Steven Suskin (variety--steven-suskin.json) SHIPPED but fullText never mentions 'Brief Encounter' (303 chars): http://www.variety.com/review/VE1117943746.html?categoryid=33&cs=1&nid=2580\n⚠️  newsday/Linda Winer (newsday--linda-winer.json) also too short to assess (0 chars): http://www.newsday.com/columnists/linda-winer/falling-in-love-all-over-again-in-brief-encounter-1.2321496",
       "violations": [
         {
           "filename": "newyorker--uncredited.json",
@@ -5048,22 +5022,6 @@
           "criticName": "Uncredited",
           "haystackLength": 201,
           "textIssuesFlag": true,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "nydailynews--joe-neumaier.json",
-          "url": "http://www.nydailynews.com/entertainment/arts/2010/09/29/2010-09-29_brief_encounter_review_surprise_is_lost_in_overly_lengthy_romance.html",
-          "outletId": "nydailynews",
-          "criticName": "Joe Neumaier",
-          "haystackLength": 139,
-          "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
             "evidence": [
@@ -8239,8 +8197,24 @@
       "showId": "hay-fever-west-end-2026",
       "title": "Hay Fever",
       "openingDate": "2026-10-01",
-      "message": "thestage/Tom Wicker (thestage--the-stage.json) SHIPPED but fullText never mentions 'Hay Fever' (3089 chars): https://www.thestage.co.uk/reviews/hay-fever-review-wyndhams-theatre-london-noel-coward-christine-baranski-richard-e-grant\ntimes-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED but fullText never mentions 'Hay Fever' (3355 chars): https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
+      "message": "littlelondonwhispers/Little London Whispers (littlelondonwhispers--little-london-whispers.json) SHIPPED but fullText never mentions 'Hay Fever' (584 chars): https://littlelondonwhispers.substack.com/p/london-theatre-review-hay-fever\nthestage/Tom Wicker (thestage--the-stage.json) SHIPPED but fullText never mentions 'Hay Fever' (3089 chars): https://www.thestage.co.uk/reviews/hay-fever-review-wyndhams-theatre-london-noel-coward-christine-baranski-richard-e-grant\ntimes-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED but fullText never mentions 'Hay Fever' (3355 chars): https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
       "violations": [
+        {
+          "filename": "littlelondonwhispers--little-london-whispers.json",
+          "url": "https://littlelondonwhispers.substack.com/p/london-theatre-review-hay-fever",
+          "outletId": "littlelondonwhispers",
+          "criticName": "Little London Whispers",
+          "haystackLength": 584,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
         {
           "filename": "thestage--the-stage.json",
           "url": "https://www.thestage.co.uk/reviews/hay-fever-review-wyndhams-theatre-london-noel-coward-christine-baranski-richard-e-grant",
@@ -19511,7 +19485,7 @@
       "showId": "a-moon-for-the-misbegotten-off-west-end-2025",
       "title": "A Moon for the Misbegotten",
       "openingDate": "2025-06-25",
-      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'A Moon for the Misbegotten' (3008 chars): https://www.theguardian.com/stage/2025/jun/26/a-moon-for-the-misbegotten-review-ruth-wilson-michael-shannon-david-threlfall-almeida-theatre-london\n⚠️  broadwayworld/Alexander Cohen (broadwayworld--alexander-cohen.json) also too short to assess (0 chars): https://www.broadwayworld.com/westend/article/Review-A-MOON-FOR-THE-MISBEGOTTEN-Almeida-20250626",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'A Moon for the Misbegotten' (3008 chars): https://www.theguardian.com/stage/2025/jun/26/a-moon-for-the-misbegotten-review-ruth-wilson-michael-shannon-david-threlfall-almeida-theatre-london",
       "violations": [
         {
           "filename": "guardian--arifa-akbar.json",
@@ -19631,7 +19605,7 @@
       "showId": "brigadoon-west-end-2025",
       "title": "Brigadoon",
       "openingDate": "2025-08-11",
-      "message": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED but fullText never mentions 'Brigadoon' (2745 chars): https://www.thetimes.com/culture/theatre-dance/article/brigadoon-review-a-rare-return-to-scotlands-shangri-la-wdk32388r\n⚠️  london-theatre/Marianka Swain (london-theatre--marianka-swain.json) also too short to assess (0 chars): https://www.londontheatre.co.uk/reviews/brigadoon-review-regents-park-open-air-theatre",
+      "message": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED but fullText never mentions 'Brigadoon' (2745 chars): https://www.thetimes.com/culture/theatre-dance/article/brigadoon-review-a-rare-return-to-scotlands-shangri-la-wdk32388r",
       "violations": [
         {
           "filename": "times-uk--clive-davis.json",
@@ -19655,7 +19629,7 @@
       "showId": "the-maids-west-end-2025",
       "title": "The Maids",
       "openingDate": "2025-10-21",
-      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'The Maids' (3510 chars): https://www.thestage.co.uk/reviews/the-maids-review-donmar-warehouse-london\n⚠️  london-theatre/Olivia Rook (london-theatre--olivia-rook.json) also too short to assess (0 chars): https://www.londontheatre.co.uk/reviews/the-maids-review-donmar-warehouse-kip-williams-yerin-ha",
+      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'The Maids' (3510 chars): https://www.thestage.co.uk/reviews/the-maids-review-donmar-warehouse-london",
       "violations": [
         {
           "filename": "thestage--sam-marlowe.json",
@@ -19741,12 +19715,12 @@
     }
   ],
   "triage": {
-    "total": 870,
+    "total": 869,
     "counts": {
-      "excerpt": 196,
+      "excerpt": 194,
       "wrong-production": 9,
       "unresolved": 608,
-      "truncated": 57
+      "truncated": 58
     },
     "outletPlans": [
       {
@@ -23147,6 +23121,25 @@
         ]
       },
       {
+        "outletId": "littlelondonwhispers",
+        "total": 1,
+        "counts": {
+          "truncated": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "hay-fever-west-end-2026/littlelondonwhispers--little-london-whispers.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
         "outletId": "london-box-office",
         "total": 4,
         "counts": {
@@ -23674,24 +23667,15 @@
       },
       {
         "outletId": "nydailynews",
-        "total": 12,
+        "total": 11,
         "counts": {
-          "excerpt": 11,
+          "excerpt": 10,
           "unresolved": 1
         },
         "requiresArticleReview": true,
         "candidates": [
           {
             "file": "baby-its-you-2011/nydailynews--joe-dziemianowicz.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "brief-encounter-2010/nydailynews--joe-neumaier.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -28202,10 +28186,10 @@
       },
       {
         "outletId": "variety",
-        "total": 12,
+        "total": 11,
         "counts": {
           "wrong-production": 1,
-          "excerpt": 6,
+          "excerpt": 5,
           "unresolved": 5
         },
         "requiresArticleReview": true,
@@ -28298,15 +28282,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "tootsie-2019/variety--marilyn-stasio.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
