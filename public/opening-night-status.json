@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T19:36:28.063Z",
+  "generatedAt": "2026-11-24T20:14:33.321Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -398,25 +398,24 @@
       "status": "open",
       "slug": "a-christmas-carol-west-end",
       "thumbnail": "/images/shows/a-christmas-carol-west-end-2026/thumbnail.webp",
-      "siteScore": 82.22,
+      "siteScore": 81.74,
       "liveScore": 82,
-      "scoreDrift": -0.21999999999999886,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "scoreDrift": 0.2600000000000051,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 3,
-      "positive": 4,
+      "positive": 5,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "5/8 total",
           "T1:0/3",
-          "T2:1/2",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
@@ -500,10 +499,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         },
         {
@@ -604,6 +599,18 @@
           "t2": 1,
           "t3": 3,
           "p": 4,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-24T20:14:33.321Z",
+          "rc": 5,
+          "s": 81.74,
+          "t1": 0,
+          "t2": 2,
+          "t3": 3,
+          "p": 5,
           "m": 0,
           "n": 0,
           "bc": "waiting"
