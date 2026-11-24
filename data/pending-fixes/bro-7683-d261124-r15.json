@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7683-d261124-r15",
   "planId": "1debf1ce-6eca-422e-8c52-451324a065d9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T00:31:42.116Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,19 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T00:37:37.887Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-clockwork-orange-a-play-with-music-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added candide-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
