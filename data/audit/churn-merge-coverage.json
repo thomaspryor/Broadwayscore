@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-24T23:18:12.219Z",
+    "generatedAt": "2026-11-24T23:53:11.995Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -10,17 +10,17 @@
     "minChurn": 30,
     "flaggedCount": 8,
     "exemptCount": 19,
-    "coveredCount": 45,
-    "highChurnTracked": 72
+    "coveredCount": 46,
+    "highChurnTracked": 73
   },
   "flagged": [
     {
       "path": "data/audit/simulated-opening-night.json",
-      "churn": 145
+      "churn": 144
     },
     {
       "path": "data/audit/reddit-post-drafts.json",
-      "churn": 75
+      "churn": 77
     },
     {
       "path": "data/audit/serp-session-ledger.json",
@@ -50,31 +50,31 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 569
+      "churn": 562
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 272
+      "churn": 271
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 193
+      "churn": 192
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 186
+      "churn": 185
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 186
+      "churn": 185
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 186
+      "churn": 185
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 131
+      "churn": 129
     },
     {
       "path": "public/opening-night-status.json",
@@ -89,18 +89,6 @@
       "churn": 35
     },
     {
-      "path": "public/data/shows/cinderella-lyric-hammersmith-off-west-end-2026.json",
-      "churn": 35
-    },
-    {
-      "path": "public/data/shows/much-ado-about-nothing-2026.json",
-      "churn": 35
-    },
-    {
-      "path": "public/data/shows/nine-night-off-west-end-2026.json",
-      "churn": 35
-    },
-    {
       "path": "data/audit/t1-outlet-breaker.json",
       "churn": 34
     },
@@ -109,36 +97,48 @@
       "churn": 34
     },
     {
+      "path": "public/data/shows/much-ado-about-nothing-2026.json",
+      "churn": 34
+    },
+    {
       "path": "public/data/shows/seven-guitars-off-broadway-2026.json",
       "churn": 34
     },
     {
       "path": "public/data/shows/the-afronauts-west-end-2026.json",
+      "churn": 34
+    },
+    {
+      "path": "public/data/shows/cinderella-lyric-hammersmith-off-west-end-2026.json",
       "churn": 33
     },
     {
-      "path": "public/data/shows/fantasma-off-broadway-2026.json",
+      "path": "public/data/shows/nine-night-off-west-end-2026.json",
       "churn": 32
     },
     {
       "path": "public/data/shows/a-christmas-carol-west-end-2026.json",
-      "churn": 31
+      "churn": 30
+    },
+    {
+      "path": "public/data/shows/elektra-off-broadway-2026.json",
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 775,
+      "churn": 791,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 610,
+      "churn": 607,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/gemini-usage-ledger.jsonl",
-      "churn": 505,
+      "churn": 506,
       "mergeAttr": "union"
     },
     {
@@ -148,32 +148,32 @@
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 391,
+      "churn": 393,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 391,
+      "churn": 393,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 384,
+      "churn": 385,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 283,
+      "churn": 282,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 282,
+      "churn": 280,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 244,
+      "churn": 242,
       "mergeAttr": "ours"
     },
     {
@@ -183,27 +183,27 @@
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 185,
+      "churn": 187,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 184,
+      "churn": 186,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 179,
+      "churn": 177,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 170,
+      "churn": 166,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-ugly-one-off-west-end-2026.json",
-      "churn": 126,
+      "churn": 128,
       "mergeAttr": "ours"
     },
     {
@@ -213,37 +213,37 @@
     },
     {
       "path": "data/audit/session-retro.jsonl",
-      "churn": 87,
+      "churn": 85,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 83,
+      "churn": 82,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 83,
+      "churn": 82,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 83,
+      "churn": 82,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 83,
+      "churn": 82,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 83,
+      "churn": 82,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 83,
+      "churn": 82,
       "mergeAttr": "ours"
     },
     {
@@ -257,18 +257,18 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/validation-baseline.json",
+      "path": "data/collection-state/browserbase-usage.json",
       "churn": 63,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/collection-state/browserbase-usage.json",
+      "path": "data/audit/validation-baseline.json",
       "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 61,
+      "churn": 60,
       "mergeAttr": "ours"
     },
     {
@@ -283,12 +283,17 @@
     },
     {
       "path": "data/audit/poller-backoff/seven-guitars-off-broadway-2026.json",
-      "churn": 43,
+      "churn": 44,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-afronauts-west-end-2026.json",
-      "churn": 39,
+      "churn": 41,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/gather-collisions.json",
+      "churn": 35,
       "mergeAttr": "ours"
     },
     {
@@ -342,12 +347,12 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/gather-collisions.json",
-      "churn": 33,
+      "path": "data/audit/poller-backoff/west-side-story-west-end-2026.json",
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/west-side-story-west-end-2026.json",
+      "path": "data/audit/url-mismatch-suspects.json",
       "churn": 30,
       "mergeAttr": "ours"
     }
