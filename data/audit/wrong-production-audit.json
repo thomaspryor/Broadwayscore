@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-24T05:38:20.990Z",
+  "timestamp": "2026-11-24T06:01:06.081Z",
   "stats": {
     "totalReviews": 84555,
     "alreadyFlagged": 22555,
     "dateGuardCatches": 244,
-    "directorMismatch": 3886,
-    "tvFilmSignals": 2432,
+    "directorMismatch": 3887,
+    "tvFilmSignals": 2433,
     "londonSignals": 3997,
     "offBroadwaySignals": 789,
     "yearMismatch": 396,
-    "noPublishDate": 8258
+    "noPublishDate": 8257
   },
   "findings": [
     {
@@ -50582,6 +50582,20 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
+      "file": "rollingstone--ct-jones.json",
+      "score": null,
+      "publishDate": "2024-02-06",
+      "url": "https://www.rollingstone.com/culture/culture-features/oh-mary-cole-escola-queer-comedy-1234961659/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
       "file": "theater-life--david-sheward.json",
       "score": 82,
       "publishDate": "2024-02-11T14:18:21",
@@ -63511,6 +63525,19 @@
       "score": 84,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/spamalot",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "talkinbroadway--howard-miller.json",
+      "publishDate": "2023-11-16",
+      "url": "https://www.temptalkinbroadway.com/Spamalot23.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
