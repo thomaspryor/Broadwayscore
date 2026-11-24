@@ -375,7 +375,7 @@ function topCallers(ledgerRecords, day, provider, n = 5) {
  * ScrapingBee/Scrapingdog attribution must use (S0-T1): those two providers
  * bill by credit, not by call, so a 25-credit SERP row and a 1-credit page
  * row are not interchangeable units. countCallsByProvider() stays row-count
- * based for Browserbase (billed per session) and Bright Data (billed per
+ * based for Browserbase (counted per session, billed per browser-hour) and Bright Data (billed per
  * request) — both of those are 1 unit = 1 billed thing.
  * @returns {{[provider: string]: number}}
  */

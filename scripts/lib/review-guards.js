@@ -4535,7 +4535,7 @@ function recordSerpAttempt(show, review) {
 // of SERP calls: scripts/lib/failed-fetch-policy.js's isPermanentlyFailed()
 // caps retries at a flat 3 (dead/garbage) or 5 (everything else) regardless
 // of show lifecycle. A closed show whose review URL 404s gets the same
-// retry budget as an opening-night show, burning Browserbase (~$0.10/
+// retry budget as an opening-night show, burning Browserbase (capped/
 // session) + Bright Data + ScrapingBee spend on URLs that will never
 // succeed.
 //

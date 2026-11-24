@@ -71,7 +71,7 @@ on:
         required: false
         default: 'true'
       browserbase_enabled:
-        description: 'Enable Browserbase tier for CAPTCHA-heavy sites (costs ~$0.10/session)'
+        description: 'Enable Browserbase tier for CAPTCHA-heavy sites (billed per browser-hour, capped)'
         required: false
         default: 'true'
       browserbase_max_sessions:

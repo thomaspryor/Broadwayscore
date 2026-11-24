@@ -26,8 +26,14 @@ const CARD_KEYS = Object.freeze(Object.values(KEYS));
 
 const FAILURES_THRESHOLD = 5;
 const SB_HIGH_CREDITS = 50000;
-const BB_SPIKE_USD = 50;
-const BB_MONITOR_USD = 25;
+// BRO-8268: Browserbase bills browser-hours on a $20/month plan (BRO-3240,
+// provider-spend-core bbCost), not $0.10/session. A normal week bills ~$6.70
+// for ~970 sessions; a Feb-2026-size runaway (12,876 sessions) bills only ~$28.
+// So the red line is a session count (independent of pricing) or $20 billed;
+// a $0.10/session ESTIMATE (billed data missing) is shown but never files a card.
+const BB_SPIKE_SESSIONS = 2500;
+const BB_SPIKE_USD = 20; // normal ~1,000-session weeks billed up to ~$14 (early Nov 2026)
+const BB_MONITOR_USD = 15;
 
 function int(v) {
   const n = Number(String(v == null ? '' : v).trim());
@@ -121,22 +127,25 @@ function evaluateCostReport(m = {}) {
   }
 
   const bbCost = Number(m.bbCost);
-  const bbUsd = Number.isFinite(bbCost) ? Math.round(bbCost) : 0;
+  const bbBilled = String(m.bbCostSource || '').trim() === 'billed';
   const bbSessions = int(m.bbSessions) || 0;
   const bbCostText = Number.isFinite(bbCost) ? bbCost.toFixed(2) : String(m.bbCost);
-  if (bbUsd > BB_SPIKE_USD) {
+  const bbBasis = bbBilled ? 'billed' : 'estimate at $0.10/session: billed rows missing from data/audit/provider-spend-daily.jsonl, check the data-health-check run';
+  const bbText = `Browserbase $${bbCostText} this week (${bbBasis}; ${bbSessions} sessions)`;
+  const bbDollarSpike = bbBilled && Number.isFinite(bbCost) && bbCost > BB_SPIKE_USD;
+  if (bbSessions > BB_SPIKE_SESSIONS || bbDollarSpike) {
     lines.push({
       level: 'red',
       conditionKey: KEYS.browserbaseSpike,
-      text: `Browserbase $${bbCostText} this week (${bbSessions} sessions)`,
+      text: bbText,
       card: {
-        title: `Browserbase cost $${bbCostText} this week (${bbSessions} sessions), find what drove it`,
-        description: `${footer}\n\nTechnical: ${bbSessions} Browserbase sessions (~$0.10 each) in the 7 days to this report, threshold $${BB_SPIKE_USD}/week. Caps: scripts/lib/browserbase-caps.js; live usage: scripts/lib/browserbase-live-usage.js.${runRef}`,
+        title: `Browserbase spike: ${bbSessions} sessions, $${bbCostText} this week, find what drove it`,
+        description: `${footer}\n\nTechnical: ${bbSessions} Browserbase sessions in the 7 days to this report; cost $${bbCostText} (${bbBasis}). Red lines: more than ${BB_SPIKE_SESSIONS} sessions, or more than $${BB_SPIKE_USD} billed (browser-hours on the $20/month plan, scripts/lib/provider-spend-core.js bbCost; week sum scripts/lib/browserbase-week-cost.js). Caps: scripts/lib/browserbase-caps.js; live usage: scripts/lib/browserbase-live-usage.js.${runRef}`,
         hint: 'List the week\'s sessions per day and match them to the workflow runs that created them (collect-review-texts, opening-night-poller, aggregator-url-watcher). Fix the caller that exceeds its expected use, or lower its cap. Emergency stop: repo variable BROWSERBASE_KILL_SWITCH=true.',
       },
     });
-  } else if (bbUsd > BB_MONITOR_USD) {
-    lines.push({ level: 'amber', conditionKey: null, card: null, text: `Browserbase $${bbCostText} this week (${bbSessions} sessions), monitor` });
+  } else if (bbBilled ? (Number.isFinite(bbCost) && bbCost > BB_MONITOR_USD) : bbSessions > 0 && Number.isFinite(bbCost) && bbCost > 0) {
+    lines.push({ level: 'amber', conditionKey: null, card: null, text: `${bbText}, monitor` });
   }
 
   const sbCredits = int(m.sbCreditsTotal) || 0;

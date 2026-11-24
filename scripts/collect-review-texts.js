@@ -14,7 +14,7 @@
  * SUCCESS RATES (Jan 2026 data):
  *   Archive.org:  11.1% (best performer!)
  *   Playwright:    6.7%
- *   Browserbase:   NEW - $0.10/browser hour, has CAPTCHA solving
+ *   Browserbase:   NEW - $20/mo plan + $0.12/browser-hour overage (BRO-3240), has CAPTCHA solving
  *   ScrapingBee:   3.6%
  *   BrightData:    3.7%
  *
@@ -470,7 +470,7 @@ const CONFIG = {
   browserbaseApiKey: process.env.BROWSERBASE_API_KEY || '',
   browserbaseProjectId: process.env.BROWSERBASE_PROJECT_ID || '',
 
-  // Browserbase spending limits (to control costs - $0.10/session).
+  // Browserbase spending limits (to control costs; billed per browser-hour, not per session: BRO-3240).
   // Empirical April 2026 baseline (peak opening-night month): median 84/day, p95
   // 199/day, max 275/day (April 26, Joe Turner). Cap of 250 covers the empirical
   // max with 0 historical clip days; cap of 200 would have clipped April 26 alone.
@@ -524,7 +524,7 @@ const CONFIG = {
   },
 
   // Sites that require Browserbase (Cloudflare/CAPTCHA/SSO blocks that BD/SB/Playwright can't solve)
-  // Keep this list tight — each session costs ~$0.10. Legacy entries without documented blockers removed.
+  // Keep this list tight — each session uses paid browser-minutes and a daily cap slot. Legacy entries without documented blockers removed.
   knownBlockedSites: [
     'nytimes.com',        // DataDome CAPTCHA in headless
     'wsj.com',            // Dow Jones SSO anti-bot — fake-rejects correct password in automated browsers

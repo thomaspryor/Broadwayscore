@@ -20,7 +20,7 @@
  *                 Catches the show-level blind spot (Broad Strokes: never polled,
  *                 so never archived, so permanently `no-census-yet`).
  *                 OFF by default (--rediscover) because BWW discovery can reach
- *                 Browserbase at ~$0.10/session.
+ *                 Browserbase (capped sessions, billed per browser-minute).
  *
  * Freshly-fetched HTML is written to a THROWAWAY archive tree and the census is
  * built from there via buildCensusFromArchives. That is deliberate reuse, not a

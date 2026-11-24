@@ -1,7 +1,7 @@
 /**
  * browserbase-session.js — the one place that creates a Browserbase session.
  *
- * Task #752: Browserbase was the most expensive provider (~$0.10/session vs
+ * Task #752: Browserbase was the most expensive provider (then priced at ~$0.10/session, really billed per browser-hour: BRO-3240; vs
  * Bright Data's ~$0.0015) and the ONLY one with zero per-call attribution — 8
  * scripts hand-rolled the session-create POST independently. When Browserbase
  * spend rebounded on 2026-08-01, the billing API could count sessions but
@@ -60,7 +60,7 @@
  * from before this card — unlike BD/SD's breaker, this chokepoint has no
  * separate exempt per-run budget to fall back to, so bypassing the check
  * entirely for exempt callers would remove the only real-dollar backstop on
- * Browserbase's $0.10/session cost; checking them against the raw ceiling
+ * Browserbase's per-session spend; checking them against the raw ceiling
  * preserves that backstop while still freeing the reserved slice from the
  * bulk callers that were starving them.
  *

@@ -175,7 +175,7 @@ async function discoverDtliSlugForShow(show) {
  * works from a residential IP (Mac) but returns 403 from GitHub Actions IPs
  * (Cloudflare bot block). fetchPage's provider chain (Bright Data → SB →
  * Playwright) handles this transparently. Costs ~$0.005/call via BD vs
- * ~$0.10/call for the Browserbase reviews.php scrape.
+ * a capped Browserbase session (billed per browser-minute) for the reviews.php scrape.
  *
  * Caught Joe Turner 2026-04-25 when reviews.php scrape returned 6 anchors
  * none matching, but homepage had the RR as the top featured article.

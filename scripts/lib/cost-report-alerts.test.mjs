@@ -10,14 +10,14 @@ const QUIET = { totalFailed: 0, totalCancelled: 0, bbCost: '0.00', bbSessions: 0
 
 test('the Oct 19-26 report: failures and the Browserbase spike each get a card', () => {
   const { lines, resolvableKeys } = evaluateCostReport({
-    ...QUIET, totalFailed: 15, totalCancelled: 52, bbCost: '122.20', bbSessions: 1222,
+    ...QUIET, totalFailed: 15, totalCancelled: 52, bbCost: '122.20', bbCostSource: 'billed', bbSessions: 1222,
     failedByWorkflow: { 'collect-review-texts.yml': 9, 'gather-reviews.yml': 6 },
   });
   const keys = lines.filter((l) => l.card).map((l) => l.conditionKey);
   assert.deepEqual(keys, [KEYS.workflowFailures, KEYS.browserbaseSpike]);
   const wf = lines.find((l) => l.conditionKey === KEYS.workflowFailures);
   assert.match(wf.card.description, /collect-review-texts\.yml: 9\n- gather-reviews\.yml: 6/);
-  assert.match(lines[1].text, /\$122\.20 this week \(1222 sessions\)/);
+  assert.match(lines[1].text, /\$122\.20 this week \(billed; 1222 sessions\)/);
   assert.deepEqual(resolvableKeys.sort(), [KEYS.sbExhausted, KEYS.sbProjectedOverCap].sort());
 });
 
@@ -27,12 +27,38 @@ test('a quiet week files nothing and resolves every card condition', () => {
   assert.deepEqual(resolvableKeys, CARD_KEYS);
 });
 
-test('thresholds match the old bash step (>5 failures, >$50 rounded, >$25 amber)', () => {
+test('failure threshold matches the old bash step (>5 failures)', () => {
   assert.equal(evaluateCostReport({ ...QUIET, totalFailed: 5 }).lines.length, 0);
   assert.equal(evaluateCostReport({ ...QUIET, totalFailed: 6 }).lines[0].conditionKey, KEYS.workflowFailures);
-  assert.equal(evaluateCostReport({ ...QUIET, bbCost: '50.49' }).lines[0].level, 'amber');
-  assert.equal(evaluateCostReport({ ...QUIET, bbCost: '50.50' }).lines[0].conditionKey, KEYS.browserbaseSpike);
-  assert.equal(evaluateCostReport({ ...QUIET, bbCost: '25.00' }).lines.length, 0);
+});
+
+// BRO-8268: Browserbase is priced on billed browser-hours, not $0.10/session.
+test('Browserbase billed thresholds: >$20 red, >$15 amber, normal week quiet', () => {
+  const billed = (bbCost, bbSessions = 970) => evaluateCostReport({ ...QUIET, bbCost, bbSessions, bbCostSource: 'billed' }).lines;
+  assert.equal(billed('6.72').length, 0, 'the real week to 2026-11-24 is quiet');
+  assert.equal(billed('13.99').length, 0, 'busiest normal week, early Nov');
+  assert.equal(billed('15.00').length, 0);
+  assert.equal(billed('15.01')[0].level, 'amber');
+  assert.equal(billed('20.00')[0].level, 'amber');
+  assert.equal(billed('20.01')[0].conditionKey, KEYS.browserbaseSpike);
+});
+
+test('Browserbase session-count spike files a card whatever the pricing basis', () => {
+  for (const bbCostSource of ['billed', 'estimate', undefined]) {
+    const l = evaluateCostReport({ ...QUIET, bbCost: '5.00', bbSessions: 2501, bbCostSource }).lines;
+    assert.equal(l[0].conditionKey, KEYS.browserbaseSpike, String(bbCostSource));
+  }
+  assert.equal(evaluateCostReport({ ...QUIET, bbCost: '5.00', bbSessions: 2500, bbCostSource: 'billed' }).lines.length, 0);
+});
+
+test('the phantom: a $0.10/session estimate never files a card (BRO-6867 was filed this way)', () => {
+  for (const bbCostSource of ['estimate', undefined, '']) {
+    const l = evaluateCostReport({ ...QUIET, bbCost: '97.10', bbSessions: 971, bbCostSource }).lines;
+    assert.equal(l.length, 1);
+    assert.equal(l[0].level, 'amber');
+    assert.equal(l[0].card, null);
+    assert.match(l[0].text, /estimate at \$0\.10\/session: billed rows missing.*data-health-check/);
+  }
 });
 
 test('ScrapingBee over-cap and exhausted are separate cards; high credits stays amber', () => {
@@ -65,7 +91,7 @@ test('parseFailedByWorkflow skips bad pairs and zeros', () => {
 });
 
 test('email list names the card, or says filing failed; no em dashes; text escaped', () => {
-  const { lines } = evaluateCostReport({ ...QUIET, totalFailed: 15, bbCost: '122.20', bbSessions: 1222, apiDegraded: '<x>' });
+  const { lines } = evaluateCostReport({ ...QUIET, totalFailed: 15, bbCost: '122.20', bbCostSource: 'billed', bbSessions: 1222, apiDegraded: '<x>' });
   const html = renderActionHtml(lines, { [KEYS.workflowFailures]: 'BRO-1' }, { states: { [KEYS.workflowFailures]: 'started' } });
   assert.match(html, /A worker session is on it: <a href="https:\/\/linear\.app\/broadway-scorecard\/issue\/BRO-1">BRO-1<\/a>/);
   assert.match(html, /Browserbase \$122\.20[^<]*Could not file a worker card/);
@@ -111,7 +137,7 @@ function fakeRouter(results) {
 
 test('routeLines: auto and silent results with a card name it; no-card, dispatchOk:false and throws fail', async () => {
   const { lines, resolvableKeys } = evaluateCostReport({
-    ...QUIET, totalFailed: 15, bbCost: '122.20', bbSessions: 1222, sbProjected: 2000000, sbStatus: 'exhausted',
+    ...QUIET, totalFailed: 15, bbCost: '122.20', bbCostSource: 'billed', bbSessions: 1222, sbProjected: 2000000, sbStatus: 'exhausted',
   });
   const router = fakeRouter({
     [KEYS.workflowFailures]: { action: 'auto', dispatchOk: true, linearIdentifier: 'BRO-1' },

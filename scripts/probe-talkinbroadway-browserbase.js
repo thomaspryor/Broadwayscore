@@ -11,7 +11,7 @@
  * the index / day pages look like, so a daily collector can be built on facts.
  *
  * Prints only structure (status, title, text length, link counts, sample link
- * paths), never review text. Cost: one Browserbase session (~$0.10), capped by
+ * paths), never review text. Cost: one Browserbase session (about a minute of billed browser time), capped by
  * the 180s session timeout.
  *
  * Its caller allowance in browserbase-caps.js was retired 2026-11-04 (BRO-6872, unused since 10-22): it now gets

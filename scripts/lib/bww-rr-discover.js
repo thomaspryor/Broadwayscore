@@ -12,7 +12,7 @@
  * minutes of publishing a Review Roundup article. No Google lag, no pattern guessing.
  *
  * Cost: section page + cheap fetchPage scan first (~$0.005). A Browserbase
- * session (~$0.10) runs only when the cheap scan is unusable or empty
+ * session (capped, billed per browser-minute) runs only when the cheap scan is unusable or empty
  * (BRO-8262). Cadence-gated at the caller side.
  *
  * Used by: scripts/opening-night-poller.js as primary BWW RR discovery path;
@@ -231,7 +231,7 @@ async function fetchReviewsPageAnchors() {
 
 /**
  * CHEAP reviews.php anchor scan via the standard scraper chain (~$0.005/call via
- * Bright Data) instead of Browserbase (~$0.10/call — 20x more).
+ * Bright Data) instead of Browserbase (a capped, slower browser session).
  *
  * Why this exists (2026-07-31 billing audit): reviews.php was reachable ONLY via
  * the paid Browserbase path, which made it look like an expensive Broadway-only
@@ -516,7 +516,7 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
     }
   }
 
-  // 3. Paid Browserbase reviews.php fallback (~$0.10/call). THIS is what the skip
+  // 3. Paid Browserbase reviews.php fallback (capped browser session, billed per minute). THIS is what the skip
   //    gate protects — not discovery itself. Skippable for closed shows (reviews.php
   //    lists only RECENT roundups, so the back-catalogue grind would burn ~$0.10 x
   //    hundreds of closed shows) and, by category default, where a paid retry after

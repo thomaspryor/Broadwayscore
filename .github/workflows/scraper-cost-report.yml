@@ -198,7 +198,12 @@ jobs:
           # render-guard-audit.js has no owner-alert-router in its require graph.
           GUARD_AUDIT_HTML=$(node scripts/render-guard-audit.js 2>/dev/null || echo "<p>Spend guard audit unavailable this run.</p>")
 
-          # --- Browserbase last 7 days (sessions × \$0.10) ---
+          # --- Browserbase last 7 days: session count from the API, cost from billing ---
+          # BRO-8268: cost is the billed browser-hours figure (BRO-3240 model) summed over
+          # the 7 complete UTC days in data/audit/provider-spend-daily.jsonl by
+          # scripts/lib/browserbase-week-cost.js. The old sessions x \$0.10 figure
+          # overstated ~10x and filed phantom spike cards (BRO-6867); it now appears
+          # only as a labelled estimate when billed rows are missing, and never files a card.
           # Previously invisible. Feb 2026 spike was 12,876 sessions = \$1,287 in
           # one week, missed entirely by this report. Now tracked explicitly.
           #
@@ -208,7 +213,7 @@ jobs:
           # pagination, an unusually small response (<7-day baseline) would trigger
           # the API_DEGRADED flag rather than silently undercounting and missing
           # the exact catastrophic-spike scenario this code exists to catch.
-          BB_SESSIONS=0; BB_COST="0.00"; BB_TOTAL_ITEMS=0
+          BB_SESSIONS=0; BB_COST="0.00"; BB_COST_SOURCE="estimate"; BB_TOTAL_ITEMS=0; BB_SESSIONS_KNOWN=""
           API_DEGRADED=""
           if [ -n "$BROWSERBASE_API_KEY" ] && [ -n "$BROWSERBASE_PROJECT_ID" ]; then
             BB_HTTP_CODE=$(curl -s -o /tmp/bb_raw.json -w "%{http_code}" -H "X-BB-API-Key: $BROWSERBASE_API_KEY" "https://api.browserbase.com/v1/sessions?projectId=$BROWSERBASE_PROJECT_ID" 2>/dev/null || echo "000")
@@ -216,7 +221,7 @@ jobs:
               BB_PARSED=$(python3 -c "import sys,json; from datetime import datetime,timedelta,timezone; d=json.load(open('/tmp/bb_raw.json')); items=d if isinstance(d,list) else d.get('data',[]); cutoff=(datetime.now(timezone.utc)-timedelta(days=7)).isoformat(); recent=sum(1 for s in items if s.get('createdAt','')>=cutoff); print(f'{recent}|{len(items)}')" 2>/dev/null || echo "0|0")
               BB_SESSIONS=$(echo "$BB_PARSED" | cut -d'|' -f1)
               BB_TOTAL_ITEMS=$(echo "$BB_PARSED" | cut -d'|' -f2)
-              BB_COST=$(echo "scale=2; $BB_SESSIONS * 0.10" | bc 2>/dev/null || echo "0.00")
+              BB_SESSIONS_KNOWN=1
               # Suspicious-pagination check: if total items returned is suspiciously
               # round (100, 500, 1000, 10000) AND we have any sessions in window,
               # treat as possible pagination cap.
@@ -224,9 +229,16 @@ jobs:
                 100|500|1000|5000|10000) API_DEGRADED="$API_DEGRADED Browserbase API returned exactly $BB_TOTAL_ITEMS items — possible pagination cap, count may be low. ";;
               esac
             else
-              API_DEGRADED="$API_DEGRADED Browserbase API HTTP $BB_HTTP_CODE — cost data missing this week. "
+              API_DEGRADED="$API_DEGRADED Browserbase API HTTP $BB_HTTP_CODE — session count missing this week (cost still from billing). "
             fi
+          else
+            API_DEGRADED="$API_DEGRADED Browserbase keys missing — session count unknown. "
           fi
+          BB_WEEK=$(node scripts/lib/browserbase-week-cost.js --sessions="$BB_SESSIONS" 2>/dev/null || echo "0.00|estimate|0")
+          BB_COST=$(echo "$BB_WEEK" | cut -d'|' -f1)
+          BB_COST_SOURCE=$(echo "$BB_WEEK" | cut -d'|' -f2)
+          if [ "$BB_COST_SOURCE" = "billed" ]; then BB_COST_LABEL="billed, 7 full UTC days"; else BB_COST_LABEL="est. \$0.10/session, billed rows missing"; fi
+          if [ -n "$BB_SESSIONS_KNOWN" ]; then BB_SESSIONS_TEXT="$BB_SESSIONS sessions"; else BB_SESSIONS_TEXT="sessions unknown"; fi
 
           # --- ScrapingBee cap % direct from API (replaces log-scraping) ---
           # Outputs: pct_used | proj_pct_of_current_cap | used | cap | projected_absolute
@@ -320,7 +332,7 @@ jobs:
           # the job afterwards ("Fail if a worker card could not be filed").
           set +e
           COST_TOTAL_FAILED="$TOTAL_FAILED" COST_TOTAL_CANCELLED="$TOTAL_CANCELLED" \
-          COST_FAILED_BY_WF="$FAILED_BY_WF" COST_BB_COST="$BB_COST" COST_BB_SESSIONS="$BB_SESSIONS" \
+          COST_FAILED_BY_WF="$FAILED_BY_WF" COST_BB_COST="$BB_COST" COST_BB_COST_SOURCE="$BB_COST_SOURCE" COST_BB_SESSIONS="$BB_SESSIONS" \
           COST_SB_PROJECTED="$SB_PROJECTED_ABS" COST_SB_CAP="$SB_TARGET_CAP" COST_SB_STATUS="$SB_STATUS" \
           COST_SB_CREDITS_TOTAL="$SB_CREDITS_TOTAL" COST_API_DEGRADED="$API_DEGRADED" COST_RUNS_QUERY_FAILED="$RUNS_QUERY_FAILED" \
             node scripts/route-cost-report-alerts.js --html-out=/tmp/action-needed.html
@@ -362,7 +374,7 @@ jobs:
               <tr><td style="padding:6px 0;color:#6b7280">Playwright (free)</td><td style="padding:6px 0;text-align:right;font-weight:600">$PW_TOTAL requests</td><td style="padding:6px 0 6px 8px;color:#10b981;text-align:right">\$0</td></tr>
               <tr><td style="padding:6px 0;color:#6b7280">BrightData</td><td style="padding:6px 0;text-align:right;font-weight:600">$BD_TOTAL requests</td><td style="padding:6px 0 6px 8px;text-align:right">~\$$BD_COST</td></tr>
               <tr style="border-top:1px solid #e5e7eb"><td style="padding:6px 0;color:#6b7280">ScrapingBee</td><td style="padding:6px 0;text-align:right;font-weight:600">$SB_TOTAL requests</td><td style="padding:6px 0 6px 8px;text-align:right">$SB_CREDITS_TOTAL credits</td></tr>
-              <tr style="border-top:1px solid #e5e7eb"><td style="padding:6px 0;color:#6b7280">Browserbase</td><td style="padding:6px 0;text-align:right;font-weight:600">$BB_SESSIONS sessions</td><td style="padding:6px 0 6px 8px;text-align:right">\$$BB_COST</td></tr>
+              <tr style="border-top:1px solid #e5e7eb"><td style="padding:6px 0;color:#6b7280">Browserbase</td><td style="padding:6px 0;text-align:right;font-weight:600">$BB_SESSIONS_TEXT</td><td style="padding:6px 0 6px 8px;text-align:right">\$$BB_COST ($BB_COST_LABEL)</td></tr>
             </table>
 
             <p style="font-size:12px;color:#9ca3af;margin:4px 0 0 0">SB breakdown (last collect run): page=$SB_PAGE, SERP=$SB_SERP</p>

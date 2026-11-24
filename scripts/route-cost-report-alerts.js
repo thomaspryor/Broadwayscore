@@ -14,7 +14,7 @@
  *
  * Input: env vars set by scraper-cost-report.yml's report step
  *   COST_TOTAL_FAILED COST_TOTAL_CANCELLED COST_FAILED_BY_WF ("file:N,...")
- *   COST_BB_COST COST_BB_SESSIONS COST_SB_PROJECTED COST_SB_CAP COST_SB_STATUS
+ *   COST_BB_COST COST_BB_COST_SOURCE COST_BB_SESSIONS COST_SB_PROJECTED COST_SB_CAP COST_SB_STATUS
  *   COST_SB_CREDITS_TOTAL COST_API_DEGRADED COST_RUNS_QUERY_FAILED COST_RUN_URL
  *
  * Usage: node scripts/route-cost-report-alerts.js --html-out=FILE [--dry-run]
@@ -69,6 +69,7 @@ function metricsFromEnv(env) {
     failedByWorkflow: parseFailedByWorkflow(env.COST_FAILED_BY_WF),
     bbCost: env.COST_BB_COST,
     bbSessions: env.COST_BB_SESSIONS,
+    bbCostSource: env.COST_BB_COST_SOURCE,
     sbProjected: env.COST_SB_PROJECTED,
     sbCap: env.COST_SB_CAP,
     sbStatus: env.COST_SB_STATUS,
