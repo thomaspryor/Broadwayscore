@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-24T21:56:25.990Z",
+  "generatedAt": "2026-11-24T23:11:33.965Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 378,
-  "clean": 378,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 377,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "pride-bridge-theatre-off-west-end-2026",
+      "title": "Pride - Bridge Theatre",
+      "openingDate": "2026-11-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.63 vs local 82.31 (Δ1.68)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-24T23:11:29.670Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
