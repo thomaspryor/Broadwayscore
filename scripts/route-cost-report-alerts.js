@@ -36,13 +36,22 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
-/** PURE. One <li> per line; a red line names its card or says filing failed. */
-function renderActionHtml(lines, cards, { dryRun = false } = {}) {
+/**
+ * PURE. One <li> per line; a red line names its card or says filing failed.
+ * BRO-6866: "A worker session is on it" is only true once the card is claimed
+ * (Linear state type `started`). `states` maps conditionKey to that state
+ * type; anything else, including an unknown state, reads "Queued". The email
+ * used to say "on it" for a card that sat Todo with no comments for 16 days.
+ */
+function renderActionHtml(lines, cards, { dryRun = false, states = {} } = {}) {
   return lines.map((l) => {
     let tail = '';
     if (l.level === 'red') {
       const id = cards[l.conditionKey];
-      if (id) tail = `. A worker session is on it: <a href="${LINEAR_ISSUE_URL}${escapeHtml(id)}">${escapeHtml(id)}</a>`;
+      const link = id ? `<a href="${LINEAR_ISSUE_URL}${escapeHtml(id)}">${escapeHtml(id)}</a>` : '';
+      if (id) tail = states[l.conditionKey] === 'started'
+        ? `. A worker session is on it: ${link}`
+        : `. Queued, no worker session has taken it yet: ${link}`;
       else if (dryRun) tail = ' (dry run: no card filed)';
       else tail = '. Could not file a worker card this run (see the workflow log)';
     }
@@ -118,6 +127,18 @@ async function routeLines({ lines, resolvableKeys, router, runContext = {}, log 
 
 const USAGE = 'usage: node scripts/route-cost-report-alerts.js --html-out=FILE [--dry-run]';
 
+/** Linear state type per filed card ('started' = claimed). Fails soft to {}: unknown reads as queued. */
+async function fetchCardStates(cards, getIssue) {
+  const states = {};
+  for (const [key, id] of Object.entries(cards)) {
+    try {
+      const issue = await getIssue(id);
+      if (issue && issue.state && issue.state.type) states[key] = issue.state.type;
+    } catch (_) { /* unknown state reads as queued */ }
+  }
+  return states;
+}
+
 async function main(argv = process.argv.slice(2), env = process.env) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const htmlArg = argv.find((a) => a.startsWith('--html-out='));
@@ -131,6 +152,7 @@ async function main(argv = process.argv.slice(2), env = process.env) {
   const { lines, resolvableKeys } = evaluateCostReport(metricsFromEnv(env));
   let cards = {};
   let failed = false;
+  let states = {};
   try {
     if (dryRun) {
       for (const l of lines) if (l.card) console.log(`[cost-alerts] dry-run: would file ${l.conditionKey}: ${l.card.title}`);
@@ -142,6 +164,7 @@ async function main(argv = process.argv.slice(2), env = process.env) {
         router: require('./lib/owner-alert-router.js'),
         runContext: { runId: env.GITHUB_RUN_ID, runUrl: env.COST_RUN_URL },
       }));
+      states = await fetchCardStates(cards, (id) => require('./lib/linear-client.js').getIssue(id));
     }
   } catch (err) {
     failed = true;
@@ -149,7 +172,7 @@ async function main(argv = process.argv.slice(2), env = process.env) {
   } finally {
     // Always written: the email step reads it, and a lost report is worse
     // than one that says its cards could not be filed.
-    fs.writeFileSync(htmlOut, renderActionHtml(lines, cards, { dryRun }));
+    fs.writeFileSync(htmlOut, renderActionHtml(lines, cards, { dryRun, states }));
   }
   if (failed) {
     console.error('::error::a red cost-report line has no worker card (check LINEAR_API_KEY); the email says so');
@@ -162,4 +185,4 @@ if (require.main === module) {
   main().then((code) => process.exit(code), (err) => { console.error(err); process.exit(3); });
 }
 
-module.exports = { renderActionHtml, metricsFromEnv, routeLines, main };
+module.exports = { renderActionHtml, fetchCardStates, metricsFromEnv, routeLines, main };
