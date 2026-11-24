@@ -26,7 +26,10 @@ on:
   workflow_dispatch: # Manual trigger — "ship NOW" path (opening night, broken page)
     inputs:
       source:
-        description: 'Who asked. urgent / rebuild-fast / opening-night / lane-press-night = ship now (go-live-now, opening-night pipelines). Anything else, including empty and "land" (BRO-5670), is routine (BRO-8028): judged like a scheduled tick and held until the live deploy is 45 min old unless src/config/dependency files changed.'
+        # Urgent sources: should-deploy-gate.js URGENT_SOURCES. Always-ship subset:
+        # ALWAYS_SHIP_SOURCES. The rest ship now only on a visitor-visible reveal
+        # in live..HEAD (deploy-reveal.js, BRO-8236/8261).
+        description: 'Who asked. Always ship now: urgent / lane-press-night / press-night-watchdog. Ship now only if live..HEAD has a visible reveal, else routine: rebuild-fast / opening-night / opening-night-reveal. Anything else, including empty and "land" (BRO-5670), is routine (BRO-8028): held until the live deploy is 45 min old unless src/config/dependency files changed.'
         required: false
         default: ''
       wait_for_run:
@@ -350,6 +353,10 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
+          # BRO-8261: same timing knobs as the gate job, so the min-interval and
+          # backstop kill switches also reach the pre-warm gate call below.
+          GATE_MIN_INTERVAL_MIN: ${{ vars.DEPLOY_MIN_INTERVAL_MIN }}
+          GATE_BACKSTOP_MIN: ${{ vars.DEPLOY_BACKSTOP_MIN }}
         run: |
           stop_here() {
             echo "go=false" >> "$GITHUB_OUTPUT"

@@ -387,7 +387,9 @@ jobs:
             echo "Collision auto-fix applied ($FIXED files modified)"
             # Review-texts changes flow through push-review-texts action below.
             # Only stage the audit report for the public repo commit.
-            if [ -f data/audit/url-collision-report.json ]; then git add data/audit/url-collision-report.json; fi
+            # BRO-6866: url-collision-report.json is a regenerable diagnostic that
+            # disqualifies the Git Data API push fallback, so it is no longer staged
+            # here (review-text fixes ship through push-review-texts).
             if ! git diff --staged --quiet; then
               git commit -m "data: Auto-fix $FIXED URL collisions
 
@@ -421,6 +423,9 @@ jobs:
           INPUT_CONTENT_TIER: ${{ inputs.content_tier }}
         run: |
           git add data/audit/ data/collection-state/ || true
+          # BRO-6866: keep the data commit eligible for the Git Data API push fallback.
+          # lint-allow-swallow: the helper only UNSTAGES regenerable diagnostics (it writes nothing); if it crashes the commit proceeds exactly as before this change, so failing the push over it would be worse
+          node scripts/lib/unstage-api-fallback-disqualifiers.js || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
             echo "has_changes=false" >> $GITHUB_OUTPUT
@@ -434,6 +439,15 @@ jobs:
             bash scripts/lib/push-with-retry.sh
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
+
+      # BRO-6866: stage-latency.jsonl is unstaged from the data commit above (it
+      # disqualifies the API push fallback); it goes out here, non-fatally.
+      - name: Commit stage-latency log
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-stage-latency
+        with:
+          workflow-name: collect-review-texts
 
       # Belt-and-suspenders: explicitly dispatch rebuild since workflow_run events
       # can be silently dropped by GitHub during high-activity periods.
@@ -826,7 +840,9 @@ jobs:
           FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "0")
           if [ "$FIXED" -gt 0 ] 2>/dev/null; then
             echo "Collision auto-fix applied ($FIXED files modified)"
-            if [ -f data/audit/url-collision-report.json ]; then git add data/audit/url-collision-report.json; fi
+            # BRO-6866: url-collision-report.json is a regenerable diagnostic that
+            # disqualifies the Git Data API push fallback, so it is no longer staged
+            # here (review-text fixes ship through push-review-texts).
             if ! git diff --staged --quiet; then
               git commit -m "data: Auto-fix $FIXED URL collisions — ${{ matrix.outlet_tier }}
 
@@ -861,6 +877,9 @@ jobs:
           # written by scripts/lib/provider-telemetry.js during collect-review-texts.js
           # were silently dropped on every parallel bulk-backfill run.
           git add data/audit/ data/collection-state/ || true
+          # BRO-6866: keep the data commit eligible for the Git Data API push fallback.
+          # lint-allow-swallow: the helper only UNSTAGES regenerable diagnostics (it writes nothing); if it crashes the commit proceeds exactly as before this change, so failing the push over it would be worse
+          node scripts/lib/unstage-api-fallback-disqualifiers.js || true
           if git diff --staged --quiet; then
             echo "No changes to commit for ${{ matrix.outlet_tier }}"
           else
@@ -883,6 +902,15 @@ jobs:
 
   # Rebuild also triggered via workflow_run as backup, but explicit dispatch above
   # is more reliable during high-activity periods.
+
+      # BRO-6866: the sweep above unstages stage-latency.jsonl (it disqualifies
+      # the API push fallback); it goes out here, non-fatally, as in the single job.
+      - name: Commit stage-latency log
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-stage-latency
+        with:
+          workflow-name: collect-review-texts-collect-reviews-parallel
 
       # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
       - name: Commit LLM usage ledger

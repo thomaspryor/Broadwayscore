@@ -119,7 +119,8 @@ const REPLY_TO = buildReplyToAddress();
 const SITE_NAME = siteNameForMarket(MARKET);
 // Readiness floors live in scripts/lib/score-confidence-gate.js (BRO-6242), shared
 // with the social autopost so "the reviews are in" means the same thing everywhere.
-const { evaluateScoreConfidence, getConfidenceFloors } = require('./lib/score-confidence-gate');
+const { evaluateScoreConfidence, getConfidenceFloors, draftMayProceed } = require('./lib/score-confidence-gate');
+const { evaluateBroadcastReadiness } = require('./lib/broadcast-readiness');
 
 
 function loadJSON(filePath) {
@@ -509,7 +510,8 @@ async function main() {
     return ageMs < 36 * 60 * 60 * 1000 ? rec : null; // stale after 36h
   }
 
-  // Check readiness: 12+ total, 3+ T1, 3+ T2
+  // Readiness: the floors (12+ total, 3+ T1, 3+ T2, 8+ high-confidence) no longer
+  // hold back a draft (owner 2026-11-24, BRO-8188); see draftMayProceed.
   const readyShows = [];
   for (const show of pendingShows) {
     const showId = show.id || show.slug;
@@ -538,6 +540,10 @@ async function main() {
       // the workflow's drafting readiness list (BRO-7386).
       readyShows.push({ show, stats, t1Count, t2Count, t3Count });
       console.log(`  ⚠️  ${show.title}: gate failed (${gate.reasons.join(', ')}); updating the existing draft's numbers anyway.`);
+    } else if (!SEND_TO && draftMayProceed(gate, evaluateBroadcastReadiness(reviewsArr.filter(r => r.showId === showId), isLondonMarket(MARKET) ? 'west-end' : 'broadway'))) {
+      // BRO-8188 (owner 2026-11-24): make the draft now; it updates in place as reviews land.
+      readyShows.push({ show, stats, t1Count, t2Count, t3Count });
+      console.log(`  📝 ${show.title}: floors short (${gate.reasons.join(', ')}); making the draft now, it updates as reviews land (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
     } else {
       const reasons = gate.reasons;
       console.log(`  ⏳ ${show.title}: Not ready — ${reasons.join(', ')} (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
@@ -546,7 +552,7 @@ async function main() {
 
   if (readyShows.length === 0) {
     const f = getConfidenceFloors(MARKET);
-    console.log(`\nNo shows are ready for broadcast (need ${f.total}+ reviews, ${f.t1}+ T1, ${f.t2}+ T2, ${f.highConfidence}+ high-confidence)`);
+    console.log(`\nNo shows are ready for broadcast (a draft needs the readiness gate: Broadway 15+ scored reviews and an aggregator, West End 12+; a preview or a returning production also needs ${f.total}+ reviews, ${f.t1}+ T1, ${f.t2}+ T2, ${f.highConfidence}+ high-confidence)`);
     process.exit(0);
   }
 

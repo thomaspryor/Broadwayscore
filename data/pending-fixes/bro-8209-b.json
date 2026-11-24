@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8209-b",
   "planId": "b99e138d-b304-4bfd-bec4-466d4eb0f855",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-24T16:50:00.000Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "Dale's review lives at the b page; the current url is The Hairy Ape's page (feedback #1203 follow-up)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T16:53:37.713Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "url: the current url is not provably wrong (aggregator, non-review page, another critic's review, another show's review, or an unverified legacy web-search url)"
+    }
+  ],
+  "executedIn": "ci"
 }

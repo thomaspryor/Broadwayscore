@@ -1443,6 +1443,10 @@ on:
       # runs in the scripts/lib/*.test.mjs glob); bash integration reproduces the
       # SHA-pinned-refspec no-op. Path-listed so a solo edit triggers CI.
       - 'scripts/lib/push-with-retry.noop-rebase.test.sh'
+      # BRO-6866: review-text add/add and rename/delete conflicts merge field-wise
+      # (review-json-three-way-merge.js) instead of falling to the generic arms.
+      - 'scripts/lib/push-with-retry.review-text-addadd.test.sh'
+      - 'scripts/lib/unstage-api-fallback-disqualifiers.js'
       # #619: post-push CONTENT-survival check + resolve_conflicts() default-arm
       # hardening. Pure classifier + CLI in push-content-survival.js (colocated
       # .test.mjs runs in the scripts/lib/*.test.mjs glob); bash integration
@@ -5506,6 +5510,11 @@ jobs:
         # scripts/lib/push-rebase-progress.test.mjs (loud-abort decision) run above.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.noop-rebase.test.sh
+
+      - name: Run push-with-retry review-text add/add test (bash integration)
+        # BRO-6866 class guard: fails with the review-text arm in resolve_conflicts() disabled.
+        if: always()  # independent suite
+        run: bash scripts/lib/push-with-retry.review-text-addadd.test.sh
 
       - name: Run push-with-retry rebase-refusal test (bash integration)
         # BRO-3662. `git rebase` refuses BEFORE it starts when the worktree or

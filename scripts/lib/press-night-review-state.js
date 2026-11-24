@@ -24,6 +24,12 @@ const SYNDICATED_REASONS = new Set(['knownSyndicationSecondary', 'syndicatedDupl
 
 // Reasons that say the listed article is about a different production/show, not this night's review.
 const WRONG_PRODUCTION_REASONS = new Set(['wrongProduction', 'wrongShow']);
+// BRO-8240: the ensemble judged the exact listed page not a scoreable review (Pages on Stages paywalled its
+// reviews 2026-11-17: the page serves a 142-word teaser). The rebuild keeps it off the site whenever the file
+// was first seen, so a listing of that same URL can never go live and is not a night miss.
+const REJECTED_LISTING_REASONS = new Set(['rejectionReason']);
+// Only the ensemble's verdict on the page's CONTENT counts; garbage_text etc. say our fetch failed, not the page.
+const REJECTED_LISTING_KINDS = new Set(['not_a_review']);
 // Both sides go through normUrl first (BRO-6702): fileState urls are stored normalized, census urls are raw.
 const urlKey = (u) => String(normUrl(u) || u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/#.*$/, '').replace(/[?&](utm_[^=&]*|fbclid|gclid)=[^&]*/g, '').replace(/\?$/, '').replace(/\/+$/, '');
 
@@ -74,6 +80,7 @@ function readReviewFileState(showId, show, { dir = DEFAULT_DIR } = {}) {
       includable: reason === null,
       reason: reason || null,
       syndicatedUnder,
+      ...(reason === 'rejectionReason' && d.rejectionReason ? { rejectionKind: String(d.rejectionReason) } : {}),
     });
   }
   return { available: true, files };
@@ -95,7 +102,7 @@ function censusExclusions(census, files, opts = {}) {
   // aggregator row for a 2013 staging) is not a review of the night, whenever the file was first seen.
   const wrongListing = new Map();
   for (const f of files) {
-    if (f.url && !f.includable && WRONG_PRODUCTION_REASONS.has(f.reason)) wrongListing.set(urlKey(f.url), f);
+    if (f.url && !f.includable && (WRONG_PRODUCTION_REASONS.has(f.reason) || (REJECTED_LISTING_REASONS.has(f.reason) && REJECTED_LISTING_KINDS.has(f.rejectionKind)))) wrongListing.set(urlKey(f.url), f);
   }
   if (windowStartMs != null) {
     files = files.filter((f) => {
@@ -120,6 +127,7 @@ function censusExclusions(census, files, opts = {}) {
     if (wl) {
       // BRO-6702: a wrongProduction listing may be the same production's earlier run (Specimen's May premiere
       // reviews listed on the Oct encore); flag it so the record says "declare priorRuns if so".
+      if (REJECTED_LISTING_REASONS.has(wl.reason)) { out.push({ outletId: e.outletId, reason: `listing is a page the rebuild rejected as not a scoreable review (${wl.reason}, e.g. paywalled teaser)` }); continue; }
       out.push({ outletId: e.outletId, reason: `listing is another production's review (${wl.reason})`, ...(wl.reason === 'wrongProduction' ? { priorRunCandidate: true } : {}) });
       continue;
     }

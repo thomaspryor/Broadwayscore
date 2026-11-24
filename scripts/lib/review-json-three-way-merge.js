@@ -32,7 +32,7 @@
  * autostash pop, the replayed commit in a rebase), write the merge and
  * `git add` it. Paths it cannot merge (delete/modify, invalid JSON,
  * failed-fetches.json) are left unmerged for the caller's fallback.
- *   node review-json-three-way-merge.js --tie=workflow|upstream
+ *   node review-json-three-way-merge.js --tie=workflow|upstream [--only=<path>] [--swap-stages]
  * Prints each merged path on stdout, one per line.
  */
 
@@ -168,6 +168,13 @@ function _cli() {
     process.stdout.write(wholeFileWinner(show('HEAD'), show('REBASE_HEAD')) + '\n');
     return;
   }
+  // BRO-6866: --only=<path> limits the merge to one path (push-with-retry's
+  // per-file resolver); --swap-stages reads stage 3 as upstream and stage 2 as
+  // ours, which is the order a `git merge` leaves (a rebase is the reverse).
+  const onlyArg = process.argv.find((a) => a.startsWith('--only='));
+  const only = onlyArg ? onlyArg.slice('--only='.length) : null;
+  const swap = process.argv.includes('--swap-stages');
+  const [upStage, wfStage] = swap ? [3, 2] : [2, 3];
   const tieArg = process.argv.find((a) => a.startsWith('--tie='));
   const tie = tieArg && tieArg.split('=')[1] === 'upstream' ? 'upstream' : 'workflow';
   const git = (args, input) => execFileSync('git', args, {
@@ -185,11 +192,12 @@ function _cli() {
   }
   const show = (stage, p) => JSON.parse(git(['show', `:${stage}:${p}`]));
   for (const [p, have] of stages) {
+    if (only && p !== only) continue;
     if (!p.endsWith('.json') || p.includes('failed-fetches')) continue;
     if (!have.has('2') || !have.has('3')) continue; // delete/modify: caller decides
     try {
       const base = have.has('1') ? show(1, p) : null;
-      const { merged, winner, conflicts, groupFrom } = mergeReviewJson(base, show(2, p), show(3, p), { tie });
+      const { merged, winner, conflicts, groupFrom } = mergeReviewJson(base, show(upStage, p), show(wfStage, p), { tie });
       fs.writeFileSync(p, JSON.stringify(merged, null, 2) + '\n');
       git(['add', '--', p]);
       process.stderr.write(`  three-way merged ${p} (conflicts -> ${winner}: ${conflicts.join(', ') || 'none'}`

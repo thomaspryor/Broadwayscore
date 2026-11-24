@@ -66,7 +66,7 @@ test('parseFailedByWorkflow skips bad pairs and zeros', () => {
 
 test('email list names the card, or says filing failed; no em dashes; text escaped', () => {
   const { lines } = evaluateCostReport({ ...QUIET, totalFailed: 15, bbCost: '122.20', bbSessions: 1222, apiDegraded: '<x>' });
-  const html = renderActionHtml(lines, { [KEYS.workflowFailures]: 'BRO-1' });
+  const html = renderActionHtml(lines, { [KEYS.workflowFailures]: 'BRO-1' }, { states: { [KEYS.workflowFailures]: 'started' } });
   assert.match(html, /A worker session is on it: <a href="https:\/\/linear\.app\/broadway-scorecard\/issue\/BRO-1">BRO-1<\/a>/);
   assert.match(html, /Browserbase \$122\.20[^<]*Could not file a worker card/);
   assert.match(html, /&lt;x&gt;/);
@@ -74,7 +74,30 @@ test('email list names the card, or says filing failed; no em dashes; text escap
   assert.match(renderActionHtml(lines, {}, { dryRun: true }), /dry run: no card filed/);
 });
 
-const { routeLines } = require('../route-cost-report-alerts.js');
+// BRO-6866 class guard: "on it" only for a claimed (started) card. Fails with the fix reverted.
+test('email says queued, not "on it", for a card nobody has claimed', () => {
+  const { lines } = evaluateCostReport({ ...QUIET, totalFailed: 15 });
+  const key = KEYS.workflowFailures;
+  const unknown = renderActionHtml(lines, { [key]: 'BRO-1' }, { states: {} });
+  assert.doesNotMatch(unknown, /worker session is on it|Queued/);
+  assert.match(unknown, /status unavailable/);
+  for (const states of [{ [key]: 'unstarted' }, { [key]: 'backlog' }]) {
+    const html = renderActionHtml(lines, { [key]: 'BRO-1' }, { states });
+    assert.doesNotMatch(html, /worker session is on it/);
+    assert.match(html, /Queued, no worker session has taken it yet: <a href=/);
+  }
+  assert.match(renderActionHtml(lines, { [key]: 'BRO-1' }, { states: { [key]: 'started' } }), /worker session is on it/);
+});
+
+test('fetchCardStates maps state types and fails soft', async () => {
+  const states = await fetchCardStates({ a: 'BRO-1', b: 'BRO-2', c: 'BRO-3' }, async (id) => {
+    if (id === 'BRO-2') throw new Error('linear down');
+    return id === 'BRO-1' ? { state: { type: 'started' } } : null;
+  });
+  assert.deepEqual(states, { a: 'started' });
+});
+
+const { routeLines, fetchCardStates } = require('../route-cost-report-alerts.js');
 
 function fakeRouter(results) {
   const calls = [];

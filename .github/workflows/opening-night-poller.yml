@@ -1509,12 +1509,16 @@ jobs:
         run: |
           DEPLOY_SHA=$(git rev-parse HEAD)
           echo "deploy_sha=$DEPLOY_SHA" >> $GITHUB_OUTPUT
-          # BRO-8236: ship-now (source=opening-night-reveal, then wait for live)
-          # only when this run's own commit changed what a visitor sees for a
+          # BRO-8236: ask for ship-now (source=opening-night-reveal, then wait for
+          # live) only when this run's own commit changed what a visitor sees for a
           # show in its opening window (new review, displayed score, counts) or
           # NYT picks or site code. Otherwise dispatch source=opening-night and
           # let the deploy gate judge it (routine: 45-min interval + deferred
           # retry), without waiting. Classification errors print reveal=true.
+          # BRO-8261: the gate re-classifies live..HEAD for opening-night-reveal
+          # too, so a forced reveal (merge commit, error) that shows nothing new
+          # is held on the min-interval; the wait step below then times out as
+          # degraded, never failed.
           REVEAL=false
           if [ "$COMMITTED" = "true" ]; then
             # A merge commit (push-with-retry's merge fallback) holds other
@@ -1565,7 +1569,7 @@ jobs:
           if [ "$RC" -eq 0 ]; then
             echo "verified=true" >> $GITHUB_OUTPUT
           elif [ "$RC" -eq 1 ]; then
-            echo "::warning::Deploy for ${{ steps.deploy.outputs.deploy_sha }} was not verified live on production within the wait window — the 5-min content-aware cron gate will pick it up"
+            echo "::warning::Deploy for ${{ steps.deploy.outputs.deploy_sha }} was not verified live on production within the wait window (slow build, or the deploy gate found no visible change and held it on the min-interval, BRO-8261). The 5-min content-aware cron gate will pick it up"
             echo "verified=false" >> $GITHUB_OUTPUT
             echo "timed_out=true" >> $GITHUB_OUTPUT
           else

@@ -11,8 +11,9 @@
  * Strategy: scrape the /reviews.php listing directly. BWW updates this page within
  * minutes of publishing a Review Roundup article. No Google lag, no pattern guessing.
  *
- * Cost: 1 Browserbase session per discovery attempt (~$0.10). Cadence-gated at
- * the caller side — only call within the opening-night window.
+ * Cost: section page + cheap fetchPage scan first (~$0.005). A Browserbase
+ * session (~$0.10) runs only when the cheap scan is unusable or empty
+ * (BRO-8262). Cadence-gated at the caller side.
  *
  * Used by: scripts/opening-night-poller.js as primary BWW RR discovery path;
  * existing SERP search remains as a final fallback.
@@ -387,7 +388,8 @@ async function _fetchReviewsPageAnchorsUncached() {
  *
  * So category is NOT a proxy for "reviews.php can't help this show". It is only
  * a weak cost heuristic for whether a $0.10 session is worth spending when the
- * cheap tier has already come back empty.
+ * cheap tier came back unusable or empty (since BRO-8262 a non-empty cheap
+ * listing never reaches the paid tier, whatever the category).
  *
  * West End/off-West End are included in the skip set (#756 audit, 2026-08-02):
  * reviews.php is a BROADWAY listing page — the one confirmed WE match
@@ -459,6 +461,8 @@ async function _fetchSectionPageAnchorsUncached(url) {
  *
  * @param {object} show - shows.json record; needs { title, openingDate, category }
  * @param {object} [opts]
+ * @param {function} [opts.fetchPaidAnchors] - override the PAID fetch only; the
+ *   cheap tier and the BRO-8262 gate still run (testing).
  * @param {function} [opts.fetchAnchors] - override the PAID reviews.php fetch
  *   (testing). When supplied, the cheap tier is bypassed entirely so existing
  *   tests exercise the paid path deterministically.
@@ -467,9 +471,13 @@ async function _fetchSectionPageAnchorsUncached(url) {
  * @param {boolean} [opts.skipReviewsPhp] - caller's OWN cost guard for the paid
  *   tier. OR'd with shouldSkipReviewsPhp(show); an explicit `false` does NOT
  *   disable the category default.
- * @returns {Promise<{ url: string|null, candidates: Array<{url:string, score:number}>, via: string }>}
+ * @param {boolean} [opts.paidCanary] - force (true) or suppress (false) the
+ *   BRO-8262 paid canary sample instead of the hourly hash (testing).
+ * @returns {Promise<{ url: string|null, candidates: Array<{url:string, score:number}>, via: string, tier?: string }>}
  *   via: 'section' | 'reviews.php-cheap' | 'section-only' | 'reviews.php'
  *      | 'cap-exhausted' | 'provider-error' | 'not-found'
+ *   tier: 'cheap-listing' only on a not-found decided by the cheap listing
+ *      alone (BRO-8262 gate); absent otherwise.
  */
 async function discoverBwwRoundupUrl(show, opts = {}) {
   // Exact title matches always outrank one-typo ('fuzzy') matches.
@@ -494,8 +502,8 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
   //    Off-Broadway roundups T4 was skipping (see shouldSkipReviewsPhp docstring
   //    for the three measured live misses). Only if this comes back empty or
   //    unusable do we consider spending a $0.10 Browserbase session.
+  let cheapAnchors = null;
   if (!opts.fetchAnchors) {
-    let cheapAnchors = null;
     try {
       const fetchCheap = opts.fetchCheapAnchors || fetchReviewsPageAnchorsCheap;
       cheapAnchors = await fetchCheap();
@@ -533,7 +541,58 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
   if (skipReviewsPhp) {
     return { url: null, candidates: [], via: 'section-only' };
   }
-  const fetchAnchors = opts.fetchAnchors || fetchReviewsPageAnchors;
+  // BRO-8262: a cheap scan that returned the real /reviews/ listing WITH roundup
+  // anchors is the same page the paid Browserbase tier would load (same URL, no
+  // scroll). A show missing from it is missing from the paid render too.
+  // Measured 11-17..24: 80 poller runs, 223 discovery misses, 0 roundups found
+  // by the paid tier, while broadwayworld.com took 311 Browserbase sessions
+  // (~$31/week). So the paid tier is skipped after a non-empty cheap miss.
+  // It still runs when the cheap scan is unusable (null: blocked, interstitial,
+  // provider error) or returns [] (the live page normally lists ~6-12 roundups,
+  // so zero means the cheap regex may have drifted from BWW's markup; the paid
+  // DOM read is the guard for that). Placed after the skip gate so shows the
+  // paid tier never probed keep 'section-only'. Behavior note: this 'not-found'
+  // also covers cases where the paid tier used to return cap-exhausted /
+  // provider-error, so the poller now records those as misses (opening-window
+  // shows are exempt from the cooldown, bww-roundup-persistence.js).
+  // tier:'cheap-listing' marks gate hits so they can be counted.
+  // forceReviewsPhp restores the paid probe per call. BWW_PAID_AFTER_CHEAP_MISS=1
+  // does it process-wide for manual/local runs (no workflow passes it; the
+  // production rollback is reverting this block).
+  //
+  // Paid canary (ship-check finding): the cheap regex and the paid DOM read are
+  // different parsers, so a PARTIAL markup change (some cards still match, the
+  // new show's card does not) would turn into a confident miss. About 1 in
+  // PAID_CANARY_EVERY gated calls (hash of show + UTC hour) still runs the paid
+  // tier; if it finds a roundup the cheap listing missed, a ::warning:: names
+  // the divergence and the paid result is used. ~10% of the old spend buys a
+  // standing check that the equivalence assumption still holds.
+  const cheapUsable = Array.isArray(cheapAnchors) && cheapAnchors.length > 0;
+  const gateOn = cheapUsable && opts.forceReviewsPhp !== true
+    && process.env.BWW_PAID_AFTER_CHEAP_MISS !== '1';
+  const canary = gateOn && (typeof opts.paidCanary === 'boolean' ? opts.paidCanary : isPaidCanaryCall(show));
+  if (gateOn && !canary) {
+    // A paid listing already in the memo (a canary or forced probe in the last
+    // 15 min, same process or the CI-restored cache) costs nothing to consult,
+    // and it is the second look the pre-gate code got for free.
+    const cachedPaid = (opts.fetchAnchors || opts.fetchPaidAnchors) ? null : _anchorCache.get('reviews.php');
+    if (Array.isArray(cachedPaid) && cachedPaid.length > 0) {
+      console.log(`  bww-rr-discover: consulted cached paid /reviews/ listing (${cachedPaid.length} roundups, no new session)`);
+      const paidCandidates = score(cachedPaid);
+      if (paidCandidates.length > 0) {
+        return { url: paidCandidates[0].url, candidates: paidCandidates, via: 'reviews.php' };
+      }
+    }
+    console.log(`  bww-rr-discover: show not in cheap /reviews/ listing (${cheapAnchors.length} roundups); paid Browserbase probe skipped (BRO-8262)`);
+    return { url: null, candidates: [], via: 'not-found', tier: 'cheap-listing' };
+  }
+  if (Array.isArray(cheapAnchors) && cheapAnchors.length === 0 && !_warnedEmptyCheap) {
+    _warnedEmptyCheap = true;
+    console.log('::warning::bww-rr-discover: cheap /reviews/ scan passed the structural guard but found 0 roundup anchors (parser drift?); falling back to the paid probe');
+  }
+  // opts.fetchPaidAnchors: test hook for the paid tier that, unlike fetchAnchors,
+  // keeps the cheap tier running (BRO-8262 gate tests).
+  const fetchAnchors = opts.fetchAnchors || opts.fetchPaidAnchors || fetchReviewsPageAnchors;
   try {
     anchors = await fetchAnchors();
   } catch (err) {
@@ -545,7 +604,33 @@ async function discoverBwwRoundupUrl(show, opts = {}) {
   if (candidates.length === 0) {
     return { url: null, candidates: [], via: 'not-found' };
   }
+  if (canary) {
+    console.log(`::warning::bww-rr-discover: cheap/paid DIVERGENCE (BRO-8262 canary): paid render found ${candidates[0].url} that the cheap /reviews/ listing (${cheapAnchors.length} roundups) missed; check the cheap regex in _fetchReviewsPageAnchorsViaScraperUncached`);
+  }
   return { url: candidates[0].url, candidates, via: 'reviews.php' };
+}
+
+// BRO-8262 paid canary rate: 1 in N gated calls still runs the paid tier.
+// BWW_PAID_CANARY_EVERY=0 turns the canary off.
+const PAID_CANARY_EVERY = (() => {
+  const n = parseInt(process.env.BWW_PAID_CANARY_EVERY || '10', 10);
+  return Number.isFinite(n) && n >= 0 ? n : 10;
+})();
+let _warnedEmptyCheap = false;
+
+/**
+ * Deterministic ~1-in-PAID_CANARY_EVERY sample keyed on show + UTC hour, so a
+ * show is sampled in some hours and skipped in others instead of every call or
+ * never. Pure apart from the clock (pass `now` to test).
+ */
+function isPaidCanaryCall(show, now = new Date(), every = PAID_CANARY_EVERY) {
+  if (!every) return false;
+  const key = `${(show && (show.id || show.title)) || ''}|${now.toISOString().slice(0, 13)}`;
+  // sha1, not a 31-multiplier rolling hash: 31 = 1 (mod 10), so that hash mod
+  // 10 collapses to a character sum and shows with equal sums canary in lockstep
+  // (ship-check, Gemini).
+  const h = require('crypto').createHash('sha1').update(key).digest().readUInt32BE(0);
+  return h % every === 0;
 }
 
 module.exports = {
@@ -559,4 +644,5 @@ module.exports = {
   slugMatchKind,
   tokensFromTitle,
   shouldSkipReviewsPhp,
+  isPaidCanaryCall,
 };

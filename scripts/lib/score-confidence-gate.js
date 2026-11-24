@@ -64,4 +64,21 @@ function evaluateScoreConfidence({ showReviews, category, getOutletTier, newRevi
   return { ok: reasons.length === 0, reasons, counts, floors: { ...floors, newReturning: minNewReturning } };
 }
 
-module.exports = { evaluateScoreConfidence, getConfidenceFloors, rowConfidence, BROADWAY_FLOORS, LONDON_FLOORS };
+// Owner decision 2026-11-24 (BRO-8188, option A): the opening-night Resend draft is
+// made as soon as the broadcast readiness gate (scripts/lib/broadcast-readiness.js:
+// Broadway 15 scored + an aggregator, West End 12) passes. The floors above no longer
+// hold the DRAFT back: it updates in place as reviews land (--update-unsent-draft) and
+// the owner reviews it before sending. The caller passes that readiness result, so a
+// hand run without --shows still cannot draft a thin show. Only the four floor
+// shortfalls are waived (an allow-list, so a new reason blocks by default); a returning
+// production's this-run shortfall (BRO-4954) still waits.
+// The social autopost does not use this; its posts go out unreviewed.
+const WAIVABLE_FOR_DRAFT = [/^\d+\/\d+ total$/, /^T1:\d+\/\d+$/, /^T2:\d+\/\d+$/, /^hi-conf:\d+\/\d+$/];
+function draftMayProceed(gate, readiness) {
+  if (!gate || !readiness || readiness.ready !== true) return false;
+  if (gate.ok) return true;
+  const reasons = Array.isArray(gate.reasons) ? gate.reasons : [];
+  return reasons.length > 0 && reasons.every(r => WAIVABLE_FOR_DRAFT.some(re => re.test(String(r))));
+}
+
+module.exports = { evaluateScoreConfidence, getConfidenceFloors, rowConfidence, draftMayProceed, BROADWAY_FLOORS, LONDON_FLOORS };

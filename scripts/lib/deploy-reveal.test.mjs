@@ -5,11 +5,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { reviewProjection, classifyReveal, resolveUrgency, classifyRange, openingIdsFrom, nytPicksChanged, MAX_SHOW_FILES } = require('./deploy-reveal.js');
-const { CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, isUrgent } = require('./should-deploy-gate.js');
+const { reviewProjection, classifyReveal, resolveUrgency, classifyRange, openingIdsFrom, nytPicksChanged, isShowFile, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES } = require('./deploy-reveal.js');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const { CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, isUrgent, isAlwaysShip, decide } = require('./should-deploy-gate.js');
 
 const fx = (n) => fs.readFileSync(new URL(`../../tests/fixtures/deploy-reveal/${n}.json`, import.meta.url), 'utf8');
 const SHOW = 'public/data/shows/x.json';
@@ -83,9 +87,12 @@ test('resolveUrgency: urgent trigger without a reveal is downgraded to routine',
   assert.equal(resolveUrgency({ urgent: false, alwaysShip: false, baselineSha: A, headSha: B, reveal: { reveal: true } }).urgent, false);
 });
 
-test('opening-night-reveal is an urgent, always-ship source', () => {
+test('BRO-8261: opening-night-reveal is urgent but re-checked (not always-ship)', () => {
   assert.ok(URGENT_SOURCES.includes('opening-night-reveal'));
-  assert.ok(ALWAYS_SHIP_SOURCES.includes('opening-night-reveal'));
+  assert.ok(!ALWAYS_SHIP_SOURCES.includes('opening-night-reveal'));
+  assert.equal(isAlwaysShip({ eventName: 'workflow_dispatch', source: 'opening-night-reveal' }), false);
+  assert.equal(isAlwaysShip({ eventName: 'workflow_dispatch', source: 'urgent' }), true);
+  assert.equal(isAlwaysShip({ eventName: 'schedule', source: 'urgent' }), false);
   assert.ok(ALWAYS_SHIP_SOURCES.includes('urgent'));
   assert.ok(!ALWAYS_SHIP_SOURCES.includes('opening-night'));
   assert.ok(!ALWAYS_SHIP_SOURCES.includes('rebuild-fast'));
@@ -112,9 +119,12 @@ test('NYT picks: only the url list counts, _meta timestamp churn does not', () =
   assert.equal(nytPicksChanged(null), true);
 });
 
-test('classifyRange on real poller commit 15785a08d: sweeney-todd reveal is outside the opening window', () => {
+test('classifyRange on real poller commit 15785a08d: sweeney-todd reveal is outside the opening window', (t) => {
+  // BRO-8261: skip visibly, and only when the commit is really absent (shallow
+  // CI checkout). Any other classify-error is a failure, not a skip.
+  const has = spawnSync('git', ['cat-file', '-e', '15785a08d~1^{commit}'], { cwd: ROOT }).status === 0;
+  if (!has) { t.skip('commit 15785a08d~1 not in this checkout (shallow history)'); return; }
   const r = classifyRange('15785a08d~1', '15785a08d', { codePaths: CODE_PATHS });
-  if (/classify-error/.test(r.reason)) return; // shallow CI checkout without this history
   assert.equal(r.reveal, false);
 });
 
@@ -151,4 +161,87 @@ test('ship-check fixes: unknown show JSON shape or schema version change is a re
   const bumped = JSON.stringify({ ...j, _v: (j._v || 0) + 1 });
   assert.equal(classifyReveal([SHOW], readOf(b, renamed)).reason, 'schema-changed');
   assert.equal(classifyReveal([SHOW], readOf(b, bumped)).reason, 'schema-changed');
+});
+
+// BRO-8261: the gate's whole chain for a poller dispatch that over-reported a
+// reveal (merge commit / classify error forced reveal=true): the gate's own
+// classification says no reveal, so it is judged as a routine tick and held by
+// the 45-min min-interval. A real reveal over the same fresh deploy still ships.
+function judge({ source, reveal, deployAgeSec = 600 }) {
+  const ev = 'workflow_dispatch';
+  const urgentTrigger = isUrgent({ eventName: ev, source });
+  const alwaysShip = isAlwaysShip({ eventName: ev, source });
+  const u = resolveUrgency({ urgent: urgentTrigger, alwaysShip, baselineSha: 'aaa', headSha: 'bbb', reveal });
+  return decide({
+    eventName: u.urgent ? ev : 'schedule', gateDisabled: false, baselineSha: 'aaa', deployAgeSec,
+    headSha: 'bbb', diffResult: 'dirty', dataDiffResult: 'dirty', codeDiffResult: 'clean', minIntervalSec: 45 * 60,
+  });
+}
+
+test('BRO-8261: source=opening-night-reveal over a no-reveal range is routine (SKIP on min-interval)', () => {
+  const noReveal = { reveal: false, reason: 'no-visible-change(3 show files)', file: null };
+  assert.deepEqual(judge({ source: 'opening-night-reveal', reveal: noReveal }), { proceed: false, reason: 'min-interval' });
+  // Same range, real reveal: ships now.
+  assert.deepEqual(judge({ source: 'opening-night-reveal', reveal: { reveal: true, reason: 'first-reviews', file: SHOW } }), { proceed: true, reason: 'explicit-ship' });
+  // Classification failed (null / error reveal): fails open, ships now.
+  assert.deepEqual(judge({ source: 'opening-night-reveal', reveal: null }), { proceed: true, reason: 'explicit-ship' });
+  assert.deepEqual(judge({ source: 'opening-night-reveal', reveal: { reveal: true, reason: 'baseline-fetch-error', file: null } }), { proceed: true, reason: 'explicit-ship' });
+  // /go-live-now still skips the check.
+  assert.deepEqual(judge({ source: 'urgent', reveal: noReveal }), { proceed: true, reason: 'explicit-ship' });
+});
+
+test('BRO-8261: every source the poller sends vercel-deploy.yml is urgent, none always-ship', () => {
+  const y = fs.readFileSync(path.join(ROOT, '.github/workflows/opening-night-poller.yml'), 'utf8');
+  // Every line that dispatches vercel-deploy.yml must name a literal source we
+  // can read (no --field/-F/quoted/$VAR forms slipping past the check).
+  const lines = y.split('\n').filter((l) => /gh workflow run vercel-deploy\.yml/.test(l));
+  assert.ok(lines.length >= 2, 'poller deploy dispatches not found');
+  const sources = lines.map((l) => {
+    const m = l.match(/gh workflow run vercel-deploy\.yml -f source=([\w-]+)(?=\s|$)/);
+    assert.ok(m, `unreadable vercel-deploy dispatch form: ${l.trim()}`);
+    return m[1];
+  });
+  assert.deepEqual([...new Set(sources)].sort(), ['opening-night', 'opening-night-reveal']);
+  for (const s of sources) {
+    assert.ok(URGENT_SOURCES.includes(s), `${s} must be in URGENT_SOURCES`);
+    assert.ok(!ALWAYS_SHIP_SOURCES.includes(s), `${s} must be re-checked by the gate`);
+  }
+});
+
+// BRO-8261 cousin: express, broadcast, rebuild-fast, land and the gate's own
+// hand-offs dispatch vercel-deploy.yml too. A typo'd source (opening_night)
+// would silently become routine and wait out the min-interval, so every
+// literal source any workflow sends must be one the gate knows.
+test('BRO-8261: every literal vercel-deploy.yml source in any workflow is a known gate source', () => {
+  const KNOWN_ROUTINE = ['land', 'deferred'];
+  const dir = path.join(ROOT, '.github/workflows');
+  const seen = new Set();
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.yml'))) {
+    for (const l of fs.readFileSync(path.join(dir, f), 'utf8').split('\n')) {
+      if (/^\s*#/.test(l) || !/vercel-deploy\.yml/.test(l)) continue;
+      for (const m of l.matchAll(/-f source=([\w-]+)/g)) {
+        seen.add(m[1]);
+        assert.ok(URGENT_SOURCES.includes(m[1]) || KNOWN_ROUTINE.includes(m[1]), `${f}: unknown deploy source "${m[1]}"`);
+      }
+    }
+  }
+  for (const s of ['opening-night', 'opening-night-reveal', 'rebuild-fast', 'land']) assert.ok(seen.has(s), `expected a dispatch with source=${s}`);
+});
+
+test('BRO-8261: only public/data/shows/<id>.json counts as a show file', () => {
+  assert.equal(isShowFile('public/data/shows/sweeney-todd-2026.json'), true);
+  assert.equal(isShowFile('public/data/shows/sweeney-todd-2026.social.json'), false);
+  assert.equal(isShowFile('public/data/shows/sub/x.json'), false);
+  assert.equal(isShowFile('public/data/shows-index.json'), false);
+  // A .social.json sibling never counts toward the show-file caps.
+  const many = Array.from({ length: MAX_SHOW_FILES + 1 }, (_, i) => `public/data/shows/s${i}.social.json`);
+  assert.equal(classifyReveal(many, () => ({ before: '{}', after: '{}' })).reveal, false);
+});
+
+test('BRO-8261: more show files than can be loaded fails open even with an opening show', () => {
+  const files = Array.from({ length: MAX_ANY_SHOW_FILES + 1 }, (_, i) => `public/data/shows/s${i}.json`);
+  // classifyRange loads no blobs past the cap: every read is null/null.
+  const r = classifyReveal(files, () => ({ before: null, after: null }), { openingIds: ['s0'] });
+  assert.equal(r.reveal, true);
+  assert.match(r.reason, /too-many-show-files/);
 });
