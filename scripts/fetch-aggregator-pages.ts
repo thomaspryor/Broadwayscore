@@ -23,6 +23,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { validateRoundupPageTitle } = require('./lib/show-matching');
+const { dtliPageWrongProduction } = require('./lib/dtli-page-year-gate');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const {
   loadNotFoundForAggregator: loadNotFoundForAggregatorLib,
@@ -450,6 +451,14 @@ async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>
 
   // Helper to validate page matches expected production
   const validateProduction = (html: string): boolean => {
+    // BRO-8266: the Opening Night line is often absent, and then this accepted any
+    // page, including the unsuffixed guess below that is an older production's page.
+    // The review items' own dates settle it: all older than the show means wrong page.
+    const yearGate = dtliPageWrongProduction(html, show);
+    if (yearGate.wrong) {
+      console.log(`    ⚠️ Review years ${[...new Set<number>(yearGate.years)].join('/')} all predate ${showId} (${yearGate.showYear}): a different production's page`);
+      return false;
+    }
     // Extract opening date from DTLI page
     const openingMatch = html.match(/Opening Night[:\s]*(?:&nbsp;)?(?:<[^>]+>)?([A-Za-z]+\s+\d+,?\s+\d{4})/i);
     if (openingMatch && expectedYear) {
