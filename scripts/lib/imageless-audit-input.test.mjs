@@ -9,6 +9,7 @@ const require = createRequire(import.meta.url);
 const { normalizeImageAuditInputs, findRegionalImageGaps } = require('./imageless-audit-input');
 const { buildNoReliableArtMarker } = require('./no-reliable-art');
 const { findImagelessScoredShows } = require('./image-trigger-guard');
+const { hasArchivedShowImages } = require('./show-images');
 const nowMs = Date.parse('2026-11-12T12:00:00Z');
 const regional = (id, city, extra = {}) => ({ id, title: id, city, category: 'regional', ...extra });
 const normalize = (shows, options = {}) => normalizeImageAuditInputs(
@@ -50,6 +51,33 @@ test('coverage requires actual files, not phantom paths or directory names', t =
   ];
   assert.deepEqual(findRegionalImageGaps(normalize(shows, { imageOptions: { publicDir } })).map(s => s.id),
     ['phantom', 'directory']);
+});
+
+test('rejected Noises Off orphan files cannot masquerade as usable art', t => {
+  const publicDir = fs.mkdtempSync(path.join(os.tmpdir(), 'imageless-orphan-'));
+  t.after(() => fs.rmSync(publicDir, { recursive: true, force: true }));
+  const id = 'noises-off-west-end-2019';
+  const dir = path.join(publicDir, 'images', 'shows', id);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'poster.jpg'), 'rejected art');
+  fs.writeFileSync(path.join(dir, 'thumbnail.jpg'), 'rejected art');
+  const show = { id, title: 'Noises Off', venue: 'Garrick Theatre', openingDate: '2019-10-03', images: { poster: null, thumbnail: null, hero: null } };
+  show.noReliableArt = buildNoReliableArtMarker(show, { now: nowMs, reason: 'All candidates rejected' });
+  const [result] = normalize([show], { imageOptions: { publicDir } });
+  assert.equal(hasArchivedShowImages(path.join(publicDir, 'images', 'shows'), id), true);
+  assert.equal(result.hasImages, false);
+  assert.equal(result.noReliableArt, true);
+  const recorded = require('../../data/image-sources.json')[id];
+  const rejected = {
+    poster: 'google-images:https://www.amazon.com/Noises-Off-Broadway-Poster-Style/dp/B003SIDESG',
+    thumbnail: 'google-images:https://sfplayhouse.org/2025-2026-season/noises-off/',
+  };
+  for (const role of ['poster', 'thumbnail']) {
+    if (recorded?.[role] !== rejected[role]) continue; // New, verified art may replace it.
+    const archive = path.join(process.cwd(), 'public', 'images', 'shows', id);
+    assert.equal(fs.existsSync(path.join(archive, `${role}.jpg`)), false, `rejected ${role} remains`);
+    assert.equal(fs.existsSync(path.join(archive, 'sm', `${role}.jpg.webp`)), false, `rejected ${role} variant remains`);
+  }
 });
 
 test('only current noReliableArt markers excuse a missing image', () => {
