@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T01:34:55.595Z",
+  "generatedAt": "2026-11-24T03:09:44.306Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -117,6 +117,16 @@
       "id": "candide-regional-2026",
       "title": "Candide",
       "openingDate": "2026-11-22"
+    },
+    {
+      "id": "all-the-world-regional-2026",
+      "title": "All the World",
+      "openingDate": "2026-11-20"
+    },
+    {
+      "id": "constellations-regional-2026",
+      "title": "Constellations",
+      "openingDate": "2026-11-20"
     }
   ],
   "skipped": [
@@ -127,10 +137,6 @@
   ],
   "feedsChecked": 87,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -152,7 +158,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 918,
+  "itemsScanned": 924,
   "matchedGaps": 0,
   "possibleGaps": 2,
   "gaps": [

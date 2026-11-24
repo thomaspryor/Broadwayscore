@@ -1,30 +1,62 @@
 {
-  "generatedAt": "2026-11-24T01:34:55.131Z",
+  "generatedAt": "2026-11-24T03:09:43.874Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 365,
-  "clean": 364,
-  "defective": 1,
+  "checked": 369,
+  "clean": 366,
+  "defective": 3,
   "byType": {
-    "score-drift": 1
+    "score-drift": 3
   },
   "shows": [
     {
-      "showId": "engines-and-instruments-of-flight-a-fantasia-in-three-acts-by-calamity-west-regional-2026",
-      "title": "Engines and Instruments of Flight: A Fantasia in Three Acts",
-      "openingDate": "2026-11-18",
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "openingDate": "2026-11-23",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 82.56 vs local 82.97 (Δ0.41)"
+          "detail": "deployed cs 70.08 vs local 68.78 (Δ1.3)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-24T01:34:50.803Z"
+      "localCount": 16,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-11-24T03:09:40.132Z"
+    },
+    {
+      "showId": "my-english-persian-kitchen-regional-2026",
+      "title": "My English Persian Kitchen",
+      "openingDate": "2026-11-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.24 vs local 84.35 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-24T03:09:40.132Z"
+    },
+    {
+      "showId": "othello-bedlam-off-broadway-2026",
+      "title": "Othello (Bedlam)",
+      "openingDate": "2026-11-07",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.17 vs local 74.34 (Δ0.83)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-11-24T03:09:40.132Z"
     }
   ],
   "persistentDefective": 0,
