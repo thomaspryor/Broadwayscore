@@ -1,19 +1,18 @@
 {
-  "updatedAt": "2026-11-24T04:18:43.143Z",
-  "scanned": 4954,
-  "showsWithViolations": 614,
-  "totalViolations": 869,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-11-24T12:59:20.998Z",
+  "scanned": 4957,
+  "showsWithViolations": 616,
+  "totalViolations": 870,
+  "newSinceLastRun": 2,
   "newViolationKeys": [
-    "hay-fever-west-end-2026::littlelondonwhispers--little-london-whispers.json"
+    "peter-pan-off-west-end-2026::thestage--oliver-jones.json",
+    "the-seagull-west-end-2025::guardian--arifa-akbar.json"
   ],
   "actionableViolations": 9,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
-  "openActionableCount": 1,
-  "actionableOpen": {
-    "lowcountry-off-broadway-2025::exeunt-magazine--unknown.json": "2026-11-20T10:26:30.020Z"
-  },
+  "openActionableCount": 0,
+  "actionableOpen": {},
   "actionableKeys": [
     "schmigadoon-2026::nytimes--jesse-green.json",
     "stranger-things-2024::nytimes--houman-barekat.json",
@@ -140,7 +139,6 @@
     "the-glass-menagerie-2013::bloomberg--jeremy-gerard.json",
     "romeo-and-juliet-2013::nytimes--ben-brantley.json",
     "first-date-2013::northjerseycom--robert-feldberg.json",
-    "first-date-2013::nytimes--charles-isherwood.json",
     "jekyll-and-hyde-2013::bloomberg--philip-boroff.json",
     "orphans-2013::nydailynews--joe-dziemianowicz.json",
     "orphans-2013::theater-life--eric-march.json",
@@ -413,6 +411,7 @@
     "standing-at-the-skys-edge-west-end-2024::thestage--dave-fargnoli.json",
     "life-of-pi-tour-2024::pioneer-press--rob-hubbard.json",
     "triumph-off-west-end-2026::thestage--david-benedict.json",
+    "peter-pan-off-west-end-2026::thestage--oliver-jones.json",
     "guess-how-much-i-love-you-west-end-2026::i-paper--fiona-mountford.json",
     "american-psycho-off-west-end-2026::thestage--sam-marlowe.json",
     "ballad-lines-off-west-end-2026::guardian--emma-john.json",
@@ -890,6 +889,7 @@
     "cat-on-a-hot-tin-roof-off-west-end-2024::thestage--siobhan-murphy.json",
     "cat-on-a-hot-tin-roof-off-west-end-2024::times-uk--clive-davis.json",
     "the-little-foxes-off-west-end-2024::thestage--dave-fargnoli.json",
+    "the-seagull-west-end-2025::guardian--arifa-akbar.json",
     "brigadoon-west-end-2025::times-uk--clive-davis.json",
     "the-maids-west-end-2025::thestage--sam-marlowe.json",
     "till-the-stars-come-down-west-end-2025::standard--nick-curtis.json",
@@ -3429,7 +3429,7 @@
       "showId": "first-date-2013",
       "title": "First Date",
       "openingDate": "2013-08-08",
-      "message": "northjerseycom/Robert Feldberg (northjerseycom--robert-feldberg.json) SHIPPED but fullText never mentions 'First Date' (189 chars): http://www.northjersey.com/arts_entertainment/theater/218947571_Theater_review___First_Date__at_the_Longacre_Theatre.html?page=all\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'First Date' (303 chars): http://theater.nytimes.com/2013/08/09/theater/reviews/first-date-a-musical-opens-on-broadway.html?pagewanted=all&_r=1&",
+      "message": "northjerseycom/Robert Feldberg (northjerseycom--robert-feldberg.json) SHIPPED but fullText never mentions 'First Date' (189 chars): http://www.northjersey.com/arts_entertainment/theater/218947571_Theater_review___First_Date__at_the_Longacre_Theatre.html?page=all",
       "violations": [
         {
           "filename": "northjerseycom--robert-feldberg.json",
@@ -3437,22 +3437,6 @@
           "outletId": "northjerseycom",
           "criticName": "Robert Feldberg",
           "haystackLength": 189,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "nytimes--charles-isherwood.json",
-          "url": "http://theater.nytimes.com/2013/08/09/theater/reviews/first-date-a-musical-opens-on-broadway.html?pagewanted=all&_r=1&",
-          "outletId": "nytimes",
-          "criticName": "Charles Isherwood",
-          "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
@@ -9221,6 +9205,30 @@
           "outletId": "thestage",
           "criticName": "David Benedict",
           "haystackLength": 3359,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "peter-pan-off-west-end-2026",
+      "title": "Peter Pan",
+      "openingDate": "2026-11-14",
+      "message": "thestage/Oliver Jones (thestage--oliver-jones.json) SHIPPED but fullText never mentions 'Peter Pan' (2900 chars): https://thestage.co.uk/reviews/peter-pan-review-polka-theatre-london-pantomime",
+      "violations": [
+        {
+          "filename": "thestage--oliver-jones.json",
+          "url": "https://thestage.co.uk/reviews/peter-pan-review-polka-theatre-london-pantomime",
+          "outletId": "thestage",
+          "criticName": "Oliver Jones",
+          "haystackLength": 2900,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "unresolved",
@@ -15325,7 +15333,7 @@
       "showId": "from-here-to-eternity-west-end-2013",
       "title": "From Here to Eternity",
       "openingDate": "2013-10-23",
-      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'From Here to Eternity' (3421 chars): https://www.theguardian.com/stage/2013/oct/23/from-here-eternity-review",
+      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'From Here to Eternity' (3421 chars): https://www.theguardian.com/stage/2013/oct/23/from-here-eternity-review\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/from-here-to-eternity-review-at-charing-cross-theatre-london-from-tim-rice-stuart-brayson-donald-rice-and-bill-oakes",
       "violations": [
         {
           "filename": "guardian--michael-billington.json",
@@ -19581,7 +19589,7 @@
       "showId": "the-little-foxes-off-west-end-2024",
       "title": "The Little Foxes",
       "openingDate": "2024-12-11",
-      "message": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Little Foxes' (3115 chars): https://www.thestage.co.uk/reviews/the-little-foxes-review-at-the-young-vic-london-by-lillian-hellman-directed-by-lyndsey-turner-starring-anne-marie-duff\n⚠️  londontheatre1/Unknown (londontheatre1--unknown.json) also too short to assess (0 chars): https://www.londontheatre1.com/reviews/the-little-foxes-young-vic-review/\n⚠️  theartsdispatch/Unknown (theartsdispatch--unknown.json) also too short to assess (0 chars): https://www.theartsdispatch.com/the-little-foxes-review-young-vic-london/",
+      "message": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Little Foxes' (3115 chars): https://www.thestage.co.uk/reviews/the-little-foxes-review-at-the-young-vic-london-by-lillian-hellman-directed-by-lyndsey-turner-starring-anne-marie-duff",
       "violations": [
         {
           "filename": "thestage--dave-fargnoli.json",
@@ -19590,6 +19598,30 @@
           "criticName": "Dave Fargnoli",
           "haystackLength": 3115,
           "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2025",
+      "title": "The Seagull",
+      "openingDate": "2025-03-06",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'The Seagull' (4890 chars, textIssues flag set): https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london\n⚠️  express-uk/Unknown (express-uk--unknown.json) also too short to assess (0 chars): https://www.express.co.uk/entertainment/theatre/2023535/seagull-review-cate-blanchett-London",
+      "violations": [
+        {
+          "filename": "guardian--arifa-akbar.json",
+          "url": "https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "haystackLength": 4890,
+          "textIssuesFlag": true,
           "triage": {
             "bucket": "unresolved",
             "evidence": [
@@ -19715,11 +19747,11 @@
     }
   ],
   "triage": {
-    "total": 869,
+    "total": 870,
     "counts": {
-      "excerpt": 194,
+      "excerpt": 193,
       "wrong-production": 9,
-      "unresolved": 608,
+      "unresolved": 610,
       "truncated": 58
     },
     "outletPlans": [
@@ -21448,9 +21480,9 @@
       },
       {
         "outletId": "guardian",
-        "total": 144,
+        "total": 145,
         "counts": {
-          "unresolved": 139,
+          "unresolved": 140,
           "truncated": 4,
           "excerpt": 1
         },
@@ -22628,6 +22660,15 @@
           },
           {
             "file": "the-scottsboro-boys-west-end-2014/guardian--lyn-gardner.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-seagull-west-end-2025/guardian--arifa-akbar.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -23936,10 +23977,10 @@
       },
       {
         "outletId": "nytimes",
-        "total": 7,
+        "total": 6,
         "counts": {
           "wrong-production": 2,
-          "excerpt": 3,
+          "excerpt": 2,
           "truncated": 1,
           "unresolved": 1
         },
@@ -23970,15 +24011,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "first-date-2013/nytimes--charles-isherwood.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -25343,9 +25375,9 @@
       },
       {
         "outletId": "thestage",
-        "total": 231,
+        "total": 232,
         "counts": {
-          "unresolved": 219,
+          "unresolved": 220,
           "excerpt": 7,
           "truncated": 5
         },
@@ -26550,6 +26582,15 @@
           },
           {
             "file": "people-places-and-things-west-end-2024/thestage--sam-marlowe.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "peter-pan-off-west-end-2026/thestage--oliver-jones.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
