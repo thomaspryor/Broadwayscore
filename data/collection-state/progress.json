@@ -309,7 +309,15 @@
     "a-month-in-the-country-off-west-end-2026/sueterryvoices--unknown.json",
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
     "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
-    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
+    "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "attention-off-west-end-2026/theatre-weekly--jake-wiafe.json",
+    "attention-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/new-york-sun--unknown.json",
+    "seven-guitars-off-broadway-2026/new-york-sun--unknown.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/allie-and-the-after-party--allie-bugajski.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/exeunt-magazine--lane-williamson.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+    "seven-guitars-off-broadway-2026/lighting-and-sound-america--david-barbour.json"
   ],
   "failed": [
     "_superseded-misattributed/coal-country-off-broadway-2022--theatermania--hayley-levitt--1794396636281.json",
@@ -449,7 +457,10 @@
     "man-to-man-west-end-2026/latimes--alexandra-del-rosario.json",
     "man-to-man-west-end-2026/plays-to-see--tim-hochstrasser.json",
     "bloodsport-after-helen-of-troy-off-west-end-2026/ground--unknown.json",
-    "the-story-west-end-2026/ground--unknown.json"
+    "the-story-west-end-2026/ground--unknown.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "the-afronauts-west-end-2026/thestage--dave-fargnoli.json",
+    "fantasma-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -632,7 +643,12 @@
       "come-from-away-regional-2026/chicagotheaterandarts--jodie-jacobs.json",
       "the-story-west-end-2026/london-box-office--stuart-king.json",
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
-      "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+      "attention-off-west-end-2026/theatre-weekly--jake-wiafe.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/allie-and-the-after-party--allie-bugajski.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/exeunt-magazine--lane-williamson.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+      "seven-guitars-off-broadway-2026/lighting-and-sound-america--david-barbour.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -686,13 +702,16 @@
       "entre-dos-sombras-regional-2026/broadwayworld--emily-berger.json",
       "roleplay-off-west-end-2026/broadwayworld--cindy-marcolina.json",
       "truly-howard-hughes-off-broadway-2026/cititour--unknown.json",
-      "the-humanities-regional-2026/broadwayworld--unknown.json"
+      "the-humanities-regional-2026/broadwayworld--unknown.json",
+      "attention-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/new-york-sun--unknown.json"
     ],
     "brightdata": [
       "othello-bedlam-off-broadway-2026/nytimes--helen-shaw.json",
       "harry-potter-2021/latimes--erin-ben-moche.json",
       "dog-mom-off-west-end-2026/ground--unknown.json",
-      "kimberly-akimbo-off-west-end-2026/ground--unknown.json"
+      "kimberly-akimbo-off-west-end-2026/ground--unknown.json",
+      "seven-guitars-off-broadway-2026/new-york-sun--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -782,6 +801,18 @@
     ]
   },
   "startTime": "2026-11-24T13:52:41.374Z",
-  "lastProcessed": "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-  "log": []
+  "lastProcessed": "fantasma-off-broadway-2026/talkinbroadway--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-24T18:08:08.304Z",
+      "event": "bb-session",
+      "session": "72672e56",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+    },
+    {
+      "t": "2026-11-24T18:08:09.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
