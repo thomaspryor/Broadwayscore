@@ -44,8 +44,12 @@ jobs:
           # failure so the run log says why the email was not sent.
           node scripts/affiliate-report.js --days 7 --html > /tmp/report.html 2>/tmp/report-stderr.txt \
             || { cat /tmp/report-stderr.txt; exit 1; }
-          node scripts/affiliate-report.js --days 7 > /tmp/report.txt 2>&1
+          # Same for the plain-text fallback: a provider retry warning on
+          # stderr must not land in the email (BRO-8220). Shown in the log.
+          node scripts/affiliate-report.js --days 7 > /tmp/report.txt 2>>/tmp/report-stderr.txt \
+            || { cat /tmp/report-stderr.txt; exit 1; }
           cat /tmp/report.txt
+          cat /tmp/report-stderr.txt
 
       - name: Send email via Resend
         env:

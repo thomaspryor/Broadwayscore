@@ -76,21 +76,26 @@ test('every PostHog query applies the shared Real Users filter', async () => {
 // BRO-8220: the 2026-11-22 Impact 503 hit the weekly report's baseline fetch,
 // which had no retry, so the report went out with a PARTIAL DATA banner and
 // no context box. With retry:true a single transient failure is retried.
-async function runWithFlakyImpact({ retry, failStatus }) {
+async function runWithFlakyImpact({ retry, failStatus, failActionsCall = 0 }) {
   const saved = { fetch: globalThis.fetch, env: { ...process.env } };
   process.env.IMPACT_ACCOUNT_SID = 'sid';
   process.env.IMPACT_AUTH_TOKEN = 'tok';
   for (const k of ['POSTHOG_PERSONAL_API_KEY', 'POSTHOG_PROJECT_ID', 'PARTNERIZE_APP_KEY', 'PARTNERIZE_USER_API_KEY']) delete process.env[k];
   let dailyCalls = 0;
+  let actionsCalls = 0;
   globalThis.fetch = async (url) => {
     const u = String(url);
     const json = (status, body) => ({ ok: status < 400, status, text: async () => JSON.stringify(body) });
     if (/Reports\//.test(u)) {
       dailyCalls += 1;
-      if (dailyCalls === 1) return { ok: false, status: failStatus, text: async () => '<html>Service Unavailable</html>' };
+      if (dailyCalls === 1 && !failActionsCall) return { ok: false, status: failStatus, text: async () => '<html>Service Unavailable</html>' };
       return json(200, { Records: [{ date_display: 'Nov 10, 2026', Clicks: '10', Actions: '1', Action_Cost: '5', Sale_zzzAmount: '50' }] });
     }
-    if (/Actions\.json/.test(u)) return json(200, { Actions: [] });
+    if (/Actions\.json/.test(u)) {
+      actionsCalls += 1;
+      if (actionsCalls === failActionsCall) return { ok: false, status: failStatus, text: async () => '' };
+      return json(200, { Actions: [] });
+    }
     throw new Error(`unexpected fetch ${u}`);
   };
   const slept = [];
@@ -100,7 +105,7 @@ async function runWithFlakyImpact({ retry, failStatus }) {
       days: 7, includeWoW: true, completeDays: true, now: new Date('2026-11-23T15:00:00Z'),
       retry, sleep: async (ms) => { slept.push(ms); },
     });
-    return { stats, dailyCalls, slept };
+    return { stats, dailyCalls, actionsCalls, slept };
   } finally {
     globalThis.fetch = saved.fetch;
     process.env = saved.env;
@@ -130,3 +135,13 @@ test('an auth failure is never retried, even with retry on', async () => {
   assert.deepEqual(slept, []);
   assert.equal(stats.context.partial, true);
 });
+
+// Call 1 is the current-window fetch, call 2 the prior-week (WoW) fetch.
+for (const [n, name] of [[1, 'current-window'], [2, 'prior-week']]) {
+  test(`weekly report: a 503 on the ${name} Impact actions fetch is retried`, async () => {
+    const { stats, actionsCalls, slept } = await runWithFlakyImpact({ retry: true, failStatus: 503, failActionsCall: n });
+    assert.equal(actionsCalls, 3, 'current + prior + one retry');
+    assert.deepEqual(slept, [15000]);
+    assert.deepEqual(stats.errors || [], []);
+  });
+}
