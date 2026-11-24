@@ -140,7 +140,10 @@ function readPage(html) {
   countDom.find('.score-badge').remove();
   countDom.find('p, a, div').append(' ');
   const text = countDom.text().replace(/\s+/g, ' ');
-  const counts = [...text.matchAll(/(\d+)\s*Critic\s*Reviews?/gi)].map(m => Number(m[1]));
+  // BRO-8227: a hero date ("Closes Feb 28, 2027") sits directly before the empty-state
+  // "Critic reviews after opening night", so a bare \d+ read the YEAR as a count of 2027.
+  // A count is 1-3 digits, never glued to a digit and never the tail of "Mon D, YYYY".
+  const counts = [...text.matchAll(/(?<!\d|,\s)(\d{1,3})(?!\d)\s*Critic\s*Reviews?\b/gi)].map(m => Number(m[1]));
   const partial = text.match(/(\d+)\s*reviews?\s*[·•]\s*\d+\s*more for a CriticScore/i);
   if (partial) counts.push(Number(partial[1]));
   if (new Set(counts).size > 1) throw new Error('Responsive critic review counts disagree');

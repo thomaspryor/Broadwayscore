@@ -169,3 +169,12 @@ test('G1: refresh marker picks the expectation (base, hash + overlay, stale preb
   const garbled = await probe({ fetchImpl: refreshTransport(marked(page(82), 'zz')), refreshExpectation: never });
   assert.deepEqual([garbled.exitCode, garbled.mismatched], [1, 1]);
 });
+
+// BRO-8227: class guard. The hero's trailing date ("Closes Feb 28, 2027") abuts the
+// "Critic reviews after opening night" empty state; the year must never read as a count.
+test('hero date year before "Critic reviews" is not a review count (BRO-8227)', () => {
+  const hero = tail => `<main><div data-testid="show-hero-redesign"><h1>Texas in Paris</h1><div class="score-badge">TBD</div><p>Previews from Jan 14, 2027 · Closes Feb 28, 2027</p>${tail}</div></main>`;
+  assert.deepEqual(readPage(hero('<p>Critic reviews after opening night</p>')), { score: null, reviewCount: 0 });
+  assert.deepEqual(readPage(hero('<span>Critic reviews after opening night</span>')), { score: null, reviewCount: 0 });
+  assert.deepEqual(readPage(hero('<p>12 Critic Reviews</p>')), { score: null, reviewCount: 12 });
+});
