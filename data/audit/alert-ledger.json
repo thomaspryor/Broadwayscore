@@ -35480,7 +35480,7 @@
       "resolveReason": "latest run no longer failing"
     },
     "cron-health:Replay Push Rescue": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Replay Push Rescue",
@@ -35491,7 +35491,8 @@
       "lastSurfacedAt": "2026-11-21T18:33:16.121Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-24T21:49:58.640Z"
     },
     "land:land/bro-6743-gather-unreported-shards": {
       "status": "resolved",
@@ -36158,7 +36159,7 @@
       "resolveReason": "absent"
     },
     "cron-health-chronic:Replay Push Rescue": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Replay Push Rescue",
       "firstSeen": "2026-11-02T21:15:33.632Z",
@@ -36169,7 +36170,8 @@
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-8063",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-24T21:49:58.666Z"
     },
     "land:land/bro-6857": {
       "status": "resolved",
