@@ -2095,5 +2095,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-24T01:04:05.485Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8220-impact-outage",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8220-impact-outage",
+    "description": "land.yml did not land land/bro-8220-impact-outage: the scripts-lib-tests gate went red at dceef96484. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45300170931",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8220-impact-outage"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "dceef964845a8cb311a41a0447f47a9e861981a3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45300170931"
+      }
+    ],
+    "queuedAt": "2026-11-24T01:20:29.887Z"
   }
 ]
