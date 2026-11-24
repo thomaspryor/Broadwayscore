@@ -1387,20 +1387,6 @@
     "queuedAt": "2026-11-24T04:17:24.179Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:seven-guitars-off-broadway-2026",
-    "title": "Review gap — \"Seven Guitars\" missing 1 cited review(s)",
-    "description": "Seven Guitars (seven-guitars-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=seven-guitars-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-24T05:16:15.585Z"
-  },
-  {
     "conditionKey": "land:land/bro-8232-vulture-page-tag",
     "title": "Landing blocked: unit-tests-node red on land/bro-8232-vulture-page-tag",
     "description": "land.yml did not land land/bro-8232-vulture-page-tag: the unit-tests-node gate went red at 6c3b699eba. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45335245379",
@@ -1487,20 +1473,6 @@
     "queuedAt": "2026-11-24T07:28:53.021Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-24.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-24T08:18:20.569Z"
-  },
-  {
     "conditionKey": "live-data-test:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception",
     "title": "Live-data test failing: the same week in the Broadway edition does not get the West End exception (scripts/newsletter/editorial-overrides.generate.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the same week in the Broadway edition does not get the West End exception\" in scripts/newsletter/editorial-overrides.generate.test.mjs is red against the live corpus.\n\nThe expression evaluated to a falsy value:\n\nassert.ok(!meta.openingShows.some((s) => s.id === PRIDE))\n",
@@ -1514,5 +1486,19 @@
     "testId": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception",
     "fields": [],
     "queuedAt": "2026-11-24T07:48:45.484Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-24.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-24T10:39:58.191Z"
   }
 ]

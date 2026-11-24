@@ -19498,7 +19498,7 @@
       "title": "Roundup gaps: 2 listed review(s) not captured across 2 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-24T08:17:41.052Z",
+      "lastSeen": "2026-11-24T10:39:27.265Z",
       "lastNotifiedAt": "2026-11-24T03:07:44.037Z",
       "lastSurfacedAt": null,
       "notifyCount": 71,
@@ -19517,7 +19517,7 @@
         "nine-night-off-west-end-2026",
         "seven-guitars-off-broadway-2026"
       ],
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -46649,7 +46649,7 @@
       "notifyCountAtRelease": 1
     },
     "review-gap:opening-window:much-ado-about-nothing-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"Much Ado About Nothing\" missing 14 cited review(s)",
       "firstSeen": "2026-11-20T06:32:22.774Z",
@@ -46660,7 +46660,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-24T10:39:27.131Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "opening-night-lane-auto-fallback:much-ado-about-nothing-2026:2026-11-19": {
       "status": "open",

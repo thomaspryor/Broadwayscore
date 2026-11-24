@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T08:18:41.892Z",
+  "generatedAt": "2026-11-24T10:40:22.161Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,6 +138,10 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -158,10 +162,19 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 934,
-  "matchedGaps": 0,
+  "itemsScanned": 921,
+  "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "the-afronauts-west-end-2026",
+      "title": "The Afronauts",
+      "level": "matched",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/the-afronauts-at-the-royal-court-review_1738037/",
+      "headline": "The Afronauts at the Royal Court – review",
+      "publishDate": "2026-11-24"
+    },
     {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
