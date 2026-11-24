@@ -41,7 +41,8 @@ const urls = process.argv.slice(2).filter(a => a.startsWith('--url=')).map(a => 
 const sampleArg = process.argv.slice(2).find(a => a.startsWith('--sample-links='));
 const sampleLinks = sampleArg ? parseInt(sampleArg.slice(15), 10) || 0 : 0;
 
-const { CHALLENGE } = require('./lib/browser-read-page');
+const finds = process.argv.slice(2).filter(a => a.startsWith('--find=')).map(a => a.slice(7));
+const { CHALLENGE, readBrowserPage } = require('./lib/browser-read-page');
 const REVIEW_LINK = /\/page\/(ob|world|bwaybway|westend|regional)\//i;
 
 async function main() {
@@ -69,17 +70,13 @@ async function main() {
       const row = { url };
       const t0 = Date.now();
       try {
-        const resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45000 });
-        // Give a managed challenge a few seconds to resolve itself.
-        for (let i = 0; i < 6; i++) {
-          const title = await page.title();
-          const body = await page.evaluate(() => (document.body && document.body.innerText) || '');
-          if (!CHALLENGE.test(title) && !CHALLENGE.test(body.slice(0, 400)) && body.length > 200) break;
-          await page.waitForTimeout(2500);
-        }
-        const title = await page.title();
-        const text = await page.evaluate(() => (document.body && document.body.innerText) || '');
-        const links = await page.evaluate(() => Array.from(document.querySelectorAll('a[href]')).map(a => ({ href: a.getAttribute('href'), text: (a.textContent || '').trim().slice(0, 60) })));
+        // readBrowserPage rides out the Cloudflare challenge's own navigation (the old inline
+        // goto + evaluate loop died with "Execution context was destroyed" on the first page, BRO-8209).
+        const r = await readBrowserPage(page, url);
+        const resp = { status: () => r.status };
+        const title = r.title;
+        const text = r.text;
+        const links = (r.anchors || []).map(a => ({ href: a.href, text: String(a.text || '').slice(0, 60) }));
         const reviewLinks = links.filter(l => REVIEW_LINK.test(l.href || ''));
         const bylines = (text.match(/Theatre Review by [^\n]{3,60}? - [A-Za-z]+ \d{1,2}, \d{4}/g) || []);
         Object.assign(row, {
@@ -94,6 +91,7 @@ async function main() {
           sampleLinks: sampleLinks ? Array.from({ length: Math.min(sampleLinks, links.length) }, (_, i) => links[Math.floor(i * links.length / Math.min(sampleLinks, links.length))]).map(l => `${l.href} | ${l.text}`) : undefined,
           bylines: bylines.length,
           firstBylines: bylines.slice(0, 4),
+          finds: finds.map(t => `${t}=${(text.match(new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi')) || []).length}`),
           seconds: Math.round((Date.now() - t0) / 100) / 10,
         });
       } catch (e) {
