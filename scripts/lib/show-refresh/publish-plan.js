@@ -42,13 +42,17 @@ const SKIPS = Object.freeze({
   NO_REVIEW_META: 'no-review-meta',
   REVIEW_COUNT_DROP: 'review-count-drop',
   REVIEW_LIST_CHANGED: 'review-list-changed',
+  // Not a rebuild step, the review list moved, and home already carries this
+  // show from a rebuild step: keep that published entry (never revert it to the
+  // build just because a backstop run cannot vouch for the review list).
+  REVIEW_LIST_KEPT: 'review-list-kept',
 });
 
 const DEFAULT_CAP = 40;
 const EXPECT_BASE = 'base';
 
 /** Why a manifest show is not carried, or null when it is a target. */
-function skipReason(id, built, cur, { flagged, rebuildStep }) {
+function skipReason(id, built, cur, { flagged, rebuildStep, prev }) {
   if (built.held) return SKIPS.HELD_BUILD;
   if (!cur) return SKIPS.NOT_IN_HEAD;
   if (cur.error || typeof cur.hash !== 'string') return SKIPS.COMPUTE_ERROR;
@@ -60,7 +64,11 @@ function skipReason(id, built, cur, { flagged, rebuildStep }) {
   if (!Number.isFinite(built.reviewCount) || typeof built.reviewsSig !== 'string'
     || !Number.isFinite(cur.reviewCount) || typeof cur.reviewsSig !== 'string') return SKIPS.NO_REVIEW_META;
   if (cur.reviewCount < built.reviewCount) return SKIPS.REVIEW_COUNT_DROP;
-  if (cur.reviewsSig !== built.reviewsSig && !rebuildStep) return SKIPS.REVIEW_LIST_CHANGED;
+  if (cur.reviewsSig !== built.reviewsSig && !rebuildStep) {
+    // A rebuild step already published exactly this slice: carrying it is no new claim.
+    if (prev && prev.hash === cur.hash) return null;
+    return prev ? SKIPS.REVIEW_LIST_KEPT : SKIPS.REVIEW_LIST_CHANGED;
+  }
   return null;
 }
 
@@ -77,18 +85,21 @@ function planPublish({ manifest, head, prevHome = null, flagged = [], rebuildSte
 
   const flaggedSet = flagged instanceof Set ? flagged : new Set(flagged || []);
   const headShows = head.shows || {};
-  const skips = {};
-  const eligible = [];
-  for (const id of Object.keys(manifest.shows).sort()) {
-    const why = skipReason(id, manifest.shows[id], Object.hasOwn(headShows, id) ? headShows[id] : null, { flagged: flaggedSet, rebuildStep });
-    if (why) skips[id] = why; else eligible.push({ id, hash: headShows[id].hash });
-  }
-  const dirty = Object.keys(headShows).filter((id) => !Object.hasOwn(manifest.shows, id)).sort();
-
   // A home written for another build is moot (row 4): start over.
   const samePrev = !!prevHome && prevHome.manifestId === manifest.manifestId;
   const prevShows = (samePrev && prevHome.shows) || {};
   const pending = { ...((samePrev && prevHome.pending) || {}) };
+
+  const skips = {};
+  const eligible = [];
+  const kept = [];
+  for (const id of Object.keys(manifest.shows).sort()) {
+    const prev = Object.hasOwn(prevShows, id) ? prevShows[id] : null;
+    const why = skipReason(id, manifest.shows[id], Object.hasOwn(headShows, id) ? headShows[id] : null, { flagged: flaggedSet, rebuildStep, prev });
+    if (why === SKIPS.REVIEW_LIST_KEPT) kept.push({ id, hash: prev.hash });
+    if (why) skips[id] = why; else eligible.push({ id, hash: headShows[id].hash });
+  }
+  const dirty = Object.keys(headShows).filter((id) => !Object.hasOwn(manifest.shows, id)).sort();
 
   let outcome = null;
   if (head.registrySha !== manifest.registrySha) outcome = OUTCOMES.REGISTRY_MISMATCH;
@@ -105,6 +116,7 @@ function planPublish({ manifest, head, prevHome = null, flagged = [], rebuildSte
     }
   } else {
     targets = eligible;
+    for (const k of kept) shows[k.id] = { hash: k.hash };
     for (const t of targets) {
       shows[t.id] = { hash: t.hash };
       if (!prevShows[t.id] || prevShows[t.id].hash !== t.hash) {
@@ -135,6 +147,7 @@ function planPublish({ manifest, head, prevHome = null, flagged = [], rebuildSte
       targets: targets.length,
       changed: changed.length,
       removed: removed.length,
+      kept: kept.length,
       dirty: dirty.length,
       pending: Object.keys(pending).length,
       skips: skipCounts,

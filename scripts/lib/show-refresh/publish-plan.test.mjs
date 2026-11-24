@@ -166,3 +166,26 @@ test('a renamed show (HEAD slug != build slug) waits for the deploy: the reader 
   const same = plan({ manifest: manifest({ x: mshow({ slug: 'old' }) }), head: head({ x: hshow({ hash: h('b'), slug: 'old' }) }) });
   assert.deepEqual(same.targets, [{ id: 'x', hash: h('b') }]);
 });
+
+test('a backstop run never reverts what a rebuild step published for a review-list change', () => {
+  const m = manifest();
+  const reviewed = hshow({ hash: h('b'), reviewCount: 3, reviewsSig: 'other' });
+  const byRebuild = plan({ manifest: m, head: head({ x: reviewed }), rebuildStep: true });
+  assert.deepEqual(byRebuild.nextHome.shows, { x: { hash: h('b') } });
+  const prevHome = { manifestId: 'm1', ...byRebuild.nextHome };
+  // Same HEAD on the backstop: carried as is, no home change.
+  const same = plan({ manifest: m, head: head({ x: reviewed }), prevHome });
+  assert.equal(same.outcome, OUTCOMES.NOTHING_TO_DO);
+  assert.deepEqual(same.nextHome.shows, { x: { hash: h('b') } });
+  assert.equal(same.skips.x, undefined);
+  // HEAD moved on (say audience data) with the review list still unvetted: keep the published slice.
+  const moved = plan({ manifest: m, head: head({ x: hshow({ hash: h('c'), reviewCount: 3, reviewsSig: 'other' }) }), prevHome });
+  assert.equal(moved.skips.x, SKIPS.REVIEW_LIST_KEPT);
+  assert.deepEqual(moved.targets, []);
+  assert.deepEqual(moved.nextHome.shows, { x: { hash: h('b') } });
+  assert.equal(moved.nextHome.pending.x.expect, h('b'), 'not re-queued to base');
+  assert.equal(moved.outcome, OUTCOMES.NOTHING_TO_DO);
+  assert.equal(moved.counts.kept, 1);
+  // The next rebuild step vets the new list and publishes it.
+  assert.deepEqual(plan({ manifest: m, head: head({ x: hshow({ hash: h('c'), reviewCount: 3, reviewsSig: 'other' }) }), prevHome, rebuildStep: true }).targets, [{ id: 'x', hash: h('c') }]);
+});
