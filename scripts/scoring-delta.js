@@ -695,8 +695,11 @@ function loadBaselineGuards() {
   const cvPath = path.join(baselineLibDir, 'content-verifier.js');
   const nrPath = path.join(baselineLibDir, 'non-review-url-patterns.js');
   if (fs.existsSync(nrPath)) delete require.cache[require.resolve(nrPath)];
+  const cmcPath = path.join(baselineLibDir, 'cross-market-contamination.js'); // BRO-8231
+  if (fs.existsSync(cmcPath)) delete require.cache[require.resolve(cmcPath)];
   return {
     ...guards,
+    __classALib: fs.existsSync(cmcPath) ? require(cmcPath) : {},
     __contentVerifier: fs.existsSync(cvPath) ? require(cvPath) : {},
     __nonReviewUrlPatterns: fs.existsSync(nrPath) ? require(nrPath) : {},
     __dateGuard: require(dgPath),
@@ -719,8 +722,11 @@ function loadWorkingTreeGuards() {
   delete require.cache[require.resolve(cmPath)];
   const prsPath = path.resolve(REPO_ROOT, 'scripts/lib/prior-run-sibling.js');
   delete require.cache[require.resolve(prsPath)];
+  const cmcWtPath = path.resolve(REPO_ROOT, 'scripts/lib/cross-market-contamination.js'); // BRO-8231
+  delete require.cache[require.resolve(cmcWtPath)];
   return {
     ...guards,
+    __classALib: require(cmcWtPath),
     __contentVerifier: require(path.resolve(REPO_ROOT, 'scripts/lib/content-verifier.js')),
     __nonReviewUrlPatterns: require(path.resolve(REPO_ROOT, 'scripts/lib/non-review-url-patterns.js')),
     __dateGuard: require(dgPath),
@@ -1010,7 +1016,7 @@ function decideInclusion(review, show, guards, filePath) {
     if (!wrongProductionCleared && review.wrongProduction === true
         && typeof autoClear.shouldAutoClearDatelessRevival === 'function') {
       const reviewDate = resolveReviewDate(review);
-      wrongProductionCleared = autoClear.shouldAutoClearDatelessRevival(review, { hasUsableDate: !!reviewDate });
+      wrongProductionCleared = autoClear.shouldAutoClearDatelessRevival(review, { hasUsableDate: !!reviewDate, classA: classAVeto()(review, show) });
     }
 
     // Collected-before-previews auto-clear (BRO-4855) — mirrors the rebuild's
@@ -1022,6 +1028,7 @@ function decideInclusion(review, show, guards, filePath) {
       // url date): resolveGuardReviewDate is the rebuild's own resolver.
       wrongProductionCleared = autoClear.shouldAutoClearCollectedBeforePreviews(review, {
         hasUsableDate: !!resolveGuardReviewDate(review, show?.raw || show), show,
+        classA: classAVeto()(review, show),
       });
     }
 
@@ -1093,6 +1100,7 @@ function decideInclusion(review, show, guards, filePath) {
       isLondonOrOffBroadway: isLondonMarket(show?.category) || show?.category === 'off-broadway',
       cvBlocksClear,
       isShowListingUrl,
+      classA: classAVeto()(review, show),
     });
   }
 
@@ -1160,6 +1168,7 @@ function decideInclusion(review, show, guards, filePath) {
           isDateMismatch,
           isShowListingUrl,
           cvBlocksClear,
+          classA: classAVeto()(review, show),
         });
       } catch {}
     }
@@ -1236,6 +1245,7 @@ function decideInclusion(review, show, guards, filePath) {
         cvBlocksClear: typeof guards.cvBlocksUkWrongProductionAutoClear === 'function'
           ? guards.cvBlocksUkWrongProductionAutoClear(review.contentVerification)
           : false,
+        classA: classAVeto()(review, show),
         inOwnProductionWindow: typeof guards.isReviewWithinOwnProductionWindow === 'function'
           ? guards.isReviewWithinOwnProductionWindow(show, review.publishDate)
           : false,
@@ -1853,6 +1863,12 @@ function main() {
         // in this list even though decideInclusion now calls it, which would have
         // reopened the exact #1163 blind spot this comparison block exists to close.
         && (baseline.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '')
+        // BRO-8231: every auto-clear that takes the class-A veto, plus the classifier itself (the old
+        // check hashed only shouldAutoClearWrongProduction, so a classifier-only edit looked identical).
+        && (baseline.__classALib?.makeClassAVeto?.toString() || '') === (working.__classALib?.makeClassAVeto?.toString() || '')
+        && (baseline.__classALib?.classifyClassAContamination?.toString() || '') === (working.__classALib?.classifyClassAContamination?.toString() || '')
+        && (baseline.__classALib?.classAApplies?.toString() || '') === (working.__classALib?.classAApplies?.toString() || '')
+        && (baseline.__classALib?.buildSiblingOpeningsMap?.toString() || '') === (working.__classALib?.buildSiblingOpeningsMap?.toString() || '')
         // BRO-4476: helpers the predicate calls (14d window, city regex) — a constant/regex-only edit leaves the predicate source identical.
         && (baseline.__priorRunLib?.isPreRunForUkClear?.toString() || '') === (working.__priorRunLib?.isPreRunForUkClear?.toString() || '')
         && (baseline.__priorRunLib?.namesNonLondonCity?.toString() || '') === (working.__priorRunLib?.namesNonLondonCity?.toString() || '')

@@ -751,7 +751,8 @@ function shouldAutoClearWrongShow(data) {
  * @param {boolean} ctx.isShowListingUrl - true if data.url is a /shows/ aggregate/listing page
  * @returns {boolean}
  */
-function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway, cvBlocksClear, isShowListingUrl } = {}) {
+function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway, cvBlocksClear, isShowListingUrl, classA } = {}) {
+  if (classA === true) return false; // BRO-8231: strict class-A leak is never auto-cleared (makeClassAVeto)
   if (data.wrongProduction !== true) return false;
   if (isWrongProductionHeld(data)) return false;
   if (!data.wrongProductionNote || !data.wrongProductionNote.includes('URL contains year')) return false;
@@ -846,7 +847,8 @@ function bwwExcerptContradictsText(data) {
   return !frags.some((f) => text.includes(f.slice(0, 60)));
 }
 
-function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
+function shouldAutoClearDatelessRevival(data, { hasUsableDate, classA } = {}) {
+  if (classA === true) return false; // BRO-8231: strict class-A leak is never auto-cleared (makeClassAVeto)
   if (!data || data.wrongProduction !== true) return false;
   const note = data.wrongProductionNote || '';
   const reason = data.wrongProductionReason || '';
@@ -891,7 +893,8 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
  * @param {object|null} ctx.show - the show record (previewsStartDate/openingDate/priorRuns/tourLegs)
  * @returns {boolean}
  */
-function shouldAutoClearCollectedBeforePreviews(data, { hasUsableDate, show } = {}) {
+function shouldAutoClearCollectedBeforePreviews(data, { hasUsableDate, show, classA } = {}) {
+  if (classA === true) return false; // BRO-8231: strict class-A leak is never auto-cleared (makeClassAVeto)
   if (!isCollectedBeforePreviewsHold(data)) return false;
   // A person stands behind the flag (humanReviewedWrongProduction === true,
   // approved-fix flag, manual provenance): no heuristic clears it (BRO-3585).
@@ -1202,6 +1205,7 @@ function namesNonLondonCity(data) {
  * @returns {boolean}
  */
 function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
+  if (ctx.classA === true) return false; // BRO-8231: strict class-A leak is never auto-cleared (makeClassAVeto)
   if (!data || data.wrongProduction !== true) return false;
   if (data.wrongProductionOverride) return false;
   if (!ctx.isLondonMarketShow) return false;
@@ -1338,6 +1342,7 @@ function isInOwnWindowByDateOrUrlYear(show, publishDate, url, isReviewWithinOwnP
  *        inOwnProductionWindow, urlFiledUnderOtherShow }
  */
 function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
+  if (ctx.classA === true) return false; // BRO-8231: strict class-A leak is never auto-cleared (makeClassAVeto)
   if (!data || data.wrongProduction !== true) return false;
   if (data.wrongProductionOverride) return false;
   if (!ctx.isNycMarketShow) return false;

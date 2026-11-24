@@ -1890,7 +1890,7 @@ const crossShowFingerprints = new Map();
         // strip it the moment the review gains a usable date (the dated guard
         // then re-decides) or a human overrides. Runs before the wrongProduction
         // short-circuit so a held file can recover.
-        if (shouldAutoClearDatelessRevival(d, { hasUsableDate: !!reviewDate })) {
+        if (shouldAutoClearDatelessRevival(d, { hasUsableDate: !!reviewDate, classA: isClassAContaminated(d, showRecord) })) {
           const wasNote = d.wrongProductionNote || d.wrongProductionReason || '(no marker)';
           d.wrongProduction = false;
           d.wrongProductionAutoCleared = `rebuild: dateless-revival hold released (was: ${wasNote})`;
@@ -1912,7 +1912,7 @@ const crossShowFingerprints = new Map();
         // contract as the dateless-revival hold above. The predicate re-runs the
         // guard on the CURRENT record + show and releases once it no longer
         // fires (date arrived, priorRuns/tourLegs declared, preview date fixed).
-        if (shouldAutoClearCollectedBeforePreviews(d, { hasUsableDate: !!reviewDate, show: showRecord })) {
+        if (shouldAutoClearCollectedBeforePreviews(d, { hasUsableDate: !!reviewDate, show: showRecord, classA: isClassAContaminated(d, showRecord) })) {
           const wasNote = d.wrongProductionNote || d.wrongProductionReason || '(no marker)';
           d.wrongProduction = false;
           d.wrongProductionAutoCleared = `rebuild: collected-before-previews hold released (was: ${wasNote})`;
@@ -3354,6 +3354,7 @@ showDirs.forEach(showId => {
           isLondonOrOffBroadway: isLondonMarket(showCat) || showCat === 'off-broadway',
           cvBlocksClear: wpCvBlocksClear,
           isShowListingUrl: wpIsShowListingUrl,
+          classA: isClassAContaminated(data, showById[showId]), // BRO-8231
         })) {
           data.wrongProduction = false;
           data.wrongProductionAutoCleared = `rebuild: WE/OB exempt from URL-year guard (was: ${data.wrongProductionNote})`;
@@ -3560,7 +3561,7 @@ showDirs.forEach(showId => {
         // Provenance-gated to CV-sourced flags only, so date/ensemble/tour flags
         // are untouched. Root cause of the R&J Shakespeare-in-the-Park NYSR drop
         // (2026-06-15) — see isStaleCvPromotedWrongProduction in review-guards.js.
-        if (isStaleCvPromotedWrongProduction(data, cvIsStale)) {
+        if (isStaleCvPromotedWrongProduction(data, cvIsStale) && !isClassAContaminated(data, showById[showId])) { // BRO-8231
           data.wrongProduction = false;
           // Deliberately NOT setting wrongProductionManualClear — that is a
           // human-override-equivalent that bypasses future wrong-production
@@ -3615,7 +3616,7 @@ showDirs.forEach(showId => {
       // (isOwnCastEvidencePersistedWrongProduction): same settle-and-retier path.
       const wpHealKind = isVenueCarveoutPersistedWrongProduction(data, showById[showId]) ? 'venue-carveout'
         : isOwnCastEvidencePersistedWrongProduction(data, showById[showId]) ? 'own-cast' : null;
-      if (wpHealKind) {
+      if (wpHealKind && !isClassAContaminated(data, showById[showId])) { // BRO-8231
         data.wrongProduction = false;
         data.wrongProductionSelfHealed = true;
         data.wrongProductionSelfHealReason = wpHealKind === 'venue-carveout'
@@ -3752,6 +3753,7 @@ showDirs.forEach(showId => {
               isDateMismatch,
               isShowListingUrl,
               cvBlocksClear,
+              classA: isClassAContaminated(data, showById[showId]), // BRO-8231
             })) {
               const clearedTradeFlag = (data.wrongProductionNote || '').startsWith('Cross-market: US outlet')
                 && !!(internationalTradeOutlets
@@ -3814,6 +3816,7 @@ showDirs.forEach(showId => {
             cvBlocksClear: cvBlocksUkWrongProductionAutoClear(data.contentVerification),
             inOwnProductionWindow: isInOwnWindowByDateOrUrlYear(showById[showId], data.publishDate, data.url, isReviewWithinOwnProductionWindow),
             urlFiledUnderOtherShow: ((urlShowIdsAll.get(normalizeUrlForDedup(data.url)) || new Set()).size > 1),
+            classA: isClassAContaminated(data, showById[showId]), // BRO-8231
           })) {
             delete data.wrongProduction;
             delete data.wrongProductionNote;
