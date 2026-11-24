@@ -463,7 +463,7 @@ function splitRelabelUndo(record, newUrl) {
 // Bookkeeping a url edit legitimately changes besides `url` itself: the
 // url-change-invariant clear (breadcrumb + the fields it names) and the
 // refetch markers set below.
-const URL_EDIT_SIDE_EFFECT_KEYS = ['_urlChangedClear', 'duplicateClearReason', 'needsRefetch', 'urlCorrectedFrom', 'urlCorrectedReason'];
+const URL_EDIT_SIDE_EFFECT_KEYS = ['_urlChangedClear', 'duplicateClearReason', 'needsRefetch', 'urlCorrectedFrom', 'urlCorrectedReason', 'firstSeenAtPriorUrl'];
 
 // BRO-5356: the rule lives in stale-wrong-content-tier.js (shared with safeWriteReview).
 function retierAfterFlagClear(record) {

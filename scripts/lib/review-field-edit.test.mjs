@@ -1190,8 +1190,14 @@ test('url repair: a TB dated page held by another show may move to the same-day 
   assert.equal(edit(page.replace('.html', 'b.html')).ok, false);
   // with the proof back, the same-day suffix repair applies
   put('the-hairy-ape-irish-repertory-theatre-off-broadway-2026', 'talkinbroadway--marc-miller.json', { outletId: 'talkinbroadway', criticName: 'Marc Miller', url: page });
+  // the real Dale file carries firstSeenAt: the url-change invariant resets it and stamps firstSeenAtPriorUrl,
+  // which the executor must count as the edit's own side effect (the first CI apply was refused on it)
+  put('falls-for-jodie-off-broadway-2026', 'talkinbroadway--michael-dale.json', { showId: 'falls-for-jodie-off-broadway-2026', outletId: 'talkinbroadway', criticName: 'Michael Dale', url: page, firstSeenAt: '2026-10-06T00:00:00.000Z' });
   const res = edit(page.replace('.html', 'b.html'));
   assert.equal(res.ok, true, res.reason);
+  const dale = JSON.parse(fs.readFileSync(path.join(root, 'falls-for-jodie-off-broadway-2026', 'talkinbroadway--michael-dale.json'), 'utf8'));
+  assert.equal(dale.firstSeenAtPriorUrl, '2026-10-06T00:00:00.000Z');
+  assert.equal(dale.url, page.replace('.html', 'b.html'));
   // a human url lock on this file, or a third show already on the destination page, refuses the move
   put('falls-for-jodie-off-broadway-2026', 'talkinbroadway--michael-dale.json', { showId: 'falls-for-jodie-off-broadway-2026', outletId: 'talkinbroadway', criticName: 'Michael Dale', url: page, urlVerified: true });
   assert.equal(edit(page.replace('.html', 'b.html')).ok, false, 'human url lock');
