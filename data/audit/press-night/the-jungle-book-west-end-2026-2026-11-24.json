@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-jungle-book-west-end-2026",
+  "night": "2026-11-24",
+  "market": "west-end",
+  "embargoAt": "2026-11-24T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-24T20:30:05.129Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-24T22:55:12.850Z",
+    "lastOkSampleAt": "2026-11-24T22:55:12.850Z"
+  },
+  "firstLiveAt": "2026-11-24T20:30:05.129Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-24T20:30:05.129Z",
+  "liveCount": 2,
+  "liveCountAt": {
+    "1h": 2,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-24T22:00:09.565Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [
+    {
+      "key": "kiddo adventures|tasha",
+      "outlet": "Kiddo Adventures",
+      "critic": "Tasha",
+      "tier": 3,
+      "publishAt": "2026-11-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T20:30:05.129Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "monstagigz|unknown",
+      "outlet": "Monstagigz",
+      "critic": null,
+      "tier": 4,
+      "publishAt": "2026-11-21",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T20:30:05.129Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 2,
+      "fetchedAt": "2026-11-24T23:00:33.133Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-24T23:00:33.211Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-24T23:00:33.792Z",
+    "files": [
+      {
+        "file": "chicago-sun-times--unknown.json",
+        "outletId": "chicago-sun-times",
+        "outlet": "Chicago Sun-Times",
+        "critic": "Unknown",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "suntimes.com/entertainment/21002764-421/its-a-jungle-in-there.html",
+        "includable": false,
+        "reason": "previewPlaceholder",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "chicagotribune--unknown.json",
+        "outletId": "chicagotribune",
+        "outlet": "Chicago Tribune",
+        "critic": "Unknown",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "chicagotribune.com/entertainment/theater/theaterloop/ct-ent-0702-jungle-book-review-20130701,0,5132024.column",
+        "includable": false,
+        "reason": "previewPlaceholder",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "daily-echo--unknown.json",
+        "outletId": "daily-echo",
+        "outlet": "Daily Echo",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-24T17:08:57.247Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-13",
+        "url": "dailyecho.co.uk/leisure/national/26728985.animal-puppets-unveiled-national-theatre-production-jungle-book",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "ew--unknown.json",
+        "outletId": "ew",
+        "outlet": "Entertainment Weekly",
+        "critic": "Unknown",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "ew.com/ew/article/0,,20364394_20713919,00.html",
+        "includable": false,
+        "reason": "previewPlaceholder",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "ikonlondonmagazine--elena-leo.json",
+        "outletId": "ikonlondonmagazine",
+        "outlet": "Ikon London Magazine",
+        "critic": "Elena Leo",
+        "firstSeenAt": "2026-11-24T17:08:57.682Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-14",
+        "url": "ikonlondonmagazine.com/the-jungle-book-national-theatre-puppets",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "islington-gazette--unknown.json",
+        "outletId": "islington-gazette",
+        "outlet": "Islington Gazette",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-24T17:08:58.044Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-13",
+        "url": "islingtongazette.co.uk/things-to-do/national/26728985.animal-puppets-unveiled-national-theatre-production-jungle-book",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "kiddoadventures--tasha.json",
+        "outletId": "kiddoadventures",
+        "outlet": "Kiddo Adventures",
+        "critic": "Tasha",
+        "firstSeenAt": "2026-11-24T17:08:58.393Z",
+        "scoredAt": "2026-11-24T17:22:39.730Z",
+        "publishDate": "2026-11-22",
+        "url": "kiddoadventures.com/2026/11/22/the-jungle-book-national-theatre-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "monstagigz--mrmonstagigz.json",
+        "outletId": "monstagigz",
+        "outlet": "Monstagigz",
+        "critic": "mrmonstagigz",
+        "firstSeenAt": "2026-11-21T17:54:40.722Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-21",
+        "url": "monstagigz.com/2026/11/21/theatre-review-the-jungle-book-starring-tony-jayawardena-and-ankur-bahl-at-the-national-theatre",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "monstagigz--unknown.json",
+        "outletId": "monstagigz",
+        "outlet": "Monstagigz",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-21T17:54:40.722Z",
+        "scoredAt": "2026-11-21T22:16:10.095Z",
+        "publishDate": "2026-11-21",
+        "url": "monstagigz.com/2026/11/21/theatre-review-the-jungle-book-starring-tony-jayawardena-and-ankur-bahl-at-the-national-theatre",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "standard--lyndsey-winship.json",
+        "outletId": "standard",
+        "outlet": "Evening Standard",
+        "critic": "Lyndsey Winship",
+        "firstSeenAt": "2026-11-24T06:10:49.793Z",
+        "scoredAt": null,
+        "publishDate": "2016-08-15",
+        "url": "standard.co.uk/culture/the-jungle-book-dance-review-kiplings-classic-transported-to-an-urban-jungle-a3320066.html",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "standard--unknown.json",
+        "outletId": "standard",
+        "outlet": "Evening Standard",
+        "critic": "Lyndsey Winship",
+        "firstSeenAt": "2026-11-24T06:10:49.793Z",
+        "scoredAt": null,
+        "publishDate": "2016-08-15",
+        "url": "standard.co.uk/culture/the-jungle-book-dance-review-kiplings-classic-transported-to-an-urban-jungle-a3320066.html",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatre-news--unknown.json",
+        "outletId": "theatre-news",
+        "outlet": "Theatre News",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-20T19:04:21.794Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "theatre-news.com/news/uk/130285/the-jungle-book-roars-into-the-national-theatre-with-spectacular-new-puppetry",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
