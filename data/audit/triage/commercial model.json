@@ -1,15 +1,15 @@
 {
   "system": "commercial model",
-  "status": "pass",
-  "lastChecked": "2026-11-24T03:41:10.303Z",
+  "status": "warn",
+  "lastChecked": "2026-11-24T12:34:03.518Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Commercial model: stored vs fresh run",
-      "status": "pass",
-      "message": "482 records match a fresh run"
+      "status": "warn",
+      "message": "1 of 482 records differ from a fresh run (1 same-day, 0 drift, 0 method): the-outsiders [same-day] run 2026-11-24 stored 149.1%, same inputs give 150.5%"
     },
     {
       "name": "Commercial model: Boring Waltz fit",

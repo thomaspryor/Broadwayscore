@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-24T03:41:10.301Z",
+  "lastChecked": "2026-11-24T12:34:03.515Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -94,22 +94,22 @@
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "92 review(s) with no usable text, 67 rejected although verified as a review, 22 never scored, 15 with a blocked URL (0 published on the site), across 769 current shows"
+      "message": "86 review(s) with no usable text, 65 rejected although verified as a review, 21 never scored, 15 with a blocked URL (0 published on the site), across 775 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (50960 checked)"
+      "message": "No published review score contradicts the critic's rating (51017 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "4 early publish date(s) awaiting recheck (limit 40); 228 already attempted and not yet confirmed"
+      "message": "5 early publish date(s) awaiting recheck (limit 40); 228 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "warn",
-      "message": "4 unexplained approved-fix drift(s) across 3965 files with approvals"
+      "message": "4 unexplained approved-fix drift(s) across 3969 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",

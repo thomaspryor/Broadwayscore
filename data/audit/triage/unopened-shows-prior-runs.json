@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-24T04:18:39.135Z",
+  "generatedAt": "2026-11-24T12:59:15.180Z",
   "linearIssue": "BRO-80",
   "scannedShows": 6145,
-  "flaggedShows": 42,
-  "flaggedFiles": 151,
+  "flaggedShows": 43,
+  "flaggedFiles": 152,
   "readmissionRiskFiles": 1,
   "readmissionRisks": [
     {
@@ -18,7 +18,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 24,
-    "needs-human-review": 18
+    "needs-human-review": 19
   },
   "shows": [
     {
@@ -2392,6 +2392,42 @@
           "criticName": "Lyn Gardner",
           "publishDate": "2016-04-13",
           "url": "https://www.theguardian.com/stage/2016/apr/12/the-brink-review-brad-birch-orange-tree",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "the-jungle-book-west-end-2026",
+      "title": "The Jungle Book",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "National Theatre (Olivier)",
+      "previewsStartDate": "2026-11-13",
+      "openingDate": "2026-11-24",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"National Theatre (Olivier)\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2016
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "standard--lyndsey-winship.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Lyndsey Winship",
+          "publishDate": "2016-08-15",
+          "url": "https://www.standard.co.uk/culture/the-jungle-book-dance-review-kiplings-classic-transported-to-an-urban-jungle-a3320066.html",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
