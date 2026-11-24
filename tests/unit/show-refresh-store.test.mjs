@@ -550,3 +550,36 @@ describe('show-refresh-store CLI', () => {
     assert.equal(fake.state.rows.get('kill').reason, 'line one\nline two');
   });
 });
+
+describe('putIfField (BRO-8214 home CAS)', () => {
+  const recorder = (rows) => {
+    const calls = [];
+    const fetchImpl = async (url, init) => { calls.push({ url: String(url), init }); return new Response(JSON.stringify(rows), { status: 200 }); };
+    return { calls, st: store.makeStateTable({ baseUrl: 'http://x/', key: 'k', fetchImpl }) };
+  };
+
+  test('PATCHes only while value->>field equals expect and returns the rows changed', async () => {
+    const { calls, st } = recorder([{ key: 'home' }]);
+    assert.equal(await st.putIfField('home.json', JSON.stringify({ generation: 4 }), 'generation', 3), 1);
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].init.method, 'PATCH');
+    assert.equal(calls[0].url, 'http://x/rest/v1/show_refresh_state?key=eq.home&value->>generation=eq.3');
+    assert.match(calls[0].init.headers.prefer, /return=representation/);
+    assert.deepEqual(JSON.parse(calls[0].init.body).value, { generation: 4 });
+  });
+
+  test('0 rows = lost the race; string expects are URL-encoded; bad field names refused', async () => {
+    const { calls, st } = recorder([]);
+    assert.equal(await st.putIfField('home.json', '{}', 'manifestId', 'a b&c'), 0);
+    assert.equal(calls[0].url, 'http://x/rest/v1/show_refresh_state?key=eq.home&value->>manifestId=eq.a%20b%26c');
+    await assert.rejects(st.putIfField('home.json', '{}', 'a&b', 1), /field/);
+    await assert.rejects(st.putIfField('home.json', '{}', 'generation', null), /expect/);
+  });
+
+  test('putIfSeq is putIfField on seq (callers unchanged)', async () => {
+    const { calls, st } = recorder([{ key: 'kill' }]);
+    assert.equal(await st.putIfSeq('kill.json', '{"seq":2}', 1), 1);
+    assert.equal(calls[0].url, 'http://x/rest/v1/show_refresh_state?key=eq.kill&value->>seq=eq.1');
+    await assert.rejects(st.putIfSeq('kill.json', '{}', 1.5), /integer/);
+  });
+});

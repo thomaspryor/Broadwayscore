@@ -102,24 +102,31 @@ function makeStateTable({ baseUrl, key, timeoutMs, fetchImpl = fetch }) {
     if (!res.ok) throw new Error(`state put ${path} ${res.status} ${(await res.text().catch(() => '')).slice(0, 200)}`);
   }
   /**
-   * Compare-and-swap: replace the row only while its value.seq still equals
-   * expectSeq. Returns the number of rows changed (0 = someone wrote since the
-   * caller read it). return=representation so an RLS-filtered PATCH (0 rows,
-   * 2xx) is not mistaken for success.
+   * Compare-and-swap: replace the row only while its value.<field> (as text)
+   * still equals expect. Returns the number of rows changed (0 = someone wrote
+   * since the caller read it). return=representation so an RLS-filtered PATCH
+   * (0 rows, 2xx) is not mistaken for success. kill uses seq, home uses
+   * generation (plan R4).
    */
-  async function putIfSeq(path, text, expectSeq) {
-    if (!Number.isInteger(expectSeq)) throw new Error(`state putIfSeq ${path}: expectSeq must be an integer`);
-    const res = await call(`${root}?key=eq.${rowKey(path)}&value->>seq=eq.${expectSeq}`, {
+  async function putIfField(path, text, field, expect) {
+    if (!/^[A-Za-z_][A-Za-z0-9_]{0,63}$/.test(String(field))) throw new Error(`state putIfField ${path}: bad field ${JSON.stringify(field)}`);
+    if (expect == null || (typeof expect !== 'string' && !Number.isFinite(expect))) throw new Error(`state putIfField ${path}: expect must be a string or number`);
+    const res = await call(`${root}?key=eq.${rowKey(path)}&value->>${field}=eq.${encodeURIComponent(String(expect))}`, {
       method: 'PATCH',
       headers: { ...auth, 'content-type': 'application/json', prefer: 'return=representation' },
       body: JSON.stringify({ value: JSON.parse(text), updated_at: new Date().toISOString() }),
     });
     const body = await res.text().catch(() => '');
-    if (!res.ok) throw new Error(`state putIfSeq ${path} ${res.status} ${body.slice(0, 200)}`);
+    if (!res.ok) throw new Error(`state putIfField ${path} ${res.status} ${body.slice(0, 200)}`);
     let rows;
-    try { rows = JSON.parse(body); } catch { throw new Error(`state putIfSeq ${path}: invalid JSON from PostgREST`); }
-    if (!Array.isArray(rows)) throw new Error(`state putIfSeq ${path}: not an array`);
+    try { rows = JSON.parse(body); } catch { throw new Error(`state putIfField ${path}: invalid JSON from PostgREST`); }
+    if (!Array.isArray(rows)) throw new Error(`state putIfField ${path}: not an array`);
     return rows.length;
+  }
+  /** putIfField on value.seq (the kill row). */
+  async function putIfSeq(path, text, expectSeq) {
+    if (!Number.isInteger(expectSeq)) throw new Error(`state putIfSeq ${path}: expectSeq must be an integer`);
+    return putIfField(path, text, 'seq', expectSeq);
   }
   /**
    * Insert the row only if no row with this key exists (never overwrites).
@@ -148,7 +155,7 @@ function makeStateTable({ baseUrl, key, timeoutMs, fetchImpl = fetch }) {
     try { n = JSON.parse(body).length; } catch { /* empty body */ }
     return n;
   }
-  return { get, put, putIfSeq, insertIfAbsent, remove, table: STATE_TABLE };
+  return { get, put, putIfField, putIfSeq, insertIfAbsent, remove, table: STATE_TABLE };
 }
 
 function envUrl(env) { return env.SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL; }
