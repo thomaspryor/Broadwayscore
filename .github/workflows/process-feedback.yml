@@ -264,21 +264,11 @@ jobs:
                 // step (GITHUB_TOKEN events never trigger issues.opened, so
                 // the dispatch is explicit). The reader store was pushed
                 // before this step, same as the bug-diagnosis dispatch below.
-                // BRO-7919: asked-for show is already live: close with a comment
-                // (the reader reply draft is already queued to the owner) and
-                // skip the proposal flow, which would otherwise leave this open
-                // and later file a "root cause" card.
-                if (isContentRequest && issueText.isAlreadyInCatalog(contentActions)) {
-                  try {
-                    await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.data.number, body: issueText.buildAlreadyInCatalogComment(contentActions) });
-                    await github.rest.issues.update({ owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.data.number, state: 'closed', state_reason: 'completed' });
-                    console.log(`  Closed #${issue.data.number}: already in catalog`);
-                    continue;
-                  } catch (err) {
-                    // Close failed: fall through so the issue still gets the proposal flow.
-                    console.log(`  Failed to close already-in-catalog #${issue.data.number}: ${err.message}`);
-                  }
-                }
+                // BRO-7919: an ask for a show already live is NOT closed here.
+                // The planner closes it (Close already-fixed issue step) only
+                // after the owner has the reply draft in hand, and offers no
+                // root-cause button when this router already reads it as
+                // already-in-catalog (Proposal.routerAlreadyInCatalog).
                 if (!willAutoDispatch && String(process.env.FEEDBACK_PROPOSAL_DISABLED || '').toLowerCase() !== 'true' && process.env.STORE_PUSH_OUTCOME !== 'failure') {
                   try {
                     await github.rest.actions.createWorkflowDispatch({

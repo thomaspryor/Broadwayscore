@@ -331,14 +331,18 @@ async function main() {
   // Content-addition asks: if the show is already in the catalog, say so and
   // let the workflow close the issue with a comment (#1190, #1124 pattern).
   if (diagnosis.needsReview && Proposal.isContentAdditionBody(issueBody)) {
-    const matches = Proposal.selectAutoCloseMatch(diagnosis.originalMessage, diagnosis.submitterShow, shows);
+    // BRO-7919: when the intake router already closes this ask (it did, or now
+    // would), the router is not a root cause: no root-cause button, which used
+    // to file a card for a fix that had already landed.
+    const routed = Proposal.routerAlreadyInCatalog(diagnosis.originalMessage, diagnosis.submitterShow, shows);
+    const matches = routed.length ? routed : Proposal.selectAutoCloseMatch(diagnosis.originalMessage, diagnosis.submitterShow, shows);
     if (matches.length > 0 && proposalOn) {
       try {
         await sendProposal({
           alreadyFixed: true,
           fixedEvidence: [`${matches.length} catalog ${matches.length === 1 ? 'entry matches' : 'entries match'} the show they named`],
           catalogMatches: matches,
-          rootCause: {
+          rootCause: routed.length ? null : {
             title: 'router leaves already-fixed asks open',
             summary: 'The feedback router could not tell which catalog entry the reader meant, so it left the issue open and sent no reply.',
             approach: 'When a requested title already matches a catalog entry, close the issue with a comment and put the reply draft in front of the owner.',

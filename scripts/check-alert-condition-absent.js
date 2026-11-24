@@ -45,6 +45,7 @@
 const fs = require('fs');
 const path = require('path');
 const { rowMatchKey } = require('./lib/health-row-check-cmd.js');
+const { rootCauseIssueNumber, replayCase: replayRootCauseCase } = require('./lib/feedback-rootcause-cases.js');
 
 const TRACKED_LEDGER = path.join(__dirname, '..', 'data', 'audit', 'alert-ledger.json');
 // owner-alert-router.js DEFAULT_COOLDOWN_HOURS: a condition that has not fired
@@ -160,6 +161,12 @@ function classifyEntry(entry, nowMs) {
  * @returns {{ code: 0|1|3, message: string }}
  */
 function decide(ledgers, key, nowMs = Date.now()) {
+  // BRO-7919: the proposal email's root-cause button keys its card
+  // `reader-feedback-rootcause-<issue>`, which no router writes to the ledger.
+  // Its condition is "the intake router still leaves that ask open": replay the
+  // ask's recorded case through the real router instead (no case: CANNOT TELL).
+  const rootCauseIssue = rootCauseIssueNumber(key);
+  if (rootCauseIssue != null) return replayRootCauseCase(rootCauseIssue);
   const newest = Math.max(0, ...ledgers.flatMap(l => Object.values(l.conditions).map(activityOf)));
   const newestAgeH = (nowMs - newest) / 36e5;
   if (!newest || newestAgeH > LEDGER_MAX_AGE_H) {

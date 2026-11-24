@@ -120,6 +120,26 @@ function selectAutoCloseMatch(message, submitterShow, shows) {
   return [];
 }
 
+/**
+ * BRO-7919: catalog matches when the intake router itself already reads this
+ * ask as "show is already live, nothing to add" (the same decision that closes
+ * the issue at intake), else []. When it does, the router is not the root cause,
+ * so the proposal email must not offer a root-cause fix for it.
+ */
+function routerAlreadyInCatalog(message, submitterShow, shows) {
+  // Lazy: the routing module is large and most proposals never reach here.
+  const { planContentRequestActions } = require('./content-request-routing.js');
+  const { isAlreadyInCatalog } = require('./feedback-issue-body.js');
+  let actions;
+  try {
+    actions = planContentRequestActions({ message: message || '', show: submitterShow || '', shows: shows || [] });
+  } catch { return []; }
+  if (!isAlreadyInCatalog(actions)) return [];
+  const ids = [...new Set(actions.map((a) => a.showId))];
+  return ids.map((id) => (shows || []).find((s) => s && s.id === id)).filter(Boolean)
+    .map((s) => ({ id: s.id, title: s.title, status: s.status, market: s.market || null, url: showUrl(s) }));
+}
+
 const same = (a, b) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 
 /**
@@ -344,7 +364,7 @@ ${section(4, 'Reply to the reader', s4)}
 module.exports = {
   DAILY_CAP, LEDGER_PATH, SIMILAR_CHECKS,
   proposalsDisabled, loadLedger, saveLedger, decideSend, minutesBetween, recordSent,
-  findCatalogMatches, selectAutoCloseMatch, checkPlanAlreadyApplied, scanSimilar,
+  findCatalogMatches, selectAutoCloseMatch, routerAlreadyInCatalog, checkPlanAlreadyApplied, scanSimilar,
   buildRootCauseUrl, buildReaderReplyDraft, buildProposalEmail,
   isContentAdditionBody, buildNeedsReviewDiagnosis,
 };

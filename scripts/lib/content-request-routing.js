@@ -301,6 +301,8 @@ function pickCandidateByPlace(candidates, text) {
     // A negated or origin mention ("not the Toronto one", "transferred from
     // Chicago", "played Manchester") points AWAY from that production.
     if (PLACE_AWAY_RE.test(t.slice(Math.max(0, idx - 30), idx + 1))) return null;
+    // Part of a longer place name: "york" inside "new york", "london" inside "new london".
+    if (/\b(new|north|south|east|west|upper|lower|port|fort|saint|st)\s$/.test(t.slice(Math.max(0, idx - 7), idx + 1))) continue;
     hits.push(s);
   }
   if (hits.length !== 1) return null;
