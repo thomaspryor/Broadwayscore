@@ -29,7 +29,8 @@ function nameFromAuthorUrl(s) {
   return words.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
-const norm = (s) => String(s || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, '');
+const { foldDiacritics } = require('./title-match');
+const norm = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, '');
 
 /**
  * BRO-8211: a multi-critic Substack (The BroadGAYS) puts the PUBLICATION in the
