@@ -54,6 +54,29 @@ function buildPages(reviews) {
   return pages;
 }
 
+/**
+ * BRO-8217: a joint credit ("A, B", "A and B", "A & B") is its own page by design, never
+ * a typo of either author. Three cards (BRO-7222/7855/8143) each hand-recorded one such
+ * pair after the live gate failed; recognise the shape up front instead.
+ */
+function jointParts(name) {
+  const parts = String(name).split(/\s*(?:,|&|\band\b|\+)\s*/i).map(s => s.trim()).filter(Boolean);
+  return parts.length >= 2 && parts.every(s => foldTokens(s).length >= 2) ? parts.map(s => foldTokens(s).join(' ')) : null;
+}
+/**
+ * True when `joint` is a joint byline of known critics: every part is itself a critic page
+ * (`known` = folded names of all pages) and one of them is `other`. Garbled tails such as
+ * "Rick Mauch and Photo by ..." or "Leslie Katz, Bay City News" have an unknown part and
+ * stay reported.
+ */
+function isJointOf(joint, other, known) {
+  const names = new Set([...other.spell.keys()].map(n => foldTokens(n).join(' ')));
+  return [...joint.spell.keys()].some(n => {
+    const parts = jointParts(n);
+    return parts && parts.every(x => known.has(x)) && parts.some(x => names.has(x));
+  });
+}
+
 /** All candidate pairs, bucketed so this stays near-linear. */
 function findSplitPairs(pages, opts = {}) {
   const buckets = new Map();
@@ -70,6 +93,8 @@ function findSplitPairs(pages, opts = {}) {
     add('P:' + t[0] + ':' + t[t.length - 1].slice(0, 3), p);
     add('S:' + t[0].slice(0, 3) + ':' + t[t.length - 1].slice(-3), p);
   }
+  const known = new Set();
+  for (const p of pages.values()) for (const n of p.spell.keys()) known.add(foldTokens(n).join(' '));
   const seen = new Set();
   const out = [];
   for (const list of buckets.values()) {
@@ -80,6 +105,7 @@ function findSplitPairs(pages, opts = {}) {
       const key = [a.slug, b.slug].sort().join('|');
       if (seen.has(key)) continue;
       seen.add(key);
+      if (isJointOf(a, b, known) || isJointOf(b, a, known)) continue;
       const res = classifyVariantPair(a, b, opts);
       if (res.verdict === 'distinct') continue;
       const [canon, typo] = res.canonical === 'a' ? [a, b] : [b, a];
@@ -184,4 +210,4 @@ function loadDistinct() {
   return new Set((readJson(DISTINCT, { pairs: [] }).pairs) || []);
 }
 
-module.exports = { buildPages, findSplitPairs, applyMerges, loadDistinct, loadBaseline, newSplitPairs };
+module.exports = { jointParts, isJointOf, buildPages, findSplitPairs, applyMerges, loadDistinct, loadBaseline, newSplitPairs };
