@@ -27,6 +27,7 @@ function fileOnOriginMain(value, { cwd = path.join(__dirname, '..', '..') } = {}
   try {
     if (_mainTree === null) {
       const cp = require('child_process');
+      // depth1-fetch-ok: read-only tree listing via FETCH_HEAD, never a merge/push base
       cp.spawnSync('git', ['fetch', '--quiet', '--depth=1', 'origin', 'main'], { cwd, timeout: 60_000 });
       const r = cp.spawnSync('git', ['ls-tree', '-r', '--name-only', 'FETCH_HEAD', 'public/images/shows/'], { cwd, encoding: 'utf8', timeout: 30_000, maxBuffer: 256 * 1024 * 1024 });
       _mainTree = r.status === 0 ? new Set(r.stdout.split('\n').filter(Boolean)) : new Set();
