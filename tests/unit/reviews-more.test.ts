@@ -73,19 +73,22 @@ test('HTTP error: error, not rows', async () => {
 });
 
 test('wiring: reviews.json carries the marker only while the flag is set', () => {
-  // The page and ReviewsList half (page prop + client check) is the phase 4
-  // pre-flip patch, BRO-8176; it restores the page/ReviewsList assertions here.
   const route = fs.readFileSync(path.join(__dirname, '../../src/app/show/[slug]/reviews.json/route.ts'), 'utf8');
+  const page = fs.readFileSync(path.join(__dirname, '../../src/app/show/[slug]/page.tsx'), 'utf8');
+  const list = fs.readFileSync(path.join(__dirname, '../../src/components/ReviewsList.tsx'), 'utf8');
   assert.match(route, /SHOW_REFRESH_REV_HEADER\]: render\?\.rev/);
   assert.match(route, /showRefreshConfigured\(\) \? \{ headers:/);
+  assert.match(page, /showRefreshConfigured\(\) \? \{ other: \{ \[SHOW_REFRESH_REV_META\]/);
+  assert.match(page, /rev: showRefreshConfigured\(\) \? render\.rev : undefined/);
+  assert.match(list, /fetchMoreRows<ReviewListItem>\(url, rev\)/);
+  assert.match(list, /state === 'mismatch'/);
 });
 
 test('class guard: reviews.json and the OG image key their markers on the flag as configured', () => {
   // showRefreshEnabled() is false during `next build`, so a marker gated on it is
-  // missing from everything a flag-on build prerenders. page.tsx moves to
-  // showRefreshConfigured() in the BRO-8176 patch, which adds it to this list.
+  // missing from everything a flag-on build prerenders.
   const dir = path.join(__dirname, '../../src/app/show/[slug]');
-  const files = ['reviews.json/route.ts', 'opengraph-image.tsx'].map(f => path.join(dir, f)).filter(f => fs.existsSync(f));
+  const files = ['page.tsx', 'reviews.json/route.ts', 'opengraph-image.tsx'].map(f => path.join(dir, f)).filter(f => fs.existsSync(f));
   for (const f of files) {
     const src = fs.readFileSync(f, 'utf8');
     assert.doesNotMatch(src, /showRefreshEnabled\(\)/, `${path.relative(dir, f)} gates on showRefreshEnabled(); use showRefreshConfigured()`);

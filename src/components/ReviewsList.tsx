@@ -14,6 +14,7 @@ import { TIER_DISPLAY, TIER_LIST, tierPercent, type OutletTier } from '@/config/
 import { TIER_CHIP_BOX, TIER_CHIP_BOX_TIGHT, TierBars, tierChipTextClass } from '@/components/show-cards/OutletTierChip';
 import { nestQuotes } from '@/lib/nest-quotes';
 import { bylineStopLabel } from '@/lib/tour-schedule';
+import { fetchMoreRows, type MoreRowsResult } from '@/lib/reviews-more';
 
 export interface ReviewListItem {
   outletId: string;
@@ -61,24 +62,20 @@ interface ReviewsListProps {
    * are in the server markup. The flags come from the full list so the tier
    * key and city sort render exactly as they would with everything inline.
    */
-  more?: { url: string; totalCount: number; hasTierChips: boolean; hasStops: boolean };
+  more?: { url: string; rev?: string; totalCount: number; hasTierChips: boolean; hasStops: boolean };
 }
 
-const moreCache = new Map<string, Promise<ReviewListItem[] | null>>();
-function loadMore(url: string): Promise<ReviewListItem[] | null> {
-  let p = moreCache.get(url);
+const moreCache = new Map<string, Promise<MoreRowsResult<ReviewListItem>>>();
+function loadMore(url: string, rev: string | undefined): Promise<MoreRowsResult<ReviewListItem>> {
+  const key = JSON.stringify([url, rev]);
+  let p = moreCache.get(key);
   if (!p) {
-    p = fetch(url)
-      .then(r => {
-        if (!r.ok) throw new Error(`${url} HTTP ${r.status}`);
-        return r.json() as Promise<ReviewListItem[]>;
-      })
-      .catch((e) => {
-        console.error('Failed to load more reviews:', e);
-        moreCache.delete(url); // allow retry on the next interaction
-        return null;
-      });
-    moreCache.set(url, p);
+    p = fetchMoreRows<ReviewListItem>(url, rev).then(result => {
+      if (result.state !== 'ok') moreCache.delete(key);
+      if (result.state === 'error') console.error('Failed to load more reviews:', result.error);
+      return result;
+    });
+    moreCache.set(key, p);
   }
   return p;
 }
@@ -481,22 +478,28 @@ type SortMode = 'score' | 'date' | 'city';
 export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, category, showTiers = true, more }: ReviewsListProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>('score');
-  const [rest, setRest] = useState<ReviewListItem[] | null>(null);
+  const [loaded, setLoaded] = useState<{ key: string; rows: ReviewListItem[] } | null>(null);
+  const [mismatchKey, setMismatchKey] = useState<string | null>(null);
   const moreUrl = more?.url;
+  const moreRev = more?.rev;
+  const moreKey = moreUrl ? JSON.stringify([moreUrl, moreRev]) : null;
+  const rest = loaded?.key === moreKey ? loaded.rows : null;
+  const mismatch = moreKey !== null && mismatchKey === moreKey;
   // Prefetch when the browser is idle so Show more and the sorts are instant;
   // an interaction before that fetches too.
   useEffect(() => {
     if (!moreUrl) return;
     let cancelled = false;
-    const go = () => { loadMore(moreUrl).then(d => { if (!cancelled && d) setRest(d); }); };
+    const key = JSON.stringify([moreUrl, moreRev]);
+    const go = () => { loadMore(moreUrl, moreRev).then(d => { if (!cancelled) { if (d.state === 'ok') { setLoaded({ key, rows: d.rows }); setMismatchKey(null); } else if (d.state === 'mismatch') setMismatchKey(key); } }); };
     const hasIdle = 'requestIdleCallback' in window;
     const id = hasIdle ? window.requestIdleCallback(go) : window.setTimeout(go, 1500);
     return () => {
       cancelled = true;
       if (hasIdle) window.cancelIdleCallback(id); else window.clearTimeout(id);
     };
-  }, [moreUrl]);
-  const ensureMore = () => { if (moreUrl && !rest) loadMore(moreUrl).then(d => { if (d) setRest(d); }); };
+  }, [moreUrl, moreRev]);
+  const ensureMore = () => { if (moreUrl && moreKey && !rest) loadMore(moreUrl, moreRev).then(d => { if (d.state === 'ok') { setLoaded({ key: moreKey, rows: d.rows }); setMismatchKey(null); } else if (d.state === 'mismatch') setMismatchKey(moreKey); }); };
   const inlineKeys = useMemo(() => new Set(inlineReviews.map(getReviewKey)), [inlineReviews]);
   const reviews = useMemo(() => (rest ? [...inlineReviews, ...rest.filter(r => !inlineKeys.has(getReviewKey(r)))] : inlineReviews), [inlineReviews, inlineKeys, rest]);
   const totalCount = more ? Math.max(more.totalCount, reviews.length) : reviews.length;
@@ -594,6 +597,7 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
         </Fragment>
       ))}
 
+      {mismatch && <p className="text-sm text-fg-muted" role="status">Reviews are being updated. Please refresh the page in a moment.</p>}
       {shouldCollapse && (
         <button
           onClick={() => { ensureMore(); setIsExpanded(!isExpanded); }}
