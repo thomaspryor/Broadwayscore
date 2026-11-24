@@ -3,7 +3,7 @@
     "postedDetection": "ok",
     "postedDetectionFailingSince": null,
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-24T11:13:58.953Z"
+    "lastRun": "2026-11-24T11:26:51.649Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -3991,35 +3991,33 @@
       "market": "off-broadway",
       "subreddit": "offbroadwayNYC",
       "score": 83,
-      "reviewCount": 12,
+      "reviewCount": 13,
       "url": "https://broadwayscorecard.com/show/seven-guitars-off-broadway",
-      "notability": 21,
+      "notability": 22,
       "createdAt": "2026-11-24T04:48:16.255Z",
       "status": "ready",
-      "source": "template",
-      "lintProblems": [
-        "title has number 7 that is not in the fact sheet",
-        "body has number 7 that is not in the fact sheet"
-      ],
-      "title": "12 reviews are in for Seven Guitars. 83/100",
-      "body": "It opened at Lincoln Center Theater/Mitzi E. Newhouse Theater, and I found 12 reviews: 6 raves, 6 positive. That works out to an 83/100.\n\nAudiences are at a B+ (across Mezzanine, Theatr, and Show Score).\n\nI haven't seen it yet. Anyone been?\n\nhttps://broadwayscorecard.com/show/seven-guitars-off-broadway",
-      "why": "Template fallback: plain roundup with the score, breakdown and critic consensus.",
-      "expectedPushback": "Someone may say numbers can't capture theater.",
-      "suggestedReply": "Totally fair, the number is just a quick way to see where critics landed. Which review do you think got it most right?",
+      "source": "gpt-5.6-luna",
+      "lintProblems": [],
+      "title": "Seven Guitars opens at 83/100 from 13 critics, with every review positive",
+      "body": "I found 13 reviews: 6 raves, 7 positive, zero mixed, and zero negative. Audiences are at a B+ (across Mezzanine, Theatr, and Show Score).\n\nhttps://broadwayscorecard.com/show/seven-guitars-off-broadway\n\nThe praise is mostly for the production and the ensemble. Roma Torre at New York Stage Review wrote, \"Like a great blues composition, Seven Guitars finds beauty in sorrow, humor in hardship and poetry in pain.\" Howard Miller at Talkin' Broadway also praised the original music, calling the production \"richly rewarding.\"\n\nSara Holdren at Vulture was a little more measured, writing that Santiago-Hudson doesn't keep the engine \"consistently blazing,\" though the production still makes space for the characters \"in all their fullness.\" Which I GET.\n\nI haven't seen this one yet, but this sounds very much like my kind of evening. Now I'm desperate to.",
+      "why": "The title makes the perfect review record the hook, while the body gives readers the production-focused praise and one measured note.",
+      "expectedPushback": "Someone may say that an 83 with only positive reviews sounds too tidy to tell us much about the production.",
+      "suggestedReply": "Fair, the score is only part of the picture. I mostly wanted to see what the reviews were actually praising, and the ensemble and music seem to be the consistent thread.",
       "personalLines": [
-        "I haven't seen it yet, and now I really want to.",
-        "Still undecided on going to this one."
+        "I haven't seen this one yet, but now I'm desperate to.",
+        "Still undecided on this one, though the reviews are making a strong case.",
+        "I haven't seen it yet, but this sounds very much like my kind of evening."
       ],
-      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=12+reviews+are+in+for+Seven+Guitars.+83%2F100&text=It+opened+at+Lincoln+Center+Theater%2FMitzi+E.+Newhouse+Theater%2C+and+I+found+12+reviews%3A+6+raves%2C+6+positive.+That+works+out+to+an+83%2F100.%0A%0AAudiences+are+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=12+reviews+are+in+for+Seven+Guitars.+83%2F100&text=It+opened+at+Lincoln+Center+Theater%2FMitzi+E.+Newhouse+Theater%2C+and+I+found+12+reviews%3A+6+raves%2C+6+positive.+That+works+out+to+an+83%2F100.%0A%0AAudiences+are+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway",
+      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=Seven+Guitars+opens+at+83%2F100+from+13+critics%2C+with+every+review+positive&text=I+found+13+reviews%3A+6+raves%2C+7+positive%2C+zero+mixed%2C+and+zero+negative.+Audiences+are+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway%0A%0AThe+praise+is+mostly+for+the+production+and+the+ensemble.+Roma+Torre+at+New+York+Stage+Review+wrote%2C+%22Like+a+great+blues+composition%2C+Seven+Guitars+finds+beauty+in+sorrow%2C+humor+in+hardship+and+poetry+in+pain.%22+Howard+Miller+at+Talkin%27+Broadway+also+praised+the+original+music%2C+calling+the+production+%22richly+rewarding.%22%0A%0ASara+Holdren+at+Vulture+was+a+little+more+measured%2C+writing+that+Santiago-Hudson+doesn%27t+keep+the+engine+%22consistently+blazing%2C%22+though+the+production+still+makes+space+for+the+characters+%22in+all+their+fullness.%22+Which+I+GET.%0A%0AI+haven%27t+seen+this+one+yet%2C+but+this+sounds+very+much+like+my+kind+of+evening.+Now+I%27m+desperate+to.",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=Seven+Guitars+opens+at+83%2F100+from+13+critics%2C+with+every+review+positive&text=I+found+13+reviews%3A+6+raves%2C+7+positive%2C+zero+mixed%2C+and+zero+negative.+Audiences+are+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway%0A%0AThe+praise+is+mostly+for+the+production+and+the+ensemble.+Roma+Torre+at+New+York+Stage+Review+wrote%2C+%22Like+a+great+blues+composition%2C+Seven+Guitars+finds+beauty+in+sorrow%2C+humor+in+hardship+and+poetry+in+pain.%22+Howard+Miller+at+Talkin%27+Broadway+also+praised+the+original+music%2C+calling+the+production+%22richly+rewarding.%22%0A%0ASara+Holdren+at+Vulture+was+a+little+more+measured%2C+writing+that+Santiago-Hudson+doesn%27t+keep+the+engine+%22consistently+blazing%2C%22+though+the+production+still+makes+space+for+the+characters+%22in+all+their+fullness.%22+Which+I+GET.%0A%0AI+haven%27t+seen+this+one+yet%2C+but+this+sounds+very+much+like+my+kind+of+evening.+Now+I%27m+desperate+to.",
       "crosspostSubreddit": "Broadway",
-      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=12+reviews+are+in+for+Seven+Guitars.+83%2F100&text=It+opened+at+Lincoln+Center+Theater%2FMitzi+E.+Newhouse+Theater%2C+and+I+found+12+reviews%3A+6+raves%2C+6+positive.+That+works+out+to+an+83%2F100.%0A%0AAudiences+are+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway",
+      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=Seven+Guitars+opens+at+83%2F100+from+13+critics%2C+with+every+review+positive&text=I+found+13+reviews%3A+6+raves%2C+7+positive%2C+zero+mixed%2C+and+zero+negative.+Audiences+are+at+a+B%2B+%28across+Mezzanine%2C+Theatr%2C+and+Show+Score%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fseven-guitars-off-broadway%0A%0AThe+praise+is+mostly+for+the+production+and+the+ensemble.+Roma+Torre+at+New+York+Stage+Review+wrote%2C+%22Like+a+great+blues+composition%2C+Seven+Guitars+finds+beauty+in+sorrow%2C+humor+in+hardship+and+poetry+in+pain.%22+Howard+Miller+at+Talkin%27+Broadway+also+praised+the+original+music%2C+calling+the+production+%22richly+rewarding.%22%0A%0ASara+Holdren+at+Vulture+was+a+little+more+measured%2C+writing+that+Santiago-Hudson+doesn%27t+keep+the+engine+%22consistently+blazing%2C%22+though+the+production+still+makes+space+for+the+characters+%22in+all+their+fullness.%22+Which+I+GET.%0A%0AI+haven%27t+seen+this+one+yet%2C+but+this+sounds+very+much+like+my+kind+of+evening.+Now+I%27m+desperate+to.",
       "emailedAt": "2026-11-24T10:57:43.001Z",
       "reminderAt": "2026-11-24T10:57:43.001Z",
       "emailedScore": 83,
       "emailedReviewCount": 12,
       "updateCount": 2,
-      "refreshedAt": "2026-11-24T11:13:58.953Z",
+      "refreshedAt": "2026-11-24T11:26:51.649Z",
       "previousScore": 83,
       "previousReviewCount": 12
     }
