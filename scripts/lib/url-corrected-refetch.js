@@ -59,6 +59,15 @@ function staleCorrectedBody(data, { now = Date.now() } = {}) {
   return mismatch;
 }
 
+function isProtectedFile(data) {
+  return !!data && (data._locked === true || data.manualContentTier === 'complete');
+}
+
+// The write guard trims before it decides a stored text is real, so whitespace is not text.
+function hasStoredText(data) {
+  return !!data && typeof data.fullText === 'string' && data.fullText.trim().length > 0;
+}
+
 function isUrlCorrectedRefetch(data, opts) {
   if (!data || !data.urlCorrectedFrom) return false;
   if (data.needsRefetch === true) return !isRefetchSatisfied(data);
@@ -77,8 +86,7 @@ function mayShortCircuitCollected(data, { isTruncated, hasGarbageText, datelessD
     // manual-entry file (manualContentTier 'complete') keeps its tier, so it read as
     // complete with nothing to protect and was never refetched (Michael Dale's Falls
     // for Jodie review sat unscored until a forced refetch).
-    const hasText = typeof data.fullText === 'string' && data.fullText.length > 0;
-    return (data._locked === true || data.manualContentTier === 'complete') && hasText
+    return isProtectedFile(data) && hasStoredText(data)
       ? (completeSkip || scoredSkip)
       : false;
   }
@@ -93,7 +101,11 @@ function mayShortCircuitCollected(data, { isTruncated, hasGarbageText, datelessD
  * about the new one). A stale-body pick waits out the ledger like any refetch.
  */
 function bypassesFetchFailureGate(data) {
-  return isUrlCorrectedRefetch(data) && data.needsRefetch === true;
+  // BRO-8209: a protected file (manual entry / locked) is often manual because its url cannot be
+  // scraped; once its wiped text makes it refetchable, a failing fetch must stay behind the
+  // ledger instead of costing a paid retry every run. The ledger entry for the OLD url is
+  // already ignored by isFetchLedgerEntryForOtherUrl, so a fresh correction is not held back.
+  return isUrlCorrectedRefetch(data) && data.needsRefetch === true && !isProtectedFile(data);
 }
 
 module.exports = {
