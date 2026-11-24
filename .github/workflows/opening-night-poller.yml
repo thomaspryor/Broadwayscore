@@ -1517,7 +1517,13 @@ jobs:
           # retry), without waiting. Classification errors print reveal=true.
           REVEAL=false
           if [ "$COMMITTED" = "true" ]; then
-            CLS=$(node scripts/lib/deploy-reveal.js "$DEPLOY_SHA~1" "$DEPLOY_SHA" || echo "reveal=true")
+            # A merge commit (push-with-retry's merge fallback) holds other
+            # workflows' changes in HEAD~1..HEAD: fail open to reveal.
+            if [ "$(git rev-list --parents -n1 "$DEPLOY_SHA" | wc -w)" -gt 2 ]; then
+              CLS="reveal=true"
+            else
+              CLS=$(node scripts/lib/deploy-reveal.js "$DEPLOY_SHA~1" "$DEPLOY_SHA" || echo "reveal=true")
+            fi
             echo "$CLS"
             grep -q '^reveal=true' <<<"$CLS" && REVEAL=true
           else

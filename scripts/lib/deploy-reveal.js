@@ -38,10 +38,18 @@ const NYT_PICKS = 'data/nyt-critics-picks.json';
 const REVEAL_DATA_FILES = [NYT_PICKS];
 const STATUS_FILE = 'public/opening-night-status.json';
 const MAX_SHOW_FILES = 600;
+// Hard cap on all changed show files read for the first-reviews check (the
+// whole catalog is ~5000 files; a single cat-file batch reads it in seconds).
+const MAX_ANY_SHOW_FILES = 8000;
+// A status file older than this (vs the head commit) no longer describes the
+// opening window: treat the window as unknown (fail open).
+const STATUS_MAX_AGE_SEC = 26 * 3600;
+const GIT_TIMEOUT_MS = 30000;
 
 /** Pure: the visitor-visible review state of one public show JSON (string, comparable). */
 function reviewProjection(json) {
   if (!json || typeof json !== 'object') return null;
+  if (json.rv != null && !Array.isArray(json.rv)) return null; // unknown shape
   const rv = Array.isArray(json.rv) ? json.rv : [];
   const reviews = rv
     .map((r) => [String(r.u || `${r.o || ''}|${r.cn || ''}`), r.s ?? null, r.v ?? null])
@@ -54,13 +62,22 @@ function reviewProjection(json) {
   });
 }
 
-/** Pure: show ids in the opening window from opening-night-status.json text, or null if unreadable. */
-function openingIdsFrom(statusText) {
+/**
+ * Pure: show ids in the opening window from opening-night-status.json text, or
+ * null when unknown (unreadable, empty, or older than STATUS_MAX_AGE_SEC before
+ * `refEpochSec`, when given). Null makes every show count (fail open).
+ */
+function openingIdsFrom(statusText, { refEpochSec = null, maxAgeSec = STATUS_MAX_AGE_SEC } = {}) {
   if (statusText == null) return null;
   try {
     const j = JSON.parse(statusText);
     if (!Array.isArray(j.shows)) return null;
-    return [...j.shows, ...(Array.isArray(j.upcoming) ? j.upcoming : [])].map((s) => s && s.id).filter(Boolean);
+    if (refEpochSec != null) {
+      const gen = Date.parse(j.generatedAt) / 1000;
+      if (!Number.isFinite(gen) || refEpochSec - gen > maxAgeSec) return null;
+    }
+    const ids = [...j.shows, ...(Array.isArray(j.upcoming) ? j.upcoming : [])].map((s) => s && s.id).filter(Boolean);
+    return ids.length ? ids : null;
   } catch {
     return null;
   }
@@ -103,6 +120,26 @@ function classifyReveal(files, read, { codePaths = [], maxShowFiles = MAX_SHOW_F
   const allShows = files.filter((f) => f.startsWith(SHOW_DIR) && f.endsWith('.json'));
   const shows = opening ? allShows.filter((f) => opening.has(showIdOf(f))) : allShows;
   if (shows.length > maxShowFiles) return { reveal: true, reason: `too-many-show-files(${shows.length})`, file: null };
+  // A show outside the window that gets its FIRST reviews is an opening the
+  // status file missed (e.g. a stuck preview with no opening date, which the
+  // poller still polls): a reveal. Later reviews of other shows ride routine.
+  if (opening) {
+    const others = allShows.filter((f) => !opening.has(showIdOf(f)));
+    if (others.length > MAX_ANY_SHOW_FILES) return { reveal: true, reason: `too-many-show-files(${others.length})`, file: null };
+    for (const f of others) {
+      let pair;
+      try { pair = read(f); } catch { return { reveal: true, reason: 'read-error', file: f }; }
+      if (!pair) return { reveal: true, reason: 'read-error', file: f };
+      let before; let after;
+      try {
+        before = pair.before == null ? null : JSON.parse(pair.before);
+        after = pair.after == null ? null : JSON.parse(pair.after);
+      } catch {
+        return { reveal: true, reason: 'parse-error', file: f };
+      }
+      if (!hasReviews(before) && hasReviews(after)) return { reveal: true, reason: 'first-reviews', file: f };
+    }
+  }
   for (const f of shows) {
     let pair;
     try { pair = read(f); } catch { return { reveal: true, reason: 'read-error', file: f }; }
@@ -119,7 +156,10 @@ function classifyReveal(files, read, { codePaths = [], maxShowFiles = MAX_SHOW_F
       if (hasReviews(before) || hasReviews(after)) return { reveal: true, reason: before == null ? 'show-added' : 'show-deleted', file: f };
       continue;
     }
-    if (reviewProjection(before) !== reviewProjection(after)) return { reveal: true, reason: 'reviews-changed', file: f };
+    const pb = reviewProjection(before);
+    const pa = reviewProjection(after);
+    if (pb == null || pa == null || before._v !== after._v) return { reveal: true, reason: 'schema-changed', file: f };
+    if (pb !== pa) return { reveal: true, reason: 'reviews-changed', file: f };
   }
   const scope = opening ? `${shows.length}/${allShows.length} opening` : `${shows.length}`;
   return { reveal: false, reason: allShows.length ? `no-visible-change(${scope} show files)` : 'no-reveal-paths', file: null };
@@ -144,7 +184,7 @@ function resolveUrgency({ urgent, alwaysShip, baselineSha, headSha, reveal }) {
 // ---- git side (not pure) ----
 
 function gitOut(args, opts = {}) {
-  const r = spawnSync('git', args, { encoding: 'utf8', maxBuffer: 512 * 1024 * 1024, timeout: 120000, ...opts });
+  const r = spawnSync('git', args, { encoding: 'utf8', maxBuffer: 512 * 1024 * 1024, timeout: GIT_TIMEOUT_MS, ...opts });
   if (r.status !== 0) throw new Error(`git ${args[0]} failed: ${(r.stderr || '').trim().slice(0, 200)}`);
   return r.stdout;
 }
@@ -153,7 +193,7 @@ function gitOut(args, opts = {}) {
 function catFileBatch(specs) {
   const out = new Map();
   if (!specs.length) return out;
-  const r = spawnSync('git', ['cat-file', '--batch'], { input: specs.join('\n') + '\n', maxBuffer: 1024 * 1024 * 1024, timeout: 120000 });
+  const r = spawnSync('git', ['cat-file', '--batch'], { input: specs.join('\n') + '\n', maxBuffer: 1024 * 1024 * 1024, timeout: GIT_TIMEOUT_MS });
   if (r.status !== 0) throw new Error('git cat-file --batch failed');
   const buf = r.stdout;
   let pos = 0;
@@ -177,14 +217,21 @@ function classifyRange(base, head, { codePaths = [] } = {}) {
     const files = gitOut(['diff', '--name-only', '--no-renames', base, head]).split('\n').filter(Boolean);
     // Status + NYT picks always read (small), so the show-file cap below never hides them.
     const status = catFileBatch([STATUS_FILE, NYT_PICKS].flatMap((f) => [`${base}:${f}`, `${head}:${f}`]));
-    const idsBase = openingIdsFrom(status.get(`${base}:${STATUS_FILE}`));
-    const idsHead = openingIdsFrom(status.get(`${head}:${STATUS_FILE}`));
-    // Either side unreadable -> unknown window -> every show counts (fail open).
-    const openingIds = idsBase && idsHead ? [...idsBase, ...idsHead] : null;
+    // Staleness is judged against the head commit's time (works for replays too).
+    const refEpochSec = Number(gitOut(['log', '-1', '--format=%ct', head]).trim()) || null;
+    const idsBase = openingIdsFrom(status.get(`${base}:${STATUS_FILE}`), { refEpochSec });
+    const idsHead = openingIdsFrom(status.get(`${head}:${STATUS_FILE}`), { refEpochSec });
+    // Head side unknown -> every show counts (fail open). The base side only
+    // adds shows that just left the window.
+    const openingIds = idsHead ? [...(idsBase || []), ...idsHead] : null;
     const opening = openingIds ? new Set(openingIds) : null;
-    const wanted = files.filter((f) => f.startsWith(SHOW_DIR) && f.endsWith('.json') && (!opening || opening.has(showIdOf(f))));
+    const allShows = files.filter((f) => f.startsWith(SHOW_DIR) && f.endsWith('.json'));
+    const openingCount = opening ? allShows.filter((f) => opening.has(showIdOf(f))).length : allShows.length;
+    // With a known window every changed show file is read (first-reviews check);
+    // without one, only up to MAX_SHOW_FILES (beyond that classifyReveal fails open).
+    const wanted = allShows;
     let blobs = status;
-    if (wanted.length && wanted.length <= MAX_SHOW_FILES) {
+    if (wanted.length && openingCount <= MAX_SHOW_FILES && wanted.length <= MAX_ANY_SHOW_FILES) {
       blobs = new Map([...status, ...catFileBatch(wanted.flatMap((f) => [`${base}:${f}`, `${head}:${f}`]))]);
     }
     const read = (f) => ({ before: blobs.get(`${base}:${f}`) ?? null, after: blobs.get(`${head}:${f}`) ?? null });
@@ -194,7 +241,7 @@ function classifyRange(base, head, { codePaths = [] } = {}) {
   }
 }
 
-module.exports = { reviewProjection, classifyReveal, openingIdsFrom, nytPicksChanged, resolveUrgency, classifyRange, catFileBatch, MAX_SHOW_FILES, REVEAL_DATA_FILES };
+module.exports = { reviewProjection, classifyReveal, openingIdsFrom, nytPicksChanged, resolveUrgency, classifyRange, catFileBatch, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES, STATUS_MAX_AGE_SEC, REVEAL_DATA_FILES };
 
 // CLI: `node scripts/lib/deploy-reveal.js <base> <head>` prints reveal=true|false
 // and reason=..., one per line (GITHUB_OUTPUT-ready). Used by the opening-night

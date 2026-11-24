@@ -117,3 +117,38 @@ test('classifyRange on real poller commit 15785a08d: sweeney-todd reveal is outs
   if (/classify-error/.test(r.reason)) return; // shallow CI checkout without this history
   assert.equal(r.reveal, false);
 });
+
+test('ship-check fixes: press-night sources always ship (private-only reveals)', () => {
+  assert.ok(ALWAYS_SHIP_SOURCES.includes('lane-press-night'));
+  assert.ok(ALWAYS_SHIP_SOURCES.includes('press-night-watchdog'));
+});
+
+test('ship-check fixes: empty or stale status file means unknown window (fail open)', () => {
+  const st = (ids, gen) => JSON.stringify({ generatedAt: gen, shows: ids.map((id) => ({ id })), upcoming: [] });
+  const now = Date.parse('2026-11-24T00:00:00Z') / 1000;
+  assert.equal(openingIdsFrom(st([], '2026-11-23T23:00:00Z')), null);
+  assert.deepEqual(openingIdsFrom(st(['a'], '2026-11-23T23:00:00Z'), { refEpochSec: now }), ['a']);
+  assert.equal(openingIdsFrom(st(['a'], '2026-11-20T00:00:00Z'), { refEpochSec: now }), null);
+  assert.equal(openingIdsFrom(st(['a'], undefined), { refEpochSec: now }), null);
+});
+
+test('ship-check fixes: first reviews for a show outside the window are a reveal', () => {
+  const none = JSON.stringify({ _v: 4, id: 'x', rv: [] });
+  const noKey = JSON.stringify({ _v: 4, id: 'x' });
+  const one = JSON.stringify({ _v: 4, id: 'x', rv: [{ u: 'u', s: 70, v: 'positive' }] });
+  const two = JSON.stringify({ _v: 4, id: 'x', rv: [{ u: 'u', s: 70, v: 'positive' }, { u: 'w', s: 60, v: 'mixed' }] });
+  const opt = { openingIds: ['other'] };
+  assert.equal(classifyReveal([SHOW], readOf(none, one), opt).reason, 'first-reviews');
+  assert.equal(classifyReveal([SHOW], readOf(noKey, one), opt).reason, 'first-reviews');
+  assert.equal(classifyReveal([SHOW], readOf(null, one), opt).reason, 'first-reviews');
+  assert.equal(classifyReveal([SHOW], readOf(one, two), opt).reveal, false); // later review, routine
+});
+
+test('ship-check fixes: unknown show JSON shape or schema version change is a reveal', () => {
+  const b = fx('bmc-before');
+  const j = JSON.parse(b);
+  const renamed = JSON.stringify({ ...j, rv: { list: j.rv } });
+  const bumped = JSON.stringify({ ...j, _v: (j._v || 0) + 1 });
+  assert.equal(classifyReveal([SHOW], readOf(b, renamed)).reason, 'schema-changed');
+  assert.equal(classifyReveal([SHOW], readOf(b, bumped)).reason, 'schema-changed');
+});

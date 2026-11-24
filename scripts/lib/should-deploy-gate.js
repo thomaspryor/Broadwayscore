@@ -208,9 +208,10 @@ const CODE_PATHS = [
 const URGENT_SOURCES = ['urgent', 'rebuild-fast', 'opening-night', 'opening-night-reveal', 'lane-press-night', 'press-night-watchdog'];
 // BRO-8236: urgent sources ship now only when the range holds a visitor-visible
 // reveal (scripts/lib/deploy-reveal.js); otherwise they are judged as routine.
-// These two skip that check: /go-live-now, and the poller after it classified
-// its own commit as a reveal.
-const ALWAYS_SHIP_SOURCES = ['urgent', 'opening-night-reveal'];
+// These skip that check: /go-live-now, the poller after it classified its own
+// commit as a reveal, and the press-night lane + watchdog, whose reviews land in
+// private core data the public commit range cannot show (real-ports.js).
+const ALWAYS_SHIP_SOURCES = ['urgent', 'opening-night-reveal', 'lane-press-night', 'press-night-watchdog'];
 const URGENT_WORKFLOW_RUN = 'Rebuild Reviews (Fast)';
 
 /** Pure: is this trigger an explicit ship-now request? */
@@ -556,7 +557,7 @@ async function main() {
   const alwaysShip = rawEvent === 'workflow_dispatch' && ALWAYS_SHIP_SOURCES.includes(String(process.env.GATE_SOURCE || ''));
   if (!gateDisabled && urgentTrigger && !alwaysShip && baseline.sha && baseline.sha !== headSha) {
     try {
-      git(['fetch', '--depth=1', 'origin', baseline.sha], { stdio: 'ignore', timeout: 60000 });
+      git(['fetch', '--depth=1', 'origin', baseline.sha], { stdio: 'ignore', timeout: 45000 });
       reveal = classifyRange(baseline.sha, headSha, { codePaths: CODE_PATHS });
     } catch {
       reveal = { reveal: true, reason: 'baseline-fetch-error', file: null };
