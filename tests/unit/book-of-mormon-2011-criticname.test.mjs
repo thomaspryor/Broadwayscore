@@ -26,7 +26,7 @@ test('BRO-4163 corrects the Guardian byline through the real writer without chan
   // Metadata-only fixtures reproduce the original attribution without private text.
   const records = {
     [target]: { showId, outletId: 'guardian', criticName: 'Ben Brantley', assignedScore: 96, originalScore: '5/5 stars' },
-    'guardian--david-cote.json': { showId, outletId: 'guardian', criticName: 'David Cote', assignedScore: 93 },
+    'observer--david-cote.json': { showId, outletId: 'observer', criticName: 'David Cote', assignedScore: 93 },
     'nytimes--ben-brantley.json': { showId, outletId: 'nytimes', criticName: 'Ben Brantley', assignedScore: 93 },
   };
   for (const [file, record] of Object.entries(records)) {
@@ -54,7 +54,7 @@ test('BRO-4163 private corpus retains the verified Guardian byline and distinct 
   }
   for (const [file, criticName] of [
     [target, 'Hadley Freeman'],
-    ['guardian--david-cote.json', 'David Cote'],
+    ['observer--david-cote.json', 'David Cote'],
     ['nytimes--ben-brantley.json', 'Ben Brantley'],
   ]) {
     const record = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
