@@ -1,50 +1,23 @@
 {
-  "updatedAt": "2026-11-24T07:38:01.563Z",
-  "processed": 765,
-  "failed": 381,
-  "successRate": "66.8%",
+  "updatedAt": "2026-11-24T07:48:39.308Z",
+  "processed": 779,
+  "failed": 365,
+  "successRate": "68.1%",
   "tierBreakdown": {
-    "playwright": 354,
-    "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "playwright": 358,
+    "amp": 1,
+    "browserbase": 23,
+    "directCookies": 1,
+    "scrapingdog": 39,
+    "scrapingbee": 72,
+    "brightdata": 12,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 283
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-24T05:44:27.243Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-24T06:31:54.524Z",
-      "event": "bb-session",
-      "session": "246df892",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/wet-brain-06-26-23"
-    },
-    {
-      "t": "2026-11-24T06:31:55.457Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-11-24T07:11:06.027Z",
-      "event": "bb-session",
-      "session": "7cf24003",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
-    },
-    {
-      "t": "2026-11-24T07:11:06.242Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-24T07:12:48.094Z",
+      "t": "2026-11-24T03:46:08.059Z",
       "event": "bb-session",
       "session": "737f7562",
       "url": "https://www.nytimes.com/theater/exhibitionist-good-thief-review-hiller"
@@ -118,13 +91,40 @@
     {
       "t": "2026-11-24T07:18:21.402Z",
       "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-11-24T07:24:24.167Z",
+      "event": "bb-session",
+      "session": "421967f3",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-24T07:24:24.486Z",
+      "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-24T07:33:58.166Z",
+      "t": "2026-11-24T07:24:40.878Z",
       "event": "bb-session",
-      "session": "479541dc",
-      "url": "https://bachtrack.com/review-my-first-ballet-cinderella-williamson-english-natio"
+      "session": "b4a30a8d",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-24T07:24:41.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-24T07:39:30.658Z",
+      "event": "bb-session",
+      "session": "31f0a8e6",
+      "url": "https://www.nytimes.com/2025/11/12/theater/the-bakers-wife-review-ariana-debose."
+    },
+    {
+      "t": "2026-11-24T07:39:30.987Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
