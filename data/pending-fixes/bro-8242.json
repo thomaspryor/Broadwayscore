@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8242",
   "planId": "bc74642a-08e2-496e-815d-34773eb85910",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T12:00:57.848Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "seven-guitars-off-broadway-2026/one-minute-critic--kelsey-minor.json: llmPullQuote"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-24T12:14:58.888Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seven-guitars-off-broadway-2026/theater-pizzazz--unknown.json criticName: \"Unknown\" -> \"Stuart Miller\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "its-a-wonderful-life-a-live-radio-play-2026/nydailynews--chris-jones.json llmPullQuote: \"The new Broadway production of \\\" It's a Wonderful Life: A Live Radio Play \\\" comes with a sprinkle of stars\" -> \"I think that's a big-time shame: Way more holiday fun could be had here.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seven-guitars-off-broadway-2026/one-minute-critic--kelsey-minor.json llmPullQuote: \"August Wilson’s Seven Guitars begins at a graveside yet makes room for bawdy laughs, unrequited love, and a bluesman who refuses to live his life without.\" -> \"Seven Guitars is a slow burn. But in a backyard intimate enough to reach out and touch, the time spent in Steel City is well worth it.\""
+    }
+  ],
+  "executedIn": "ci"
 }
