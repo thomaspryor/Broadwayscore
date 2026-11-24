@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-24T07:28:40.331Z",
+  "generated": "2026-11-24T08:31:47.247Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 49,
+  "count": 47,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -106,13 +106,6 @@
       "loserFile": "times-uk--unknown.json",
       "targetFile": "times-uk--nicola-jeal.json",
       "reason": "orphaned-duplicate-heal: times-uk--nicola-jeal.json was flagged invalid after times-uk--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "from-here-to-eternity-west-end-2013",
-      "loserFile": "thestage--paul-vale.json",
-      "targetFile": "thestage--unknown.json",
-      "reason": "orphaned-duplicate-heal: thestage--unknown.json was flagged invalid after thestage--paul-vale.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -338,13 +331,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "from-here-to-eternity-west-end-2013",
-      "loserFile": "thestage--paul-vale.json",
-      "targetFile": "thestage--unknown.json",
-      "reason": "orphaned-duplicate-heal: thestage--unknown.json was flagged invalid after thestage--paul-vale.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
