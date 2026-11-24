@@ -97,7 +97,7 @@ async function main() {
   if (marked.length) console.log(`${marked.length} imageless show(s) are marked noReliableArt and are not re-dispatched.`);
   const flagged = findImagelessScoredShows(normalized.filter((s) => !s.noReliableArt), { nowMs, thresholdHours: DEFAULT_THRESHOLD_HOURS });
 
-  console.log(`${flagged.length} show(s) have reviews but no usable image (recorded and on disk) after ${DEFAULT_THRESHOLD_HOURS}h.`);
+  console.log(`${flagged.length} show(s) have reviews but no usable image (recorded and resolvable) after ${DEFAULT_THRESHOLD_HOURS}h.`);
   if (dryRun) {
     for (const f of flagged) console.log(`  - ${f.id} (${f.title}), reviewCount=${f.reviewCount}`);
     return;
@@ -115,8 +115,8 @@ async function main() {
   for (const clearedId of idsClearedSinceLastRun(prevById, hasImageById)) {
     try {
       const { resolveCondition } = require('./lib/owner-alert-router.js');
-      resolveCondition(`imageless-scored-show:still-imageless:${clearedId}`, { reason: 'image landed on disk' });
-      resolveCondition(`imageless-scored-show:dispatch-failed:${clearedId}`, { reason: 'image landed on disk' });
+      resolveCondition(`imageless-scored-show:still-imageless:${clearedId}`, { reason: 'usable image now recorded in shows.json' });
+      resolveCondition(`imageless-scored-show:dispatch-failed:${clearedId}`, { reason: 'usable image now recorded in shows.json' });
     } catch (err) {
       console.error(`resolveCondition (self-heal cleared) failed for ${clearedId}: ${err.message}`);
     }
