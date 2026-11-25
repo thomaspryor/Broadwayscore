@@ -269,6 +269,9 @@ test('the collector refuses a page dated outside the production window (or undat
   // Undated page, but the search title names an earlier year: rejected, never accepted.
   assert.equal(publishWindowVerdict(null, { ...w, requireDate: true }, 'HP review, Palace, London, 2016'), 'outside-publish-window');
   assert.equal(publishWindowVerdict(null, { ...w, requireDate: true }, 'Since 2016, now 2026: review'), 'no-publish-date');
+  assert.equal(publishWindowVerdict(null, { ...w, requireDate: true }, 'Hit transfers from 2024 to the West End'), 'no-publish-date');
+  assert.equal(publishWindowVerdict(null, { ...w, requireDate: true }, '1984 review, Almeida, 1984', '1984'), 'no-publish-date');
+  assert.equal(publishWindowVerdict(null, w, 'HP review, Palace, London, 2016'), null); // no date required: lenient as before
   assert.equal(publishWindowVerdict(null, w, 'Review 2026'), null);
   assert.equal(publishWindowVerdict('2026-10-02', w, 'Review, 2016'), null); // a real date always wins
 });
