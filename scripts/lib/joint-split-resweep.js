@@ -44,7 +44,8 @@ function pickWholeText(data, history = []) {
 
 /**
  * Re-plan a joint parent's whole text as if it had never been split.
- * Returns { verdict: 'no-split' | 'still-split' | 'no-whole-text', ... }.
+ * Returns { verdict: 'lede-cousin' | 'no-split' | 'still-split' | 'no-whole-text', ... }.
+ * Only 'lede-cousin' (and 'refetch' from a reconstruction) is a BRO-8272 mis-split to repair.
  */
 function replanJointParent(data, history, shows) {
   const whole = pickWholeText(data, history);
@@ -54,7 +55,11 @@ function replanJointParent(data, history, shows) {
   const plan = planMultiShowFanout(fresh, shows, { ownShowId: data.showId, joint: true });
   const holdsWhole = typeof data.fullText === 'string' && data.fullText.length >= whole.text.length - 50;
   if (!plan || plan.otherSections.length === 0) {
-    return { verdict: 'no-split', source: whole.source, wholeChars: whole.text.length, holdsWhole };
+    // A BRO-8272 cousin only when the lede-comparison rule is the one thing stopping the split;
+    // any other null (a real column the joint strategy no longer reads) keeps its split.
+    const without = planMultiShowFanout(fresh, shows, { ownShowId: data.showId, joint: true, skipLedeComparison: true });
+    const cousin = !!(without && without.strategy === 'joint' && without.otherSections.length);
+    return { verdict: cousin ? 'lede-cousin' : 'no-split', source: whole.source, wholeChars: whole.text.length, holdsWhole };
   }
   return {
     verdict: 'still-split', source: whole.source, wholeChars: whole.text.length, holdsWhole,
@@ -94,13 +99,18 @@ function replanReconstructed(data, children, shows) {
   const cands = reconstructCandidates(data, children);
   if (!cands) return { verdict: 'no-whole-text' };
   let split = 0;
+  let cousin = 0;
   for (const text of cands) {
     const fresh = { ...data, fullText: text };
     for (const k of SPLIT_MARKERS) delete fresh[k];
     const plan = planMultiShowFanout(fresh, shows, { ownShowId: data.showId, joint: true });
-    if (plan && plan.otherSections.length) split++;
+    if (plan && plan.otherSections.length) { split++; continue; }
+    const without = planMultiShowFanout(fresh, shows, { ownShowId: data.showId, joint: true, skipLedeComparison: true });
+    if (without && without.strategy === 'joint' && without.otherSections.length) cousin++;
   }
-  return { verdict: split === cands.length ? 'still-split' : 'refetch', source: 'reconstructed', orders: cands.length, ordersSplit: split };
+  // Order unknown: any order that is a lede-comparison cousin means refetch to see the true one.
+  const verdict = cousin ? 'refetch' : split === cands.length ? 'still-split' : 'no-split';
+  return { verdict, source: 'reconstructed', orders: cands.length, ordersSplit: split, ordersCousin: cousin };
 }
 
 module.exports = { isJointParent, pickWholeText, replanJointParent, reconstructCandidates, replanReconstructed, SPLIT_MARKERS };

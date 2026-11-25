@@ -3,8 +3,11 @@
  * BRO-8292 — READ-ONLY sweep of joint-split parents (multiShowSplitParent +
  * multiShowSplitAnchorKind=joint). Re-plans each parent's whole pre-split
  * article (current fullText or review-texts git history) with the current
- * planner and lists the parents it no longer splits: those are older-planner
- * mis-splits (BRO-8272 class) to force-refetch + rescore.
+ * planner. REPAIR rows are BRO-8272 cousins: the planner no longer splits them
+ * and the lede-comparison rule is the only reason (or, for parents whose whole
+ * text never reached git, some order of the rebuilt sections is one) — force-
+ * refetch + rescore those. NO-SPLIT(keep) rows decline for other reasons (real
+ * multi-show columns the joint strategy no longer reads): leave their split.
  *
  * Usage: node scripts/sweep-joint-split-parents.js [--review-texts=DIR] [--json] [--out=FILE]
  * Needs full git history in the review-texts checkout (not a shallow clone).
@@ -58,16 +61,18 @@ function main() {
     }
   }
   const noSplit = rows.filter((r) => r.verdict === 'no-split');
-  const summary = { parents: rows.length, noSplit: noSplit.length,
+  const repair = rows.filter((r) => r.verdict === 'lede-cousin' || r.verdict === 'refetch');
+  const summary = { parents: rows.length, ledeCousin: rows.filter((r) => r.verdict === 'lede-cousin').length, noSplit: noSplit.length,
     stillSplit: rows.filter((r) => r.verdict === 'still-split').length,
     refetch: rows.filter((r) => r.verdict === 'refetch').length,
     noWholeText: rows.filter((r) => r.verdict === 'no-whole-text').length };
-  const report = { generatedAt: new Date().toISOString(), summary, noSplit, rows };
+  const report = { generatedAt: new Date().toISOString(), summary, repair, noSplit, rows };
   if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(report, null, 2));
   if (process.argv.includes('--json')) { console.log(JSON.stringify(report, null, 2)); return; }
   console.log(JSON.stringify(summary));
-  for (const r of noSplit) console.log(`NO-SPLIT\t${r.file}\tchildren=${r.children.join(',')}\twhole=${r.wholeChars}(${r.source})\tcurrent=${r.currentChars}`);
-  for (const r of rows.filter((x) => x.verdict === 'refetch' || x.verdict === 'no-whole-text')) console.log(`${r.verdict.toUpperCase()}\t${r.file}\t${r.ordersSplit ?? ''}/${r.orders ?? ''}`);
+  for (const r of repair) console.log(`REPAIR\t${r.verdict}\t${r.file}\tchildren=${r.children.join(',')}`);
+  for (const r of noSplit) console.log(`NO-SPLIT(keep)\t${r.file}\tchildren=${r.children.join(',')}\twhole=${r.wholeChars}(${r.source})\tcurrent=${r.currentChars}`);
+  for (const r of rows.filter((x) => x.verdict === 'no-whole-text')) console.log(`${r.verdict.toUpperCase()}\t${r.file}\t${r.ordersSplit ?? ''}/${r.orders ?? ''}`);
 }
 
 main();
