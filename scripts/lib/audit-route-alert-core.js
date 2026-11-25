@@ -54,7 +54,7 @@ const REVIEWED = Object.freeze({
   'scripts/check-sd-breaker.js': { count: 1, reason: 'same as check-bd-breaker.js' },
   'scripts/check-corpus-drift.js': { count: 1, reason: 'consecutiveBlocks counter, digest; shouldEscalate re-fires every reminderEvery blocks' },
   'scripts/check-vercel-build-guard.js': { count: 1, reason: 'same as check-corpus-drift.js' },
-  'scripts/check-provider-spend.js': { count: 4, reason: 'writes the spend ledger/snapshot; conditions (incl. the BRO-7576 LLM scoring 7-day average) are recomputed from it every run, routeAlert ledger dedupes' },
+  'scripts/check-provider-spend.js': { count: 5, reason: 'writes the spend ledger/snapshot; conditions (incl. the BRO-7576 LLM scoring 7-day average and the BRO-8116 reviewer-spend two-day window) are recomputed from it every run, routeAlert ledger dedupes' },
   'scripts/ingest-dmarc-reports.js': { count: 1, reason: 'report ledger/summary, digest; findings recomputed every run' },
   'scripts/poll-trade-press-rss.js': { count: 1, reason: 'feed state errorCount keeps the dead-feed condition firing every run until it recovers' },
   'scripts/promote-ob-venue-candidates.js': { count: 2, reason: 'saveShows/staging data, not alert state; digest' },
