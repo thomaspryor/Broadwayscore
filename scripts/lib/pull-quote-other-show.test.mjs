@@ -131,9 +131,20 @@ test('a comparison that names the other title is kept when this show is named in
   assert.equal(quoteInOtherShowPassage(q, d, cfa, index), null);
 });
 
-test('a one-word title in the quote is not an other-show signal', () => {
-  const sweat = { id: 'sweat-2017', title: 'Sweat Shop Story', openingDate: '2017-03-26', cast: [] };
-  const idx = buildEvidenceIndex([sweat]);
-  const q = 'The staging is lively and the songs land with real feeling throughout the night.';
-  assert.equal(quoteInOtherShowPassage(q, vv, cfa, idx), null);
+test('a one-word title in the quote is not an other-show signal (Caroline)', () => {
+  const caroline = { id: 'caroline-2017', title: 'Caroline', openingDate: '2017-03-26', cast: [] };
+  const idx = buildEvidenceIndex([caroline]);
+  const q = 'Caroline is the name of the loyal servant, and she steals every scene she is in.';
+  const d = { ...vv, fullText: `Caroline opens this week.${filler(4)} ${q}${filler(3)}` };
+  assert.equal(quoteInOtherShowPassage(q, d, cfa, idx), null);
+});
+
+test('a title that contains this show\'s own title is not an other-show signal (Romeo and Juliet Suite)', () => {
+  const suite = { id: 'rj-suite', title: 'Romeo and Juliet Suite', openingDate: '2017-03-12', cast: [] };
+  const rj = { id: 'rj', title: 'Romeo and Juliet', openingDate: '2017-03-14', cast: [] };
+  const idx = buildEvidenceIndex([suite, rj]);
+  const q = 'Romeo and Juliet Suite stays close to the text and never loses its pace.';
+  const d = { showId: 'rj-suite', showTitle: suite.title, publishDate: '2017-03-17',
+    fullText: `Romeo and Juliet opens in the same week.${filler(4)} ${q}${filler(3)}` };
+  assert.equal(quoteInOtherShowPassage(q, d, suite, idx), null);
 });
