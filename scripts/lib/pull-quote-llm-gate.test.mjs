@@ -10,6 +10,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 delete process.env.PULL_QUOTE_LLM_GATE_OFF;
+const { useShowsFixture } = require('./shows-json-fixture.js'); // keep the other-show guard off live data
+process.on('exit', useShowsFixture([]));
 require('./review-write-guard.js')._setShowsCacheForTest(new Map());
 const gate = require('./pull-quote-llm-gate.js');
 
