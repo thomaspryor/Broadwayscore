@@ -4,7 +4,7 @@
     "audit-star-bands.js": {
       "bucket": "a",
       "rank": 1,
-      "reason": "CLAUDE.md §3 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
+      "reason": "CLAUDE.md \u00a73 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
     },
     "audit-announced-cast.js": {
       "bucket": "a",
@@ -492,6 +492,11 @@
       "bucket": "b",
       "rank": 99,
       "reason": "BRO-8294: manual replay and latency proof for Broadway-only poller targeting; needs gh run history (--runs TSV), so not a scheduled check"
+    },
+    "audit-pull-quote-other-show.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-8326 corpus sweep for stored quotes from another show's passage; needs the private review-texts corpus; the CI class guard is scripts/lib/pull-quote-other-show.test.mjs and the rebuild enforces the rule itself"
     }
   }
 }
