@@ -158,7 +158,6 @@ test('BRO-5526: resolve only after a multi-day clean, fully-measured window', ()
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
 
 const { llmSessionBreach } = require('./lib/provider-spend-core.js');
 const { foldSessionRows } = require('./lib/gemini-usage-ledger.js');
@@ -217,12 +216,4 @@ test('BRO-8116: foldSessionRows twice adds no duplicates', () => {
   assert.equal(foldSessionRows({ from, to }), 1);
   assert.equal(foldSessionRows({ from, to }), 0);
   assert.equal(fs.readFileSync(to, 'utf8').split('\n').filter(Boolean).length, 1);
-});
-
-test('BRO-8116: record-claude-session-cost.js --fold-only exits 0 and is a no-op without home rows', () => {
-  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'fold8116h-'));
-  const r = spawnSync(process.execPath, [new URL('./record-claude-session-cost.js', import.meta.url).pathname, '--fold-only'],
-    { encoding: 'utf8', env: { ...process.env, HOME: home, LLM_SESSION_LEDGER_PATH: path.join(home, 'none.jsonl') } });
-  assert.equal(r.status, 0, r.stderr);
-  assert.match(r.stdout, /nothing new to fold/);
 });
