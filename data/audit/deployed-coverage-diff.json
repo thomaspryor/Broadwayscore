@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-25T17:01:39.631Z",
+  "generatedAt": "2026-11-25T18:04:00.569Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 372,
-  "clean": 363,
-  "defective": 9,
+  "checked": 371,
+  "clean": 357,
+  "defective": 14,
   "byType": {
-    "score-drift": 8,
-    "missing-from-prod": 4
+    "score-drift": 13,
+    "missing-from-prod": 7
   },
   "shows": [
     {
@@ -19,17 +19,18 @@
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: all-that-dazzles-uk"
+          "detail": "2 scored outlet(s) absent from the deployed payload: all-that-dazzles-uk, musical-theatre-review"
         },
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.53 vs local 78.14 (Δ0.61)"
+          "detail": "deployed cs 77.53 vs local 78.44 (Δ0.91)"
         }
       ],
       "missingFromProd": [
-        "all-that-dazzles-uk"
+        "all-that-dazzles-uk",
+        "musical-theatre-review"
       ],
-      "localCount": 11,
+      "localCount": 13,
       "deployedCount": 13,
       "firstDefectAt": "2026-11-25T15:41:35.786Z"
     },
@@ -41,19 +42,20 @@
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "3 scored outlet(s) absent from the deployed payload: london-theatre, standard, theatreandtonic"
+          "detail": "4 scored outlet(s) absent from the deployed payload: london-theatre, rolandcat, standard, theatreandtonic"
         },
         {
           "type": "score-drift",
-          "detail": "deployed cs 60.95 vs local 61.77 (Δ0.82)"
+          "detail": "deployed cs 60.95 vs local 62.08 (Δ1.13)"
         }
       ],
       "missingFromProd": [
         "london-theatre",
+        "rolandcat",
         "standard",
         "theatreandtonic"
       ],
-      "localCount": 16,
+      "localCount": 17,
       "deployedCount": 13,
       "firstDefectAt": "2026-11-25T15:41:35.786Z"
     },
@@ -96,6 +98,104 @@
       "localCount": 2,
       "deployedCount": 1,
       "firstDefectAt": "2026-11-25T15:41:35.786Z"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: monstagigz"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.32 vs local 76.45 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [
+        "monstagigz"
+      ],
+      "localCount": 35,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-11-25T18:03:57.884Z"
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "title": "Beetlejuice",
+      "openingDate": "2026-05-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: all-that-dazzles-uk"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 65.72 vs local 66.02 (Δ0.3)"
+        }
+      ],
+      "missingFromProd": [
+        "all-that-dazzles-uk"
+      ],
+      "localCount": 40,
+      "deployedCount": 39,
+      "firstDefectAt": "2026-11-25T18:03:57.884Z"
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "title": "The Outsiders",
+      "openingDate": "2024-04-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: pages-on-stages"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.98 vs local 71.1 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [
+        "pages-on-stages"
+      ],
+      "localCount": 32,
+      "deployedCount": 31,
+      "firstDefectAt": "2026-11-25T18:03:57.884Z"
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "title": "Much Ado About Nothing",
+      "openingDate": "2026-11-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.19 vs local 79.25 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-11-25T18:03:57.884Z"
+    },
+    {
+      "showId": "downstate-2026",
+      "title": "Downstate",
+      "openingDate": "2026-11-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.48 vs local 86.38 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 29,
+      "deployedCount": 29,
+      "firstDefectAt": "2026-11-25T18:03:57.884Z"
     },
     {
       "showId": "nine-night-off-west-end-2026",

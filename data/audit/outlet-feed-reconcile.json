@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T17:01:40.042Z",
+  "generatedAt": "2026-11-25T18:04:00.898Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -168,32 +168,16 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 500 for https://theaterpizzazz.com/feed/"
     }
   ],
-  "itemsScanned": 904,
-  "matchedGaps": 5,
+  "itemsScanned": 922,
+  "matchedGaps": 6,
   "possibleGaps": 5,
   "gaps": [
     {
@@ -231,6 +215,15 @@
       "url": "https://stageandcinema.com/2026/11/21/purpose-geffen-playhouse-review/",
       "headline": "Theater Review: PURPOSE (Geffen Playhouse)",
       "publishDate": "2026-11-22"
+    },
+    {
+      "showId": "the-afronauts-west-end-2026",
+      "title": "The Afronauts",
+      "level": "matched",
+      "outletId": "a-youngish-perspective",
+      "url": "https://ayoungishperspective.co.uk/2026/11/25/review-the-afronauts/",
+      "headline": "REVIEW: The Afronauts",
+      "publishDate": "2026-11-25"
     },
     {
       "showId": "the-afronauts-west-end-2026",

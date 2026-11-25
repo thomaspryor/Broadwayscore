@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-25T17:01:14.199Z",
+  "generatedAt": "2026-11-25T18:03:46.882Z",
   "maxAgeHours": 12,
-  "showsAffected": 0,
-  "strandedFiles": 0,
+  "showsAffected": 1,
+  "strandedFiles": 1,
   "blackoutShows": [],
   "agedStubHours": 48,
-  "agedStubFiles": 48,
-  "agedStubShows": 42,
+  "agedStubFiles": 49,
+  "agedStubShows": 43,
   "agedStubs": [
     {
       "showId": "suffs-2024",
@@ -220,7 +220,7 @@
           "file": "usatoday--matthew-j-palm.json",
           "url": "https://www.usatoday.com/story/life/theater/2022/12/08/aint-no-mo-broadway-review/10856338002/",
           "outlet": "USA Today",
-          "ageHours": 6712.596999722222
+          "ageHours": 6713.639411666667
         }
       ]
     },
@@ -472,7 +472,7 @@
           "file": "usatoday--elysa-gardner.json",
           "url": "https://www.usatoday.com/life/theater/reviews/2008-10-17-all-my-sons_N.htm",
           "outlet": "USA Today",
-          "ageHours": 6712.596999722222
+          "ageHours": 6713.639411666667
         }
       ]
     },
@@ -547,7 +547,36 @@
           "ageHours": null
         }
       ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "status": "open",
+      "stubs": [
+        {
+          "file": "nytimes--manohla-dargis.json",
+          "url": "https://www.nytimes.com/2026/10/22/movies/possible-love-review-the-lives-of-others.html",
+          "outlet": "The New York Times",
+          "ageHours": 628.1560941666667
+        }
+      ]
     }
   ],
-  "findings": []
+  "findings": [
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "nytimes--manohla-dargis.json",
+          "url": "https://www.nytimes.com/2026/10/22/movies/possible-love-review-the-lives-of-others.html",
+          "outlet": "The New York Times",
+          "ageHours": 628.1560941666667
+        }
+      ],
+      "usable": 54,
+      "discovered": 54,
+      "totalBlackout": false
+    }
+  ]
 }

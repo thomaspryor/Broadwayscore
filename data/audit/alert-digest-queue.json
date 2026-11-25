@@ -404,20 +404,6 @@
     "queuedAt": "2026-11-25T16:01:52.463Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-25.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-25T17:01:13.901Z"
-  },
-  {
     "conditionKey": "corpus-drift:orphan-production-clusters",
     "title": "Corpus drift: wrongProduction reviews of a production missing from shows.json (cluster baseline-diff)",
     "description": "check-corpus-drift.js audit \"orphan-production-clusters\" (node scripts/cluster-orphan-productions.js --gate) has been drifting. Latest output:\n\norphan wrongProduction reviews: 562; clusters: 393; clusters >=3: 37 (147 reviews)\nFAIL: 1 orphan production cluster(s) new or grown vs baseline (a production is missing from shows.json):\n  whenwearemarried|west-end count=6 baseline=5 hosts=when-we-are-married-west-end-2010",
@@ -515,6 +501,20 @@
       }
     ],
     "queuedAt": "2026-11-25T17:25:43.256Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-25.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T18:03:46.655Z"
   },
   {
     "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]",
