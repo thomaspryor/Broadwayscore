@@ -93,7 +93,7 @@ or the limit type is not `seven_day`, skip it: the default 4/24h cap applies.
 For each card:
 
 1. `node scripts/cloud-worker-pick.js` (background it if slow). Non-zero exit or
-   a null `pick`: stop this lane. A `pick.resume`: follow its instructions.
+   a null `pick`: stop this lane. A `pick.resume`: follow its instructions. A `pick.uiHold` (BRO-7639): Codex's UI change is on that ref; follow `pick.uiHold.instructions` (fetch the ref, /visual-qa, `visual-approval.js request`) instead of redoing it.
    While a Codex runner is live the pick leaves to it the cards one Codex
    firing will take (up to 9, listed in `leftToCodex`; owner 2026-10-15, BRO-5384: Codex carries the
    load, this lane is the fallback for what Codex cannot do, Urgent and
