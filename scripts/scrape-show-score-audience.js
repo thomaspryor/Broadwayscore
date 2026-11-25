@@ -22,6 +22,7 @@
 // renders); these SB-primary scripts used to be unmetered, so raise the default.
 process.env.SB_CREDIT_BUDGET = process.env.SB_CREDIT_BUDGET || '2000';
 const { canDiscoverShowScoreUrl } = require('./lib/showscore-status-eligibility');
+const { dropUkShowScoreRating } = require('./lib/show-score-uk-drop');
 const { servesUkPageForUsShow, allowsUkShowScorePage, isUkPageForShow, pageRatingOf, storedRatingMatchesPage } = require('./lib/show-score-canonical');
 const { removeSourceWithTombstone } = require('./lib/reconcile-audience-buzz');
 const fs = require('fs');
@@ -739,19 +740,20 @@ let noRatingsYet = false;
  * (and recompute the combined score from what remains) so the bad number does not wait for the purge.
  */
 function dropUkShowScoreSource(show, html) {
-  const rec = audienceBuzz.shows && audienceBuzz.shows[show.id];
-  if (dryRun || !rec || !rec.sources || !rec.sources.showScore) return;
-  // Only when the stored rating IS the UK page's rating: a transient London page says nothing about a
-  // rating scraped earlier from the right page (same proof as purge-uk-show-score-audience.js).
-  if (!storedRatingMatchesPage(rec.sources.showScore, pageRatingOf(html))) return;
-  removeSourceWithTombstone(rec, 'showScore', 'Show Score page is a UK production page (canonical /uk/london/...) (BRO-5499)');
-  const { score } = calculateCombinedScore(rec.sources, { status: show.status, closingDate: show.closingDate, category: show.category });
-  rec.combinedScore = score ?? null;
-  rec.designation = score == null ? null : getDesignation(score);
-  console.log(`  Cleared stale Show Score rating for ${show.id}; combinedScore now ${rec.combinedScore}`);
-  // processShow returns null here, so the main loop's save-on-success never runs for this show.
-  // Shard runs merge through merge-show-score-shards.js instead of writing audience-buzz directly.
-  if (!shardMode) saveAudienceBuzz(audienceBuzz);
+  if (dryRun) return;
+  const pageRating = pageRatingOf(html);
+  const r = dropUkShowScoreRating(audienceBuzz.shows && audienceBuzz.shows[show.id], pageRating, show);
+  if (!r.removed) return;
+  console.log(`  Cleared stale Show Score rating for ${show.id}; combinedScore now ${r.combinedScore}`);
+  // Shard runs never save audience-buzz: the finding rides the shard file and
+  // merge-show-score-shards.js applies it (BRO-7434).
+  if (shardOutput && shardPath) {
+    if (!shardOutput.ukPage) shardOutput.ukPage = {};
+    shardOutput.ukPage[show.id] = pageRating;
+    fs.writeFileSync(shardPath, JSON.stringify(shardOutput, null, 2));
+  } else {
+    saveAudienceBuzz(audienceBuzz);
+  }
 }
 
 /**

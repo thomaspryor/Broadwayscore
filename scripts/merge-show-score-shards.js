@@ -18,6 +18,7 @@ const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-writ
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { findConflictingShowId, isProductionMismatch } = require('./lib/show-score-url-map');
 const { removeWrongProductionShowScore } = require('./lib/show-score-wrong-production');
+const { dropUkShowScoreRating } = require('./lib/show-score-uk-drop');
 
 const USAGE = `merge-show-score-shards.js — Merges Show Score shard output files into audience-buzz.json and show-score-urls.json.
 
@@ -96,6 +97,7 @@ function main() {
   const allUrls = {};
   const allScores = {};
   const allMismatches = {}; // BRO-5866: showId -> another production's page
+  const allUkPages = {}; // BRO-7434: showId -> {score,count} printed on the UK page served at a US slug
 
   for (const file of shardFiles) {
     const filePath = path.join(shardDir, file);
@@ -107,6 +109,7 @@ function main() {
       Object.assign(allUrls, data.discoveredUrls || {});
       Object.assign(allScores, data.scores || {});
       Object.assign(allMismatches, data.productionMismatch || {});
+      Object.assign(allUkPages, data.ukPage || {});
     } catch (e) {
       console.error(`  Error reading ${file}: ${e.message}`);
     }
@@ -173,6 +176,13 @@ function main() {
   for (const [showId, url] of Object.entries(allMismatches)) {
     const r = removeWrongProductionShowScore({ showId, url, urlData, audienceBuzz, show: showMapById[showId] });
     console.log(`  ${showId}: ${url} is another production's page (mapping removed: ${r.mappingRemoved}, audience score removed: ${r.audienceRemoved})`);
+  }
+
+  // BRO-7434: a shard found a US show's page is London's and cleared its in-memory rating; shards never
+  // save audience-buzz, so clear the stored one here.
+  for (const [showId, pageRating] of Object.entries(allUkPages)) {
+    const r = dropUkShowScoreRating(audienceBuzz.shows[showId], pageRating, showMapById[showId]);
+    if (r.removed) console.log(`  ${showId}: Show Score page is a UK page, cleared its rating (combinedScore now ${r.combinedScore})`);
   }
 
   let merged = 0;

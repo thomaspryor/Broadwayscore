@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-7434-b",
+  "planId": "1db4e5c7-d6f4-4088-bd57-71e67a163e37",
+  "status": "pending",
+  "createdAt": "2026-11-25T15:03:31.064Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove UK Show Score audience rating from jerusalem-2011",
+    "steps": [
+      "Remove UK Show Score 85%/40 from jerusalem-2011 (archived page canonical is /uk/london/west-end-shows/jerusalem-london); combined score 82.31 to 78."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Remove UK Show Score 85%/40 from jerusalem-2011 (archived page canonical is /uk/london/west-end-shows/jerusalem-london); combined score 82.31 to 78.",
+        "script": "purge-uk-show-score-audience.js",
+        "args": "--apply"
+      }
+    ]
+  }
+}
