@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T12:11:09.654Z",
+  "generatedAt": "2026-11-25T12:33:59.345Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -418,9 +418,9 @@
       "status": "open",
       "slug": "a-christmas-carol-west-end",
       "thumbnail": "/images/shows/a-christmas-carol-west-end-2026/thumbnail.webp",
-      "siteScore": 78.48,
-      "liveScore": 78,
-      "scoreDrift": -0.480000000000004,
+      "siteScore": 78.9,
+      "liveScore": 79,
+      "scoreDrift": 0.09999999999999432,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -436,7 +436,7 @@
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -514,10 +514,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "British Theatre Guide",
-          "isDualMarket": false
         },
         {
           "name": "BritishTheatre.com",
@@ -681,6 +677,18 @@
           "t": "2026-11-25T12:11:09.654Z",
           "rc": 11,
           "s": 78.48,
+          "t1": 0,
+          "t2": 7,
+          "t3": 4,
+          "p": 11,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T12:33:59.345Z",
+          "rc": 11,
+          "s": 78.9,
           "t1": 0,
           "t2": 7,
           "t3": 4,
@@ -2279,10 +2287,6 @@
         },
         {
           "name": "The Arts Desk",
-          "isDualMarket": false
-        },
-        {
-          "name": "British Theatre Guide",
           "isDualMarket": false
         },
         {
