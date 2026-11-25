@@ -40,6 +40,8 @@ test('press, critics and city-named sites are never first-party', () => {
     ['https://www.chicago.com/x', 'Chicago Shakespeare Theater, Chicago, IL'],
     ['https://arena.com/x', 'Arena Stage, Washington, DC'],
     ['https://citylit.xyz/x', 'City Lit Theater, Chicago, IL'],
+    ['https://www.chicagoarts.org/x', 'Chicago Shakespeare Theater, Chicago, IL'],
+    ['https://www.kansasco.com/x', 'Kansas City Repertory Theatre, Kansas City, MO'],
     [null, 'City Lit Theater'],
   ];
   for (const [url, venue] of bad) assert.equal(isFirstPartyVenueUrl(url, venue), false, `${url} <= ${venue}`);
