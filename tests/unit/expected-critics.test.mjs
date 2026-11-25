@@ -230,11 +230,11 @@ test('the owner sees no expected-critics line while searches remain; dead ends a
   // the grade line stays silent for a recovering cell (grade-openings passes only visible gaps)
   assert.equal(expectedMissingForShow('medea', s.visible).length, 0);
 
-  // dead end: the only find was not a review
-  const dead = { cells: { 'medea::theatermania': { ...tried.cells['medea::theatermania'], attempts: [attempt(3, 'no_evidence'), attempt(7, 'rejected', { reason: 'non-review-url' }), attempt(14, 'no_evidence')] } } };
+  // dead end: a likely review was found but a rejected older copy blocks saving it
+  const dead = { cells: { 'medea::theatermania': { ...tried.cells['medea::theatermania'], attempts: [attempt(3, 'no_evidence'), attempt(7, 'rejected', { reason: 'flagged-file-collision' }), attempt(14, 'no_evidence')] } } };
   const v = R.splitForOwner([g], dead, at(15)).visible;
   assert.equal(v.length, 1);
-  assert.equal(R.ownerLine(v[0]), 'TheaterMania on Medea: no review on the site, and the only match was a page that is not a review.');
+  assert.equal(R.ownerLine(v[0]), 'TheaterMania on Medea: no review on the site, and a likely review was found, but an older rejected copy is in the way of saving it.');
   assert.doesNotMatch(R.ownerLine(v[0]), /::|—|BRO-|\.js/);
 
   // not searchable ends at once
@@ -302,4 +302,83 @@ test('a file already on disk waits for the rebuild instead of searching daily; a
   const s2 = R.syncState(s1, [gap('s', 'o', { openingDate: '2026-10-05' })], at(4));
   assert.equal(s2.cells['s::o'].openingDate, '2026-10-05');
   assert.equal(s2.cells['s::o'].firstSeenMissingAt, s1.cells['s::o'].firstSeenMissingAt);
+});
+
+// BRO-7312 follow-up (2026-11-25): Harry Potter's one-part West End run went owner-visible on
+// three outlets whose every find was an earlier production's article.
+test('an earlier production\'s article never makes an owner item: cross-market, owned by the 2021 show, or a rejected copy on file', () => {
+  const OLD_URL = 'https://lt.example/reviews/hp-2016';
+  const NEWS = 'https://lt.example/news/hp-anniversary';
+  const files = {
+    s: [
+      { __file: 'london-theatre--critic.json', url: NEWS, wrongProduction: true, rejectionReason: 'not_a_review' },
+      { __file: 'thestage--unknown.json', url: 'https://ts.example/hp-recast-2017', wrongProduction: true, incompleteReason: 'wrong_content' },
+      { __file: 'telegraph--unknown.json', url: 'https://tg.example/hp', contentTier: 'invalid' }, // failed fetch: not a verdict
+    ],
+    'hp-2021': [{ __file: 'london-theatre--x.json', url: OLD_URL, publishDate: '2022-01-25' }],
+  };
+  const lookup = (id) => files[id] || null;
+  const state = { schemaVersion: 1, cells: {
+    's::london-theatre': { showId: 's', outletId: 'london-theatre', openingDate: OPEN, attempts: [
+      attempt(3, 'rejected', { reason: 'cross-show-url-owned:hp-2021', url: OLD_URL }),
+      attempt(7, 'rejected', { reason: 'onMerge-aborted', url: NEWS }),
+      attempt(14, 'rejected', { reason: 'cross-show-url-owned:hp-2021', url: OLD_URL })] },
+    's::whatsonstage': { showId: 's', outletId: 'whatsonstage', openingDate: OPEN, attempts: [
+      attempt(3, 'rejected', { reason: 'cross-market: Broadway URL pattern: /-broadway/', url: 'u' }),
+      attempt(7, 'no_evidence'),
+      attempt(14, 'rejected', { reason: 'cross-market: Broadway URL pattern: /-broadway/', url: 'u' })] },
+    's::thestage': { showId: 's', outletId: 'thestage', openingDate: OPEN, attempts: [
+      attempt(3, 'rejected', { reason: 'file-exists', url: 'https://ts.example/hp-recast-2017' }),
+      attempt(7, 'rejected', { reason: 'file-exists', url: 'https://ts.example/hp-2016' }),
+      attempt(14, 'no_evidence')] },
+    's::telegraph': { showId: 's', outletId: 'telegraph', openingDate: OPEN, attempts: [
+      attempt(3, 'rejected', { reason: 'file-exists', url: 'https://tg.example/hp' }),
+      attempt(7, 'no_evidence'), attempt(14, 'no_evidence')] },
+  } };
+  // Before: owner-visible dead ends (whatsonstage is settled by the read-time rule alone).
+  for (const k of ['s::london-theatre', 's::thestage', 's::telegraph']) assert.equal(R.cellPhase(state.cells[k], at(15)).phase, 'dead-end', k);
+
+  const { state: next, changed } = R.reclassifyFileFinds(state, lookup, at(15));
+  assert.equal(changed, 2); // london-theatre, thestage (whatsonstage needs no rewrite: read-time rule)
+  assert.equal(R.cellPhase(next.cells['s::london-theatre'], at(15)).phase, 'acked');
+  assert.match(next.cells['s::london-theatre'].autoAck.note, /3 targeted searches/);
+  assert.equal(R.cellPhase(next.cells['s::whatsonstage'], at(15)).phase, 'acked');
+  assert.match(R.mergedAcks([], { cells: { k: { ...state.cells['s::whatsonstage'], autoAck: { note: 'x' } } } })[0].note, /x/);
+  // The filename-only collision is searched again (the collector now judges its date), not acked blind.
+  const ts = R.cellPhase(next.cells['s::thestage'], at(15));
+  assert.equal(ts.phase, 'recovering');
+  assert.equal(next.cells['s::thestage'].attempts[1].reason, 'filename-collision-rejudge');
+  // A copy that is invalid only because its text did not load stays an owner item.
+  assert.equal(R.cellPhase(next.cells['s::telegraph'], at(15)).phase, 'dead-end');
+
+  // Absence is never evidence: with no review-texts on this machine nothing changes.
+  assert.equal(R.reclassifyFileFinds(state, () => null, at(15)).changed, 0);
+  // A URL owned by another show whose copy is from this run's own dates is a real conflict: left alone.
+  const recent = { 'hp-2021': [{ url: OLD_URL, publishDate: '2026-09-28' }], s: [] };
+  const r2 = R.reclassifyFileFinds({ cells: { k: state.cells['s::london-theatre'] } }, (id) => recent[id] || null, at(15));
+  assert.equal(R.cellPhase(r2.state.cells.k, at(15)).phase, 'dead-end');
+});
+
+test('the collector judges the date before refusing on a rejected copy\'s filename', async () => {
+  const fs = require('fs'); const os = require('os'); const path = require('path');
+  const { writeReviewFile } = require('../../scripts/collect-outlet-reviews.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ecr-wrf-'));
+  fs.mkdirSync(path.join(dir, 'hp'));
+  const SAME = 'https://ts.example/hp-recast-2017';
+  fs.writeFileSync(path.join(dir, 'hp', 'thestage--unknown.json'), JSON.stringify({ url: SAME, wrongProduction: true }));
+  const window = { dateMin: new Date('2026-10-01'), dateMax: new Date('2026-12-31'), requireDate: true };
+  const run = async (url, publishDate, publishWindow = window) => {
+    let reason = null;
+    await writeReviewFile('hp', 'thestage', url, 'HP', 'The Stage', {
+      reviewTextsDir: dir, dryRun: true, publishWindow, onSkip: (r) => { reason = r; },
+      prefetchFn: async () => ({ publishDate }),
+    });
+    return reason;
+  };
+  assert.equal(await run('https://ts.example/hp-2016', '2016-07-30'), 'outside-publish-window');
+  assert.equal(await run(SAME, '2026-10-25'), 'existing-file-not-this-production');
+  assert.equal(await run('https://ts.example/hp-2026', '2026-10-25'), 'flagged-file-collision');
+  assert.equal(await run('https://ts.example/hp-2026', '2026-10-25', null), 'file-exists'); // ordinary runs: unchanged
+  assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'existing-file-not-this-production' }, 'x').outcome, 'no_evidence');
+  assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'flagged-file-collision' }, 'x').outcome, 'rejected');
 });

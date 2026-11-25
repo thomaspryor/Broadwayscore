@@ -63,6 +63,30 @@ function runCollector(plan, { dryRun }) {
   }
 }
 
+/**
+ * Review records for one show from data/review-texts/<showId>/, each tagged
+ * with its filename (__file). null when the directory is not here (a sparse
+ * checkout, a worktree without the private repo): reclassifyFileFinds then
+ * changes nothing for that show.
+ */
+function makeFilesForShow(dir = path.join(ROOT, 'data', 'review-texts')) {
+  const cache = new Map();
+  return (showId) => {
+    if (cache.has(showId)) return cache.get(showId);
+    const showDir = path.join(dir, showId);
+    let out = null;
+    if (/^[a-z0-9-]+$/.test(showId) && fs.existsSync(showDir)) {
+      out = [];
+      for (const f of fs.readdirSync(showDir)) {
+        if (!f.endsWith('.json') || f.startsWith('_')) continue;
+        try { out.push({ ...JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')), __file: f }); } catch { /* unreadable: skip */ }
+      }
+    }
+    cache.set(showId, out);
+    return out;
+  };
+}
+
 /** Single writer (BRO-7312). Called after every show so a crash mid-run never re-buys searches already made. */
 function saveState(state) {
   fs.mkdirSync(path.dirname(R.STATE_PATH), { recursive: true });
@@ -79,7 +103,11 @@ function main() {
   const budgetMs = Number(arg('budget-minutes') || 22) * 60 * 1000;
   const only = arg('cells') ? new Set(arg('cells').split(',').filter(Boolean)) : null;
 
-  let state = R.syncState(R.loadRecoveryState(), currentGaps(R.loadRecoveryState(), nowMs), nowMs);
+  // Re-judge stored "already on file" refusals first: a cell that settles here
+  // gets its autoAck before syncState, which keeps only acked or missing cells.
+  const re = R.reclassifyFileFinds(R.loadRecoveryState(), makeFilesForShow(), nowMs);
+  if (re.changed) console.log(`Re-judged stored file refusals on ${re.changed} cell(s)`);
+  let state = R.syncState(re.state, currentGaps(re.state, nowMs), nowMs);
   const scoped = only
     ? { ...state, cells: Object.fromEntries(Object.entries(state.cells).filter(([k]) => only.has(k))) }
     : state;
@@ -111,4 +139,4 @@ if (require.main === module) {
   try { main(); } catch (e) { console.error(e.stack || e.message); process.exit(1); }
 }
 
-module.exports = { currentGaps };
+module.exports = { currentGaps, makeFilesForShow };

@@ -48,7 +48,17 @@ const ACK_SOURCE = 'expected-critics-recovery';
 const EVIDENCE = new Set(['no_evidence', 'rejected']);
 // A refused match that still says "no review of this production here": counts
 // as an empty search, so these cells can auto-ack (review finding, BRO-7312).
-const EMPTY_FIND_REASONS = new Set(['non-review-url', 'wrong-domain', 'outside-publish-window']);
+const EMPTY_FIND_REASONS = new Set(['non-review-url', 'wrong-domain', 'outside-publish-window',
+  // The only match was a copy already on file and already judged to be about
+  // another production (collect-outlet-reviews.js writeReviewFile; reclassifyFileFinds).
+  'existing-file-not-this-production',
+  // The only match is owned by an earlier production of the same title, dated
+  // well before this one opened (reclassifyFileFinds checks the owner's date).
+  'url-owned-by-earlier-production']);
+// "cross-market: Broadway URL pattern ...": the URL itself names the other market.
+const EMPTY_FIND_PREFIXES = ['cross-market'];
+const isEmptyFindReason = (reason) => !!reason
+  && (EMPTY_FIND_REASONS.has(reason) || EMPTY_FIND_PREFIXES.some((p) => String(reason).startsWith(p)));
 // A refused match we could not judge (page would not load or had no date):
 // retried like any other failed search, never counted toward ack or dead end.
 const RETRY_FIND_REASONS = new Set(['no-publish-date', 'http-error']);
@@ -57,7 +67,7 @@ const RETRY_FIND_REASONS = new Set(['no-publish-date', 'http-error']);
 function attemptFromRow(row, at) {
   if (!row) return { at, outcome: 'non_evidence', reason: 'no-result-row' };
   let outcome = row.outcome;
-  if (outcome === 'rejected' && EMPTY_FIND_REASONS.has(row.reason)) outcome = 'no_evidence';
+  if (outcome === 'rejected' && isEmptyFindReason(row.reason)) outcome = 'no_evidence';
   else if (outcome === 'rejected' && RETRY_FIND_REASONS.has(row.reason)) outcome = 'non_evidence';
   return {
     at, outcome,
@@ -87,6 +97,11 @@ function openedMs(openingDate) {
 
 const atMs = (a) => Date.parse(a && a.at);
 
+/** Read-time view of a stored attempt: refusals recorded before a reason joined the empty set count as empty now. */
+function normalizedAttempt(a) {
+  return a && a.outcome === 'rejected' && isEmptyFindReason(a.reason) ? { ...a, outcome: 'no_evidence', collectorOutcome: 'rejected' } : a;
+}
+
 /**
  * Where one cell stands.
  * @param {{openingDate: string, attempts?: object[], autoAck?: object}} cell
@@ -95,7 +110,7 @@ const atMs = (a) => Date.parse(a && a.at);
 function cellPhase(cell, nowMs) {
   if (cell.autoAck) return { phase: 'acked', reason: 'no-review-found', nextDueMs: null };
   const opened = openedMs(cell.openingDate);
-  const attempts = (cell.attempts || []).filter((a) => Number.isFinite(atMs(a)));
+  const attempts = (cell.attempts || []).map(normalizedAttempt).filter((a) => Number.isFinite(atMs(a)));
   const last = attempts[attempts.length - 1] || null;
 
   if (attempts.some((a) => a.outcome === 'not_searchable')) {
@@ -226,8 +241,80 @@ function applyResults(state, { plan, rows, nowMs, dryRun = false }) {
   return next;
 }
 
+/**
+ * A review file already judged to be about something other than this
+ * production (a different run, a non-review). Narrower than "flagged": an
+ * invalid tier from a failed fetch is NOT this, so a real review whose text
+ * did not load never auto-acks its cell.
+ */
+function isNotThisProduction(data) {
+  if (!data) return false;
+  if (data.wrongProduction || data.wrongShow || data.isNonReview || data.isRoundupArticle) return true;
+  return data.rejectionReason === 'not_a_review' || data.incompleteReason === 'wrong_content';
+}
+
+const sameUrl = (a, b) => !!a && !!b && String(a).replace(/[?#].*$/, '').replace(/\/+$/, '') === String(b).replace(/[?#].*$/, '').replace(/\/+$/, '');
+const FILE_FIND_REASONS = new Set(['file-exists', 'onMerge-aborted']);
+const EARLIER_PRODUCTION_MS = 90 * DAY_MS; // the owner's copy must predate this opening by this much
+
+/**
+ * Re-judge stored refusals that only meant "something is already on file"
+ * (BRO-7312 follow-up: Harry Potter's one-part West End run, 2026-11-25, went
+ * owner-visible on three outlets whose every find was the 2016/2022 review).
+ *   - file-exists / onMerge-aborted whose URL is a file here already judged not
+ *     this production -> empty (existing-file-not-this-production).
+ *   - file-exists whose URL is on no file, while <outlet>--unknown.json here is
+ *     such a file: the old collector refused on the filename alone, before
+ *     reading the article's date -> non_evidence, so the next search judges it.
+ *   - cross-show-url-owned:<other> where the other show's copy is dated 90+
+ *     days before this opening -> empty (url-owned-by-earlier-production).
+ * Anything else is left alone. filesForShow(showId) returns that show's review
+ * records, or null when its directory is not on this machine: then nothing is
+ * changed (absence is never evidence).
+ * @returns {{state: object, changed: number}}
+ */
+function reclassifyFileFinds(state, filesForShow, nowMs) {
+  let changed = 0;
+  const next = { ...state, cells: { ...(state.cells || {}) } };
+  for (const [key, cell] of Object.entries(next.cells)) {
+    if (cell.autoAck || !Array.isArray(cell.attempts)) continue;
+    const opened = openedMs(cell.openingDate);
+    let touched = false;
+    const attempts = cell.attempts.map((a) => {
+      if (!a || a.outcome !== 'rejected' || !a.url) return a;
+      const relabel = (outcome, reason) => { touched = true; return { ...a, outcome, collectorOutcome: 'rejected', collectorReason: a.reason, reason }; };
+      if (FILE_FIND_REASONS.has(a.reason)) {
+        const files = filesForShow(cell.showId);
+        if (!files) return a;
+        const byUrl = files.find((f) => sameUrl(f.url, a.url));
+        if (byUrl) return isNotThisProduction(byUrl) ? relabel('no_evidence', 'existing-file-not-this-production') : a;
+        const stub = files.find((f) => f.__file === `${cell.outletId}--unknown.json`);
+        if (a.reason === 'file-exists' && stub && isNotThisProduction(stub)) return relabel('non_evidence', 'filename-collision-rejudge');
+        return a;
+      }
+      const owned = /^cross-show-url-owned:(.+)$/.exec(String(a.reason || ''));
+      if (owned && owned[1] !== cell.showId && opened != null) {
+        const files = filesForShow(owned[1]);
+        if (!files) return a;
+        const f = files.find((x) => sameUrl(x.url, a.url));
+        const t = f && f.publishDate ? Date.parse(f.publishDate) : NaN;
+        if (Number.isFinite(t) && t < opened - EARLIER_PRODUCTION_MS) return relabel('no_evidence', 'url-owned-by-earlier-production');
+      }
+      return a;
+    });
+    if (!touched) continue;
+    changed++;
+    const updated = { ...cell, attempts };
+    if (cellPhase(updated, nowMs).phase === 'acked') {
+      updated.autoAck = { ackedAt: new Date(nowMs).toISOString(), note: ackNote(updated) };
+    }
+    next.cells[key] = updated;
+  }
+  return { state: next, changed };
+}
+
 function ackNote(cell) {
-  const dates = (cell.attempts || []).filter((a) => a.outcome === 'no_evidence').map((a) => String(a.at).slice(0, 10));
+  const dates = (cell.attempts || []).map(normalizedAttempt).filter((a) => a.outcome === 'no_evidence').map((a) => String(a.at).slice(0, 10));
   return `auto (BRO-7312): ${dates.length} targeted searches of ${cell.outletId} for ${cell.showId} found no review (${dates.join(', ')})`;
 }
 
@@ -289,6 +376,7 @@ const REASON_TEXT = {
   'no-publish-date': 'the only match had no date, so we could not tell which production it covers',
   'search-keeps-failing': 'the search itself kept failing',
   'file-exists': 'we have a copy on file, but it never made it onto the site',
+  'flagged-file-collision': 'a likely review was found, but an older rejected copy is in the way of saving it',
   'write-skipped': 'we found it but could not save it',
   'recovery-overdue': 'the automatic search has stopped running',
   'recovery-not-running': 'the automatic search has not looked for it yet',
@@ -305,5 +393,6 @@ module.exports = {
   STATE_PATH, SCHEDULE_DAYS, ATTEMPTS_FOR_ACK, ACK_SOURCE,
   emptyState, loadRecoveryState,
   cellPhase, syncState, planRecovery, collectorArgs, applyResults,
+  isEmptyFindReason, isNotThisProduction, reclassifyFileFinds,
   mergedAcks, ownerVisibility, splitForOwner, ownerLine,
 };

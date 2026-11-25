@@ -321,9 +321,22 @@ async function writeReviewFile(showId, outletId, url, showTitle, outletName, opt
   const fileName = generateReviewFilename(outletId, 'unknown');
   const existing = findExistingReviewFile(showDir, outletId, 'unknown');
   const skip = (reason) => { if (opts.onSkip) opts.onSkip(reason); return false; };
-  if (existing || fs.existsSync(path.join(showDir, fileName))) {
-    console.log(`    SKIP (file exists): ${existing ? existing.filename : fileName}`);
+  if (existing) {
+    console.log(`    SKIP (file exists): ${existing.filename}`);
     return skip('file-exists');
+  }
+  // Only a flagged copy holds the name (BRO-7312 follow-up). The article is
+  // still judged by its date below before giving up, so an earlier
+  // production's review reads as "not this run", not as "a copy on file".
+  const flaggedPath = path.join(showDir, fileName);
+  let flagged = null;
+  if (fs.existsSync(flaggedPath)) {
+    try { flagged = JSON.parse(fs.readFileSync(flaggedPath, 'utf8')); } catch { flagged = {}; }
+    // No date window (ordinary collector runs): nothing to judge, skip as before.
+    if (!opts.publishWindow) {
+      console.log(`    SKIP (file exists): ${fileName}`);
+      return skip('file-exists');
+    }
   }
 
   // BRO-3133: fetch the body now, as opening-night discovery does (BRO-4933).
@@ -343,6 +356,12 @@ async function writeReviewFile(showId, outletId, url, showTitle, outletName, opt
   if (verdict) {
     console.log(`    SKIP (${verdict}${prefetch && prefetch.publishDate ? `: ${prefetch.publishDate}` : ''})`);
     return skip(verdict);
+  }
+  if (flagged) {
+    const { isNotThisProduction } = require('./lib/expected-critics-recovery');
+    const reason = flagged.url === url && isNotThisProduction(flagged) ? 'existing-file-not-this-production' : 'flagged-file-collision';
+    console.log(`    SKIP (${reason}): ${fileName}`);
+    return skip(reason);
   }
 
   // Route through the shared save-time chokepoint (card 38b637c5) so every
