@@ -829,3 +829,6 @@ data/money-monthly/snapshot.json
 /data/audit/job-memory-cap-state.json.*.tmp
 /data/audit/job-memory-cap-agent.json
 /data/audit/job-memory-cap-agent.json.*.tmp
+
+# scratch copies of libs made for before/after diffs (BRO-8292 committed one by accident)
+scripts/**/_tmp_*.js
