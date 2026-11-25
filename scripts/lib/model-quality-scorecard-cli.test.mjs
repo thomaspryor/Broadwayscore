@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: runs the real CLI over the bot-written landings and session-cost ledgers, so it belongs in the drift lane, not the blocking batch
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
