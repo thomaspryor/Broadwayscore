@@ -156,4 +156,17 @@ function loadTbReviewFiles(reviewTextsDir, fsImpl) {
   return out;
 }
 
-module.exports = { loadTbReviewFiles, planTbDatedCollisionRepairs, applyTbDatedCollisionRepairs };
+/** The collector's step 1b, whole: plan from the index read, apply (unless dryRun), print the TB-COLLISIONS report. Never throws. */
+function resolveTbDatedCollisions({ entries, shows, reviewTextsDir, dryRun = false, log = console.log, executeIn }) {
+  try {
+    const plan = planTbDatedCollisionRepairs(entries, loadTbReviewFiles(reviewTextsDir), shows);
+    const fixed = dryRun ? [] : applyTbDatedCollisionRepairs(reviewTextsDir, plan.repairs, executeIn ? { executeIn } : undefined);
+    log(`TB-COLLISIONS: ${plan.repairs.length} repairable, ${fixed.filter((r) => r.ok).length} fixed, ${plan.unresolved.length} unresolved${dryRun ? ' (dry run)' : ''}`);
+    for (const r of plan.repairs) log(`  ${dryRun ? 'WOULD FIX' : (fixed.find((x) => x.file === r.file && x.showId === r.showId) || {}).ok ? 'FIXED' : 'FAILED'} ${r.showId}/${r.file}: ${r.from} -> ${r.to} (${r.evidence})`);
+    for (const f of fixed.filter((x) => !x.ok)) log(`  FAILED ${f.showId}/${f.file}: ${f.msg}`);
+    for (const u of plan.unresolved) log(`  UNRESOLVED ${u.url} [${u.showIds.join(', ')}]: ${u.why}`);
+    return { plan, fixed };
+  } catch (e) { log(`TB-COLLISIONS failed (ingest continues): ${String(e.message).slice(0, 200)}`); return null; }
+}
+
+module.exports = { loadTbReviewFiles, planTbDatedCollisionRepairs, applyTbDatedCollisionRepairs, resolveTbDatedCollisions };

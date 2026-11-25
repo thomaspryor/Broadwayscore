@@ -119,3 +119,26 @@ test('opening-date window: 29 days before the page date is eligible, 31 days is 
   assert.equal(planTbDatedCollisionRepairs(idx, files, mk('2026-09-06')).repairs.length, 1);
   assert.equal(planTbDatedCollisionRepairs(idx, files, mk('2026-09-04')).repairs.length, 0);
 });
+
+test('the collector step (resolveTbDatedCollisions) reports and fixes a real collision on disk, and a dry run changes nothing', async (t) => {
+  const fs = await import('node:fs'); const path = await import('node:path');
+  const { makeTmpDir } = require('./tmpdir-for-tests.js');
+  const { resolveTbDatedCollisions } = require('./tb-dated-collision.js');
+  const dir = makeTmpDir(t, 'tbc-step-');
+  const put = (show) => { fs.mkdirSync(path.join(dir, show), { recursive: true }); fs.writeFileSync(path.join(dir, show, 'talkinbroadway--frank-scheck.json'), JSON.stringify({ showId: show, outletId: 'talkinbroadway', criticName: 'Frank Scheck', url: `${B}10_05_26.html`, fullText: 'a review '.repeat(40), publishDate: '2026-10-05' })); };
+  put('hairy-ape'); put('falls-for-jodie');
+  const urlOf = (show) => JSON.parse(fs.readFileSync(path.join(dir, show, 'talkinbroadway--frank-scheck.json'), 'utf8')).url;
+  const lines = [];
+  resolveTbDatedCollisions({ entries: index, shows, reviewTextsDir: dir, dryRun: true, log: (l) => lines.push(l) });
+  assert.match(lines[0], /1 repairable, 0 fixed, 0 unresolved \(dry run\)/);
+  assert.equal(urlOf('falls-for-jodie'), `${B}10_05_26.html`);
+  const live = [];
+  resolveTbDatedCollisions({ entries: index, shows, reviewTextsDir: dir, log: (l) => live.push(l) });
+  assert.match(live[0], /1 repairable, 1 fixed, 0 unresolved/);
+  assert.match(live[1], /FIXED falls-for-jodie/);
+  assert.equal(urlOf('falls-for-jodie'), `${B}10_05_26b.html`);
+  assert.equal(urlOf('hairy-ape'), `${B}10_05_26.html`);
+  const again = [];
+  resolveTbDatedCollisions({ entries: index, shows, reviewTextsDir: dir, log: (l) => again.push(l) });
+  assert.match(again[0], /0 repairable, 0 fixed, 0 unresolved/);
+});
