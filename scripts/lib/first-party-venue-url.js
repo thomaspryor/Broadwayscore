@@ -49,7 +49,6 @@ function venueName(venue) {
   return String(venue || '').split(',')[0].split(/\s+-\s+/)[0];
 }
 
-/** www.tickets.goodmantheatre.org -> goodmantheatre; cft.org.uk -> cft. */
 // A theatre's own site is on a mainstream TLD; squatter TLDs (.xyz, .biz, .info) are not.
 const FIRST_PARTY_TLDS = new Set(['com', 'org', 'net', 'theatre', 'theater', 'art', 'arts', 'tickets', 'nyc', 'uk', 'au', 'nz', 'ca', 'us']);
 const BARE_TLDS = new Set(['org', 'theatre', 'theater', 'arts', 'uk', 'au', 'nz', 'ca']);
@@ -57,6 +56,7 @@ function tldOf(url) {
   try { return new URL(url).hostname.toLowerCase().split('.').pop(); } catch { return ''; }
 }
 
+/** www.tickets.goodmantheatre.org -> goodmantheatre; cft.org.uk -> cft. */
 function siteLabel(url) {
   let host;
   try { host = new URL(url).hostname.toLowerCase(); } catch { return null; }
@@ -83,7 +83,13 @@ function venueSpellings(venue) {
   }
   const out = new Set();
   const bare = new Set();
-  for (const whole of wholes) if (whole.length >= 7) { out.add(whole); bare.add(whole); }
+  // The full name WITH its theatre word ("hampsteadtheatre") is never a newspaper; only a label
+  // made of distinctive words alone ("kansascity") is bare and needs the .org-style TLDs.
+  for (const whole of wholes) {
+    if (whole.length < 7) continue;
+    out.add(whole);
+    if (whole === distinctive.join('')) bare.add(whole);
+  }
   for (const stem of new Set([...prefixes, ...wholes])) {
     for (const suffix of SUFFIXES) {
       if (suffix === '') continue;

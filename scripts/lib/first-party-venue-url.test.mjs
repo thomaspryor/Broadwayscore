@@ -16,6 +16,10 @@ test('theatre sites spelled from the venue name are first-party', () => {
     ['https://tickets.arenastage.org/x', 'Arena Stage, Washington, DC'],
     ['https://www.pasadenaplayhouse.org', 'Pasadena Playhouse, Pasadena, CA'],
     ['https://www.royalexchange.co.uk/whats-on/x', 'Royal Exchange Theatre, Manchester'],
+    // full name with its theatre word is fine on .com; a distinctive-only bare label needs .org
+    ['https://www.hampsteadtheatre.com/whats-on/x', 'Hampstead Theatre, London'],
+    ['https://www.moxietheatre.com/x', 'Moxie Theatre, San Diego, CA'],
+    ['https://www.kansascityrep.org/x', 'Kansas City Repertory Theatre, Kansas City, MO'],
   ];
   for (const [url, venue] of ok) assert.equal(isFirstPartyVenueUrl(url, venue), true, `${url} <= ${venue}`);
 });
