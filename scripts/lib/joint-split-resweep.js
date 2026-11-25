@@ -27,7 +27,7 @@ function isJointParent(data) {
  */
 function pickWholeText(data, history = []) {
   const orig = Number(data.multiShowSplitOriginalLength);
-  const near = (t) => typeof t === 'string' && Number.isFinite(orig) && Math.abs(t.length - orig) <= 50;
+  const near = (t) => typeof t === 'string' && Number.isFinite(orig) && Math.abs(t.length - orig) <= Math.max(50, orig * 0.03);
   const cur = typeof data.fullText === 'string' ? data.fullText : '';
   if (near(cur) || (Number.isFinite(orig) && cur.length > orig)) return { text: cur, source: 'current' };
   for (let i = 0; i < history.length; i++) {
@@ -50,6 +50,11 @@ function pickWholeText(data, history = []) {
 function replanJointParent(data, history, shows) {
   const whole = pickWholeText(data, history);
   if (!whole) return { verdict: 'no-whole-text' };
+  return replanText(data, whole, shows);
+}
+
+/** Re-plan one known whole text ({ text, source }) for a joint parent, markers stripped. */
+function replanText(data, whole, shows) {
   const fresh = { ...data, fullText: whole.text };
   for (const k of SPLIT_MARKERS) delete fresh[k];
   const plan = planMultiShowFanout(fresh, shows, { ownShowId: data.showId, joint: true });
@@ -113,4 +118,4 @@ function replanReconstructed(data, children, shows) {
   return { verdict, source: 'reconstructed', orders: cands.length, ordersSplit: split, ordersCousin: cousin };
 }
 
-module.exports = { isJointParent, pickWholeText, replanJointParent, reconstructCandidates, replanReconstructed, SPLIT_MARKERS };
+module.exports = { isJointParent, pickWholeText, replanJointParent, replanText, reconstructCandidates, replanReconstructed, SPLIT_MARKERS };

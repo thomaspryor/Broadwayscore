@@ -9,14 +9,17 @@
  * refetch + rescore those. NO-SPLIT(keep) rows decline for other reasons (real
  * multi-show columns the joint strategy no longer reads): leave their split.
  *
- * Usage: node scripts/sweep-joint-split-parents.js [--review-texts=DIR] [--json] [--out=FILE]
+ * Usage: node scripts/sweep-joint-split-parents.js [--review-texts=DIR] [--json] [--out=FILE] [--fetch]
+ * --fetch: for parents with no whole text in git or in their split sections,
+ * fetch the article (fetchPage + article-extractor) and re-plan it. Read-only:
+ * nothing is written to review-texts.
  * Needs full git history in the review-texts checkout (not a shallow clone).
  */
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { loadShows } = require('./lib/multi-show-splitter');
-const { isJointParent, replanJointParent, replanReconstructed } = require('./lib/joint-split-resweep');
+const { isJointParent, replanJointParent, replanReconstructed, replanText } = require('./lib/joint-split-resweep');
 
 const arg = (k) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
 const ROOT = path.resolve(arg('review-texts') || path.join(__dirname, '..', 'data', 'review-texts'));
@@ -34,7 +37,16 @@ function history(rel) {
   return out;
 }
 
-function main() {
+async function fetchWhole(data) {
+  const { fetchPage } = require('./lib/scraper');
+  const { extractArticleText } = require('./lib/article-extractor');
+  const got = await fetchPage(data.url);
+  if (!got || !got.content) return null;
+  const text = got.format === 'html' ? extractArticleText(got.content, new URL(data.url).hostname, data.criticName) : String(got.content);
+  return typeof text === 'string' && text.length > 800 ? { text, source: `fetched:${got.source || got.method || 'fetchPage'}` } : null;
+}
+
+async function main() {
   if (!fs.existsSync(ROOT)) { console.error(`review-texts not found: ${ROOT}`); process.exit(2); }
   const shows = loadShows();
   const rows = [];
@@ -56,6 +68,13 @@ function main() {
       const recon = replanReconstructed(own, children, shows);
       if (r.verdict === 'no-whole-text') r = recon;
       else r.reconstructed = recon.verdict;
+      if (r.verdict === 'no-whole-text' && process.argv.includes('--fetch') && data.url) {
+        try {
+          const whole = await fetchWhole(data);
+          if (whole) r = { ...replanText(own, whole, shows), fetchedChars: whole.text.length };
+          else r.fetchError = 'no article text';
+        } catch (e) { r.fetchError = String(e.message || e).slice(0, 200); }
+      }
       rows.push({ file: rel, children: data.multiShowSplitChildShowIds || [], currentChars: (data.fullText || '').length,
         originalChars: data.multiShowSplitOriginalLength, ...r });
     }
@@ -72,7 +91,8 @@ function main() {
   console.log(JSON.stringify(summary));
   for (const r of repair) console.log(`REPAIR\t${r.verdict}\t${r.file}\tchildren=${r.children.join(',')}`);
   for (const r of noSplit) console.log(`NO-SPLIT(keep)\t${r.file}\tchildren=${r.children.join(',')}\twhole=${r.wholeChars}(${r.source})\tcurrent=${r.currentChars}`);
-  for (const r of rows.filter((x) => x.verdict === 'no-whole-text')) console.log(`${r.verdict.toUpperCase()}\t${r.file}\t${r.ordersSplit ?? ''}/${r.orders ?? ''}`);
+  for (const r of rows.filter((x) => x.verdict === 'no-whole-text')) console.log(`NO-WHOLE-TEXT\t${r.file}${r.fetchError ? `\tfetch: ${r.fetchError}` : ''}`);
+  for (const r of rows.filter((x) => String(x.source || '').startsWith('fetched'))) console.log(`FETCHED\t${r.verdict}\t${r.file}\t${r.fetchedChars}/${r.originalChars}`);
 }
 
-main();
+main().catch((e) => { console.error(e); process.exit(1); });
