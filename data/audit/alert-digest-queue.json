@@ -313,5 +313,63 @@
       }
     ],
     "queuedAt": "2026-11-25T15:10:05.892Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8280-sb-pace",
+    "title": "Landing blocked: lint-workflows red on land/bro-8280-sb-pace",
+    "description": "land.yml did not land land/bro-8280-sb-pace: the lint-workflows gate went red at 801f9a2592. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45642169820",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8280-sb-pace"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "801f9a2592c626aede0c556fb33acc1d7d5ea10d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45642169820"
+      }
+    ],
+    "queuedAt": "2026-11-25T15:34:41.779Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/lib/default-critic-home.live.test.mjs::allowlist has no stale entries (a fixed default must #9a73db8fc2",
+    "title": "Test red on main: allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS) [testCodeFailure]",
+    "description": "scripts/lib/default-critic-home.live.test.mjs::allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS) [testCodeFailure] fails on origin/main itself (scripts-lib-tests), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8280-sb-pace. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45642169820",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "test",
+        "value": "scripts/lib/default-critic-home.live.test.mjs::allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS) [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45642169820"
+      }
+    ],
+    "queuedAt": "2026-11-25T15:34:42.089Z"
   }
 ]
