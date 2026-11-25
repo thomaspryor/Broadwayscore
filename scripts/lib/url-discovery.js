@@ -30,7 +30,8 @@ const { isTimeOutLondonListing } = require('./timeout-london-url');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { resolveSerpLink, dropUnresolvableSerpResults } = require('./unresolvable-url');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
-const { sdBilledCredits, withSpendFallback, withSpendShow, withSpendOutlet } = require('./provider-telemetry');
+const { sdBilledCredits, withSpendFallback, withSpendShow, withSpendOutlet, currentSpendShowId } = require('./provider-telemetry');
+const { sbSerpMarketSkips } = require('./sb-market-gate');
 const { consultBrightData } = require('./brightdata-caps');
 const { consultScrapingdog, pressNightCapStatus } = require('./scrapingdog-caps');
 const { consultScrapingbee } = require('./scrapingbee-caps');
@@ -1151,7 +1152,12 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     scrapingbee: { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' },
     brightdata: { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' },
   };
-  const _chain = serpChainOrder(effectivePreferSpeed({ preferSpeed, emptyAuthoritative, sdAnswered: _sdAnswered }), _skips).map(name => _entries[name]);
+  // BRO-8323: ScrapingBee is Broadway's tier. A non-Broadway show's chain drops it. Kept out of
+  // _skips on purpose: _chainTruncated (above) would stop caching that market's empty answers,
+  // and this drop is deterministic per show, not a mode that could poison a later run.
+  const _marketSkips = sbSerpMarketSkips(currentSpendShowId());
+  const _chainSkips = _marketSkips.size ? new Set([..._skips, ..._marketSkips]) : _skips;
+  const _chain = serpChainOrder(effectivePreferSpeed({ preferSpeed, emptyAuthoritative, sdAnswered: _sdAnswered }), _chainSkips).map(name => _entries[name]);
   if (_chain.length === 0) {
     if (_sdFiller) return { results: _sdFiller, provider: 'scrapingdog' };
     log('    ⚠ All SERP providers skipped (skipProviders/SERP_NO_SB) — no results');

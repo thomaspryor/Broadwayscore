@@ -1725,6 +1725,23 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
         return [];
       }
 
+      // BRO-8323: a non-Broadway show's paid JS render of one outlet host runs at most once per
+      // gap (default 30 min; SB_RENDER_GAP_HOURS, SB_MARKET_GATE_DISABLED=1 to turn off). Broadway and
+      // unclassified shows always render. Not a miss: nothing was searched, so no give-up credit.
+      if (!freeResults && !skipPaid && config.requiresJs && show && show.id) {
+        const _g = require('./sb-market-gate');
+        const _d = options._deps || {};
+        const _last = Object.prototype.hasOwnProperty.call(_d, 'lastRenderMs')
+          ? _d.lastRenderMs
+          : _g.lastSbRenderMs(require('./provider-telemetry').resolveLedgerPath(), show.id, config.domain);
+        const _gap = _g.renderGapDecision({ category: show.category, lastRenderMs: _last, nowMs: (_d.now || new Date()).getTime() });
+        if (_gap.skip) {
+          if (verbose) console.log(`    Site search [${config.name}]: ${show.category} show rendered ${Math.round(_gap.ageMs / 60000)}min ago (gap ${Math.round(_gap.gapMs / 60000)}min), paid render skipped`);
+          if (options.outcomes) options.outcomes[outletId] = 'not-attempted';
+          return [];
+        }
+      }
+
       let html = '';
       if (freeResults || skipPaid) {
         // free search answered (a validated hit, or a clean no-match); skip the paid render
