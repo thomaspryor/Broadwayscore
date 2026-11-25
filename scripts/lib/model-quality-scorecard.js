@@ -31,9 +31,7 @@ const THRESHOLDS = {
   reworkMinGapHours: 6,
   /** WORSE when after-rate > ratio x baseline-rate AND the after-rate is at least the floor. */
   reworkRatio: 1.5, reworkFloor: 0.05,
-  /** Extra land attempts per landed change (a refused or red run that was pushed again). */
-  retryRatio: 1.5, retryFloor: 0.10,
-  /** Revert landings (branch name has "revert") per landed change. */
+  /** Revert landings (branch name has "revert"; a revert under a card-named branch is not seen) per landed change. */
   revertRatio: 2, revertFloor: 0.02,
   /** Cards reopened after Done, per landed change; needs this many reopens after the switch. */
   reopenRatio: 2, reopenMinCount: 3, reopenFloor: 0.02,
@@ -44,24 +42,31 @@ function cardOfBranch(branch) {
   return m ? `BRO-${m[1]}` : null;
 }
 
-/** PURE. Landings rows -> rows in [startMs, endMs) with card + ms. */
+/** PURE. Landings rows -> card-named landings in [startMs, endMs), deduped by branch+sha. */
 function landingsInWindow(landings, startMs, endMs) {
   const out = [];
+  const seen = new Set();
   for (const r of landings || []) {
     const ms = Date.parse(r && r.ts);
     if (!Number.isFinite(ms) || ms < startMs || ms >= endMs) continue;
-    out.push({ ms, card: cardOfBranch(r.branch), branch: String(r.branch || ''), attempts: Number(r.attempts) || 1 });
+    const card = cardOfBranch(r.branch);
+    if (!card) continue; // data/bot landings carry no card: they would dilute every rate
+    const key = `${r.branch}@${r.sha || r.tip || ms}`;
+    if (seen.has(key)) continue; // one landing batched into several ledger rows
+    seen.add(key);
+    out.push({ ms, card, branch: String(r.branch || ''), attempts: Number(r.attempts) || 1 });
   }
   return out;
 }
 
 /**
- * PURE. Rework + retry + revert counts for the landings in a window. The lookback supplies earlier
- * landings: a landing is rework when the same card landed earlier within the rework window.
+ * PURE. Rework + rebase-loop + revert counts for the card landings in a window. A landing is rework
+ * when the same card landed earlier in the same window, 6h to 7 days before.
  */
 function reworkStats(allLandings, startMs, endMs, t = THRESHOLDS) {
   const win = landingsInWindow(allLandings, startMs, endMs);
-  const lookback = landingsInWindow(allLandings, startMs - t.reworkWindowDays * DAY_MS, endMs);
+  // Earlier landings come from the SAME window only, so Opus-era work cannot charge rework to the after window.
+  const lookback = win;
   const byCard = new Map();
   for (const r of lookback) {
     if (!r.card) continue;
@@ -123,7 +128,6 @@ function computeScorecard({ sessionRows, landings, reopens = null, switchDate, n
   const after = build(switchMs, nowMs, afterDays);
   const hits = [
     worse('rework rate', after.reworkRate, baseline.reworkRate, t.reworkRatio, t.reworkFloor),
-    worse('extra land attempts per landed change', after.retryRate, baseline.retryRate, t.retryRatio, t.retryFloor),
     worse('revert rate', after.revertRate, baseline.revertRate, t.revertRatio, t.revertFloor),
   ];
   if (after.reopen.available && baseline.reopen.available && after.reopen.count >= t.reopenMinCount) {
@@ -150,9 +154,9 @@ function formatScorecard(sc, { siteHealth = [] } = {}) {
   const rows = [
     ['Landed changes', b.landed, a.landed],
     ['Cards landed', b.cards, a.cards],
-    ['Cost per landed card', usd(b.cost.perCardUsd), usd(a.cost.perCardUsd)],
+    ['Session spend per card (ledger sessions only, from 2026-10-29)', usd(b.cost.perCardUsd), usd(a.cost.perCardUsd)],
     ['Rework (follow-up landing on same card within 7 days)', `${b.rework} (${pct(b.reworkRate)})`, `${a.rework} (${pct(a.reworkRate)})`],
-    ['Extra land attempts per landed change', `${b.extraAttempts} (${pct(b.retryRate)})`, `${a.extraAttempts} (${pct(a.retryRate)})`],
+    ['Rebase-loop attempts beyond the first (informational; refused or red runs write no row)', `${b.extraAttempts} (${pct(b.retryRate)})`, `${a.extraAttempts} (${pct(a.retryRate)})`],
     ['Revert landings', `${b.reverts} (${pct(b.revertRate)})`, `${a.reverts} (${pct(a.revertRate)})`],
     ['Cards reopened after Done', reo(b), reo(a)],
   ];

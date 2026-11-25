@@ -49,7 +49,7 @@ test('rework doubling after the switch is WORSE', () => {
   assert.match(sc.reasons.join(' '), /rework rate/);
 });
 
-test('similar rates are OK', () => {
+test("similar rates are OK", () => {
   const landings = [...window(SW - 28 * D, 40, 4), ...window(SW, 40, 4)];
   const sc = computeScorecard({ sessionRows: [], landings, switchDate: SWITCH, nowMs: SW + 10 * D });
   assert.strictEqual(sc.verdict, 'OK');
