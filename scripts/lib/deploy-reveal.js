@@ -108,29 +108,13 @@ function nytPicksChanged(pair) {
 // BRO-8281: owner rule (2026-11-25): Broadway openings are found in the first 30-60 min, anything else within
 // 6-8h. Only a change to a show whose public `cat` is in this list keeps ship-now; every other known category
 // rides the routine path (45-min interval, deferred retry, 3h backstop). null = every category counts (old behavior).
-const DEFAULT_REVEAL_CATEGORIES = ['broadway'];
-const NON_BROADWAY_CATEGORIES = ['off-broadway', 'west-end', 'off-west-end', 'regional', 'tour'];
-// Broadway ids carry no market hint; every other market's id does. A show is skipped only when the `cat` field AND
-// the id agree it is not Broadway, so one mislabeled `cat` cannot demote a Broadway opening (BRO-8281 pre-mortem).
-const NON_BROADWAY_ID_RE = /(^|-)(off-broadway|west-end|off-west-end|regional|tour|london|uk-tour)(-|$)/;
-
-/** Pure: env switch -> categories policy. GATE_REVEAL_ALL_CATEGORIES=true restores the old all-categories reveal. */
-function revealCategoriesFromEnv(env = process.env) {
-  return env && env.GATE_REVEAL_ALL_CATEGORIES === 'true' ? null : DEFAULT_REVEAL_CATEGORIES;
-}
+const { DEFAULT_REVEAL_CATEGORIES, NON_BROADWAY_CATEGORIES, NON_BROADWAY_ID_RE, revealCategoriesFromEnv, isNonBroadwayShowEntry } = require('./non-broadway-shows.js');
 
 /**
  * Pure: may this changed show file be ignored for the reveal decision? Only when a policy is set and every side
  * that exists has a top-level `cat` that is a KNOWN non-reveal category, and the id also looks non-Broadway.
  * Missing/unknown/mixed cat, or an id with no market hint, fails open (counts).
  */
-// Pure: should the SLA / reporting skip this shows.json entry as non-Broadway? Same id hint as the gate, and an
-// entry whose own category says broadway is never skipped.
-function isNonBroadwayShowEntry(show) {
-  if (!show || !NON_BROADWAY_ID_RE.test(String(show.id || ''))) return false;
-  const c = show.category;
-  return !(typeof c === 'string' && /^broadway$/i.test(c));
-}
 function skipForCategory(showId, before, after, revealCategories) {
   if (!revealCategories) return false;
   if (!NON_BROADWAY_ID_RE.test(String(showId || ''))) return false;

@@ -290,7 +290,7 @@ async function main() {
   } else if (!args.days) {
     // BRO-8281: only Broadway reveals ship-now, so the opening-night SLA judges Broadway openings. Non-Broadway
     // shows ride the routine deploy path (6-8h is the owner's target) and would read as false "too slow".
-    const { isNonBroadwayShowEntry, revealCategoriesFromEnv } = require('./lib/deploy-reveal');
+    const { isNonBroadwayShowEntry, revealCategoriesFromEnv } = require('./lib/non-broadway-shows');
     const slaShows = revealCategoriesFromEnv() ? showList.filter((x) => !isNonBroadwayShowEntry(x)) : showList;
     windows = selectRecentOpeningWindows(slaShows, { now, count: args.windows, records });
   }
