@@ -1380,5 +1380,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T08:33:03.779Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 1 review(s) flagged for anchored re-score — escalated after 39 notifications",
+    "description": "Filed BRO-8298 for owner triage after 39 repeats with no tracker.\n\n{\"unanchored\":1} across the whole corpus, by market {\"west-end\":335,\"broadway\":176,\"regional\":44,\"tour\":8}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] the-little-foxes-off-west-end-2024/thereviewshub--scott-matthewman.json A band 89-94",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8298",
+    "fields": [],
+    "queuedAt": "2026-11-25T09:20:11.733Z"
   }
 ]
