@@ -1196,10 +1196,28 @@ test('ledger path resolution: CI uses the tracked ledger, local execution does n
   }
 });
 
+test('BRO-8118: an explicit ALERT_LEDGER_PATH is a fixture, never seeded from the tracked ledger', () => {
+  const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-noseed-'));
+  const fixtureLedger = path.join(stateDir, 'alert-ledger.json');
+  const { router, restore, trackedLedgerPath } = loadRouterWithFakes({ ledgerEnvPath: fixtureLedger });
+  try {
+    const t = new Date().toISOString();
+    simulateGitCheckoutWipe(trackedLedgerPath, { conditions: { 'ci-condition': { status: 'open', disposition: 'digest', title: 'x', firstSeen: t, lastSeen: t, lastNotifiedAt: t, notifyCount: 1 } } });
+    assert.deepEqual(router.loadLedger().conditions, {});
+  } finally {
+    restore();
+  }
+});
+
 test('local ledger seeds from the committed CI ledger on first use (no cooldown reset storm)', async () => {
   const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-seed-'));
-  const localLedger = path.join(stateDir, 'alert-ledger.json');
-  const { router, calls, restore, trackedLedgerPath } = loadRouterWithFakes({ ledgerEnvPath: localLedger });
+  // BRO-8118: only the implicit local default seeds (an explicit ALERT_LEDGER_PATH is a fixture and must
+  // not read the live tracked ledger), so point HOME at a temp dir and load with no ALERT_LEDGER_PATH.
+  const localLedger = path.join(stateDir, '.broadwayscore-state', 'alert-ledger.json');
+  const priorHome = process.env.HOME;
+  process.env.HOME = stateDir;
+  const { router, calls, restore: restoreRouter, trackedLedgerPath } = loadRouterWithFakes({ ledgerEnvPath: null });
+  const restore = () => { restoreRouter(); if (priorHome === undefined) delete process.env.HOME; else process.env.HOME = priorHome; };
   try {
     // The local ledger does not exist yet; the committed one already records
     // this condition as notified 10 minutes ago.
@@ -1230,8 +1248,7 @@ test('local ledger seeds from the committed CI ledger on first use (no cooldown 
     });
     assert.equal(result.action, 'silent', 'CI already notified this inside the cooldown');
     assert.equal(calls.createLinearIssue.length, 0, 'no duplicate dispatch on the local sender');
-    // The seeded copy is now persisted locally; the tracked file is never written.
-    assert.ok(fs.existsSync(localLedger));
+    // (saveLedger refuses the real home path under node:test, so persistence is not asserted here.)
   } finally {
     restore();
     fs.rmSync(stateDir, { recursive: true, force: true });

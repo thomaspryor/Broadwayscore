@@ -219,6 +219,26 @@ test('verify-changed --refuse-undeclared: undeclared live test exits 1 with the 
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
+// BRO-8118: the local floor traces under CI=true like land.yml, so a probe that reaches the alert router's
+// tracked ledger is refused here (it used to pass locally and fail in the land run); a fixture ledger passes.
+test('verify-changed --refuse-undeclared: a probe reaching the router tracked ledger is refused locally; ALERT_LEDGER_PATH fixture passes', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8118-lane-'));
+  try {
+    const router = JSON.stringify(path.join(ROOT, 'scripts', 'lib', 'owner-alert-router.js'));
+    const probe = (pre) => `import { createRequire } from 'node:module';\nimport { test } from 'node:test';\nconst require = createRequire(import.meta.url);\n${pre}\ntest('router', () => { require(${router}).loadLedger(); });\n`;
+    const live = path.join(dir, 'probe-router-live.test.mjs');
+    fs.writeFileSync(live, probe(''));
+    const fixture = path.join(dir, 'probe-router-fixture.test.mjs');
+    fs.writeFileSync(fixture, probe(`process.env.ALERT_LEDGER_PATH = ${JSON.stringify(path.join(dir, 'alert-ledger.json'))};`));
+    const run = (f) => spawnSync(process.execPath, ['scripts/live-data-lane.js', '--verify-changed', '--refuse-undeclared', `--files=${path.relative(ROOT, f)}`], { cwd: ROOT, encoding: 'utf8', env: cleanEnv({}) });
+    const red = run(live);
+    assert.equal(red.status, 1, red.stdout + red.stderr);
+    assert.match(red.stdout, /probe-router-live\.test\.mjs reads live data \(data\/audit\/alert-ledger\.json/);
+    const ok = run(fixture);
+    assert.equal(ok.status, 0, ok.stdout + ok.stderr);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
 test('fixtureHint names the shows fixture seam only for a shows.json read', () => {
   assert.match(L.fixtureHint(['data/shows.json (untracked core data)']), /useShowsFixture/);
   assert.equal(L.fixtureHint(['data/audit/x.json (bot ledger)']), '');

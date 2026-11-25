@@ -297,7 +297,10 @@ function loadLedger() {
   // it): seed from the committed CI ledger so conditions CI already notified
   // stay inside their cooldown instead of all re-firing at once. Read-only —
   // saveLedger() always writes LEDGER_PATH, never the tracked one.
-  if (LEDGER_PATH !== TRACKED_LEDGER_PATH) {
+  // BRO-8118: an explicit ALERT_LEDGER_PATH is a fixture or a purpose-built ledger (tests, sweeps, the
+  // cloud worker's breaker alert): never mix the live tracked ledger into it, or a test that passes
+  // on a Mac reads live data in CI. Only the implicit local default seeds from the tracked file.
+  if (!process.env.ALERT_LEDGER_PATH && LEDGER_PATH !== TRACKED_LEDGER_PATH) {
     const tracked = readLedgerFile(TRACKED_LEDGER_PATH);
     if (tracked) return tracked;
   }
