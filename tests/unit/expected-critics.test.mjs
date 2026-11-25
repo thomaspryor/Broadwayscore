@@ -408,3 +408,12 @@ test('the collector judges the date before refusing on a rejected copy\'s filena
   assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'existing-file-not-this-production' }, 'x').outcome, 'no_evidence');
   assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'flagged-file-collision' }, 'x').outcome, 'rejected');
 });
+
+test('the daily cap serves the most overdue cell first, not the oldest opening', () => {
+  const old = { showId: 'old', outletId: 'o', openingDate: '2026-09-01', attempts: [{ at: '2026-11-23T10:00:00Z', outcome: 'no_evidence' }] };
+  const fresh = { showId: 'new', outletId: 'o', openingDate: '2026-11-17', firstSeenMissingAt: '2026-11-21T00:00:00Z', attempts: [] };
+  const state = { cells: { 'old::o': old, 'new::o': fresh } };
+  const now = Date.parse('2026-11-25T12:00:00Z');
+  const plans = R.planRecovery(state, now, { maxSearches: 1 });
+  assert.deepEqual(plans, [{ showId: 'new', outletIds: ['o'] }]);
+});

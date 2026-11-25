@@ -182,7 +182,7 @@ function syncState(state, gaps, nowMs) {
 }
 
 /**
- * Cells due for a search, oldest opening first, grouped per show (one
+ * Cells due for a search, most overdue first, grouped per show (one
  * collector run per show), capped at maxSearches cells.
  * @returns {Array<{showId: string, outletIds: string[]}>}
  */
@@ -190,9 +190,13 @@ function planRecovery(state, nowMs, { maxSearches = 12 } = {}) {
   const due = [];
   for (const [key, cell] of Object.entries(state.cells || {})) {
     const p = cellPhase(cell, nowMs);
-    if (p.phase === 'recovering' && p.nextDueMs != null && p.nextDueMs <= nowMs) due.push({ key, cell });
+    if (p.phase === 'recovering' && p.nextDueMs != null && p.nextDueMs <= nowMs) due.push({ key, cell, dueMs: p.nextDueMs });
   }
-  due.sort((a, b) => String(a.cell.openingDate).localeCompare(String(b.cell.openingDate)) || a.key.localeCompare(b.key));
+  // Most overdue first. Oldest-opening-first starved a newer show's first
+  // searches for days behind older shows' retries (Blue Man Group, never
+  // searched 2026-11-21..25 under the 12/day cap), and an overdue cell is
+  // owner-visible.
+  due.sort((a, b) => a.dueMs - b.dueMs || String(a.cell.openingDate).localeCompare(String(b.cell.openingDate)) || a.key.localeCompare(b.key));
   const byShow = new Map();
   for (const { cell } of due.slice(0, Math.max(0, maxSearches))) {
     if (!byShow.has(cell.showId)) byShow.set(cell.showId, []);
