@@ -45,4 +45,30 @@ function findDeadShowRedirects(redirects, liveSlugs, slugRedirectMap, liveIds) {
   return list.filter(r => dead.has(r));
 }
 
-module.exports = { isDeadShowRedirect, findDeadShowRedirects };
+/**
+ * BRO (2026-11-25): a hardcoded `/show/<x>` → `/show/<y>` redirect whose SOURCE
+ * is the slug of a live show hijacks that show's page. Example: when the
+ * Broadway `birthright` (Hudson Theatre) was added, an old
+ * /show/birthright → /show/birthright-off-broadway rule from the off-Broadway
+ * run still 301'd every visitor away from it. vercel.json redirects run before
+ * the page route, so the live page was unreachable.
+ *
+ * Exempt: redirects whose destination is not a /show/ page (e.g. the
+ * /show/<slug>-off-broadway → /opera/<slug> rules, which intentionally move
+ * a live opera row to its own route). Parameterised sources are ignored.
+ */
+function findShadowingShowRedirects(redirects, liveSlugs) {
+  return (redirects || []).filter((r) => {
+    const src = r && r.source;
+    const dest = r && r.destination;
+    if (typeof src !== 'string' || typeof dest !== 'string') return false;
+    if (!src.startsWith('/show/') || !dest.startsWith('/show/')) return false;
+    const slug = src.slice('/show/'.length).replace(/\/$/, '').toLowerCase();
+    if (!slug || /[:/(*]/.test(slug)) return false;
+    if (dest.replace(/\/$/, '') === src.replace(/\/$/, '')) return false;
+    // Slugs only: a /show/<id> -> /show/<slug> rule is an alias, not a hijack.
+    return liveSlugs.has(slug);
+  });
+}
+
+module.exports = { isDeadShowRedirect, findDeadShowRedirects, findShadowingShowRedirects };

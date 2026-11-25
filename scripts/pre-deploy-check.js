@@ -113,7 +113,7 @@ try {
   // turns <a> into a 404. Drop those rules for this build (the middleware map
   // then resolves <a> if it can). See lib/dead-show-redirects.js (BRO-275).
   try {
-    const { findDeadShowRedirects } = require('./lib/dead-show-redirects');
+    const { findDeadShowRedirects, findShadowingShowRedirects } = require('./lib/dead-show-redirects');
     const vercelPath = path.join(__dirname, '..', 'vercel.json');
     const slugMapPath = path.join(__dirname, '..', 'data', 'slug-redirects-compact.json');
     const vercelRaw = fs.readFileSync(vercelPath, 'utf8');
@@ -128,11 +128,15 @@ try {
     }
     const slugMap = fs.existsSync(slugMapPath) ? JSON.parse(fs.readFileSync(slugMapPath, 'utf8')) : {};
     const dead = findDeadShowRedirects(vercelCfg.redirects, new Set(shows.map(s => s.slug)), slugMap, new Set(shows.map(s => s.id)));
-    if (dead.length > 0) {
-      const deadSet = new Set(dead);
-      vercelCfg.redirects = vercelCfg.redirects.filter(r => !deadSet.has(r));
+    // A rule whose source is a LIVE show's slug hides that show (birthright,
+    // 2026-11-25). Drop it for this build and say so loudly.
+    const shadowing = findShadowingShowRedirects(vercelCfg.redirects, new Set(shows.map(s => s.slug)));
+    const drop = new Set([...dead, ...shadowing]);
+    if (drop.size > 0) {
+      vercelCfg.redirects = vercelCfg.redirects.filter(r => !drop.has(r));
       fs.writeFileSync(vercelPath, JSON.stringify(vercelCfg, null, 2) + (vercelRaw.endsWith('\n') ? '\n' : ''));
-      ok(`Dropped ${dead.length} vercel.json show redirect(s) to missing slugs: ${dead.map(r => `${r.source} → ${r.destination}`).join(', ')}`);
+      if (dead.length > 0) ok(`Dropped ${dead.length} vercel.json show redirect(s) to missing slugs: ${dead.map(r => `${r.source} → ${r.destination}`).join(', ')}`);
+      if (shadowing.length > 0) ok(`Dropped ${shadowing.length} vercel.json show redirect(s) that hid a live show: ${shadowing.map(r => `${r.source} → ${r.destination}`).join(', ')}`);
     }
   } catch (e) {
     console.warn(`⚠️  Dead show-redirect check skipped: ${e.message}`);
