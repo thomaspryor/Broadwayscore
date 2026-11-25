@@ -49435,13 +49435,13 @@
       "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.296Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.296Z",
-      "lastSeen": "2026-11-25T06:17:39.049Z",
+      "lastSeen": "2026-11-25T06:43:42.514Z",
       "lastNotifiedAt": "2026-11-24T17:22:45.963Z",
       "lastSurfacedAt": "2026-11-24T17:22:45.963Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 36
+      "silentRefires": 37
     },
     "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c": {
       "status": "open",
@@ -49449,13 +49449,13 @@
       "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.324Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.324Z",
-      "lastSeen": "2026-11-25T06:17:39.078Z",
+      "lastSeen": "2026-11-25T06:43:42.542Z",
       "lastNotifiedAt": "2026-11-24T17:22:45.993Z",
       "lastSurfacedAt": "2026-11-24T17:22:45.993Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 36
+      "silentRefires": 37
     },
     "land:land/job/linear-BRO-8167-mwtgpag4": {
       "status": "resolved",
@@ -50029,13 +50029,13 @@
       "title": "Test red on main: the same week in the Broadway edition does not get the West End exception [testCodeFailure]",
       "firstSeen": "2026-11-24T07:28:53.020Z",
       "incidentOpenedAt": "2026-11-24T07:28:53.020Z",
-      "lastSeen": "2026-11-25T06:17:39.015Z",
+      "lastSeen": "2026-11-25T06:43:42.482Z",
       "lastNotifiedAt": "2026-11-24T07:28:53.020Z",
       "lastSurfacedAt": "2026-11-24T07:28:53.020Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 50
+      "silentRefires": 51
     },
     "live-data-test:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception": {
       "status": "open",
@@ -50518,13 +50518,13 @@
       "title": "Test red on main: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a ",
       "firstSeen": "2026-11-25T05:33:43.517Z",
       "incidentOpenedAt": "2026-11-25T05:33:43.517Z",
-      "lastSeen": "2026-11-25T06:17:39.106Z",
+      "lastSeen": "2026-11-25T06:43:42.569Z",
       "lastNotifiedAt": "2026-11-25T05:33:43.517Z",
       "lastSurfacedAt": "2026-11-25T05:33:43.517Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-8289-retro": {
       "status": "open",
@@ -50554,7 +50554,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-8289-json": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-8289-json",
       "firstSeen": "2026-11-25T06:07:59.716Z",
@@ -50564,7 +50564,8 @@
       "lastSurfacedAt": "2026-11-25T06:07:59.716Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-25T06:43:42.341Z"
     }
   }
 }
