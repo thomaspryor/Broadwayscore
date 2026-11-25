@@ -32,12 +32,17 @@
  * ended five days earlier). After the spotlight merge, recent NYT reviews we
  * hold that are not on the list are fetched and judged by the label above
  * their own headline (scripts/lib/nyt-review-page-pick.js). It runs even when
- * the spotlight fetch fails. Candidates come from data/review-texts: the
- * shows in $SHOWS (the poller sets it) or, when unset, every show. Negative
- * results are cached in the picks file's _meta.pageChecks so a review is
- * fetched at most twice. Add --review-url=<url> (repeatable) to check
- * specific URLs, e.g. to confirm one by hand with --dry-run.
- * --no-review-pages skips the pass.
+ * the spotlight fetch fails, on its own time budget (at least 3 min), so a
+ * blocked spotlight page cannot starve it. Candidates come from
+ * data/review-texts: the shows in $SHOWS (the opening-night poller sets it and
+ * checks out review-texts). Without $SHOWS it scans every show, which only
+ * works where review-texts is checked out; the weekly/daily job has no such
+ * checkout, so there the pass lists nothing and the spotlight scrape alone
+ * applies (it catches up within days). Negative results and failed fetches are
+ * cached in the picks file's _meta.pageChecks: a review is fetched at most
+ * twice for a verdict and at most 4 times if fetches fail. Add
+ * --review-url=<url> (repeatable) to check specific URLs, e.g. to confirm one
+ * by hand with --dry-run. --no-review-pages skips the pass.
  *
  * --max-pages=1 checks only the newest ~10 picks. The opening-night poller
  * uses it so a pick published on opening night gets its badge in the same
@@ -58,6 +63,9 @@ const OUTPUT_PATH = path.join(__dirname, '../data/nyt-critics-picks.json');
 const BASE_URL = 'https://www.nytimes.com/spotlight/theater-critics-picks';
 const MAX_PAGES = 15; // Safety cap
 const DELAY_MS = 1500;
+// A review-page fetch is a fetchPage() chain (worst case ~2.5 min, run-budget.js).
+const PAGE_PASS_MIN_BUDGET_MIN = 3;
+const PAGE_FETCH_MIN_REMAINING_MS = 90 * 1000;
 // NYT publishes a few picks a week. A run that finds more new URLs than this
 // scraped something other than the spotlight list; since the list only grows,
 // a bad merge would badge non-picks permanently, so refuse it instead.
@@ -230,12 +238,17 @@ async function main() {
     ({ urls, added } = mergePicks(existingUrls, scraped));
     console.log(`New picks: ${added.length}`);
     added.forEach(u => console.log('  + ' + u));
-    metaPatch = { source: BASE_URL, lastScrapeCount: scraped.length };
+    // lastUpdated is the spotlight's freshness (health-check.js warns at 72h),
+    // so only a successful spotlight merge moves it.
+    metaPatch = { source: BASE_URL, lastScrapeCount: scraped.length, lastUpdated: new Date().toISOString() };
   }
 
   let pageState = (prev && prev._meta && prev._meta.pageChecks) || {};
   if (!process.argv.includes('--no-review-pages')) {
-    const pass = await reviewPagePass({ urls, pageState, budget, argv: process.argv.slice(2) });
+    // Own budget: the poller gives the spotlight 2 min, and a blocked spotlight
+    // page can spend all of it before this pass starts.
+    const passBudget = createRunBudget(Math.max(PAGE_PASS_MIN_BUDGET_MIN, parseTimeBudgetMin(process.argv.slice(2))));
+    const pass = await reviewPagePass({ urls, pageState, budget: passBudget, argv: process.argv.slice(2) });
     pageState = pass.pageState;
     if (pass.picks.length) {
       const merged = mergePicks(urls, pass.picks);
@@ -253,7 +266,6 @@ async function main() {
       _meta: {
         ...((prev && prev._meta) || {}),
         ...metaPatch,
-        lastUpdated: new Date().toISOString(),
         count: urls.length,
         pageChecks: pageState,
       },
@@ -309,6 +321,7 @@ async function reviewPagePass({ urls, pageState, budget, argv, now = new Date(),
     }
   }
   const onFile = new Set(urls.map(canonicalPickUrl));
+  // (--review-url bypasses the cache, so repeated manual checks always fetch.)
   const todo = selectUrlsToCheck({
     urls: candidates.filter(u => !onFile.has(canonicalPickUrl(u))),
     state: explicit.length ? {} : pageState,
@@ -319,7 +332,7 @@ async function reviewPagePass({ urls, pageState, budget, argv, now = new Date(),
     return { picks: [], pageState };
   }
   console.log(`Review-page pass: checking ${todo.length} review page(s)`);
-  const result = await classifyReviewPages({ urls: todo, fetch, shouldStop: () => budget.exceeded() });
+  const result = await classifyReviewPages({ urls: todo, fetch, shouldStop: () => !budget.canStartItem(PAGE_FETCH_MIN_REMAINING_MS) });
   result.picks.forEach(u => console.log('  + (review page label) ' + u));
   result.negatives.forEach(u => console.log('  - not a pick: ' + u));
   result.failures.forEach(f => console.warn(`  ! ${f.url}: ${f.reason}`));

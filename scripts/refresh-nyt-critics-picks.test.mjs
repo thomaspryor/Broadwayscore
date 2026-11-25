@@ -99,7 +99,7 @@ test('parseMaxPages: default is the full cap, --max-pages=1 limits to page 1, ju
 const SEVEN = 'https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago-hudson.html';
 const pickPage = '<div><p>Critic’s Pick</p></div><div><h1 data-testid="headline">T</h1> seven-guitars-review-hornsby-santiago-hudson';
 const plainPage = '<div><p>Critic’s Notebook</p></div><div><h1 data-testid="headline">T</h1> seven-guitars-review-hornsby-santiago-hudson';
-const neverExceeded = { exceeded: () => false };
+const neverExceeded = { exceeded: () => false, canStartItem: () => true };
 
 test('review-page pass adds a review the spotlight list does not have', async () => {
   const r = await reviewPagePass({
@@ -137,7 +137,8 @@ test('review-page pass skips URLs already on the list and survives a failed fetc
     listCandidates: () => [SEVEN], fetch: async () => { throw new Error('HTTP 403'); },
   });
   assert.deepEqual(blocked.picks, []);
-  assert.equal(blocked.pageState[SEVEN], undefined, 'a blocked fetch is not a negative result');
+  assert.equal(blocked.pageState[SEVEN].checks, 0, 'a blocked fetch is not a negative result');
+  assert.equal(blocked.pageState[SEVEN].fails, 1, 'but it is counted so the next poll backs off');
 });
 
 test('--review-url checks exactly those URLs, bypassing the cache', async () => {
@@ -148,4 +149,36 @@ test('--review-url checks exactly those URLs, bypassing the cache', async () => 
     listCandidates: () => { throw new Error('must not list'); }, fetch: async () => pickPage,
   });
   assert.deepEqual(r.picks, [SEVEN]);
+});
+
+test('review-page pass does not start a fetch when its budget cannot cover one (the blocked-spotlight starvation)', async () => {
+  let fetched = 0;
+  const r = await reviewPagePass({
+    urls: [], pageState: {}, argv: [], now: new Date('2026-11-25T01:00:00Z'),
+    budget: { exceeded: () => false, canStartItem: () => false },
+    listCandidates: () => [SEVEN], fetch: async () => { fetched++; return pickPage; },
+  });
+  assert.equal(fetched, 0);
+  assert.deepEqual(r.picks, []);
+});
+
+test('review-page pass backs off a blocked review page instead of retrying every poll', async () => {
+  const t0 = new Date('2026-11-25T01:00:00Z');
+  let fetched = 0;
+  let state = {};
+  const poll = async (minutes) => {
+    const r = await reviewPagePass({
+      urls: [], pageState: state, budget: neverExceeded, argv: [],
+      now: new Date(t0.getTime() + minutes * 60 * 1000),
+      listCandidates: () => [SEVEN], fetch: async () => { fetched++; throw new Error('HTTP 403'); },
+    });
+    state = r.pageState;
+  };
+  await poll(0);
+  await poll(30);   // inside the 60 min backoff
+  assert.equal(fetched, 1);
+  await poll(90); await poll(180); await poll(270);
+  assert.equal(fetched, 4, 'four failed tries, then it stops');
+  await poll(400); await poll(600);
+  assert.equal(fetched, 4);
 });

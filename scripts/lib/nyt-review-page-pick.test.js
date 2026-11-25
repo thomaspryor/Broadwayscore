@@ -14,6 +14,7 @@ const path = require('node:path');
 const {
   isCriticsPickPage, looksLikeArticlePage, selectUrlsToCheck, classifyReviewPages,
   recordChecks, pruneState, MAX_NEGATIVE_CHECKS, MIN_RECHECK_GAP_MS, MAX_URLS_PER_RUN,
+  MAX_FAILED_FETCHES, FAIL_BACKOFF_MS,
 } = require('./nyt-review-page-pick');
 
 const FIX = path.join(__dirname, '..', '..', 'tests', 'fixtures', 'nyt-review-page');
@@ -129,4 +130,23 @@ test('pruneState drops entries past the retention window', () => {
   const now = new Date('2026-11-25T00:00:00Z');
   const state = { old: { checks: 1, lastCheckedAt: '2026-10-01T00:00:00Z' }, fresh: { checks: 1, lastCheckedAt: '2026-11-24T00:00:00Z' } };
   assert.deepEqual(Object.keys(pruneState(state, now)), ['fresh']);
+});
+
+test('the JSON fallback only trusts the first header block, not a later related item', () => {
+  const related = '<h1 data-testid="headline">T</h1><script>{"__typename":"HeaderBasicBlock","label":{"content":[{"text":"Critic’s Notebook"}]},'
+    + '"x":"y"} {"__typename":"HeaderBasicBlock","label":{"content":[{"text":"Critic’s Pick"}]}}</script>';
+  assert.equal(isCriticsPickPage(related), false);
+});
+
+test('failed fetches back off, stop after MAX_FAILED_FETCHES, and a later negative keeps the count', () => {
+  const t0 = new Date('2026-11-25T01:00:00Z');
+  let state = recordChecks({}, { failures: [{ url: SEVEN, reason: 'x' }] }, t0);
+  assert.equal(state[SEVEN].fails, 1);
+  assert.equal(state[SEVEN].checks, 0);
+  assert.deepEqual(selectUrlsToCheck({ urls: [SEVEN], state, now: new Date(t0.getTime() + FAIL_BACKOFF_MS - 1000) }), []);
+  const t1 = new Date(t0.getTime() + FAIL_BACKOFF_MS + 1000);
+  assert.deepEqual(selectUrlsToCheck({ urls: [SEVEN], state, now: t1 }), [SEVEN]);
+  for (let i = 1; i < MAX_FAILED_FETCHES; i++) state = recordChecks(state, { failures: [{ url: SEVEN }] }, t1);
+  assert.equal(state[SEVEN].fails, MAX_FAILED_FETCHES);
+  assert.deepEqual(selectUrlsToCheck({ urls: [SEVEN], state, now: new Date(t1.getTime() + 24 * 3600 * 1000) }), []);
 });

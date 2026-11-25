@@ -107,7 +107,7 @@ if (require.main === module) {
   let pickUrls = [];
   try { pickUrls = JSON.parse(fs.readFileSync(path.join(root, 'data', 'nyt-critics-picks.json'), 'utf8')).urls || []; } catch { /* treat as empty */ }
   const reviewTextsDir = path.join(root, 'data', 'review-texts');
-  const shows = showIds.map(showId => ({ showId, reviews: readShowReviews(reviewTextsDir, showId) }));
+  const shows = showIds.map(showId => ({ showId, reviews: readShowReviews(reviewTextsDir, showId, 'nytimes') }));
   const unpicked = findUnpickedNytUrls({ shows, pickUrls, now });
   let lastCheckedAt = null;
   try { lastCheckedAt = JSON.parse(fs.readFileSync(statePath, 'utf8')).lastCheckedAt; } catch { /* never checked */ }

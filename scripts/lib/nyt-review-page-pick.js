@@ -36,6 +36,11 @@ const HEADER_BLOCK_LABEL_RE = /"__typename":"HeaderBasicBlock","label":\{[^}]*?"
 // label could be added after publication), then never again.
 const MAX_NEGATIVE_CHECKS = 2;
 const MIN_RECHECK_GAP_MS = 12 * 60 * 60 * 1000;
+// A fetch that failed (blocked, paywall shell) is not a negative, but each try
+// is a paid fetchPage() chain, so it backs off and gives up after a few tries
+// (BRO-8286 review: 6 URLs x every 30 min x 3 days would otherwise be ~860 chains).
+const MAX_FAILED_FETCHES = 4;
+const FAIL_BACKOFF_MS = 60 * 60 * 1000;
 const MAX_URLS_PER_RUN = 6;
 // Entries in the negative cache older than this are dropped (the recency
 // window for candidates is 3 days, so they can never be asked about again).
@@ -68,10 +73,17 @@ function isCriticsPickPage(html) {
   if (h < 0) return false;
   const before = text.slice(Math.max(0, h - LABEL_LOOKBACK_CHARS), h);
   if (LABEL_P_RE.test(before)) return true;
-  // Only the FIRST header block is this article's; later ones belong to
-  // embedded or related items.
-  const j = text.indexOf('"__typename":"HeaderBasicBlock"');
-  if (j >= 0 && HEADER_BLOCK_LABEL_RE.test(text.slice(j, j + 600))) return true;
+  // Fallback if NYT reshuffles the DOM: the article's own header block in the
+  // page JSON. Only the FIRST block counts; later ones belong to embedded or
+  // related items. (Every real page checked 2026-11-25 had exactly one headline
+  // and one header block; A alone classified all 9 correctly, B is redundancy.)
+  const marker = '"__typename":"HeaderBasicBlock"';
+  const j = text.indexOf(marker);
+  if (j >= 0) {
+    const next = text.indexOf(marker, j + marker.length);
+    const end = next >= 0 ? Math.min(next, j + 600) : j + 600;
+    if (HEADER_BLOCK_LABEL_RE.test(text.slice(j, end))) return true;
+  }
   return false;
 }
 
@@ -89,6 +101,9 @@ function selectUrlsToCheck({ urls, state = {}, now = new Date(), limit = MAX_URL
       if ((s.checks || 0) >= MAX_NEGATIVE_CHECKS) continue;
       const last = Date.parse(s.lastCheckedAt || '');
       if (Number.isFinite(last) && now.getTime() - last < MIN_RECHECK_GAP_MS) continue;
+      if ((s.fails || 0) >= MAX_FAILED_FETCHES) continue;
+      const lastFail = Date.parse(s.lastFailedAt || '');
+      if (Number.isFinite(lastFail) && now.getTime() - lastFail < FAIL_BACKOFF_MS) continue;
     }
     out.push(url);
     if (out.length >= limit) break;
@@ -100,8 +115,8 @@ function selectUrlsToCheck({ urls, state = {}, now = new Date(), limit = MAX_URL
 function pruneState(state = {}, now = new Date()) {
   const kept = {};
   for (const [url, s] of Object.entries(state)) {
-    const last = Date.parse((s && s.lastCheckedAt) || '');
-    if (Number.isFinite(last) && now.getTime() - last <= STATE_RETENTION_MS) kept[url] = s;
+    const last = Math.max(Date.parse((s && s.lastCheckedAt) || '') || 0, Date.parse((s && s.lastFailedAt) || '') || 0);
+    if (last > 0 && now.getTime() - last <= STATE_RETENTION_MS) kept[url] = s;
   }
   return kept;
 }
@@ -135,13 +150,18 @@ async function classifyReviewPages({ urls, fetch, shouldStop = () => false }) {
   return { picks, negatives, failures };
 }
 
-/** Fold one run's outcome into the negative cache. Pure. */
-function recordChecks(state = {}, { negatives = [], picks = [] }, now = new Date()) {
+/** Fold one run's outcome (negatives, failed fetches) into the cache. Pure. */
+function recordChecks(state = {}, { negatives = [], picks = [], failures = [] }, now = new Date()) {
   const next = { ...state };
   for (const url of picks) delete next[url];
   for (const url of negatives) {
-    const prev = next[url] || { checks: 0 };
-    next[url] = { checks: (prev.checks || 0) + 1, lastCheckedAt: now.toISOString() };
+    const prev = next[url] || {};
+    next[url] = { ...prev, checks: (prev.checks || 0) + 1, lastCheckedAt: now.toISOString() };
+  }
+  for (const f of failures) {
+    const url = f && f.url ? f.url : f;
+    const prev = next[url] || {};
+    next[url] = { ...prev, checks: prev.checks || 0, fails: (prev.fails || 0) + 1, lastFailedAt: now.toISOString() };
   }
   return pruneState(next, now);
 }
@@ -156,4 +176,6 @@ module.exports = {
   MAX_NEGATIVE_CHECKS,
   MIN_RECHECK_GAP_MS,
   MAX_URLS_PER_RUN,
+  MAX_FAILED_FETCHES,
+  FAIL_BACKOFF_MS,
 };
