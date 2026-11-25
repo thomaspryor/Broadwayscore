@@ -229,3 +229,14 @@ test('BRO-7179: an empty scan never resolves the alert condition', () => {
   assert.match(r.stderr, /scanned 0 files .* leaving the alert condition untouched/);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test('BRO-8042: approvals for the 2026 folder do not exclude reviews now in the 2025 production', () => {
+  const fixId = 'bd6b152d-8b35-4c24-bba4-2b361b237a50';
+  for (const file of ['broadwayworld--aliya-al-hassan.json', 'everything-theatre--rob-warren.json', 'londontheatre1--alan-fitter.json', 'londontheatre1--allan-fitter.json']) {
+    const path = `marie-and-rosetta-west-end-2025/${file}`;
+    const rec = { approvedFixes: [{ field: 'wrongProduction', newValue: true, fixId, at: '2026-10-13T03:38:15.265Z' }] };
+    assert.match(classifyRecord(path, rec)[0].explained || '', /^acknowledged:/);
+    rec.approvedFixes[0].fixId = 'new-decision';
+    assert.equal(classifyRecord(path, rec)[0].explained, null);
+  }
+});

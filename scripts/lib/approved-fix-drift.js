@@ -38,6 +38,16 @@ const MANUAL_CLEAR_FIELD = {
 const ACKNOWLEDGED = {
   'elling-2010/reuters--david-rooney.json|69e2b6ef-ea6a-446f-92ce-d05b37c6ee0b':
     'BRO-7155: the approval cleared the flag because the Hollywood Reporter primary was missing; hollywood-reporter--unknown.json is back as a complete copy of the same Rooney review, so this Reuters syndication is correctly the duplicate.',
+  // BRO-4898-d approved these exclusions in the 2026 Soho Place folder, explicitly
+  // because the reviews cover the 2025 Rose Theatre run. They now sit in that
+  // 2025 production's folder, where the old wrong-production verdict is reversed.
+  ...Object.fromEntries([
+    'broadwayworld--aliya-al-hassan.json',
+    'everything-theatre--rob-warren.json',
+    'londontheatre1--alan-fitter.json',
+    'londontheatre1--allan-fitter.json',
+  ].map((file) => [`marie-and-rosetta-west-end-2025/${file}|bd6b152d-8b35-4c24-bba4-2b361b237a50`,
+    'BRO-8042: BRO-4898-d excluded this 2025 Rose Theatre review from the 2026 Soho Place production; it is now filed under the 2025 Rose Theatre production.'])),
 };
 
 function norm(v) {
