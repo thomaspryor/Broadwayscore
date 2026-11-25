@@ -117,3 +117,23 @@ test('an ordinal publish date ("March 17th, 2017") still lets the other-show tes
   const d = { ...vv, publishDate: 'March 17th, 2017' };
   assert.equal((quoteInOtherShowPassage(QUOTE_PRICE, d, cfa, index) || {}).rule, 'other-show');
 });
+
+test('a quote that names the other show by title and nothing of this one is rejected (live Village Voice, 2026-11-25)', () => {
+  const q = "Coaxing a vital, personalized eccentricity from each of his four equally strong actors, he's come up with the best rendition of The Price since John Stix's 1979 version, with the unforgettable Joseph Buloff as the furniture dealer.";
+  const d = { ...vv, fullText: vv.fullText.replace('As the play', `${q} As the play`) };
+  assert.equal((quoteInOtherShowPassage(q, d, cfa, index) || {}).rule, 'other-show');
+  assert.equal(quoteInOtherShowPassage(q, { ...d, showId: price.id, showTitle: price.title }, price, index), null);
+});
+
+test('a comparison that names the other title is kept when this show is named in between', () => {
+  const q = 'It runs shorter and warmer than The Price, and the cast is better for it.';
+  const d = { ...vv, fullText: `${vv.fullText.slice(0, 60)}${filler(4)} The Price opened this week. Come From Away is the better night out. ${q}${filler(2)}` };
+  assert.equal(quoteInOtherShowPassage(q, d, cfa, index), null);
+});
+
+test('a one-word title in the quote is not an other-show signal', () => {
+  const sweat = { id: 'sweat-2017', title: 'Sweat Shop Story', openingDate: '2017-03-26', cast: [] };
+  const idx = buildEvidenceIndex([sweat]);
+  const q = 'The staging is lively and the songs land with real feeling throughout the night.';
+  assert.equal(quoteInOtherShowPassage(q, vv, cfa, idx), null);
+});
