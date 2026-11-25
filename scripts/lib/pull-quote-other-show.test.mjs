@@ -8,6 +8,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { quoteInOtherShowPassage, buildEvidenceIndex } = require('./pull-quote-other-show.js');
 const guards = require('./pull-quote-guards.js');
+const { useShowsFixture } = require('./shows-json-fixture.js');
 
 const cfa = {
   id: 'come-from-away-2017', title: 'Come From Away', openingDate: '2017-03-12',
@@ -19,6 +20,8 @@ const price = {
   cast: [{ name: 'Mark Ruffalo' }, { name: 'Danny DeVito' }, { name: 'Tony Shalhoub' }],
   creativeTeam: [{ name: 'Terry Kinney' }],
 };
+// BRO-8107: lookups by id read this fixture, never the live data/shows.json.
+process.on('exit', useShowsFixture([cfa, price]));
 const index = buildEvidenceIndex([cfa, price, { id: 'sweat-2017', title: 'Sweat', openingDate: '2017-03-26', cast: [] }]);
 
 const filler = (n) => ' The evening moves briskly and the staging keeps every scene in motion.'.repeat(n);
@@ -77,7 +80,7 @@ test('an ordinary review that opens before it names the show is untouched', () =
   assert.equal(quoteInOtherShowPassage('Friday night at the Triad, his TransAtlantic Dame show confirmed that he’s gifted and riotously funny.', review, cfa, index), null);
 });
 
-test('hasUsableLlmQuote (real data/shows.json index) drops a stored other-show quote so the extractor re-extracts it', () => {
+test('hasUsableLlmQuote (shows fixture index) drops a stored other-show quote so the extractor re-extracts it', () => {
   assert.equal(guards.hasUsableLlmQuote({ ...vv, llmPullQuote: QUOTE_PRICE }), false);
   assert.equal(guards.hasUsableLlmQuote({ ...vv, llmPullQuote: "Ashley's cast moves like a single organism, and Jenn Colella is superb." }), true);
 });
