@@ -494,6 +494,24 @@ function supersededByLaterFetch(review, recoveredRow) {
 }
 
 /**
+ * BRO-8276: read a review by its ledger key, following a rename. A key whose
+ * file was renamed after its text landed (byline resolved: --unknown ->
+ * --<critic>) is read from the file stamped `_renamedFrom.file === key` in
+ * the same show dir, so reconcile does not call a moved text lost.
+ * @returns {object|null}
+ */
+function readReviewFollowingRename(dir, key) {
+  const read = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } };
+  const direct = path.join(dir, key);
+  if (fs.existsSync(direct)) return read(direct);
+  const showDir = path.join(dir, path.dirname(key));
+  let names = [];
+  try { names = fs.readdirSync(showDir).filter((n) => n.endsWith('.json')); } catch { return null; }
+  const hits = names.map((n) => read(path.join(showDir, n))).filter((r) => r && r._renamedFrom && r._renamedFrom.file === key);
+  return hits.length === 1 ? hits[0] : null;
+}
+
+/**
  * Nightly reconcile (pure): every review whose latest row is 'recovered' but
  * whose recovered text is no longer on disk (fullText shorter than the row's
  * bytesAfter; tier !== complete for rows without bytesAfter) gets a 'reopened'
@@ -614,6 +632,7 @@ function isVanishedReviewFile(err, filePath) {
 }
 
 module.exports = {
+  readReviewFollowingRename,
   landingRows,
   landingInfo,
   goneUpstreamRow,

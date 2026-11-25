@@ -541,3 +541,18 @@ test('BRO-8276: a pending text whose file was removed upstream is closed with go
   assert.equal(row.outcome, 'non_evidence');
   assert.equal(L2.pendingPushInfo([pending, row]).size, 0);
 });
+
+test('BRO-8276: reconcile reads a recovered key that was renamed afterwards from its stamped successor', () => {
+  const L2 = require('./gap-recovery-ledger.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rt-rename-'));
+  fs.mkdirSync(path.join(dir, 'show'));
+  const text = 'Recovered review text. '.repeat(200);
+  fs.writeFileSync(path.join(dir, 'show', 'x--named.json'), JSON.stringify({ fullText: text, contentTier: 'complete', _renamedFrom: { file: 'show/x--unknown.json' } }));
+  fs.writeFileSync(path.join(dir, 'show', 'y--other.json'), JSON.stringify({ fullText: 'x' }));
+  const rec = L2.makeRow({ reviewKey: 'show/x--unknown.json', strategy: 'ARCHIVE', outcome: 'recovered', reason: 'landed_on_origin_main', bytesAfter: text.length });
+  assert.equal(L2.readReviewFollowingRename(dir, 'show/x--unknown.json').fullText, text);
+  assert.deepEqual(L2.reconcileRecovered([rec], (k) => L2.readReviewFollowingRename(dir, k)), [], 'not reopened: the text moved, it was not lost');
+  // Removed with no stamped successor: still reopened (unreadable).
+  fs.unlinkSync(path.join(dir, 'show', 'x--named.json'));
+  assert.equal(L2.reconcileRecovered([rec], (k) => L2.readReviewFollowingRename(dir, k)).length, 1);
+});
