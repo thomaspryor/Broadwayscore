@@ -294,7 +294,7 @@ function headlineCapitalizes(headline, word) {
   return new RegExp(`(^|[^A-Za-z])(${esc(cap)}|${esc(w.toUpperCase())})(?![A-Za-z])`).test(h);
 }
 
-function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { nowMs = Date.now(), publishDate = null } = {}) {
+function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { nowMs = Date.now(), publishDate = null, rivalIndex = undefined } = {}) {
   if (!headline && !urlSlug) return [];
   if (looksLikeBookReview(headline, urlSlug)) return [];
   // Slug separators become spaces too (hyphenSpaced handles the dashes):
@@ -392,7 +392,21 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
   // own title: "Hamlet at St. Luke's Theatre ... soon" belongs to Hamlet.
   const kept = matches.filter((show) => !venueOnly.has(show)
     || !matches.some((o) => o !== show && !venueOnly.has(o) && sharesVenueForm(o, show)));
-  return dropTitlesInsideLongerMatch(kept, headline ? hyphenSpaced(String(headline).replace(/[_/]+/g, ' ')) : combined);
+  const longestOnly = dropTitlesInsideLongerMatch(kept, headline ? hyphenSpaced(String(headline).replace(/[_/]+/g, ' ')) : combined);
+  return dropTitlesOwnedByRival(longestOnly, headline, urlSlug, rivalIndex);
+}
+
+// A title that appears only inside a LONGER show's title belongs to that show even when the
+// longer show is not in the pool (upcoming, closed, another market). The Reviews Hub's
+// "a-christmas-carol-goes-wrong-grand-theatre-wolverhampton" matched the Old Vic's "A Christmas
+// Carol" because "Christmas Carol Goes Wrong" is an upcoming show the poller never offers (BRO-8321).
+function dropTitlesOwnedByRival(shows, headline, urlSlug, rivalIndex) {
+  if (!shows.length) return shows;
+  const { rivalSwallowsTitle, defaultRivalIndex } = require('./rival-title');
+  const index = rivalIndex === undefined ? defaultRivalIndex() : rivalIndex;
+  if (!index) return shows;
+  const slug = String(urlSlug || '');
+  return shows.filter((show) => !rivalSwallowsTitle(`${headline || ''} ${slug}`, show, index));
 }
 
 // A title found only as part of a longer matched title is that longer show:

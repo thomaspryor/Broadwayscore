@@ -142,6 +142,7 @@ function hasNonNycPriorRun(show) {
   return show.priorRuns.some((run) => !run.venue || isNonNycVenue(run.venue));
 }
 
+
 /**
  * @param {object} review  - a review file or incoming review ({url, outletId, publishDate, fullText})
  * @param {object} show    - shows.json row ({category, venue, previewsStartDate, openingDate})
@@ -182,6 +183,21 @@ function otherProductionSignal(review, show, opts = {}) {
     const id = String(review.outletId).toLowerCase();
     if (UK_MARKET_REGIONS.has(outletRegionMap[id]) && !dualMarket.has(id)) {
       return { signal: 'outlet-market', detail: `outlet ${id} is London-only (region ${outletRegionMap[id]}); show is NYC` };
+    }
+  }
+
+  // 2b. rival title (BRO-8321): the url slug (or headline) names a LONGER title that contains
+  // this show's whole title, and the show's title appears only inside it. "A Christmas Carol"
+  // (Old Vic) inside "a-christmas-carol-goes-wrong-grand-theatre-wolverhampton" (Mischief tour).
+  if (want('rival-title') && (url || review.title || review.headline)) {
+    const index = opts.rivalIndex || require('./rival-title').defaultRivalIndex();
+    if (index) {
+      const { rivalSwallowsTitle } = require('./rival-title');
+      const slug = url ? String(url).replace(/^[a-z]+:\/\/[^/]+/i, '').replace(/[?#].*$/, '') : '';
+      for (const text of [slug, review.title, review.headline]) {
+        const rival = text ? rivalSwallowsTitle(text, show, index) : null;
+        if (rival) return { signal: 'rival-title', detail: `names "${rival.title}" (${rival.id}), which contains "${show.title}"; the show's own title never appears alone` };
+      }
     }
   }
 
@@ -235,7 +251,7 @@ function londonAggregatorCandidates(shows) {
 // or from an outlet that may legitimately cover both cities. Safe to act on at
 // ingest, before anything is written (measured 2026-09-29 over 21,054
 // included reviews: every remaining hit was a real other-production review).
-const URL_SIGNALS = Object.freeze(['url-edition-market', 'url-year']);
+const URL_SIGNALS = Object.freeze(['url-edition-market', 'url-year', 'rival-title']);
 
 // Ingest gate (BRO-8266): URL signals plus a stored publishDate that is years, not
 // weeks, before the production. A timeout.com URL has no year and the aggregator date
@@ -243,6 +259,7 @@ const URL_SIGNALS = Object.freeze(['url-edition-market', 'url-year']);
 // a wrong-by-months stored date from dropping a real review (those are flagged later).
 const INGEST_SIGNALS = Object.freeze([...URL_SIGNALS, 'date-before-production']);
 const INGEST_DATE_GAP_DAYS = 730;
+const RIVAL_ONLY = Object.freeze(['rival-title']);
 
 /**
  * Audit the live corpus: included reviews (data/reviews.json) whose URL proves
@@ -250,11 +267,15 @@ const INGEST_DATE_GAP_DAYS = 730;
  */
 function auditIncludedReviews(reviews, shows) {
   const byId = new Map(shows.map((s) => [s.id, s]));
+  const rivalIndex = require('./rival-title').buildRivalIndex(shows);
   const hits = [];
   for (const r of reviews) {
     const show = byId.get(r.showId);
-    if (!show || !showMarket(show)) continue;
-    const sig = otherProductionSignal(r, show, { only: URL_SIGNALS });
+    if (!show) continue;
+    // Shows with no single home market (tour, regional) skip the market signals but not the
+    // rival-title one: the title clash does not depend on a city.
+    const only = showMarket(show) ? URL_SIGNALS : RIVAL_ONLY;
+    const sig = otherProductionSignal(r, show, { only, rivalIndex });
     if (sig) hits.push({ showId: r.showId, outletId: r.outletId, publishDate: r.publishDate || null, url: r.url, ...sig });
   }
   return hits;
@@ -274,8 +295,10 @@ function auditIncludedReviews(reviews, shows) {
 const OTHER_PRODUCTION_URL_REASON = 'other-production-url';
 
 function detectOtherProductionUrl(review, show, opts = {}) {
-  if (!review || !show || !showMarket(show)) return null;
-  const sig = otherProductionSignal(review, show, { ...opts, only: URL_SIGNALS });
+  if (!review || !show) return null;
+  const homeMarket = !!showMarket(show);
+  const sig = otherProductionSignal(review, show, { ...opts, only: homeMarket ? URL_SIGNALS : RIVAL_ONLY });
+  if (!homeMarket) return sig;
   if (sig || opts.urlOnly) return sig;
   // A full /YYYY/mon/DD/ url date outside every run and priorRuns window, on a
   // file whose publishDate disagrees with it (Oslo 2017 carried the Lyttelton
