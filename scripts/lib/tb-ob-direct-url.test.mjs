@@ -136,3 +136,9 @@ test('a subtitled show matches its main title on the OB page', async () => {
   });
   assert.equal(r.found, true);
 });
+
+test('a byline whose critic name is a mailto link still counts as a review signal', () => {
+  const { _internal } = require('./tb-direct-url.js');
+  assert.equal(_internal.hasBylineSignal('<p>Theatre Review by <a href="mailto:hm@talkinbroadway.com">Howard Miller</a> - February 24, 2026</p>'), true);
+  assert.equal(_internal.hasBylineSignal('<p>no credit here</p>'), false);
+});

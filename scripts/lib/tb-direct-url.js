@@ -112,8 +112,11 @@ function extractTitle(html) {
 }
 
 function hasBylineSignal(html) {
-  // Real TB reviews credit: "reviewed by Matthew Murray" or "by Matthew Murray"
-  return /(?:reviewed\s+)?by\s+[A-Z][a-z]+\s+[A-Z][a-z]+/.test(html || '');
+  // Real TB reviews credit: "reviewed by Matthew Murray" or "by Matthew Murray". The name is
+  // often a mailto link ("Theatre Review by <a href=...>Howard Miller</a>"), so test the text
+  // with tags removed (BRO-8148: The Reservoir's real page failed the raw-HTML check).
+  const text = String(html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+  return /(?:reviewed\s+)?by\s+[A-Z][a-z]+\s+[A-Z][a-z]+/.test(text);
 }
 
 function hasStarRatingSignal(html) {
