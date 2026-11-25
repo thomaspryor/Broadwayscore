@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-25T19:55:34.379Z",
-  "processed": 88,
-  "failed": 52,
-  "successRate": "62.9%",
+  "updatedAt": "2026-11-25T20:00:00.499Z",
+  "processed": 94,
+  "failed": 56,
+  "successRate": "62.7%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 58,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 6,
     "scrapingbee": 6,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 21
+    "archive": 24
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-11-25T19:27:56.983Z",
@@ -32,6 +32,12 @@
       "t": "2026-11-25T19:49:02.141Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T19:58:00.932Z",
+      "event": "bb-session",
+      "session": "db76e4bb",
+      "url": "https://deadline.com/2025/12/walt-disney-world-raiders-of-the-lost-ark-boulder-a"
     }
   ]
 }
