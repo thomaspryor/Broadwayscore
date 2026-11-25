@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7434-b",
   "planId": "1db4e5c7-d6f4-4088-bd57-71e67a163e37",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-25T15:03:31.064Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "args": "--apply"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-25T15:54:35.187Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran purge-uk-show-score-audience.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
