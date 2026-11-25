@@ -124,7 +124,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     const show = shows.get(row.showId) || null;
     const ffEntry = ff.get(reviewKey) || null;
     const live = L.liveRows(ledgerIndex.get(reviewKey) || []);
-    const facts = PO.attemptFacts(live, { review, reopened: (ledgerIndex.get(reviewKey) || []).some((r) => r.outcome === 'reopened') });
+    const facts = PO.attemptFacts(live, { review, reopenedAtMs: (ledgerIndex.get(reviewKey) || []).reduce((m, r) => (r.outcome === 'reopened' ? Math.max(m, Date.parse(r.ts) || 0) : m), 0) });
     const baseEligible = (strategy) => {
       // URL_FIND: per-method progress across nights (gap-url-find.urlFindEligibility).
       if (strategy === 'URL_FIND') return require('./lib/gap-url-find').urlFindEligibility(live, { cooldownH: Number(process.env.GAP_URL_FIND_COOLDOWN_H || 20), loginReader: adapterUsable(review.outletId, { explicitOutlets: OPTS.outlets }) });
@@ -222,12 +222,14 @@ function printPlan(cands) {
   console.log(`\nOpen gaps planned: ${cands.length} (recent ${recent.length}); with a strategy: ${cands.filter((c) => c.strategy).length}`);
   console.log('\nby strategy:', JSON.stringify(byStrategy));
   // BRO-8277: honest try history (ledger since 2026-11-09 plus pre-ledger marks on the file).
-  const tryHistory = { ledgerTried: 0, olderToolsOnly: 0, fetchedOnceNeverRetried: 0, noTryEver: 0 };
+  // Absence is not proof: a later success clears the older tools' failure marks
+  // (clear-failure-flags.js), so the last two buckets mean "no retained evidence".
+  const tryHistory = { ledgerTried: 0, olderToolsOnly: 0, fetchedOnceNoRetryEvidence: 0, noTryEvidence: 0 };
   for (const c of cands) {
     if (c.ledgerAttempts > 0) tryHistory.ledgerTried++;
     else if (c.legacyTries > 0) tryHistory.olderToolsOnly++;
-    else if (c.firstFetchOnly) tryHistory.fetchedOnceNeverRetried++;
-    else tryHistory.noTryEver++;
+    else if (c.firstFetchOnly) tryHistory.fetchedOnceNoRetryEvidence++;
+    else tryHistory.noTryEvidence++;
   }
   console.log('\ntry history:', JSON.stringify(tryHistory));
   // BRO-7997: the paid scraper cannot log in; list who still gets it and whether a browser adapter exists.
@@ -400,7 +402,7 @@ function planUrlFind(cands, paidSlots, freeSlots) {
   const reg = readJson(path.join(ROOT, 'data', 'outlet-registry.json'));
   const outlets = reg.outlets || reg;
   return require('./lib/gap-url-find').planUrlFindWork(cands.filter((c) => c.strategy), {
-    paidSlots, freeSlots, freeInPlace: true, tierOf: (id) => (outlets[id] && outlets[id].tier) || null,
+    paidSlots, freeSlots, freeInPlace: true, freshFirst: OPTS.freshFirst, tierOf: (id) => (outlets[id] && outlets[id].tier) || null,
   });
 }
 

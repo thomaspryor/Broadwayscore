@@ -802,8 +802,10 @@ function urlFindPriority(tierOf) {
  * the END of the run, after everything else. The rest wait. Pure: returns a
  * new array (with .skippedUrlFind), never mutates the input.
  */
-function planUrlFindWork(work, { paidSlots, freeSlots = 0, tierOf, freeInPlace = false }) {
-  const uf = work.filter((c) => c.strategy === 'URL_FIND').sort(urlFindPriority(tierOf));
+function planUrlFindWork(work, { paidSlots, freeSlots = 0, tierOf, freeInPlace = false, freshFirst = false }) {
+  // BRO-8277: the driver's --fresh-first order also decides who gets a URL_FIND slot.
+  const prio = freshFirst ? require('./gap-plan-order').freshFirst(urlFindPriority(tierOf)) : urlFindPriority(tierOf);
+  const uf = work.filter((c) => c.strategy === 'URL_FIND').sort(prio);
   const paid = uf.slice(0, Math.max(0, paidSlots));
   const free = uf.slice(paid.length, paid.length + Math.max(0, freeSlots));
   const out = [];
