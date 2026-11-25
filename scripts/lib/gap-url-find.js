@@ -698,7 +698,12 @@ const { urlFindMethodErrorRates } = require('./url-find-method-health');
 
 const DEAD_FREE_RE = /^free:no_evidence\/url_dead/;
 
-async function fetchCandidateText(url, { allowBd = false, minChars = 1500, onPaid = null } = {}, deps = null) {
+/**
+ * @param {string} url
+ * @param {{allowBd?:boolean, minChars?:number, onPaid?:Function, subscriberOutlet?:boolean}} [opts]
+ *   subscriberOutlet: the outlet has a logged-in browser adapter (adapterFor).
+ */
+async function fetchCandidateText(url, { allowBd = false, minChars = 1500, onPaid = null, subscriberOutlet = false } = {}, deps = null) {
   const S = require('./gap-strategies');
   const d = deps || S.defaultDeps();
   const tried = [];
@@ -712,7 +717,16 @@ async function fetchCandidateText(url, { allowBd = false, minChars = 1500, onPai
   if (!best || best.rawText.length < minChars) take(await S.archive({ url }, d), 'wayback');
   // A free fetch that got a hard 404 and no capture: the link is dead, do not pay for it.
   const dead = !best && DEAD_FREE_RE.test(tried[0] || '') && /^wayback:no_evidence\//.test(tried[1] || '');
-  if (allowBd && !dead && (!best || best.rawText.length < minChars)) {
+  // BRO-8099 (BRO-7997 class), decided: walled detection goes through the free
+  // tier first. Bright Data cannot log in (0/19 on subscriber outlets), so once
+  // the free tier has shown the wall (paywall or bot check) on an outlet with a
+  // logged-in browser adapter, paying only buys the same wall: the link is
+  // already handed to that browser (walledFetchReason). Bright Data stays when
+  // the free tier proved nothing (timeout, 403, fetch error): its walled answer
+  // is what routes the link to the browser instead of leaving the method open.
+  const walledFree = subscriberOutlet && !best && walledFetchReason(tried);
+  if (walledFree && allowBd) tried.push(`brightdata:skipped/subscriber_walled_free_${walledFree}`);
+  if (allowBd && !dead && !walledFree && (!best || best.rawText.length < minChars)) {
     paid++;
     if (onPaid) onPaid();
     try {

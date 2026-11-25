@@ -322,7 +322,12 @@ function urlFindEnvironment({ dir, rootDir }) {
  * (gap-url-find.urlFindProgress, gap-terminal NOT_FINDABLE).
  * @returns candidate | refusal, plus `methods` {METHOD: status}
  */
+// BRO-8099: the outlet has a logged-in browser adapter, so fetchCandidateText skips
+// Bright Data once the free tier has shown the wall (the browser reads it instead).
+const defaultSubscriberOutlet = (outletId) => !!require('./browser-outlet-adapters').adapterFor(outletId);
+
 async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set(), methods: only = null, freeOnly = false } = {}, ufDeps = null) {
+  const subscriberOutlet = (ufDeps && ufDeps.subscriberOutlet) || defaultSubscriberOutlet;
   const fs = require('fs');
   const path = require('path');
   const UF = require('./gap-url-find');
@@ -369,7 +374,7 @@ async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set()
     let walledSeen = false;
     for (const cand of fresh.slice(0, URL_FIND_CANDIDATES_PER_METHOD)) {
       tried.add(cand.url.replace(/\/$/, ''));
-      const got = await UF.fetchCandidateText(cand.url, { allowBd: !freeOnly && urlFindBdLeft(), onPaid: () => { urlFindBdUsed++; } }, (ufDeps && ufDeps.fetchDeps) || null);
+      const got = await UF.fetchCandidateText(cand.url, { allowBd: !freeOnly && urlFindBdLeft(), onPaid: () => { urlFindBdUsed++; }, subscriberOutlet: subscriberOutlet(review.outletId) }, (ufDeps && ufDeps.fetchDeps) || null);
       if (!got.ok) {
         // Refused only when every route answered with evidence (404, no
         // capture, extractor null); a timeout or budget cap leaves it open.

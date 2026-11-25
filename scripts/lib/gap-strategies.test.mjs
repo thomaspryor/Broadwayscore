@@ -635,3 +635,52 @@ _t62('BRO-7962: the Telegraph Akamai "Access Denied" page (real, 2026-11-21) is 
   _a62.equal(req('./scraper.js').isChallengeOrGarbage(AKAMAI), true);
   _a62.equal(req('./gap-strategies.js').walledFetchError(Object.assign(new Error('All scraping methods failed'), { challengeHtml: AKAMAI })).reason, 'bot_challenge');
 });
+
+// BRO-8099 (BRO-7997 class): URL_FIND's candidate fetch paid Bright Data on a
+// subscriber outlet even after the free tier showed the wall; Bright Data cannot
+// log in, so it only bought the same wall. Decided: walled detection goes
+// through the free tier first; paid stays when the free tier proved nothing.
+{
+  const req = _cr62(import.meta.url);
+  const UF = req('./gap-url-find.js');
+  const PAYWALLED = '<html><head><script type="application/ld+json">{"@type":"NewsArticle","isAccessibleForFree":"False"}</script></head><body><p>Subscribe</p></body></html>';
+  const mk = (freeHtml, counter) => ({
+    isNotFoundHtml: () => false, extractArticleText: () => null, listCaptureTimestamps: async () => [],
+    fetchPage: async (u, o) => { if (o && o.tiers && o.tiers[0] === 'brightdata') { counter.bd++; return { content: PAYWALLED }; } if (freeHtml === null) throw new Error('timeout of 30000ms exceeded'); return { content: freeHtml, source: 'x' }; },
+  });
+  _t62('fetchCandidateText: subscriber outlet + free tier walled -> no Bright Data, still handed to the browser', async () => {
+    const n = { bd: 0 };
+    const got = await UF.fetchCandidateText('https://www.thetimes.com/a', { allowBd: true, subscriberOutlet: true }, mk(PAYWALLED, n));
+    _a62.equal(n.bd, 0, JSON.stringify(got.tried));
+    _a62.equal(got.paid, 0);
+    _a62.equal(UF.walledFetchReason(got.tried), 'paywalled');
+    _a62.equal(UF.fetchRefusedOnEvidence(got.tried), false);
+    _a62.ok(got.tried.includes('brightdata:skipped/subscriber_walled_free_paywalled'));
+  });
+  _t62('fetchCandidateText: Bright Data kept for free outlets, and for subscriber outlets when the free tier proved nothing', async () => {
+    const a = { bd: 0 };
+    await UF.fetchCandidateText('https://free.example/a', { allowBd: true, subscriberOutlet: false }, mk(PAYWALLED, a));
+    _a62.equal(a.bd, 1, 'not a subscriber outlet: unchanged');
+    const b = { bd: 0 };
+    const got = await UF.fetchCandidateText('https://www.thetimes.com/a', { allowBd: true, subscriberOutlet: true }, mk(null, b));
+    _a62.equal(b.bd, 1, 'a free-tier timeout says nothing about the wall');
+    _a62.equal(UF.walledFetchReason(got.tried), 'paywalled', 'paid answer routes the link to the browser');
+  });
+  _t62('urlFind passes subscriberOutlet from the outlet adapter to fetchCandidateText', async () => {
+    const fs = req('fs'); const os = req('os'); const path = req('path');
+    const S = req('./gap-strategies.js');
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'urlfind8099-'));
+    fs.mkdirSync(path.join(tmp, 'julie-west-end-2018'));
+    const fp = path.join(tmp, 'julie-west-end-2018', 'times-uk--x.json');
+    fs.writeFileSync(fp, JSON.stringify({ showId: 'julie-west-end-2018', outletId: 'times-uk', criticName: 'X Y', url: null, fullText: 'short' }));
+    const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+    const orig = { runMethod: UF.runMethod, fetchCandidateText: UF.fetchCandidateText };
+    const seen = [];
+    UF.runMethod = async (m) => ({ candidates: m === 'SLUG_GUESS' ? [{ url: 'https://www.thetimes.com/w1' }] : [], tried: [], error: null });
+    UF.fetchCandidateText = async (url, o) => { seen.push(o.subscriberOutlet); return { ok: false, tried: ['free:rejected/paywalled'] }; };
+    try {
+      await S.urlFind({ filePath: fp, showId: 'julie-west-end-2018' }, { dir: tmp, rootDir: root, methods: ['SLUG_GUESS'] }, { gate: async () => ({ ok: false }) });
+      _a62.deepEqual(seen, [true], 'times-uk has a browser adapter');
+    } finally { Object.assign(UF, orig); fs.rmSync(tmp, { recursive: true, force: true }); }
+  });
+}
