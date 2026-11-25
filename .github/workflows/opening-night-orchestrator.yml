@@ -1118,12 +1118,15 @@ jobs:
         if: cancelled()
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          RUN_STARTED_AT: ${{ github.run_started_at }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
         run: |
           # BRO-8300: a hang is the 360-min timeout. A run cancelled early (manual
           # `gh run cancel`, runner freeing, superseded dispatch) is not a hang and
           # must not page "Orchestrator Failed". Only runs older than 300 min can alert.
-          RUN_AGE_MIN=$(node -e "console.log(Math.floor((Date.now()-Date.parse(process.env.RUN_STARTED_AT))/60000))" 2>/dev/null || echo "")
+          RUN_STARTED_AT=$(gh api "repos/$GH_REPO/actions/runs/$RUN_ID" --jq .run_started_at 2>/dev/null || echo "")
+          RUN_AGE_MIN=""
+          [ -n "$RUN_STARTED_AT" ] && RUN_AGE_MIN=$(RUN_STARTED_AT="$RUN_STARTED_AT" node -e "console.log(Math.floor((Date.now()-Date.parse(process.env.RUN_STARTED_AT))/60000))" 2>/dev/null || echo "")
           if [ -n "$RUN_AGE_MIN" ] && [ "$RUN_AGE_MIN" -lt 300 ]; then
             echo "preempted=true" >> "$GITHUB_OUTPUT"
             echo "::notice::Cancelled after ${RUN_AGE_MIN} min (<300) - external cancel, not a timeout hang. Skipping alert."
