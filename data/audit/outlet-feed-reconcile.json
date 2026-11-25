@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T20:57:27.733Z",
+  "generatedAt": "2026-11-25T22:16:30.225Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -157,6 +157,16 @@
       "id": "home-im-darling-regional-2026",
       "title": "Home, I'm Darling",
       "openingDate": "2026-11-23"
+    },
+    {
+      "id": "we-the-people-regional-2026",
+      "title": "We the People",
+      "openingDate": "2026-11-23"
+    },
+    {
+      "id": "the-last-victorian-regional-2026",
+      "title": "The Last Victorian",
+      "openingDate": "2026-11-24"
     }
   ],
   "skipped": [
@@ -190,12 +200,25 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 902,
+  "itemsScanned": 904,
   "matchedGaps": 2,
   "possibleGaps": 4,
   "gaps": [
+    {
+      "showId": "attention-off-west-end-2026",
+      "title": "Attention",
+      "level": "matched",
+      "outletId": "londonpubtheatres",
+      "url": "https://www.londonpubtheatres.com/review-attention-at-bush-theatre-until-23-december-2026",
+      "headline": "REVIEW: Attention at Bush Theatre until 23 December 2026",
+      "publishDate": "2026-11-25"
+    },
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
       "title": "Cinderella",
@@ -203,15 +226,6 @@
       "outletId": "british-theatre",
       "url": "https://www.britishtheatreguide.info/reviews/matthew-bourne-the-lowry-salf-26239",
       "headline": "Matthew Bourne's Cinderella!",
-      "publishDate": "2026-11-25"
-    },
-    {
-      "showId": "the-afronauts-west-end-2026",
-      "title": "The Afronauts",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/the-afronauts-royal-court-london/",
-      "headline": "The Afronauts – Royal Court, London",
       "publishDate": "2026-11-25"
     },
     {
