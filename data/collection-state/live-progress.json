@@ -1,19 +1,83 @@
 {
-  "updatedAt": "2026-11-25T15:44:24.648Z",
-  "processed": 20,
-  "failed": 5,
-  "successRate": "80.0%",
+  "updatedAt": "2026-11-25T15:48:23.523Z",
+  "processed": 165,
+  "failed": 106,
+  "successRate": "60.9%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 94,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 15,
+    "scrapingbee": 18,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 40
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 7,
+  "recentActivity": [
+    {
+      "t": "2026-11-25T12:42:26.802Z",
+      "event": "bb-session",
+      "session": "fb9024a7",
+      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago"
+    },
+    {
+      "t": "2026-11-25T12:42:27.136Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T15:04:31.423Z",
+      "event": "bb-session",
+      "session": "f6c736f7",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-25T15:04:51.714Z",
+      "event": "bb-session",
+      "session": "546a9b1f",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-25T15:29:35.707Z",
+      "event": "bb-session",
+      "session": "de30404b",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-25T15:29:36.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-25T15:30:02.395Z",
+      "event": "bb-session",
+      "session": "f03aff37",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-25T15:30:24.785Z",
+      "event": "bb-session",
+      "session": "5dcf5018",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-25T15:31:33.602Z",
+      "event": "bb-session",
+      "session": "7b17118e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-25T15:37:40.992Z",
+      "event": "bb-session",
+      "session": "27185c8f",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-25T15:37:41.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
