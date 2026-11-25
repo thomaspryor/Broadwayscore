@@ -156,7 +156,6 @@ test('BRO-5526: resolve only after a multi-day clean, fully-measured window', ()
 
 // ---- BRO-8116: reviewer (session LLM) spend alarm + --fold-only ----
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 
 const { llmSessionBreach } = require('./lib/provider-spend-core.js');
@@ -208,8 +207,8 @@ test('BRO-8116: the shipped threshold file defines llmSessionDailyUsd', () => {
   assert.equal(typeof t.llmSessionDailyUsd, 'number');
 });
 
-test('BRO-8116: foldSessionRows twice adds no duplicates', () => {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fold8116-'));
+test('BRO-8116: foldSessionRows twice adds no duplicates', (t) => {
+  const dir = require('./lib/tmpdir-for-tests.js').makeTmpDir(t, 'fold8116-');
   const from = path.join(dir, 'home.jsonl');
   const to = path.join(dir, 'tracked.jsonl');
   fs.writeFileSync(from, [JSON.stringify(sessRow('2026-11-23T10:00:00Z', 3)), JSON.stringify({ kind: 'api', costUsd: 1 })].join('\n') + '\n');
