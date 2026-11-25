@@ -189,6 +189,25 @@ async function fetchImpactDaily(days, opts = {}) {
 }
 
 /**
+ * Total Impact commission (payout, the same figure getAffiliateStats books as
+ * totals.commission) for ONE explicit date range, e.g. a full closed month.
+ * Needed because trailing windows cap at 45 days: a missed early-month run
+ * could otherwise never finalize the prior month (BRO-8273).
+ * Throws on missing credentials or API error: callers must not write on failure.
+ *
+ * @param {Date} start range start
+ * @param {Date} end   range end (keep start..end under IMPACT_MAX_DAYS)
+ */
+async function fetchImpactCommissionRange(start, end, opts = {}) {
+  if ((end.getTime() - start.getTime()) / DAY_MS > IMPACT_MAX_DAYS) {
+    throw new Error(`Impact range exceeds ${IMPACT_MAX_DAYS} days`);
+  }
+  const result = await fetchImpact(start, end, opts);
+  if (result.skipped) throw new Error(`Impact commission fetch skipped: ${result.reason}`);
+  return summarizeImpact(result.actions).totalPayout;
+}
+
+/**
  * Raw Impact actions for a trailing window (monitor/report-grade: throws on
  * missing credentials). One fetch serves payout-anomaly checks, outlier
  * annotations AND the WoW/baseline maths — never two calls whose partial
@@ -769,6 +788,7 @@ module.exports = {
   // Monitor-grade fetchers (throw on missing credentials — affiliate hardening 2026-08-03)
   fetchImpactDaily,
   fetchImpactActionsWindow,
+  fetchImpactCommissionRange,
   fetchPosthogDailyClicks,
   // Exported for testing / advanced callers
   analyzeTodaytixMix,

@@ -147,6 +147,22 @@ function extractReceiptNo(text = '') {
   return m ? m[1] : null;
 }
 
+/**
+ * Last four digits of the card a receipt was charged to, or null.
+ * Handles "ending in 1234" / "ending with 1234" (OpenAI, most SaaS) and
+ * Stripe-style "Visa - 1234" / "Mastercard – 1234" payment-method lines.
+ * Only the 4 digits are returned. Any card-to-person mapping lives in the
+ * private data repo, never here (public repo).
+ */
+function extractCardLast4(body = '') {
+  const text = String(body);
+  // "<card word> ... ending in 1234": the card word must sit just before, so
+  // "trial ending in 2026" never reads as a card.
+  const m = text.match(/\b(?:credit|debit)?\s*card\b[^.\d]{0,30}?\bending\s+(?:in|with)\s+(\d{4})\b/i) ||
+    text.match(/\b(?:visa|mastercard|master\s?card|amex|american\s+express|discover)\b\s*(?:card)?\s*[-\u2013\u2014]?\s*(?:ending\s+(?:in|with)\s+)?(\d{4})\b/i);
+  return m ? m[1] : null;
+}
+
 function computeDedupHash({ vendorKey, date, amountUsd, receiptNo }) {
   const basis = `${vendorKey}|${date}|${Number(amountUsd).toFixed(2)}|${receiptNo || ''}`;
   return crypto.createHash('sha256').update(basis).digest('hex').slice(0, 16);
@@ -194,6 +210,7 @@ function toLedgerRow(receipt, config = loadVendorConfig(), fx = DEFAULT_FX_TO_US
     amountUsd,
     businessPct,
     amountBusiness: Math.round(amountUsd * (businessPct / 100) * 100) / 100,
+    cardLast4: extractCardLast4(receipt.body || ''),
     source: 'gmail',
     raw: { subject: receipt.subject || '', from: receipt.from || '', receiptNo },
     confidence: 'high',
@@ -226,6 +243,26 @@ function reclassifyMonthlyDupes(rows) {
       const want = i === 0 ? 'subscription' : 'extra-topup';
       if (r.kind !== want) { r.kind = want; changed++; }
     });
+  }
+  return changed;
+}
+
+/**
+ * Re-apply each vendor's configured businessPct to rows already in the ledger
+ * (idempotent). A split change (Claude Max 100 -> 50, BRO-8273) must reach rows
+ * booked before it; ingest skips existing rows, so nothing else would.
+ * Returns the number of rows changed.
+ */
+function applyVendorBusinessPct(rows, config = loadVendorConfig()) {
+  const pct = new Map((config.expenseVendors || []).filter((v) => v.kind !== 'ignore' && v.businessPct != null).map((v) => [v.key, v.businessPct]));
+  let changed = 0;
+  for (const r of rows) {
+    if (!pct.has(r.vendorKey) || r.amountUsd == null) continue;
+    const want = pct.get(r.vendorKey);
+    const amountBusiness = Math.round(r.amountUsd * (want / 100) * 100) / 100;
+    if (r.businessPct !== want || r.amountBusiness !== amountBusiness) {
+      r.businessPct = want; r.amountBusiness = amountBusiness; changed++;
+    }
   }
   return changed;
 }
@@ -265,6 +302,7 @@ module.exports = {
   loadVendorConfig,
   reclassifyMonthlyDupes,
   applyExternallyPaid,
+  applyVendorBusinessPct,
   classifyReceipt,
   matchesRule,
   isPersonal,
@@ -272,6 +310,7 @@ module.exports = {
   extractEmailAddress,
   extractAmount,
   extractReceiptNo,
+  extractCardLast4,
   toUsd,
   computeDedupHash,
   toLedgerRow,

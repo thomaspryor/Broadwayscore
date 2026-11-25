@@ -20,8 +20,10 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { getAffiliateStats } = require('./lib/affiliate-stats');
-const { computeAffiliateAccrual, daysInPriorMonth } = require('./lib/revenue-accrual');
+const { getAffiliateStats, fetchImpactCommissionRange } = require('./lib/affiliate-stats');
+const {
+  computeAffiliateAccrual, daysInPriorMonth, monthsNeedingFinalization, monthRange, applyMonthFinalizations,
+} = require('./lib/revenue-accrual');
 
 function parseArgs(argv) {
   const a = { out: 'data/finances', dryRun: false, today: null };
@@ -65,13 +67,47 @@ async function main() {
   let ledger = [];
   try { ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8')); } catch { /* first run */ }
 
-  const { ledger: next, changes } = computeAffiliateAccrual({ todayIso, mtdCommission, priorWindowCommission, ledger });
+  let { ledger: next, changes } = computeAffiliateAccrual({ todayIso, mtdCommission, priorWindowCommission, ledger });
+
+  // Self-heal (BRO-8273): any closed month still missing or 'pending' is
+  // finalized from an explicit month-sized Impact range, whatever day it is
+  // today. A failed fetch for one month leaves it for the next run and is
+  // surfaced as a workflow error annotation (this step is continue-on-error,
+  // so an annotation is the only thing that makes a stuck month visible).
+  const stuck = [];
+  const finals = [];
+  const allStuck = monthsNeedingFinalization({ todayIso, ledger: next, maxMonths: 1000 });
+  const todo = allStuck.slice(-6);
+  if (allStuck.length > todo.length) {
+    console.error(`::warning title=Affiliate revenue backlog::${allStuck.length - todo.length} older month(s) not finalized this run (6 per run)`);
+  }
+  for (const month of todo) {
+    const { start, end } = monthRange(month);
+    let done = false;
+    for (let attempt = 1; attempt <= 2 && !done; attempt++) {
+      try {
+        finals.push({ month, commission: await fetchImpactCommissionRange(start, end, { timeoutMs: 60000 }) });
+        done = true;
+      } catch (e) {
+        if (attempt === 2) {
+          stuck.push(month);
+          console.error(`::error title=Affiliate revenue not finalized::${month}: ${e.message}`);
+        }
+      }
+    }
+  }
+  if (finals.length) {
+    const healed = applyMonthFinalizations(next, finals, todayIso);
+    next = healed.ledger;
+    changes = changes.concat(healed.changes);
+  }
   for (const c of changes) console.log(`  ${c.month} affiliate $${c.amountUsd} (${c.status}) — ${c.action}`);
 
-  if (args.dryRun) { console.log('[dry-run] nothing written.'); return; }
+  if (args.dryRun) { console.log('[dry-run] nothing written.'); if (stuck.length) process.exit(1); return; }
   fs.mkdirSync(args.out, { recursive: true });
   fs.writeFileSync(ledgerPath, JSON.stringify(next, null, 2));
   console.log(`Wrote ${next.length} revenue rows → ${ledgerPath}`);
+  if (stuck.length) process.exit(1); // finalized months are saved above; non-zero fails the step loudly
 }
 
 if (require.main === module) main().catch((e) => { console.error(e.message); process.exit(1); });
