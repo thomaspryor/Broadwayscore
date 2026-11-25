@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T04:41:53.557Z",
+  "generatedAt": "2026-11-25T05:00:20.144Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -3270,23 +3270,23 @@
       "status": "open",
       "slug": "its-a-wonderful-life-a-live-radio-play",
       "thumbnail": "/images/shows/its-a-wonderful-life-a-live-radio-play-2026/thumbnail.webp",
-      "siteScore": 65.46,
-      "liveScore": 65,
-      "scoreDrift": -0.45999999999999375,
+      "siteScore": 65.68,
+      "liveScore": 66,
+      "scoreDrift": 0.3199999999999932,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 23,
+      "total": 24,
       "t1": 4,
       "t2": 12,
-      "t3": 7,
-      "positive": 15,
+      "t3": 8,
+      "positive": 16,
       "mixed": 4,
       "negative": 4,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 22,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3714,6 +3714,18 @@
           "m": 4,
           "n": 4,
           "bc": "complete"
+        },
+        {
+          "t": "2026-11-25T05:00:20.144Z",
+          "rc": 24,
+          "s": 65.68,
+          "t1": 4,
+          "t2": 12,
+          "t3": 8,
+          "p": 16,
+          "m": 4,
+          "n": 4,
+          "bc": "complete"
         }
       ]
     },
@@ -3727,28 +3739,28 @@
       "status": "open",
       "slug": "a-clockwork-orange-a-play-with-music-regional-2026",
       "thumbnail": "/images/shows/a-clockwork-orange-a-play-with-music-regional-2026/thumbnail.webp",
-      "siteScore": 85.1,
-      "liveScore": 85,
-      "scoreDrift": -0.09999999999999432,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 76.46,
+      "liveScore": 76,
+      "scoreDrift": -0.45999999999999375,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 0,
       "t2": 1,
-      "t3": 3,
+      "t3": 4,
       "positive": 4,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/12 total",
+          "5/12 total",
           "T1:0/3",
           "T2:1/3",
-          "hi-conf:4/8"
+          "hi-conf:5/8"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -4135,6 +4147,18 @@
           "p": 4,
           "m": 0,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T05:00:20.144Z",
+          "rc": 5,
+          "s": 76.46,
+          "t1": 0,
+          "t2": 1,
+          "t3": 4,
+          "p": 4,
+          "m": 0,
+          "n": 1,
           "bc": "waiting"
         }
       ]
