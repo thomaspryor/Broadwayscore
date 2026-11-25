@@ -583,5 +583,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T17:44:17.001Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8326-quote-other-show",
+    "title": "Landing blocked: toplevel-regression red on land/bro-8326-quote-other-show",
+    "description": "land.yml did not land land/bro-8326-quote-other-show: the toplevel-regression gate went red at 38c29b11cd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45667579915",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8326-quote-other-show"
+      },
+      {
+        "name": "gate",
+        "value": "toplevel-regression"
+      },
+      {
+        "name": "tip",
+        "value": "38c29b11cd3a4f47d7e08a9da93ed45297dd31d5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45667579915"
+      }
+    ],
+    "queuedAt": "2026-11-25T18:03:49.846Z"
   }
 ]
