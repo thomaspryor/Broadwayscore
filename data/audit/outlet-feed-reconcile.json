@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T18:04:00.898Z",
+  "generatedAt": "2026-11-25T19:30:32.621Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -151,7 +151,7 @@
     {
       "id": "purpose-geffen-regional-2026",
       "title": "Purpose",
-      "openingDate": "2026-11-23"
+      "openingDate": "2026-11-20"
     },
     {
       "id": "home-im-darling-regional-2026",
@@ -172,23 +172,14 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "HTTP 500 for https://theaterpizzazz.com/feed/"
+      "outletId": "musical-theatre-review",
+      "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     }
   ],
-  "itemsScanned": 922,
-  "matchedGaps": 6,
-  "possibleGaps": 5,
+  "itemsScanned": 929,
+  "matchedGaps": 3,
+  "possibleGaps": 4,
   "gaps": [
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/26-a-christmas-carol-old-vic-london-2/",
-      "headline": "A Christmas Carol &#8211; Old Vic, London",
-      "publishDate": "2026-11-25"
-    },
     {
       "showId": "candide-regional-2026",
       "title": "Candide",
@@ -215,24 +206,6 @@
       "url": "https://stageandcinema.com/2026/11/21/purpose-geffen-playhouse-review/",
       "headline": "Theater Review: PURPOSE (Geffen Playhouse)",
       "publishDate": "2026-11-22"
-    },
-    {
-      "showId": "the-afronauts-west-end-2026",
-      "title": "The Afronauts",
-      "level": "matched",
-      "outletId": "a-youngish-perspective",
-      "url": "https://ayoungishperspective.co.uk/2026/11/25/review-the-afronauts/",
-      "headline": "REVIEW: The Afronauts",
-      "publishDate": "2026-11-25"
-    },
-    {
-      "showId": "the-afronauts-west-end-2026",
-      "title": "The Afronauts",
-      "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-the-afronauts-royal-court",
-      "headline": "Review: The Afronauts (Royal Court)",
-      "publishDate": "2026-11-25"
     },
     {
       "showId": "a-christmas-carol-west-end-2026",
@@ -269,15 +242,6 @@
       "url": "https://www.thereviewshub.com/alicias-amazing-adventure-to-find-the-first-black-britons-the-grove-hall-south-kirkby/",
       "headline": "Alicia’s Amazing Adventure to Find the First Black Britons &#8211; The Grove Hall, South Kirkby",
       "publishDate": "2026-11-22"
-    },
-    {
-      "showId": "the-afronauts-west-end-2026",
-      "title": "The Afronauts",
-      "level": "possible",
-      "outletId": "artsdesk",
-      "url": "https://theartsdesk.com/theatre/afronauts-royal-court-review-final-frontier-remains-elusive",
-      "headline": "The Afronauts, Royal Court review – final frontier remains elusive",
-      "publishDate": null
     }
   ]
 }
