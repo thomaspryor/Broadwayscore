@@ -974,8 +974,12 @@ function isDatedGuardNote(note) {
  * @param {object} data - the review JSON object
  * @returns {boolean}
  */
-function restoreParkedFullText(data) {
+function restoreParkedFullText(data, opts = {}) {
   if (!data || data.fullText) return false;
+  // Anticipatory clears only lift the DATE objection. If content verification also says this is
+  // another production (a regional or tour staging), the body stays parked: a later pass re-applies
+  // that flag and the file would otherwise carry restored text under a live wrongProduction.
+  if (opts.keepIfCvWrongProduction && data.contentVerification && data.contentVerification.wrongProduction === true) return false;
   // The body may have been parked for a content reason too: keep it parked.
   if (data.wrongAttribution || data.wrongShow || data.wrongArticle
     || (data.contentVerification && data.contentVerification.wrongArticle)) return false;

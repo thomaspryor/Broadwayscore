@@ -1963,7 +1963,7 @@ const crossShowFingerprints = new Map();
             delete d.wrongProductionDetectedBy;
             delete d.anticipatoryGateOutletCategory;
             delete d.anticipatoryGateDaysBeforeOpening;
-            restoreParkedFullText(d); // BRO-8324: put the parked body back
+            restoreParkedFullText(d, { keepIfCvWrongProduction: true }); // BRO-8324: put the parked body back
           } else if (reason.startsWith('CV-promoted:') || reason.startsWith('CV-low-but-strong-signal:')) {
             delete d.wrongProductionReason;
           } else if (wasAdjudicatedTour) {
@@ -2064,7 +2064,7 @@ const crossShowFingerprints = new Map();
             delete d.wrongProductionDetectedBy;
             delete d.anticipatoryGateOutletCategory;
             delete d.anticipatoryGateDaysBeforeOpening;
-            restoreParkedFullText(d); // BRO-8324: put the parked body back
+            restoreParkedFullText(d, { keepIfCvWrongProduction: true }); // BRO-8324: put the parked body back
             if (isStaleScoreInput(d, showRecord, fp)) {
               markRescoreNeeded(d, 'wrongProduction false-positive cleared (anticipatory grace re-evaluated)');
             }
