@@ -125,7 +125,8 @@ jobs:
     # 152->160 (BRO-8010): readiness rebuild cap 10->15 (+300s) and a memo
     # restore step; (9120*0.85+300+120)/0.85 = ~9610s, so 160min = 9600s+.
     # 160->167 (BRO-7117): the 6-min "Push collect checkpoint" step; (9600*0.85+360)/0.85 = ~10024s.
-    timeout-minutes: 167
+    # 167->173 (BRO-8286): the NYT-pick step 10->15 min for the review-page pass; (10020*0.85+300)/0.85 = ~10373s.
+    timeout-minutes: 173
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
       # on the checkout below), so rebase/diff/show fetch missing blobs over the
@@ -1207,7 +1208,7 @@ jobs:
         # Kill switch: repo variable DISABLE_NYT_PICK_FASTPATH=1.
         if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && vars.DISABLE_NYT_PICK_FASTPATH != '1'
         continue-on-error: true
-        timeout-minutes: 10  # spotlight fetch (<=2 min budget) + push-with-retry (240s deadline) + buffer
+        timeout-minutes: 15  # spotlight (<=2 min budget, one ~2.5 min fetch overrun) + review-page pass (3 min budget + one fetch overrun) + push-with-retry (240s) + buffer (BRO-8286)
         env:
           SHOWS: ${{ steps.find.outputs.shows }}
           # Union-merge the append-only spend ledger on push conflicts
