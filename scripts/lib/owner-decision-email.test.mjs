@@ -244,7 +244,7 @@ test('email renders the session link only when found, always the paths line', ()
   assert.ok(a.includes(`href="${S1}"`));
   const b = buildDecisionEmail({ decision, description: DESC, secret, now: 0 }).html;
   assert.doesNotMatch(b, /Talk to the Claude session/);
-  assert.match(b, /a comment on the card that starts with ANSWER: is also read within minutes/);
+  assert.match(b, /a comment on the card that starts with "Answer:" is also read within minutes/);
   const c = buildDecisionEmail({ decision, description: DESC, secret, now: 0, sessionUrl: 'https://evil.example/x' }).html;
   assert.doesNotMatch(c, /evil\.example/);
 });

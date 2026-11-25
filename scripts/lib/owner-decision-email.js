@@ -70,7 +70,7 @@ ${optionHtml}
 ${block.recommendation ? `<p style="margin:16px 0 6px;"><strong>My recommendation:</strong> ${esc(noDash(block.recommendation))}</p>` : ''}
 ${block.defaultText ? `<p style="margin:0 0 12px;"><strong>If you do not answer:</strong> ${esc(noDash(block.defaultText))}</p>` : ''}
 ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
-<p style="margin:16px 0 0;color:#666;font-size:13px;">Each button asks you to confirm before anything is saved, and a comment on the card that starts with ANSWER: is also read within minutes. This link works for 14 days. If you already answered this in a Claude chat, tell that chat 'record my answer' and it will be saved here.</p>
+<p style="margin:16px 0 0;color:#666;font-size:13px;">Each button asks you to confirm before anything is saved, and a comment on the card that starts with "Answer:" is also read within minutes. This link works for 14 days. If you already answered this in a Claude chat, tell that chat 'record my answer' and it will be saved here.</p>
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
   return { subject, html, tokenHash: hash };
