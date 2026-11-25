@@ -180,7 +180,7 @@ test('CLI smoke: a dry run over no matching commits reads git, writes nothing, e
   if (spawnSync('git', ['rev-parse', '--verify', '-q', 'origin/main'], { cwd: root }).status !== 0) return t.skip('no origin/main in this checkout');
   // BRO-8111: 2s on a quiet box, but it ran inside an 800s test gauntlet on a loaded runner and once hit the old 60s
   // cap (a kill leaves status null and empty stderr, so the failure said nothing). Generous cap, and a kill is named.
-  const CAP_MS = 300000;
+  const CAP_MS = 150000;
   const why = (x) => `${x.error ? x.error.message : ''} signal=${x.signal} status=${x.status} stderr=${x.stderr}`;
   const r = spawnSync('node', ['scripts/landed-change-proof-audit.js', '--dry-run', '--days=1', '--sha=ffffffffffff'], { cwd: root, encoding: 'utf8', timeout: CAP_MS, env: { ...process.env, GH_TOKEN: '', VERCEL_TOKEN: '' } });
   assert.equal(r.status, 0, why(r));
@@ -319,7 +319,12 @@ test('noRunReason covers src, allowlisted-not-dispatched, failed safe run; cardB
 test('CLI smoke keeps a loaded-runner timeout and names a kill (BRO-8111 class guard)', async () => {
   const { readFileSync } = await import('node:fs');
   const src = readFileSync(new URL(import.meta.url), 'utf8');
-  const smoke = src.slice(src.indexOf("test('CLI smoke:"), src.indexOf("test('dispatchPlan:"));
-  assert.doesNotMatch(smoke, /timeout:\s*60000/, 'a 60s cap flaked once inside the 800s land gauntlet');
+  const a = src.indexOf("test('CLI smoke:"), b = src.indexOf("test('dispatchPlan:");
+  assert.ok(a >= 0 && b > a, 'smoke and dispatchPlan tests must both exist');
+  const smoke = src.slice(a, b);
+  assert.ok(src.indexOf("test('CLI smoke:") >= 0 && smoke.length > 100, 'guard slice must find the smoke test');
+  const cap = Number((smoke.match(/const CAP_MS = (\d+)/) || [])[1]);
+  assert.ok(cap >= 120000 && cap <= 200000, 'two sequential spawns must fit the 800s land gauntlet: cap 120s-200s, a 60s cap flaked once');
+  assert.doesNotMatch(smoke, /timeout:\s*\d/, 'spawn timeouts must use CAP_MS');
   assert.match(smoke, /signal=\$\{x\.signal\}/, 'a killed child must say so, not fail with an empty stderr');
 });
