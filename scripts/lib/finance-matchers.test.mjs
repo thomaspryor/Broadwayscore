@@ -164,23 +164,50 @@ test('reclassifyMonthlyDupes: 2nd+ same-month subscription charge → extra-topu
   assert.equal(M.reclassifyMonthlyDupes(rows), 0); // second run: no changes
 });
 
-test('applyExternallyPaid: early anthropic recharges + scrapingbee topups excluded, boundary respected', () => {
+test('applyExternallyPaid mechanism: rules exclude, boundary respected, config edit clears (shipped config has NO rules)', () => {
+  assert.deepEqual(config.externallyPaid.rules, [], 'nothing is excluded for who paid (BRO-8273 follow-up)');
+  const withRules = { ...config, externallyPaid: { rules: [
+    { vendorKey: 'anthropic', kinds: ['usage-recharge'], before: '2026-05-01', reason: 'paid-by-family' },
+    { vendorKey: 'scrapingbee', kinds: ['extra-topup'], before: '2026-05-01', reason: 'paid-by-family' },
+  ] } };
   const rows = [
-    { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-04-10' }, // < before → excluded
-    { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-05-10' }, // ≥ before → kept
-    { vendorKey: 'scrapingbee', kind: 'extra-topup', date: '2026-02-09' },  // excluded
-    { vendorKey: 'scrapingbee', kind: 'subscription', date: '2026-02-02' }, // base sub kept
+    { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-04-10' },
+    { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-05-10' },
+    { vendorKey: 'scrapingbee', kind: 'extra-topup', date: '2026-02-09' },
+    { vendorKey: 'scrapingbee', kind: 'subscription', date: '2026-02-02' },
   ];
-  const res = M.applyExternallyPaid(rows, config);
+  const res = M.applyExternallyPaid(rows, withRules);
   assert.equal(res.excluded, 2);
   assert.deepEqual(rows.map((r) => !!r.excluded), [true, false, true, false]);
   assert.equal(rows[0].excludedReason, 'paid-by-family');
-
-  // Config edit retroactively clears flags (self-healing).
-  const noRules = { ...config, externallyPaid: { rules: [] } };
-  const res2 = M.applyExternallyPaid(rows, noRules);
+  const res2 = M.applyExternallyPaid(rows, config); // shipped config: no rules
   assert.equal(res2.cleared, 2);
   assert.ok(rows.every((r) => !r.excluded && !r.excludedReason));
+});
+
+test('applyRowTags: private rules label payer/coding, never change totals, retag on rule edit', () => {
+  const rows = [
+    { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-03-01', amountBusiness: 10 },
+    { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-08-01', amountBusiness: 20 },
+    { vendorKey: 'openai-api', kind: 'usage-recharge', date: '2026-08-01', amountBusiness: 5 },
+  ];
+  const rules = [
+    { vendorKey: 'anthropic', set: { payer: 'private-label' } },
+    { vendorKey: 'anthropic', kinds: ['usage-recharge'], after: '2026-06-01', set: { coding: true } },
+  ];
+  assert.equal(M.applyRowTags(rows, rules), 2);
+  assert.equal(rows[0].payer, 'private-label');
+  assert.equal(rows[0].coding, undefined);
+  assert.equal(rows[1].coding, true);
+  assert.equal(rows[2].payer, undefined);
+  assert.deepEqual(rows.map((r) => r.amountBusiness), [10, 20, 5]);
+  assert.equal(M.applyRowTags(rows, []), 0); // rule removed: tags cleared
+  assert.ok(rows.every((r) => r.payer === undefined && r.coding === undefined));
+});
+
+test('ScrapingBee hello@ renewal notice stays out of bookings (it duplicates the contact@ receipt for the same charge)', () => {
+  const { disposition } = M.toLedgerRow({ gmailMessageId: 'sb-r1', date: '2026-11-24T10:00:00Z', from: 'ScrapingBee <hello@scrapingbee.com>', subject: 'Your subscription has been renewed', body: 'Your plan renewed. Total $99.00' }, config);
+  assert.notEqual(disposition, 'booked');
 });
 
 test('exact-from rules match Gmail API display-name-wrapped From headers', () => {
@@ -255,25 +282,25 @@ test('Claude Max subscription books as anthropic-max subscription, not API usage
   }, config);
   assert.equal(api.vendorKey, 'anthropic');
   // Max subs are a shared subscription (BRO-8273): booked at 50%, never excluded.
-  // API recharges follow the pre-May family-paid rule.
+  // API recharges are no longer excluded either (payer is a private label, not an exclusion).
   const maxRow = { vendorKey: 'anthropic-max', kind: 'subscription', date: '2026-06-21' };
   const apiRow = { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-03-21' };
   const apiRowMay = { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-05-21' };
   M.applyExternallyPaid([maxRow, apiRow, apiRowMay], config);
   assert.ok(!maxRow.excluded);
   assert.equal(row.businessPct, 50);
-  assert.ok(apiRow.excluded);
+  assert.ok(!apiRow.excluded);
   assert.ok(!apiRowMay.excluded);
 });
 
-test('Vercel Jan–Mar 2026 excluded (family-paid), including the Feb bill and Mar refund; Apr+ kept', () => {
+test('Vercel Jan–Mar 2026 is counted in full (no externallyPaid exclusion)', () => {
   const rows = [
-    { vendorKey: 'vercel', kind: 'usage', date: '2026-02-21' },   // the $3.5K bill
-    { vendorKey: 'vercel', kind: 'refund', date: '2026-03-04' },  // its refund
-    { vendorKey: 'vercel', kind: 'usage', date: '2026-04-22' },   // April onward = business
+    { vendorKey: 'vercel', kind: 'usage', date: '2026-02-21' },
+    { vendorKey: 'vercel', kind: 'refund', date: '2026-03-04' },
+    { vendorKey: 'vercel', kind: 'usage', date: '2026-04-22' },
   ];
   M.applyExternallyPaid(rows, config);
-  assert.deepEqual(rows.map((r) => !!r.excluded), [true, true, false]);
+  assert.deepEqual(rows.map((r) => !!r.excluded), [false, false, false]);
 });
 
 // ---- BRO-8273: OpenAI top-ups, card last-4, shared Claude Max, new vendors ----

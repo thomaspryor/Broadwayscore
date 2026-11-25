@@ -298,7 +298,35 @@ function applyExternallyPaid(rows, config = loadVendorConfig()) {
   return { excluded, cleared };
 }
 
+/**
+ * Apply private per-row tags (payer label, coding flag) from rules that live in
+ * the PRIVATE ledger dir (row-tags.json), never in this public repo. Rule:
+ * { vendorKey, kinds?, before?, after?, set: { payer?: string, coding?: boolean } }.
+ * Recomputed on every run (the two tag keys are cleared first), so editing the
+ * private file retroactively retags the whole ledger. Tags never change totals.
+ * Returns the number of rows that carry a tag afterwards.
+ */
+const TAG_KEYS = ['payer', 'coding'];
+function applyRowTags(rows, rules = []) {
+  const matches = (r, rule) =>
+    r.vendorKey === rule.vendorKey &&
+    (!rule.kinds || rule.kinds.includes(r.kind)) &&
+    (!rule.before || String(r.date) < rule.before) &&
+    (!rule.after || String(r.date) >= rule.after);
+  let tagged = 0;
+  for (const r of rows) {
+    for (const k of TAG_KEYS) delete r[k];
+    for (const rule of rules) {
+      if (!matches(r, rule)) continue;
+      for (const k of TAG_KEYS) if (rule.set && rule.set[k] !== undefined && r[k] === undefined) r[k] = rule.set[k];
+    }
+    if (TAG_KEYS.some((k) => r[k] !== undefined)) tagged++;
+  }
+  return tagged;
+}
+
 module.exports = {
+  applyRowTags,
   loadVendorConfig,
   reclassifyMonthlyDupes,
   applyExternallyPaid,

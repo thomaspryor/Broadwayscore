@@ -22,7 +22,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { toLedgerRow, loadVendorConfig, reclassifyMonthlyDupes, applyExternallyPaid, applyVendorBusinessPct, classifyReceipt } = require('./lib/finance-matchers');
+const { toLedgerRow, loadVendorConfig, reclassifyMonthlyDupes, applyExternallyPaid, applyVendorBusinessPct, applyRowTags, classifyReceipt } = require('./lib/finance-matchers');
 const { computeFinanceStats } = require('./lib/finance-stats');
 
 function parseArgs(argv) {
@@ -154,6 +154,9 @@ async function main() {
   const retyped = reclassifyMonthlyDupes(ledger);
   const pctFixed = applyVendorBusinessPct(ledger, config);
   const ext = applyExternallyPaid(ledger, config);
+  // Private payer/coding tags: rules live in the private ledger dir, absent = no tags.
+  const tagRules = readJson(path.join(args.out, 'row-tags.json'), []);
+  const tagged = applyRowTags(ledger, Array.isArray(tagRules) ? tagRules : (tagRules.rules || []));
 
   // Drain queue entries whose message has since booked (a matcher fix can turn
   // yesterday's needs-review into today's booking — the stale entry would sit
@@ -172,7 +175,7 @@ async function main() {
 
   console.log(`Receipts in: ${receipts.length}`);
   console.log(`  booked ${stats.booked} · duplicate ${stats.duplicate} · personal ${stats.personal} · ignored ${stats.ignore} · needs-review ${stats.needsReview} · amount-unparsed ${stats.unparsed} · cardLast4 filled on existing ${stats.cardFilled}`);
-  console.log(`  extra-topup retyped ${retyped} · businessPct re-applied ${pctFixed} · externally-paid marked ${ext.excluded} / cleared ${ext.cleared} (total excluded ${ledger.filter((r) => r.excluded).length}) · queue drained ${drained}`);
+  console.log(`  extra-topup retyped ${retyped} · businessPct re-applied ${pctFixed} · externally-paid marked ${ext.excluded} / cleared ${ext.cleared} (total excluded ${ledger.filter((r) => r.excluded).length}) · rows tagged ${tagged} · queue drained ${drained}`);
 
   const revenue = readJson(path.join(args.out, 'revenue-ledger.json'), []);
   const pnl = computeFinanceStats({ expenses: ledger, revenue, monthsBack: 6 });
