@@ -11,7 +11,7 @@ const { buildTbObOpeningCandidates, tryTbDirectUrl } = require('./tb-direct-url.
 
 const OB = 'https://www.talkinbroadway.com/page/ob/';
 const page = (title, critic = 'Moshe Bloxenheim', date = 'November 22, 2026') =>
-  `<html><head><title>Talkin' Broadway Off-Broadway Review: ${title}</title></head><body>` +
+  `<html><head><title>Talkin' Broadway Off-Broadway - "${title}" - 11/22/26</title></head><body>` +
   `<h1>${title}</h1><p>Theatre Review by ${critic} - ${date}</p>${'<p>review body text</p>'.repeat(80)}</body></html>`;
 
 function fakeFetch(pages) {
@@ -117,4 +117,22 @@ test('tbFileHoldsReview: dated OB page held, OB index and flagged files not, Bro
   assert.equal(tbFileHoldsReview({ url: 'https://www.talkinbroadway.com/page/world/FallenAngels.html' }), true);
   assert.equal(tbFileHoldsReview({ url: 'https://www.talkinbroadway.com/page/world/fallenangels2026.html' }), false);
   assert.equal(tbFileHoldsReview({ url: '' }, ob), false);
+});
+
+test('a one-word title does not take another show filed under the same date (Art vs Art of Leaving)', async () => {
+  const fetchPage = fakeFetch({ [`${OB}10_22_25.html`]: page('Art of Leaving', 'James Wilson', 'October 22, 2025') });
+  const r = await tryTbDirectUrl({
+    show: { id: 'art-2025', title: 'Art', openingDate: '2025-10-22' },
+    year: 2025, fetchPage, offBroadway: true, logger: quiet,
+  });
+  assert.equal(r.found, false);
+});
+
+test('a subtitled show matches its main title on the OB page', async () => {
+  const fetchPage = fakeFetch({ [`${OB}11_22_26.html`]: page('School Girls') });
+  const r = await tryTbDirectUrl({
+    show: { id: 'sg', title: 'School Girls; Or, The African Mean Girls Play', openingDate: '2026-11-22' },
+    year: 2026, fetchPage, offBroadway: true, logger: quiet,
+  });
+  assert.equal(r.found, true);
 });

@@ -22,6 +22,7 @@ const MIN_CONTENT_BYTES = 800; // TB 404 pages are <500 bytes; real reviews are 
 const { foldDiacritics } = require('./title-match');
 const { shortTitleCandidate } = require('./title-normalization');
 const { containsAsWords } = require('./title-containment');
+const { pageTitleMatchesShow } = require('./talkinbroadway-index');
 
 // Same floor used by verifyTbPage's short-title fallback below — short titles under this
 // length (e.g. "Oh, Mary!" → "Oh") are too generic to build a reliable URL slug from.
@@ -288,6 +289,17 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
   // as before: no new fetch starts once it is spent, and a fetch already started is awaited
   // (fetchPage has its own provider timeouts). Once a candidate verifies, nothing of lower
   // priority starts; the first verified candidate in priority order wins, then the index.
+  // An OB url carries no title, so a same-date page for another show ("Art of Leaving" vs "Art")
+  // passes the loose word-containment check. Off-Broadway also needs the quoted show title in the
+  // page <title> to equal the show's title or its main/comma short form (BRO-8148 review).
+  const verifyCandidate = (content) => {
+    const v = verifyTbPage(content, { showTitle: show.title, openingDate: show.openingDate, isRevival });
+    if (!v.ok || !offBroadway) return v;
+    const pageTitle = extractTitle(content);
+    const forms = [show.title, show.title.split(/[;:]/)[0].trim(), shortTitleCandidate(show.title)].filter(Boolean);
+    if (forms.some(f => pageTitleMatchesShow(pageTitle, f))) return v;
+    return { ok: false, reason: `quoted page title is not this show (page="${pageTitle.slice(0, 80)}", show="${show.title}")` };
+  };
   const deadline = now() + tbBudgetMs(budgetMs);
   const answered = urls.map(() => 'budget');
   let next = 0;
@@ -299,7 +311,7 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
       logger.log(urls[i] === indexUrl ? `  Talkin' Broadway: trying index.html fallback...` : `  Checking Talkin' Broadway: ${urls[i]}`);
       answered[i] = await fetchPage(urls[i], { renderJs: false }).then(page => ({ page }), err => ({ err }));
       const content = answered[i].page && answered[i].page.content;
-      if (i < candidates.length && content && verifyTbPage(content, { showTitle: show.title, openingDate: show.openingDate, isRevival }).ok) {
+      if (i < candidates.length && content && verifyCandidate(content).ok) {
         bestVerified = Math.min(bestVerified, i);
       }
     }
@@ -312,11 +324,7 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
     if (r === 'budget') continue;
     if (r.err) { logger.log(`    fetch error (${candidates[i]}): ${r.err.message}`); continue; }
     if (!r.page || !r.page.content) continue;
-    const v = verifyTbPage(r.page.content, {
-      showTitle: show.title,
-      openingDate: show.openingDate,
-      isRevival,
-    });
+    const v = verifyCandidate(r.page.content);
     if (v.ok) {
       logger.log(`  Talkin' Broadway: verified — ${candidates[i]}`);
       return {
