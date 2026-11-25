@@ -618,20 +618,6 @@
     "queuedAt": "2026-11-25T19:21:17.090Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +18 more). Checked 2026-11-25.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-25T19:43:01.132Z"
-  },
-  {
     "conditionKey": "opening-night-publish-date-pre-opening:missing:the-afronauts-west-end-2026",
     "title": "Shipped review missing publishDate on The Afronauts",
     "description": "artsdesk/null SHIPPED with no publishDate — cannot confirm post-opening: https://theartsdesk.com/theatre/afronauts-royal-court-review-final-frontier-remains-elusive",
@@ -675,6 +661,20 @@
       }
     ],
     "queuedAt": "2026-11-25T19:50:59.200Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-25.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T21:01:54.542Z"
   },
   {
     "conditionKey": "review-gap:opening-window:a-christmas-carol-west-end-2026",
