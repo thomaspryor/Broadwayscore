@@ -23,6 +23,7 @@ const linear = require('./lib/linear-client');
 const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
 const { findOwnerDecisions, planNotification } = require('./lib/owner-decision-notify.js');
 const link = require('../src/lib/owner-decision-link.js');
+const { findAskingSessionUrl } = require('./lib/owner-decision-session-link.js');
 const { buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, pictureHold, clarityHold } = require('./lib/owner-decision-email.js');
 const { holdReason, sendMode } = require('./lib/owner-decision-quiet-period.js');
 
@@ -249,8 +250,9 @@ async function main(argv = process.argv.slice(2)) {
     return failures ? 1 : 0;
   }
   for (const d of fresh.slice(0, opts.max)) {
-    const email = buildDecisionEmail({ decision: d, description: byId.get(d.identifier).description, related: relatedOf(d), secret });
-    if (opts.dryRun) { console.log(`[dry-run] would email "${email.subject}" (${d.identifier})`); continue; }
+    const sessionUrl = findAskingSessionUrl(((byId.get(d.identifier).comments || {}).nodes) || []);
+    const email = buildDecisionEmail({ decision: d, description: byId.get(d.identifier).description, related: relatedOf(d), secret, sessionUrl });
+    if (opts.dryRun) { console.log(`[dry-run] would email "${email.subject}" (${d.identifier}) session link: ${sessionUrl || 'none'}`); continue; }
     // Resend dedupes this key for 24h, so a failed marker write below cannot double-send within a day.
     const ok = await sendEmailAlert({ title: email.subject, description: '', severity: 'error', subjectLabel: '', html: email.html, idempotencyKey: `owner-decision:${d.identifier}:${email.tokenHash}` });
     if (!ok) { failures++; console.error(`[owner-decision-emails] email for ${d.identifier} was not delivered; will retry next run`); continue; }

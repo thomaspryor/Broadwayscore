@@ -36,8 +36,8 @@ function button(href, label, primary) {
  * decision: { identifier, title, url, question }, description: the card text,
  * secret: signing secret. Returns { subject, html, tokenHash }.
  */
-function buildDecisionEmail({ decision, description, related = [], secret, now = Date.now(), baseUrl = BASE_URL, reminder = false }) {
-  const seeHtml = contextLinksHtml({ decision, links: mockupLinks(description, ...related) });
+function buildDecisionEmail({ decision, description, related = [], secret, now = Date.now(), baseUrl = BASE_URL, reminder = false, sessionUrl = null }) {
+  const seeHtml = contextLinksHtml({ decision, links: mockupLinks(description, ...related) }) + talkHtml(sessionUrl);
   const hash = questionHash(decision.question || decision.title);
   const token = signToken({ id: decision.identifier, hash, secret, now });
   const block = parseDecisionBlock(description);
@@ -74,6 +74,14 @@ ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
   return { subject, html, tokenHash: hash };
+}
+
+// BRO-8282: how the owner can talk to the session that asked, plus a plain line on the answer paths.
+const SESSION_URL_OK = /^https:\/\/claude\.ai\/code\/session_[A-Za-z0-9_-]+$/;
+function talkHtml(sessionUrl) {
+  const link = sessionUrl && SESSION_URL_OK.test(sessionUrl)
+    ? `<p style="margin:0 0 10px;font-size:14px;"><a href="${esc(sessionUrl)}" style="color:#1a1208;font-weight:600;">Talk to the Claude session that asked</a> (opens the chat; type your question there)</p>` : '';
+  return `${link}<p style="margin:0 0 12px;color:#666;font-size:13px;">${sessionUrl ? 'Your button answer goes to the card and a fresh Claude picks it up within minutes. To chat about it first, open the session. ' : ''}Buttons record an answer. A comment on the card is also read within minutes.</p>`;
 }
 
 // BRO-8199: the plain-words background ("A star deal is ...") right under the question.

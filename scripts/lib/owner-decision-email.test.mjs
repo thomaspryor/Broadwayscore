@@ -216,3 +216,35 @@ test('BRO-8199 ship-check: the unclear-question note does not reset the maybe-an
   const found = q.maybeAnswerComments ? q.maybeAnswerComments(issue, Date.parse('2026-11-04T00:00:00Z')) : null;
   if (found) assert.equal(found.length, 1, 'the owner "A" before the note still counts');
 });
+
+// BRO-8282: talk-to-the-session link.
+const { findAskingSessionUrl } = require('./owner-decision-session-link.js');
+const S1 = 'https://claude.ai/code/session_AAA111';
+const S2 = 'https://claude.ai/code/session_BBB222';
+
+test('asking session: prefers the comment carrying the DECISION NEEDED block, skips batch senders and host fallbacks', () => {
+  const comments = [
+    { createdAt: '2026-11-01', body: `Claimed by ${S1} at 2026-11-01` },
+    { createdAt: '2026-11-02', body: `DECISION NEEDED: x\n<!-- session: ${S2} -->` },
+    { createdAt: '2026-11-03', body: `Emailed the owner this decision with answer buttons.\n<!-- session: https://claude.ai/code/session_EMAILER -->` },
+    { createdAt: '2026-11-04', body: 'Claimed by a session on Toms-Mac at now' },
+  ];
+  assert.equal(findAskingSessionUrl(comments), S2);
+  assert.equal(findAskingSessionUrl(comments.slice(0, 1)), S1);
+});
+
+test('asking session: null when none is known', () => {
+  assert.equal(findAskingSessionUrl([{ body: 'Claimed by a session on Mac at now' }, { body: 'local session abc on Mac' }]), null);
+  assert.equal(findAskingSessionUrl([]), null);
+});
+
+test('email renders the session link only when found, always the paths line', () => {
+  const a = buildDecisionEmail({ decision, description: DESC, secret, now: 0, sessionUrl: S1 }).html;
+  assert.match(a, /Talk to the Claude session that asked/);
+  assert.ok(a.includes(`href="${S1}"`));
+  const b = buildDecisionEmail({ decision, description: DESC, secret, now: 0 }).html;
+  assert.doesNotMatch(b, /Talk to the Claude session/);
+  assert.match(b, /A comment on the card is also read within minutes/);
+  const c = buildDecisionEmail({ decision, description: DESC, secret, now: 0, sessionUrl: 'https://evil.example/x' }).html;
+  assert.doesNotMatch(c, /evil\.example/);
+});
