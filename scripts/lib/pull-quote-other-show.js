@@ -79,20 +79,40 @@ function buildEvidenceIndex(shows) {
     const titleKey = distinctiveTitle(s && s.title);
     if (!titleKey) continue;
     const opening = s.openingDate ? Date.parse(s.openingDate) : NaN;
-    out.push({ id: s.id, title: s.title, titleKey, opening: Number.isFinite(opening) ? opening : null, names: showNames(s, { creativeSurnames: null }) });
+    out.push({ id: s.id, title: s.title, titleKey, titleLower: titleKey.toLowerCase(), opening: Number.isFinite(opening) ? opening : null, names: showNames(s, { creativeSurnames: null }) });
   }
   return out;
 }
 
 let _defaultIndex = null;
+let _showsById = null;
+// Fail open: a missing or unreadable data/shows.json must not abort a rebuild or
+// an extractor run; the guard then just has no cross-show evidence.
+function loadShows() {
+  if (_showsById) return _showsById;
+  _showsById = new Map();
+  let list = [];
+  try {
+    const path = require('path');
+    const fs = require('fs');
+    const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
+    list = Array.isArray(raw) ? raw : (raw.shows || Object.values(raw));
+  } catch (e) {
+    console.warn(`[pull-quote-other-show] data/shows.json unreadable (${e.code || e.message}); other-show guard has no evidence`);
+  }
+  for (const sh of list) if (sh && sh.id) _showsById.set(sh.id, sh);
+  _defaultIndex = buildEvidenceIndex(list);
+  return _showsById;
+}
+
 function loadDefaultIndex() {
-  if (_defaultIndex) return _defaultIndex;
-  const path = require('path');
-  const fs = require('fs');
-  const file = path.join(__dirname, '..', '..', 'data', 'shows.json');
-  const raw = JSON.parse(fs.readFileSync(file, 'utf8'));
-  _defaultIndex = buildEvidenceIndex(Array.isArray(raw) ? raw : (raw.shows || Object.values(raw)));
+  if (!_defaultIndex) loadShows();
   return _defaultIndex;
+}
+
+/** The full show record (cast, creative team) for an id, or null. Lets every caller judge a record with the same evidence. */
+function lookupShow(id) {
+  return (id && loadShows().get(id)) || null;
 }
 
 /** Whole-word positions of `needle` in `text`. */
@@ -128,6 +148,11 @@ function locateQuote(text, q) {
 // show index, and the rebuild asks about several candidate quotes per review.
 const _articleCache = new WeakMap();
 
+// "Rent" must not hide "Current": nested titles count only on whole words.
+function sameOrNestedTitle(a, b) {
+  return a === b || ` ${a} `.includes(` ${b} `) || ` ${b} `.includes(` ${a} `);
+}
+
 function articleContext(data, show, index, ownKey) {
   const showId = (show && show.id) || data.showId || '';
   const hit = _articleCache.get(data);
@@ -139,8 +164,8 @@ function articleContext(data, show, index, ownKey) {
   if (Number.isFinite(reviewDate)) {
     for (const o of index || loadDefaultIndex()) {
       if (o.id === showId || o.opening === null) continue; // no date evidence: not a "same time" show
-      const ok = o.titleKey.toLowerCase();
-      if (ok === ownTitleLower || ok.includes(ownTitleLower) || ownTitleLower.includes(ok)) continue;
+      const ok = o.titleLower;
+      if (sameOrNestedTitle(ok, ownTitleLower)) continue;
       if (Math.abs(o.opening - reviewDate) > WINDOW_DAYS * 864e5) continue;
       if (!positionsOf(text, o.titleKey, true).length) continue;
       others.push(o);
@@ -186,7 +211,9 @@ function quoteInOtherShowPassage(quote, data, show, index) {
       if (!named) continue;
       // The other show's title must lead into the quote: a performer's name in a
       // review of this show can be a comparison, a title heading cannot.
-      if (qStart < 0) return { rule: 'other-show', detail: `names "${named}" (${o.title})` };
+      // A quote we cannot place in the article has no position, so a performer's
+      // name alone (a comparison, say) is not enough to reject it.
+      if (qStart < 0) continue;
       const heads = positionsOf(text, o.titleKey, true).filter((p) => p < qStart && qStart - p <= SECTION_CHARS);
       if (!heads.length) continue;
       const lead = Math.max(...heads);
@@ -205,6 +232,6 @@ function quoteInOtherShowPassage(quote, data, show, index) {
 }
 
 module.exports = {
-  quoteInOtherShowPassage, buildEvidenceIndex, loadDefaultIndex,
+  quoteInOtherShowPassage, buildEvidenceIndex, loadDefaultIndex, lookupShow,
   FAR_BEFORE_CHARS, SECTION_CHARS, WINDOW_DAYS,
 };

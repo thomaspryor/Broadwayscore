@@ -737,11 +737,15 @@ function hasUsableLlmQuote(data) {
  * BRO-8326: the quote sits in another show's part of the article, or in a news
  * column's lede ahead of this show (scripts/lib/pull-quote-other-show.js).
  * Returns the reason string or null. `show` is optional: a stored record only
- * carries its title, so cast evidence is used when the caller has the show.
+ * carries its title, so the show is looked up by data.showId when not passed.
  */
 function quoteFromOtherShowPassage(quote, data, show) {
-  const r = require('./pull-quote-other-show').quoteInOtherShowPassage(
-    quote, data, show || { id: data && data.showId, title: data && data.showTitle });
+  const lib = require('./pull-quote-other-show');
+  // Every caller judges with the same evidence: a stored record carries only its
+  // title, so the show record (cast, creative team) is looked up by id.
+  const resolved = show || lib.lookupShow(data && data.showId)
+    || { id: data && data.showId, title: data && data.showTitle };
+  const r = lib.quoteInOtherShowPassage(quote, data, resolved);
   return r ? `${r.rule}: ${r.detail}` : null;
 }
 

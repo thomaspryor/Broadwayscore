@@ -87,3 +87,25 @@ test('short or missing input never throws and never flags', () => {
   assert.equal(quoteInOtherShowPassage('x', { fullText: 'short' }, cfa, index), null);
   assert.equal(quoteInOtherShowPassage('a quote long enough to matter here', { fullText: vv.fullText }, { title: '' }, index), null);
 });
+
+// Review findings (ship-check, BRO-8326)
+test('a quote that cannot be placed in the article is kept even when it names another show\'s performer', () => {
+  const unplaced = 'Danny DeVito is nothing like the stagey furniture dealer anyone remembers.'; // not in vv.fullText
+  assert.equal(quoteInOtherShowPassage(unplaced, vv, cfa, index), null);
+});
+
+test('hasUsableLlmQuote and the rebuild path agree: the show is looked up by id when not passed', () => {
+  const rec = { ...vv, showId: 'come-from-away-2017', llmPullQuote: "Ashley's cast moves like a single organism, and Jenn Colella is superb." };
+  assert.equal(guards.quoteFromOtherShowPassage(rec.llmPullQuote, rec), guards.quoteFromOtherShowPassage(rec.llmPullQuote, rec, cfa));
+  assert.equal(guards.quoteFromOtherShowPassage(QUOTE_PRICE, rec) === null, guards.quoteFromOtherShowPassage(QUOTE_PRICE, rec, cfa) === null);
+});
+
+test('a short own title does not hide a different show whose title merely contains it', () => {
+  const rent = { id: 'rent', title: 'Rent', openingDate: '2017-03-12', cast: [] };
+  const current = { id: 'current', title: 'The Current War Show', openingDate: '2017-03-16', cast: [{ name: 'Alexander Hanson' }] };
+  const idx = buildEvidenceIndex([rent, current]);
+  const q = "Alexander Hanson's patient, funny performance is the best thing here and it never flags.";
+  const d = { showId: 'rent', showTitle: 'Rent', publishDate: '2017-03-17',
+    fullText: `Rent arrives. ${filler(4)} The Current War Show is the other opening. ${q}${filler(3)}` };
+  assert.equal((quoteInOtherShowPassage(q, d, rent, idx) || {}).rule, 'other-show');
+});
