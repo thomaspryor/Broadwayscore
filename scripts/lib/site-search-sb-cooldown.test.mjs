@@ -1,14 +1,14 @@
 // BRO-8280: the site-search direct ScrapingBee render must honour the shared SB host cooldown.
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import https from 'node:https';
 
 const require = createRequire(import.meta.url);
-const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sb-cd-'));
+const { makeTmpDir } = require('./tmpdir-for-tests.js');
+const dir = makeTmpDir(after, 'sb-cd-');
 const ledger = path.join(dir, 'ledger.jsonl');
 const hoursAgo = (h) => new Date(Date.now() - h * 3600e3).toISOString();
 const rows = (host, n, success, h) => Array.from({ length: n }, () => JSON.stringify({ provider: 'scrapingbee', host, success, ts: hoursAgo(h) }));
