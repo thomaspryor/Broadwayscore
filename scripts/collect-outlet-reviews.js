@@ -352,7 +352,7 @@ async function writeReviewFile(showId, outletId, url, showTitle, outletName, opt
   // productions share the title. West End searches carry no SERP date filter,
   // so the article's own date decides. Missing date rejects only when the
   // search itself was unfiltered (window.requireDate).
-  const verdict = publishWindowVerdict(prefetch && prefetch.publishDate, window);
+  const verdict = publishWindowVerdict(prefetch && prefetch.publishDate, window, opts.serpTitle);
   if (verdict) {
     console.log(`    SKIP (${verdict}${prefetch && prefetch.publishDate ? `: ${prefetch.publishDate}` : ''})`);
     return skip(verdict);
@@ -401,10 +401,17 @@ async function writeReviewFile(showId, outletId, url, showTitle, outletName, opt
  * null when a candidate's publish date is acceptable, else a rejection reason.
  * window: {dateMin: Date, dateMax: Date, requireDate: boolean} or null (no check).
  */
-function publishWindowVerdict(publishDate, window) {
+function publishWindowVerdict(publishDate, window, serpTitle = null) {
   if (!window) return null;
   const t = publishDate ? Date.parse(publishDate) : NaN;
-  if (!Number.isFinite(t)) return window.requireDate ? 'no-publish-date' : null;
+  if (!Number.isFinite(t)) {
+    // A paywalled page often has no readable date, but its search title names
+    // the year ("... review, Palace, London, 2016"). Every year in the title
+    // before the window's first year can only reject, never accept.
+    const years = String(serpTitle || '').match(/\b(19|20)\d{2}\b/g);
+    if (years && years.every((y) => Number(y) < window.dateMin.getUTCFullYear())) return 'outside-publish-window';
+    return window.requireDate ? 'no-publish-date' : null;
+  }
   if (t < window.dateMin.getTime() || t > window.dateMax.getTime()) return 'outside-publish-window';
   return null;
 }
@@ -672,7 +679,7 @@ async function main() {
                 if (skipValidation) console.log(`    SKIP validation (${accessModel} outlet)`);
                 let skipReason = null;
                 const written = await writeReviewFile(show.id, outlet.id, foundUrl, show.title, outletName,
-                  { ...writeOpts, onSkip: (r) => { skipReason = r; } });
+                  { ...writeOpts, serpTitle, onSkip: (r) => { skipReason = r; } });
                 if (written) totalWritten++;
                 record(show.id, outlet.id, written ? 'written' : 'rejected',
                   { url: foundUrl, serpTitle, ...(written ? { dryRun: !!opts.dryRun } : { reason: skipReason || 'write-skipped' }) });

@@ -266,6 +266,11 @@ test('the collector refuses a page dated outside the production window (or undat
   assert.equal(publishWindowVerdict(null, w), null);
   assert.equal(publishWindowVerdict(null, { ...w, requireDate: true }), 'no-publish-date');
   assert.equal(publishWindowVerdict('2019-05-01', null), null);
+  // Undated page, but the search title names an earlier year: rejected, never accepted.
+  assert.equal(publishWindowVerdict(null, { ...w, requireDate: true }, 'HP review, Palace, London, 2016'), 'outside-publish-window');
+  assert.equal(publishWindowVerdict(null, { ...w, requireDate: true }, 'Since 2016, now 2026: review'), 'no-publish-date');
+  assert.equal(publishWindowVerdict(null, w, 'Review 2026'), null);
+  assert.equal(publishWindowVerdict('2026-10-02', w, 'Review, 2016'), null); // a real date always wins
 });
 
 test('a junk match (news page, other site, older production) counts as an empty search; an undated or broken match is retried', () => {

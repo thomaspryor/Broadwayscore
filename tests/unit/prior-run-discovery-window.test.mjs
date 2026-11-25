@@ -255,3 +255,24 @@ describe('isUrlYearInTourLeg', () => {
     assert.strictEqual(isUrlYearInTourLeg('https://example.com/reviews/tour-2019', TOUR_LEGS), false);
   });
 });
+
+// BRO-7312 / BRO-5724: an inheritReviews:false prior run is a SEPARATE production.
+// It must not widen discovery back to its press (Harry Potter one-part 2026 searched from 2016).
+describe('inheritReviews:false prior runs do not widen discovery', () => {
+  const hp = {
+    openingDate: '2026-10-21', previewsStartDate: '2026-10-09', closingDate: '2027-06-27',
+    priorRuns: [{ venue: 'Palace Theatre', openingDate: '2016-07-30', closingDate: '2026-09-20', inheritReviews: false }],
+  };
+  it('earliestPriorRunStart ignores the opt-out run', () => {
+    assert.strictEqual(earliestPriorRunStart(hp), null);
+    const mixed = { ...hp, priorRuns: [...hp.priorRuns, { openingDate: '2024-05-01' }] };
+    assert.strictEqual(earliestPriorRunStart(mixed).toISOString().slice(0, 10), '2024-05-01');
+  });
+  it('calculateDateWindow starts at this run\'s previews', () => {
+    assert.strictEqual(calculateDateWindow(hp).dateMin.toISOString().slice(0, 10), '2026-10-02');
+  });
+  it('isUrlYearInPriorRun does not readmit the opt-out run\'s years', () => {
+    assert.strictEqual(isUrlYearInPriorRun('https://x.example/2016/07/hp-review', hp.priorRuns), false);
+    assert.strictEqual(isUrlYearInPriorRun('https://x.example/2016/07/hp-review', [{ openingDate: '2016-07-30', closingDate: '2017-01-01' }]), true);
+  });
+});

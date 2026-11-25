@@ -1733,7 +1733,10 @@ function earliestPriorRunStart(show) {
   if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return null;
   let earliest = null;
   for (const run of show.priorRuns) {
-    if (!run || !run.openingDate) continue;
+    // BRO-5724: inheritReviews:false declares a SEPARATE earlier production;
+    // its press is out of scope, so it must not widen discovery (BRO-7312:
+    // Harry Potter one-part 2026's window reached back to the 2016 run).
+    if (!run || !run.openingDate || run.inheritReviews === false) continue;
     const d = new Date(run.openingDate);
     if (isNaN(d.getTime())) continue;
     if (!earliest || d.getTime() < earliest.getTime()) earliest = d;
@@ -1833,7 +1836,7 @@ function isUrlYearInPriorRun(url, priorRuns) {
   const urlYear = urlYearOf(url);
   if (urlYear === null) return false;
   for (const run of priorRuns) {
-    if (!run || !run.openingDate) continue;
+    if (!run || !run.openingDate || run.inheritReviews === false) continue; // BRO-5724 opt-out: not in scope
     const open = new Date(run.openingDate);
     if (isNaN(open.getTime())) continue;
     const close = run.closingDate ? new Date(run.closingDate) : null;
