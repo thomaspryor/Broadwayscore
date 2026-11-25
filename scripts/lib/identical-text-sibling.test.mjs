@@ -1,9 +1,9 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Tests for scripts/lib/identical-text-sibling.js and the shared same-article
  * key, review-normalization.canonicalArticleKey (BRO-5321).
  * Run: node --test scripts/lib/identical-text-sibling.test.mjs
  */
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

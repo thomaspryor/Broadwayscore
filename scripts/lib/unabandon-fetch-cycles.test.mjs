@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Tests for scripts/unabandon-fetch-cycles.js — the rollback for the fetch
  * retry lifecycle gate (BRO-787's shouldRetryFetch/recordFetchAttempt).
@@ -11,6 +10,7 @@
  *
  * Run: node --test scripts/lib/unabandon-fetch-cycles.test.mjs
  */
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';

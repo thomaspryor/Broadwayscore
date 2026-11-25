@@ -1,6 +1,6 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4098: triage-review-gap.js must not count another production's file as
 // "ingested". Runs the real CLI against a fixture review-texts dir.
+import './lib/shows-json-empty-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

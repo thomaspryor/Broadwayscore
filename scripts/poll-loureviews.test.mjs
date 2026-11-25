@@ -1,6 +1,6 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-2926: permanent ingest refusals are told apart from "already exists"
 // and remembered, so the LouReviews poller stops re-fetching them every cycle.
+import './lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

@@ -1,9 +1,9 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4458: createOrMergeReviewFile must refuse Google's relative /goto redirect
  * (and cache/AMP wrappers) as a review URL. Live case: broadwaynews + tennessean
  * stubs on the-body-of-mary stranded empty-body >24h on unfetchable /goto URLs.
  */
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

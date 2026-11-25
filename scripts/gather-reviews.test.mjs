@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test for gather-reviews.js's production-verification guards
  * (scripts/lib/production-verifier.js), using the exact scenario from
@@ -8,6 +7,7 @@
  * via Show Score's West End page. Requires the real functions rather than
  * re-implementing the date/venue logic (CLAUDE.md rule 15).
  */
+import './lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';

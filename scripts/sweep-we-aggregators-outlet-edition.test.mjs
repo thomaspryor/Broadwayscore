@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * sweep-we-aggregators.js writeReview: the URL edition decides the outlet.
  *
@@ -10,6 +9,7 @@
  * Run: node --test scripts/sweep-we-aggregators-outlet-edition.test.mjs
  */
 
+import './lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

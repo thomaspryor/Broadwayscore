@@ -1,9 +1,9 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // The named-non-review-URL rule must be enforced by the REBUILD, not only by
 // explainExclusion(). Until 2026-09-25 it lived only in explainExclusion, so
 // nytg /show/ listings and Stage /news/ items from SERP discovery stayed on
 // the site (la-traviata-off-broadway-2026, the-infinite-wrench, kiss-of-the-
 // spider-woman-1993, mamma-mia-2001).
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

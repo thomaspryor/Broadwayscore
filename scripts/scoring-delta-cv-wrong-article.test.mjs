@@ -1,9 +1,9 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6233: the CV wrongArticle routing is one helper (cvWrongArticlePromotion)
 // shared by both rebuild CV pre-passes and scoring-delta's replay, the BRO-6225
 // partial-window rescore hook is one helper used by both pre-passes, and the
 // mirror's cvWrongArticleHighConfidence rule is a named, classified helper.
 // Requires the real functions (CLAUDE.md rule 15).
+import './lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

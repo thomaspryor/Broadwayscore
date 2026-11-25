@@ -1,6 +1,6 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5395: the showNotMentioned flag audit names what would still exclude a
 // file once that flag is cleared, so a hand sort sees the second flag.
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-7080 (replays BRO-6438 Benjamin Button 27 vs 24 and BRO-6202 Other Desert
  * Cities 36 vs 32): countLocalIncluded must drop what the rebuild drops inside a
@@ -7,6 +6,7 @@
  *
  * Run: node --test scripts/lib/review-count-probe-dedup.test.mjs
  */
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

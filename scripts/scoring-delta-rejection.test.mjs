@@ -1,8 +1,8 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5238: scoring-delta's inclusion mirror must replay explainExclusion's
 // rejection gates (rejectionReason / rejectedByMultipleModels / rejectedAt),
 // so a guard edit that lifts rejection-excluded files shows up as flips.
 // Requires the real decideInclusion and review-guards (CLAUDE.md rule 15).
+import './lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

@@ -1,8 +1,8 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Submission-form junk guard: a NEW file from submit-review-form on a curated
 // non-review page (ticket reseller, venue listing, press release) is refused;
 // real reviews on hosts the broad classifier would wrongly reject
 // (blogcritics.org, wbur.org /news/) still write; merges are never blocked.
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

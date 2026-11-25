@@ -1,7 +1,7 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4512: keep the card's acceptance command runnable. The private-data
 // check reads the recovered file, including its historical Victor Gluck slug.
 // Public checkouts still exercise the real gap classifier with offline cases.
+import '../lib/shows-json-empty-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

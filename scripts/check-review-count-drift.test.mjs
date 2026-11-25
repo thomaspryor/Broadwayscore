@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-58: the 2026-04-22 baseline run of the OLD expected-vs-actual delta
 // algorithm flagged 86 shows as "drift" — review-text files existing on disk
 // with no matching reviews.json entry. That algorithm was retired wholesale
@@ -18,6 +17,7 @@
 // appearing in reviews.json — for both the genuine-miss case (must flag) and
 // the expected-noise case (must not flag), using real fixture files on disk
 // (REVIEW_TEXTS_DIR override, same pattern as audit-duplicate-of-url-mismatch.js).
+import './lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
