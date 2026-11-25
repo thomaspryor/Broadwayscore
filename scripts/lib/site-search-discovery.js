@@ -1400,8 +1400,7 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
       if (status === 401 || status === 402 || status === 429 || status === 'error') sbHostCooldown.release(url);
       else sbHostCooldown.record(url, success);
     };
-    let req;
-    try { req = https.get(apiUrl, (res) => {
+    const req = https.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -1409,7 +1408,7 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
         else { _rec(false, res.statusCode); reject(new Error(`ScrapingBee HTTP ${res.statusCode}`)); }
       });
       res.on('error', (err) => { _rec(false, 'error'); reject(err); });
-    }); } catch (err) { _rec(false, 'error'); return reject(err); }
+    });
     req.on('error', (err) => { _rec(false, 'error'); reject(err); });
     req.setTimeout(timeoutMs, () => { req.destroy(); _rec(false, 'timeout'); reject(new Error('Timeout')); });
   });
