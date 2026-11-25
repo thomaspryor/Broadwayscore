@@ -210,6 +210,7 @@ on:
       - 'scripts/check-missed-broadcasts.js'
       - 'scripts/gmail-reauth.js'
       - 'scripts/mezzanine-token.js'
+      - 'scripts/model-quality-scorecard.js'
       # scripts/deploy-now.js must call scripts/lib/prod-held-flags-guard.js before
       # `vercel build --prod` (BRO-4525); prod-held-flags-guard.test.mjs checks
       # that, but a solo edit dropping the call would otherwise trigger ZERO CI.
