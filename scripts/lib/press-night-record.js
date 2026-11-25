@@ -715,7 +715,13 @@ function sameNightCheck(rec, g) {
   // BRO-8308: a review file published inside a declared earlier run (a 2024 Time Out page first picked up on the
   // 2026 night of a return engagement) is that run's review, not one owed tonight. The date alone never excuses
   // a file dated on or after the night.
-  const { isWithinPriorRun } = require('./wrong-production-autoclear');
+  // Strict window (no post-close review-lag grace): a quick remount's own pre-opening review must stay owed.
+  const { priorRunWindow } = require('./wrong-production-autoclear');
+  const isWithinPriorRun = (d, runs) => runs.some((run) => {
+    if (!run || run.inheritReviews === false) return false;
+    const w = priorRunWindow(run, { allowGrace: false });
+    return !!w && d.getTime() >= w.fromMs && d.getTime() <= w.toMs;
+  });
   const inPriorRun = (f) => !!(Array.isArray(rec.priorRuns) && rec.priorRuns.length && /^\d{4}-\d{2}-\d{2}/.test(String(f.publishDate || ''))
     && String(f.publishDate).slice(0, 10) < String(rec.night) && isWithinPriorRun(new Date(String(f.publishDate).slice(0, 10)), rec.priorRuns));
   const nightFiles = fsnap.files.filter((f) => f.includable && f.outletId && !inPriorRun(f) && toMs(f.firstSeenAt) != null

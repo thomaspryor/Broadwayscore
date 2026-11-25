@@ -471,14 +471,15 @@ test('buildCensusFromArchives hands the show to the Show Score parser (BRO-7965)
   assert.equal((src.match(/takesShow: true/g) || []).length, 1);
 });
 
-test('parseShowScore: page-exempt same-production page still drops pre-run tiles (BRO-8308 supersedes BRO-7965 keep); &amp; URLs still match', () => {
+test('parseShowScore: exempt same-production page keeps old tiles when no priorRuns are declared; &amp; URLs still match (BRO-7965)', () => {
   const old = ssTile('https://www.nytimes.com/2019/04/03/arts/x.html?a=1&amp;b=2', 'April 3rd, 2019');
   const show = { openingDate: '2021-10-04', previewsStartDate: '2021-09-01', status: 'open' };
   assert.equal(parseShowScore(old, 'slave-play-2021', show).length, 0);
   const exemptPage = `<link rel="canonical" href="https://www.show-score.com/broadway-shows/slave-play">` + old;
-  // BRO-8308: the page exemption (by show id via exemptionFor) keeps the PAGE, not an owed review: a 2019 tile is
-  // not owed on the 2021 night. A declared prior run covering the date still keeps it.
-  assert.equal(parseShowScore(exemptPage, 'slave-play-2021', { ...show, id: 'slave-play-2021' }).length, 0);
+  assert.equal(parseShowScore(exemptPage, 'slave-play-2021', { ...show, id: 'slave-play-2021' }).length, 1);
+  // BRO-8308: once priorRuns are declared, a tile outside them is an earlier era's, not owed tonight.
+  const elsewhere = { ...show, id: 'slave-play-2021', priorRuns: [{ openingDate: '2012-03-01', closingDate: '2012-06-01' }] };
+  assert.equal(parseShowScore(exemptPage, 'slave-play-2021', elsewhere).length, 0);
   const covered = { ...show, id: 'slave-play-2021', priorRuns: [{ openingDate: '2019-03-01', closingDate: '2019-06-01' }] };
   assert.equal(parseShowScore(exemptPage, 'slave-play-2021', covered).length, 1);
 });

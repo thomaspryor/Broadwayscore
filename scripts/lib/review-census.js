@@ -197,11 +197,16 @@ function parseShowScore(content, showId, show) { // eslint-disable-line no-unuse
   if (show && tilesFn) {
     const { isShowScoreTileDateOutOfRun } = require('./gap-ingest-policy');
     try {
-      // BRO-8308: the page-level SAME_PRODUCTION exemption (return engagement, remount) says the PAGE is this
-      // production's, so it keeps the page's audience data; it does not make a 2016-18 tile an owed review of
-      // tonight. The Dead, 1904 (Irish Rep remount, prior run 2024) owed 2016-18 NYT/THR/amNY/TheaterMania notices
-      // and failed the night. Tile dates are judged against previews and declared priorRuns whatever the exemption.
-      for (const t of tilesFn(content) || []) if (isShowScoreTileDateOutOfRun(t.date, show)) outOfRun.add(norm(t.url));
+      // BRO-8308: the page-level SAME_PRODUCTION exemption keeps the PAGE; it does not make a tile from an earlier
+      // era an owed review of tonight. The Dead, 1904 (Irish Rep remount, declared prior run 2024) owed 2016-18
+      // NYT/THR/amNY/TheaterMania notices and failed the night. A show that DECLARES priorRuns has said which earlier
+      // runs carry reviews, so tiles outside previews and those runs are dropped. An exempt show with no declared
+      // priorRuns keeps every tile (BRO-7965), as before.
+      const { exemptionFor } = require('./show-score-production-window');
+      const declared = Array.isArray(show.priorRuns) && show.priorRuns.length > 0;
+      if (declared || !exemptionFor(show, archiveCanonicalUrl(content))) {
+        for (const t of tilesFn(content) || []) if (isShowScoreTileDateOutOfRun(t.date, show)) outOfRun.add(norm(t.url));
+      }
     } catch (_) { /* fail open */ }
   }
   const urls = (fn(content) || []).filter((u) => !outOfRun.has(norm(u)));

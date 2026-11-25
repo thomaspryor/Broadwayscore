@@ -1033,3 +1033,9 @@ test('BRO-8308: a file published inside a declared prior run is not owed on the 
   sameDay.fileState.files = [file('timeout', 30, { publishDate: sameDay.night })];
   assert.equal(sn(sameDay).status, 'fail');
 });
+
+test('BRO-8308: prior-run excusal has no post-close grace (a remount\'s own pre-opening review stays owed)', () => {
+  const r = nightRec({}, [file('timeout', 30, { publishDate: '2025-01-08' })]); // 3 days after the 2025-01-05 close
+  r.priorRuns = [{ openingDate: '2024-11-26', closingDate: '2025-01-05' }];
+  assert.equal(sn(r).status, 'fail');
+});
