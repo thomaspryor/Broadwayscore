@@ -1,13 +1,64 @@
 {
-  "generatedAt": "2026-11-25T01:16:55.881Z",
+  "generatedAt": "2026-11-25T02:27:33.418Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 377,
-  "clean": 377,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 374,
+  "defective": 3,
+  "byType": {
+    "score-drift": 3
+  },
+  "shows": [
+    {
+      "showId": "the-dead-1904-off-broadway-2026",
+      "title": "The Dead, 1904",
+      "openingDate": "2026-11-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.53 vs local 75.96 (Δ0.57)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 3,
+      "firstDefectAt": "2026-11-25T02:27:27.633Z"
+    },
+    {
+      "showId": "candide-regional-2026",
+      "title": "Candide",
+      "openingDate": "2026-11-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.75 vs local 79 (Δ4.25)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-11-25T02:27:27.633Z"
+    },
+    {
+      "showId": "a-midsummer-nights-dream-jentes-regional-2026",
+      "title": "A Midsummer Night's Dream",
+      "openingDate": "2026-11-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.83 vs local 81.92 (Δ0.91)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-25T02:27:27.633Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
