@@ -92,7 +92,12 @@ function buildSkipConfig(stats, existingConfig, { skipThreshold, now }) {
       for (const tierId of Object.keys(entry)) {
         const existingTier = entry[tierId];
         if (!existingTier || GENERATED_REASON_RE.test(existingTier.reason)) continue;
-        if (out[domain] && out[domain][tierId]) continue; // fresh generated data wins on collision
+        if (out[domain] && out[domain][tierId]) {
+          // Fresh generated data wins on collision, but a hand-set scope survives:
+          // stats come from page fetches, so dropping it would re-silence the JSON API.
+          if (existingTier.scope && !out[domain][tierId].scope) out[domain][tierId].scope = existingTier.scope;
+          continue;
+        }
         if (!out[domain]) out[domain] = {};
         out[domain][tierId] = { ...existingTier };
       }

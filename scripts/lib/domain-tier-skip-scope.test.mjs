@@ -23,3 +23,11 @@ test('class guard: every hand-written SD skip whose reason talks about guessed p
     && v.scrapingdog.scope !== 'html').map(([d]) => d);
   assert.deepEqual(bad, [], `page-URL-based SD skips without scope:html: ${bad.join(', ')}`);
 });
+
+test('regeneration keeps a hand-set scope when fresh stats collide with the entry', () => {
+  const { buildSkipConfig } = require('./domain-tier-skip.js');
+  const out = buildSkipConfig({ 'theatre.reviews': { scrapingdog: { successes: 0, failures: 5 } } }, config, { skipThreshold: 3, now: '2026-11-25' });
+  assert.equal(out['theatre.reviews'].scrapingdog.scope, 'html');
+  const out2 = buildSkipConfig({}, config, { skipThreshold: 3, now: '2026-11-25' });
+  assert.equal(out2['theatre.reviews'].scrapingdog.scope, 'html');
+});
