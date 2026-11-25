@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T19:30:32.621Z",
+  "generatedAt": "2026-11-25T20:57:27.733Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -168,27 +168,34 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "musical-theatre-review",
-      "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 929,
-  "matchedGaps": 3,
+  "itemsScanned": 902,
+  "matchedGaps": 2,
   "possibleGaps": 4,
   "gaps": [
-    {
-      "showId": "candide-regional-2026",
-      "title": "Candide",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/22/candide-la-opera-review/",
-      "headline": "Opera Review: CANDIDE (LA Opera)",
-      "publishDate": "2026-11-23"
-    },
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
       "title": "Cinderella",
@@ -199,13 +206,13 @@
       "publishDate": "2026-11-25"
     },
     {
-      "showId": "purpose-geffen-regional-2026",
-      "title": "Purpose",
+      "showId": "the-afronauts-west-end-2026",
+      "title": "The Afronauts",
       "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/21/purpose-geffen-playhouse-review/",
-      "headline": "Theater Review: PURPOSE (Geffen Playhouse)",
-      "publishDate": "2026-11-22"
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/the-afronauts-royal-court-london/",
+      "headline": "The Afronauts – Royal Court, London",
+      "publishDate": "2026-11-25"
     },
     {
       "showId": "a-christmas-carol-west-end-2026",

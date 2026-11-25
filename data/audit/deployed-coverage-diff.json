@@ -1,13 +1,144 @@
 {
-  "generatedAt": "2026-11-25T19:30:32.311Z",
+  "generatedAt": "2026-11-25T20:57:27.426Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 372,
-  "clean": 372,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 364,
+  "defective": 8,
+  "byType": {
+    "score-drift": 8
+  },
+  "shows": [
+    {
+      "showId": "hanukkah-spectacular-regional-2026",
+      "title": "Hanukkah Spectacular",
+      "openingDate": "2026-11-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.63 vs local 69.76 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-25T20:57:18.127Z"
+    },
+    {
+      "showId": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 64.29 vs local 64.17 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 38,
+      "deployedCount": 39,
+      "firstDefectAt": "2026-11-25T20:57:18.127Z"
+    },
+    {
+      "showId": "1972-regional-2026",
+      "title": "1972",
+      "openingDate": "2026-10-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.11 vs local 78.22 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-25T20:57:18.127Z"
+    },
+    {
+      "showId": "boop-tour-2026",
+      "title": "Boop! The Musical",
+      "openingDate": "2026-10-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.56 vs local 75.89 (Δ0.33)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-25T20:57:18.127Z"
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "title": "Who’s Afraid of Virginia Woolf?",
+      "openingDate": "2026-09-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.77 vs local 85.64 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 40,
+      "deployedCount": 42,
+      "firstDefectAt": "2026-11-25T20:57:18.127Z"
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "title": "Beetlejuice",
+      "openingDate": "2026-05-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 66.24 vs local 66.3 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 40,
+      "deployedCount": 40,
+      "firstDefectAt": "2026-11-25T20:57:18.127Z"
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "title": "Paddington The Musical",
+      "openingDate": "2025-11-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 88.01 vs local 88.53 (Δ0.52)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 34,
+      "deployedCount": 35,
+      "firstDefectAt": "2026-11-25T20:57:18.127Z"
+    },
+    {
+      "showId": "hadestown-2019",
+      "title": "Hadestown",
+      "openingDate": "2019-04-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.92 vs local 83 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 50,
+      "deployedCount": 51,
+      "firstDefectAt": "2026-11-25T20:57:18.127Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

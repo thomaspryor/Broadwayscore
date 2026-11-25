@@ -19504,7 +19504,7 @@
       "title": "Roundup gaps: 1 listed review(s) not captured across 1 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-25T19:29:54.890Z",
+      "lastSeen": "2026-11-25T20:52:54.967Z",
       "lastNotifiedAt": "2026-11-25T18:03:26.487Z",
       "lastSurfacedAt": null,
       "notifyCount": 74,
@@ -19524,7 +19524,7 @@
         "seven-guitars-off-broadway-2026",
         "a-christmas-carol-west-end-2026"
       ],
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -37297,12 +37297,13 @@
       "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania",
       "firstSeen": "2026-11-04T06:41:38.163Z",
       "incidentOpenedAt": "2026-11-04T06:41:38.163Z",
-      "lastSeen": "2026-11-25T14:03:18.223Z",
+      "lastSeen": "2026-11-25T20:57:06.569Z",
       "lastNotifiedAt": "2026-11-25T14:03:18.223Z",
       "lastSurfacedAt": "2026-11-25T14:03:18.223Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-8322"
+      "linearIdentifier": "BRO-8322",
+      "silentRefires": 1
     },
     "land:land/bro-4315-image-gate-renames": {
       "status": "resolved",
@@ -51025,6 +51026,19 @@
       "cardId": null,
       "linearIdentifier": null,
       "resolvedAt": "2026-11-25T20:17:16.821Z"
+    },
+    "review-gap:opening-window:a-christmas-carol-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review gap — \"A Christmas Carol\" missing 1 cited review(s)",
+      "firstSeen": "2026-11-25T20:52:54.894Z",
+      "incidentOpenedAt": "2026-11-25T20:52:54.894Z",
+      "lastSeen": "2026-11-25T20:52:54.894Z",
+      "lastNotifiedAt": "2026-11-25T20:52:54.894Z",
+      "lastSurfacedAt": "2026-11-25T20:52:54.894Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
