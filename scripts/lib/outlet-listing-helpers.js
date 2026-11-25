@@ -684,6 +684,7 @@ function confirmLogicFingerprint() {
   // GENERIC_VENUES, credit regexes...) a per-function list would miss. A harmless edit to this
   // file drops the cache once; a missed rule change would keep stale verdicts for 7 days.
   const fs = require('fs');
+  // bundle-safe-ok: lazy, called only by the poller scripts, never from a Next route
   const src = [__filename, require.resolve('./title-match')].map((f) => fs.readFileSync(f, 'utf8')).join('\n');
   return require('crypto').createHash('sha1').update(src).digest('hex').slice(0, 12);
 }
