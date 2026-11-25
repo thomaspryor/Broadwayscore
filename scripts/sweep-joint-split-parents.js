@@ -16,6 +16,7 @@
  * (REPAIR rows) or holds its whole article under split markers (WHOLE-TEXT-ON-SPLIT).
  * Needs full git history in the review-texts checkout (not a shallow clone).
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
