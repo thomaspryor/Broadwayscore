@@ -6,6 +6,8 @@
  * Uses the Wayback Machine API to find archived versions
  */
 
+// BRO-8099: --help prints usage; it used to run the script (live fetches).
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -48,15 +50,14 @@ async function getWaybackUrl(originalUrl) {
   const apiUrl = `https://archive.org/wayback/available?url=${encodeURIComponent(originalUrl)}`;
 
   try {
-    const response = await fetch(apiUrl);
-    if (response.statusCode !== 200) return null;
-
-    const data = JSON.parse(response.data);
-    if (data.archived_snapshots && data.archived_snapshots.closest) {
+    // BRO-8099: typed IA auth refusal (archive-cdx), never read as "not in archive".
+    const data = await require('./lib/archive-cdx').fetchArchiveIndexJson(apiUrl, { timeoutMs: 30000 });
+    if (data && data.archived_snapshots && data.archived_snapshots.closest) {
       return data.archived_snapshots.closest.url;
     }
     return null;
   } catch (e) {
+    if (require('./lib/archive-cdx').isArchiveAuthError(e)) return { blocked: 'archive_auth_required' };
     return null;
   }
 }
@@ -121,6 +122,7 @@ async function processReview(filePath) {
 
   // Get Wayback Machine URL
   const waybackUrl = await getWaybackUrl(review.url);
+  if (waybackUrl && waybackUrl.blocked) return { status: 'error', reason: `${waybackUrl.blocked} (archive route blocked, not evidence)` };
   if (!waybackUrl) {
     return { status: 'error', reason: 'not in archive' };
   }

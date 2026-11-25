@@ -32,6 +32,10 @@ function httpsGet(url, headers = {}) {
 }
 
 async function checkScrapingBee({ minPct = 25 } = {}) {
+  // BRO-8330: intentionally off is healthy, not a failed credit check.
+  if (require('./sb-switch').isScrapingBeeOff()) {
+    return { provider: 'ScrapingBee', ok: true, skipped: true, reason: require('./sb-switch').offStatusLine() };
+  }
   const key = process.env.SCRAPINGBEE_API_KEY;
   if (!key) {
     return { provider: 'ScrapingBee', ok: false, reason: 'SB credit check failed: SCRAPINGBEE_API_KEY not set' };

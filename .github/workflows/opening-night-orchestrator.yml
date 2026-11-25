@@ -491,7 +491,8 @@ jobs:
         id: budget
         if: steps.find.outputs.has_shows == 'true'
         env:
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
@@ -516,7 +517,8 @@ jobs:
         continue-on-error: true
         env:
           SHOWS: ${{ steps.find.outputs.shows }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           # GHA_BILLING_PAT (optional): PAT with read:user + billing scope.

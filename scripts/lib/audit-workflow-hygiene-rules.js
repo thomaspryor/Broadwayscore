@@ -12,6 +12,7 @@
  * data-out function so it can run in tests without a real workflow file.
  */
 'use strict';
+const { splitUnquoted } = require('./shell-split-unquoted.js');
 
 const indentOf = (line) => line.length - line.replace(/^ +/, '').length;
 
@@ -938,7 +939,7 @@ function findGitDiffOnIgnoredPaths(raw, isIgnored) {
     GIT_INSPECT_RE.lastIndex = 0;
     let m;
     while ((m = GIT_INSPECT_RE.exec(text))) {
-      const rest = text.slice(m.index + m[0].length).split(/\|\||&&|[|;)#]/)[0];
+      const rest = splitUnquoted(text.slice(m.index + m[0].length))[0].split(/[)#]/)[0];
       for (let tok of rest.trim().split(/\s+/)) {
         tok = tok.replace(/^["']+|["']+$/g, '');
         if (!tok || tok.startsWith('-') || tok.includes('$')) continue;

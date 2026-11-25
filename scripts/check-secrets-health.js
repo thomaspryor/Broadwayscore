@@ -192,6 +192,8 @@ const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { sbUsageFields } = require('./lib/provider-billing'); // BRO-3010: SB /usage field names live in one place
 
 async function checkScrapingBee() {
+  const sbSwitch = require('./lib/sb-switch'); // BRO-8330
+  if (sbSwitch.isScrapingBeeOff()) return { name: 'ScrapingBee', status: 'pass', message: sbSwitch.offStatusLine() };
   const key = process.env.SCRAPINGBEE_API_KEY;
   if (!key) return { name: 'ScrapingBee', status: 'skip', message: 'Key not set' };
 

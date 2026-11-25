@@ -46,7 +46,8 @@ jobs:
           # server-side while cookie expiry still looks healthy — the silent
           # Stage logout, 2026-05-29). Manual dispatch honors the input.
           LIVE_CHECK: ${{ github.event_name == 'workflow_dispatch' && inputs.live_check || 'true' }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

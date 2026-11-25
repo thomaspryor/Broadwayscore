@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-25T17:01:14.199Z",
+  "generatedAt": "2026-11-25T22:16:12.202Z",
   "maxAgeHours": 12,
-  "showsAffected": 0,
-  "strandedFiles": 0,
+  "showsAffected": 1,
+  "strandedFiles": 1,
   "blackoutShows": [],
   "agedStubHours": 48,
-  "agedStubFiles": 48,
-  "agedStubShows": 42,
+  "agedStubFiles": 54,
+  "agedStubShows": 48,
   "agedStubs": [
     {
       "showId": "suffs-2024",
@@ -220,7 +220,7 @@
           "file": "usatoday--matthew-j-palm.json",
           "url": "https://www.usatoday.com/story/life/theater/2022/12/08/aint-no-mo-broadway-review/10856338002/",
           "outlet": "USA Today",
-          "ageHours": 6712.596999722222
+          "ageHours": 6717.846445
         }
       ]
     },
@@ -429,6 +429,30 @@
       ]
     },
     {
+      "showId": "promises-promises-2010",
+      "status": "closed",
+      "stubs": [
+        {
+          "file": "vulture--unknown.json",
+          "url": "https://nymag.com/listings/theater/promises-promises-in-concert/",
+          "outlet": "Vulture",
+          "ageHours": 50.84575111111111
+        }
+      ]
+    },
+    {
+      "showId": "the-addams-family-2010",
+      "status": "closed",
+      "stubs": [
+        {
+          "file": "reuters--frank-scheck.json",
+          "url": "https://www.reuters.com/article/lifestyle/addams-family-on-broadway-a-kooky-misfire-idUSTRE6380XY/",
+          "outlet": "Reuters",
+          "ageHours": 50.696376111111114
+        }
+      ]
+    },
+    {
       "showId": "red-2010",
       "status": "closed",
       "stubs": [
@@ -472,7 +496,7 @@
           "file": "usatoday--elysa-gardner.json",
           "url": "https://www.usatoday.com/life/theater/reviews/2008-10-17-all-my-sons_N.htm",
           "outlet": "USA Today",
-          "ageHours": 6712.596999722222
+          "ageHours": 6717.846445
         }
       ]
     },
@@ -497,6 +521,18 @@
           "url": "https://www.usatoday.com/life/theater/reviews/2008-01-25-little-sheba_N.htm",
           "outlet": "USA Today",
           "ageHours": null
+        }
+      ]
+    },
+    {
+      "showId": "the-39-steps-2008",
+      "status": "closed",
+      "stubs": [
+        {
+          "file": "nytimes--unknown.json",
+          "url": "https://www.nytimes.com/alfred-hitchcocks-the-39-steps-theater-review",
+          "outlet": "The New York Times",
+          "ageHours": 50.716458055555556
         }
       ]
     },
@@ -547,7 +583,60 @@
           "ageHours": null
         }
       ]
+    },
+    {
+      "showId": "jersey-boys-2005",
+      "status": "closed",
+      "stubs": [
+        {
+          "file": "nytimes--unknown.json",
+          "url": "http://theater2.nytimes.com/2005/11/07/theater/reviews/07jers.html",
+          "outlet": "The New York Times",
+          "ageHours": null
+        }
+      ]
+    },
+    {
+      "showId": "pacific-overtures-1976",
+      "status": "closed",
+      "stubs": [
+        {
+          "file": "theatermania--unknown.json",
+          "url": "https://www.theatermania.com/news/pacific-overtures_5404/",
+          "outlet": "TheaterMania",
+          "ageHours": 50.87257916666667
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "status": "open",
+      "stubs": [
+        {
+          "file": "nytimes--manohla-dargis.json",
+          "url": "https://www.nytimes.com/2026/10/22/movies/possible-love-review-the-lives-of-others.html",
+          "outlet": "The New York Times",
+          "ageHours": 632.3631275
+        }
+      ]
     }
   ],
-  "findings": []
+  "findings": [
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "nytimes--manohla-dargis.json",
+          "url": "https://www.nytimes.com/2026/10/22/movies/possible-love-review-the-lives-of-others.html",
+          "outlet": "The New York Times",
+          "ageHours": 632.3631275
+        }
+      ],
+      "usable": 54,
+      "discovered": 54,
+      "totalBlackout": false
+    }
+  ]
 }

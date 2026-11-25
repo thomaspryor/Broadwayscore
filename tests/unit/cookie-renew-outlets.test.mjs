@@ -582,3 +582,68 @@ test('BRO-8092 class guard (BRO-7705): profileSession never calls a metered free
   assert.ok(src.includes('bprobe.profileSession(context, cfg, probe, o)'), 'renew-cookies must use cookie-browser-probe.profileSession');
   assert.match(src, /else if \(!c\.ok\) return done\(1, `profile reads logged out but it is not confirmed/, 'renew-cookies lost the confirmed-wall gate before adopt/login');
 });
+
+// BRO-8099: verify-cookie-login.js probed the saved jar with classifyWithControl
+// and NO deps, so a vacuous primary url never rotated (BRO-7922) and a bot-walled
+// anonymous control never fell back to the jar minus its auth cookies: it said
+// VACUOUS / BOT-CHECK where renew-cookies.js rotated or passed. Now both go
+// through the same profileDeps (classifySavedCookies).
+function savedJarContext({ pageFor }) {
+  let jar = [];
+  let url = null;
+  const page = {
+    goto: async (u) => { url = u; return { status: () => 200 }; },
+    waitForTimeout: async () => {},
+    content: async () => pageFor(url, jar),
+  };
+  return {
+    jar: () => jar,
+    pages: () => [page],
+    newPage: async () => page,
+    addCookies: async (cs) => { jar = [...jar.filter((c) => !cs.some((n) => n.name === c.name)), ...cs]; },
+    clearCookies: async ({ name }) => { jar = jar.filter((c) => c.name !== name); },
+    cookies: async () => jar,
+    close: async () => {},
+  };
+}
+const FULL = '<p>' + 'w'.repeat(5000) + '</p>';
+const WALL = '<div data-testid="paywall-bar-thin"></div><p>teaser</p>';
+const strip = (h) => String(h).replace(/<[^>]*>/g, '');
+
+test('classifySavedCookies rotates a vacuous primary url through altUrls, like renew-cookies', async () => {
+  const p = { ...COOKIE_PROBES.newyorker, url: 'https://nyer.test/free', altUrls: ['https://nyer.test/walled'], extractBody: strip };
+  // The free primary reads full for everyone; the alternate is walled without a session.
+  const anon = async (pr) => ({ html: pr.url.endsWith('/free') ? FULL : WALL, body: strip(pr.url.endsWith('/free') ? FULL : WALL), httpStatus: 200 });
+  const ctx = savedJarContext({ pageFor: (u, jar) => (u.endsWith('/free') || jar.some((c) => c.name === 'CN_access') ? FULL : WALL) });
+  const r = await bprobe.classifySavedCookies(p, [{ name: 'CN_access', value: 'v', domain: '.nyer.test' }], ['CN_access'], { launch: async () => ctx, anon });
+  assert.equal(r.status, 'logged-in');
+  assert.equal(r.usedUrl, 'https://nyer.test/walled');
+  // A jar with no auth cookie that still reads the full article is a metered free read (live 2026-11-25).
+  const ctx2 = savedJarContext({ pageFor: () => FULL });
+  const free = await bprobe.classifySavedCookies({ ...p, altUrls: [] }, [{ name: 'other', value: 'v', domain: '.nyer.test' }], ['CN_access'], { launch: async () => ctx2, anon: async () => ({ html: WALL, body: strip(WALL), httpStatus: 200 }) });
+  assert.deepEqual([free.status, free.noAuthCookie], ['logged-out', true]);
+  // Without the deps (the old verify-cookie-login call) the same jar read vacuous.
+  assert.equal((await bprobe.classifyWithControl(p, r.withCookies, { anon })).status, 'vacuous');
+});
+
+test('classifySavedCookies falls back to the jar minus its auth cookies when the anonymous control is bot-walled', async () => {
+  const p = { url: 'https://nyt.test/a', minBody: 4500, profileControl: true, extractBody: strip };
+  const DD = { html: '<script src="https://ct.captcha-delivery.com/c.js"></script>', body: '', httpStatus: 403 };
+  const ctx = savedJarContext({ pageFor: (_u, jar) => (jar.some((c) => c.name === 'NYT-S') ? FULL : '<p>gateway-content teaser</p>') });
+  const saved = [{ name: 'NYT-S', value: 's', domain: '.nyt.test' }, { name: 'datadome', value: 'd', domain: '.nyt.test' }];
+  const r = await bprobe.classifySavedCookies(p, saved, ['NYT-S'], { launch: async () => ctx, anon: async () => DD });
+  assert.equal(r.status, 'logged-in', 'the in-jar control replaced the bot-walled anonymous one');
+  assert.deepEqual(ctx.jar().map((c) => c.name).sort(), ['NYT-S', 'datadome'], 'auth cookies restored after the control');
+  assert.equal((await bprobe.classifyWithControl(p, r.withCookies, { anon: async () => DD })).status, 'control-blocked', 'old no-deps call');
+});
+
+test('verify-cookie-login: browser targets use classifySavedCookies; fetch targets carry no altUrls (decided, no browser context)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(path.join(REPO, 'scripts/verify-cookie-login.js'), 'utf8');
+  assert.match(src, /bprobe\.classifySavedCookies\(p, saved, /, 'browser path must share renew-cookies deps');
+  assert.doesNotMatch(src, /bprobe\.classifyWithControl\(/, 'a bare classifyWithControl call drops altUrls + profile control');
+  const { TARGETS } = require('../../scripts/verify-cookie-login.js');
+  for (const t of TARGETS.filter((x) => x.shared && !COOKIE_PROBES[x.outlet].browserOnly)) {
+    assert.ok(!(COOKIE_PROBES[t.outlet].altUrls || []).length, `${t.outlet}: altUrls rotation needs the browser path; make it browserOnly`);
+  }
+});

@@ -148,7 +148,8 @@ jobs:
           # BRO-6669: the live BWW roundup fetch for the census (fetchPage's cheap tiers, as in press-night-probe.yml).
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           # GITHUB_TOKEN cannot read repo variables (BRO-6639); each tick re-reads both switches with this token.
           VARS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}

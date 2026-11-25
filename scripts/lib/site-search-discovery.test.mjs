@@ -382,3 +382,87 @@ test('BRO-7532: only deadline and hollywood-reporter carry freeWp, each with a p
   }
   assert.ok(SITE_SEARCH_ENDPOINTS.deadline.freeWp && SITE_SEARCH_ENDPOINTS['hollywood-reporter'].freeWp);
 });
+
+test('BRO-8323: JS site-search works with no ScrapingBee: Playwright then Scrapingdog plain, SB still first', async (t) => {
+  const { fetchJsSearchHtml, rescueJsSearchHtml } = require('./site-search-discovery.js');
+  const dl = SITE_SEARCH_ENDPOINTS.deadline;
+  const url = 'https://deadline.com/?s=Hamilton+review';
+  const good = '<a href="https://deadline.com/2026/11/hamilton-review-123/">Hamilton</a> Hamilton Hamilton Hamilton';
+  const shell = '<html>loading</html>';
+  const noKey = async () => { throw new Error('No ScrapingBee key'); };
+  const calls = [];
+  const pw = async () => { calls.push('pw'); return { content: good, source: 'playwright' }; };
+  const sd = async () => { calls.push('sd'); return { content: good }; };
+
+  // SB key absent: the free render answers, and Scrapingdog is never paid.
+  assert.equal(await fetchJsSearchHtml(dl, url, { sbFetch: noKey, pwFetch: pw, sdPlainFetch: sd }), good);
+  assert.deepEqual(calls, ['pw']);
+
+  // SB empty or rejecting counts the same as absent; Playwright shell then SD plain.
+  calls.length = 0;
+  const pwShell = async () => { calls.push('pw'); return { content: shell }; };
+  assert.equal(await fetchJsSearchHtml(dl, url, { sbFetch: async () => '', pwFetch: pwShell, sdPlainFetch: sd }), good);
+  assert.deepEqual(calls, ['pw', 'sd']);
+
+  // SB working: unchanged, no rescue call at all (Broadway behaviour with the key present).
+  calls.length = 0;
+  assert.equal(await fetchJsSearchHtml(dl, url, { sbFetch: async () => 'SB-HTML', pwFetch: pw, sdPlainFetch: sd }), 'SB-HTML');
+  assert.deepEqual(calls, []);
+
+  // Everything fails: the original SB error surfaces so the caller reports it as before.
+  await assert.rejects(fetchJsSearchHtml(dl, url, { sbFetch: noKey, pwFetch: pwShell, sdPlainFetch: async () => null }), /No ScrapingBee key/);
+
+  // Kill switch and the Scrapingdog off switch.
+  const prev = { r: process.env.SB_RESCUE_DISABLED, s: process.env.SCRAPER_USE_SCRAPINGDOG };
+  t.after(() => { for (const [k, v] of [['SB_RESCUE_DISABLED', prev.r], ['SCRAPER_USE_SCRAPINGDOG', prev.s]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; } });
+  process.env.SB_RESCUE_DISABLED = '1';
+  assert.equal(await rescueJsSearchHtml(dl, url, { pwFetch: pw }), '');
+  delete process.env.SB_RESCUE_DISABLED;
+  process.env.SCRAPER_USE_SCRAPINGDOG = '0';
+  calls.length = 0;
+  assert.equal(await rescueJsSearchHtml(dl, url, { pwFetch: pwShell, sdPlainFetch: sd }), '');
+  assert.deepEqual(calls, ['pw']);
+});
+
+test('BRO-8323: rescue echo check reads s= too, skips stop words, no SD repeat on EW, no rescue on SB cooldown, keyless gate', async (t) => {
+  const { fetchJsSearchHtml, rescueJsSearchHtml, jsSiteSearchAvailable } = require('./site-search-discovery.js');
+  const dl = SITE_SEARCH_ENDPOINTS.deadline;
+  const link = '<a href="https://deadline.com/2026/11/some-review-1/">x</a>';
+  const none = async () => null;
+  // Nav shell with a link but no echo of the s= query: rejected (it used to pass: only q= was read).
+  assert.equal(await rescueJsSearchHtml(dl, 'https://deadline.com/?s=Hamilton+review', { pwFetch: async () => ({ content: link }), sdPlainFetch: none }), '');
+  // A leading stop word must not be the echo word ("the" is on every page).
+  assert.equal(await rescueJsSearchHtml(dl, 'https://deadline.com/?s=The+Hamilton', { pwFetch: async () => ({ content: link + ' the the the the' }), sdPlainFetch: none }), '');
+  // EW already tried Scrapingdog plain; rescue must not pay for it again.
+  const calls = [];
+  const ew = SITE_SEARCH_ENDPOINTS.ew;
+  await rescueJsSearchHtml(ew, 'https://ew.com/search/?q=Hamilton', { pwFetch: none, sdPlainFetch: async () => { calls.push('sd'); return null; } });
+  assert.deepEqual(calls, []);
+  // SB host cooldown rejection is final: no Playwright, no credit.
+  const pwCalls = [];
+  await assert.rejects(fetchJsSearchHtml(dl, 'https://deadline.com/?s=x', {
+    sbFetch: async () => { throw new Error('ScrapingBee host cooldown: 6 failures'); },
+    pwFetch: async () => { pwCalls.push(1); return { content: link }; },
+  }), /host cooldown/);
+  assert.deepEqual(pwCalls, []);
+  // Keyless runs may search JS outlets unless the rescue kill switch is on.
+  assert.equal(jsSiteSearchAvailable({}), true);
+  assert.equal(jsSiteSearchAvailable({ SB_RESCUE_DISABLED: '1' }), false);
+  assert.equal(jsSiteSearchAvailable({ SB_RESCUE_DISABLED: '1', SCRAPINGBEE_API_KEY: 'k' }), true);
+});
+
+test('BRO-8330: keyless rescue falls through to Scrapingdog render+wait, and a 200 shell never counts', async () => {
+  const { rescueJsSearchHtml } = require('./site-search-discovery.js');
+  const dl = SITE_SEARCH_ENDPOINTS.deadline;
+  const url = 'https://deadline.com/?s=Hamilton+review';
+  const good = '<a href="https://deadline.com/2026/11/hamilton-review-1/">x</a> hamilton hamilton hamilton hamilton';
+  const shell = '<html>' + 'x'.repeat(5000) + '</html>';
+  const seen = [];
+  const out = await rescueJsSearchHtml(dl, url, {
+    pwFetch: async () => null,
+    sdRenderFetch: async (u) => { seen.push(u); return { content: good }; },
+  });
+  assert.equal(out, good);
+  assert.deepEqual(seen, [url]);
+  assert.equal(await rescueJsSearchHtml(dl, url, { pwFetch: async () => null, sdRenderFetch: async () => ({ content: shell }) }), '', 'large 200 shell with no result links is rejected');
+});

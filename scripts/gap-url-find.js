@@ -109,7 +109,7 @@ async function main() {
       for (const c of r.candidates.slice(0, maxCands)) {
         let v = fetched.get(`${row.reviewKey}|${c.url}`);
         if (!v) {
-          const got = await UF.fetchCandidateText(c.url, { allowBd: allowPaid });
+          const got = await UF.fetchCandidateText(c.url, { allowBd: allowPaid, subscriberOutlet: !!require('./lib/browser-outlet-adapters').adapterFor(review.outletId) });
           v = { url: c.url, fetch: got.tried, ok: false, code: got.ok ? null : 'fetch_failed' };
           if (got.ok) {
             const d = await recoverReviewTextVerified({

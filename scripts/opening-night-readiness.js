@@ -70,6 +70,7 @@ function checkOrchestratorCron(market) {
 // pair check-opening-night-readiness.js uses, so a payload missing
 // max_api_credit is "unknown" instead of "100% remaining".
 function checkScrapingBeeCredits() {
+  if (require('./lib/sb-switch').isScrapingBeeOff()) return sbReadinessCheck({ ok: true, skipped: true, reason: 'sb-off' }); // BRO-8330
   const key = process.env.SCRAPINGBEE_API_KEY;
   if (!key) return sbReadinessCheck({ ok: false, reason: 'no-key' });
 

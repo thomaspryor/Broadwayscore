@@ -182,6 +182,11 @@ function main() {
 
   console.log('=== Tier 1 (REQUIRED) ===');
   for (const name of TIER_1) {
+    // BRO-8330: a key switched off on purpose is not missing.
+    if (name === 'SCRAPINGBEE_API_KEY' && require('./lib/sb-switch').isScrapingBeeOff()) {
+      console.log(`  · ${name.padEnd(28)} intentionally off (SCRAPINGBEE_DISABLED=1)`);
+      continue;
+    }
     const s = statusFor(name, fromDisk);
     if (s.set) {
       const via = s.source === '.env' ? ' via .env' : '';

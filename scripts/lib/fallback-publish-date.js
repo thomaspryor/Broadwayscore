@@ -32,18 +32,22 @@ function cdxTimestampToDate(ts) {
  * injectable for tests: (url) => Promise<any>.
  */
 async function archiveFirstCaptureDate(url, { fetchJson } = {}) {
+  // BRO-8099: through archive-cdx. The IA auth refusal throws a typed error
+  // (e.kind === 'archive_auth_required') instead of reading as "no capture";
+  // other HTTP failures stay null as before.
   const get = fetchJson || (async (u) => {
-    const ctl = new AbortController();
-    const t = setTimeout(() => ctl.abort(), 15000);
-    try {
-      const r = await fetch(u, { signal: ctl.signal });
-      if (!r.ok) return null;
-      return await r.json();
-    } finally { clearTimeout(t); }
+    const AC = require('./archive-cdx');
+    const r = await AC.fetchArchiveIndex(u, { timeoutMs: 15000 });
+    if (r.ok) return JSON.parse(r.text);
+    if (r.kind === AC.ARCHIVE_AUTH_REQUIRED) throw AC.authRequiredError(u);
+    return null;
   });
   const cdx = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&fl=timestamp&filter=statuscode:200&limit=1`;
   let rows;
-  try { rows = await get(cdx); } catch { return null; }
+  try { rows = await get(cdx); } catch (e) {
+    if (require('./archive-cdx').isArchiveAuthError(e)) console.warn(`fallback-publish-date: ${e.message} (route blocked, not "no capture")`);
+    return null;
+  }
   if (!Array.isArray(rows) || rows.length < 2) return null; // row 0 is the header
   const first = Array.isArray(rows[1]) ? rows[1][0] : rows[1];
   return cdxTimestampToDate(first);

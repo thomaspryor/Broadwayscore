@@ -201,14 +201,13 @@ async function queryCDX(url) {
   }
   const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(cleanUrl)}&output=json&limit=10&from=2005`;
 
-  const response = await httpGet(cdxUrl, 30000);
-  if (response.statusCode !== 200) {
-    throw new Error(`CDX API returned ${response.statusCode}`);
-  }
+  // BRO-8099: through archive-cdx, so the IA 403 "requires authorization" throws
+  // e.kind === 'archive_auth_required' (route blocked) instead of a bare status.
+  const text = await require('./lib/archive-cdx').fetchArchiveIndexText(cdxUrl, { timeoutMs: 30000 });
 
   let rows;
   try {
-    rows = JSON.parse(response.data);
+    rows = JSON.parse(text);
   } catch {
     throw new Error('CDX API returned invalid JSON');
   }
@@ -1004,7 +1003,8 @@ async function main() {
       snapshots = await queryCDX(c.url);
       consecutiveFailures = 0;
     } catch (err) {
-      console.log(`  ✗ CDX error: ${err.message}`);
+      // A typed IA auth refusal is a blocked route, not "no snapshots" (BRO-8000/8099).
+      console.log(`  ✗ CDX error${require('./lib/archive-cdx').isArchiveAuthError(err) ? ' (archive_auth_required: route blocked, not evidence)' : ''}: ${err.message}`);
       consecutiveFailures++;
       stats.errors++;
       continue;

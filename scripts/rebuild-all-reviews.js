@@ -122,6 +122,8 @@ const {
   shouldAutoClearStaleDateGuard,
   isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,
+  restoreParkedFullText,
+  hasLiveWrongProductionVerdict,
   shouldAutoClearWrongProductionUkDualMarket,
   shouldAutoClearStaleLondonOutletCrossMarket,
   isInOwnWindowByDateOrUrlYear,
@@ -1962,6 +1964,7 @@ const crossShowFingerprints = new Map();
             delete d.wrongProductionDetectedBy;
             delete d.anticipatoryGateOutletCategory;
             delete d.anticipatoryGateDaysBeforeOpening;
+            restoreParkedFullText(d, { keepIfCvWrongProduction: true }); // BRO-8324: put the parked body back
           } else if (reason.startsWith('CV-promoted:') || reason.startsWith('CV-low-but-strong-signal:')) {
             delete d.wrongProductionReason;
           } else if (wasAdjudicatedTour) {
@@ -2062,6 +2065,7 @@ const crossShowFingerprints = new Map();
             delete d.wrongProductionDetectedBy;
             delete d.anticipatoryGateOutletCategory;
             delete d.anticipatoryGateDaysBeforeOpening;
+            restoreParkedFullText(d, { keepIfCvWrongProduction: true }); // BRO-8324: put the parked body back
             if (isStaleScoreInput(d, showRecord, fp)) {
               markRescoreNeeded(d, 'wrongProduction false-positive cleared (anticipatory grace re-evaluated)');
             }
@@ -3635,10 +3639,7 @@ showDirs.forEach(showId => {
           : 'CV wrongProduction contradicted by the body naming this show\'s own cast, dated at its opening (BRO-5805 rule, BRO-6716 heal) — cleared';
       // collect-review-texts parks a wrong-production body in wrongFullText; put it back
       // so safeWriteReview's stale-wrong-content-tier retier can classify it.
-        if (!data.fullText && typeof data.wrongFullText === 'string' && data.wrongFullText.length > 300) {
-          data.fullText = data.wrongFullText;
-          delete data.wrongFullText;
-        }
+        restoreParkedFullText(data);
         // The tier safety net and incompleteReason pass above ran while the flag was
         // still set (and on the parked text). Redo both now so this pass writes the
         // settled record; otherwise the next rebuild changes it again (ship-check P1).
@@ -5094,7 +5095,7 @@ showDirs.forEach(showId => {
             data.showNotMentioned = false;
             delete data._showNotMentionedDiscoveryAttempted;
             // Restore fullText from wrongFullText if it was nulled out
-            if (!data.fullText && data.wrongFullText) {
+            if (!data.fullText && data.wrongFullText && !hasLiveWrongProductionVerdict(data)) { // BRO-8324
               data.fullText = data.wrongFullText;
               delete data.wrongFullText;
             }
@@ -5105,7 +5106,7 @@ showDirs.forEach(showId => {
               const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
               sourceData.showNotMentioned = false;
               delete sourceData._showNotMentionedDiscoveryAttempted;
-              if (!sourceData.fullText && sourceData.wrongFullText) {
+              if (!sourceData.fullText && sourceData.wrongFullText && !hasLiveWrongProductionVerdict(sourceData)) { // BRO-8324
                 sourceData.fullText = sourceData.wrongFullText;
                 delete sourceData.wrongFullText;
               }
@@ -5135,7 +5136,7 @@ showDirs.forEach(showId => {
             if (matchedKeyword) {
               data.showNotMentioned = false;
               delete data._showNotMentionedDiscoveryAttempted;
-              if (!data.fullText && data.wrongFullText) {
+              if (!data.fullText && data.wrongFullText && !hasLiveWrongProductionVerdict(data)) { // BRO-8324
                 data.fullText = data.wrongFullText;
                 delete data.wrongFullText;
               }
@@ -5144,7 +5145,7 @@ showDirs.forEach(showId => {
                 const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
                 sourceData.showNotMentioned = false;
                 delete sourceData._showNotMentionedDiscoveryAttempted;
-                if (!sourceData.fullText && sourceData.wrongFullText) {
+                if (!sourceData.fullText && sourceData.wrongFullText && !hasLiveWrongProductionVerdict(sourceData)) { // BRO-8324
                   sourceData.fullText = sourceData.wrongFullText;
                   delete sourceData.wrongFullText;
                 }

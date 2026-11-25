@@ -46,7 +46,8 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
         run: node scripts/confirm-sd-empty-authoritative.js
       - name: Commit scraper-spend ledger
         if: always() && inputs.mode == 'confirm-empty-authoritative'

@@ -214,7 +214,8 @@ jobs:
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
         # --limit raised 50→150 (2026-06-26): the 6-hourly cap of 50 couldn't keep
@@ -270,7 +271,8 @@ jobs:
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           DRAIN_SCOPE: ${{ steps.drain-scope.outputs.scope }}
@@ -298,7 +300,8 @@ jobs:
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}

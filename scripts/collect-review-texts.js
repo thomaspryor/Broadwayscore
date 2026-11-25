@@ -464,7 +464,7 @@ const CONFIG = {
   maxDurationMs: process.env.MAX_DURATION_MS ? parseInt(process.env.MAX_DURATION_MS) : 0,
 
   // API Keys
-  scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
+  scrapingBeeKey: require('./lib/sb-switch').scrapingBeeKey(), // BRO-8330
   brightDataKey: process.env.BRIGHTDATA_TOKEN || '',
   brightDataCustomerId: process.env.BRIGHTDATA_CUSTOMER_ID || '',
   browserbaseApiKey: process.env.BROWSERBASE_API_KEY || '',
@@ -3162,10 +3162,11 @@ async function fetchFromArchive(url) {
   archiveOrgLastRequestTime = Date.now();
 
   // Check if snapshots exist
-  const availabilityUrl = `http://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
-  const availability = await axios.get(availabilityUrl, { timeout: 15000 });
+  const availabilityUrl = `https://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
+  // BRO-8099: archive-cdx throws e.kind === 'archive_auth_required' for the IA refusal (route blocked, not "no snapshot").
+  const availability = await require('./lib/archive-cdx').fetchArchiveIndexJson(availabilityUrl, { timeoutMs: 15000 });
 
-  const snapshot = availability.data?.archived_snapshots?.closest;
+  const snapshot = availability?.archived_snapshots?.closest;
   if (!snapshot || !snapshot.url) {
     throw new Error('No archive snapshot available');
   }
@@ -3219,10 +3220,9 @@ async function fetchFromArchiveCDX(url) {
   const isPaywalledSite = url.includes('newyorker.com') || url.includes('nytimes.com') || url.includes('wsj.com');
   const fromYear = isPaywalledSite ? '2008' : '2014';
   const snapshotLimit = isPaywalledSite ? 20 : 10;
-  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=${snapshotLimit}&from=${fromYear}`;
-  const cdxResp = await axios.get(cdxUrl, { timeout: 15000 });
-
-  const rows = cdxResp.data;
+  const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=${snapshotLimit}&from=${fromYear}`;
+  // BRO-8099: archive-cdx throws e.kind === 'archive_auth_required' for the IA refusal (route blocked, not "no snapshots").
+  const rows = await require('./lib/archive-cdx').fetchArchiveIndexJson(cdxUrl, { timeoutMs: 15000 });
   if (!Array.isArray(rows) || rows.length < 2) {
     throw new Error('No CDX snapshots found');
   }
@@ -5380,7 +5380,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         // Restore fullText from wrongFullText if a prior run nulled it. Not
         // when a live wrong-content verdict quarantined it (this run's
         // anticipatory gate, BRO-5261 S11).
-        if (!data.fullText && data.wrongFullText && !data.wrongProduction && !data.wrongShow) {
+        if (!data.fullText && data.wrongFullText && !data.wrongProduction && !data.wrongShow
+          && !(data.contentVerification && data.contentVerification.wrongProduction === true)) { // BRO-8324: another production stays parked
           data.fullText = data.wrongFullText;
           data.wrongFullText = null;
           repaired = true;

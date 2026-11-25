@@ -16,6 +16,10 @@ test('theatre sites spelled from the venue name are first-party', () => {
     ['https://tickets.arenastage.org/x', 'Arena Stage, Washington, DC'],
     ['https://www.pasadenaplayhouse.org', 'Pasadena Playhouse, Pasadena, CA'],
     ['https://www.royalexchange.co.uk/whats-on/x', 'Royal Exchange Theatre, Manchester'],
+    // full name with its theatre word is fine on .com; a distinctive-only bare label needs .org
+    ['https://www.hampsteadtheatre.com/whats-on/x', 'Hampstead Theatre, London'],
+    ['https://www.moxietheatre.com/x', 'Moxie Theatre, San Diego, CA'],
+    ['https://www.kansascityrep.org/x', 'Kansas City Repertory Theatre, Kansas City, MO'],
   ];
   for (const [url, venue] of ok) assert.equal(isFirstPartyVenueUrl(url, venue), true, `${url} <= ${venue}`);
 });
@@ -29,6 +33,15 @@ test('press, critics and city-named sites are never first-party', () => {
     ['https://www.theatreinchicago.com/x/1/', 'Theatre In Chicago'],
     ['https://www.theatre.com/', 'The Theatre, Chicago, IL'], // no distinctive word
     ['ftp://citylit.org', 'City Lit Theater, Chicago, IL'],
+    // post-landing review: a leading city word is a newspaper's domain, a squatter TLD is not a theatre's
+    ['https://www.kansascity.com/arts/review', 'Kansas City Repertory Theatre, Kansas City, MO'],
+    ['https://www.cleveland.com/entertainment/x', 'Cleveland Play House, Cleveland, OH'],
+    ['https://www.boston.com/x', 'Boston Court Pasadena, Pasadena, CA'],
+    ['https://www.chicago.com/x', 'Chicago Shakespeare Theater, Chicago, IL'],
+    ['https://arena.com/x', 'Arena Stage, Washington, DC'],
+    ['https://citylit.xyz/x', 'City Lit Theater, Chicago, IL'],
+    ['https://www.chicagoarts.org/x', 'Chicago Shakespeare Theater, Chicago, IL'],
+    ['https://www.kansasco.com/x', 'Kansas City Repertory Theatre, Kansas City, MO'],
     [null, 'City Lit Theater'],
   ];
   for (const [url, venue] of bad) assert.equal(isFirstPartyVenueUrl(url, venue), false, `${url} <= ${venue}`);

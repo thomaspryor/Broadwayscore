@@ -670,6 +670,10 @@
         {
           "at": "2026-11-21T16:57:38.885Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-25T19:34:20.549Z",
+          "outcome": "no_evidence"
         }
       ]
     },
@@ -681,6 +685,10 @@
       "attempts": [
         {
           "at": "2026-11-21T16:58:04.513Z",
+          "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-25T19:34:42.604Z",
           "outcome": "no_evidence"
         }
       ]
@@ -694,6 +702,10 @@
         {
           "at": "2026-11-21T16:58:04.513Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-25T19:34:42.604Z",
+          "outcome": "no_evidence"
         }
       ]
     },
@@ -706,6 +718,10 @@
         {
           "at": "2026-11-23T21:44:38.127Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-25T19:34:42.604Z",
+          "outcome": "no_evidence"
         }
       ]
     },
@@ -717,6 +733,10 @@
       "attempts": [
         {
           "at": "2026-11-23T21:44:38.127Z",
+          "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-25T19:34:42.604Z",
           "outcome": "no_evidence"
         }
       ]
@@ -795,6 +815,10 @@
           "collectorOutcome": "rejected",
           "reason": "http-error",
           "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-the-Eccles-Theater-is-Staggeringly-Awe-Inspiring-20260924"
+        },
+        {
+          "at": "2026-11-25T19:34:54.806Z",
+          "outcome": "no_evidence"
         }
       ]
     },
@@ -859,8 +883,16 @@
         {
           "at": "2026-11-24T20:40:01.082Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-25T19:34:54.806Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-25T19:34:54.806Z",
+        "note": "auto (BRO-7312): 3 targeted searches of thestage for harry-potter-and-the-cursed-child-one-part-west-end-2026 found no review (2026-11-22, 2026-11-24, 2026-11-25)"
+      }
     },
     "harry-potter-and-the-cursed-child-one-part-west-end-2026::timeout-london": {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
@@ -890,8 +922,16 @@
           "url": "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review",
           "collectorOutcome": "rejected",
           "collectorReason": "onMerge-aborted"
+        },
+        {
+          "at": "2026-11-25T19:34:54.806Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-25T19:34:54.806Z",
+        "note": "auto (BRO-7312): 3 targeted searches of timeout-london for harry-potter-and-the-cursed-child-one-part-west-end-2026 found no review (2026-11-23, 2026-11-24, 2026-11-25)"
+      }
     },
     "harry-potter-and-the-cursed-child-one-part-west-end-2026::whatsonstage": {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
@@ -953,9 +993,11 @@
       "attempts": [
         {
           "at": "2026-11-25T13:24:07.370Z",
-          "outcome": "rejected",
-          "reason": "onMerge-aborted",
-          "url": "https://variety.com/2026/legit/news/tom-hiddleston-hayley-atwell-broadway-much-ado-about-nothing-1236667301/"
+          "outcome": "no_evidence",
+          "reason": "existing-file-not-this-production",
+          "url": "https://variety.com/2026/legit/news/tom-hiddleston-hayley-atwell-broadway-much-ado-about-nothing-1236667301/",
+          "collectorOutcome": "rejected",
+          "collectorReason": "onMerge-aborted"
         }
       ]
     }

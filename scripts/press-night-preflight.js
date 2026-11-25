@@ -35,7 +35,7 @@ async function main() {
   const v = preflightVerdict({ results, sb });
   const summary = [`Press night preflight ${show} ${night} ${label}: ${v.ok ? 'clean' : `${v.problems.length} problem(s)`}`,
     ...v.problems.map((p) => `- ${p.key}: ${p.why}`),
-    sb && sb.ok ? `ScrapingBee: ${Math.round(sb.pctUsed)}% used, ${sb.remaining} left` : 'ScrapingBee credits: unknown',
+    sb && sb.skipped ? 'ScrapingBee: intentionally off' : sb && sb.ok ? `ScrapingBee: ${Math.round(sb.pctUsed)}% used, ${sb.remaining} left` : 'ScrapingBee credits: unknown',
     ...(v.sbNote ? [`ScrapingBee note (not paged, ride-out policy): ${v.sbNote}`] : [])];
   console.log(summary.join('\n'));
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary.join('\n') + '\n');

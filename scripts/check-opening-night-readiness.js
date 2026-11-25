@@ -342,6 +342,10 @@ async function runChecks() {
 
   for (const kc of keyChecks) {
     const key = process.env[kc.env];
+    if (kc.env === 'SCRAPINGBEE_API_KEY' && require('./lib/sb-switch').isScrapingBeeOff()) { // BRO-8330
+      report(PASS, `API key: ${kc.name}`, 'Intentionally off (SCRAPINGBEE_DISABLED=1)');
+      continue;
+    }
     if (!key) {
       report(WARN, `API key: ${kc.name}`, 'Not set in environment. Set in .env or GitHub secrets.');
       continue;

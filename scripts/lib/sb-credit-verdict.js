@@ -72,6 +72,10 @@ function sbCreditVerdict(status, thresholds = {}) {
     return { level: 'warn', detail: 'No usage status returned' };
   }
 
+  if (status.skipped || status.reason === 'sb-off') {
+    return { level: 'pass', detail: 'ScrapingBee intentionally off (SCRAPINGBEE_DISABLED=1)' }; // BRO-8330
+  }
+
   if (!status.ok) {
     // Unknown is not exhausted. A transient 500, a missing key, or a payload
     // whose shape we cannot read must not fail an opening-night gate — but it

@@ -335,21 +335,15 @@ async function fetchFromArchive(url) {
   // Check if snapshots exist
   const availabilityUrl = `http://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
 
-  const availability = await new Promise((resolve, reject) => {
-    const req = https.get(availabilityUrl.replace('http:', 'https:'), { timeout: 15000 }, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(new Error('Invalid Archive.org response'));
-        }
-      });
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
-  });
+  // BRO-8099: through archive-cdx, so the IA auth refusal throws e.kind ===
+  // 'archive_auth_required' (route blocked) instead of 'Invalid Archive.org response'.
+  let availability;
+  try {
+    availability = await require('./archive-cdx').fetchArchiveIndexJson(availabilityUrl.replace('http:', 'https:'), { timeoutMs: 15000 });
+  } catch (e) {
+    if (e instanceof SyntaxError) throw new Error('Invalid Archive.org response');
+    throw e;
+  }
 
   const snapshot = availability?.archived_snapshots?.closest;
   if (!snapshot || !snapshot.url) {

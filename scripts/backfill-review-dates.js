@@ -147,9 +147,10 @@ async function fetchFromArchiveOrg(url) {
   lastArchiveRequest = Date.now();
 
   // Check availability
-  const availUrl = `http://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
-  const avail = await axios.get(availUrl, { timeout: 15000 });
-  const snapshot = avail.data?.archived_snapshots?.closest;
+  const availUrl = `https://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
+  // BRO-8099: archive-cdx throws e.kind === 'archive_auth_required' for the IA refusal.
+  const avail = await require('./lib/archive-cdx').fetchArchiveIndexJson(availUrl, { timeoutMs: 15000 });
+  const snapshot = avail?.archived_snapshots?.closest;
   if (!snapshot || !snapshot.url) {
     throw new Error('No archive snapshot');
   }

@@ -49,6 +49,13 @@ function venueName(venue) {
   return String(venue || '').split(',')[0].split(/\s+-\s+/)[0];
 }
 
+// A theatre's own site is on a mainstream TLD; squatter TLDs (.xyz, .biz, .info) are not.
+const FIRST_PARTY_TLDS = new Set(['com', 'org', 'net', 'theatre', 'theater', 'art', 'arts', 'tickets', 'nyc', 'uk', 'au', 'nz', 'ca', 'us']);
+const BARE_TLDS = new Set(['org', 'theatre', 'theater', 'arts', 'uk', 'au', 'nz', 'ca']);
+function tldOf(url) {
+  try { return new URL(url).hostname.toLowerCase().split('.').pop(); } catch { return ''; }
+}
+
 /** www.tickets.goodmantheatre.org -> goodmantheatre; cft.org.uk -> cft. */
 function siteLabel(url) {
   let host;
@@ -58,35 +65,62 @@ function siteLabel(url) {
   return trimmed[trimmed.length - 2].replace(/-/g, '');
 }
 
-/** Every domain label a theatre with this name would plausibly own. */
-function venueSpellings(venue) {
+// A one-word city or state prefix plus a generic word ("chicagoarts", "kansasco") is an arts
+// council or chamber, not the theatre: those suffixes only attach to the whole name.
+const PREFIX_SUFFIXES = new Set(['theatre', 'theater', 'theatreco', 'theaterco', 'rep', 'stage', 'playhouse']);
+
+/** Every domain label a theatre with this name would plausibly own: {all, bare}. */
+function venueSpellingSets(venue) {
   const all = words(venueName(venue));
   const ws = all[0] === 'the' ? all.slice(1) : all;
   const distinctive = ws.filter((w) => !GENERIC.has(w));
-  if (distinctive.length === 0) return new Set();
-  const stems = new Set();
+  if (distinctive.length === 0) return { all: new Set(), bare: new Set() };
+  // A leading prefix of the name ("kansascity" from "Kansas City Repertory Theatre",
+  // "cleveland" from "Cleveland Play House") is also a newspaper's domain, so a prefix
+  // only counts with a theatre suffix; the bare label must be the whole distinctive name
+  // (or the whole name) and long enough not to be a common word (post-landing review, BRO-7668).
+  const wholes = new Set([distinctive.join(''), ws.join('')]);
+  const prefixes = new Set();
   for (let k = 1; k <= ws.length; k++) {
     const head = ws.slice(0, k);
-    if (head.some((w) => !GENERIC.has(w))) stems.add(head.join(''));
+    if (head.some((w) => !GENERIC.has(w))) prefixes.add(head.join(''));
   }
-  stems.add(distinctive.join(''));
   const out = new Set();
-  for (const stem of stems) {
+  const bare = new Set();
+  // The full name WITH its theatre word ("hampsteadtheatre") is never a newspaper; only a label
+  // made of distinctive words alone ("kansascity") is bare and needs the .org-style TLDs.
+  for (const whole of wholes) {
+    if (whole.length < 7) continue;
+    out.add(whole);
+    if (whole === distinctive.join('')) bare.add(whole);
+  }
+  for (const stem of new Set([...prefixes, ...wholes])) {
     for (const suffix of SUFFIXES) {
+      if (suffix === '') continue;
+      if (!wholes.has(stem) && !PREFIX_SUFFIXES.has(suffix)) continue;
       const s = stem + suffix;
       if (s.length >= 5) out.add(s);
     }
   }
-  return out;
+  return { all: out, bare };
 }
+
+function venueSpellings(venue) { return venueSpellingSets(venue).all; }
 
 /** True when `url` is an http(s) page on the theatre's own site. */
 function isFirstPartyVenueUrl(url, venue) {
   if (typeof url !== 'string' || !/^https?:\/\//i.test(url)) return false;
   if (isBlockedOfficialUrl(url)) return false;
   try { if (LISTING_HOST_RE.test(new URL(url).hostname)) return false; } catch { return false; }
+  if (!FIRST_PARTY_TLDS.has(tldOf(url))) return false;
   const label = siteLabel(url);
-  return !!label && venueSpellings(venue).has(label);
+  if (!label) return false;
+  const spellings = venueSpellingSets(venue);
+  if (!spellings.all.has(label)) return false;
+  // A bare name ("kansascity" for Kansas City Repertory Theatre) is also a newspaper's domain
+  // unless it carries a theatre suffix; accept it only on .org and the theatre TLDs.
+  const suffixedOnly = !spellings.bare.has(label);
+  return suffixedOnly || BARE_TLDS.has(tldOf(url));
 }
 
 /**

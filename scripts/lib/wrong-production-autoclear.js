@@ -966,6 +966,43 @@ function isDatedGuardNote(note) {
 }
 
 /**
+ * True when a review still carries a live "another production / show" verdict, so a body parked in
+ * wrongFullText must stay parked (BRO-8324). Covers the flag, wrongShow and the content-verification
+ * verdict. The showNotMentioned auto-clears use it: they lift only the "show not mentioned" objection.
+ * @param {object} d - the review JSON object
+ * @returns {boolean}
+ */
+function hasLiveWrongProductionVerdict(d) {
+  if (!d) return false;
+  return d.wrongProduction === true || !!d.wrongShow
+    || !!(d.contentVerification && d.contentVerification.wrongProduction === true);
+}
+
+/**
+ * collect-review-texts parks the body of a flagged review in wrongFullText and
+ * nulls fullText. When the anticipatory flag is cleared the body is the right
+ * one again (the flag was date-only), so put it back; otherwise the review is
+ * re-admitted as a text-less stub (BRO-8324: 35 of 68 re-admitted files).
+ * Pure: mutates and returns the same object. Returns true when it restored.
+ * @param {object} data - the review JSON object
+ * @returns {boolean}
+ */
+function restoreParkedFullText(data, opts = {}) {
+  if (!data || data.fullText) return false;
+  // Anticipatory clears only lift the DATE objection. If content verification also says this is
+  // another production (a regional or tour staging), the body stays parked: a later pass re-applies
+  // that flag and the file would otherwise carry restored text under a live wrongProduction.
+  if (opts.keepIfCvWrongProduction && data.contentVerification && data.contentVerification.wrongProduction === true) return false;
+  // The body may have been parked for a content reason too: keep it parked.
+  if (data.wrongAttribution || data.wrongShow || data.wrongArticle
+    || (data.contentVerification && data.contentVerification.wrongArticle)) return false;
+  if (typeof data.wrongFullText !== 'string' || data.wrongFullText.length <= 300) return false;
+  data.fullText = data.wrongFullText;
+  delete data.wrongFullText;
+  return true;
+}
+
+/**
  * Decide whether a STALE anticipatory_pre_opening_post wrongProduction flag
  * should be auto-cleared because re-running isAnticipatoryPreviewPost on the
  * review's CURRENT publishDate/showCategory/openingDate no longer rejects it.
@@ -1368,6 +1405,8 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  restoreParkedFullText,
+  hasLiveWrongProductionVerdict,
   priorRunWindow,
   bwwExcerptContradictsText,
   DATE_GUARD_PREFIXES,

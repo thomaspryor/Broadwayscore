@@ -71,4 +71,18 @@ async function fetchArchiveIndexText(url, opts) {
   const e = new Error(r.message); e.status = r.status || undefined; throw e;
 }
 
-module.exports = { ARCHIVE_AUTH_REQUIRED, isArchiveIndexUrl, classifyArchiveResponse, authRequiredError, fetchArchiveIndex, fetchArchiveIndexText };
+/**
+ * fetchArchiveIndexText + JSON.parse, for the CDX (output=json) and
+ * availability callers (BRO-8099). An empty body (CDX with no captures can
+ * answer one) is null. Throws the typed auth error (e.kind ===
+ * ARCHIVE_AUTH_REQUIRED), an HTTP/network Error, or a SyntaxError.
+ */
+async function fetchArchiveIndexJson(url, opts) {
+  const text = await fetchArchiveIndexText(url, opts);
+  return text.trim() ? JSON.parse(text) : null;
+}
+
+/** True for the typed refusal error thrown above (blocked route, not evidence). */
+function isArchiveAuthError(e) { return !!e && e.kind === ARCHIVE_AUTH_REQUIRED; }
+
+module.exports = { ARCHIVE_AUTH_REQUIRED, isArchiveIndexUrl, classifyArchiveResponse, authRequiredError, fetchArchiveIndex, fetchArchiveIndexText, fetchArchiveIndexJson, isArchiveAuthError };

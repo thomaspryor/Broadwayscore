@@ -71,10 +71,16 @@ async function get(url, { timeoutMs = 60000, retries = 3 } = {}) {
     try {
       const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT }, signal: AbortSignal.timeout(timeoutMs) });
       if (res.status === 404) return null;
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      // BRO-8099: the IA CDX auth refusal (archive-cdx) is typed and not retried:
+      // a blocked season must never read as "no shows captured".
+      if (!res.ok) {
+        const AC = require('./lib/archive-cdx');
+        if (AC.isArchiveIndexUrl(url) && AC.classifyArchiveResponse(res.status, await res.text().catch(() => ''))) throw AC.authRequiredError(url);
+        throw new Error(`HTTP ${res.status}`);
+      }
       return await res.text();
     } catch (e) {
-      if (attempt >= retries) throw e;
+      if (attempt >= retries || require('./lib/archive-cdx').isArchiveAuthError(e)) throw e;
       await sleep(5000 * attempt);
     }
   }

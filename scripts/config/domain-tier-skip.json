@@ -703,7 +703,8 @@
     "scrapingdog": {
       "skip": true,
       "reason": "Scraping cost v3 S1-T2 (2026-08-03): production ledger showed 22% success/301 calls over the prior 7d, below the approved <30% skip:true bar. Unlike didtheylikeit.com, no param fix rescues this — theatre.reviews' bounded-URL-construction discovery (scripts/lib/tr-roundup-discover.js) guesses a roundup URL per show and most shows never got one, so SD's '404 URL does not exist' is a genuine miss, not a provider block. Live retest (2026-08-03) confirmed Bright Data independently finds real content on URLs SD 404s (e.g. reviews-roundup/ivanov-reviews/), so BD stays in the chain unaffected — this flag only removes SD's guaranteed-wasted first hop on this domain, cutting the double-hop the card was filed for. Superseded the stale 2026-07-31 1-URL conclusion, which never saw production's real guess-heavy traffic mix.",
-      "addedAt": "2026-08-03"
+      "addedAt": "2026-08-03",
+      "scope": "html"
     }
   },
   "theatreartsdaily.com": {

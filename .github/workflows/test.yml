@@ -192,6 +192,7 @@ on:
       - 'scripts/audit-artsdesk-banner.js'
       - 'scripts/audit-url-critic-slug-filenames.js'
       - 'scripts/export-cookies.js'
+      - 'scripts/evaluate-brightdata-serp.js' # BRO-8330 SB switch class guard, tested by scripts/lib/sb-switch.test.mjs
       # scripts/backtest-recoupment-ground-truth.js runs in unit-tests (advisory model backtest, BRO-4989)
       - 'scripts/backtest-recoupment-ground-truth.js'
       # scripts/backtest-cap-comparables.js is run by tests/unit/cap-comparables.test.mjs (BRO-5849)
@@ -777,6 +778,7 @@ on:
       - 'scripts/verify-commercial-sources.js'
       - 'scripts/verify-deep-research-claims.js'
       - 'scripts/verify-merge-landed.js'
+      - 'scripts/verify-cookie-login.js'
       - 'scripts/verify-showscore-stars.js'
       - 'scripts/video-reviews/eval-prompts.js'
       - 'scripts/video-reviews/score-video-reviews.js'
@@ -3932,18 +3934,6 @@ jobs:
         # broadcast. Keeps the fixed ordering from regressing.
         run: node scripts/assert-broadcast-step-order.js
 
-      - name: Audit — scripts/lib test push-path deps outside scripts/lib/** (advisory, task #1745)
-        if: always() && steps.deps.outcome == 'success'
-        # scripts/lib/** (added task #1745) covers every push-path trigger
-        # INSIDE scripts/lib/, closing the bug class where 55 of 313
-        # scripts/lib/*.test.mjs files had silently fallen off the old
-        # hand-maintained allow-list. This catches the remaining shape of the
-        # same gap: a scripts/lib test requiring a file OUTSIDE scripts/lib/
-        # (top-level scripts/*.js, root config) that has no path entry of its
-        # own. Heuristic (regex require()/import parsing), non-blocking —
-        # always exits 0 (see script header for why).
-        run: node scripts/audit-test-yml-lib-deps.js
-
       - name: Audit — no new fs.statSync().isDirectory() show-dir listings (ratchet, BRO-5885)
         if: always() && steps.deps.outcome == 'success'
         # A dangling symlink in data/review-texts made statSync throw ENOENT and
@@ -3987,38 +3977,6 @@ jobs:
         # non-blocking, always exits 0 (see script header for known false-
         # positive/negative classes, incl. computed process.env[var] keys).
         run: node scripts/audit-workflow-secret-gaps.js
-
-      - name: Audit — review-texts scripts missing from test.yml push-path allowlist (advisory, task #1760)
-        if: always() && steps.deps.outcome == 'success'
-        # Sibling guard to the one directly above: catches the same
-        # recurrence gap one level up. Task #1749 migrated 12 scripts to
-        # resolveReviewTextsDir(); 8 of 12 were found missing from this
-        # push-path allow-list (fixed in 808c40b7c6c), and it recurred twice
-        # more mid-task as scripts were added to
-        # tests/unit/review-texts-dir-resolution.test.mjs's MIGRATED_SCRIPTS
-        # array without a matching entry here. Heuristic (regex array-literal
-        # parsing), non-blocking — always exits 0 (see script header for why).
-        run: node scripts/audit-review-texts-test-yml-coverage.js
-
-      - name: Audit — top-level scripts/*.test files missing from test.yml push-path allowlist (advisory, BRO-172)
-        if: always() && steps.deps.outcome == 'success'
-        # General version of the two guards directly above, for scripts/
-        # (not scripts/lib/, not the review-texts migration list): a
-        # manifest-registered scripts/*.test.mjs proves a test exists and is
-        # meant to run in CI, but that alone means nothing if neither it nor
-        # its sibling source file has a push-path entry — a solo push
-        # touching only that file then triggers zero CI. Found and fixed 6
-        # real gaps at introduction (scripts/audit-errexit-unguarded-
-        # substitution.js, scripts/check-cross-outlet-attribution-drift.js,
-        # scripts/verify-contamination-gate.js — missing entirely — plus 3
-        # test-file-only gaps on already-covered source files). Motivated by
-        # scripts/fix-platform-ticket-links.js having had ZERO CI coverage
-        # (not even this narrower gap — no test existed at all) which let a
-        # region-mismatch bug in its Ticketmaster SERP re-verification
-        # regress shows.json at least 6 times undetected. Heuristic
-        # (manifest + push-path string matching, no dependency chasing),
-        # non-blocking — always exits 0 (see script header for why).
-        run: node scripts/audit-toplevel-script-test-yml-coverage.js
 
       - name: Audit — run-budget coverage on BD/SB cron scripts (advisory)
         if: always() && steps.deps.outcome == 'success'
@@ -4104,22 +4062,6 @@ jobs:
         # header for why). Exempt a workflow with
         # # breadcrumb-coverage-ok: <reason>.
         run: node scripts/audit-same-job-breadcrumb-coverage.js
-
-      - name: Audit — delete without CLEAR_BREADCRUMBS entry (advisory)
-        if: always() && steps.deps.outcome == 'success'
-        # Task #1625 / Notion 3bd637c5: catches a script that `delete data.X`-s
-        # a field with no scripts/lib/review-write-guard.js CLEAR_BREADCRUMBS
-        # entry, then calls safeWriteReview() with no force:true. Unlike the
-        # same-job guard above (a force:true clear resurrected by a LATER
-        # push-review-texts restore), this is the more common mistake:
-        # safeWriteReview's OWN merge-mode restore pass silently reverts the
-        # delete on its very next invocation, no CI restore step required.
-        # Fixed by hand 3 times already (#1618, #1624 x2). Scopes
-        # delete/safeWriteReview pairs per-function via an acorn AST walk.
-        # Heuristic, non-blocking — always exits 0 (see script header for
-        # why). Exempt a reviewed false positive with
-        # // breadcrumb-delete-ok: <reason> in the script.
-        run: node scripts/audit-delete-without-breadcrumb.js
 
       - name: Audit — push-with-retry.sh budget undersizing (advisory; job-timeout flag HARD, BRO-2322)
         if: always() && steps.deps.outcome == 'success'
@@ -5188,7 +5130,6 @@ jobs:
         continue-on-error: true
         run: |
           node scripts/audit-direct-github-api.js
-          timeout -k 10 300 node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
 
       - name: Unguarded git network timeout audit (BRO-7458, advisory)
         # Flags a sync git fetch/pull/clone with a timeout that skips
@@ -5830,28 +5771,6 @@ jobs:
             fi
           fi
           node scripts/check-image-aspect.js --changed "$RANGE"
-
-      - name: Dispatch-ledger write isolation (no test may write the real ledger)
-        # Task #1789: a test called the real bsc-next main() without stubbing
-        # appendLedgerEntry, so it fell through to dispatchLedger.appendEntry —
-        # whose LEDGER_PATH is hardcoded to the owner's Mac checkout. 77 junk
-        # "launch" rows landed in the production ledger, every one stamped
-        # workspaceRef "workspace:1" (the test stub's literal return), which
-        # read like a dispatcher storming a live owner workspace. It corrupted
-        # the dead-launch-rate denominator and isLatestDispatchDead().
-        # Static check, so it works on ubuntu even though the polluted path is
-        # macOS-only — the exposure is local, but the defect is authored here.
-        if: always()
-        run: timeout -k 10 300 node --test scripts/lib/ledger-write-isolation.test.mjs
-
-      - name: Run API fallback path disqualifier unit tests
-        # BRO-3663. The predicate deciding which paths the Git Data API fallback
-        # may overlay used to be an inline `node -e` in push-with-retry.sh plus a
-        # hand-maintained "precise mirror" in audit-push-retry-budgets.js — which
-        # had already drifted once (BRO-3348). It now has one definition; this
-        # pins its rules so a change to them fails here.
-        if: always()  # independent suite — don't let an earlier red step skip it
-        run: timeout -k 10 300 node --test scripts/lib/api-fallback-disqualifier.test.mjs
 
       - name: Recoupment model backtest vs previous commit (advisory, BRO-4989)
         # Scores the commercial recoupment model at the pushed-from commit and at

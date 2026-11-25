@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const cq = require('./content-quality.js');
-const { stripVenueListingsTrailer, stripVenueListingsTrailerUncached, stripMemoStats, classifyContentTier, STRIP_MEMO_ENV_NAMES } = cq;
+const { stripVenueListingsTrailer, stripVenueListingsTrailerUncached, stripMemoStats, classifyContentTier, getStripMemoEnvNames } = cq;
 
 const BODY = 'The production is a joy from start to finish, and the cast sings with real conviction throughout the evening. '.repeat(4);
 const CASES = [
@@ -56,8 +56,8 @@ test('classifyContentTier reuses the strip within one call (fails if the memo is
 });
 
 test('the memo key covers every env switch trailer-signatures.js reads', () => {
-  for (const k of ['TRAILER_FIXES_DISABLED', 'FURNITURE_TAIL_DISABLED', 'RUN_INFO_TRAILER_DISABLED']) assert.ok(STRIP_MEMO_ENV_NAMES.includes(k), k);
-  for (const k of STRIP_MEMO_ENV_NAMES) {
+  for (const k of ['TRAILER_FIXES_DISABLED', 'FURNITURE_TAIL_DISABLED', 'RUN_INFO_TRAILER_DISABLED']) assert.ok(getStripMemoEnvNames().includes(k), k);
+  for (const k of getStripMemoEnvNames()) {
     const prev = process.env[k];
     try {
       for (const t of CASES) {

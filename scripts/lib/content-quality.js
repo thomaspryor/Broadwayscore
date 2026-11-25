@@ -2239,14 +2239,26 @@ const STRIP_MEMO_MAX_CHARS = 8 * 1024 * 1024;
 const STRIP_MEMO_MAX_TEXT = 256 * 1024;
 const stripMemo = new Map();
 const stripMemoStats = { hits: 0, misses: 0, heldChars: 0 };
-const STRIP_MEMO_ENV_NAMES = (() => {
-  const src = require('fs').readFileSync(require.resolve('./trailer-signatures'), 'utf8');
-  const names = new Set();
-  for (const m of src.matchAll(/process\.env(?:\.([A-Z0-9_]+)|\[\s*['"]([A-Z0-9_]+)['"]\s*\])/g)) names.add(m[1] || m[2]);
-  return Object.freeze([...names].sort());
-})();
+// Read lazily and only from a real path. At module load, under the Next bundle,
+// require.resolve() returns a webpack module id (a number) and readFileSync(number)
+// reads that file descriptor: EBADF broke every production build (2026-11-25). Any
+// failure here turns the memo off, never the caller.
+let stripMemoEnvNames;
+function getStripMemoEnvNames() {
+  if (stripMemoEnvNames !== undefined) return stripMemoEnvNames;
+  try {
+    const src = require('fs').readFileSync(require('path').join(__dirname, 'trailer-signatures.js'), 'utf8');
+    const names = new Set();
+    for (const m of src.matchAll(/process\.env(?:\.([A-Z0-9_]+)|\[\s*['"]([A-Z0-9_]+)['"]\s*\])/g)) names.add(m[1] || m[2]);
+    stripMemoEnvNames = names.size ? Object.freeze([...names].sort()) : null;
+  } catch (e) {
+    stripMemoEnvNames = null;
+  }
+  return stripMemoEnvNames;
+}
 function stripMemoEnvKey() {
-  return STRIP_MEMO_ENV_NAMES.map((k) => process.env[k] || '').join('\0');
+  const names = getStripMemoEnvNames();
+  return names ? names.map((k) => process.env[k] || '').join('\0') : null;
 }
 function stripMemoEvict(text) {
   const old = stripMemo.get(text);
@@ -2259,6 +2271,7 @@ function stripVenueListingsTrailer(text, outletId) {
     return stripVenueListingsTrailerUncached(text, outletId);
   }
   const envKey = stripMemoEnvKey();
+  if (envKey === null) return stripVenueListingsTrailerUncached(text, outletId);
   const hit = stripMemo.get(text);
   if (hit && hit.outletId === outletId && hit.envKey === envKey) {
     stripMemoStats.hits++;
@@ -4495,7 +4508,7 @@ module.exports = { outletBylineOverride, withPrintedCredit, extractTheRecsByline
   stripVenueListingsTrailer,
   stripVenueListingsTrailerUncached,
   stripMemoStats,
-  STRIP_MEMO_ENV_NAMES,
+  getStripMemoEnvNames,
   isGarbageContent,
   stripLeadingJsonBlob,
   stripLeadingCookieConsentBlock,

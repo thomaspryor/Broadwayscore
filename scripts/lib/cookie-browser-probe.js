@@ -199,8 +199,47 @@ function profileDeps(context, authCookies) {
   };
 }
 
+/**
+ * verify-cookie-login.js's browser-only probe (BRO-8099): the SAVED cookie jar
+ * loaded into a throwaway profile, classified exactly as renew-cookies.js
+ * classifies the persistent profile, i.e. with profileDeps. Without them a
+ * vacuous primary url never rotated through probe.altUrls (BRO-7922) and a
+ * bot-walled anonymous control never fell back to the same jar minus its auth
+ * cookies, so verify said VACUOUS / BOT-CHECK where renew rotated and passed.
+ * @param {object} probe  COOKIE_PROBES entry
+ * @param {object[]} cookies  saved cookie file rows
+ * @param {string[]} authCookies  RENEW_OUTLETS[outlet].authCookies (profile control)
+ * @param {{launch?: Function, anon?: Function}} [deps]  for tests
+ * @returns {Promise<{status:string, withCookies:{html:string, body:string}, control:object, usedUrl?:string, rotatedFrom?:string}>}
+ */
+async function classifySavedCookies(probe, cookies, authCookies, { launch, anon = anonymousProbe } = {}) {
+  const launchFn = launch || require('./otp-login-helpers').launchOtpBrowser;
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'verify-cookie-login-'));
+  const ctx = await launchFn(dir, { headless: true, userAgent: UA });
+  try {
+    await ctx.addCookies(cookies.map((c) => ({
+      name: c.name, value: c.value, domain: c.domain, path: c.path || '/',
+      expires: Number(c.expires) > 0 ? Number(c.expires) : undefined,
+      httpOnly: !!c.httpOnly, secure: !!c.secure,
+      sameSite: ['Strict', 'Lax', 'None'].includes(c.sameSite) ? c.sameSite : 'Lax',
+    })));
+    const withCookies = await loadProbe(ctx, probe);
+    const r = await classifyWithControl(probe, withCookies, { anon, ...profileDeps(ctx, authCookies) });
+    // Same rule as profileSession: a metered wall shows a fresh browser the whole
+    // article (New Yorker, measured 2026-11-25: 8509 chars to a jar with no
+    // CN_access), so a jar with no auth cookie has no session, whatever the body says.
+    if (r.status === 'logged-in' && !require('./cookie-renew').hasAuthCookie(cookies, authCookies)) {
+      return { ...r, status: 'logged-out', noAuthCookie: true, withCookies };
+    }
+    return { ...r, withCookies };
+  } finally {
+    await ctx.close().catch(() => {});
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
 function describe(probe, r) {
   return `body ${r.body.length} chars, floor ${probe.minBody}${probe.wallMarker ? `, wall marker ${probe.wallMarker.test(r.html) ? 'present' : 'absent'}` : ''}`;
 }
 
-module.exports = { UA, probeBody, loadProbe, anonymousProbe, classify, classifyWithControl, profileControlProbe, profileDeps, profileSession, confirmWall, describe };
+module.exports = { UA, probeBody, loadProbe, anonymousProbe, classify, classifyWithControl, classifySavedCookies, profileControlProbe, profileDeps, profileSession, confirmWall, describe };

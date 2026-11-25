@@ -229,6 +229,6 @@ test('a matrix-suffixed Unit Test Shard job resolves like its unsuffixed name (B
 // The re-verify command must stay the bare safe-form `node --test X`, not owner-judgment.
 test('a timeout-bounded single-file step in the real test.yml still resolves to its safe-form command', () => {
   const yml = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', '.github', 'workflows', 'test.yml'), 'utf8');
-  const v = verifyForSignature({ job: 'Unit Tests', step: 'Dispatch-ledger write isolation (no test may write the real ledger)' }, yml);
-  assert.equal(v.line, 'VERIFY: node --test scripts/lib/ledger-write-isolation.test.mjs');
+  const v = verifyForSignature({ job: 'Unit Tests', step: 'Run merge-worktree-to-main stash-restore test (BRO-2904)' }, yml);
+  assert.equal(v.line, 'VERIFY: node --test scripts/merge-worktree-to-main.test.mjs');
 });

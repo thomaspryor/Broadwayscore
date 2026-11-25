@@ -4,8 +4,9 @@
  * newest Wayback capture of its Show Score page dated BEFORE opening night and read
  * the aggregate audience score and review count off that capture. Research only.
  *
- * Every request goes through fetchPage() (scripts/lib/scraper.js):
- *   - capture lookup: archive.org availability API, { directOnly: true } = free, no paid tier
+ * Requests:
+ *   - capture lookup: archive.org availability API through lib/archive-cdx.js = free, and the
+ *     IA auth refusal is typed archive_auth_required (BRO-8099), never "no capture"
  *   - capture read:   web.archive.org snapshot, normal chain (Scrapingdog/ScrapingBee) = 1 paid fetch
  * Paid fetches are counted and capped (--max-paid, default 150; the card's ceiling is ~300).
  * Only aggregate numbers (score, review count, capture timestamp) are written: no review text.
@@ -45,9 +46,9 @@ let paid = 0;
 
 async function lookup(pageUrl, ts) {
   const q = `https://archive.org/wayback/available?url=${encodeURIComponent(pageUrl)}&timestamp=${ts}`;
-  const r = await fetchPage(q, { directOnly: true, skipVerify: true });
-  const j = JSON.parse(r.content);
-  const c = j.archived_snapshots && j.archived_snapshots.closest;
+  // BRO-8099: archive-cdx types the IA 403 (throws e.kind === 'archive_auth_required').
+  const j = await require('./lib/archive-cdx').fetchArchiveIndexJson(q, { timeoutMs: 60000 });
+  const c = j && j.archived_snapshots && j.archived_snapshots.closest;
   return c && c.available && /^\d{14}$/.test(c.timestamp) ? c.timestamp : null;
 }
 

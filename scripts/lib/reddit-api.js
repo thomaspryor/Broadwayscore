@@ -17,6 +17,7 @@
  */
 
 const https = require('https');
+const { scrapingBeeKey: sbSwitchKey } = require('./sb-switch'); // BRO-8330
 const { NEVER_ASK_REDDIT_APP } = require('./reddit-owner-guard');
 require('./cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
 const { recordSbCall, recordSdCall, recordBdCall, sbBilledCredits, sdBilledCredits } = require('./provider-telemetry');
@@ -179,7 +180,7 @@ function sbBreakerBlock() {
  * Fetch via ScrapingBee (fallback)
  */
 async function fetchViaScrapingBee(url) {
-  const apiKey = process.env.SCRAPINGBEE_API_KEY;
+  const apiKey = sbSwitchKey();
   if (!apiKey) {
     throw new Error('SCRAPINGBEE_API_KEY not set and direct Reddit access failed');
   }
@@ -914,7 +915,7 @@ async function _fetchWithFallbackInner(url, retryCount = 0, opts = {}) {
       }
     }
     // Try ScrapingBee (last proxy resort)
-    if (process.env.SCRAPINGBEE_API_KEY && !scrapingBeeDown) {
+    if (sbSwitchKey() && !scrapingBeeDown) {
       try {
         return await fetchViaScrapingBee(url);
       } catch (e) {
@@ -1007,7 +1008,7 @@ async function switchToProxy(url, opts = {}) {
   }
 
   // Try ScrapingBee
-  if (process.env.SCRAPINGBEE_API_KEY && !scrapingBeeDown) {
+  if (sbSwitchKey() && !scrapingBeeDown) {
     console.warn('  Falling back to ScrapingBee');
     return fetchViaScrapingBee(url);
   }
@@ -1021,7 +1022,7 @@ async function switchToProxy(url, opts = {}) {
   if (scrapingBeeDown) reasons.push('ScrapingBee (down — invalid key or credits; see prior 401/402)');
   if (!process.env.BRIGHTDATA_TOKEN) reasons.push('Bright Data (no token)');
   if (!process.env.SCRAPINGDOG_API_KEY) reasons.push('Scrapingdog (no key)');
-  if (!process.env.SCRAPINGBEE_API_KEY) reasons.push('ScrapingBee (no key)');
+  if (!sbSwitchKey()) reasons.push('ScrapingBee (no key)');
   throw new Error(`Reddit blocked and all proxies unavailable: ${reasons.join(', ')}`);
 }
 

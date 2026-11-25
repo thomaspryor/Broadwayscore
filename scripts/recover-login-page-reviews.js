@@ -8,6 +8,8 @@
  * Usage: node scripts/recover-login-page-reviews.js [--dry-run] [--outlet=vulture]
  */
 
+// BRO-8099: --help prints usage; it used to run the script (live fetches).
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -173,11 +175,9 @@ async function fetchFromArchiveOrg(url) {
   // Check CDX API for snapshots
   const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=5&fl=timestamp,statuscode&filter=statuscode:200&sort=reverse`;
 
-  const cdxResp = await fetch(cdxUrl, { signal: AbortSignal.timeout(60000) });
-  if (!cdxResp.ok) throw new Error('Archive.org CDX failed');
-
-  const cdxData = await cdxResp.json();
-  if (cdxData.length < 2) throw new Error('No archive snapshots');
+  // BRO-8099: archive-cdx types the IA 403 as e.kind === 'archive_auth_required' (route blocked).
+  const cdxData = await require('./lib/archive-cdx').fetchArchiveIndexJson(cdxUrl, { timeoutMs: 60000 });
+  if (!Array.isArray(cdxData) || cdxData.length < 2) throw new Error('No archive snapshots');
 
   // Try most recent snapshot
   const timestamp = cdxData[1][0]; // Skip header row

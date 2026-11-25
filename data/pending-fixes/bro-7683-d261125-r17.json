@@ -1,0 +1,90 @@
+{
+  "issueNumber": "bro-7683-d261125-r17",
+  "planId": "9e350da9-80f5-4586-9558-26defd94c5b8",
+  "status": "applied",
+  "createdAt": "2026-11-25T20:34:30.169Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7683: 2 hub productions reviewed on BroadwayWorld",
+    "steps": [
+      "add we-the-people-regional-2026 (BroadwayWorld review 2026-11-23)",
+      "add the-last-victorian-regional-2026 (BroadwayWorld review 2026-11-24)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add we-the-people-regional-2026 (BroadwayWorld review 2026-11-23)",
+        "show": {
+          "id": "we-the-people-regional-2026",
+          "title": "We the People",
+          "slug": "we-the-people-regional-2026",
+          "venue": "Constitution Hall, Washington, DC",
+          "status": "open",
+          "type": "opera",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-23",
+          "openingDateSource": "bww-first-review",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "washington-dc",
+          "discoveredAt": "2026-11-25",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/washington-dc/article/Review-WE-THE-PEOPLE-at-Constitution-Hall-20261123"
+          ],
+          "images": {
+            "poster": "/images/shows/we-the-people-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/we-the-people-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add the-last-victorian-regional-2026 (BroadwayWorld review 2026-11-24)",
+        "show": {
+          "id": "the-last-victorian-regional-2026",
+          "title": "The Last Victorian",
+          "slug": "the-last-victorian-regional-2026",
+          "venue": "Undercroft Theatre, Washington, DC",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-24",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2026-12-13",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "washington-dc",
+          "discoveredAt": "2026-11-25",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/washington-dc/article/Review-THE-LAST-VICTORIAN-at-Washington-Stage-Guild-20261124"
+          ],
+          "images": {
+            "poster": "/images/shows/the-last-victorian-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/the-last-victorian-regional-2026/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-25T20:40:10.381Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added we-the-people-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-last-victorian-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

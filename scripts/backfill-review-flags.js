@@ -153,7 +153,9 @@ for (const showId of showDirs) {
             delete data._showNotMentionedDiscoveryAttempted;
             modified = true;
           }
-          if (!data.fullText && data.wrongFullText) {
+          if (!data.fullText && data.wrongFullText
+            && !data.wrongProduction && !data.wrongShow
+            && !(data.contentVerification && data.contentVerification.wrongProduction === true)) { // BRO-8324: keep wrong-content bodies parked
             data.fullText = data.wrongFullText;
             delete data.wrongFullText;
             modified = true;

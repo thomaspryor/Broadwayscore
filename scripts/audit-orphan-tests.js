@@ -74,6 +74,9 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-8324 RECHECK-AFTER probe: live review-texts corpus, red until the rebuild after the landing clears stale
+  // preview-period flags; run by autonomous-acceptance-recheck.js, never CI.
+  'scripts/verify-bro8324-preview-reviews.test.mjs': 'BRO-8324',
   // BRO-5673 acceptance shim; imports suites already run by the node unit-test
   // batch and scripts/lib/*.test.mjs step. Do not run those suites twice in CI.
   'scripts/batch-session-optimization.test.mjs': 'BRO-5673',

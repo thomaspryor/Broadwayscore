@@ -19,13 +19,23 @@
  * Pure: skipped tier IDs for a domain, from either schema shape.
  * @param {object} config - parsed domain-tier-skip.json
  * @param {string} hostname - already-normalized (no www.) domain
+ * @param {string} [kind] - 'json' ignores entries marked scope:'html'
  * @returns {Set<string>}
  */
-function getSkippedTiers(config, hostname) {
+function getSkippedTiers(config, hostname, kind) {
   const entry = config && config[hostname];
   if (!entry) return new Set();
   if (Array.isArray(entry)) return new Set(entry); // legacy shape
-  return new Set(Object.keys(entry).filter(tierId => entry[tierId] && entry[tierId].skip === true));
+  return new Set(Object.keys(entry).filter(tierId => {
+    const e = entry[tierId];
+    if (!e || e.skip !== true) return false;
+    // BRO-8330: an entry learned from HTML pages (scope "html") says nothing about
+    // the host's JSON API. theatre.reviews' SD skip came from guessed round-up URLs
+    // that 404, yet it also silenced SD for wp-json, so ~870 JSON calls in 2.8 days
+    // fell to ScrapingBee and then Bright Data.
+    if (kind === 'json' && e.scope === 'html') return false;
+    return true;
+  }));
 }
 
 // A reason exactly this shape means buildSkipConfig generated it from raw
@@ -82,7 +92,12 @@ function buildSkipConfig(stats, existingConfig, { skipThreshold, now }) {
       for (const tierId of Object.keys(entry)) {
         const existingTier = entry[tierId];
         if (!existingTier || GENERATED_REASON_RE.test(existingTier.reason)) continue;
-        if (out[domain] && out[domain][tierId]) continue; // fresh generated data wins on collision
+        if (out[domain] && out[domain][tierId]) {
+          // Fresh generated data wins on collision, but a hand-set scope survives:
+          // stats come from page fetches, so dropping it would re-silence the JSON API.
+          if (existingTier.scope && !out[domain][tierId].scope) out[domain][tierId].scope = existingTier.scope;
+          continue;
+        }
         if (!out[domain]) out[domain] = {};
         out[domain][tierId] = { ...existingTier };
       }
