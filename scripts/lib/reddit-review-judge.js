@@ -94,7 +94,6 @@ function identityFacts(show, todayIso, otherProductions = []) {
     title: show.title,
     venue,
     openingDate: show.openingDate || null,
-    previewsStartDate: show.previewsStartDate || null, // BRO-8324
     closingDate: show.closingDate || null,
     cast: (show.cast || []).map(c => c && c.name).filter(Boolean).slice(0, 12),
     people: [...(show.cast || []), ...(Array.isArray(show.creativeTeam) ? show.creativeTeam : [])].map(c => c && c.name).filter(Boolean),
@@ -138,7 +137,7 @@ function nonReviewPageReason(r, facts) {
     if (!c.ok) return c.reason || 'non-review-url';
   }
   if (!facts || !facts.openingDate || !r.publishDate || r.humanReviewedEarlyPublish === true) return null;
-  const v = isAnticipatoryPreviewPost(r.publishDate, facts.openingDate, r.outletId || null, { category: facts.category || undefined, previewsStartDate: facts.previewsStartDate || undefined });
+  const v = isAnticipatoryPreviewPost(r.publishDate, facts.openingDate, r.outletId || null, { category: facts.category || undefined }); // BRO-8324-STRICT: page classifier, keeps the 2-day rule (no previewsStartDate)
   return v.rejected ? 'pre-opening-non-review' : null;
 }
 

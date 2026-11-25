@@ -1185,7 +1185,9 @@ function preOpeningNonReviewReason(url, ctx = {}) {
   const verdict = require('./content-filters').isAnticipatoryPreviewPost(publishDate, show.openingDate, outletId || null, {
     humanReviewedEarlyPublish: humanReviewedEarlyPublish === true,
     category: show.category,
-    previewsStartDate: show.previewsStartDate, // BRO-8324
+    // BRO-8324-STRICT: this is a page classifier (a URL with no review word on a review outlet),
+    // not the review-eligibility date gate, so it keeps the 2-day rule: a preview-window interview
+    // page must still be refused. previewsStartDate is deliberately not passed.
   });
   return verdict.rejected ? 'pre-opening-non-review' : null;
 }

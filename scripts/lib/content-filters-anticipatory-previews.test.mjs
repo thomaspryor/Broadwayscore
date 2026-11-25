@@ -87,7 +87,9 @@ test('off-west-end keeps its 14-day grace when previews started later than that'
 });
 
 // Class guard: any caller that forgets previewsStartDate would re-reject (or re-flag on
-// rebuild) the reviews this gate now admits. Scan every non-test caller.
+// rebuild) the reviews this gate now admits. Scan every non-test caller. The two page
+// classifiers (non-review-url-patterns, reddit-review-judge) opt out on purpose and say so
+// with a BRO-8324-STRICT marker.
 test('every isAnticipatoryPreviewPost caller passes previewsStartDate', () => {
   const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
   const files = [];
@@ -114,9 +116,9 @@ test('every isAnticipatoryPreviewPost caller passes previewsStartDate', () => {
       if (/^\s*(\/\/|\*|\/\*)/.test(src.slice(lineStart, m.index))) continue;
       calls++;
       const window = src.slice(m.index, m.index + 900);
-      if (!/previewsStartDate/.test(window)) offenders.push(`${path.relative(root, f)}:${src.slice(0, m.index).split('\n').length}`);
+      if (!/previewsStartDate|BRO-8324-STRICT/.test(window)) offenders.push(`${path.relative(root, f)}:${src.slice(0, m.index).split('\n').length}`);
     }
   }
   assert.ok(calls >= 5, `expected to find the known callers, found ${calls}`);
-  assert.deepEqual(offenders, [], `callers missing previewsStartDate: ${offenders.join(', ')}`);
+  assert.deepEqual(offenders, [], `callers missing previewsStartDate (or a BRO-8324-STRICT marker): ${offenders.join(', ')}`);
 });
