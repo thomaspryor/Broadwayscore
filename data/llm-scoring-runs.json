@@ -427372,5 +427372,56 @@
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T20:30:40.918Z",
+    "completedAt": "2026-11-25T20:30:59.677Z",
+    "totalReviews": 8,
+    "processed": 166,
+    "skipped": 5,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 1270793,
+      "output": 62631,
+      "cacheRead": 806804,
+      "cacheWrite": 33929,
+      "total": 3238888
+    },
+    "costUsd": 2.3546306500000003,
+    "runId": "45695184145",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+        "outletId": "theater-life",
+        "error": "resume_input_hash_mismatch"
+      },
+      {
+        "showId": "the-last-ship-2014",
+        "outletId": "rollingstone",
+        "error": "resume_input_hash_mismatch"
+      }
+    ],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T20:35:56.532Z",
+    "completedAt": "2026-11-25T20:35:56.534Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "45695184145",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
   }
 ]
