@@ -54,9 +54,9 @@ async function main() {
   // An unreadable catalogue makes every planner call return null, which would read as "keep".
   if (!Array.isArray(shows) || shows.length < 1000) { console.error(`show catalogue missing or tiny (${(shows || []).length}); run npm run data:check`); process.exit(2); }
   const rows = [];
-  for (const dir of fs.readdirSync(ROOT).sort()) {
+  const { listShowDirs } = require('./lib/list-show-dirs');
+  for (const dir of listShowDirs(ROOT, { silent: true }).sort()) {
     const d = path.join(ROOT, dir);
-    if (dir.startsWith('.') || dir.startsWith('_') || !fs.statSync(d).isDirectory()) continue;
     for (const f of fs.readdirSync(d).sort()) {
       if (!f.endsWith('.json')) continue;
       let data;
