@@ -31,3 +31,10 @@ test('regeneration keeps a hand-set scope when fresh stats collide with the entr
   const out2 = buildSkipConfig({}, config, { skipThreshold: 3, now: '2026-11-25' });
   assert.equal(out2['theatre.reviews'].scrapingdog.scope, 'html');
 });
+
+test('fetchJSON asks for the json view of the tier skips (scraper.js)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./scraper.js', import.meta.url), 'utf8');
+  const body = src.slice(src.indexOf('async function fetchJSON('));
+  assert.match(body.slice(0, 1500), /_getDomainSkips\(url, 'json'\)/);
+});
