@@ -34,6 +34,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
 const { openaiChatBody, geminiThinkingOff } = require('./lib/llm-batch');
 const negCache = require('./lib/pull-quote-negative-cache');
+const llmGate = require('./lib/pull-quote-llm-gate');
 const { loadLiveScoreLookup, quoteVerdictStamp, needsRetone } = require('./lib/live-review-score');
 // Re-picks per run (BRO-8060). Bounds the cost if a set of re-picks keeps being quarantined by safeWriteReview.
 const RETONE_CAP = parseInt(process.env.PULL_QUOTE_RETONE_CAP || '150', 10);
@@ -125,10 +126,12 @@ const PROMPT_VERSION = negCache.promptVersionFor([
   describeVerdict.toString(),
   verifyInText.toString(),
   fs.readFileSync(require.resolve('./lib/pull-quote-guards'), 'utf8'),
+  fs.readFileSync(require.resolve('./lib/pull-quote-llm-gate'), 'utf8'), // BRO-8334
   PROVIDER === 'openai' ? GPT4O_MINI : GEMINI_FLASH,
 ].join('\n#--\n'));
 // Kill switch: PULL_QUOTE_NEGATIVE_CACHE_OFF=1 ignores rejection stamps (still writes them)
 // without --overwrite's side effect of re-extracting reviews that already have a quote.
+const LLM_GATE_OFF = process.env.PULL_QUOTE_LLM_GATE_OFF === '1';
 const NEG_CACHE_OFF = process.env.PULL_QUOTE_NEGATIVE_CACHE_OFF === '1';
 
 function describeVerdict(score) {
@@ -557,6 +560,32 @@ async function processReview(entry) {
       if (VERBOSE) console.log(`  OTHER-SHOW rejected after retry: ${path.basename(filePath)}`);
       reject('other-show-passage');
       return;
+    }
+
+    // LLM show check (BRO-8334): after the free heuristic, one cheap yes/no/unclear
+    // call. Only a clear "no" drops the quote; same retry budget and stamp as above.
+    // PULL_QUOTE_LLM_GATE_OFF=1 skips it.
+    if (!LLM_GATE_OFF) {
+      let verdict = 'unclear';
+      try {
+        const gateReply = await callLLMWithRetry(llmGate.GATE_SYSTEM_PROMPT, llmGate.buildGateUserPrompt(data.showTitle || data.showId, quote, sourceText));
+        verdict = llmGate.parseGateVerdict(gateReply);
+      } catch (e) {
+        if (VERBOSE) console.log(`  LLM-GATE error (keeping quote): ${e.message}`);
+      }
+      stats.llmGateCalls = (stats.llmGateCalls || 0) + 1;
+      if (verdict === 'no') {
+        if (attempt === 1) {
+          stats.llmGateRetried = (stats.llmGateRetried || 0) + 1;
+          if (VERBOSE) console.log(`  LLM-GATE no: "${quote.slice(0, 80)}..." — retrying`);
+          hint = llmGate.gateHint(quote, data.showTitle);
+          continue;
+        }
+        stats.llmGateRejected = (stats.llmGateRejected || 0) + 1;
+        if (VERBOSE) console.log(`  LLM-GATE rejected after retry: ${path.basename(filePath)}`);
+        reject('llm-gate-other-show');
+        return;
+      }
     }
 
     // Reservation check: if the review is positive and the quote opens
