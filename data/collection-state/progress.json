@@ -21,14 +21,18 @@
     "dogstar-off-west-end-2026/londonlivinglarge--unknown.json",
     "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
     "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher.json",
-    "speculations-off-west-end-2026/islingtontribune--unknown.json"
+    "speculations-off-west-end-2026/islingtontribune--unknown.json",
+    "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json"
   ],
   "failed": [
     "a-christmas-carol-west-end-2026/daily-mail--unknown.json",
     "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/telegraph--claire-allfree.json",
     "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/whatsonstage--sarah-crompton.json",
     "the-afronauts-west-end-2026/consequence--langdon-hickman.json",
-    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json"
+    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -49,7 +53,9 @@
       "cloud-9-west-end-2026/theatre-weekly--unknown.json",
       "dogstar-off-west-end-2026/islingtontribune--unknown.json",
       "dogstar-off-west-end-2026/londonlivinglarge--unknown.json",
-      "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher.json"
+      "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -61,13 +67,27 @@
       "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+    ],
     "archiveToday": [],
     "archive": [
       "speculations-off-west-end-2026/islingtontribune--unknown.json"
     ]
   },
   "startTime": "2026-11-25T08:43:51.093Z",
-  "lastProcessed": "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-  "log": []
+  "lastProcessed": "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-25T09:23:48.148Z",
+      "event": "bb-session",
+      "session": "3e28af55",
+      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago"
+    },
+    {
+      "t": "2026-11-25T09:23:48.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

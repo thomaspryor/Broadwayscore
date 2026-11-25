@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-11-25T09:10:19.615Z",
-  "processed": 22,
-  "failed": 5,
-  "successRate": "81.5%",
+  "updatedAt": "2026-11-25T09:26:15.907Z",
+  "processed": 25,
+  "failed": 6,
+  "successRate": "80.6%",
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 19,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 4,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-11-25T09:23:48.148Z",
+      "event": "bb-session",
+      "session": "3e28af55",
+      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago"
+    },
+    {
+      "t": "2026-11-25T09:23:48.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
