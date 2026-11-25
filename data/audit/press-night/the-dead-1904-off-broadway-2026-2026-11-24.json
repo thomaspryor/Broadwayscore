@@ -91,60 +91,34 @@
   "dropped": [],
   "reference": {
     "2h": {
-      "status": "incomplete",
-      "source": [
-        "show-score"
-      ],
-      "count": 16,
-      "covered": 3,
-      "coverage": 0.188,
-      "missing": [
-        "nytimes",
-        "hollywood-reporter",
-        "amny",
-        "theatermania",
-        "talkinbroadway",
-        "stagebuddy",
-        "cititour",
-        "northjerseycom",
-        "epoch-times",
-        "adriandimanlig",
-        "irish-central",
-        "village-voice",
-        "metro-us"
-      ],
-      "suppressedMissing": [],
-      "liveCount": 4,
-      "fetchedAt": "2026-11-25T05:00:33.286Z",
-      "censusNote": "no BWW roundup found"
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 3,
+      "fetchedAt": "2026-11-25T16:03:52.995Z",
+      "asOf": "2026-11-25T05:00:00.000Z",
+      "method": "timeline",
+      "notYetPublished": [],
+      "discoveredAfter": [],
+      "censusNote": "archive only"
     },
     "end": {
-      "status": "incomplete",
-      "source": [
-        "show-score"
-      ],
-      "count": 16,
-      "covered": 3,
-      "coverage": 0.188,
-      "missing": [
-        "nytimes",
-        "hollywood-reporter",
-        "amny",
-        "theatermania",
-        "talkinbroadway",
-        "stagebuddy",
-        "cititour",
-        "northjerseycom",
-        "epoch-times",
-        "adriandimanlig",
-        "irish-central",
-        "village-voice",
-        "metro-us"
-      ],
-      "suppressedMissing": [],
-      "liveCount": 4,
-      "fetchedAt": "2026-11-25T09:00:36.709Z",
-      "censusNote": "no BWW roundup found"
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 3,
+      "fetchedAt": "2026-11-25T16:03:52.995Z",
+      "asOf": "2026-11-25T08:57:00.256Z",
+      "method": "timeline",
+      "notYetPublished": [],
+      "discoveredAfter": [],
+      "censusNote": "archive only"
     }
   },
   "manualActions": [],
@@ -2564,5 +2538,13 @@
         "updatedAt": "2026-11-25T06:06:50Z"
       }
     ]
-  }
+  },
+  "priorRuns": [
+    {
+      "openingDate": "2024-11-26",
+      "closingDate": "2025-01-05",
+      "venue": "American Irish Historical Society"
+    }
+  ],
+  "regradeNote": "BRO-8308: -live census snapshots (16 outlets, incl. 2016-18 Show Score tiles of earlier runs) dropped; census rebuilt with the tile-date filter, which leaves no owed outlet."
 }

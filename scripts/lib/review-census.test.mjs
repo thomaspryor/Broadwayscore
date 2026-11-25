@@ -471,11 +471,28 @@ test('buildCensusFromArchives hands the show to the Show Score parser (BRO-7965)
   assert.equal((src.match(/takesShow: true/g) || []).length, 1);
 });
 
-test('parseShowScore: exempt same-production page keeps old tiles; &amp; URLs still match (BRO-7965)', () => {
+test('parseShowScore: page-exempt same-production page still drops pre-run tiles (BRO-8308 supersedes BRO-7965 keep); &amp; URLs still match', () => {
   const old = ssTile('https://www.nytimes.com/2019/04/03/arts/x.html?a=1&amp;b=2', 'April 3rd, 2019');
   const show = { openingDate: '2021-10-04', previewsStartDate: '2021-09-01', status: 'open' };
   assert.equal(parseShowScore(old, 'slave-play-2021', show).length, 0);
   const exemptPage = `<link rel="canonical" href="https://www.show-score.com/broadway-shows/slave-play">` + old;
-  // canonical present but not exempt-keyed by url: still dropped; exemption is by show id via exemptionFor
-  assert.equal(parseShowScore(exemptPage, 'slave-play-2021', { ...show, id: 'slave-play-2021' }).length, 1);
+  // BRO-8308: the page exemption (by show id via exemptionFor) keeps the PAGE, not an owed review: a 2019 tile is
+  // not owed on the 2021 night. A declared prior run covering the date still keeps it.
+  assert.equal(parseShowScore(exemptPage, 'slave-play-2021', { ...show, id: 'slave-play-2021' }).length, 0);
+  const covered = { ...show, id: 'slave-play-2021', priorRuns: [{ openingDate: '2019-03-01', closingDate: '2019-06-01' }] };
+  assert.equal(parseShowScore(exemptPage, 'slave-play-2021', covered).length, 1);
+});
+
+test('BRO-8308: a SAME_PRODUCTION-exempt Show Score page still drops tiles dated before the run (The Dead, 1904)', () => {
+  const html = `<link rel="canonical" href="https://www.show-score.com/off-broadway-shows/the-dead-1904">`
+    + ssTile('http://www.nytimes.com/2016/12/08/theater/the-dead-1904-review.html', 'December 8th, 2016')
+    + ssTile('http://www.hollywoodreporter.com/review/dead-1904-954670', 'December 9th, 2016')
+    + ssTile('http://www.theatermania.com/off-broadway/reviews/the-dead-1904_83329.html', 'November 30th, 2017')
+    + ssTile('https://culturesauce.com/2026/11/the-dead-1904-review', 'November 25th, 2026');
+  const show = { id: 'the-dead-1904-off-broadway-2026', title: 'The Dead, 1904', venue: 'American Irish Historical Society',
+    openingDate: '2026-11-24', previewsStartDate: '2026-11-21', status: 'open', priorRuns: [{ openingDate: '2024-11-26', closingDate: '2025-01-05' }] };
+  const { exemptionFor } = require('./show-score-production-window.js');
+  assert.ok(exemptionFor(show, 'x'), 'fixture show is page-exempt');
+  const ids = parseShowScore(html, show.id, show).map((r) => r.outletId);
+  assert.deepEqual(ids, ['culturesauce'], '2016-17 tiles are not owed on the 2026 night');
 });

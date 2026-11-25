@@ -176,6 +176,8 @@ function stampFileState(rec, show, census) {
   const state = require('./lib/press-night-review-state');
   const read = show ? state.readReviewFileState(rec.showId, show) : { available: false, files: [] };
   if (read.available) rec.fileState = { capturedAt: new Date().toISOString(), files: read.files };
+  // BRO-8308: same-night-completeness must not owe a review dated inside a declared earlier run.
+  if (show && Array.isArray(show.priorRuns) && show.priorRuns.length) rec.priorRuns = show.priorRuns;
   const files = rec.fileState && rec.fileState.files;
   if (!files) console.log('[press-night] review-texts not available: census exclusions and same-night-completeness stay unknown');
   const g = lib.DEFAULT_GATES;
@@ -280,6 +282,8 @@ async function main() {
 
   if (has('check')) {
     const rec = readRecord(file);
+    // Records captured before BRO-8308 carry no priorRuns: read them from shows.json (in memory only).
+    if (rec && !rec.priorRuns) { const sh = loadShow(showId); if (sh && Array.isArray(sh.priorRuns) && sh.priorRuns.length) rec.priorRuns = sh.priorRuns; }
     const gates = {};
     if (arg('first-live-within')) gates.firstLiveWithinMin = Number(arg('first-live-within'));
     if (arg('coverage2h')) gates.coverage2h = Number(arg('coverage2h'));

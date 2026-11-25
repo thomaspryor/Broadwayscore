@@ -197,12 +197,11 @@ function parseShowScore(content, showId, show) { // eslint-disable-line no-unuse
   if (show && tilesFn) {
     const { isShowScoreTileDateOutOfRun } = require('./gap-ingest-policy');
     try {
-      // A page reviewed as THIS production (return engagement, remount: SAME_PRODUCTION) keeps its older tiles,
-      // the same exemption the page-level guard applies.
-      const { exemptionFor } = require('./show-score-production-window');
-      if (!exemptionFor(show, archiveCanonicalUrl(content))) {
-        for (const t of tilesFn(content) || []) if (isShowScoreTileDateOutOfRun(t.date, show)) outOfRun.add(norm(t.url));
-      }
+      // BRO-8308: the page-level SAME_PRODUCTION exemption (return engagement, remount) says the PAGE is this
+      // production's, so it keeps the page's audience data; it does not make a 2016-18 tile an owed review of
+      // tonight. The Dead, 1904 (Irish Rep remount, prior run 2024) owed 2016-18 NYT/THR/amNY/TheaterMania notices
+      // and failed the night. Tile dates are judged against previews and declared priorRuns whatever the exemption.
+      for (const t of tilesFn(content) || []) if (isShowScoreTileDateOutOfRun(t.date, show)) outOfRun.add(norm(t.url));
     } catch (_) { /* fail open */ }
   }
   const urls = (fn(content) || []).filter((u) => !outOfRun.has(norm(u)));

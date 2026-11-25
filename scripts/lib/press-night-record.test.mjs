@@ -1017,3 +1017,19 @@ test('same-night-completeness: a named critic\'s earlier piece cannot vouch for 
   r.perReview[0].publishAt = '2026-10-20';
   assert.equal(sn(r).status, 'fail');
 });
+
+test('BRO-8308: a file published inside a declared prior run is not owed on the night; the same file with no priorRuns is', () => {
+  const nightDay = lib.emptyRecord ? fresh().night : null;
+  const old = file('timeout', 30, { publishDate: '2024-12-03' }); // first seen inside the night window, dated in the 2024 run
+  const mk = () => nightRec({}, [old]);
+  const without = mk();
+  assert.equal(sn(without).status, 'fail', 'legacy: counted as an owed review that never went live');
+  const withRuns = mk();
+  withRuns.priorRuns = [{ openingDate: '2024-11-26', closingDate: '2025-01-05' }];
+  assert.notEqual(sn(withRuns).status, 'fail', `declared prior run excuses it (night ${nightDay})`);
+  // a file dated on/after the night is never excused by priorRuns
+  const sameDay = mk();
+  sameDay.priorRuns = withRuns.priorRuns;
+  sameDay.fileState.files = [file('timeout', 30, { publishDate: sameDay.night })];
+  assert.equal(sn(sameDay).status, 'fail');
+});

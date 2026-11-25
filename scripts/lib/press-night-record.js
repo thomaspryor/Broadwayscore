@@ -712,7 +712,13 @@ function sameNightCheck(rec, g) {
   const t2 = embMs + 2 * HOUR;
   const nearPrior = (f) => !!(f.publishDate && rec.night && String(f.publishDate).slice(0, 10) < rec.night
     && String(f.publishDate).slice(0, 10) >= shiftDay(rec.night, -NEAR_PRIOR_GRACE_DAYS));
-  const nightFiles = fsnap.files.filter((f) => f.includable && f.outletId && toMs(f.firstSeenAt) != null
+  // BRO-8308: a review file published inside a declared earlier run (a 2024 Time Out page first picked up on the
+  // 2026 night of a return engagement) is that run's review, not one owed tonight. The date alone never excuses
+  // a file dated on or after the night.
+  const { isWithinPriorRun } = require('./wrong-production-autoclear');
+  const inPriorRun = (f) => !!(Array.isArray(rec.priorRuns) && rec.priorRuns.length && /^\d{4}-\d{2}-\d{2}/.test(String(f.publishDate || ''))
+    && String(f.publishDate).slice(0, 10) < String(rec.night) && isWithinPriorRun(new Date(String(f.publishDate).slice(0, 10)), rec.priorRuns));
+  const nightFiles = fsnap.files.filter((f) => f.includable && f.outletId && !inPriorRun(f) && toMs(f.firstSeenAt) != null
     && toMs(f.firstSeenAt) >= embMs - g.nightStartH * HOUR && toMs(f.firstSeenAt) <= embMs + g.sameNightEndH * HOUR);
   const perOutletFiles = new Map();
   for (const f of nightFiles) perOutletFiles.set(f.outletId, (perOutletFiles.get(f.outletId) || 0) + 1);
@@ -738,7 +744,7 @@ function sameNightCheck(rec, g) {
   const censusKnown = !!(ref2 && ref2.coverage != null && ref2.status !== 'no-census-yet');
   if (censusKnown) for (const o of ref2.missing) missA.set(o, 'listed by the aggregators, not live at +2h');
   for (const f of fsnap.files) {
-    if (!f.includable || !f.outletId) continue;
+    if (!f.includable || !f.outletId || inPriorRun(f)) continue;
     const seen = toMs(f.firstSeenAt);
     if (seen == null || seen < winStart || seen > winEnd) continue;
     const liveAt = liveOf(f);
