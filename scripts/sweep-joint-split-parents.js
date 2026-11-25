@@ -13,7 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { loadShows } = require('./lib/multi-show-splitter');
-const { isJointParent, replanJointParent } = require('./lib/joint-split-resweep');
+const { isJointParent, replanJointParent, replanReconstructed } = require('./lib/joint-split-resweep');
 
 const arg = (k) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
 const ROOT = path.resolve(arg('review-texts') || path.join(__dirname, '..', 'data', 'review-texts'));
@@ -44,7 +44,15 @@ function main() {
       try { data = JSON.parse(fs.readFileSync(path.join(d, f), 'utf8')); } catch { continue; }
       if (!isJointParent(data)) continue;
       const rel = `${dir}/${f}`;
-      const r = replanJointParent({ showId: dir, ...data }, history(rel), shows);
+      const own = { showId: dir, ...data };
+      const children = (data.multiShowSplitChildShowIds || []).map((id) => {
+        try { return JSON.parse(fs.readFileSync(path.join(ROOT, id, f), 'utf8')); } catch { return null; }
+      });
+      let r = replanJointParent(own, history(rel), shows);
+      // Calibration: the reconstruction verdict alongside the true-text one.
+      const recon = replanReconstructed(own, children, shows);
+      if (r.verdict === 'no-whole-text') r = recon;
+      else r.reconstructed = recon.verdict;
       rows.push({ file: rel, children: data.multiShowSplitChildShowIds || [], currentChars: (data.fullText || '').length,
         originalChars: data.multiShowSplitOriginalLength, ...r });
     }
@@ -52,13 +60,14 @@ function main() {
   const noSplit = rows.filter((r) => r.verdict === 'no-split');
   const summary = { parents: rows.length, noSplit: noSplit.length,
     stillSplit: rows.filter((r) => r.verdict === 'still-split').length,
+    refetch: rows.filter((r) => r.verdict === 'refetch').length,
     noWholeText: rows.filter((r) => r.verdict === 'no-whole-text').length };
   const report = { generatedAt: new Date().toISOString(), summary, noSplit, rows };
   if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(report, null, 2));
   if (process.argv.includes('--json')) { console.log(JSON.stringify(report, null, 2)); return; }
   console.log(JSON.stringify(summary));
   for (const r of noSplit) console.log(`NO-SPLIT\t${r.file}\tchildren=${r.children.join(',')}\twhole=${r.wholeChars}(${r.source})\tcurrent=${r.currentChars}`);
-  for (const r of rows.filter((x) => x.verdict === 'no-whole-text')) console.log(`NO-WHOLE-TEXT\t${r.file}`);
+  for (const r of rows.filter((x) => x.verdict === 'refetch' || x.verdict === 'no-whole-text')) console.log(`${r.verdict.toUpperCase()}\t${r.file}\t${r.ordersSplit ?? ''}/${r.orders ?? ''}`);
 }
 
 main();

@@ -63,4 +63,44 @@ function replanJointParent(data, history, shows) {
   };
 }
 
-module.exports = { isJointParent, pickWholeText, replanJointParent, SPLIT_MARKERS };
+/**
+ * When no whole text survives anywhere, rebuild candidates from the parent's
+ * section plus its children's sections (each still its split section when
+ * its fullText length matches multiShowSplitTextLength). Section order is
+ * unknown, so every order is returned; null unless the pieces add up to the
+ * recorded original length (within 10%).
+ */
+function reconstructCandidates(data, children) {
+  const own = typeof data.fullText === 'string' ? data.fullText : '';
+  const parts = [own];
+  for (const c of children) {
+    if (!c || c.multiShowSplitChild !== true || typeof c.fullText !== 'string') return null;
+    if (Number.isFinite(c.multiShowSplitTextLength) && Math.abs(c.fullText.length - c.multiShowSplitTextLength) > 50) return null;
+    parts.push(c.fullText);
+  }
+  if (parts.length < 2 || parts.length > 4) return null;
+  const orig = Number(data.multiShowSplitOriginalLength);
+  const sum = parts.reduce((n, t) => n + t.length, 0);
+  if (!Number.isFinite(orig) || Math.abs(sum - orig) > orig * 0.1) return null;
+  const perms = (a) => (a.length <= 1 ? [a] : a.flatMap((x, i) => perms([...a.slice(0, i), ...a.slice(i + 1)]).map((r) => [x, ...r])));
+  return perms(parts).map((p) => p.join('\n\n'));
+}
+
+/**
+ * Re-plan every reconstruction. 'still-split' only when EVERY order still
+ * splits; any order that does not is 'refetch' (the true order is unknown).
+ */
+function replanReconstructed(data, children, shows) {
+  const cands = reconstructCandidates(data, children);
+  if (!cands) return { verdict: 'no-whole-text' };
+  let split = 0;
+  for (const text of cands) {
+    const fresh = { ...data, fullText: text };
+    for (const k of SPLIT_MARKERS) delete fresh[k];
+    const plan = planMultiShowFanout(fresh, shows, { ownShowId: data.showId, joint: true });
+    if (plan && plan.otherSections.length) split++;
+  }
+  return { verdict: split === cands.length ? 'still-split' : 'refetch', source: 'reconstructed', orders: cands.length, ordersSplit: split };
+}
+
+module.exports = { isJointParent, pickWholeText, replanJointParent, reconstructCandidates, replanReconstructed, SPLIT_MARKERS };
