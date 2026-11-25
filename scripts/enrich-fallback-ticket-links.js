@@ -84,6 +84,9 @@ const MIN_REMAINING_MS_TO_START = 90_000;
 // the whole 30-show venue phase measured 69s on 2026-11-19.
 const SERP_PHASE_RESERVE_MS = 240_000;
 const VENUE_ITEM_WORST_MS = 150_000;
+// BRO-7668 official-page item: at most one listing read (fetchPage direct, 10s)
+// plus probeFirstPartyUrl (4 hops x 15s): ~70s, rounded up.
+const OFFICIAL_ITEM_WORST_MS = 90_000;
 const MAX_VENUE_FETCHES = 8;
 // Politeness gap between consecutive reads of one venue host.
 const VENUE_REQUEST_GAP_MS = 500;
@@ -349,7 +352,7 @@ async function main() {
   console.log(`\nFirst-party official page: ${officialTargets.length} show(s) with no ticket or official link and a page to read.`);
   let officialAdded = 0;
   for (const show of officialTargets) {
-    if (!timeBudget.canStartItem(SERP_PHASE_RESERVE_MS + 60_000)) {
+    if (!timeBudget.canStartItem(SERP_PHASE_RESERVE_MS + OFFICIAL_ITEM_WORST_MS)) {
       console.log('\n⏱ Official-page phase stopped to leave the SERP phase its time budget.');
       break;
     }
