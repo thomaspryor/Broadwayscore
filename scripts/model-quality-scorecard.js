@@ -98,14 +98,16 @@ async function main() {
   const nowMs = Date.now();
   const reopens = opts['no-linear'] ? null : await fetchReopens(new Date(Date.parse(`${switchDate}T00:00:00Z`) - THRESHOLDS.baselineDays * 86400 * 1000).toISOString());
   const sc = computeScorecard({ sessionRows, landings, reopens, switchDate, nowMs });
+  // In --json mode stdout must stay pure JSON, so trailing advice goes to stderr.
+  const note = (m) => (opts.json ? console.error(m) : console.log(m));
   if (opts.json) console.log(JSON.stringify(sc, null, 2));
   else console.log(formatScorecard(sc, { siteHealth: siteHealthLines() }));
   if (sc.verdict === 'WORSE') {
-    console.log('ROLLBACK (one line): in .claude/settings.json delete the "model" key and its "_comment_model" line, set model: claude-opus-5-5 in .claude/agents/review-panelist.md and in EXPECTED in tests/unit/claude-agent-models.test.mjs, then land it. Keep this scorecard.');
+    note('ROLLBACK (one line): in .claude/settings.json delete the "model" key and its "_comment_model" line, set model: claude-opus-5-5 in .claude/agents/review-panelist.md and in EXPECTED in tests/unit/claude-agent-models.test.mjs, then land it. Keep this scorecard.');
     return 1;
   }
   if (sc.verdict === 'INSUFFICIENT DATA') {
-    console.log('Not a pass: re-run after the windows fill (exit 3).');
+    note('Not a pass: re-run after the windows fill (exit 3).');
     return 3;
   }
   return 0;
