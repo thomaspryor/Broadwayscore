@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-25T18:56:22.716Z",
-  "processed": 49,
-  "failed": 51,
-  "successRate": "49.0%",
+  "updatedAt": "2026-11-25T19:16:10.471Z",
+  "processed": 77,
+  "failed": 73,
+  "successRate": "51.3%",
   "tierBreakdown": {
-    "playwright": 29,
+    "playwright": 47,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 13,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 11
+    "archive": 22
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-11-25T18:43:58.106Z",
@@ -33,6 +33,56 @@
       "event": "bb-session",
       "session": "eae42795",
       "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-11-25T19:00:49.600Z",
+      "event": "bb-session",
+      "session": "324ef1db",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-25T19:00:50.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T19:04:00.383Z",
+      "event": "bb-session",
+      "session": "32f69362",
+      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+    },
+    {
+      "t": "2026-11-25T19:04:01.003Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T19:05:09.052Z",
+      "event": "bb-session",
+      "session": "3d4dbc9c",
+      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+    },
+    {
+      "t": "2026-11-25T19:05:09.690Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T19:10:09.666Z",
+      "event": "bb-session",
+      "session": "8f26e922",
+      "url": "https://www.nytimes.com/2026/05/07/theater/ministry-of-awe-philadelphia-immersiv"
+    },
+    {
+      "t": "2026-11-25T19:10:10.375Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T19:13:00.326Z",
+      "event": "bb-session",
+      "session": "9f8ae360",
+      "url": "https://brianeugenioherrera.substack.com/p/260330-theatrical-horror-stories"
     }
   ]
 }
