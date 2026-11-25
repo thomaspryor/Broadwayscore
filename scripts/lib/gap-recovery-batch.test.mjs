@@ -61,3 +61,11 @@ test('BRO-7962: a round that is allowed to run never gets a 0 budget (0 means "n
     assert.ok(rem.bd !== 0 && rem.serp !== 0, JSON.stringify({ cap, spend, rem }));
   }
 });
+
+test('roundSpend: a dry-run round spends nothing; a missing summary books the whole allowance (BRO-8277)', () => {
+  const rem = { bd: 25, serp: 60 };
+  assert.deepEqual(B.roundSpend({ mode: 'dry_run', attempted: 0 }, rem), { bd: 0, serp: 0 });
+  assert.deepEqual(B.roundSpend({ spend: { bd: 3, serp: 7 } }, rem), { bd: 3, serp: 7 });
+  assert.deepEqual(B.roundSpend(null, rem), { bd: 25, serp: 60 });
+  assert.deepEqual(B.roundSpend(null, { bd: null, serp: null }), { bd: 0, serp: 0 });
+});

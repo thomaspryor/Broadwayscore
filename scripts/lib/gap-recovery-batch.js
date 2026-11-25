@@ -75,4 +75,16 @@ function buildRoundRow({ batchId, round, startedAt, endedAt, exit, summary, spen
   };
 }
 
-module.exports = { checkpointCadence, orphanAccepts, stopDecision, remainingBudget, buildRoundRow, MAX_ACCEPTS_BETWEEN_CHECKPOINTS, MAX_MINUTES_BETWEEN_CHECKPOINTS, MAX_FAILED_PUSHES };
+/**
+ * BRO-8277: what one round spent, for the batch-wide cap. A round with no summary
+ * (killed, timed out) has unknown spend: assume its whole allowance. A dry run
+ * spends nothing; its summary carries no spend field and used to be booked as a
+ * full allowance, so one dry-run batch "used up" the cap (25 BD / 60 SERP each).
+ */
+function roundSpend(summary, rem) {
+  if (summary && summary.spend) return { bd: summary.spend.bd || 0, serp: summary.spend.serp || 0 };
+  if (summary && summary.mode === 'dry_run') return { bd: 0, serp: 0 };
+  return { bd: rem.bd == null ? 0 : rem.bd, serp: rem.serp == null ? 0 : rem.serp };
+}
+
+module.exports = { roundSpend, checkpointCadence, orphanAccepts, stopDecision, remainingBudget, buildRoundRow, MAX_ACCEPTS_BETWEEN_CHECKPOINTS, MAX_MINUTES_BETWEEN_CHECKPOINTS, MAX_FAILED_PUSHES };

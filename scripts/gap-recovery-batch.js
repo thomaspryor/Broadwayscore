@@ -89,8 +89,7 @@ function main() {
     const exit = r.status === null ? 1 : r.status;
     let summary = null; try { summary = JSON.parse(fs.readFileSync(sumPath, 'utf8')); } catch { /* none */ }
     // A round with no summary (killed/timed out) has unknown spend: assume it used its whole allowance.
-    if (summary && summary.spend) { spend.bd += summary.spend.bd || 0; spend.serp += summary.spend.serp || 0; }
-    else { spend.bd += rem.bd == null ? 0 : rem.bd; spend.serp += rem.serp == null ? 0 : rem.serp; }
+    const used = B.roundSpend(summary, rem); spend.bd += used.bd; spend.serp += used.serp;
     if (summary && (summary.pushFailed || summary.pushRetryFailed)) failedPushes++;
     // No summary (killed/timed out): work is unknown, not zero; never read it as an idle round.
     lastWork = summary ? (summary.attempted || 0) + (summary.landed || 0) + (summary.adopted || 0) : 1;
