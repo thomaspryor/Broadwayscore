@@ -1,19 +1,43 @@
 {
-  "updatedAt": "2026-11-25T20:40:38.890Z",
-  "processed": 47,
-  "failed": 43,
-  "successRate": "52.2%",
+  "updatedAt": "2026-11-25T20:44:22.153Z",
+  "processed": 122,
+  "failed": 62,
+  "successRate": "66.3%",
   "tierBreakdown": {
-    "playwright": 28,
+    "playwright": 84,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 12,
-    "scrapingbee": 5,
-    "brightdata": 0,
+    "scrapingdog": 8,
+    "scrapingbee": 6,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 10
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-11-25T19:27:56.983Z",
+      "event": "bb-session",
+      "session": "399a5c94",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-25T19:49:01.213Z",
+      "event": "bb-session",
+      "session": "980d6726",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-25T19:49:02.141Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T19:58:00.932Z",
+      "event": "bb-session",
+      "session": "db76e4bb",
+      "url": "https://deadline.com/2025/12/walt-disney-world-raiders-of-the-lost-ark-boulder-a"
+    }
+  ]
 }
