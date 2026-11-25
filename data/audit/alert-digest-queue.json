@@ -399,5 +399,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T15:43:56.229Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8323-sb-market-gate",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8323-sb-market-gate",
+    "description": "land.yml did not land land/bro-8323-sb-market-gate: the scripts-lib-tests gate went red at e9998c09e4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45648128043",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8323-sb-market-gate"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "e9998c09e4b733dbfcc85e369c6cbf21d9609dcf"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45648128043"
+      }
+    ],
+    "queuedAt": "2026-11-25T16:01:52.463Z"
   }
 ]
