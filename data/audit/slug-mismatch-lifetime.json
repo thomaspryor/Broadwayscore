@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-24T13:01:30.530Z",
-  "scanned": 4957,
-  "showsWithViolations": 202,
-  "totalViolations": 230,
+  "updatedAt": "2026-11-25T12:03:10.932Z",
+  "scanned": 4967,
+  "showsWithViolations": 199,
+  "totalViolations": 226,
   "newSinceLastRun": 0,
   "newViolationKeys": [],
   "actionableViolations": 3,
@@ -19,8 +19,6 @@
     "sunset-boulevard-2024::https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
     "mj-2022::https://apnews.com/article/entertainment-music-reviews-arts-and-entertainment-michael-jackson-46719c4c14753f3f01008318fe3c1057",
     "sea-wall-a-life-2019::https://www.curtainup.com/seawallbway.html",
-    "kiss-me-kate-2019::http://www.theaternewsonline.com/NYTheaterReviews/TAP-HAPPY.cfm",
-    "bernhardthamlet-2018::https://theaternewsonline.com/NYTheaterReviews/GENDERROLES.cfm",
     "bernhardthamlet-2018::https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=10529",
     "travesties-2018::https://www.washingtonpost.com/entertainment/theater_dance/denzel-washingtons-big-star-turn-leads-a-strong-iceman-cast-on-broadway/2018/04/26/85531724-494f-11e8-ad53-d5751c8f243f_story.html?noredirect=on&utm_term=.78d8afb6da98",
     "angels-in-america-2018::https://www.theaterinthenow.com/2018/04/review-series-of-triumphs-and-choices.html",
@@ -55,7 +53,6 @@
     "les-miserables-2014::https://www.stagezine.com/les-miz-returns-amplified-aiming-to-please/",
     "beautiful-the-carole-king-musical-2014::http://www.huffingtonpost.com/danny-groner/ibeautifuli-lives-up-to-i_b_4584984.html",
     "annie-2012::https://www.washingtonpost.com/entertainment/theater_dance/review-bullying-and-climate-change-entwine-in-clever-if-there-is-i-havent-found-it-yet/2012/09/20/154bd592-0387-11e2-9132-f2750cd65f97_story.html",
-    "wit-2012::https://www.ft.com/cms/s/2/6b0f0b8a-4851-11e1-941c-00144feabdc0.html#axzz1kdBKKSeK",
     "on-a-clear-day-you-can-see-forever-2011::https://articles.philly.com/2011-12-11/news/30504756_1_psychiatrist-melinda-broadway-review",
     "the-mountaintop-2011::https://yonkerstribune.typepad.com/yonkers_tribune/2011/10/eye-on-theatre-actors-in-command-by-john-simon.html",
     "man-and-boy-2011::https://yonkerstribune.typepad.com/yonkers_tribune/2011/10/eye-on-theatre-actors-in-command-by-john-simon.html",
@@ -201,7 +198,6 @@
     "venus-off-broadway-2017::https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7124",
     "marry-harry-off-broadway-2017::https://www.wolfentertainmentguide.com/viewpage.aspx?record=7113&cat=theater",
     "ring-twice-for-miranda-off-broadway-2017::https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7042",
-    "hadestown-off-broadway-2016::https://broadwayandme.blogspot.com/2016/06/is-helluva-fine-destination.html",
     "invisible-thread-off-broadway-2015::http://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/",
     "cloud-nine-off-broadway-2015::http://letstalkoffbroadway.com/2015/09/churchill-macdonald-atlantic.html",
     "steve-off-broadway-2015::https://www.asherworldturns.com/winter-2015-16-nyc-theater-guide/",
@@ -294,33 +290,11 @@
       ]
     },
     {
-      "showId": "kiss-me-kate-2019",
-      "title": "Kiss Me, Kate",
-      "openingDate": "2019-03-14",
-      "message": "Review URL for theater-news-online/Jeremy Gerard does not mention show slug (checked: kiss-me-kate-2019, kiss-me-kate, kiss, kate, kisskate, kissmekate): http://www.theaternewsonline.com/NYTheaterReviews/TAP-HAPPY.cfm",
-      "violations": [
-        {
-          "outletId": "theater-news-online",
-          "criticName": "Jeremy Gerard",
-          "url": "http://www.theaternewsonline.com/NYTheaterReviews/TAP-HAPPY.cfm",
-          "urlSlug": "ny theater reviews tap-happy",
-          "namesOtherShow": null
-        }
-      ]
-    },
-    {
       "showId": "bernhardthamlet-2018",
       "title": "Bernhardt/Hamlet",
       "openingDate": "2018-09-25",
-      "message": "Review URL for theater-news-online/Joe Dziemianowicz does not mention show slug (checked: bernhardthamlet-2018, bernhardthamlet, bernhardt-hamlet, bernhardt, hamlet): https://theaternewsonline.com/NYTheaterReviews/GENDERROLES.cfm\nReview URL for wolf-entertainment-guide/William Wolf does not mention show slug (checked: bernhardthamlet-2018, bernhardthamlet, bernhardt-hamlet, bernhardt, hamlet): https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=10529",
+      "message": "Review URL for wolf-entertainment-guide/William Wolf does not mention show slug (checked: bernhardthamlet-2018, bernhardthamlet, bernhardt-hamlet, bernhardt, hamlet): https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=10529",
       "violations": [
-        {
-          "outletId": "theater-news-online",
-          "criticName": "Joe Dziemianowicz",
-          "url": "https://theaternewsonline.com/NYTheaterReviews/GENDERROLES.cfm",
-          "urlSlug": "ny theater reviews genderroles",
-          "namesOtherShow": null
-        },
         {
           "outletId": "wolf-entertainment-guide",
           "criticName": "William Wolf",
@@ -765,21 +739,6 @@
           "criticName": "Jennifer Farrar",
           "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-bullying-and-climate-change-entwine-in-clever-if-there-is-i-havent-found-it-yet/2012/09/20/154bd592-0387-11e2-9132-f2750cd65f97_story.html",
           "urlSlug": "entertainment theater_dance review-bullying-and-climate-change-entwine-in-clever-if-there-is-i-havent-found-it-yet 2012 09 20  _story",
-          "namesOtherShow": null
-        }
-      ]
-    },
-    {
-      "showId": "wit-2012",
-      "title": "Wit",
-      "openingDate": "2012-01-26",
-      "message": "Review URL for financialtimes/Brendan Lemon does not mention show slug (checked: wit-2012, wit): https://www.ft.com/cms/s/2/6b0f0b8a-4851-11e1-941c-00144feabdc0.html#axzz1kdBKKSeK",
-      "violations": [
-        {
-          "outletId": "financialtimes",
-          "criticName": "Brendan Lemon",
-          "url": "https://www.ft.com/cms/s/2/6b0f0b8a-4851-11e1-941c-00144feabdc0.html#axzz1kdBKKSeK",
-          "urlSlug": "cms s 2  ",
           "namesOtherShow": null
         }
       ]
@@ -2795,21 +2754,6 @@
           "criticName": "William Wolf",
           "url": "https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7042",
           "urlSlug": "viewpage",
-          "namesOtherShow": null
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-off-broadway-2016",
-      "title": "Hadestown",
-      "openingDate": "2016-05-23",
-      "message": "Review URL for broadway-and-me/Janice C. Simpson does not mention show slug (checked: hadestown-off-broadway-2016, hadestown, hadestown-off-broadway): https://broadwayandme.blogspot.com/2016/06/is-helluva-fine-destination.html",
-      "violations": [
-        {
-          "outletId": "broadway-and-me",
-          "criticName": "Janice C. Simpson",
-          "url": "https://broadwayandme.blogspot.com/2016/06/is-helluva-fine-destination.html",
-          "urlSlug": "2016 06 is-helluva-fine-destination",
           "namesOtherShow": null
         }
       ]

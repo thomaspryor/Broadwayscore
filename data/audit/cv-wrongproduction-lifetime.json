@@ -1,19 +1,21 @@
 {
-  "updatedAt": "2026-11-24T12:58:37.341Z",
-  "scanned": 4957,
-  "showsWithViolations": 125,
-  "totalViolations": 155,
-  "newSinceLastRun": 0,
+  "updatedAt": "2026-11-25T11:59:53.327Z",
+  "scanned": 4967,
+  "showsWithViolations": 126,
+  "totalViolations": 156,
+  "newSinceLastRun": 1,
   "handled": {
     "not-shipped": 67,
-    "temporal-override-low-confidence": 980,
+    "temporal-override-low-confidence": 981,
     "duplicate-not-shipped": 55,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 12,
     "self-healed": 75,
-    "prior-run-or-tour-leg": 48
+    "prior-run-or-tour-leg": 47
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "high-school-musical-off-west-end-2026::aviewfromrowjay--jay.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "the-hills-of-california-2024::broadway-and-me--janice-c-simpson.json",
@@ -85,6 +87,7 @@
     "celebrity-autobiography-2026::cititour--brian-scott-lipton.json",
     "turandot-off-broadway-2025::new-york-classical-review--george-grella.json",
     "heathers-the-musical-off-west-end-2026::voice-magazine--sam-nead.json",
+    "high-school-musical-off-west-end-2026::aviewfromrowjay--jay.json",
     "the-smile-of-her-off-west-end-2026::jonathan-baz--florit-shoihetruns.json",
     "rent-west-end-2026::readaboutstuff--dan-english.json",
     "lets-love-off-broadway-2026::thewrap--robert-hofler.json",
@@ -863,7 +866,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of genuine quality, but it reviews the Chichester Festival Theatre's 2019 production of Shadowlands in  — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre's 2019 production of Shadowlands, which is transferring to the Aldwy — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -872,10 +875,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a review of genuine quality, but it reviews the Chichester Festival Theatre's 2019 production of Shadowlands in ",
+          "cvReasoning": "This is a review of the Chichester Festival Theatre's 2019 production of Shadowlands, which is transferring to the Aldwy",
           "cvIssues": [
-            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End production opening 2026-02-12",
-            "Opening sentence explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — the critic is reviewing the transferred Chichester production"
+            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End run opening 2026-02-12",
+            "Opening sentence explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — critic is reviewing the transferred Chichester production"
           ]
         }
       ]
@@ -1516,6 +1519,27 @@
           "cvIssues": [
             "Opening date mismatch: review states 'opened at the new The Arts at Marble Arch theatre...on July 9th' but expected opening date is 2026-07-14",
             "Review describes a UK and Ireland touring production ('The new UK and Ireland tour of the cult favourite'), not a fixed Off-West End run"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "title": "High School Musical",
+      "openingDate": "2026-10-12",
+      "message": "aviewfromrowjay/Jay (aviewfromrowjay--jay.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 37d of opening, likely correct production] This is a valid review of High School Musical (not a — https://www.aviewfromrowjay.com/p/review-high-school-musical",
+      "violations": [
+        {
+          "filename": "aviewfromrowjay--jay.json",
+          "url": "https://www.aviewfromrowjay.com/p/review-high-school-musical",
+          "outletId": "aviewfromrowjay",
+          "criticName": "Jay",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 37d of opening, likely correct production] This is a valid review of High School Musical (not a",
+          "cvIssues": [
+            "Review does not name the venue where the performance was seen",
+            "No confirmation this review is of the Troubadour Wembley Park Theatre production"
           ]
         }
       ]
