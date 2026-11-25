@@ -29,6 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const { cellKey } = require('./expected-critics');
+const { toDateMs } = require('./date-utils');
 
 const STATE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'expected-critics-recovery.json');
 const DAY_MS = 86400000;
@@ -281,7 +282,7 @@ function isNotThisProduction(data, { show = null, filePath, openedMs = null } = 
   if (show && g.isIncludableForRebuild(data, show, filePath)) return false;
   if (isRuledNonReview(data)) return true;
   if (!(data.wrongProduction || data.wrongShow)) return false;
-  const t = data.publishDate ? Date.parse(data.publishDate) : NaN;
+  const t = toDateMs(data.publishDate); // ordinal-safe ("June 13th, 2017")
   return Number.isFinite(t) && openedMs != null && t < openedMs - PREDATES_OPENING_MS;
 }
 
@@ -336,7 +337,7 @@ function reclassifyFileFinds(state, filesForShow, nowMs, { showById = () => null
         const files = filesForShow(owned[1]);
         if (!files) return a;
         const f = files.find((x) => sameUrl(x.url, a.url));
-        const t = f && f.publishDate ? Date.parse(f.publishDate) : NaN;
+        const t = f ? toDateMs(f.publishDate) : NaN;
         if (Number.isFinite(t) && t < opened - EARLIER_PRODUCTION_MS) return relabel('no_evidence', 'url-owned-by-earlier-production');
       }
       return a;
