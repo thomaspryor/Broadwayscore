@@ -1777,6 +1777,17 @@ function extractPublishDate(html, url, { strictMetadata = false } = {}) {
     if (bd) return bd;
   }
 
+  // 7. BRO-8321: The Arts Desk (Drupal rebuild) has no meta, JSON-LD or <time>; the date is
+  // printed once, inside <div class='author_date'>...<span class='created'>Wednesday, 25 November 2026</span>.
+  // Without it every Arts Desk review lands undated, and the date guards (which key on
+  // publishDate) cannot tell a 2022 review of an annual show from this year's.
+  const adBlocks = [...html.matchAll(/<div[^>]+class=["']author_date["'][^>]*>([\s\S]{0,600}?)<\/div>/gi)];
+  if (adBlocks.length === 1) {
+    const created = (adBlocks[0][1].match(/<span[^>]+class=["']created["'][^>]*>([^<]+)</i) || [])[1];
+    const ad = normalizeDate(created && created.replace(/^[A-Za-z]+,\s*/, '').trim(), url);
+    if (ad) return ad;
+  }
+
   return null;
 }
 

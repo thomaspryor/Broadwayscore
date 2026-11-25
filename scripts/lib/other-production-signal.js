@@ -214,6 +214,14 @@ function otherProductionSignal(review, show, opts = {}) {
       return { signal: 'url-year', detail: `url path year ${y} predates production start ${startYear}` };
     }
 
+    // 3b. season label (BRO-8321): Stagedoor lists each past season of an annual show under its own
+    // outlet name ("Time Out (2022)", outletId time-out-2022). A label year before this production
+    // began names an earlier season; no stored date is needed to see it.
+    const labelYear = Number((String(review.outlet || '').match(/\(((?:19|20)\d{2})\)\s*$/) || String(review.outletId || '').match(/-((?:19|20)\d{2})$/) || [])[1]);
+    if (want('outlet-season-label') && labelYear && labelYear < limit && !priorRunCoversYear(show, labelYear)) {
+      return { signal: 'outlet-season-label', detail: `outlet label year ${labelYear} predates production start ${startYear}` };
+    }
+
     // 4. stored publishDate well before the production started.
     if (want('date-before-production') && !opts.skipDate && review.publishDate) {
       const pd = require('./date-utils').toDateMs(review.publishDate);
@@ -251,7 +259,7 @@ function londonAggregatorCandidates(shows) {
 // or from an outlet that may legitimately cover both cities. Safe to act on at
 // ingest, before anything is written (measured 2026-09-29 over 21,054
 // included reviews: every remaining hit was a real other-production review).
-const URL_SIGNALS = Object.freeze(['url-edition-market', 'url-year', 'rival-title']);
+const URL_SIGNALS = Object.freeze(['url-edition-market', 'url-year', 'rival-title', 'outlet-season-label']);
 
 // Ingest gate (BRO-8266): URL signals plus a stored publishDate that is years, not
 // weeks, before the production. A timeout.com URL has no year and the aggregator date

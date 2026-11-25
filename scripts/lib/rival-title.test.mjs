@@ -60,3 +60,14 @@ test('matcher: findMatchingShows drops the show when only the rival names it', (
   assert.deepEqual(helpers.findMatchingShows('A Christmas Carol Goes Wrong, Grand Theatre Wolverhampton', 'a-christmas-carol-goes-wrong-grand-theatre-wolverhampton', pool, '', { rivalIndex: index }), []);
   assert.deepEqual(helpers.findMatchingShows('A Christmas Carol at the Old Vic', 'a-christmas-carol-old-vic', pool, '', { rivalIndex: index }).map((s) => s.id), [carol.id]);
 });
+
+test('season label: an outlet labelled with an earlier year is another season of the annual show', () => {
+  const sig = (r, show = carol) => op.otherProductionSignal(r, show, { only: op.URL_SIGNALS, rivalIndex: index });
+  assert.equal(sig({ outlet: 'Time Out (2022)', outletId: 'time-out-2022' })?.signal, 'outlet-season-label');
+  assert.equal(sig({ outlet: 'West End Best Friend (2024)', outletId: 'west-end-best-friend' })?.signal, 'outlet-season-label');
+  assert.equal(sig({ outletId: 'london-theatre-2022' })?.signal, 'outlet-season-label');
+  assert.equal(sig({ outlet: 'Time Out (2026)', outletId: 'time-out-2026' }), null);
+  assert.equal(sig({ outlet: 'Time Out', outletId: 'time-out' }), null);
+  // a declared prior run covering that year keeps its reviews
+  assert.equal(sig({ outlet: 'Time Out (2022)', outletId: 'time-out-2022' }, { ...carol, priorRuns: [{ openingDate: '2022-11-01', closingDate: '2023-01-14' }] }), null);
+});
