@@ -50167,7 +50167,7 @@
       "resolveReason": "drain healthy on the latest sweep"
     },
     "pending-drain-zero-promote": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "_pending drain resolved nothing for 4 sweeps in a row",
       "firstSeen": "2026-11-24T15:27:11.030Z",
@@ -50178,7 +50178,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-25T15:08:36.701Z",
+      "resolveReason": "drain healthy on the latest sweep"
     },
     "land:land/bro-6867-bb-spend": {
       "status": "resolved",
