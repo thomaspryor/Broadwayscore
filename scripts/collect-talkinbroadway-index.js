@@ -178,6 +178,18 @@ async function main() {
       }
     }
 
+    // 1b. BRO-8209 follow-up: two shows holding one dated page is resolved from this same index read
+    // (no extra session). --dry-run reports only.
+    if (!onlyUrl) {
+      const { loadTbReviewFiles, planTbDatedCollisionRepairs, applyTbDatedCollisionRepairs } = require('./lib/tb-dated-collision');
+      const plan = planTbDatedCollisionRepairs(entries, loadTbReviewFiles(reviewTextsDir), shows);
+      const fixed = dryRun ? [] : applyTbDatedCollisionRepairs(reviewTextsDir, plan.repairs);
+      console.log(`TB-COLLISIONS: ${plan.repairs.length} repairable, ${fixed.filter((r) => r.ok).length} fixed, ${plan.unresolved.length} unresolved${dryRun ? ' (dry run)' : ''}`);
+      for (const r of plan.repairs) console.log(`  ${dryRun ? 'WOULD FIX' : (fixed.find((x) => x.file === r.file && x.showId === r.showId) || {}).ok ? 'FIXED' : 'FAILED'} ${r.showId}/${r.file}: ${r.from} -> ${r.to} (${r.evidence})`);
+      for (const f of fixed.filter((x) => !x.ok)) console.log(`  FAILED ${f.showId}/${f.file}: ${f.msg}`);
+      for (const u of plan.unresolved) console.log(`  UNRESOLVED ${u.url} [${u.showIds.join(', ')}]: ${u.why}`);
+    }
+
     // 2. What are we missing?
     let { toFetch, skipped } = planCollection(entries, shows, held, { now: new Date(), windowDays });
     if (onlyUrl) {
