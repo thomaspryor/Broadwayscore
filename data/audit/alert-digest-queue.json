@@ -623,21 +623,6 @@
     "queuedAt": "2026-11-24T19:15:48.377Z"
   },
   {
-    "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
-    "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n1 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: 'Ben Kulvichit',\n+     outletId: 'thestage',\n+     showId: 'the-little-mermaid-bristol-old-vic-regional-2025'\n+   }\n+ ]\n- []\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "testId": "tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
-    "fields": [],
-    "queuedAt": "2026-11-24T20:46:58.005Z"
-  },
-  {
     "conditionKey": "land:land/bj-mincemeat-plan",
     "title": "Landing blocked: unit-tests-node red on land/bj-mincemeat-plan",
     "description": "land.yml did not land land/bj-mincemeat-plan: the unit-tests-node gate went red at 748f381848. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45474945680",
@@ -1382,30 +1367,18 @@
     "queuedAt": "2026-11-25T07:23:16.025Z"
   },
   {
-    "conditionKey": "land-preexisting:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does#54f27d9304",
-    "title": "Test red on main: the same week in the Broadway edition does not get the West End exception [testCodeFailure]",
-    "description": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/job/linear-BRO-8292-mwvoorhp. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45566155961",
-    "severity": "warning",
+    "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
+    "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n1 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: 'David Sheward',\n+     outletId: 'theater-life',\n+     showId: 'meteor-shower-2017'\n+   }\n+ ]\n- []\n",
+    "severity": "error",
     "url": null,
     "decision": false,
     "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "test",
-        "value": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception [testCodeFailure]"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45566155961"
-      }
-    ],
-    "queuedAt": "2026-11-25T07:30:10.305Z"
+    "testId": "tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
+    "fields": [],
+    "queuedAt": "2026-11-25T07:35:33.536Z"
   }
 ]

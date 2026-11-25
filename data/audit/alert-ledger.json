@@ -22789,22 +22789,20 @@
       "resolvedAt": "2026-10-20T22:22:57.440Z"
     },
     "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
-      "incidentOpenedAt": "2026-11-24T20:46:58.005Z",
+      "incidentOpenedAt": "2026-11-25T07:35:33.536Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-24T20:46:58.005Z",
-      "lastNotifiedAt": "2026-11-24T20:46:58.005Z",
-      "lastSurfacedAt": "2026-11-24T20:46:58.005Z",
-      "notifyCount": 18,
+      "lastSeen": "2026-11-25T07:35:33.536Z",
+      "lastNotifiedAt": "2026-11-25T07:35:33.536Z",
+      "lastSurfacedAt": "2026-11-25T07:35:33.536Z",
+      "notifyCount": 19,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 13,
-      "sweptTracker": "BRO-7012",
-      "resolvedAt": "2026-11-24T21:17:06.102Z",
-      "resolveReason": "live-data test green"
+      "sweptTracker": "BRO-7012"
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "resolved",
@@ -38048,13 +38046,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-25T05:13:16.391Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:46:33.088Z",
+      "lastSeen": "2026-11-25T07:35:33.491Z",
       "lastNotifiedAt": "2026-11-25T05:13:16.391Z",
       "lastSurfacedAt": "2026-11-25T05:13:16.391Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -42407,12 +42405,13 @@
       "firstSeen": "2026-11-11T15:05:44.026Z",
       "incidentOpenedAt": "2026-11-25T05:46:33.104Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:46:33.104Z",
+      "lastSeen": "2026-11-25T07:35:33.506Z",
       "lastNotifiedAt": "2026-11-25T05:46:33.104Z",
       "lastSurfacedAt": "2026-11-25T05:46:33.104Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-7373-cost": {
       "status": "open",
@@ -46812,13 +46811,13 @@
       "firstSeen": "2026-11-20T13:18:47.633Z",
       "incidentOpenedAt": "2026-11-20T13:18:47.633Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:46:32.755Z",
+      "lastSeen": "2026-11-25T07:35:33.145Z",
       "lastNotifiedAt": "2026-11-25T03:46:50.381Z",
       "lastSurfacedAt": "2026-11-23T02:00:01.244Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-8101",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::live history (when data/reviews.json is present): every on-time outlet has a source or a gap": {
       "status": "resolved",
@@ -48136,13 +48135,13 @@
       "firstSeen": "2026-11-22T01:44:47.666Z",
       "incidentOpenedAt": "2026-11-24T19:15:48.377Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:46:33.122Z",
+      "lastSeen": "2026-11-25T07:35:33.521Z",
       "lastNotifiedAt": "2026-11-24T19:15:48.377Z",
       "lastSurfacedAt": "2026-11-24T19:15:48.377Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "land:land/bro-7101-arm-gates": {
       "status": "resolved",
@@ -49185,13 +49184,13 @@
       "firstSeen": "2026-11-23T14:53:31.566Z",
       "incidentOpenedAt": "2026-11-23T14:53:31.566Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:46:33.137Z",
+      "lastSeen": "2026-11-25T07:35:33.551Z",
       "lastNotifiedAt": "2026-11-24T15:14:59.748Z",
       "lastSurfacedAt": "2026-11-24T15:14:59.748Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "land:land/bro-8150-fn-size-guard": {
       "status": "resolved",
@@ -49534,13 +49533,13 @@
       "firstSeen": "2026-11-23T18:37:33.367Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.367Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:46:32.724Z",
+      "lastSeen": "2026-11-25T07:35:33.114Z",
       "lastNotifiedAt": "2026-11-24T19:15:47.999Z",
       "lastSurfacedAt": "2026-11-24T19:15:47.999Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "live-data-test:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd": {
       "status": "open",
@@ -49549,13 +49548,13 @@
       "firstSeen": "2026-11-23T18:37:33.463Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.463Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:46:32.740Z",
+      "lastSeen": "2026-11-25T07:35:33.130Z",
       "lastNotifiedAt": "2026-11-24T19:15:48.027Z",
       "lastSurfacedAt": "2026-11-24T19:15:48.027Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "land:land/bro-8163-score-gate": {
       "status": "open",
@@ -50043,13 +50042,13 @@
       "firstSeen": "2026-11-24T07:48:45.483Z",
       "incidentOpenedAt": "2026-11-24T07:48:45.483Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:46:32.706Z",
+      "lastSeen": "2026-11-25T07:35:33.096Z",
       "lastNotifiedAt": "2026-11-24T07:48:45.483Z",
       "lastSurfacedAt": "2026-11-24T07:48:45.483Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 15
+      "silentRefires": 16
     },
     "opening-night-remediation-exhausted-t1-missing:the-afronauts-west-end-2026": {
       "status": "open",
