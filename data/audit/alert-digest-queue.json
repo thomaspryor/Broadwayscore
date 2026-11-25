@@ -915,5 +915,36 @@
       }
     ],
     "queuedAt": "2026-11-25T01:59:31.060Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8283-tb-collisions",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8283-tb-collisions",
+    "description": "land.yml did not land land/bro-8283-tb-collisions: the scripts-lib-tests gate went red at 878cf94a29. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45525989317",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8283-tb-collisions"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "878cf94a29bf63a3980a1f7540acd40c68c48c03"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45525989317"
+      }
+    ],
+    "queuedAt": "2026-11-25T02:04:43.185Z"
   }
 ]
