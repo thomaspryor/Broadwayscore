@@ -231,13 +231,39 @@ function verifyTbIndexPage(content, { show, isRevival }) {
   return v.ok ? { ...v, indexShowTitle } : v;
 }
 
-async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = false, logger = console, budgetMs, now = Date.now }) {
+// BRO-8148: off-Broadway TB reviews are filed by review date (/page/ob/M_D_YY[a-c].html), not
+// by title, so the opening-night poller can construct them from show.openingDate. Before this
+// the poller skipped TB entirely for off-Broadway and waited on Google News, which first
+// surfaced Fantasma's review (press night 2026-11-22) at 11:47pm, 13 minutes before the grade
+// mark, too late to publish. Order follows reviews.json (303 OB rows, 2026-11-24): same day
+// 227, next day 14, day before 5. Same-day suffixes come first; a/b/c is a second, third or
+// fourth review that day. The day-after page is only tried for the plain name.
+function buildTbObOpeningCandidates(openingDate) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(openingDate || ''));
+  if (!m) return [];
+  const base = Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  const day = (offset) => {
+    const d = new Date(base + offset * 86400000);
+    return { y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate() };
+  };
+  const sameDay = buildTbObCandidateUrls(day(0));
+  const plainOnly = (urls) => urls.filter(u => /_\d{2}\.html$/.test(u));
+  return [...new Set([...sameDay, ...plainOnly(buildTbObCandidateUrls(day(1))), ...plainOnly(buildTbObCandidateUrls(day(-1)))])];
+}
+
+async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = false, offBroadway = false, logger = console, budgetMs, now = Date.now }) {
   if (!show || !show.title) return { found: false, reason: 'no show title' };
+  if (offBroadway && !overrideUrl && !buildTbObOpeningCandidates(show.openingDate).length) {
+    return { found: false, reason: 'no opening date to build Off-Broadway TB urls from' };
+  }
   const candidates = overrideUrl
     ? [overrideUrl]
-    : buildTbCandidateUrls(show.title, year);
+    : (offBroadway ? buildTbObOpeningCandidates(show.openingDate) : buildTbCandidateUrls(show.title, year));
   const indexUrl = `${TB_HOST}/page/world/index.html`;
-  const urls = overrideUrl ? candidates : [...candidates, indexUrl];
+  // No index fallback off-Broadway: the OB front page only shows the newest review, so a stored
+  // index url goes stale the next day (BRO-4437). The dated candidates cover it instead.
+  const useIndex = !overrideUrl && !offBroadway;
+  const urls = useIndex ? [...candidates, indexUrl] : candidates;
 
   // BRO-6589: every candidate is a ~60 s paid unlocker fetch behind Cloudflare, and before
   // the review publishes all of them miss on every poll pass. Fetching up to TB_PARALLEL at
@@ -286,7 +312,7 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
     logger.log(`    rejected (${candidates[i]}): ${v.reason}`);
   }
 
-  if (!overrideUrl) {
+  if (useIndex) {
     const r = answered[candidates.length];
     if (r !== 'budget' && r.err) logger.log(`    index fetch error: ${r.err.message}`);
     else if (r !== 'budget' && r.page) {
@@ -308,7 +334,7 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
     logger.log(`  Talkin' Broadway: time budget exhausted with ${timedOut}/${urls.length} fetch(es) never started — stopping so the poll cycle can finish`);
     return { found: false, reason: `time budget exhausted with ${timedOut} of ${urls.length} fetches never started` };
   }
-  return { found: false, reason: `all ${candidates.length} candidates${overrideUrl ? '' : ' + index fallback'} failed verification` };
+  return { found: false, reason: `all ${candidates.length} candidates${useIndex ? ' + index fallback' : ''} failed verification` };
 }
 
 // Off-Broadway TB reviews live at /page/ob/MM_DD_YY.html (optional b/c suffix for a second
@@ -383,6 +409,7 @@ module.exports = {
   isTbObIndexUrl,
   extractTbReviewDate,
   buildTbObCandidateUrls,
+  buildTbObOpeningCandidates,
   resolveTbObIndexUrl,
   _internal: { toCamelSlug, toLowerSlug, extractTitle, hasBylineSignal, hasStarRatingSignal, extractPublishDateCandidate, withinDateWindow, tbBudgetMs, DEFAULT_TB_BUDGET_MS },
 };
