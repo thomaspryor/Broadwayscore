@@ -138,6 +138,7 @@ async function firstUnpaused(queue, nowMs, historySkipped, breakerSkip = () => f
       if (!pre) fetches++;
       const full = pre ? null : await getIssue(queue[i].issue.identifier);
       const nodes = pre || (full && full.comments ? full.comments.nodes : []);
+      if (!pre && !queue[i].issue.comments) queue[i].issue.comments = { nodes }; // BRO-7639: pickJson reads uiHold from these
       // Both reads cap at 50 comments; past that the latest report may be cut off.
       if (nodes.length >= 50) console.error(`[cloud-worker-pick] ${queue[i].issue.identifier}: 50+ comments, pause history may be incomplete`);
       reason = historySkipReason(queue[i].issue, nodes, nowMs, { cloudLane: !process.argv.includes('--codex') });
@@ -368,6 +369,8 @@ function pickJson(chosen, nowMs, verifyCommand, isStartNow, modelOf) {
   if (!chosen) return null;
   const { issue: pick, resume, tier } = chosen;
   const { model, reason: modelReason } = modelOf(pick);
+  // BRO-7639: Codex's change was held for visual approval; start from its ref (docs/cloud-routines/board-workers.md step 2.1).
+  const uiHold = require('./lib/codex-ui-hold.js').uiHoldFromComments(pick.comments && pick.comments.nodes);
   return {
     identifier: pick.identifier,
     title: pick.title,
@@ -380,6 +383,7 @@ function pickJson(chosen, nowMs, verifyCommand, isStartNow, modelOf) {
     verify: verifyCommand(pick),
     // START-NOW is not applied to the P2/P3 tiers (the lib's skipReason), so never report it there.
     startNow: tier === require('./lib/cloud-worker-pick.js').TIER_P0P1 && isStartNow(pick, nowMs),
+    ...(uiHold && { uiHold }),
     ...(resume && {
       resume: {
         landRef: resume.ref,

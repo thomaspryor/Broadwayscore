@@ -61,6 +61,7 @@ import venueInfoData from '../../data/venue-info.json';
 // Access facts, seat-view links and Broadway official websites (BRO-8112): only what two models
 // agreed on AND quoted from the venue's own page (scripts/research-venue-access.js).
 import venueAccessData from '../../data/venue-access.json';
+import { accessibilityFor, sourcedAccessTips } from '../../scripts/lib/venue-access-display';
 import { getTheaterAddress } from '../../scripts/lib/venue-addresses';
 import { displaysCriticScore } from './critic-score-display';
 import { getShowYear } from './date-utils';
@@ -81,27 +82,6 @@ type VenueAccessEntry = {
   seatLinks?: { seatplan?: string; aviewfrommyseat?: string };
 };
 const VENUE_ACCESS = (venueAccessData as unknown as { venues: Record<string, VenueAccessEntry> }).venues;
-const ACCESS_FLAGS: AccessFlag[] = ['wheelchair', 'stepFree', 'elevator', 'hearingLoop', 'assistiveListening'];
-
-/** Access facts from the venue's own page, in the shape the access badges read; undefined when none. */
-function accessibilityFor(entry: VenueAccessEntry | undefined): TheaterAccessibility | undefined {
-  const a = entry?.access;
-  if (!a || !ACCESS_FLAGS.some(f => typeof a[f] === 'boolean')) return undefined;
-  const denied = ACCESS_FLAGS.filter(f => a[f] === false);
-  return {
-    wheelchair: a.wheelchair === true,
-    stepFree: a.stepFree === true,
-    elevator: a.elevator === true,
-    hearingLoop: a.hearingLoop === true,
-    assistiveListening: a.assistiveListening === true,
-    verified: true,
-    ...(a.note ? { notes: a.note } : {}),
-    ...(denied.length ? { denied } : {}),
-    ...(a.sourceUrl ? { sourceUrl: a.sourceUrl } : {}),
-    ...(a.verifiedAt ? { checkedAt: a.verifiedAt } : {}),
-  };
-}
-
 /** Verified address for an Off-Broadway / London show's venue page, if one exists (BRO-8088). */
 const US_ZIP = /\b\d{5}(-\d{4})?\b/;
 const UK_POSTCODE = /\b[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}\b/i;
@@ -971,6 +951,7 @@ export function getAllTheaters(): Theater[] {
     .map(([name, data]) => {
       const currentShow = data.shows.find(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
       const theaterMeta = meta[name];
+      const accessibility = accessibilityFor(VENUE_ACCESS[`broadway/${slugify(name)}`], theaterMeta?.accessibility);
 
       // Compute overall venue score from individual dimensions
       const rawScores = theaterMeta?.venueScores;
@@ -995,10 +976,10 @@ export function getAllTheaters(): Theater[] {
         operator: theaterMeta?.operator,
         formerNames: theaterMeta?.formerNames,
         tips: theaterMeta?.tips,
-        structuredTips: theaterMeta?.structuredTips,
+        structuredTips: sourcedAccessTips(theaterMeta?.structuredTips, accessibility),
         images: theaterMeta?.images,
         venueScores,
-        accessibility: theaterMeta?.accessibility,
+        accessibility,
         externalLinks: theaterMeta?.externalLinks,
         currentShow,
         allShows: data.shows.sort((a, b) => {

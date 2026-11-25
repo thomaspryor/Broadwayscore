@@ -3649,6 +3649,9 @@ on:
       - 'scripts/cloud-visual-qa.mjs'
       - 'scripts/land-ready.mjs'
       - 'scripts/visual-qa.mjs'
+      # BRO-7639: codex UI-hold handoff + hold-ref sweeper
+      - 'scripts/cloud-worker-pick.js'
+      - 'scripts/prune-stale-land-refs.js'
   pull_request:
     branches: [main]
   schedule:

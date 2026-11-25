@@ -261,3 +261,55 @@ test('both prompts carry the rule-21 learning step', () => {
   assert.match(chk, /class guard/);
   assert.match(chk, /SHIP-WITH-FIXES/);
 });
+
+// BRO-7639: a held UI change is handed to the Claude worker (marker -> pick.uiHold) and its ref is swept.
+const uiHoldLib = require('../../scripts/lib/codex-ui-hold.js');
+
+test('a UI-held card gets the CODEX-UI-HOLD hand-off line that the worker picker reads back', () => {
+  const ref = uiHoldLib.uiHoldRef('BRO-123');
+  assert.equal(ref, 'codex-ui-hold/bro-123');
+  const why = runnerLib.uiApprovalBlock(['src/components/BrowseListClient.tsx'], { holdRef: ref }).note;
+  const body = runnerLib.bounceTodoNote({ bounceClass: runnerLib.classifyBounce({ uiApproval: true }), holdRef: ref, why, summary: 'findings' });
+  // Still a Codex bounce of class ui-approval, so Codex does not take it again.
+  assert.ok(runnerLib.isCodexBounce(body));
+  assert.equal(runnerLib.bounceClassOf(body), 'ui-approval');
+  const nowIso = '2026-11-25T12:00:00Z';
+  const hold = uiHoldLib.uiHoldFromComments([{ body: 'unrelated comment', createdAt: nowIso }, { body, createdAt: nowIso }]);
+  assert.equal(hold.ref, ref);
+  assert.match(hold.instructions, /git fetch origin codex-ui-hold\/bro-123/);
+  assert.match(hold.instructions, /\/visual-qa/);
+  assert.match(hold.instructions, /visual-approval\.js request/);
+  // No ref pushed (or not a UI hold): no marker, so the picker reports no uiHold.
+  const plain = runnerLib.bounceTodoNote({ bounceClass: 'codex-miss', holdRef: null, why: 'x', summary: 'y' });
+  assert.equal(uiHoldLib.uiHoldFromComments([{ body: plain, createdAt: nowIso }]), null);
+  assert.equal(uiHoldLib.uiHoldFromComments(undefined), null);
+  // A pre-marker note names the ref only in prose (the BRO-7636 wording): still found.
+  assert.equal(uiHoldLib.uiHoldFromComments([{ body: "Codex's commit is on the ref codex-ui-hold/bro-7560 (git fetch origin codex-ui-hold/bro-7560).", createdAt: nowIso }]).ref, 'codex-ui-hold/bro-7560');
+  // The runner writes this note on the Todo bounce and the picker prints the marker.
+  assert.match(runnerSrc, /R\.bounceTodoNote\(\{ bounceClass, holdRef: uiHeldRef/);
+  assert.match(readFileSync(join(ROOT, 'scripts/cloud-worker-pick.js'), 'utf8'), /uiHoldFromComments\(pick\.comments/);
+  // --pr mode: the PR comment carries the same instruction.
+  assert.match(runnerLib.uiApprovalBlock(['src/app/globals.css'], { pr: true }).note, /gh pr checkout[\s\S]*visual-approval\.js request/);
+});
+
+test('stale or Done codex-ui-hold refs are swept, fresh and in-use ones are kept', () => {
+  const now = Date.parse('2026-11-25T12:00:00Z');
+  const daysAgo = (d) => new Date(now - d * 86400000).toISOString();
+  const decide = (p) => uiHoldLib.decideUiHoldRefPrune({ now, ...p });
+  assert.deepEqual(decide({ tipCommittedAt: daysAgo(3), cardStateType: 'completed' }), { prune: true, reason: 'ui-hold-card-done' });
+  assert.equal(decide({ tipCommittedAt: daysAgo(3), cardStateType: 'canceled' }).prune, true);
+  assert.equal(decide({ tipCommittedAt: daysAgo(uiHoldLib.UI_HOLD_MAX_AGE_DAYS + 1), cardStateType: 'unstarted' }).reason, 'ui-hold-stale');
+  assert.equal(decide({ tipCommittedAt: daysAgo(uiHoldLib.UI_HOLD_MAX_AGE_DAYS + 1), cardStateType: null, cardLookupFailed: true }).reason, 'card-unreadable');
+  assert.ok(require('../../scripts/lib/cloud-worker-pick.js').landRefCardNumber('land/bro-7639-x') === 7639);
+  assert.match(readFileSync(join(ROOT, 'scripts/prune-stale-land-refs.js'), 'utf8'), /replace\(\/\^codex-ui-hold/);
+  // Kept: fresh, card still open, a worker on it, or the date unreadable.
+  assert.equal(decide({ tipCommittedAt: daysAgo(0.2), cardStateType: 'completed' }).reason, 'too-young');
+  assert.equal(decide({ tipCommittedAt: daysAgo(5), cardStateType: 'unstarted' }).reason, 'ui-hold-recent');
+  assert.equal(decide({ tipCommittedAt: daysAgo(5), cardStateType: 'completed', cardLookupFailed: true }).reason, 'card-unreadable');
+  assert.equal(decide({ tipCommittedAt: daysAgo(uiHoldLib.UI_HOLD_MAX_AGE_DAYS + 1), cardStateType: 'started' }).reason, 'ui-hold-card-in-progress');
+  assert.equal(decide({ tipCommittedAt: null }).reason, 'tip-date-unreadable');
+  // The daily land-ref prune is the sweeper: it lists codex-ui-hold refs and decides them with this function.
+  const pruneSrc = readFileSync(join(ROOT, 'scripts/prune-stale-land-refs.js'), 'utf8');
+  assert.match(pruneSrc, /matching-refs\/heads\/\$\{UI_HOLD_PREFIX/);
+  assert.match(pruneSrc, /decideUiHoldRefPrune\(/);
+});

@@ -174,6 +174,7 @@ jobs:
           SERP_CENSUS_INGEST: ${{ vars.SERP_CENSUS_INGEST || '' }}
           # WE-only kill switch (leaves the Broadway audit untouched):
           WE_GAP_REFERENCE_DISABLED: ${{ vars.WE_GAP_REFERENCE_DISABLED || '' }}
+          TR_MISS_CACHE_DISABLED: ${{ vars.TR_MISS_CACHE_DISABLED || '' }}
           # SERP-census throttles (#872). Without these lines the knobs exist in
           # code but are unreachable from the cron that actually spends the
           # credits: SERP_CENSUS_NAIVE_PAGES trims the naive arm's depth
@@ -573,7 +574,7 @@ jobs:
           # ccTLD twin) and write them to data/outlet-registry.json, so only real
           # judgment calls reach the digest as cards. Advisory: never fails the step.
           OUTLET_DOMAIN_MOVE_AUTORESOLVE_DISABLED="${{ vars.OUTLET_DOMAIN_MOVE_AUTORESOLVE_DISABLED }}" node scripts/resolve-outlet-domain-moves.js --apply || echo "::warning::resolve-outlet-domain-moves failed (advisory)"
-          for f in data/outlet-registry.json data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/coverage-digest-snapshot.json data/audit/outlet-feed-reconcile.json data/audit/scraper-spend-ledger.jsonl data/audit/uncollected-live-reviews.json data/audit/outlet-ground-truth.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
+          for f in data/outlet-registry.json data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/coverage-digest-snapshot.json data/audit/outlet-feed-reconcile.json data/audit/scraper-spend-ledger.jsonl data/audit/bww-roundup-miss-ledger.jsonl data/audit/uncollected-live-reviews.json data/audit/outlet-ground-truth.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then

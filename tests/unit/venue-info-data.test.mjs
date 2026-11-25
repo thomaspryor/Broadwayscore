@@ -95,9 +95,9 @@ test('access facts exist for a meaningful set of venues (floor from the first ru
 
 test('every published access fact is backed by a verbatim, on-topic quote from the venue\'s own site', () => {
   for (const [key, v] of accessEntries) {
-    assert.match(key, /^(off-broadway|london)\/[a-z0-9-]+$/, `${key}: access is only for Off-Broadway/London pages`);
+    assert.match(key, /^(broadway|off-broadway|london)\/[a-z0-9-]+$/, `${key}: unknown access market`);
     assert.equal(v.access.verified, true, key);
-    const site = info.venues[key]?.fields?.website;
+    const site = key.startsWith('broadway/') ? v.website : info.venues[key]?.fields?.website;
     assert.ok(site, `${key}: access published for a venue with no verified official website`);
     assert.ok(v.access.sourceUrl && hostMatches(v.access.sourceUrl, site), `${key}: sourceUrl ${v.access.sourceUrl} is not on the venue's own site ${site}`);
     const flags = FLAGS.filter((f) => typeof v.access[f] === 'boolean');
@@ -186,4 +186,19 @@ test('venue-access.json: denials, partial claims and notes obey the strict rules
     if (a.note && !(a.evidence && a.evidence.note && a.evidence.note.url)) bad.push(`${key} note: no source page`);
   }
   assert.deepEqual(bad, []);
+});
+
+// BRO-8121: require the production adapter and pin its Broadway caller.
+test('Broadway reader never publishes unsourced legacy accessibility as verified', () => {
+  const { accessibilityFor, sourcedAccessTips } = require('../../scripts/lib/venue-access-display');
+  const core = fs.readFileSync(path.join(ROOT, 'src/lib/data-core.ts'), 'utf8');
+  assert.match(core, /accessibilityFor\(VENUE_ACCESS\[`broadway\/\$\{slugify\(name\)\}`\], theaterMeta\?\.accessibility\)/);
+  assert.match(core, /structuredTips: sourcedAccessTips\(theaterMeta\?\.structuredTips, accessibility\)/);
+  for (const [name, meta] of Object.entries(theaterMeta)) {
+    if (name === '_meta') continue;
+    const resolved = accessibilityFor(access.venues[`broadway/${slugifyName(name)}`], meta.accessibility);
+    if (resolved?.verified) assert.ok(resolved.sourceUrl, `${name}: verified access has no source`);
+    const tips = sourcedAccessTips(meta.structuredTips, resolved);
+    if (tips?.seating?.accessibility) assert.ok(resolved?.sourceUrl, `${name}: unsourced access survived in seating tips`);
+  }
 });

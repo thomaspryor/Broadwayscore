@@ -7,6 +7,9 @@
  *   node scripts/prune-stale-land-refs.js            dry run (default): report candidates
  *   node scripts/prune-stale-land-refs.js --apply    delete them (at most MAX_DELETES_PER_RUN)
  *
+ * Also deletes codex-ui-hold/<card> refs (BRO-7639) once the card is Done or the hold is stale
+ * (scripts/lib/codex-ui-hold.js decideUiHoldRefPrune).
+ *
  * Decisions + tests: scripts/lib/land-ref-prune{,.test}. Run daily by land-ref-prune.yml.
  */
 
@@ -14,6 +17,7 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { runGhWithFallback } = require('./lib/land-retry-on-cancel');
 const { decideLandRefPrune, MAX_DELETES_PER_RUN, ABANDONED_AFTER_DAYS } = require('./lib/land-ref-prune');
+const { decideUiHoldRefPrune, UI_HOLD_PREFIX } = require('./lib/codex-ui-hold');
 
 const USAGE = 'usage: node scripts/prune-stale-land-refs.js [--apply]';
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
@@ -26,7 +30,8 @@ const CARD_QUERY = 'query($id: String!) { issue(id: $id) { identifier state { ty
 
 async function cardState(branch, cache) {
   const { landRefCardNumber } = require('./lib/cloud-worker-pick.js');
-  const n = landRefCardNumber(branch);
+  // codex-ui-hold/bro-N names the card the same way land/bro-N-... does (BRO-7639).
+  const n = landRefCardNumber(branch.replace(/^codex-ui-hold\//, 'land/'));
   if (n == null) return { type: null, failed: false };
   if (cache.has(n)) return cache.get(n);
   let out;
@@ -45,7 +50,11 @@ async function main() {
   const refs = gh([`repos/${repo}/git/matching-refs/heads/land`])
     .filter((r) => r.ref.startsWith('refs/heads/land/'))
     .map((r) => ({ branch: r.ref.replace(/^refs\/heads\//, ''), tip: r.object.sha }));
-  console.log(`${refs.length} land/** ref(s) on origin; mode ${apply ? 'APPLY' : 'dry-run'}`);
+  // BRO-7639: Codex's held UI changes (codex-ui-hold/<card>) get their own rule; no Land run ever uses them.
+  const holds = gh([`repos/${repo}/git/matching-refs/heads/${UI_HOLD_PREFIX.replace(/\/$/, '')}`])
+    .filter((r) => r.ref.startsWith(`refs/heads/${UI_HOLD_PREFIX}`))
+    .map((r) => ({ branch: r.ref.replace(/^refs\/heads\//, ''), tip: r.object.sha, uiHold: true }));
+  console.log(`${refs.length} land/** ref(s) and ${holds.length} ${UI_HOLD_PREFIX}* ref(s) on origin; mode ${apply ? 'APPLY' : 'dry-run'}`);
   // A hand-dispatched Land run lists under main, not its ref, so while one is
   // in flight no ref's state is knowable: skip the pass (same rule as --stranded).
   const dispatched = gh([`repos/${repo}/actions/workflows/land.yml/runs?event=workflow_dispatch&per_page=20`]).workflow_runs || [];
@@ -83,6 +92,18 @@ async function main() {
       console.log(`::warning::${branch}: skipped (${String(err.message).split('\n')[0]})`);
     }
   }
+  for (const { branch, tip } of holds) {
+    try {
+      const tipCommittedAt = gh([`repos/${repo}/commits/${tip}`]).commit.committer.date;
+      const card = await cardState(branch, cache);
+      const d = decideUiHoldRefPrune({ tipCommittedAt, cardStateType: card.type, cardLookupFailed: card.failed });
+      if (d.prune) candidates.push({ branch, tip, reason: d.reason, tipCommittedAt });
+      else keptBy[d.reason] = (keptBy[d.reason] || 0) + 1;
+    } catch (err) {
+      keptBy['unreadable'] = (keptBy['unreadable'] || 0) + 1;
+      console.log(`::warning::${branch}: skipped (${String(err.message).split('\n')[0]})`);
+    }
+  }
   candidates.sort((a, b) => Date.parse(a.tipCommittedAt) - Date.parse(b.tipCommittedAt)); // oldest first, so the cap never starves the tail
   const batch = candidates.slice(0, MAX_DELETES_PER_RUN);
   for (const c of candidates) console.log(`${apply && batch.includes(c) ? 'DELETE' : 'candidate'} ${c.branch} @${c.tip} (${c.reason}, tip ${c.tipCommittedAt.slice(0, 10)})`);
@@ -100,8 +121,8 @@ async function main() {
     }
   }
   console.log(`kept: ${JSON.stringify(keptBy)}`);
-  if ((keptBy.unreadable || 0) > refs.length * 0.2) { console.log(`::error::${keptBy.unreadable} of ${refs.length} refs unreadable; the pass proved little`); process.exitCode = 1; }
-  console.log(`prune summary: ${refs.length} ref(s), ${candidates.length} candidate(s), ${deleted} deleted${apply ? '' : ' (dry-run)'}`);
+  if ((keptBy.unreadable || 0) > (refs.length + holds.length) * 0.2) { console.log(`::error::${keptBy.unreadable} of ${refs.length + holds.length} refs unreadable; the pass proved little`); process.exitCode = 1; }
+  console.log(`prune summary: ${refs.length + holds.length} ref(s), ${candidates.length} candidate(s), ${deleted} deleted${apply ? '' : ' (dry-run)'}`);
   if (failed) { console.log(`::error::${failed} delete(s) refused`); process.exitCode = 1; }
 }
 

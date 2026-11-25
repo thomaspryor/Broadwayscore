@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-dead-1904-off-broadway-2026",
+  "night": "2026-11-24",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-25T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-25T02:30:04.676Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-25T04:55:13.434Z",
+    "lastOkSampleAt": "2026-11-25T04:55:13.434Z"
+  },
+  "firstLiveAt": "2026-11-25T02:30:04.676Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-25T02:30:04.676Z",
+  "liveCount": 4,
+  "liveCountAt": {
+    "1h": 4,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-25T04:00:10.042Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [
+    {
+      "key": "time out new york|unknown",
+      "outlet": "Time Out New York",
+      "critic": null,
+      "tier": 1,
+      "publishAt": "2024-12-03",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-25T02:30:04.676Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|elysa gardner",
+      "outlet": "New York Stage Review",
+      "critic": "Elysa Gardner",
+      "tier": 2,
+      "publishAt": "2024-11-26",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-25T02:30:04.676Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|steven suskin",
+      "outlet": "New York Stage Review",
+      "critic": "Steven Suskin",
+      "tier": 2,
+      "publishAt": "2024-11-26",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-25T02:30:04.676Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2024-11-26",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-25T02:30:04.676Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "incomplete",
+      "source": [
+        "show-score"
+      ],
+      "count": 16,
+      "covered": 3,
+      "coverage": 0.188,
+      "missing": [
+        "nytimes",
+        "hollywood-reporter",
+        "amny",
+        "theatermania",
+        "talkinbroadway",
+        "stagebuddy",
+        "cititour",
+        "northjerseycom",
+        "epoch-times",
+        "adriandimanlig",
+        "irish-central",
+        "village-voice",
+        "metro-us"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 4,
+      "fetchedAt": "2026-11-25T05:00:33.286Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-25T05:00:33.384Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-25T05:00:36.892Z",
+    "files": [
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-22T12:03:28.110Z",
+        "scoredAt": "2026-11-23T15:30:55.981Z",
+        "publishDate": "2024-11-26",
+        "url": "culturesauce.com/2024/11/26/the-dead-1904-joyce-off-broadway-review-irish-rep",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--elysa-gardner.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Elysa Gardner",
+        "firstSeenAt": "2026-11-22T12:03:28.070Z",
+        "scoredAt": "2026-11-23T15:31:00.898Z",
+        "publishDate": "2024-11-26",
+        "url": "nystagereview.com/2024/11/26/the-dead-1904-irish-rep-brings-james-joyce-adaptation-home-to-new-york-for-the-holidays",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--steven-suskin.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Steven Suskin",
+        "firstSeenAt": "2026-11-22T12:03:28.045Z",
+        "scoredAt": "2026-11-23T15:30:27.993Z",
+        "publishDate": "2024-11-26",
+        "url": "nystagereview.com/2024/11/26/the-dead-1904-james-joyce-and-the-living-2024",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "timeout--unknown.json",
+        "outletId": "timeout",
+        "outlet": "Time Out New York",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-25T01:06:34.429Z",
+        "scoredAt": "2026-11-25T01:27:24.206Z",
+        "publishDate": "2024-12-03",
+        "url": "timeout.com/newyork/theater/the-dead-1904",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}

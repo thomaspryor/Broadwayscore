@@ -5,7 +5,7 @@
  * venue pages (BRO-8112, follows BRO-8088's research-venue-details.js).
  *
  * Three jobs, each publishing only what can be verified:
- *  1. ACCESS (Off-Broadway + London): read the venue's own website (its homepage and the access /
+ *  1. ACCESS (Broadway + Off-Broadway + London): read the venue's own website (its homepage and the access /
  *     visitor pages it links to, through fetchPage()), give the SAME page text to Gemini and
  *     OpenAI, and publish a fact only when both answers match and both back it with a quote that
  *     appears word for word on the page (scripts/lib/venue-access-agree.js). The page URL the
@@ -20,8 +20,10 @@
  * (market: off-broadway | london | broadway), read by src/lib/data-core.ts.
  *
  * Usage:
- *   node scripts/research-venue-access.js [--phase=broadway,access,seats] [--market=off-broadway|london]
+ *   node scripts/research-venue-access.js [--phase=broadway,access,seats] [--market=broadway|off-broadway|london]
  *     [--only=slug,slug] [--limit=N] [--max-usd=15] [--workers=4] [--refresh]
+ * Broadway access backfill (reuses agreed sites, preserves other markets):
+ *   node scripts/research-venue-access.js --phase=access --market=broadway --max-usd=2
  */
 
 require('./lib/cli-help').exitOnHelp(module);
@@ -30,8 +32,8 @@ const os = require('os');
 const path = require('path');
 const crypto = require('crypto');
 const { slugify } = require('./lib/url-slug');
-const { websitesAgree, pickWebsite, siteHost } = require('./lib/venue-info-agree');
-const { FIELDS, agreeAccess, htmlToText, accessLinks, titleNamesVenue } = require('./lib/venue-access-agree');
+const { broadwayWebsites, venueList, publishVenueAccess } = require('./lib/venue-access-publish');
+const { FIELDS, htmlToText, accessLinks, titleNamesVenue } = require('./lib/venue-access-agree');
 
 const ROOT = path.join(__dirname, '..');
 const INFO_PATH = path.join(ROOT, 'data/venue-info.json');
@@ -194,16 +196,6 @@ async function viewFromSeatLink(v) {
 
 // ---------- main ----------
 
-function venueList(scoped = true) {
-  const info = readJson(INFO_PATH, { venues: {} }).venues;
-  let out = Object.entries(info).map(([key, v]) => ({ key, market: key.split('/')[0], slug: key.split('/')[1], name: v.name, website: v.fields.website || null }));
-  if (!scoped) return out;
-  if (args.market) out = out.filter((v) => v.market === args.market);
-  if (args.only) { const only = new Set(String(args.only).split(',')); out = out.filter((v) => only.has(v.slug)); }
-  if (args.limit) out = out.slice(0, Number(args.limit));
-  return out;
-}
-
 async function main() {
   require('./lib/llm-usage-install');
   const ask = require('./lib/dual-model-client');
@@ -231,7 +223,10 @@ async function main() {
     save();
   }
 
-  const venues = venueList();
+  const published = readJson(OUT_PATH, { venues: {} }).venues;
+  const sites = broadwayWebsites(readJson(META_PATH, {}), raw.broadway, published);
+  const info = readJson(INFO_PATH, { venues: {} }).venues;
+  const venues = venueList(info, sites, args);
 
   if (phases.has('access')) {
     const withSite = venues.filter((v) => v.website);
@@ -258,7 +253,7 @@ async function main() {
   }
 
   if (phases.has('seats')) {
-    const todo = venues.filter((v) => args.refresh || !raw.seats[v.key]);
+    const todo = venues.filter((v) => v.market !== 'broadway' && (args.refresh || !raw.seats[v.key]));
     console.log(`seat links: to check ${todo.length}`);
     let done = 0;
     await ask.pool(todo, workers, async (v) => {
@@ -270,43 +265,12 @@ async function main() {
   }
 
   // ---------- build the published file from the checkpoint ----------
-  // The published file always covers every venue; --only/--market/--limit only scope the research above.
-  const all = venueList(false);
-  // Facts researched under a spelling that now folds into this page (BRO-8173) still count.
-  const { pickWithFolded } = require('./lib/venue-info-agree');
-  const usableAccess = (r) => !!(r.gemini && r.openai && !r.gemini.error && !r.openai.error);
-  const usableSeats = (r) => !!(r.seatplan || r.aviewfrommyseat);
-  const pick = (store, k, usable) => pickWithFolded(store, k, undefined, usable);
-  const out = {};
-  const rejects = {};
-  for (const v of all) {
-    const entry = {};
-    const a = pick(raw.access, v.key, usableAccess);
-    if (a && a.gemini && a.openai && v.website) {
-      const pages = await accessPages(v.website); // cached on disk, same text the models saw
-      const r = agreeAccess(a.gemini, a.openai, pages);
-      if (Object.keys(r.access).length) {
-        entry.access = { ...r.access, verified: true, sourceUrl: Object.values(r.evidence).map((e) => e.url).find(Boolean) || null, evidence: r.evidence, verifiedAt: a.at.slice(0, 10) };
-      }
-      if (r.rejected.length) rejects[v.key] = r.rejected;
-    }
-    const s = pick(raw.seats, v.key, usableSeats);
-    if (s && (s.seatplan || s.aviewfrommyseat)) {
-      entry.seatLinks = {};
-      if (s.seatplan) entry.seatLinks.seatplan = s.seatplan;
-      if (s.aviewfrommyseat) entry.seatLinks.aviewfrommyseat = s.aviewfrommyseat;
-    }
-    if (Object.keys(entry).length) out[v.key] = { name: v.name, ...entry };
-  }
-  for (const [name, b] of Object.entries(raw.broadway)) {
-    const g = b.gemini; const o = b.openai;
-    if (!g || !o || g.error || o.error || !g.website || !o.website) continue;
-    if (!websitesAgree(g.website, o.website)) continue;
-    const site = pickWebsite(g.website, o.website);
-    if (!site) continue;
-    const sources = [...new Set([...(g.sources || []), ...(o.sources || [])])].filter((u) => /^https?:\/\//.test(u)).slice(0, 5);
-    out[`broadway/${slugify(name)}`] = { name, website: site, how: { website: 'gemini+openai' }, sources, researchedAt: b.at };
-  }
+  // The published file covers every venue; scoped runs preserve untouched entries.
+  // A scoped backfill must not fetch or rewrite other markets' already published facts.
+  const scoped = args.market || args.only || args.limit;
+  const all = scoped ? venues : venueList(info, sites);
+  const previousRejects = scoped ? readJson(path.join(ROOT, 'data/audit/venue-access-rejected.json'), {}) : {};
+  const { out, rejects } = await publishVenueAccess(all, raw, accessPages, sites, scoped ? published : {}, previousRejects);
 
   const doc = {
     _meta: {

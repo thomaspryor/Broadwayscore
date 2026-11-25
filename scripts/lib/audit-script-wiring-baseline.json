@@ -487,6 +487,11 @@
       "bucket": "b",
       "rank": 0,
       "reason": "BRO-7748 offline dry run of the press-night near-miss detector over recent press nights (hit rate and false alarms); read-only, no fetches; logic covered by tests/unit/lane-near-miss-alarm.test.mjs, which CI runs"
+    },
+    "audit-poller-nonbroadway-coverage.js": {
+      "bucket": "b",
+      "rank": 99,
+      "reason": "BRO-8294: manual replay and latency proof for Broadway-only poller targeting; needs gh run history (--runs TSV), so not a scheduled check"
     }
   }
 }

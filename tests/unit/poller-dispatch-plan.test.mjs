@@ -95,3 +95,57 @@ test('orchestrator still dispatches the guarded auto run in parallel mode and do
   // only targeted run ids are added to the wait list
   assert.ok(!/WAIT_IDS="\$WAIT_IDS \$PREV_POLLER_RUN_ID"/.test(body));
 });
+
+// BRO-8294: only main-stage Broadway shows get a targeted run; every other market rides the auto run.
+test('BRO-8294: a non-Broadway show in its window is left to the auto run (legacy dispatch)', () => {
+  for (const category of ['off-broadway', 'west-end', 'off-west-end']) {
+    const p = planPollerDispatch({ shows: [old, { ...hot, category }], nowMs: E + 30 * M });
+    assert.equal(p.mode, 'legacy', category);
+    assert.deepEqual(p.targetedIds, [], category);
+    assert.match(p.reason, /left to the auto run: blueberries/, category);
+  }
+});
+
+test('BRO-8294: a non-Broadway show never takes a targeted slot from a Broadway show', () => {
+  const offClose = { id: 'off-close', embargoMs: E + 5 * M, category: 'off-broadway' };
+  const weClose = { id: 'we-close', embargoMs: E + 6 * M, category: 'west-end' };
+  const bway = { id: 'bway-far', embargoMs: E + 40 * M, category: 'broadway' };
+  const bway2 = { id: 'bway-far2', embargoMs: E + 50 * M };
+  // Old behaviour: the two Off/WE shows (nearest the embargo) fill both slots and the Broadway show gets none.
+  const withNon = planPollerDispatch({ shows: [offClose, weClose, bway, bway2], nowMs: E + 10 * M, includeNonBroadway: true });
+  assert.deepEqual(withNon.targetedIds.slice().sort(), ['off-close', 'we-close']);
+  const p = planPollerDispatch({ shows: [offClose, weClose, bway, bway2], nowMs: E + 10 * M });
+  assert.equal(p.mode, 'parallel');
+  assert.deepEqual(p.targetedIds, ['bway-far', 'bway-far2']);
+  assert.match(p.reason, /non-Broadway left to the auto run: (off-close,we-close|we-close,off-close)/);
+});
+
+test('BRO-8294: Broadway targeted ids are a superset of the old plan at every rotation', () => {
+  const mix = [
+    { id: 'b1', embargoMs: E, category: 'broadway' }, { id: 'b2', embargoMs: E + 15 * M, category: 'broadway' },
+    { id: 'b3', embargoMs: E + 40 * M, category: 'broadway' },
+    { id: 'o1', embargoMs: E + 2 * M, category: 'off-broadway' }, { id: 'w1', embargoMs: E + 3 * M, category: 'west-end' },
+  ];
+  for (let rotation = 0; rotation < 8; rotation++) {
+    for (const t of [-30, 0, 20, 90, 300]) {
+      const oldIds = planPollerDispatch({ shows: mix, nowMs: E + t * M, rotation, includeNonBroadway: true }).targetedIds.filter((i) => i.startsWith('b'));
+      const newIds = planPollerDispatch({ shows: mix, nowMs: E + t * M, rotation }).targetedIds;
+      assert.ok(oldIds.every((i) => newIds.includes(i)), `rot ${rotation} t ${t}: ${oldIds} not in ${newIds}`);
+    }
+  }
+});
+
+test('BRO-8294: the kill switch (includeNonBroadway) restores any-market targeting exactly', () => {
+  const p = planPollerDispatch({ shows: [old, { ...hot, category: 'west-end' }], nowMs: E + 30 * M, includeNonBroadway: true });
+  assert.equal(p.mode, 'parallel');
+  assert.deepEqual(p.targetedIds, ['blueberries']);
+});
+
+test('BRO-8294: the CLI wires category and the kill switch through (the workflow calls the CLI, not the function)', () => {
+  const src = fs.readFileSync(new URL('../../scripts/lib/poller-dispatch-plan.js', import.meta.url), 'utf8');
+  assert.match(src, /category: s \? s\.category : undefined/);
+  assert.match(src, /includeNonBroadway: arg\('non-broadway-targeted'\) === 'true'/);
+  const wf = fs.readFileSync(new URL('../../.github/workflows/opening-night-orchestrator.yml', import.meta.url), 'utf8');
+  assert.match(wf, /POLLER_NON_BROADWAY_TARGETED: \$\{\{ vars\.POLLER_NON_BROADWAY_TARGETED \}\}/);
+  assert.match(wf, /--non-broadway-targeted="\$\{POLLER_NON_BROADWAY_TARGETED:-\}"/);
+});

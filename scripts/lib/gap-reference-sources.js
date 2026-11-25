@@ -41,6 +41,7 @@ const fs = require('fs');
 const path = require('path');
 const { discoverWetRoundupRows } = require('./wet-roundup-discover');
 const { discoverTrRoundupHtml } = require('./tr-roundup-discover');
+const { discoverTrRoundupHtmlCached } = require('./tr-roundup-miss');
 const { discoverLboRoundupHtml } = require('./lbo-roundup-discover');
 const { discoverBestOfTheatreRoundup, extractBestOfTheatreRows } = require('./bestoftheatre-roundup-discover');
 const { normalizeOutlet } = require('./review-normalization');
@@ -250,7 +251,8 @@ async function getWeReferenceRows(show, opts = {}) {
 
   // theatre.reviews — discover HTML, parse with the existing scraper module
   try {
-    const tr = await discoverTrRoundupHtml(show, { ...opts, stats: trStats });
+    // BRO-8294: the audit shares the poller's theatre.reviews negative cache (hot window = no cooldown).
+    const tr = await discoverTrRoundupHtmlCached(show, { ...opts, stats: trStats });
     if (tr && isServerErrorPageHtml(tr.html)) {
       sources['theatre-reviews'].error = 'server error page served in place of the round-up';
       log(`    WE-ref TR: server error page at ${tr.url}, rows skipped`);
@@ -355,9 +357,11 @@ async function getWeReferenceRows(show, opts = {}) {
   // counting them would mask a real network blackout of the fetching sources.
   sources.westendtheatre.fetchErrors = wetStats.fetchErrors || 0;
   sources['theatre-reviews'].fetchErrors = trStats.fetchErrors || 0;
+  // BRO-8294: a cooldown skip made no fetch, so it is no evidence for or against a blackout of the others.
+  if (trStats.skippedByCooldown) sources['theatre-reviews'].skipped = true;
   sources['lbo-roundup'].fetchErrors = lboStats.fetchErrors || 0;
   sources.bestoftheatre.fetchErrors = botStats.fetchErrors || 0;
-  const allSourcesFailed = Object.values(sources).filter((s) => !s.passive).every(
+  const allSourcesFailed = Object.values(sources).filter((s) => !s.passive && !s.skipped).every(
     (s) => !s.found && (s.error !== null || (s.fetchErrors || 0) > 0)
   );
   return { rows, sources, allSourcesFailed };

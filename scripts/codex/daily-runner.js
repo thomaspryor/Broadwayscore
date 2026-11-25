@@ -61,6 +61,7 @@ const linear = require(path.join(ROOT, 'scripts/lib/linear-client.js'));
 const { verifyCommand } = require(path.join(ROOT, 'scripts/lib/linear-drain-parked.js'));
 const { makeVerifyCmdEvidence } = require(path.join(ROOT, 'scripts/lib/linear-cmd-execution.js'));
 const R = require(path.join(ROOT, 'scripts/lib/codex-runner.js'));
+const UH = require(path.join(ROOT, 'scripts/lib/codex-ui-hold.js'));
 const DF = require(path.join(ROOT, 'scripts/lib/codex-data-fixes.js'));
 const TL = require(path.join(ROOT, 'scripts/lib/codex-trust-ladder.js'));
 const PF = require(path.join(ROOT, 'scripts/lib/codex-sandbox-preflight.js'));
@@ -1171,7 +1172,7 @@ async function workCard(pick, stats, inFlight) {
       let c = commitAttempt(card, attempt);
       lastHasDiff = c.hasDiff;
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
-      if (c.hasDiff && (uiHeld = uiHold({ holdRef: `codex-ui-hold/${id.toLowerCase()}` }))) { check = { verdict: 'REJECT', text: `Held for visual approval (not a Codex miss): ${uiHeld.note}` }; step = 'bounce'; break; }
+      if (c.hasDiff && (uiHeld = uiHold({ holdRef: UH.uiHoldRef(id) }))) { check = { verdict: 'REJECT', text: `Held for visual approval (not a Codex miss): ${uiHeld.note}` }; step = 'bounce'; break; }
       // Land refuses new unit/audit failures half an hour after the push, when the worktree has
       // moved on; catch them here and hand them straight back to Codex in the same attempt.
       if (c.hasDiff && !fitsBeforeHardStop(landChecksMs + REVIEW_RESERVE_MS)) { outOfTime = 'the land checks and the review'; break; }
@@ -1185,7 +1186,7 @@ async function workCard(pick, stats, inFlight) {
         report = `${report}\n\n--- after fixing the land-check failures ---\n${fx.report}`;
         c = commitAttempt(card, attempt);
         if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
-        if (c.hasDiff && (uiHeld = uiHold({ holdRef: `codex-ui-hold/${id.toLowerCase()}` }))) { check = { verdict: 'REJECT', text: `Held for visual approval (not a Codex miss): ${uiHeld.note}` }; step = 'bounce'; break; }
+        if (c.hasDiff && (uiHeld = uiHold({ holdRef: UH.uiHoldRef(id) }))) { check = { verdict: 'REJECT', text: `Held for visual approval (not a Codex miss): ${uiHeld.note}` }; step = 'bounce'; break; }
         keepLock(MAX_STAMP_GAP_MS, 'land-checks');
         try { landFails = throwIfDisk(newLandFailures(), 'the land checks'); } catch (e) { if (e instanceof LandWaitTimeout) { outOfTime = 'the land checks'; break; } throw e; }
       }
@@ -1202,7 +1203,7 @@ async function workCard(pick, stats, inFlight) {
           report = `${report}\n\n--- after fixing the site build ---\n${fx.report}`;
           c = commitAttempt(card, attempt);
           if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
-          if (c.hasDiff && (uiHeld = uiHold({ holdRef: `codex-ui-hold/${id.toLowerCase()}` }))) { check = { verdict: 'REJECT', text: `Held for visual approval (not a Codex miss): ${uiHeld.note}` }; step = 'bounce'; break; }
+          if (c.hasDiff && (uiHeld = uiHold({ holdRef: UH.uiHoldRef(id) }))) { check = { verdict: 'REJECT', text: `Held for visual approval (not a Codex miss): ${uiHeld.note}` }; step = 'bounce'; break; }
           keepLock(MAX_STAMP_GAP_MS, 'land-checks');
           // The fix changed the branch: the land checks and the build both run again before the review.
           try { landFails = throwIfDisk(newLandFailures(), 'the land checks'); } catch (e) { if (e instanceof LandWaitTimeout) { outOfTime = 'the land checks'; break; } throw e; }
@@ -1348,7 +1349,7 @@ async function workCard(pick, stats, inFlight) {
     let uiHeldRef = null;
     if (uiHeld && OPTS.land) {
       // The commit is kept on an inert ref (not land/, not visual-hold/: neither workflow set may fire) so the Claude worker can fetch it.
-      const hold = `codex-ui-hold/${id.toLowerCase()}`;
+      const hold = UH.uiHoldRef(id);
       try { git(['push', '--no-verify', '--force', 'origin', `HEAD:refs/heads/${hold}`]); uiHeldRef = hold; } catch (e) { log(`${id}: UI hold ref not pushed (${e.message.split('\n')[0]})`); }
     }
     const why = uiHeld ? `${uiHeld.note}${uiHeldRef ? `\n\nCodex's commit is on the ref ${uiHeldRef} (git fetch origin ${uiHeldRef}).` : ' Codex\'s commit was not pushed anywhere; redo the change or ask Codex to redo it.'}`
@@ -1373,7 +1374,8 @@ async function workCard(pick, stats, inFlight) {
       if (parked.code === 0) { stats.bounced.push(id); handedBack = true; disposed = true; return 'done'; }
       log(`${id}: could not park (exit ${parked.code}); bouncing to Todo`);
     }
-    handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n${R.bounceClassLine(bounceClass)}\n\n${why} Findings for whoever takes it next:\n\n${summary}`)).code === 0;
+    // BRO-7639: a pushed hold ref gets a parseable CODEX-UI-HOLD line (cloud-worker-pick.js prints it as pick.uiHold).
+    handedBack = (await moveCard(id, 'Todo', R.bounceTodoNote({ bounceClass, holdRef: uiHeldRef, why, summary }))).code === 0;
     disposed = true;
     return 'done';
   } catch (e) {

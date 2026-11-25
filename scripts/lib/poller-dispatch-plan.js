@@ -19,7 +19,14 @@
  * iteration), so every in-window show gets a targeted poll at least every (n-1)/(cap-1) iterations; the reason line
  * names the deferred shows so a starved one shows in the log.
  *
- * CLI: node scripts/lib/poller-dispatch-plan.js --shows=a,b [--disabled=true] [--now=ISO] [--rotation=N]
+ * BRO-8294 (cost): only MAIN-STAGE Broadway shows get a targeted run. Every other market (off-Broadway, West End,
+ * off-West End) rides the guarded auto run, whose order puts in-window shows first and never budget-cuts the front
+ * (measured by scripts/audit-poller-nonbroadway-coverage.js: worst-case first-poll latency well inside the 6-8h
+ * target). A non-Broadway show is therefore never "hot" here, and never takes one of the MAX_TARGETED slots from a
+ * Broadway show. Kill switch: repo var POLLER_NON_BROADWAY_TARGETED=true (includeNonBroadway) restores the old
+ * any-market targeting exactly.
+ *
+ * CLI: node scripts/lib/poller-dispatch-plan.js --shows=a,b [--disabled=true] [--non-broadway-targeted=true] [--now=ISO] [--rotation=N]
  * prints `mode=<legacy|parallel>`, `targeted=<id,id>` and `reason=<text>` lines (shows from data/shows.json).
  */
 
@@ -29,25 +36,37 @@ const WINDOW_AFTER_MIN = 420;
 const MAX_TARGETED = 2;
 const { rotateShows } = require('./poller-loop-budget');
 
-/** shows: [{id, embargoMs}]. Returns {mode:'legacy'|'parallel', targetedIds:[], reason}. */
-function planPollerDispatch({ shows = [], nowMs, disabled = false, maxTargeted = MAX_TARGETED, rotation = 0 } = {}) {
+/** Main-stage Broadway only; a show with no category counts as broadway (same default as opening-night-selection). */
+function isBroadwayTargetable(s) {
+  return (s.category || 'broadway') === 'broadway';
+}
+
+/** shows: [{id, embargoMs, category?}]. Returns {mode:'legacy'|'parallel', targetedIds:[], reason}. */
+function planPollerDispatch({ shows = [], nowMs, disabled = false, maxTargeted = MAX_TARGETED, rotation = 0, includeNonBroadway = false } = {}) {
   const list = (shows || []).filter((s) => s && s.id);
   if (disabled) return { mode: 'legacy', targetedIds: [], reason: 'POLLER_PER_SHOW_DISABLED' };
   if (list.length <= 1) return { mode: 'legacy', targetedIds: [], reason: 'one show or none: targeted dispatch already used' };
-  const hot = list
+  const inWindow = list
     .filter((s) => Number.isFinite(s.embargoMs)
-      && nowMs >= s.embargoMs - WINDOW_BEFORE_MIN * MIN && nowMs <= s.embargoMs + WINDOW_AFTER_MIN * MIN)
+      && nowMs >= s.embargoMs - WINDOW_BEFORE_MIN * MIN && nowMs <= s.embargoMs + WINDOW_AFTER_MIN * MIN);
+  const hot = inWindow
+    .filter((s) => includeNonBroadway || isBroadwayTargetable(s))
     .sort((a, b) => Math.abs(nowMs - a.embargoMs) - Math.abs(nowMs - b.embargoMs) || String(a.id).localeCompare(String(b.id)));
-  if (!hot.length) return { mode: 'legacy', targetedIds: [], reason: 'no selected show is inside its opening window' };
+  const autoOnly = inWindow.filter((s) => !hot.includes(s)).map((s) => s.id);
+  if (!hot.length) {
+    return { mode: 'legacy', targetedIds: [], reason: autoOnly.length
+      ? `only non-Broadway shows in window, left to the auto run: ${autoOnly.join(',')}`
+      : 'no selected show is inside its opening window' };
+  }
   const cap = Math.max(0, maxTargeted);
   const ordered = hot.length > cap ? rotateShows(hot, rotation, 1) : hot;
   const picked = ordered.slice(0, cap);
   const deferred = ordered.slice(cap);
-  const reason = `in window: ${picked.map((s) => s.id).join(',')}${deferred.length ? ` (deferred this iteration: ${deferred.map((s) => s.id).join(',')})` : ''}`;
+  const reason = `in window: ${picked.map((s) => s.id).join(',')}${deferred.length ? ` (deferred this iteration: ${deferred.map((s) => s.id).join(',')})` : ''}${autoOnly.length ? ` (non-Broadway left to the auto run: ${autoOnly.join(',')})` : ''}`;
   return { mode: 'parallel', targetedIds: picked.map((s) => s.id), reason };
 }
 
-module.exports = { planPollerDispatch, MAX_TARGETED, WINDOW_BEFORE_MIN, WINDOW_AFTER_MIN };
+module.exports = { planPollerDispatch, isBroadwayTargetable, MAX_TARGETED, WINDOW_BEFORE_MIN, WINDOW_AFTER_MIN };
 
 if (require.main === module) {
   const arg = (k) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : ''; };
@@ -59,10 +78,10 @@ if (require.main === module) {
     const ids = arg('shows').split(',').map((s) => s.trim()).filter(Boolean);
     const shows = ids.map((id) => {
       const s = all.find((x) => (x.id || x.slug) === id);
-      return { id, embargoMs: s ? Date.parse(defaultEmbargoAt(s) || '') : NaN };
+      return { id, embargoMs: s ? Date.parse(defaultEmbargoAt(s) || '') : NaN, category: s ? s.category : undefined };
     });
     const nowMs = arg('now') ? Date.parse(arg('now')) : Date.now();
-    out(planPollerDispatch({ shows, nowMs, disabled: arg('disabled') === 'true', rotation: Number(arg('rotation')) || 0 }));
+    out(planPollerDispatch({ shows, nowMs, disabled: arg('disabled') === 'true', includeNonBroadway: arg('non-broadway-targeted') === 'true', rotation: Number(arg('rotation')) || 0 }));
   } catch (e) {
     console.error(`::warning::poller dispatch plan failed (${e.message}); using legacy dispatch`);
     out({ mode: 'legacy', targetedIds: [], reason: `plan error: ${e.message}` });

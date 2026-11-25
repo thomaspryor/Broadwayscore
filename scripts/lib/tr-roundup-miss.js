@@ -65,4 +65,28 @@ function recordTrMiss(show, stats, ledgerPath) {
   return true;
 }
 
-module.exports = { cooldownMsFor, trMissKey, isTrDiscoveryInCooldown, recordTrMiss, readRoundupMisses };
+/**
+ * BRO-8294: discovery with the negative cache applied, for callers that had none (the hourly
+ * review-gap audit fetched the same 2 guessed URLs per show with no roundup every run).
+ * The cooldown is 0 inside the first HOT_DAYS after opening, so a first fetch on a press
+ * night is never skipped. A skipped call returns null and sets stats.skippedByCooldown.
+ *
+ * @param {object} show
+ * @param {object} [opts] discoverTrRoundupHtml opts, plus { missEntries, ledgerPath, now } for tests
+ */
+async function discoverTrRoundupHtmlCached(show, opts = {}) {
+  const stats = opts.stats || {};
+  const { discoverTrRoundupHtml } = require('./tr-roundup-discover');
+  let entries = opts.missEntries;
+  if (!entries) { try { entries = readRoundupMisses(opts.ledgerPath); } catch { entries = []; } } // fail open
+  if (isTrDiscoveryInCooldown(show, entries, opts.now || Date.now())) {
+    stats.skippedByCooldown = true;
+    stats.fetchErrors = 0;
+    return null;
+  }
+  const found = await discoverTrRoundupHtml(show, { ...opts, stats });
+  if (!found) { try { if (!opts.dryRun) recordTrMiss(show, stats, opts.ledgerPath); } catch { /* ledger write is best-effort */ } }
+  return found;
+}
+
+module.exports = { cooldownMsFor, trMissKey, isTrDiscoveryInCooldown, recordTrMiss, readRoundupMisses, discoverTrRoundupHtmlCached };

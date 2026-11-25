@@ -11,6 +11,8 @@
 // Keys the quarterly LLM merge owns and may rewrite. Every other key under
 // structuredTips / structuredTips.seating is carried forward byte-for-byte and
 // validateMergedMetadata refuses a merge that changes one (BRO-8057).
+const { accessibilityFor } = require('./venue-access-display');
+
 const LLM_SEATING_KEYS = new Set(['bestSeats', 'avoidSeats', 'accessibility']);
 const LLM_TOP_KEYS = new Set(['lastUpdated', 'seating', 'parking', 'dining', 'logistics']);
 
@@ -49,7 +51,7 @@ function buildMergedStructuredTips(tips, existingTheaterMetadata) {
 
   // Inject verified accessibility from metadata
   let accessibilityInjected = false;
-  const verifiedAccessibility = existingTheaterMetadata?.accessibility;
+  const verifiedAccessibility = accessibilityFor(undefined, existingTheaterMetadata?.accessibility);
   if (verifiedAccessibility?.verified) {
     const accessText = buildAccessibilityText(verifiedAccessibility);
     if (accessText) {

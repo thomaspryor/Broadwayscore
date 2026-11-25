@@ -503,6 +503,14 @@ function classifyBounce({ envBlocked = null, blocked = null, remaining = [], rep
 }
 /** The class line a bounce note carries, put on the line after the heading. */
 const bounceClassLine = (cls) => `<!-- codex-bounce-class: ${cls} -->`;
+/**
+ * BRO-7639: the Todo note a bounced card gets. A UI hold whose commit reached a ref carries the
+ * CODEX-UI-HOLD line (codex-ui-hold.js) that cloud-worker-pick.js prints as pick.uiHold.
+ */
+function bounceTodoNote({ bounceClass, holdRef = null, why, summary }) {
+  const holdLine = holdRef ? `\n${require('./codex-ui-hold.js').uiHoldHandoffLine(holdRef)}` : '';
+  return `${BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n${bounceClassLine(bounceClass)}${holdLine}\n\n${why} Findings for whoever takes it next:\n\n${summary}`;
+}
 /** -> the class a bounce note records, or null for a note written before BRO-6144. */
 function bounceClassOf(body) {
   const m = BOUNCE_CLASS_RE.exec(String(body || ''));
@@ -1946,7 +1954,7 @@ function uiApprovalBlock(files, { pr = false, holdRef = null } = {}) {
   if (!ui.length) return null;
   const list = ui.slice(0, 8).join(', ') + (ui.length > 8 ? `, and ${ui.length - 8} more` : '');
   const how = pr
-    ? 'A person must run /visual-qa on this change and get the owner to approve how it looks before it lands.'
+    ? 'A Claude worker must check this pull request\'s branch out (gh pr checkout <this PR>), run /visual-qa, and ask the owner with `node scripts/visual-approval.js request --issue=<a card for this PR> --what="<plain words>"` before it lands.'
     : `A Claude worker must check the change out${holdRef ? ` from the ref ${holdRef}` : ''}, run /visual-qa, and ask the owner with \`node scripts/visual-approval.js request --issue=<this card> --what="<plain words>"\`.`;
   return { files: ui, note: `This change touches UI files (${list}). Screenshots and the owner's approval are required before UI changes land, and the Codex runner has no way to get them, so it did not land this. ${how}` };
 }
@@ -2037,6 +2045,7 @@ module.exports = {
   BOUNCED_MARKER,
   classifyBounce,
   bounceClassLine,
+  bounceTodoNote,
   bounceClassOf,
   structuralBounceHolds,
   isPersonComment,
