@@ -33,7 +33,7 @@ const path = require('path');
 // BRO-8159: the prior worker reported maxima across 10 main runs of 143.3 MB
 // traced and 147.5 MB packaged. 180 MB leaves 32.5 MB (22%) above the latter,
 // and 70 MB below Vercel's 250 MB cap. Run IDs were not retained in the report;
-// recheck the measurements as builds change. Both workflow checks are advisory.
+// recheck the measurements as builds change. Both workflow checks are armed for exit 1 only; exit 2 (measurement broken) warns and passes (BRO-8159).
 const DEFAULT_LIMIT_MB = 180;
 const MB = 1024 * 1024;
 const MAX_MISSING_RATIO = 0.5;

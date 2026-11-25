@@ -258,7 +258,7 @@ test('vercel-deploy.yml touches the build env only in known ways', () => {
     'grep -Eq "^${v}=\\"?[^\\"[:space:]]" .vercel/.env.production.local 2>/dev/null || MISSING="$MISSING $v"', // Supabase step
     'run: rm -rf .vercel/output',
     'run: node scripts/lib/held-feature-leak.js .vercel/output/static', // BRO-5007 leak scan, reads the built output only
-    'run: node scripts/lib/check-function-trace-size.js --vercel-output .vercel/output', // BRO-8165 packaged size check, reads the built output only
+    'run: node scripts/lib/check-function-trace-size.js --vercel-output .vercel/output || [ $? -eq 2 ]', // BRO-8165 packaged size check, reads the built output only
     'run: node scripts/lib/check-function-bundle-size.js .vercel/output', // BRO-8150 size warning, reads the built output only
   ];
   assert.deepEqual(unknownEnvLines(wf, known), [], 'read NEXT_PUBLIC_FEATURES with featuresFromEnvFile; add other lines here once checked');

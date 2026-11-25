@@ -594,29 +594,32 @@ jobs:
         continue-on-error: true
         run: node scripts/lib/check-coverage-floor-trace.js .next
 
-      - name: Guard — traced function size under Vercel's 250 MB limit (advisory)
+      - name: Guard — traced function size under Vercel's 250 MB limit
         # BRO-8154: on 2026-11-23 api/admin/ingest-review/detect traced 341 MB and
         # every prod deploy failed for ~7h, found only after the ~1.3 GB upload.
         # Sums each .next/server/**/*.nft.json (node_modules included) and fails
-        # above 230 MB, naming the 5 biggest files (Next's shared runtime trace is
-        # added to each function). Advisory first (§19). Before arming (dropping
-        # continue-on-error), calibrate the "largest:" figure against the packaged
-        # .vercel/output/functions/*.func sizes: .nft traces are a proxy, and
-        # static routes also have traces (BRO-8154 review findings).
-        continue-on-error: true
-        run: node scripts/lib/check-function-trace-size.js .next
+        # above the script's 180 MB limit, naming the 5 biggest files (Next's shared
+        # runtime trace is added to each function).
+        # Armed (BRO-8159): only exit 1 (over the limit) fails the deploy. Exit 2
+        # means the measurement itself broke; the script prints a ::warning and the
+        # step passes, so a broken measurement never blocks a healthy deploy.
+        # gate-arm-ok: 8 successful main deploy runs (45716455962, 45716160898,
+        # 45715948251, 45715699164, 45715537328, 45707730331, 45706895166,
+        # 45706596004) all reported largest app/page 144.3 MB traced and
+        # api/admin/ingest-review 148.8 MB packaged against the 180 MB limit.
+        run: node scripts/lib/check-function-trace-size.js .next || [ $? -eq 2 ]
 
-      - name: Guard — PACKAGED function size under Vercel's 250 MB limit (advisory)
+      - name: Guard — PACKAGED function size under Vercel's 250 MB limit
         # BRO-8165: the step above sizes .nft.json traces (a proxy). This one sizes
         # what `vercel deploy --prebuilt` uploads: every .vercel/output/functions/**/*.func
         # (symlinks followed, filePathMap targets added, route aliases of one lambda
         # counted once), prints the 10 biggest, and names the top 10 files of any
-        # function over 230 MB, so a leak fails here instead of as a generic "did not
-        # reach READY" after the upload. Exit 2 = measurement broken (fails closed).
-        # Advisory first (§19): arm (drop continue-on-error) once this prints sane
-        # sizes on real runs and agrees with the trace step's "largest:" line.
-        continue-on-error: true
-        run: node scripts/lib/check-function-trace-size.js --vercel-output .vercel/output
+        # function over the limit, so a leak fails here instead of as a generic "did
+        # not reach READY" after the upload.
+        # Armed (BRO-8159): exit 1 (over the limit) fails the deploy; exit 2
+        # (measurement broken) stays a visible ::warning and does not block.
+        # gate-arm-ok: same 8 runs as the step above; packaged largest 148.8 MB.
+        run: node scripts/lib/check-function-trace-size.js --vercel-output .vercel/output || [ $? -eq 2 ]
       - name: Guard — no route fs-reads a data file its trace dropped (advisory)
         # BRO-8155: next.config.js drops the inlined copies of reviews.json,
         # grosses-history.json and cast-manifest.json from every route that does
