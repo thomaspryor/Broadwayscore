@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-25T04:32:42.535Z",
+  "generatedAt": "2026-11-25T05:32:32.113Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 377,
-  "clean": 376,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "title": "Matilda The Musical",
-      "openingDate": "2011-11-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 91.37 vs local 91.28 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 18,
-      "firstDefectAt": "2026-11-25T04:32:37.103Z"
-    }
-  ],
+  "clean": 377,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
