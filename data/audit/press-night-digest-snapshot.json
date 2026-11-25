@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T19:06:00.824Z",
+  "generatedAt": "2026-11-25T23:01:07.722Z",
   "night": "2026-11-24",
   "counts": {
     "total": 6,
@@ -10,7 +10,7 @@
   "lines": [
     {
       "verdict": "FAIL",
-      "line": "A Christmas Carol: published by the regular pipeline; no opening-night email draft. Failed."
+      "line": "A Christmas Carol: published by the regular pipeline; no opening-night email draft; Reddit draft emailed to you is out of date (score 79 from 11 reviews, the site shows score 78 from 14 reviews). Failed."
     },
     {
       "verdict": "UNKNOWN",
@@ -26,7 +26,7 @@
     },
     {
       "verdict": "UNKNOWN",
-      "line": "The Dead, 1904: not graded, no reviews were published overnight."
+      "line": "The Dead, 1904: published by the regular pipeline; emails ready. Not graded: no reviews were published overnight."
     },
     {
       "verdict": "UNKNOWN",
@@ -39,6 +39,7 @@
     "passedOnOwn": 3
   },
   "missFirstSeen": {
-    "a-christmas-carol-west-end-2026|2026-11-24|email:broadcast:missing": "2026-11-25T15:45:20.904Z"
+    "a-christmas-carol-west-end-2026|2026-11-24|email:broadcast:missing": "2026-11-25T15:45:20.904Z",
+    "a-christmas-carol-west-end-2026|2026-11-24|email:reddit:stale": "2026-11-25T23:01:07.722Z"
   }
 }
