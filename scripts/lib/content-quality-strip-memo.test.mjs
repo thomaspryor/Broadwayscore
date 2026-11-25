@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const cq = require('./content-quality.js');
-const { stripVenueListingsTrailer, stripVenueListingsTrailerUncached, stripMemoStats, classifyContentTier } = cq;
+const { stripVenueListingsTrailer, stripVenueListingsTrailerUncached, stripMemoStats, classifyContentTier, STRIP_MEMO_ENV_NAMES } = cq;
 
 const BODY = 'The production is a joy from start to finish, and the cast sings with real conviction throughout the evening. '.repeat(4);
 const CASES = [
@@ -53,4 +53,31 @@ test('classifyContentTier reuses the strip within one call (fails if the memo is
   const hits = stripMemoStats.hits;
   classifyContentTier({ fullText: `${BODY} A unique closing line ${Date.now()}.`, outletId: 'stagebuddy' });
   assert.ok(stripMemoStats.hits > hits, 'second strip of the same text should be a memo hit');
+});
+
+test('the memo key covers every env switch trailer-signatures.js reads', () => {
+  for (const k of ['TRAILER_FIXES_DISABLED', 'FURNITURE_TAIL_DISABLED', 'RUN_INFO_TRAILER_DISABLED']) assert.ok(STRIP_MEMO_ENV_NAMES.includes(k), k);
+  for (const k of STRIP_MEMO_ENV_NAMES) {
+    const prev = process.env[k];
+    try {
+      for (const t of CASES) {
+        delete process.env[k];
+        assert.equal(stripVenueListingsTrailer(t, null), stripVenueListingsTrailerUncached(t, null), `${k} unset`);
+        process.env[k] = 'true';
+        assert.equal(stripVenueListingsTrailer(t, null), stripVenueListingsTrailerUncached(t, null), `${k}=true`);
+      }
+    } finally {
+      if (prev === undefined) delete process.env[k]; else process.env[k] = prev;
+    }
+  }
+});
+
+test('held characters stay within budget and very long texts are not held', () => {
+  const big = `${BODY}${'x '.repeat(200 * 1024)}end.`;
+  const before = stripMemoStats.heldChars;
+  assert.equal(stripVenueListingsTrailer(big, null), stripVenueListingsTrailerUncached(big, null));
+  assert.equal(stripMemoStats.heldChars, before);
+  for (let i = 0; i < 600; i++) stripVenueListingsTrailer(`${BODY}Line ${i}.`, null);
+  assert.ok(stripMemoStats.heldChars <= 8 * 1024 * 1024);
+  assert.ok(stripMemoStats.heldChars > 0);
 });

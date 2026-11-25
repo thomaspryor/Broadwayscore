@@ -2228,26 +2228,50 @@ const LISTINGS_TRAILER_RE = /\s*Listings?\s+and\s+ticket\s+information\s+can\s+b
 // (once inside detectTruncationSignals, once for its own ending check), and the
 // rebuild classifies most files twice (tier safety net, then the pull-quote copy).
 // The strip was ~55% of the classifier's time on the corpus. It is a pure
-// function of (text, outletId, the three trailer kill switches), so a small
-// in-process memo keyed on exactly those returns the identical string. Bounded:
-// oldest entry evicted past STRIP_MEMO_MAX. Off: STRIP_TRAILER_MEMO_DISABLED=true.
+// function of (text, outletId, the env switches trailer-signatures.js reads), so
+// a small in-process LRU keyed on exactly those returns the identical string.
+// The env names are read from trailer-signatures.js's source at load (as
+// fingerprint-memo.js does), so a new kill switch there is keyed automatically.
+// Bounded by entries and by total held characters; a text over STRIP_MEMO_MAX_TEXT
+// is never held. Off: STRIP_TRAILER_MEMO_DISABLED=true.
 const STRIP_MEMO_MAX = 512;
+const STRIP_MEMO_MAX_CHARS = 8 * 1024 * 1024;
+const STRIP_MEMO_MAX_TEXT = 256 * 1024;
 const stripMemo = new Map();
-const stripMemoStats = { hits: 0, misses: 0 };
+const stripMemoStats = { hits: 0, misses: 0, heldChars: 0 };
+const STRIP_MEMO_ENV_NAMES = (() => {
+  const src = require('fs').readFileSync(require.resolve('./trailer-signatures'), 'utf8');
+  const names = new Set();
+  for (const m of src.matchAll(/process\.env(?:\.([A-Z0-9_]+)|\[\s*['"]([A-Z0-9_]+)['"]\s*\])/g)) names.add(m[1] || m[2]);
+  return Object.freeze([...names].sort());
+})();
 function stripMemoEnvKey() {
-  const e = process.env;
-  return `${e.TRAILER_FIXES_DISABLED || ''}\0${e.FURNITURE_TAIL_DISABLED || ''}\0${e.RUN_INFO_TRAILER_DISABLED || ''}`;
+  return STRIP_MEMO_ENV_NAMES.map((k) => process.env[k] || '').join('\0');
+}
+function stripMemoEvict(text) {
+  const old = stripMemo.get(text);
+  if (!old) return;
+  stripMemo.delete(text);
+  stripMemoStats.heldChars -= text.length + old.result.length;
 }
 function stripVenueListingsTrailer(text, outletId) {
-  if (typeof text !== 'string' || process.env.STRIP_TRAILER_MEMO_DISABLED === 'true') return stripVenueListingsTrailerUncached(text, outletId);
+  if (typeof text !== 'string' || text.length > STRIP_MEMO_MAX_TEXT || process.env.STRIP_TRAILER_MEMO_DISABLED === 'true') {
+    return stripVenueListingsTrailerUncached(text, outletId);
+  }
   const envKey = stripMemoEnvKey();
   const hit = stripMemo.get(text);
-  if (hit && hit.outletId === outletId && hit.envKey === envKey) { stripMemoStats.hits++; return hit.result; }
+  if (hit && hit.outletId === outletId && hit.envKey === envKey) {
+    stripMemoStats.hits++;
+    stripMemo.delete(text); // refresh recency
+    stripMemo.set(text, hit);
+    return hit.result;
+  }
   stripMemoStats.misses++;
   const result = stripVenueListingsTrailerUncached(text, outletId);
-  stripMemo.delete(text);
+  stripMemoEvict(text);
   stripMemo.set(text, { outletId, envKey, result });
-  if (stripMemo.size > STRIP_MEMO_MAX) stripMemo.delete(stripMemo.keys().next().value);
+  stripMemoStats.heldChars += text.length + result.length;
+  while (stripMemo.size > STRIP_MEMO_MAX || stripMemoStats.heldChars > STRIP_MEMO_MAX_CHARS) stripMemoEvict(stripMemo.keys().next().value);
   return result;
 }
 function stripVenueListingsTrailerUncached(text, outletId) {
@@ -4471,6 +4495,7 @@ module.exports = { outletBylineOverride, withPrintedCredit, extractTheRecsByline
   stripVenueListingsTrailer,
   stripVenueListingsTrailerUncached,
   stripMemoStats,
+  STRIP_MEMO_ENV_NAMES,
   isGarbageContent,
   stripLeadingJsonBlob,
   stripLeadingCookieConsentBlock,
