@@ -5,8 +5,9 @@ const require = createRequire(import.meta.url);
 const { planTbDatedCollisionRepairs, applyTbDatedCollisionRepairs } = require('./tb-dated-collision.js');
 const B = 'https://www.talkinbroadway.com/page/ob/';
 const shows = [
-  { id: 'falls-for-jodie', title: 'Falls for Jodie' }, { id: 'hairy-ape', title: 'The Hairy Ape' },
-  { id: 'bach-orig', title: 'Going Bacharach' }, { id: 'bach-return', title: 'Going Bacharach' },
+  { id: 'falls-for-jodie', title: 'Falls for Jodie', openingDate: '2026-10-05' }, { id: 'hairy-ape', title: 'The Hairy Ape', openingDate: '2026-10-05' },
+  { id: 'hairy-ape-2022', title: 'The Hairy Ape', openingDate: '2022-04-11' },
+  { id: 'bach-orig', title: 'Going Bacharach', openingDate: '2026-01-12' }, { id: 'bach-return', title: 'Going Bacharach', openingDate: '2026-09-16' },
 ];
 const index = [
   { url: `${B}10_05_26.html`, title: 'The Hairy Ape' }, { url: `${B}10_05_26b.html`, title: 'Falls for Jodie' },
@@ -60,4 +61,25 @@ test('loadTbReviewFiles reads real files and marks flagged ones', async () => {
   fs.writeFileSync(path.join(dir, 's1', 'talkinbroadway--b.json'), JSON.stringify({ url: `${B}10_05_26.html`, wrongShow: true }));
   const got = loadTbReviewFiles(dir).map((f) => [f.file, f.flagged]).sort();
   assert.deepEqual(got, [['talkinbroadway--a.json', false], ['talkinbroadway--b.json', true]]);
+});
+
+test('throwing executor, a reused title in another year, several files and a held destination', () => {
+  const out = applyTbDatedCollisionRepairs('/x', [{ showId: 's', file: 'f.json', from: 'a', to: 'b', evidence: 'e' }], { executeIn: () => { throw new Error('bad json'); } });
+  assert.equal(out[0].ok, false);
+  // the 2022 Hairy Ape does not make the 2026 one ambiguous
+  const files = [
+    { showId: 'hairy-ape', file: 'a.json', url: `${B}10_05_26.html` },
+    { showId: 'falls-for-jodie', file: 'b.json', url: `${B}10_05_26.html` },
+  ];
+  assert.equal(planTbDatedCollisionRepairs(index, files, shows).repairs.length, 1);
+  // an old production holding the bare page is not moved onto the new show's review
+  const old = [
+    { showId: 'hairy-ape-2022', file: 'a.json', url: `${B}10_05_26.html` },
+    { showId: 'falls-for-jodie', file: 'b.json', url: `${B}10_05_26.html` },
+  ];
+  assert.equal(planTbDatedCollisionRepairs(index, old, shows).repairs.length, 0);
+  const two = [...files, { showId: 'falls-for-jodie', file: 'c.json', url: `${B}10_05_26.html` }];
+  assert.equal(planTbDatedCollisionRepairs(index, two, shows).repairs.length, 0);
+  const held = [...files, { showId: 'hairy-ape', file: 'd.json', url: `${B}10_05_26b.html` }];
+  assert.equal(planTbDatedCollisionRepairs(index, held, shows).repairs.length, 0);
 });
