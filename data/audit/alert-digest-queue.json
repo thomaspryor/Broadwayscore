@@ -884,5 +884,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T01:44:13.559Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8280-sb-cooldown",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8280-sb-cooldown",
+    "description": "land.yml did not land land/bro-8280-sb-cooldown: the unit-tests-node gate went red at 9f1eb967ba. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45526436555",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8280-sb-cooldown"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9f1eb967ba7a1a48210ef7661700957787dd2562"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45526436555"
+      }
+    ],
+    "queuedAt": "2026-11-25T01:59:31.060Z"
   }
 ]
