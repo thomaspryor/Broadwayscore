@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T12:17:05.256Z",
+  "generatedAt": "2026-11-25T15:45:20.904Z",
   "night": "2026-11-24",
   "counts": {
     "total": 6,
@@ -10,7 +10,7 @@
   "lines": [
     {
       "verdict": "FAIL",
-      "line": "A Christmas Carol: published by the regular pipeline; opening-night email draft not due until 9:00am; Reddit draft emailed to you is out of date (score 76 from 8 reviews, the site shows score 78 from 11 reviews). Failed."
+      "line": "A Christmas Carol: published by the regular pipeline; no opening-night email draft; Reddit draft emailed to you is out of date (score 79 from 11 reviews, the site shows score 76 from 10 reviews). Failed."
     },
     {
       "verdict": "FAIL",
@@ -30,7 +30,7 @@
     },
     {
       "verdict": "UNKNOWN",
-      "line": "The Jungle Book: published by the regular pipeline; 1 of 1 review live by 6:00pm; opening-night email draft not due until 9:00am. Not graded: no reviews were published overnight."
+      "line": "The Jungle Book: published by the regular pipeline; 1 of 1 review live by 6:00pm; no opening-night email draft yet (the site has 0 of the 8 reviews a draft needs). Not graded: no reviews were published overnight."
     }
   ],
   "scoreboard": {
@@ -39,6 +39,7 @@
     "passedOnOwn": 3
   },
   "missFirstSeen": {
+    "a-christmas-carol-west-end-2026|2026-11-24|email:broadcast:missing": "2026-11-25T15:45:20.904Z",
     "a-christmas-carol-west-end-2026|2026-11-24|email:reddit:stale": "2026-11-25T12:17:05.256Z",
     "the-dead-1904-off-broadway-2026|2026-11-24|review:timeout:Unknown": "2026-11-25T12:17:05.256Z",
     "the-dead-1904-off-broadway-2026|2026-11-24|review:nytimes:": "2026-11-25T12:17:05.256Z",

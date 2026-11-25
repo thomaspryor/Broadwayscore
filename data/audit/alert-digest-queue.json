@@ -385,5 +385,19 @@
       }
     ],
     "queuedAt": "2026-11-25T15:34:42.089Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:the-dead-1904-off-broadway-2026:timeout",
+    "title": "Auto-remediation gave up on the-dead-1904-off-broadway-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-dead-1904-off-broadway-2026\",\"outlet\":\"timeout\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T15:43:56.229Z"
   }
 ]
