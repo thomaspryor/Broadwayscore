@@ -467,3 +467,45 @@ test('BRO-8276: successor has another writer\'s uncommitted edit: deferred and k
   assert.equal(JSON.parse(originHas(env, NAMED_REL)).fullText, RECOVERED);
   assert.deepEqual(readPending(env.pendingPath), []);
 });
+
+test('BRO-8276: a NEW file whose unpushed commit a reset wiped is restored, not taken for an upstream deletion', () => {
+  const env = setup();
+  const hook = path.join(env.origin, 'hooks', 'pre-receive');
+  fs.writeFileSync(hook, '#!/bin/bash\nexit 1\n');
+  fs.chmodSync(hook, 0o755);
+  const NEW_REL = 'show-2026/guardian--new.json';
+  const abs = path.join(env.local, NEW_REL);
+  fs.writeFileSync(abs, review(RECOVERED));
+  assert.throws(() => checkpointReviewTexts({ repoDir: env.local, paths: [abs], message: 'feat: new', pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1 }), ReviewTextsPushError);
+  git(env.local, 'reset', '-q', '--hard', 'origin/main'); // another session's reset wipes the commit (and the file)
+  fs.unlinkSync(hook);
+  const r = retryPendingPushes({ repoDir: env.local, pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1 });
+  assert.deepEqual(r.superseded, [], 'never superseded');
+  assert.equal(r.restored.length, 1);
+  assert.equal(JSON.parse(originHas(env, NEW_REL)).fullText, RECOVERED);
+});
+
+test('BRO-8276: text already on the successor upstream: reported landed with renamedFrom, a dirty local successor is never committed', () => {
+  const env = setup();
+  seedUrl(env);
+  fs.writeFileSync(env.file, review(RECOVERED, { outletId: 'nytimes', url: STUB_URL }));
+  const fakePush = path.join(env.dir, 'fake-push.sh');
+  fs.writeFileSync(fakePush, '#!/bin/bash\nexit 0\n');
+  assert.throws(() => checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: test', pendingPath: env.pendingPath, pushScript: fakePush }), ReviewTextsLandingError);
+  // Upstream renamed the file AND already carries our text on the successor.
+  const body = path.join(env.dir, 'carried.body');
+  fs.writeFileSync(body, JSON.stringify({ showId: 'show-2026', outletId: 'nytimes', url: STUB_URL, criticName: 'Named Critic', fullText: RECOVERED, _renamedFrom: { file: REL } }, null, 2) + '\n');
+  const inj = path.join(env.dir, 'inject-carried.sh');
+  fs.writeFileSync(inj, `set -e\ncd "${env.ci}"\ngit pull -q --rebase origin main\ngit rm -q "${REL}"\ncp "${body}" "${NAMED_REL}"\ngit add -A\ngit commit -q -m carried\ngit push -q origin HEAD:main\n`);
+  execFileSync('bash', [inj]);
+  const before = originHas(env, NAMED_REL);
+  // After the retry's push, another writer leaves a metadata-only edit on the successor.
+  const dirtyPush = path.join(env.dir, 'dirty-meta-push.sh');
+  fs.writeFileSync(dirtyPush, `#!/bin/bash\nbash "${REAL_PUSH}" "$@" || exit $?\nnode -e 'const f=process.argv[1];const j=JSON.parse(require("fs").readFileSync(f,"utf8"));j.halfWritten=true;require("fs").writeFileSync(f,JSON.stringify(j))' "${path.join(env.local, NAMED_REL)}"\n`);
+  const calls = [];
+  const r = retryPendingPushes({ repoDir: env.local, pendingPath: env.pendingPath, pushScript: dirtyPush, retries: 1, onLanded: (l) => calls.push({ path: l.path, renamedFrom: l.renamedFrom || null }) });
+  assert.deepEqual(calls, [{ path: NAMED_REL, renamedFrom: REL }]);
+  assert.equal(originHas(env, NAMED_REL), before, 'nothing of the half-written local file was pushed');
+  assert.equal(r.renamed.length, 1);
+  assert.deepEqual(readPending(env.pendingPath), []);
+});

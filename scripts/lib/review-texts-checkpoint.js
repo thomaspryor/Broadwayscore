@@ -208,7 +208,10 @@ function fireLanded(onLanded, landed, entry) {
  * so our text is not lost in git but is not on origin either.
  */
 function isGoneUpstream(r) {
-  return !r.landed && r.landedBlob == null && r.committedKey != null && !!r.blob;
+  // The path must have existed before our commit (on origin, or in the HEAD we
+  // committed on): a file this run CREATED that is missing from origin is a
+  // wiped addition for the restore path, never a deletion upstream.
+  return !r.landed && r.landedBlob == null && r.committedKey != null && !!r.blob && !!(r.parentBlob || r.baseBlob);
 }
 
 function groupBy(list, keyOf) {
@@ -223,16 +226,18 @@ function trimEntry(pendingPath, id, keepRel) {
 }
 
 /**
- * Run a carry-over of `rels` (gone paths of pending entry `id`). A failed
- * successor push has already journaled the successor under its own entry,
- * so the gone paths leave entry `id` before the error propagates: otherwise
- * the next run would carry and report the same text twice.
+ * Run a carry-over of gone paths of pending entry `id`. A failed successor
+ * push has already journaled the successor under its own entry, so the
+ * carried paths leave entry `id` before the error propagates: otherwise the
+ * next run would carry and report the same text twice.
  */
-function carryGone(pendingPath, id, rels, run) {
+function carryGone(pendingPath, id, run) {
   try {
     return run();
   } catch (e) {
-    if (e instanceof ReviewTextsPushError) trimEntry(pendingPath, id, (rel) => !rels.includes(rel));
+    // Only the paths handed to the successor checkpoint (e.carriedFrom); a
+    // deferred or superseded sibling stays in entry `id`.
+    if (e instanceof ReviewTextsPushError && Array.isArray(e.carriedFrom)) trimEntry(pendingPath, id, (rel) => !e.carriedFrom.includes(rel));
     throw e;
   }
 }
@@ -289,34 +294,43 @@ function findSuccessor(repo, rel, { ours, parent }) {
  * The local successor must be clean and tracked (its committed copy may be
  * older than origin's: the push rebases it the same field-wise way). Call
  * under the review-texts lock.
- * @returns {{moved: {fromRel, rel, abs, key}[], superseded: {rel, why}[], deferred: {rel, why}[]}}
+ * @returns {{moved: {fromRel, rel, abs, key}[], already: object[], superseded: {rel, why}[], deferred: {rel, why}[]}}
  *   deferred = cannot carry from this checkout yet; the caller keeps it pending.
  */
 function carryOntoSuccessors(repo, gone) {
   const moved = [];
+  const already = [];
   const superseded = [];
   const deferred = [];
-  if (!gone.length) return { moved, superseded, deferred };
+  if (!gone.length) return { moved, already, superseded, deferred };
   let synced = null;
   const blobText = (sha) => { try { return sha ? git(repo, ['cat-file', 'blob', sha]) : null; } catch { return null; } };
   for (const g of gone) {
     const ours = parseOrNull(blobText(g.blob));
-    const parent = parseOrNull(blobText(g.parentBlob));
+    // Merge base: what origin held before our push, else the HEAD we committed on.
+    const parent = parseOrNull(blobText(g.parentBlob || g.baseBlob));
     if (!ours) { superseded.push({ rel: g.rel, why: 'committed blob no longer in the object store' }); continue; }
     const succ = findSuccessor(repo, g.rel, { ours, parent });
     if (!succ) { superseded.push({ rel: g.rel, why: 'removed upstream, no successor file' }); continue; }
     const abs = path.join(repo, succ.rel);
+    const originBlob = blobOrNull(repo, 'origin/main', succ.rel);
     if (landingKey(succ.rec) === landingKey(ours)) {
-      // Already on origin (someone carried it): report it landed via a no-op checkpoint.
-      moved.push({ fromRel: g.rel, rel: succ.rel, abs, key: landingKey(succ.rec) });
+      // Already on origin (another run carried it): confirmed remotely, no local commit.
+      already.push({ fromRel: g.rel, rel: succ.rel, abs, blob: originBlob, fullTextHash: landingKey(ours) });
       continue;
     }
-    if (!blobOrNull(repo, 'HEAD', succ.rel)) {
-      if (!synced) synced = syncCheckoutToOrigin(repo, { fetch: false });
-      if (!blobOrNull(repo, 'HEAD', succ.rel)) { deferred.push({ rel: g.rel, why: `successor ${succ.rel} not in this checkout yet (${synced.reason})` }); continue; }
+    if (blobOrNull(repo, 'HEAD', succ.rel) !== originBlob && !synced) synced = syncCheckoutToOrigin(repo, { fetch: false });
+    const headBlob = blobOrNull(repo, 'HEAD', succ.rel);
+    if (!headBlob) { deferred.push({ rel: g.rel, why: `successor ${succ.rel} not in this checkout yet (${synced ? synced.reason : 'not in HEAD'})` }); continue; }
+    // A HEAD older than origin is fine while origin did not change the
+    // successor's text since: the push rebase then merges the other fields
+    // field-wise. A text change upstream could fail that rebase closed.
+    if (headBlob !== originBlob) {
+      const headRec = parseOrNull(blobText(headBlob));
+      if (!headRec || headRec.fullText !== succ.rec.fullText) { deferred.push({ rel: g.rel, why: `successor ${succ.rel} text changed on origin since this checkout (${synced ? synced.reason : 'stale'})` }); continue; }
     }
     const wtBlob = fs.existsSync(abs) ? git(repo, ['hash-object', '--', abs]).trim() : null;
-    if (wtBlob !== blobOrNull(repo, 'HEAD', succ.rel)) { deferred.push({ rel: g.rel, why: `successor ${succ.rel} has uncommitted local edits` }); continue; }
+    if (wtBlob !== headBlob) { deferred.push({ rel: g.rel, why: `successor ${succ.rel} has uncommitted local edits` }); continue; }
     const { mergeReviewJson } = require('./review-json-three-way-merge');
     const { merged } = mergeReviewJson(parent, succ.rec, ours, { tie: 'upstream' });
     if (merged.fullText !== ours.fullText) {
@@ -333,7 +347,7 @@ function carryOntoSuccessors(repo, gone) {
     }
     moved.push({ fromRel: g.rel, rel: succ.rel, abs, key: landingKey(after) });
   }
-  return { moved, superseded, deferred };
+  return { moved, already, superseded, deferred };
 }
 
 /**
@@ -344,8 +358,11 @@ function carryOntoSuccessors(repo, gone) {
  * @returns {{landed: object[], superseded: object[], deferred: object[]}}
  */
 function landOnSuccessors(repo, gone, { onLanded, meta, pendingPath, pushScript, pushEnv, retries }) {
-  const { moved, superseded, deferred } = carryOntoSuccessors(repo, gone);
-  if (!moved.length) return { landed: [], superseded, deferred };
+  const { moved, already, superseded, deferred } = carryOntoSuccessors(repo, gone);
+  const withMeta = (list) => list.map((x) => ({ ...x, meta: meta || null }));
+  const alreadyLanded = already.map((a) => ({ rel: a.rel, abs: a.abs, landedBlob: a.blob, fullTextHash: a.fullTextHash, renamedFrom: a.fromRel, landed: true }));
+  fireLanded(onLanded, alreadyLanded, { commit: null, meta });
+  if (!moved.length) return { landed: alreadyLanded, superseded: withMeta(superseded), deferred: withMeta(deferred) };
   try {
     const res = checkpointReviewTexts({
       repoDir: repo,
@@ -355,10 +372,16 @@ function landOnSuccessors(repo, gone, { onLanded, meta, pendingPath, pushScript,
       message: `fix: land recovered text on ${moved.length} renamed review file(s) (BRO-8276)`,
       onLanded, meta, pendingPath, pushScript, pushEnv, retries,
     });
-    return { landed: res.landed, superseded: [...superseded, ...(res.superseded || [])], deferred: [...deferred, ...(res.deferred || [])] };
+    return { landed: [...alreadyLanded, ...res.landed], superseded: withMeta([...superseded, ...(res.superseded || [])]), deferred: withMeta([...deferred, ...(res.deferred || [])]) };
   } catch (e) {
-    if (!(e instanceof ReviewTextsLandingError)) throw e; // a failed push: journaled, the caller stops as for any push failure
-    return { landed: e.landed || [], superseded, deferred: [...deferred, ...(e.notLanded || []).map((r) => ({ rel: r.rel, why: r.why || 'successor not on origin/main after push' }))] };
+    if (!(e instanceof ReviewTextsLandingError)) {
+      // A failed push journaled the successors: tell carryGone which gone paths moved.
+      if (e instanceof ReviewTextsPushError) e.carriedFrom = moved.map((m) => m.fromRel);
+      throw e;
+    }
+    // Pushed but not confirmed: the successor checkpoint journaled those paths
+    // itself (with renamedFrom), so the original gone paths are not kept too.
+    return { landed: [...alreadyLanded, ...(e.landed || [])], superseded: withMeta(superseded), deferred: withMeta(deferred), pendingOnSuccessor: (e.notLanded || []).map((r) => ({ rel: r.rel, why: r.why || 'successor not on origin/main after push' })) };
   }
 }
 
@@ -398,6 +421,8 @@ function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onL
     const rels = allRels.filter((rel) => fs.existsSync(path.join(repo, rel)) || blobOrNull(repo, 'HEAD', rel));
     const vanished = allRels.filter((rel) => !rels.includes(rel) && !deletedRels.has(rel)).map((rel) => ({ rel, abs: path.join(repo, rel), landed: false, why: 'file vanished before commit' }));
     if (!rels.length) return { committed: false, pushed: false, commit: null, landed: [], notLanded: vanished };
+    // BRO-8276: what HEAD held before our commit (tells a deletion upstream from our own addition).
+    const baseBlobs = new Map(rels.map((rel) => [rel, blobOrNull(repo, 'HEAD', rel)]));
     git(repo, ['add', '-A', '--', ...rels]);
     const hasStagedChanges = !gitOk(repo, ['diff', '--cached', '--quiet', '--', ...rels]);
     let committed = false;
@@ -423,6 +448,7 @@ function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onL
           // The baseline a wiped commit may be restored over: what origin/main
           // held before this push (HEAD~1 may itself be an unpushed commit).
           parentBlob: blobOrNull(repo, 'origin/main', rel),
+          baseBlob: baseBlobs.get(rel) || null,
           // BRO-8276: carried onto this successor from a path gone upstream;
           // kept in the journal so a later retry still reports the move.
           ...(renamedFrom && renamedFrom.has(rel) ? { renamedFrom: renamedFrom.get(rel) } : {}),
@@ -476,14 +502,17 @@ function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onL
     const notLanded = res.filter((r) => !r.landed && !isGoneUpstream(r));
     // Paths still missing from origin/main after a successful push stay in the
     // ledger for the next run's retry; only landed (or resolved) ones leave it.
-    fireLanded(onLanded, landed, entry);
     const goneRels = gone.map((g) => g.rel);
-    const moved = carryGone(pendingPath, entry.id, goneRels, () => landOnSuccessors(repo, gone, { onLanded, meta: entry.meta, pendingPath, pushScript, pushEnv, retries }));
+    const notLandedRels = notLanded.map((r) => r.rel);
+    // Landed paths leave the journal before anything else can throw.
+    trimEntry(pendingPath, entry.id, (rel) => notLandedRels.includes(rel) || goneRels.includes(rel));
+    fireLanded(onLanded, landed, entry);
+    const moved = carryGone(pendingPath, entry.id, () => landOnSuccessors(repo, gone, { onLanded, meta: entry.meta, pendingPath, pushScript, pushEnv, retries }));
     // A gone path we could not carry yet stays journaled for the next run.
-    const keep = new Set([...notLanded.map((r) => r.rel), ...moved.deferred.filter((d) => goneRels.includes(d.rel)).map((d) => d.rel)]);
-    trimEntry(pendingPath, entry.id, (rel) => keep.has(rel));
+    const deferredRels = moved.deferred.map((d) => d.rel);
+    trimEntry(pendingPath, entry.id, (rel) => notLandedRels.includes(rel) || (goneRels.includes(rel) && deferredRels.includes(rel)));
     if (notLanded.length || lost.length || vanished.length) failLanding(notLanded, [...landed, ...moved.landed], true);
-    return { committed, pushed: true, commit, landed, notLanded, renamed: moved.landed, superseded: moved.superseded, deferred: moved.deferred };
+    return { committed, pushed: true, commit, landed: [...landed, ...moved.landed], notLanded, renamed: moved.landed, superseded: moved.superseded, deferred: moved.deferred };
   });
 }
 
@@ -546,25 +575,27 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
     // checkpoint has recorded its own pending entry (it does so before
     // pushing, so a ReviewTextsPushError means it did): a crash or a git
     // failure before that keeps the original record for the next run.
-    // Carried onto successors before the journal forgets the gone paths; a
-    // push failure here throws with the journal still holding them.
-    const keepGone = new Map(); // entry id -> gone rels still to carry (deferred)
+    // Journal first: each entry keeps only what is still unresolved, its gone
+    // paths (to carry) and its restore paths (until the restore checkpoint
+    // journals its own entry); fully resolved entries leave. Nothing below can
+    // then report a landed path a second time.
+    const goneBy = new Map([...groupBy(gone, (g) => g.entry.id)].map(([id, l]) => [id, new Set(l.map((g) => g.rel))]));
+    const restoreBy = new Map([...groupBy(toRestore, (r) => r.entry.id)].map(([id, l]) => [id, new Set(l.map((r) => r.rel))]));
+    const ids = new Set(entries.map((e) => e.id));
+    writePending(pendingPath, readPending(pendingPath).map((e) => (ids.has(e.id)
+      ? { ...e, paths: e.paths.filter((p) => (goneBy.get(e.id) || new Set()).has(p.rel) || (restoreBy.get(e.id) || new Set()).has(p.rel)) }
+      : e)).filter((e) => e.paths.length));
     for (const [id, list] of groupBy(gone, (g) => g.entry.id)) {
-      const moved = carryGone(pendingPath, id, list.map((g) => g.rel), () => landOnSuccessors(repo, list, { onLanded, meta: list[0].entry.meta, pendingPath, pushScript, pushEnv, retries }));
+      const moved = carryGone(pendingPath, id, () => landOnSuccessors(repo, list, { onLanded, meta: list[0].entry.meta, pendingPath, pushScript, pushEnv, retries }));
+      out.landed.push(...moved.landed);
       out.renamed.push(...moved.landed);
       out.superseded.push(...moved.superseded);
       out.deferred.push(...moved.deferred);
-      const ownRels = new Set(list.map((g) => g.rel));
-      const still = moved.deferred.filter((d) => ownRels.has(d.rel)).map((d) => d.rel);
-      if (still.length) keepGone.set(id, new Set(still));
+      // Deferred gone paths stay for the next run; carried/superseded ones leave.
+      const still = new Set(moved.deferred.map((d) => d.rel));
+      trimEntry(pendingPath, id, (rel) => (restoreBy.get(id) || new Set()).has(rel) || (goneBy.get(id).has(rel) && still.has(rel)));
     }
-    // Deferred gone paths stay in their entry (trimmed to them) for the next run.
-    if (keepGone.size) writePending(pendingPath, readPending(pendingPath).map((e) => (keepGone.has(e.id) ? { ...e, paths: e.paths.filter((p) => keepGone.get(e.id).has(p.rel)) } : e)));
-    // An entry trimmed to deferred gone paths is never dropped here (even when
-    // its other paths are being restored: the restore journals its own entry).
-    const restoring = new Set(toRestore.map((r) => r.entry.id).filter((id) => !keepGone.has(id)));
-    const dropEntries = (ids) => writePending(pendingPath, readPending(pendingPath).filter((e) => !ids.has(e.id)));
-    dropEntries(new Set(entries.filter((e) => !restoring.has(e.id) && !keepGone.has(e.id)).map((e) => e.id)));
+    const dropRestored = () => { for (const [id, rels] of restoreBy) trimEntry(pendingPath, id, (rel) => !rels.has(rel)); };
     if (toRestore.length) {
       let res;
       try {
@@ -578,10 +609,10 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
           pendingPath, pushScript, pushEnv, retries,
         });
       } catch (e) {
-        if (e instanceof ReviewTextsPushError) dropEntries(restoring);
+        if (e instanceof ReviewTextsPushError) dropRestored();
         throw e;
       }
-      dropEntries(restoring);
+      dropRestored();
       out.restored.push(...res.landed);
     }
     return out;
