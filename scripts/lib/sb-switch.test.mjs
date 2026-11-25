@@ -161,7 +161,7 @@ test('class guard: a caller that restricts fetchPage to the scrapingbee tier mus
     const rel = path.relative(ROOT, f);
     if (/\.test\.|\/test-|__tests__/.test(rel)) continue;
     const src = fs.readFileSync(f, 'utf8');
-    if (!/tiers:\s*\[\s*'scrapingbee'\s*\]/.test(src)) continue;
+    if (!/tiers:\s*\[\s*['"]scrapingbee['"]\s*\]/.test(src)) continue;
     if (/isScrapingBeeOff|sb-switch/.test(src)) continue;
     if (allowed[rel]) continue;
     bad.push(rel);
