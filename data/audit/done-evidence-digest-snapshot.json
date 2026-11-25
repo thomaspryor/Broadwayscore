@@ -1,11 +1,16 @@
 {
-  "generatedAt": "2026-11-24T12:43:04.499Z",
-  "bannerText": "224/270 Done(14d) verified on main · 6 FAILED · 0 vacuous · 20 stuck-but-done · 4 mis-armed, needs re-arming (BRO-8155, BRO-8152, BRO-8112, +1 more) — PARTIAL RUN: 27 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-25T11:46:33.733Z",
+  "bannerText": "149/177 Done(14d) verified on main · 3 FAILED · 0 vacuous · 24 stuck-but-done · 1 mis-armed, needs re-arming (BRO-8112) — PARTIAL RUN: 13 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-7666 — BSC Daily: Data quality: fulltext-mentions-show lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: fulltext-mentions-show lifetime sweep\" still listed in the 2026-11-24T12:34:17.132Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7666/bsc-daily-data-quality-fulltext-mentions-show-lifetime-sweep"
+      "title": "FAILED BRO-8148 — P1: Opening night miss: Fantasma (2026-11-22)",
+      "detail": "gap audit generated 2026-11-25T10:31:59.079Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8148/p1-opening-night-miss-fantasma-2026-11-22"
+    },
+    {
+      "title": "FAILED BRO-8044 — BSC Daily: Quality: outlet domain moves",
+      "detail": "[check-health-row-absent] FAIL: \"Quality: outlet domain moves\" still listed in the 2026-11-25T11:27:29.824Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8044/bsc-daily-quality-outlet-domain-moves"
     },
     {
       "title": "FAILED BRO-7531 — Scraping cost savings: audit vendor spend, re-order fetch chain, evaluate new vendors",
@@ -13,35 +18,30 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7531/scraping-cost-savings-audit-vendor-spend-re-order-fetch-chain-evaluate"
     },
     {
-      "title": "FAILED BRO-6703 — 2 show(s) still have no image after repeated self-heal attempts",
-      "detail": "[check-alert-condition-absent] FAIL: \"imageless-scored-show:still-imageless:all\" still firing — open, last fired 2026-11-24T04:32:52.300Z (8.2h ago, within 168h)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6703/2-shows-still-have-no-image-after-repeated-self-heal-attempts"
-    },
-    {
-      "title": "FAILED BRO-7823 — BSC Daily: Quality: opening date vs review dates",
-      "detail": "[check-health-row-absent] FAIL: \"Quality: opening date vs review dates\" still listed in the 2026-11-24T12:34:17.132Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7823/bsc-daily-quality-opening-date-vs-review-dates"
-    },
-    {
-      "title": "FAILED BRO-7818 — Quarantine 4 poisoned aggregator-archive pages that fail audit --strict (+ 93 cross-market pages awaiting quarantine)",
-      "detail": "❌ scanned 0 archive files — data/aggregator-archive is missing or empty (private data not set up). The gate cannot pass vacuously; run scripts/setup-local-data.sh first.",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7818/quarantine-4-poisoned-aggregator-archive-pages-that-fail-audit-strict"
-    },
-    {
-      "title": "FAILED BRO-7730 — Land-follow check reads land pushes inside heredocs and test fixtures as real pushes",
-      "detail": "TAP version 13",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7730/land-follow-check-reads-land-pushes-inside-heredocs-and-test-fixtures"
-    },
-    {
-      "title": "STUCK BRO-7568 — Recheck 2026-11-15: 6 done claims no longer hold on main",
+      "title": "STUCK BRO-8100 — Numeric show titles (44, 13) still fail url-content-mismatch, rebuild showNotMentioned and headline gates: 44 has 8/16 reviews live, 13 has 1/28",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7568/recheck-2026-11-15-6-done-claims-no-longer-hold-on-main"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8100/numeric-show-titles-44-13-still-fail-url-content-mismatch-rebuild"
     },
     {
-      "title": "STUCK BRO-7136 — Land Dependabot PR #1182: chore(deps): Bump the all-updates group across 1 directory with 12 updates",
+      "title": "STUCK BRO-8094 — Root-cause audit, infra/gates/discovery fixes from session 12bb3cbc: BRO-7492 7931 7934 7947 7949 7951 7984 8008 7924, plus BRO-3823 live-probe ETIMEDOUT in land floor",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7136/land-dependabot-pr-1182-choredeps-bump-the-all-updates-group-across-1"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8094/root-cause-audit-infragatesdiscovery-fixes-from-session-12bb3cbc-bro"
+    },
+    {
+      "title": "STUCK BRO-8091 — Drain the _pending fetch candidates: 33 (2025-26), 166 (2015-24), 747 (pre-2015), chained + checkpointed, subscriber outlets via logged-in browser",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8091/drain-the-pending-fetch-candidates-33-2025-26-166-2015-24-747-pre-2015"
+    },
+    {
+      "title": "STUCK BRO-8089 — P1: _pending keeps refilling: 329 of 593 new stubs in 14 days are junk the triage already recognizes (show-score 162, site-search 109, submit-review-form 36); triage only runs at drain time",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8089/p1-pending-keeps-refilling-329-of-593-new-stubs-in-14-days-are-junk"
+    },
+    {
+      "title": "STUCK BRO-8025 — Recurrence detector: repeat outlets spread across markets never reach a class (guardian 10 shows, whatsonstage 8, thestage 8, timeout-london 8 in 2 months)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8025/recurrence-detector-repeat-outlets-spread-across-markets-never-reach-a"
     }
   ],
-  "moreCount": 18
+  "moreCount": 19
 }
