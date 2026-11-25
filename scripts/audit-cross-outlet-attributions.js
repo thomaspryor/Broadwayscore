@@ -83,6 +83,7 @@ const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-sca
 const { isTriagedOut, makeOutletCanonicalizer } = require('./lib/cross-outlet-triage');
 const { explainExclusion } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { buildEvidencedDefaultHomes } = require('./lib/default-critic-home');
 // Registry aliases (gotham-playgoer -> bobs-theater-blog, dc-metro-theater-arts
 // -> dc-theater-arts) are the SAME outlet. Comparing raw outletIds reported a
 // critic at their own home outlet's alias as a cross-outlet suspect (BRO-4695).
@@ -171,17 +172,20 @@ for (const required of ['data/review-texts', 'data/reviews.json', 'data/outlet-r
 const AGG = ['playbill-verdict', 'show-score', 'bww-roundup', 'dtli', 'outlet-listing-poller'];
 
 const registryDoc = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
-const registry = registryDoc.outlets;
 const canonOutlet = makeOutletCanonicalizer(registryDoc);
-const defaultOf = new Map();
-for (const [oid, entry] of Object.entries(registry)) {
-  if (entry.defaultCritic) {
-    if (!defaultOf.has(entry.defaultCritic)) defaultOf.set(entry.defaultCritic, []);
-    defaultOf.get(entry.defaultCritic).push(canonOutlet(oid));
-  }
-}
-
 const reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8')).reviews;
+// BRO-7391: only defaults the critic has actually published under count as a
+// home. A homeless registry default (Stasio at boston-herald, Kennedy at
+// news-tribune) made every review that critic wrote anywhere else a suspect.
+const defaultOf = buildEvidencedDefaultHomes(registryDoc, reviews);
+{
+  // Visible, not silent: a correct default whose home rows are all missing from
+  // reviews.json drops out here too, and its drift would go unreported.
+  const dropped = Object.entries(registryDoc.outlets)
+    .filter(([oid, e]) => e && e.defaultCritic && !(defaultOf.get(e.defaultCritic) || []).includes(canonOutlet(oid)))
+    .map(([oid, e]) => `${oid}|${e.defaultCritic}`);
+  if (dropped.length) console.error(`ignoring ${dropped.length} registry defaultCritic(s) with no reviews at their own outlet: ${dropped.join(', ')}`);
+}
 const perOutletCritic = new Map();
 for (const r of reviews) {
   const key = `${canonOutlet(r.outletId)}||${r.criticName}`;

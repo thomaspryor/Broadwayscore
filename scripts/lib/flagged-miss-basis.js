@@ -117,7 +117,8 @@ function isTimeoutListingCapsule(d) {
 function isHeldSyndicatedReprint(d, isHeldFile) {
   return !!d && d.isSyndicatedDuplicate === true && typeof d.syndicatedPrimaryFile === 'string'
     && d.syndicatedPrimaryFile.includes('/')
-    && Number(d.syndicationSimilarity) >= 80
+    // BRO-7391: a truncated copy carries a low Jaccard but a containment score.
+    && (Number(d.syndicationSimilarity) >= 80 || Number(d.syndicationContainment) >= 90)
     && typeof isHeldFile === 'function' && !!isHeldFile(d.syndicatedPrimaryFile, d);
 }
 // BRO-6689: the CV pass reads a (often truncated, plot-heavy) slice of the body, so its

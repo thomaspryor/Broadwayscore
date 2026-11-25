@@ -39,7 +39,7 @@ test('BRO-4163 corrects the Guardian byline through the real writer without chan
     const after = JSON.parse(fs.readFileSync(path.join(dir, showId, file), 'utf8'));
     assert.deepEqual(after, file === target ? {
       ...record, criticName: 'Hadley Freeman',
-      approvedFixes: [{ ...stamp, field: 'criticName', newValue: 'Hadley Freeman' }],
+      approvedFixes: [{ ...stamp, field: 'criticName', newValue: 'Hadley Freeman', boundTo: { url: '', contentHash: 'excerpt-only' } }],
     } : record, file);
   }
   assert.equal(executeReviewFieldEditIn(dir, action, stamp).ok, false,

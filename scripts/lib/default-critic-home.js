@@ -51,4 +51,38 @@ function findHomelessDefaultCritics(registryDoc, reviews) {
   return out.sort((a, b) => a.outletId.localeCompare(b.outletId));
 }
 
-module.exports = { findHomelessDefaultCritics };
+/**
+ * BRO-7391: the critic -> home-outlets map the cross-outlet audit flags against,
+ * built ONLY from defaultCritic rows the critic has actually published under
+ * (>=1 review at the alias-canonical home in reviews.json). A homeless default
+ * is no evidence of where the critic works, so it must not make every review
+ * they write elsewhere a suspect: BRO-7038 (Mark Kennedy at news-tribune, he is
+ * AP) and BRO-8038 (Marilyn Stasio at boston-herald, she is Variety: her review
+ * syndicated in the Chicago Tribune read as drift) were both this.
+ * The live test (default-critic-home.live.test.mjs) still keeps NEW homeless
+ * defaults out of the registry; this makes the audit immune to the ones there.
+ *
+ * @returns {Map<string, string[]>} criticName -> canonical home outletIds
+ */
+function buildEvidencedDefaultHomes(registryDoc, reviews) {
+  if (!registryDoc || typeof registryDoc.outlets !== 'object' || !Array.isArray(reviews) || !reviews.length) {
+    throw new Error('buildEvidencedDefaultHomes: registry.outlets and a non-empty reviews array are required (an empty corpus would drop every home)');
+  }
+  const canon = makeOutletCanonicalizer(registryDoc);
+  const seen = new Set();
+  for (const r of reviews) {
+    if (r && r.criticName) seen.add(`${canon(r.outletId)}||${r.criticName}`);
+  }
+  const homes = new Map();
+  for (const [oid, entry] of Object.entries(registryDoc.outlets)) {
+    const critic = entry && entry.defaultCritic;
+    if (!critic) continue;
+    const home = canon(oid);
+    if (!seen.has(`${home}||${critic}`)) continue;
+    if (!homes.has(critic)) homes.set(critic, []);
+    if (!homes.get(critic).includes(home)) homes.get(critic).push(home);
+  }
+  return homes;
+}
+
+module.exports = { findHomelessDefaultCritics, buildEvidencedDefaultHomes };
