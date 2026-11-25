@@ -86,19 +86,21 @@ function buildEvidenceIndex(shows) {
 
 let _defaultIndex = null;
 let _showsById = null;
+let _loadedPath = null;
 // Fail open: a missing or unreadable data/shows.json must not abort a rebuild or
-// an extractor run; the guard then just has no cross-show evidence.
+// an extractor run; the guard then just has no cross-show evidence. The path is
+// resolved per call (SHOWS_JSON_PATH, BRO-8107) so a test can point it at a fixture.
 function loadShows() {
-  if (_showsById) return _showsById;
+  const file = require('./shows-json-path').showsJsonPath();
+  if (_showsById && _loadedPath === file) return _showsById;
+  _loadedPath = file;
   _showsById = new Map();
   let list = [];
   try {
-    const path = require('path');
-    const fs = require('fs');
-    const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
+    const raw = JSON.parse(require('fs').readFileSync(file, 'utf8'));
     list = Array.isArray(raw) ? raw : (raw.shows || Object.values(raw));
   } catch (e) {
-    console.warn(`[pull-quote-other-show] data/shows.json unreadable (${e.code || e.message}); other-show guard has no evidence`);
+    console.warn(`[pull-quote-other-show] ${file} unreadable (${e.code || e.message}); other-show guard has no evidence`);
   }
   for (const sh of list) if (sh && sh.id) _showsById.set(sh.id, sh);
   _defaultIndex = buildEvidenceIndex(list);
@@ -106,7 +108,7 @@ function loadShows() {
 }
 
 function loadDefaultIndex() {
-  if (!_defaultIndex) loadShows();
+  loadShows();
   return _defaultIndex;
 }
 
