@@ -29,6 +29,8 @@
  * lazy data/shows.json read in loadDefaultIndex().
  */
 
+const { toDateMs } = require('./date-utils');
+
 const FAR_BEFORE_CHARS = 1200;
 const SECTION_CHARS = 1800;
 const WINDOW_DAYS = 150;
@@ -78,7 +80,7 @@ function buildEvidenceIndex(shows) {
   for (const s of shows || []) {
     const titleKey = distinctiveTitle(s && s.title);
     if (!titleKey) continue;
-    const opening = s.openingDate ? Date.parse(s.openingDate) : NaN;
+    const opening = s.openingDate ? toDateMs(s.openingDate) : NaN;
     out.push({ id: s.id, title: s.title, titleKey, titleLower: titleKey.toLowerCase(), opening: Number.isFinite(opening) ? opening : null, names: showNames(s, { creativeSurnames: null }) });
   }
   return out;
@@ -161,7 +163,7 @@ function articleContext(data, show, index, ownKey) {
   if (hit && hit.src === data.fullText && hit.showId === showId && hit.index === index) return hit;
   const text = fold(data.fullText);
   const ownTitleLower = ownKey.toLowerCase();
-  const reviewDate = Date.parse(data.publishDate || '');
+  const reviewDate = toDateMs(data.publishDate || '');
   const others = [];
   if (Number.isFinite(reviewDate)) {
     for (const o of index || loadDefaultIndex()) {

@@ -112,3 +112,8 @@ test('a short own title does not hide a different show whose title merely contai
     fullText: `Rent arrives. ${filler(4)} The Current War Show is the other opening. ${q}${filler(3)}` };
   assert.equal((quoteInOtherShowPassage(q, d, rent, idx) || {}).rule, 'other-show');
 });
+
+test('an ordinal publish date ("March 17th, 2017") still lets the other-show test run', () => {
+  const d = { ...vv, publishDate: 'March 17th, 2017' };
+  assert.equal((quoteInOtherShowPassage(QUOTE_PRICE, d, cfa, index) || {}).rule, 'other-show');
+});
