@@ -1,10 +1,10 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5325: end-to-end run of scripts/copy-multishow-section.js on fixture
 // review-texts. Shapes follow the card's three cases: venus-in-fur-2011 (a short
 // own WSJ row, the section in godspell-2011's column), of-mice-and-men-2014 (no
 // Teachout row, the section in act-one-2014's column) and 9-to-5-2009 (its box
 // sits in a cluster in waiting-for-godot-2009's column, so the copy refuses).
 // Invented placeholder prose, not review text. Pure rules: tests/unit/multishow-section-copy.test.mjs.
-import './lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

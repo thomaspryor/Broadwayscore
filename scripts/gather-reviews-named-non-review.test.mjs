@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4101 — gather-reviews.js's createReviewFile() is a SEPARATE write
  * chokepoint from review-file-writer.js's createOrMergeReviewFile() (its own
@@ -12,7 +13,6 @@
  * obviously-scratch showId and removes the directory afterward so it never
  * pollutes a real show's review-texts folder.
  */
-import './lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
