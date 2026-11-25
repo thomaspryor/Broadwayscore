@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T02:03:55.851Z",
+  "generatedAt": "2026-11-25T03:42:04.094Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -418,25 +418,24 @@
       "status": "open",
       "slug": "a-christmas-carol-west-end",
       "thumbnail": "/images/shows/a-christmas-carol-west-end-2026/thumbnail.webp",
-      "siteScore": 82.22,
-      "liveScore": 82,
-      "scoreDrift": -0.21999999999999886,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 81.43,
+      "liveScore": 81,
+      "scoreDrift": -0.4300000000000068,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 3,
-      "positive": 4,
+      "positive": 5,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "5/8 total",
           "T1:0/3",
-          "T2:1/2",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
@@ -512,10 +511,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -648,6 +643,18 @@
           "t2": 1,
           "t3": 3,
           "p": 4,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T03:42:04.094Z",
+          "rc": 5,
+          "s": 81.43,
+          "t1": 0,
+          "t2": 2,
+          "t3": 3,
+          "p": 5,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -842,25 +849,25 @@
       "status": "open",
       "slug": "attention-off-west-end",
       "thumbnail": "/images/shows/attention-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 63.47,
+      "siteScore": 63.49,
       "liveScore": 63,
-      "scoreDrift": -0.46999999999999886,
+      "scoreDrift": -0.490000000000002,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 10,
       "t1": 0,
       "t2": 4,
-      "t3": 5,
+      "t3": 6,
       "positive": 6,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1010,6 +1017,18 @@
           "t3": 5,
           "p": 6,
           "m": 1,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T03:42:04.094Z",
+          "rc": 10,
+          "s": 63.49,
+          "t1": 0,
+          "t2": 4,
+          "t3": 6,
+          "p": 6,
+          "m": 2,
           "n": 2,
           "bc": "waiting"
         }
