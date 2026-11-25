@@ -245,3 +245,82 @@ test('BRO-8261: more show files than can be loaded fails open even with an openi
   assert.equal(r.reveal, true);
   assert.match(r.reason, /too-many-show-files/);
 });
+
+// ---- BRO-8281: only Broadway changes keep ship-now ----
+const { skipForCategory, revealCategoriesFromEnv, DEFAULT_REVEAL_CATEGORIES, NON_BROADWAY_CATEGORIES } = require('./deploy-reveal.js');
+const OB = 'public/data/shows/the-dead-1904-off-broadway-2026.json';
+const WE = 'public/data/shows/some-play-west-end-2026.json';
+const BW = 'public/data/shows/hamilton-2015.json';
+const showJson = (cat, rc, extra = {}) => JSON.stringify({ _v: 1, id: 'x', cat, cs: 70, rc, bd: [0, 0, 0, 0, 0], rv: [], au: null, ...extra });
+const pair = (cat, rc0, rc1) => ({ before: showJson(cat, rc0), after: showJson(cat, rc1) });
+const readMap = (m) => (f) => m[f];
+const DEF = { revealCategories: DEFAULT_REVEAL_CATEGORIES };
+
+test('BRO-8281: skipForCategory truth table', () => {
+  const j = (cat) => (cat === undefined ? {} : { cat });
+  assert.equal(skipForCategory('a-off-broadway-2026', j('off-broadway'), j('off-broadway'), DEFAULT_REVEAL_CATEGORIES), true);
+  for (const c of NON_BROADWAY_CATEGORIES) {
+    assert.equal(skipForCategory(`x-${c}-1`, j(c), j(c), DEFAULT_REVEAL_CATEGORIES), true, c);
+  }
+  assert.equal(skipForCategory('hamilton-2015', j('broadway'), j('broadway'), DEFAULT_REVEAL_CATEGORIES), false);
+  assert.equal(skipForCategory('a-off-broadway-2026', j(undefined), j(undefined), DEFAULT_REVEAL_CATEGORIES), false, 'missing cat fails open');
+  assert.equal(skipForCategory('a-off-broadway-2026', j('mars'), j('mars'), DEFAULT_REVEAL_CATEGORIES), false, 'unknown cat fails open');
+  assert.equal(skipForCategory('a-off-broadway-2026', j('off-broadway'), j('broadway'), DEFAULT_REVEAL_CATEGORIES), false, 'reclassified either way counts');
+  assert.equal(skipForCategory('a-off-broadway-2026', j('broadway'), j('off-broadway'), DEFAULT_REVEAL_CATEGORIES), false);
+  assert.equal(skipForCategory('a-off-broadway-2026', null, j('off-broadway'), DEFAULT_REVEAL_CATEGORIES), true, 'added file');
+  assert.equal(skipForCategory('a-off-broadway-2026', j('off-broadway'), null, DEFAULT_REVEAL_CATEGORIES), true, 'deleted file');
+  assert.equal(skipForCategory('a-off-broadway-2026', j('off-broadway'), j('off-broadway'), null), false, 'null policy = old behavior');
+  // Mislabel guard: a cat that says off-broadway on an id with no market hint is not trusted.
+  assert.equal(skipForCategory('hamilton-2015', j('off-broadway'), j('off-broadway'), DEFAULT_REVEAL_CATEGORIES), false);
+});
+
+test('BRO-8281: non-Broadway show in the opening window is routine; same change with the switch is a reveal', () => {
+  const read = readMap({ [OB]: pair('off-broadway', 3, 9) });
+  const r = classifyReveal([OB], read, { openingIds: ['the-dead-1904-off-broadway-2026'], ...DEF });
+  assert.equal(r.reveal, false);
+  assert.match(r.reason, /1 non-broadway skipped/);
+  const old = classifyReveal([OB], read, { openingIds: ['the-dead-1904-off-broadway-2026'], revealCategories: null });
+  assert.equal(old.reveal, true);
+  assert.equal(old.reason, 'reviews-changed');
+});
+
+test('BRO-8281: first reviews for a non-Broadway show outside the window are routine, Broadway ones still reveal', () => {
+  const first = (cat) => ({ before: showJson(cat, 0), after: showJson(cat, 5, { cs: 70 }) });
+  const ob = classifyReveal([WE], readMap({ [WE]: first('west-end') }), { openingIds: ['unrelated-show-2026'], ...DEF });
+  assert.equal(ob.reveal, false);
+  // a hand-built broadway first-reviews file (no market hint in id) still reveals
+  const bw = classifyReveal([BW], readMap({ [BW]: { before: showJson('broadway', 0, { rv: [] }), after: showJson('broadway', 5, { rv: [{ o: 'NYT', s: 80 }] }) } }), { openingIds: ['unrelated-show-2026'], ...DEF });
+  assert.equal(bw.reveal, true);
+  assert.equal(bw.reason, 'first-reviews');
+});
+
+test('BRO-8281: mixed range reveals in either file order', () => {
+  const m = { [OB]: pair('off-broadway', 3, 9), [BW]: pair('broadway', 3, 9) };
+  const ids = ['the-dead-1904-off-broadway-2026', 'hamilton-2015'];
+  for (const files of [[OB, BW], [BW, OB]]) {
+    const r = classifyReveal(files, readMap(m), { openingIds: ids, ...DEF });
+    assert.equal(r.reveal, true, files.join());
+    assert.equal(r.file, BW);
+  }
+});
+
+test('BRO-8281: unknown window still applies the category rule; caps and code paths still fail open', () => {
+  const read = readMap({ [OB]: pair('off-broadway', 3, 9) });
+  assert.equal(classifyReveal([OB], read, { openingIds: null, ...DEF }).reveal, false);
+  assert.equal(classifyReveal([OB, 'src/app/page.tsx'], read, { codePaths: ['src/'], ...DEF }).reveal, true);
+  const many = Array.from({ length: MAX_SHOW_FILES + 1 }, (_, i) => `public/data/shows/s${i}-off-broadway-2026.json`);
+  const r = classifyReveal(many, () => pair('off-broadway', 1, 2), { openingIds: null, ...DEF });
+  assert.equal(r.reveal, true);
+  assert.match(r.reason, /too-many-show-files/);
+});
+
+test('BRO-8281: kill switch env maps to null policy and the workflows wire it in all three call sites', () => {
+  assert.deepEqual(revealCategoriesFromEnv({}), DEFAULT_REVEAL_CATEGORIES);
+  assert.deepEqual(revealCategoriesFromEnv({ GATE_REVEAL_ALL_CATEGORIES: 'false' }), DEFAULT_REVEAL_CATEGORIES);
+  assert.equal(revealCategoriesFromEnv({ GATE_REVEAL_ALL_CATEGORIES: 'true' }), null);
+  const wire = 'GATE_REVEAL_ALL_CATEGORIES: ${{ vars.DEPLOY_REVEAL_ALL_CATEGORIES }}';
+  const deploy = fs.readFileSync(path.join(ROOT, '.github/workflows/vercel-deploy.yml'), 'utf8');
+  const poller = fs.readFileSync(path.join(ROOT, '.github/workflows/opening-night-poller.yml'), 'utf8');
+  assert.equal(deploy.split(wire).length - 1, 2, 'gate job + pre-warm step');
+  assert.equal(poller.split(wire).length - 1, 1, 'poller classification step');
+});

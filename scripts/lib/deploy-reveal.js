@@ -105,13 +105,41 @@ function nytPicksChanged(pair) {
   }
 }
 
+// BRO-8281: owner rule (2026-11-25): Broadway openings are found in the first 30-60 min, anything else within
+// 6-8h. Only a change to a show whose public `cat` is in this list keeps ship-now; every other known category
+// rides the routine path (45-min interval, deferred retry, 3h backstop). null = every category counts (old behavior).
+const DEFAULT_REVEAL_CATEGORIES = ['broadway'];
+const NON_BROADWAY_CATEGORIES = ['off-broadway', 'west-end', 'off-west-end', 'regional', 'tour'];
+// Broadway ids carry no market hint; every other market's id does. A show is skipped only when the `cat` field AND
+// the id agree it is not Broadway, so one mislabeled `cat` cannot demote a Broadway opening (BRO-8281 pre-mortem).
+const NON_BROADWAY_ID_RE = /(off-broadway|west-end|off-west-end|regional|tour|london|uk-tour)/;
+
+/** Pure: env switch -> categories policy. GATE_REVEAL_ALL_CATEGORIES=true restores the old all-categories reveal. */
+function revealCategoriesFromEnv(env = process.env) {
+  return env && env.GATE_REVEAL_ALL_CATEGORIES === 'true' ? null : DEFAULT_REVEAL_CATEGORIES;
+}
+
+/**
+ * Pure: may this changed show file be ignored for the reveal decision? Only when a policy is set and every side
+ * that exists has a top-level `cat` that is a KNOWN non-reveal category, and the id also looks non-Broadway.
+ * Missing/unknown/mixed cat, or an id with no market hint, fails open (counts).
+ */
+function skipForCategory(showId, before, after, revealCategories) {
+  if (!revealCategories) return false;
+  if (!NON_BROADWAY_ID_RE.test(String(showId || ''))) return false;
+  const sides = [before, after].filter((j) => j != null);
+  if (!sides.length) return false;
+  return sides.every((j) => typeof j.cat === 'string' && NON_BROADWAY_CATEGORIES.includes(j.cat) && !revealCategories.includes(j.cat));
+}
+
 /**
  * Pure: classify changed files. `read(path) -> {before, after}` returns raw
  * file text (null when absent on that side). `openingIds` is the list of show
  * ids in the opening window, or null (unknown: every show counts). Returns
  * { reveal: boolean, reason: string, file: string|null }.
  */
-function classifyReveal(files, read, { codePaths = [], maxShowFiles = MAX_SHOW_FILES, openingIds = null } = {}) {
+function classifyReveal(files, read, { codePaths = [], maxShowFiles = MAX_SHOW_FILES, openingIds = null, revealCategories = null } = {}) {
+  let skipped = 0;
   const isCode = (f) => codePaths.some((p) => (p.endsWith('/') ? f.startsWith(p) : f === p));
   for (const f of files) {
     if (isCode(f)) return { reveal: true, reason: 'code', file: f };
@@ -145,6 +173,7 @@ function classifyReveal(files, read, { codePaths = [], maxShowFiles = MAX_SHOW_F
       } catch {
         return { reveal: true, reason: 'parse-error', file: f };
       }
+      if (skipForCategory(showIdOf(f), before, after, revealCategories)) { skipped++; continue; }
       if (!hasReviews(before) && hasReviews(after)) return { reveal: true, reason: 'first-reviews', file: f };
     }
   }
@@ -160,6 +189,7 @@ function classifyReveal(files, read, { codePaths = [], maxShowFiles = MAX_SHOW_F
     } catch {
       return { reveal: true, reason: 'parse-error', file: f };
     }
+    if (skipForCategory(showIdOf(f), before, after, revealCategories)) { skipped++; continue; }
     if (before == null || after == null) {
       if (hasReviews(before) || hasReviews(after)) return { reveal: true, reason: before == null ? 'show-added' : 'show-deleted', file: f };
       continue;
@@ -170,7 +200,8 @@ function classifyReveal(files, read, { codePaths = [], maxShowFiles = MAX_SHOW_F
     if (pb !== pa) return { reveal: true, reason: 'reviews-changed', file: f };
   }
   const scope = opening ? `${shows.length}/${allShows.length} opening` : `${shows.length}`;
-  return { reveal: false, reason: allShows.length ? `no-visible-change(${scope} show files)` : 'no-reveal-paths', file: null };
+  const skipNote = skipped ? `,${skipped} non-broadway skipped` : '';
+  return { reveal: false, reason: allShows.length ? `no-visible-change(${scope} show files${skipNote})` : 'no-reveal-paths', file: null };
 }
 
 /**
@@ -220,7 +251,7 @@ function catFileBatch(specs) {
 }
 
 /** Classify base..head in the current repo. Never throws: errors fail open. */
-function classifyRange(base, head, { codePaths = [] } = {}) {
+function classifyRange(base, head, { codePaths = [], revealCategories = DEFAULT_REVEAL_CATEGORIES } = {}) {
   try {
     const files = gitOut(['diff', '--name-only', '--no-renames', base, head]).split('\n').filter(Boolean);
     // Status + NYT picks always read (small), so the show-file cap below never hides them.
@@ -243,13 +274,13 @@ function classifyRange(base, head, { codePaths = [] } = {}) {
       blobs = new Map([...status, ...catFileBatch(wanted.flatMap((f) => [`${base}:${f}`, `${head}:${f}`]))]);
     }
     const read = (f) => ({ before: blobs.get(`${base}:${f}`) ?? null, after: blobs.get(`${head}:${f}`) ?? null });
-    return { ...classifyReveal(files, read, { codePaths, openingIds }), changed: files.length };
+    return { ...classifyReveal(files, read, { codePaths, openingIds, revealCategories }), changed: files.length };
   } catch (e) {
     return { reveal: true, reason: `classify-error: ${String(e.message || e).slice(0, 120)}`, file: null, changed: null };
   }
 }
 
-module.exports = { reviewProjection, classifyReveal, isShowFile, openingIdsFrom, nytPicksChanged, resolveUrgency, classifyRange, catFileBatch, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES, STATUS_MAX_AGE_SEC, REVEAL_DATA_FILES };
+module.exports = { DEFAULT_REVEAL_CATEGORIES, NON_BROADWAY_CATEGORIES, revealCategoriesFromEnv, skipForCategory, reviewProjection, classifyReveal, isShowFile, openingIdsFrom, nytPicksChanged, resolveUrgency, classifyRange, catFileBatch, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES, STATUS_MAX_AGE_SEC, REVEAL_DATA_FILES };
 
 // CLI: `node scripts/lib/deploy-reveal.js <base> <head>` prints reveal=true|false
 // and reason=..., one per line (GITHUB_OUTPUT-ready). Used by the opening-night
@@ -258,7 +289,7 @@ if (require.main === module) {
   const [base, head] = process.argv.slice(2);
   let r;
   if (!base || !head) r = { reveal: true, reason: 'usage: <base> <head>', file: null };
-  else r = classifyRange(base, head, { codePaths: require('./should-deploy-gate.js').CODE_PATHS });
+  else r = classifyRange(base, head, { codePaths: require('./should-deploy-gate.js').CODE_PATHS, revealCategories: revealCategoriesFromEnv() });
   const reason = `${r.reason}${r.file ? ' ' + r.file : ''}`.replace(/[\r\n]/g, ' ');
   process.stdout.write(`reveal=${r.reveal}\nreason=${reason}\n`);
 }

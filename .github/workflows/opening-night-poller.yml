@@ -1512,6 +1512,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           COMMITTED: ${{ steps.commit.outputs.committed }}
+          # BRO-8281: same kill switch as vercel-deploy.yml, so the poller's own classification matches the gate's.
+          GATE_REVEAL_ALL_CATEGORIES: ${{ vars.DEPLOY_REVEAL_ALL_CATEGORIES }}
         run: |
           DEPLOY_SHA=$(git rev-parse HEAD)
           echo "deploy_sha=$DEPLOY_SHA" >> $GITHUB_OUTPUT

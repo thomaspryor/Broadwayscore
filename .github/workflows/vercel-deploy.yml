@@ -120,6 +120,8 @@ jobs:
           # (health-check's freshness alert bars then move to 11h/15h with it).
           GATE_BACKSTOP_MIN: ${{ vars.DEPLOY_BACKSTOP_MIN }}
           GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
+          # BRO-8281: kill switch. true restores ship-now for reveals in every category, not just Broadway.
+          GATE_REVEAL_ALL_CATEGORIES: ${{ vars.DEPLOY_REVEAL_ALL_CATEGORIES }}
         run: |
           # The gate script fails OPEN internally (API/fetch/diff errors →
           # proceed=true). If the script itself crashes, fail this step LOUDLY
@@ -353,6 +355,8 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
+          # BRO-8281: kill switch. true restores ship-now for reveals in every category, not just Broadway.
+          GATE_REVEAL_ALL_CATEGORIES: ${{ vars.DEPLOY_REVEAL_ALL_CATEGORIES }}
           # BRO-8261: same timing knobs as the gate job, so the min-interval and
           # backstop kill switches also reach the pre-warm gate call below.
           GATE_MIN_INTERVAL_MIN: ${{ vars.DEPLOY_MIN_INTERVAL_MIN }}

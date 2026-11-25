@@ -87,7 +87,7 @@ const fs = require('fs');
 const path = require('path');
 const { DATA_TRACKED_FILES, blobShaMetaKey } = require('./core-data-blob-meta.js');
 const { runGitOrThrow } = require('./git-proc-guard.js'); // BRO-7458
-const { classifyRange, resolveUrgency } = require('./deploy-reveal.js'); // BRO-8236
+const { classifyRange, resolveUrgency, revealCategoriesFromEnv } = require('./deploy-reveal.js'); // BRO-8236
 
 // Tracked data/*.json the site imports from src/ (BRO-4614). Exact paths, not a
 // data/ prefix: data/audit/ churns constantly and never changes the site.
@@ -565,7 +565,7 @@ async function main() {
   if (!gateDisabled && urgentTrigger && !alwaysShip && baseline.sha && baseline.sha !== headSha) {
     try {
       git(['fetch', '--depth=1', 'origin', baseline.sha], { stdio: 'ignore', timeout: 45000 });
-      reveal = classifyRange(baseline.sha, headSha, { codePaths: CODE_PATHS });
+      reveal = classifyRange(baseline.sha, headSha, { codePaths: CODE_PATHS, revealCategories: revealCategoriesFromEnv() });
     } catch {
       reveal = { reveal: true, reason: 'baseline-fetch-error', file: null };
     }
