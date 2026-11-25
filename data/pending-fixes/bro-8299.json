@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8299",
   "planId": "f61867c6-3b27-4437-b0cb-d558c3be70fe",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-25T10:01:17.145Z",
   "submitter": {
     "name": null,
@@ -144,5 +144,74 @@
         "description": "shows.json: west-side-story-west-end-2026.status"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-25T10:12:04.221Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-smile-of-her-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-smile-of-her-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for tartuffe-remixed-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for tartuffe-remixed-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for deep-heat-rivalry-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for deep-heat-rivalry-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for night-city-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for night-city-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for marilyn-exposed-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for marilyn-exposed-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for west-side-story-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for west-side-story-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for west-side-story-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
