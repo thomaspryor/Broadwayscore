@@ -1165,5 +1165,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T22:58:17.508Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8326-wrapup",
+    "title": "Landing blocked: rebase red on land/bro-8326-wrapup",
+    "description": "land.yml did not land land/bro-8326-wrapup: the rebase gate went red at 7c08a32a22. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45722143232",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8326-wrapup"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "7c08a32a2286b0c7ab36e69f7ef26ae27829fb92"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45722143232"
+      }
+    ],
+    "queuedAt": "2026-11-25T23:35:08.048Z"
   }
 ]
