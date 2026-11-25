@@ -644,5 +644,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T19:42:07.638Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8111-cli-smoke-timeout",
+    "title": "Landing blocked: lint-workflows red on land/bro-8111-cli-smoke-timeout",
+    "description": "land.yml did not land land/bro-8111-cli-smoke-timeout: the lint-workflows gate went red at d5bc25e714. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45684962811",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8111-cli-smoke-timeout"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "d5bc25e7141fea4a3ec7f8cd3fe8d0c1fdbbc156"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45684962811"
+      }
+    ],
+    "queuedAt": "2026-11-25T19:50:59.200Z"
   }
 ]
