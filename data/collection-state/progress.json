@@ -55,9 +55,11 @@
     "speculations-off-west-end-2026/westminsterextra--unknown.json"
   ],
   "failed": [
-    "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/telegraph--claire-allfree.json",
-    "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/whatsonstage--sarah-crompton.json",
-    "the-afronauts-west-end-2026/consequence--langdon-hickman.json"
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json",
+    "fantasma-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-good-thief-off-broadway-2026/theatermania--linda-buchwald.json",
+    "the-steel-man-off-broadway-2026/talkinbroadway--unknown.json",
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -129,7 +131,7 @@
     ]
   },
   "startTime": "2026-11-24T22:49:42.940Z",
-  "lastProcessed": "the-afronauts-west-end-2026/consequence--langdon-hickman.json",
+  "lastProcessed": "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
   "log": [
     {
       "t": "2026-11-24T22:59:47.440Z",
@@ -147,6 +149,17 @@
       "event": "bb-session",
       "session": "6e86f4e0",
       "url": "https://deadline.com/2026/11/daredevil-charlie-cox-audition-james-bond-robert-pa"
+    },
+    {
+      "t": "2026-11-25T00:13:58.078Z",
+      "event": "bb-session",
+      "session": "ed357243",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656128"
+    },
+    {
+      "t": "2026-11-25T00:13:58.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
