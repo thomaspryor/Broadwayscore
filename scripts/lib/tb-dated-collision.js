@@ -17,7 +17,7 @@ const { normalizeTitle, normalizeTbUrl } = require('./talkinbroadway-index');
 const { tbDatedPage } = require('./review-slot-guards');
 
 const pageKey = (p) => `${p.date}${p.suffix}`;
-const WINDOW_DAYS = 14;
+const WINDOW_DAYS = 30;
 
 /** A show counts as the page's show only when it opened within WINDOW_DAYS of the page date (a reused title in another year must not match). */
 function openedNear(show, page) {
