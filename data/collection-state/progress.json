@@ -1,28 +1,248 @@
 {
   "processed": [
-    "a-christmas-carol-west-end-2026/thereviewshub--unknown.json"
+    "wit-2012/nytimes--ben-brantley.json",
+    "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
+    "wit-2012/hollywood-reporter--david-rooney.json",
+    "a-christmas-story-the-musical-2012/ew--thom-geier.json",
+    "the-importance-of-being-earnest-2011/hollywood-reporter--unknown.json",
+    "the-great-society-2019/front-row-center--kathleen-campion.json",
+    "the-great-society-2019/latimes--meredith-blake.json",
+    "the-great-society-2019/theatre-reviews-limited--david-roberts.json",
+    "the-little-foxes-2017/timeout--david-cote.json",
+    "the-little-foxes-2017/wsj--unknown.json",
+    "the-little-foxes-2017/artsfuse--unknown.json",
+    "the-little-foxes-2017/cultural-weekly--david-sheward.json",
+    "the-little-foxes-2017/npr--unknown.json",
+    "the-little-foxes-2017/ny1--unknown.json",
+    "the-little-foxes-2017/whatsonstage--sarah-crompton.json",
+    "the-little-foxes-2017/wnyc--jennifer-vanasco.json",
+    "the-present-2017/dc-theater-arts--richard-seff.json",
+    "the-present-2017/huffpost--steven-suskin.json",
+    "a-delicate-balance-2014/culturesauce--unknown.json",
+    "a-delicate-balance-2014/latimes--david-ng.json",
+    "the-river-2014/abc-news--mark-kennedy.json",
+    "the-river-2014/amny--matt-windman.json",
+    "the-last-ship-2014/variety--marilyn-stasio.json",
+    "the-last-ship-2014/billboard--unknown.json",
+    "the-last-ship-2014/chicago-sun-times--bill-zwecker.json",
+    "the-last-ship-2014/rollingstone--unknown.json",
+    "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
+    "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+    "a-christmas-story-the-musical-2012/amny--matt-windman.json",
+    "the-mystery-of-edwin-drood-2012/nytimes--maya-phillips.json",
+    "the-mystery-of-edwin-drood-2012/theatermania--dan-bacalzo.json",
+    "the-mystery-of-edwin-drood-2012/village-voice--michael-musto.json",
+    "wit-2012/wsj--terry-teachout.json",
+    "venus-in-fur-2011/dctheatrescene--unknown.json",
+    "venus-in-fur-2011/sfgate--lily-janiak.json",
+    "venus-in-fur-2011/village-voice--michael-musto.json",
+    "the-mountaintop-2011/new-jersey-newsroom--michael-sommers.json",
+    "the-importance-of-being-earnest-2011/dctheatrescene--unknown.json",
+    "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
+    "a-behanding-in-spokane-2010/slantmagazine--unknown.json"
   ],
   "failed": [
-    "a-christmas-carol-west-end-2026/times-uk--clive-davis.json"
+    "venus-in-fur-2011/newsday--linda-winer.json",
+    "a-behanding-in-spokane-2010/ap--elisabeth-vincentelli.json",
+    "wit-2012/nydailynews--joe-dziemianowicz.json",
+    "a-life-in-the-theatre-2010/variety--unknown.json",
+    "the-great-society-2019/theater-news-online--jeremy-gerard.json",
+    "the-present-2017/curtainup--elyse-sommer.json",
+    "the-present-2017/thestage--alix-cohen.json",
+    "a-delicate-balance-2014/ew--marc-snetiker.json",
+    "a-christmas-story-the-musical-2012/huffpost--mark-kennedy.json",
+    "the-mystery-of-edwin-drood-2012/newsday--linda-winer.json",
+    "the-mystery-of-edwin-drood-2012/timeout--david-cote.json",
+    "the-mystery-of-edwin-drood-2012/northjerseycom--robert-feldberg.json",
+    "wit-2012/ap--mark-kennedy.json",
+    "wit-2012/backstage--david-sheward.json",
+    "wit-2012/huffpost--mark-kennedy.json",
+    "venus-in-fur-2011/northjerseycom--robert-feldberg.json",
+    "the-mountaintop-2011/northjerseycom--robert-feldberg.json",
+    "the-mountaintop-2011/yonkers-tribune--john-simon.json",
+    "the-importance-of-being-earnest-2011/nydailynews--joe-dziemianowicz.json",
+    "the-importance-of-being-earnest-2011/ap--mark-kennedy.json",
+    "the-importance-of-being-earnest-2011/timeout--david-cote.json",
+    "the-importance-of-being-earnest-2011/bloomberg--jeremy-gerard.json",
+    "a-life-in-the-theatre-2010/hollywood-reporter--frank-scheck.json",
+    "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
+    "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
+    "a-life-in-the-theatre-2010/timeout--adam-feldman.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "a-behanding-in-spokane-2010/wsj--terry-teachout.json",
+    "a-behanding-in-spokane-2010/timeout--bill-cain.json",
+    "young-frankenstein-2007/the-globe-and-mail--kelly-nestruck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "a-christmas-carol-west-end-2026/thereviewshub--unknown.json"
+      "the-great-society-2019/front-row-center--kathleen-campion.json",
+      "the-great-society-2019/theatre-reviews-limited--david-roberts.json",
+      "the-little-foxes-2017/timeout--david-cote.json",
+      "the-little-foxes-2017/artsfuse--unknown.json",
+      "the-little-foxes-2017/cultural-weekly--david-sheward.json",
+      "the-little-foxes-2017/npr--unknown.json",
+      "the-little-foxes-2017/ny1--unknown.json",
+      "the-little-foxes-2017/whatsonstage--sarah-crompton.json",
+      "the-little-foxes-2017/wnyc--jennifer-vanasco.json",
+      "a-delicate-balance-2014/culturesauce--unknown.json",
+      "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+      "the-mystery-of-edwin-drood-2012/theatermania--dan-bacalzo.json",
+      "venus-in-fur-2011/dctheatrescene--unknown.json",
+      "the-importance-of-being-earnest-2011/dctheatrescene--unknown.json",
+      "the-importance-of-being-earnest-2011/theater-life--eric-march.json",
+      "a-behanding-in-spokane-2010/slantmagazine--unknown.json"
     ],
-    "amp": [],
-    "browserbase": [],
+    "amp": [
+      "data/review-texts/a-life-in-the-theatre-2010/variety--unknown.json"
+    ],
+    "browserbase": [
+      "data/review-texts/wit-2012/hollywood-reporter--david-rooney.json",
+      "wit-2012/hollywood-reporter--david-rooney.json",
+      "data/review-texts/the-importance-of-being-earnest-2011/hollywood-reporter--unknown.json",
+      "the-importance-of-being-earnest-2011/hollywood-reporter--unknown.json",
+      "data/review-texts/the-little-foxes-2017/wsj--unknown.json",
+      "the-little-foxes-2017/wsj--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [
-      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
-      "much-ado-about-nothing-2026/broadwayworld--sam-anctil.json"
+      "the-last-ship-2014/rollingstone--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json",
+      "the-last-ship-2014/variety--marilyn-stasio.json"
+    ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "wit-2012/nytimes--ben-brantley.json",
+      "a-christmas-story-the-musical-2012/ew--thom-geier.json",
+      "the-great-society-2019/latimes--meredith-blake.json",
+      "the-present-2017/dc-theater-arts--richard-seff.json",
+      "the-present-2017/huffpost--steven-suskin.json",
+      "a-delicate-balance-2014/latimes--david-ng.json",
+      "the-river-2014/abc-news--mark-kennedy.json",
+      "the-river-2014/amny--matt-windman.json",
+      "the-last-ship-2014/billboard--unknown.json",
+      "the-last-ship-2014/chicago-sun-times--bill-zwecker.json",
+      "a-christmas-story-the-musical-2012/newsday--linda-winer.json",
+      "a-christmas-story-the-musical-2012/amny--matt-windman.json",
+      "the-mystery-of-edwin-drood-2012/nytimes--maya-phillips.json",
+      "the-mystery-of-edwin-drood-2012/village-voice--michael-musto.json",
+      "wit-2012/wsj--terry-teachout.json",
+      "venus-in-fur-2011/sfgate--lily-janiak.json",
+      "venus-in-fur-2011/village-voice--michael-musto.json",
+      "the-mountaintop-2011/new-jersey-newsroom--michael-sommers.json"
+    ]
   },
-  "startTime": "2026-11-25T19:26:39.960Z",
-  "lastProcessed": "a-christmas-carol-west-end-2026/thereviewshub--unknown.json",
-  "log": []
+  "startTime": "2026-11-25T19:15:18.986Z",
+  "lastProcessed": "young-frankenstein-2007/the-globe-and-mail--kelly-nestruck.json",
+  "log": [
+    {
+      "t": "2026-11-25T19:18:12.369Z",
+      "event": "bb-session",
+      "session": "67f5b2b6",
+      "url": "http://www.hollywoodreporter.com/review/wit-theater-review-285075"
+    },
+    {
+      "t": "2026-11-25T19:19:00.815Z",
+      "event": "bb-session",
+      "session": "2408ee31",
+      "url": "https://www.hollywoodreporter.com/review/importance-earnest-theater-review-71658"
+    },
+    {
+      "t": "2026-11-25T19:21:21.479Z",
+      "event": "bb-session",
+      "session": "bc07e343",
+      "url": "https://www.wsj.com/articles/tony-awards-honor-dear-evan-hansen-the-little-foxes"
+    },
+    {
+      "t": "2026-11-25T19:21:22.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-25T19:31:31.771Z",
+      "event": "bb-session",
+      "session": "30d0bd99",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/179235381_Theater_review__"
+    },
+    {
+      "t": "2026-11-25T19:31:32.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-25T19:31:49.194Z",
+      "event": "bb-session",
+      "session": "c568b4e2",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/179235381_Theater_review__"
+    },
+    {
+      "t": "2026-11-25T19:31:49.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-25T19:32:54.326Z",
+      "event": "bb-session",
+      "session": "4f509a38",
+      "url": "http://online.wsj.com/article/SB10001424052970204573704577184752896051224.html"
+    },
+    {
+      "t": "2026-11-25T19:32:54.940Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-25T19:34:43.472Z",
+      "event": "bb-session",
+      "session": "1dad22ab",
+      "url": "http://www.northjersey.com/arts_entertainment/133513823_Mars_and_Venus_collide_i"
+    },
+    {
+      "t": "2026-11-25T19:34:44.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-25T19:38:37.922Z",
+      "event": "bb-session",
+      "session": "9236230b",
+      "url": "http://www.northjersey.com/arts_entertainment/131843148__Mountaintop__provides_d"
+    },
+    {
+      "t": "2026-11-25T19:38:38.564Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-25T19:38:55.370Z",
+      "event": "bb-session",
+      "session": "674dba6d",
+      "url": "http://www.northjersey.com/arts_entertainment/131843148__Mountaintop__provides_d"
+    },
+    {
+      "t": "2026-11-25T19:38:56.008Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-25T19:42:49.876Z",
+      "event": "bb-session",
+      "session": "53d97f02",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-r"
+    },
+    {
+      "t": "2026-11-25T19:44:48.872Z",
+      "event": "bb-session",
+      "session": "9ffcc36c",
+      "url": "https://www.wsj.com/articles/SB10001424052748704187204575101443623615472"
+    },
+    {
+      "t": "2026-11-25T19:44:49.575Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
