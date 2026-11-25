@@ -94,3 +94,27 @@ test('Broadway path is unchanged: world candidates plus the world index', async 
   assert.ok(fetchPage.seen.includes('https://www.talkinbroadway.com/page/world/index.html'));
   assert.ok(fetchPage.seen.every(u => u.includes('/page/world/')));
 });
+
+test('an Off-Broadway index override is ignored in favour of the dated pages (BRO-4437)', async () => {
+  const fetchPage = fakeFetch({ [`${OB}11_22_26.html`]: page('Fantasma') });
+  const r = await tryTbDirectUrl({
+    show: { id: 'fantasma-off-broadway-2026', title: 'Fantasma', openingDate: '2026-11-22' },
+    year: 2026, overrideUrl: `${OB}index.html`, fetchPage, offBroadway: true, logger: quiet,
+  });
+  assert.equal(r.url, `${OB}11_22_26.html`);
+  assert.ok(!fetchPage.seen.includes(`${OB}index.html`));
+});
+
+test('tbFileHoldsReview: dated OB page held, OB index and flagged files not, Broadway unchanged', async () => {
+  const { tbFileHoldsReview } = require('./tb-direct-url.js');
+  const ob = { offBroadway: true };
+  assert.equal(tbFileHoldsReview({ url: `${OB}11_22_26.html` }, ob), true);
+  assert.equal(tbFileHoldsReview({ url: `${OB}9_29_26a.html` }, ob), true);
+  assert.equal(tbFileHoldsReview({ url: `${OB}07_17_25.html#:~:text=cast` }, ob), true);
+  assert.equal(tbFileHoldsReview({ url: `${OB}index.html` }, ob), false);
+  assert.equal(tbFileHoldsReview({ url: `${OB}11_22_26.html`, wrongShow: true }, ob), false);
+  assert.equal(tbFileHoldsReview({ url: `${OB}11_22_26.html` }), false);
+  assert.equal(tbFileHoldsReview({ url: 'https://www.talkinbroadway.com/page/world/FallenAngels.html' }), true);
+  assert.equal(tbFileHoldsReview({ url: 'https://www.talkinbroadway.com/page/world/fallenangels2026.html' }), false);
+  assert.equal(tbFileHoldsReview({ url: '' }, ob), false);
+});

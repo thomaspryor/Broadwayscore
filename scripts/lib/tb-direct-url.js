@@ -251,8 +251,25 @@ function buildTbObOpeningCandidates(openingDate) {
   return [...new Set([...sameDay, ...plainOnly(buildTbObCandidateUrls(day(1))), ...plainOnly(buildTbObCandidateUrls(day(-1)))])];
 }
 
+// Does an existing talkinbroadway--*.json file already hold this show's review, so the poller can
+// skip direct discovery? Broadway: TB's CamelCase /page/world/ url (lowercased slugs are 404s).
+// Off-Broadway: a dated /page/ob/ page, never the front page (BRO-4437). A file flagged as another
+// show or production holds nothing (BRO-8148).
+const TB_WORLD_HELD_RE = /^https?:\/\/(www\.)?talkinbroadway\.com\/page\/world\/[A-Z][A-Za-z0-9]*\.html$/;
+const TB_OB_HELD_RE = /^https?:\/\/(www\.)?talkinbroadway\.com\/page\/ob\/\d{1,2}_\d{1,2}_\d{2}[a-z]?\.html(?:[?#].*)?$/;
+function tbFileHoldsReview(rec, { offBroadway = false } = {}) {
+  if (!rec || typeof rec.url !== 'string' || !rec.url) return false;
+  if (rec.wrongShow || rec.wrongProduction || rec.isRoundupArticle) return false;
+  return (offBroadway ? TB_OB_HELD_RE : TB_WORLD_HELD_RE).test(rec.url);
+}
+
 async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = false, offBroadway = false, logger = console, budgetMs, now = Date.now }) {
   if (!show || !show.title) return { found: false, reason: 'no show title' };
+  // An OB front-page override would be stored as a listing url that goes stale (BRO-4437): build the dated pages instead.
+  if (offBroadway && isTbObIndexUrl(overrideUrl)) {
+    logger.log(`  Talkin' Broadway: ignoring Off-Broadway index override ${overrideUrl}, trying dated pages`);
+    overrideUrl = '';
+  }
   if (offBroadway && !overrideUrl && !buildTbObOpeningCandidates(show.openingDate).length) {
     return { found: false, reason: 'no opening date to build Off-Broadway TB urls from' };
   }
@@ -410,6 +427,7 @@ module.exports = {
   extractTbReviewDate,
   buildTbObCandidateUrls,
   buildTbObOpeningCandidates,
+  tbFileHoldsReview,
   resolveTbObIndexUrl,
   _internal: { toCamelSlug, toLowerSlug, extractTitle, hasBylineSignal, hasStarRatingSignal, extractPublishDateCandidate, withinDateWindow, tbBudgetMs, DEFAULT_TB_BUDGET_MS },
 };
