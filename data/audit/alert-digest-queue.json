@@ -1084,5 +1084,47 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T03:35:59.213Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:attention-off-west-end-2026",
+    "title": "Auto-remediation gave up on attention-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"attention-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T04:03:42.016Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:attention-off-west-end-2026",
+    "title": "Content mismatch on Attention",
+    "description": "london-theatre-reviews/LTR (london-theatre-reviews--ltr.json) SHIPPED but fullText never mentions 'Attention' (3561 chars): https://www.londontheatrereviews.co.uk/post.cfm?p=29714",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T04:03:42.034Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:fourteen-again-off-west-end-2026",
+    "title": "Auto-remediation gave up on fourteen-again-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"fourteen-again-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T04:03:42.051Z"
   }
 ]
