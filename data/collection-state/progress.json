@@ -2,26 +2,55 @@
   "processed": [
     "the-afronauts-west-end-2026/afridiziak-theatre-news--unknown.json",
     "the-afronauts-west-end-2026/british-theatre--unknown.json",
-    "the-afronauts-west-end-2026/theupcoming--unknown.json"
+    "the-afronauts-west-end-2026/theupcoming--unknown.json",
+    "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+    "the-afronauts-west-end-2026/broadwayworld--gary-naylor.json",
+    "the-afronauts-west-end-2026/theupcoming--sophia-moss.json"
   ],
-  "failed": [],
+  "failed": [
+    "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/telegraph--claire-allfree.json",
+    "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/whatsonstage--sarah-crompton.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "the-afronauts-west-end-2026/afridiziak-theatre-news--unknown.json",
       "the-afronauts-west-end-2026/british-theatre--unknown.json",
-      "the-afronauts-west-end-2026/theupcoming--unknown.json"
+      "the-afronauts-west-end-2026/theupcoming--unknown.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--alix-cohen.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+      "the-afronauts-west-end-2026/theupcoming--sophia-moss.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-afronauts-west-end-2026/broadwayworld--gary-naylor.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-11-25T12:23:50.793Z",
-  "lastProcessed": "the-afronauts-west-end-2026/theupcoming--unknown.json",
-  "log": []
+  "lastProcessed": "the-afronauts-west-end-2026/theupcoming--sophia-moss.json",
+  "log": [
+    {
+      "t": "2026-11-25T12:41:32.921Z",
+      "event": "bb-session",
+      "session": "f63586dc",
+      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago"
+    },
+    {
+      "t": "2026-11-25T12:41:33.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
