@@ -179,7 +179,7 @@ const { getFoundOutletIds, getFlaggedOnlyOutletIds } = require('./lib/found-outl
 const { claimsOutletCoverage, buildStagedoorRow } = require('./lib/outlet-coverage-claim'); // BRO-6762
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldLogRejection, shouldStampPreviewPlaceholder } = require('./lib/gather-review-stats');
-const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
+const { searchOutletSites, jsSiteSearchAvailable, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 let chromium, playwright;
 try {
   playwright = require('playwright');
@@ -5534,7 +5534,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
       const foundAfterSsr = new Set(alreadyFoundIds);
       for (const r of siteSearchResults) { if (r.outletId) foundAfterSsr.add(r.outletId.toLowerCase()); }
-      const jsIds = scrapingBeeKey
+      const jsIds = (scrapingBeeKey || jsSiteSearchAvailable())
         ? selectApplicableSiteSearchOutlets(market, show, foundAfterSsr, true)
             .filter(id => SITE_SEARCH_ENDPOINTS[id].requiresJs)
         : [];

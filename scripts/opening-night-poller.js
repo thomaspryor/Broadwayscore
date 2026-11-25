@@ -53,7 +53,7 @@ const { checkRSSFeeds } = require('./lib/rss-discovery');
 const { serpDeadlineSec, serpTimeLeft } = require('./lib/poller-serp-deadline');
 const POLLER_START_MS = Date.now();
 const { discoverGoogleNewsReviews } = require('./lib/google-news-rss');
-const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
+const { searchOutletSites, jsSiteSearchAvailable, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS, hasSerpProvider } = require('./lib/url-discovery');
 // 1 Minute Critic direct-discovery. Its RSS feed isn't in rss-discovery.js's
 // outlet list, and the T3 SERP fallback below is Broadway-only, so without
@@ -1416,7 +1416,7 @@ async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'b
     const results = await searchOutletSites(showTitle, searchable, {
       knownUrls,
       verbose: true,
-      skipJs: !process.env.SCRAPINGBEE_API_KEY, // Skip JS-rendered if no API key
+      skipJs: !jsSiteSearchAvailable(), // BRO-8323: keyless runs use Playwright/Scrapingdog rescue
       market,
       openingDate,
       show,

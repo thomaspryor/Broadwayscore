@@ -1441,6 +1441,9 @@ async function fetchJsSearchHtml(config, url, deps = {}) {
       const h = await realSb(u);
       if (h) return h;
     } catch (e) { sbErr = e; }
+    // A host the shared SB cooldown has blocked is known not to render; do not turn that free
+    // rejection into a Playwright render plus a Scrapingdog credit on every tick.
+    if (sbErr && /host cooldown/.test(sbErr.message || '')) throw sbErr;
     const rescued = await rescueJsSearchHtml(config, u, deps);
     if (rescued) return rescued;
     if (sbErr) throw sbErr;
@@ -1470,13 +1473,23 @@ async function fetchJsSearchHtml(config, url, deps = {}) {
   return sbFetch(url);
 }
 
+const STOP_WORDS = new Set(['the', 'and', 'for', 'new', 'review', 'theatre', 'broadway']);
+
+/**
+ * BRO-8323: can JS-rendered site search run at all? True with an SB key, or with the keyless
+ * rescue (local Playwright, Scrapingdog plain). Callers used to gate on the SB key alone.
+ */
+function jsSiteSearchAvailable(env = process.env) {
+  return Boolean(env.SCRAPINGBEE_API_KEY) || env.SB_RESCUE_DISABLED !== '1';
+}
+
 /** True when html shows a result link for this outlet and echoes the query (not a nav-only shell). */
 function looksLikeSearchResults(config, html, url) {
   if (!html || typeof html !== 'string') return false;
   const probe = new RegExp(config.linkPattern.source, config.linkPattern.flags.replace('g', ''));
   if (!probe.test(html)) return false;
   let word = '';
-  try { word = (new URL(url).searchParams.get('q') || '').toLowerCase().split(/[^a-z0-9]+/).find(w => w.length >= 3) || ''; } catch (_) { word = ''; }
+  try { const sp = new URL(url).searchParams; word = (sp.get('q') || sp.get('s') || '').toLowerCase().split(/[^a-z0-9]+/).find(w => w.length >= 3 && !STOP_WORDS.has(w)) || ''; } catch (_) { word = ''; }
   return word ? html.toLowerCase().split(word).length - 1 >= 3 : true;
 }
 
@@ -1490,7 +1503,8 @@ async function rescueJsSearchHtml(config, url, deps = {}) {
   const pwFetch = deps.pwFetch || ((u) => require('./scraper').fetchWithPlaywright(u, {}));
   const sdPlain = deps.sdPlainFetch || deps.sdFetch || ((u) => require('./scraper').fetchWithScrapingdog(u, { renderJs: false }));
   const tiers = [pwFetch];
-  if (process.env.SCRAPER_USE_SCRAPINGDOG !== '0') tiers.push(sdPlain);
+  // scrapingdog-page outlets (EW) already tried this exact plain page in fetchJsSearchHtml.
+  if (process.env.SCRAPER_USE_SCRAPINGDOG !== '0' && config.fetchVia !== 'scrapingdog-page') tiers.push(sdPlain);
   for (const t of tiers) {
     try {
       const res = await t(url);
@@ -1943,6 +1957,7 @@ module.exports = {
   SITE_SEARCH_ENDPOINTS,
   fetchJsSearchHtml,
   rescueJsSearchHtml,
+  jsSiteSearchAvailable,
   tryFreeWpSearch,
   extractVultureTheaterArticleUrls,
   extractGuardianRssReviewUrls,

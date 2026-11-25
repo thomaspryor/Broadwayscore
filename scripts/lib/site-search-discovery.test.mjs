@@ -387,7 +387,7 @@ test('BRO-8323: JS site-search works with no ScrapingBee: Playwright then Scrapi
   const { fetchJsSearchHtml, rescueJsSearchHtml } = require('./site-search-discovery.js');
   const dl = SITE_SEARCH_ENDPOINTS.deadline;
   const url = 'https://deadline.com/?s=Hamilton+review';
-  const good = '<a href="https://deadline.com/2026/11/hamilton-review-123/">x</a>';
+  const good = '<a href="https://deadline.com/2026/11/hamilton-review-123/">Hamilton</a> Hamilton Hamilton Hamilton';
   const shell = '<html>loading</html>';
   const noKey = async () => { throw new Error('No ScrapingBee key'); };
   const calls = [];
@@ -422,4 +422,31 @@ test('BRO-8323: JS site-search works with no ScrapingBee: Playwright then Scrapi
   calls.length = 0;
   assert.equal(await rescueJsSearchHtml(dl, url, { pwFetch: pwShell, sdPlainFetch: sd }), '');
   assert.deepEqual(calls, ['pw']);
+});
+
+test('BRO-8323: rescue echo check reads s= too, skips stop words, no SD repeat on EW, no rescue on SB cooldown, keyless gate', async (t) => {
+  const { fetchJsSearchHtml, rescueJsSearchHtml, jsSiteSearchAvailable } = require('./site-search-discovery.js');
+  const dl = SITE_SEARCH_ENDPOINTS.deadline;
+  const link = '<a href="https://deadline.com/2026/11/some-review-1/">x</a>';
+  const none = async () => null;
+  // Nav shell with a link but no echo of the s= query: rejected (it used to pass: only q= was read).
+  assert.equal(await rescueJsSearchHtml(dl, 'https://deadline.com/?s=Hamilton+review', { pwFetch: async () => ({ content: link }), sdPlainFetch: none }), '');
+  // A leading stop word must not be the echo word ("the" is on every page).
+  assert.equal(await rescueJsSearchHtml(dl, 'https://deadline.com/?s=The+Hamilton', { pwFetch: async () => ({ content: link + ' the the the the' }), sdPlainFetch: none }), '');
+  // EW already tried Scrapingdog plain; rescue must not pay for it again.
+  const calls = [];
+  const ew = SITE_SEARCH_ENDPOINTS.ew;
+  await rescueJsSearchHtml(ew, 'https://ew.com/search/?q=Hamilton', { pwFetch: none, sdPlainFetch: async () => { calls.push('sd'); return null; } });
+  assert.deepEqual(calls, []);
+  // SB host cooldown rejection is final: no Playwright, no credit.
+  const pwCalls = [];
+  await assert.rejects(fetchJsSearchHtml(dl, 'https://deadline.com/?s=x', {
+    sbFetch: async () => { throw new Error('ScrapingBee host cooldown: 6 failures'); },
+    pwFetch: async () => { pwCalls.push(1); return { content: link }; },
+  }), /host cooldown/);
+  assert.deepEqual(pwCalls, []);
+  // Keyless runs may search JS outlets unless the rescue kill switch is on.
+  assert.equal(jsSiteSearchAvailable({}), true);
+  assert.equal(jsSiteSearchAvailable({ SB_RESCUE_DISABLED: '1' }), false);
+  assert.equal(jsSiteSearchAvailable({ SB_RESCUE_DISABLED: '1', SCRAPINGBEE_API_KEY: 'k' }), true);
 });
