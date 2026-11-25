@@ -1814,7 +1814,17 @@ jobs:
         if: cancelled()
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          RUN_STARTED_AT: ${{ github.run_started_at }}
         run: |
+          # BRO-8300: a hang is the 173-min timeout. A run cancelled early (manual
+          # `gh run cancel`, runner freeing, superseded dispatch) is not a hang and
+          # must not page. Only runs older than 150 min can alert.
+          RUN_AGE_MIN=$(node -e "console.log(Math.floor((Date.now()-Date.parse(process.env.RUN_STARTED_AT))/60000))" 2>/dev/null || echo "")
+          if [ -n "$RUN_AGE_MIN" ] && [ "$RUN_AGE_MIN" -lt 150 ]; then
+            echo "preempted=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Cancelled after ${RUN_AGE_MIN} min (<150) - external cancel, not a timeout hang. Skipping alert."
+            exit 0
+          fi
           # BRO-6643: a failed read is UNKNOWN, not "unset" (that sent false hang alerts on an
           # Express takeover). Unknown after a retry -> preempted=true (suppress) with a warning.
           if PAUSED=$(READ_ATTEMPTS=2 READ_RETRY_SLEEP=3 bash scripts/lib/read-actions-variable.sh ORCHESTRATOR_PAUSED); then

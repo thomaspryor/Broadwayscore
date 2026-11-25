@@ -121,6 +121,12 @@ describe('BRO-6643: no fail-open ORCHESTRATOR_PAUSED reads remain', () => {
     // the age gate must come before the ORCHESTRATOR_PAUSED read
     assert.ok(body.indexOf('RUN_AGE_MIN') < body.indexOf('read-actions-variable.sh'));
   });
+  test('BRO-8300: poller check_preemption suppresses the hang alert for runs cancelled before 150 min', () => {
+    const body = stepBody(code('opening-night-poller.yml'), 'Check for Express preemption');
+    assert.match(body, /RUN_STARTED_AT: \$\{\{ github\.run_started_at \}\}/);
+    assert.match(body, /\[ "\$RUN_AGE_MIN" -lt 150 \][\s\S]*?preempted=true[\s\S]*?exit 0/);
+    assert.ok(body.indexOf('RUN_AGE_MIN') < body.indexOf('read-actions-variable.sh'));
+  });
   test('Express Set retries then falls back to the job-start snapshot (never blocks on a blip)', () => {
     const wf = code('opening-night-express.yml');
     const body = stepBody(wf, 'Set ORCHESTRATOR_PAUSED');
