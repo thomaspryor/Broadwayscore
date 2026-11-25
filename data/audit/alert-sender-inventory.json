@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-24T23:49:51.734Z",
+  "generatedAt": "2026-11-25T23:28:10.117Z",
   "counts": {
-    "router": 244,
+    "router": 245,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -72,7 +72,7 @@
     },
     {
       "file": ".github/workflows/scrape-new-aggregators.yml",
-      "line": 264,
+      "line": 266,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -100,14 +100,14 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4666,
+      "line": 4612,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4675,
+      "line": 4621,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -142,7 +142,7 @@
     },
     {
       "file": ".github/workflows/update-show-status.yml",
-      "line": 2117,
+      "line": 2126,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -590,35 +590,42 @@
     },
     {
       "file": "scripts/check-provider-spend.js",
-      "line": 303,
+      "line": 315,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/check-provider-spend.js",
-      "line": 346,
+      "line": 358,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/check-provider-spend.js",
-      "line": 388,
+      "line": 384,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "digest"
+    },
+    {
+      "file": "scripts/check-provider-spend.js",
+      "line": 425,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/check-provider-spend.js",
-      "line": 442,
+      "line": 479,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/check-provider-spend.js",
-      "line": 489,
+      "line": 526,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -653,7 +660,7 @@
     },
     {
       "file": "scripts/check-sb-breaker.js",
-      "line": 201,
+      "line": 205,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -667,7 +674,7 @@
     },
     {
       "file": "scripts/check-secrets-health.js",
-      "line": 640,
+      "line": 642,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -737,7 +744,7 @@
     },
     {
       "file": "scripts/cloud-worker-pick.js",
-      "line": 323,
+      "line": 324,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -975,28 +982,28 @@
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5869,
+      "line": 5871,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5904,
+      "line": 5906,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 6365,
+      "line": 6367,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 6366,
+      "line": 6368,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -1668,14 +1675,14 @@
     },
     {
       "file": "scripts/time-to-publish-sla.js",
-      "line": 363,
+      "line": 367,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/time-to-publish-sla.js",
-      "line": 380,
+      "line": 384,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
