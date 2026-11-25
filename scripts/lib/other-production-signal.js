@@ -194,10 +194,13 @@ function otherProductionSignal(review, show, opts = {}) {
     if (index) {
       const { rivalSwallowsTitle } = require('./rival-title');
       const slug = url ? String(url).replace(/^[a-z]+:\/\/[^/]+/i, '').replace(/[?#].*$/, '') : '';
-      for (const text of [slug, review.title, review.headline]) {
-        const rival = text ? rivalSwallowsTitle(text, show, index) : null;
-        if (rival) return { signal: 'rival-title', detail: `names "${rival.title}" (${rival.id}), which contains "${show.title}"; the show's own title never appears alone` };
-      }
+      const texts = [slug, review.title, review.headline].filter(Boolean);
+      const hits = texts.map((text) => rivalSwallowsTitle(text, show, index));
+      const rival = hits.find(Boolean);
+      // A field that names the show's own title on its own (a corrected headline over a legacy
+      // slug) outweighs one that only names the rival.
+      const ownTitleAlone = texts.some((text, i) => !hits[i] && require('./rival-title').mentionsTitle(text, show));
+      if (rival && !ownTitleAlone) return { signal: 'rival-title', detail: `names "${rival.title}" (${rival.id}), which contains "${show.title}"; the show's own title never appears alone` };
     }
   }
 

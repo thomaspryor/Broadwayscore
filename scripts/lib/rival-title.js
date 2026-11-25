@@ -33,6 +33,9 @@ const GENERIC_SUFFIX_WORDS = new Set([
   'the', 'a', 'an', 'musical', 'play', 'new', 'live', 'concert', 'show', 'revival', 'tour',
   'uk', 'us', 'broadway', 'west', 'end', 'off', 'in', 'on', 'at', 'of', 'and', 'ballet', 'opera',
   'production', 'version', 'edition', 'cast', 'recording', 'film', 'movie', 'review', 'reviews',
+  // edition / part / city tails: "Wolf Hall Parts One & Two", "The History Boys 20th Anniversary",
+  // "Torch Song Trilogy", "Magic Mike Live New York" are the same work, not another show.
+  'anniversary', 'parts', 'part', 'trilogy', 'one', 'two', 'three', 'york', 'nyc', 'london', 'christmas', 'holiday',
 ]);
 
 function foldDiacritics(s) {
@@ -94,7 +97,7 @@ function extendsAsSuffix(rivalTitle, showTitle) {
   if (/[!?.]$/.test(t)) return false;
   const tail = r.slice(t.length + 1);
   if (!/^[a-z0-9]/.test(tail) || /[(),:;\u2013\u2014]|\s-\s/.test(tail)) return false;
-  return tokens(tail).some((w) => !GENERIC_SUFFIX_WORDS.has(w));
+  return tokens(tail).some((w) => !GENERIC_SUFFIX_WORDS.has(w) && !/^\d+(?:st|nd|rd|th)?$/.test(w));
 }
 
 /**
@@ -160,6 +163,11 @@ function rivalSwallowsTitle(text, show, index) {
   return containsSeq(rest, own) ? null : { id: swallowedBy.id, title: swallowedBy.title };
 }
 
+/** True when the show's title (article-insensitive) appears anywhere in `text`. */
+function mentionsTitle(text, show) {
+  return !!(text && show && show.title) && containsSeq(tokens(text), titleTokens(show.title));
+}
+
 let _defaultIndex;
 /** Index over data/shows.json (every status), built once per process. Null when the file is absent. */
 function defaultRivalIndex() {
@@ -167,8 +175,11 @@ function defaultRivalIndex() {
   try {
     const S = require(require('path').join(__dirname, '..', '..', 'data', 'shows.json'));
     _defaultIndex = buildRivalIndex(S.shows || S);
-  } catch { _defaultIndex = null; }
+  } catch (e) {
+    _defaultIndex = null;
+    console.warn(`[rival-title] show index unavailable, guard disabled: ${e.message}`);
+  }
   return _defaultIndex;
 }
 
-module.exports = { defaultRivalIndex, buildRivalIndex, rivalSwallowsTitle, titleTokens, tokens, extendsAsSuffix, GENERIC_SUFFIX_WORDS };
+module.exports = { defaultRivalIndex, buildRivalIndex, rivalSwallowsTitle, mentionsTitle, titleTokens, tokens, extendsAsSuffix, GENERIC_SUFFIX_WORDS };

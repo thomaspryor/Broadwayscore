@@ -71,3 +71,15 @@ test('season label: an outlet labelled with an earlier year is another season of
   // a declared prior run covering that year keeps its reviews
   assert.equal(sig({ outlet: 'Time Out (2022)', outletId: 'time-out-2022' }, { ...carol, priorRuns: [{ openingDate: '2022-11-01', closingDate: '2023-01-14' }] }), null);
 });
+
+test('edition, part and city tails are name variants, not rivals (BRO-8321 review)', () => {
+  const pairs = [['Wolf Hall', 'Wolf Hall Parts One & Two'], ['Torch Song', 'Torch Song Trilogy'], ['The History Boys', 'The History Boys 20th Anniversary'], ['Magic Mike Live', 'Magic Mike Live New York'], ['Million Dollar Quartet', 'Million Dollar Quartet Christmas']];
+  for (const [a, b] of pairs) assert.equal(rt.extendsAsSuffix(b, a), false, `${b} must not be a rival of ${a}`);
+  assert.equal(rt.extendsAsSuffix('Christmas Carol Goes Wrong', 'A Christmas Carol'), true);
+});
+
+test('a headline that names the show alone outweighs a rival-only url slug', () => {
+  const url = 'https://www.thereviewshub.com/a-christmas-carol-goes-wrong-grand-theatre-wolverhampton/';
+  assert.ok(op.otherProductionSignal({ url }, carol, { rivalIndex: index }));
+  assert.equal(op.otherProductionSignal({ url, headline: 'A Christmas Carol at the Old Vic review' }, carol, { rivalIndex: index }), null);
+});

@@ -19,3 +19,8 @@ test('no author_date block (or two of them) gives no date rather than a guess', 
   const two = page('Wednesday, 25 November 2026') + `<div class='author_date'><span class='created'>Friday, 9 December 2022</span></div>`;
   assert.equal(extractPublishDate(two, URL_), null);
 });
+
+test('the reader only applies to theartsdesk.com pages', () => {
+  assert.equal(extractPublishDate(page('Wednesday, 25 November 2026'), 'https://example.com/review'), null);
+  assert.equal(extractPublishDate(page('Wednesday, 25 November 2026'), ''), null);
+});
