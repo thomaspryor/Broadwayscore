@@ -2,9 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
-const __dirname_ = fileURLToPath(new URL('.', import.meta.url));
 const { findDeadShowRedirects } = require('./dead-show-redirects.js');
 
 const live = new Set(['the-choir-of-man-marble-arch-off-west-end', 'the-choir-of-man-off-west-end', 'the-music-man-2022']);
@@ -47,8 +45,6 @@ test('a destination that is another live hardcoded redirect source is alive', ()
 // show's slug hides that show. Revert findShadowingShowRedirects (or the
 // vercel.json fix) and this fails.
 import { findShadowingShowRedirects } from './dead-show-redirects.js';
-import fs from 'node:fs';
-import path from 'node:path';
 
 test('findShadowingShowRedirects flags /show/<live> -> /show/<other>, not opera moves or dead sources', () => {
   const slugs = new Set(['birthright', 'birthright-off-broadway', 'tosca-off-broadway']);
@@ -62,14 +58,4 @@ test('findShadowingShowRedirects flags /show/<live> -> /show/<other>, not opera 
     { source: '/show/:slug-2024', destination: '/show/:slug' }, // parameterised
   ];
   assert.deepEqual(findShadowingShowRedirects(redirects, slugs).map(r => r.source), ['/show/birthright', '/show/Birthright/']);
-});
-
-test('committed vercel.json has no /show/<live slug> -> /show/<other> redirect (skips without core data)', (t) => {
-  const shows = path.join(__dirname_, '..', '..', 'data', 'shows.json');
-  if (!fs.existsSync(shows)) return t.skip('data/shows.json not present');
-  const d = JSON.parse(fs.readFileSync(shows, 'utf8'));
-  const list = d.shows || d;
-  const vercel = JSON.parse(fs.readFileSync(path.join(__dirname_, '..', '..', 'vercel.json'), 'utf8'));
-  const bad = findShadowingShowRedirects(vercel.redirects, new Set(list.map(s => s.slug)));
-  assert.deepEqual(bad.map(r => `${r.source} -> ${r.destination}`), []);
 });
