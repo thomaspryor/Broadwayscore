@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8271-e",
   "planId": "993bc00f-fcb9-4dc8-b02b-5fd88cd09eef",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T23:47:38.506Z",
   "submitter": {
     "name": null,
@@ -194,5 +194,99 @@
         "description": "shows.json: arcadia-west-end-2026.runtime cleared: TodayTix API default \"2hrs 30mins (including interval)\" with no page value to confirm it"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-25T01:23:29.381Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for joris-lacoste-nexus-de-ladoration-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for manual-cinema-the-4th-witch-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for minor-theater-pity-whore-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for cullberg-faye-driscoll-flesh-chariot-chariot-of-flesh-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-gorgeous-nothings-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-unsinkable-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for slanted-floors-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for you-got-older-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-humans-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for allegra-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for gentlemen-prefer-blondes-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for henry-v-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for lost-in-del-valle-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-hunger-games-on-stage-off-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for jesus-christ-superstar-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for arcadia-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
