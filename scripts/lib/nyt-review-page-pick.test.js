@@ -87,11 +87,11 @@ test('classifyReviewPages: picks, negatives and failures are kept apart; a block
     'https://www.nytimes.com/2026/11/24/theater/slug-b.html',
     'https://www.nytimes.com/2026/11/24/theater/slug-c.html',
     'https://www.nytimes.com/2026/11/24/theater/slug-d.html'];
-  const fetch = async (u) => {
+  const getPage = async (u) => {
     if (u.endsWith('slug-d.html')) throw new Error('HTTP 403');
     return pages[u.match(/slug-(\w)/)[1]];
   };
-  const r = await classifyReviewPages({ urls, fetch });
+  const r = await classifyReviewPages({ urls, getPage });
   assert.deepEqual(r.picks, [urls[0]]);
   assert.deepEqual(r.negatives, [urls[1]]);
   assert.deepEqual(r.failures.map(f => f.url), [urls[2], urls[3]]);
@@ -101,7 +101,7 @@ test('classifyReviewPages stops when the time budget says so', async () => {
   let calls = 0;
   const r = await classifyReviewPages({
     urls: ['https://www.nytimes.com/2026/11/24/theater/a.html', 'https://www.nytimes.com/2026/11/24/theater/b.html'],
-    fetch: async () => { calls++; return '<h1 data-testid="headline">x</h1> a b'; },
+    getPage: async () => { calls++; return '<h1 data-testid="headline">x</h1> a b'; },
     shouldStop: () => calls >= 1,
   });
   assert.equal(calls, 1);

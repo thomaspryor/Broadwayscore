@@ -122,13 +122,13 @@ function pruneState(state = {}, now = new Date()) {
 }
 
 /**
- * Fetch each URL and classify it. `fetch(url)` resolves to the page HTML or
+ * Fetch each URL and classify it. `getPage(url)` resolves to the page HTML or
  * rejects. A page that is not recognisably the article (blocked, paywall
  * shell) counts as a failure, never as a negative, so it is retried.
  *
  * @returns {Promise<{picks: string[], negatives: string[], failures: {url: string, reason: string}[]}>}
  */
-async function classifyReviewPages({ urls, fetch, shouldStop = () => false }) {
+async function classifyReviewPages({ urls, getPage, shouldStop = () => false }) {
   const picks = [];
   const negatives = [];
   const failures = [];
@@ -136,7 +136,7 @@ async function classifyReviewPages({ urls, fetch, shouldStop = () => false }) {
     if (shouldStop()) break;
     let html;
     try {
-      html = await fetch(url);
+      html = await getPage(url);
     } catch (err) {
       failures.push({ url, reason: err && err.message ? err.message : String(err) });
       continue;

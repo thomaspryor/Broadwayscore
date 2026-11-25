@@ -106,7 +106,7 @@ test('review-page pass adds a review the spotlight list does not have', async ()
     urls: [], pageState: {}, budget: neverExceeded, argv: [],
     now: new Date('2026-11-25T01:00:00Z'),
     listCandidates: () => [SEVEN],
-    fetch: async () => pickPage,
+    getPage: async () => pickPage,
   });
   assert.deepEqual(r.picks, [SEVEN]);
   assert.equal(r.pageState[SEVEN], undefined);
@@ -117,7 +117,7 @@ test('review-page pass remembers a negative and does not refetch it inside the g
   let fetched = 0;
   const run = (n, state) => reviewPagePass({
     urls: [], pageState: state, budget: neverExceeded, argv: [], now: new Date(n),
-    listCandidates: () => [SEVEN], fetch: async () => { fetched++; return plainPage; },
+    listCandidates: () => [SEVEN], getPage: async () => { fetched++; return plainPage; },
   });
   const first = await run(now, {});
   assert.deepEqual(first.picks, []);
@@ -129,12 +129,12 @@ test('review-page pass remembers a negative and does not refetch it inside the g
 test('review-page pass skips URLs already on the list and survives a failed fetch', async () => {
   const onList = await reviewPagePass({
     urls: [SEVEN], pageState: {}, budget: neverExceeded, argv: [], listCandidates: () => [SEVEN],
-    fetch: async () => { throw new Error('should not fetch'); },
+    getPage: async () => { throw new Error('should not fetch'); },
   });
   assert.deepEqual(onList.picks, []);
   const blocked = await reviewPagePass({
     urls: [], pageState: {}, budget: neverExceeded, argv: [], now: new Date('2026-11-25T01:00:00Z'),
-    listCandidates: () => [SEVEN], fetch: async () => { throw new Error('HTTP 403'); },
+    listCandidates: () => [SEVEN], getPage: async () => { throw new Error('HTTP 403'); },
   });
   assert.deepEqual(blocked.picks, []);
   assert.equal(blocked.pageState[SEVEN].checks, 0, 'a blocked fetch is not a negative result');
@@ -146,7 +146,7 @@ test('--review-url checks exactly those URLs, bypassing the cache', async () => 
   const r = await reviewPagePass({
     urls: [], pageState: { [SEVEN]: { checks: 2, lastCheckedAt: '2026-11-25T00:59:00Z' } },
     budget: neverExceeded, argv: [`--review-url=${SEVEN}`], now: new Date('2026-11-25T01:00:00Z'),
-    listCandidates: () => { throw new Error('must not list'); }, fetch: async () => pickPage,
+    listCandidates: () => { throw new Error('must not list'); }, getPage: async () => pickPage,
   });
   assert.deepEqual(r.picks, [SEVEN]);
 });
@@ -156,7 +156,7 @@ test('review-page pass does not start a fetch when its budget cannot cover one (
   const r = await reviewPagePass({
     urls: [], pageState: {}, argv: [], now: new Date('2026-11-25T01:00:00Z'),
     budget: { exceeded: () => false, canStartItem: () => false },
-    listCandidates: () => [SEVEN], fetch: async () => { fetched++; return pickPage; },
+    listCandidates: () => [SEVEN], getPage: async () => { fetched++; return pickPage; },
   });
   assert.equal(fetched, 0);
   assert.deepEqual(r.picks, []);
@@ -170,7 +170,7 @@ test('review-page pass backs off a blocked review page instead of retrying every
     const r = await reviewPagePass({
       urls: [], pageState: state, budget: neverExceeded, argv: [],
       now: new Date(t0.getTime() + minutes * 60 * 1000),
-      listCandidates: () => [SEVEN], fetch: async () => { fetched++; throw new Error('HTTP 403'); },
+      listCandidates: () => [SEVEN], getPage: async () => { fetched++; throw new Error('HTTP 403'); },
     });
     state = r.pageState;
   };

@@ -309,7 +309,7 @@ async function fetchReviewPage(url) {
  * Returns { picks, pageState }; never throws (a failed fetch is logged and
  * retried on the next run).
  */
-async function reviewPagePass({ urls, pageState, budget, argv, now = new Date(), fetch = fetchReviewPage, listCandidates = findUnpickedCandidates }) {
+async function reviewPagePass({ urls, pageState, budget, argv, now = new Date(), getPage = fetchReviewPage, listCandidates = findUnpickedCandidates }) {
   const explicit = parseReviewUrlArgs(argv);
   let candidates = explicit;
   if (!explicit.length) {
@@ -332,7 +332,7 @@ async function reviewPagePass({ urls, pageState, budget, argv, now = new Date(),
     return { picks: [], pageState };
   }
   console.log(`Review-page pass: checking ${todo.length} review page(s)`);
-  const result = await classifyReviewPages({ urls: todo, fetch, shouldStop: () => !budget.canStartItem(PAGE_FETCH_MIN_REMAINING_MS) });
+  const result = await classifyReviewPages({ urls: todo, getPage, shouldStop: () => !budget.canStartItem(PAGE_FETCH_MIN_REMAINING_MS) });
   result.picks.forEach(u => console.log('  + (review page label) ' + u));
   result.negatives.forEach(u => console.log('  - not a pick: ' + u));
   result.failures.forEach(f => console.warn(`  ! ${f.url}: ${f.reason}`));
