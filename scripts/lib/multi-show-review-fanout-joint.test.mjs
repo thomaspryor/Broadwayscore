@@ -685,3 +685,44 @@ test('BRO-8272: a lede naming the cousin twice is still one review; a later "Unl
   const p = mk(text);
   assert.ok(!p || (p.otherSections || []).length === 0);
 });
+
+// BRO-8272 (instance repair): a parent that an older planner joint-split holds its whole article
+// again after a forced refetch, still carrying split markers. The planner now returns no split, so
+// the apply step must clear the markers (queue a rescore) and leave a wrongShow child alone
+// (BRO-8209), without marking the pair a combined review.
+test('BRO-8272: a whole-text joint parent with stale split markers is unsplit; wrongShow child untouched', () => {
+  const SHOWS = [
+    { id: 'the-wanderers-test-2023', title: 'The Wanderers', category: 'off-broadway', openingDate: '2023-02-16' },
+    { id: 'leopoldstadt-test-2022', title: 'Leopoldstadt', category: 'broadway', openingDate: '2022-10-02' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const foot = `The Wanderers Through April 2, 2023 Roundabout Theatre Company Laura Pels Theatre, 111 West 46th Street, New York NY Tickets online: example.org Leopoldstadt . The Wanderers Through April 2, 2023 Roundabout Theatre Company.`;
+  const text = [
+    `The Wanderers , a new family drama downtown, shares much with its cousin Leopoldstadt : one act. ${filler('setting', 14)}`,
+    `Why is this called The Wanderers ? ${filler('verdict', 8)} The Wanderers has some sharp observations, but I might have enjoyed it more with fewer questions.`,
+    foot,
+  ].join(' ');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8272-'));
+  fs.mkdirSync(path.join(dir, 'the-wanderers-test-2023'));
+  fs.mkdirSync(path.join(dir, 'leopoldstadt-test-2022'));
+  const file = path.join(dir, 'the-wanderers-test-2023', 'x--c.json');
+  const childFile = path.join(dir, 'leopoldstadt-test-2022', 'x--c.json');
+  const parent = { outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: 'the-wanderers-test-2023', publishDate: '2023-02-16', fullText: text,
+    multiShowSplitParent: true, multiShowSplitAnchorKind: 'joint', multiShowSplitTextLength: 900, multiShowSplitOriginalLength: text.length, multiShowSplitChildShowIds: ['leopoldstadt-test-2022'], isCombinedReview: true, combinedWith: ['leopoldstadt-test-2022'] };
+  const child = { outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', showId: 'leopoldstadt-test-2022', fullText: 'short child text '.repeat(40), contentTier: 'invalid', wrongShow: true, multiShowSplitChild: true, multiShowSplitParentShowId: 'the-wanderers-test-2023' };
+  fs.writeFileSync(file, JSON.stringify(parent));
+  fs.writeFileSync(childFile, JSON.stringify(child));
+  try {
+    const res = applyMultiShowFanoutToFile(file, { shows: SHOWS, reviewTextsDir: dir, joint: true });
+    assert.ok(res.unsplit, 'stale markers are cleared');
+    const out = JSON.parse(fs.readFileSync(file, 'utf8'));
+    assert.equal(out.multiShowSplitParent, undefined);
+    assert.equal(out.multiShowSplitTextLength, undefined);
+    assert.equal(out.isCombinedReview, undefined);
+    assert.equal(out.fullText, text);
+    assert.equal(out.needsRescore, true);
+    const c = JSON.parse(fs.readFileSync(childFile, 'utf8'));
+    assert.equal(c.wrongShow, true);
+    assert.equal(c.fullText, child.fullText, 'wrongShow child is not given the whole article');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});

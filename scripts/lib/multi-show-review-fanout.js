@@ -1463,6 +1463,10 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
   if (!plan) {
     if (!dryRun && isWholeArticleBackOnBadSplit(data, shows)) {
       result.unsplit = unsplitArticle(filePath, data, reviewTextsDir, ownShowId);
+    } else if (!dryRun && isStaleJointSplitOnWholeText(data)) {
+      // BRO-8272: a joint split the planner no longer makes (a lede that only compares to
+      // the other show) left a parent holding the whole article again with split markers.
+      result.unsplit = unsplitArticle(filePath, data, reviewTextsDir, ownShowId, { combined: false });
     }
     return result;
   }
@@ -1552,6 +1556,21 @@ function isWholeArticleBackOnBadSplit(data, shows) {
   return sections.length >= 2 && captionSectionsCrossTalk(sections, shows);
 }
 
+/**
+ * A joint-split parent that holds its whole original article again while the planner returns no
+ * split for it (BRO-8272). Narrow on purpose: joint anchor only, text back at the original length,
+ * nothing a human or another verdict owns.
+ */
+function isStaleJointSplitOnWholeText(data) {
+  if (!(data && data.multiShowSplitParent === true && data.multiShowSplitAnchorKind === 'joint'
+    && typeof data.fullText === 'string' && Number.isFinite(data.multiShowSplitOriginalLength)
+    && Number.isFinite(data.multiShowSplitTextLength)
+    && data.fullText.length >= data.multiShowSplitOriginalLength - 50
+    && data.fullText.length > data.multiShowSplitTextLength + 200)) return false;
+  return !(data._locked === true || data.manualContentTier || data.humanReviewScore != null
+    || data.wrongProduction === true || data.isRoundupArticle === true || data.duplicateOf);
+}
+
 const SPLIT_FIELDS = [
   'multiShowSplitProcessed', 'multiShowSplitParent', 'multiShowSplitChild',
   'multiShowSplitChildShowIds', 'multiShowSplitParentShowId', 'multiShowSplitAnchorKind',
@@ -1565,7 +1584,8 @@ const SPLIT_FIELDS = [
  * article too, since its section was cut at the same wrong point. Both are
  * re-scored. Children that hold anything else are left alone.
  */
-function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
+function unsplitArticle(filePath, data, reviewTextsDir, ownShowId, opts = {}) {
+  const combined = opts.combined !== false;
   const { safeWriteReview } = require('./review-write-guard');
   const now = new Date().toISOString();
   const allShows = [ownShowId, ...(data.multiShowSplitChildShowIds || [])];
@@ -1575,8 +1595,13 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
     out.multiShowUnsplitAt = now;
     // The established joint-review marker (flag-combined-reviews.js): every
     // cross-show URL check treats the copies as one article.
-    out.isCombinedReview = true;
-    out.combinedWith = allShows.filter((id) => id !== out.showId);
+    if (combined) {
+      out.isCombinedReview = true;
+      out.combinedWith = allShows.filter((id) => id !== out.showId);
+    } else {
+      delete out.isCombinedReview;
+      delete out.combinedWith;
+    }
     require('./rescore-flagging').markRescoreNeeded(out, out.rescoreReason || 'multi-show-split undone: article is one essay about both shows', now, { requeue: true });
     out.needsRescoreReason = 'multi-show-split undone: article is one essay about both shows';
     delete out.ensembleData;
@@ -1592,7 +1617,7 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
     const sameArticle = !!data.url && child.url
       && multiShowSplitGroup({ ...child, multiShowSplitChild: true }) === multiShowSplitGroup(data);
     if (child._locked === true || child.manualContentTier || child.humanReviewScore != null) continue;
-    if (child.isRoundupArticle === true || child.wrongProduction === true || child.duplicateOf) continue;
+    if (child.isRoundupArticle === true || child.wrongProduction === true || child.wrongShow === true || child.duplicateOf) continue;
     if (child.multiShowSplitChild !== true || child.multiShowSplitParentShowId !== ownShowId) {
       // Already holds the whole article unsplit (re-ingested under its show):
       // mark it joint too, text unchanged.
@@ -1623,6 +1648,7 @@ module.exports = {
   headerSections,
   captionSectionsCrossTalk,
   isWholeArticleBackOnBadSplit,
+  isStaleJointSplitOnWholeText,
   applyMultiShowFanoutToFile,
   introSections,
   jointSections,
