@@ -14,6 +14,9 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
+// BRO-8276: safeWriteReview (successor carry) reads shows.json; pin a fixture so
+// a bot data commit cannot turn this test red (live-data-lane).
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([]));
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REAL_PUSH = path.join(HERE, 'push-with-retry.sh');
 
