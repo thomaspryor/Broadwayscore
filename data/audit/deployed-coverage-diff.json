@@ -1,13 +1,105 @@
 {
-  "generatedAt": "2026-11-25T14:03:43.698Z",
+  "generatedAt": "2026-11-25T15:41:40.558Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 372,
-  "clean": 372,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 367,
+  "defective": 5,
+  "byType": {
+    "score-drift": 4,
+    "missing-from-prod": 2
+  },
+  "shows": [
+    {
+      "showId": "the-afronauts-west-end-2026",
+      "title": "The Afronauts",
+      "openingDate": "2026-11-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: london-theatre"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 60.95 vs local 60.87 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [
+        "london-theatre"
+      ],
+      "localCount": 14,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-25T15:41:35.786Z"
+    },
+    {
+      "showId": "death-and-the-maiden-regional-2026",
+      "title": "Death and the Maiden",
+      "openingDate": "2026-11-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: stagescenela"
+        }
+      ],
+      "missingFromProd": [
+        "stagescenela"
+      ],
+      "localCount": 2,
+      "deployedCount": 1,
+      "firstDefectAt": "2026-11-25T15:41:35.786Z"
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "openingDate": "2026-11-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.53 vs local 76.32 (Δ1.21)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-25T15:41:35.786Z"
+    },
+    {
+      "showId": "nine-night-off-west-end-2026",
+      "title": "Nine Night",
+      "openingDate": "2026-11-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.31 vs local 81.57 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-11-25T15:41:35.786Z"
+    },
+    {
+      "showId": "witness-for-the-prosecution-off-west-end-2022",
+      "title": "Witness for the Prosecution",
+      "openingDate": "2017-10-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.69 vs local 75.85 (Δ0.16)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 19,
+      "deployedCount": 19,
+      "firstDefectAt": "2026-11-25T15:41:35.786Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

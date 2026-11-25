@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T14:03:44.150Z",
+  "generatedAt": "2026-11-25T15:41:40.927Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -168,6 +168,10 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -188,19 +192,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 915,
-  "matchedGaps": 8,
+  "itemsScanned": 908,
+  "matchedGaps": 4,
   "possibleGaps": 4,
   "gaps": [
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-a-christmas-carol-the-old-vic-2026",
-      "headline": "Review: A Christmas Carol (The Old Vic)",
-      "publishDate": "2026-11-25"
-    },
     {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
@@ -208,15 +203,6 @@
       "outletId": "thereviewshub",
       "url": "https://www.thereviewshub.com/26-a-christmas-carol-old-vic-london-2/",
       "headline": "A Christmas Carol &#8211; Old Vic, London",
-      "publishDate": "2026-11-25"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-a-christmas-carol-old-vic-theatre-nov-2026",
-      "headline": "Review: A CHRISTMAS CAROL, Old Vic Theatre - Nov 2026",
       "publishDate": "2026-11-25"
     },
     {
@@ -245,24 +231,6 @@
       "url": "https://stageandcinema.com/2026/11/21/purpose-geffen-playhouse-review/",
       "headline": "Theater Review: PURPOSE (Geffen Playhouse)",
       "publishDate": "2026-11-22"
-    },
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/11/21/august-wilsons-seven-guitars",
-      "headline": "Seven Guitars",
-      "publishDate": "2026-11-25"
-    },
-    {
-      "showId": "the-afronauts-west-end-2026",
-      "title": "The Afronauts",
-      "level": "matched",
-      "outletId": "theatreandtonic",
-      "url": "https://theatreandtonic.co.uk/blog/the-afronauts-royal-court-theatre-london-review",
-      "headline": "The Afronauts at Royal Court Theatre London Review",
-      "publishDate": "2026-11-25"
     },
     {
       "showId": "a-christmas-carol-west-end-2026",

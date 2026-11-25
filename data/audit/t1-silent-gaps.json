@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T13:58:36.995Z",
+  "generatedAt": "2026-11-25T15:41:20.188Z",
   "windowDays": 45,
   "showsScanned": 299,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 390.9407297222222,
+      "fileAgeHours": 392.65278944444447,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 368.392415,
+      "nonTerminalAgeHours": 370.10441333333335,
       "needsManualRecovery": true
     },
     {
@@ -38,30 +38,10 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 360.17265694444444,
+      "fileAgeHours": 361.8846791666667,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 359.02797,
+      "nonTerminalAgeHours": 360.7399683333333,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "purpose-geffen-regional-2026",
-      "title": "Purpose",
-      "openingDate": "2026-11-23",
-      "file": "independent--albert-toth.json",
-      "outletId": "independent",
-      "tier": 2,
-      "type": "rejected-unscoreable",
-      "recoverable": false,
-      "url": "https://www.independent.co.uk/bulletin/news/timms-review-pip-personal-independence-payment-b3090697.html",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=purpose-geffen-regional-2026 --url=https://www.independent.co.uk/bulletin/news/timms-review-pip-personal-independence-payment-b3090697.html --outlet=independent --critic=\"Albert Toth\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-25T05:23:02.494Z",
-      "fileAgeHours": 8.59291611111111,
-      "gapSeenAt": "2026-11-25T06:43:03.555Z",
-      "nonTerminalAgeHours": 7.259288611111111,
-      "needsManualRecovery": false
     }
   ],
   "contradictions": []
