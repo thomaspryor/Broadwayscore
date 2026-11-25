@@ -444,3 +444,26 @@ test('BRO-8276: an earlier run\'s pending entry whose path is now gone upstream 
   assert.deepEqual(r.notLanded, []);
   assert.deepEqual(readPending(env.pendingPath), []);
 });
+
+test('BRO-8276: successor has another writer\'s uncommitted edit: deferred and kept pending, never dropped or thrown', () => {
+  const env = setup();
+  seedUrl(env);
+  fs.writeFileSync(env.file, review(RECOVERED, { outletId: 'nytimes', url: STUB_URL }));
+  const fakePush = path.join(env.dir, 'fake-push.sh');
+  fs.writeFileSync(fakePush, '#!/bin/bash\nexit 0\n');
+  assert.throws(() => checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: test', pendingPath: env.pendingPath, pushScript: fakePush }), ReviewTextsLandingError);
+  execFileSync('bash', [renameInjection(env)]);
+  // Real push, then another local writer edits the successor before we carry.
+  const dirtyPush = path.join(env.dir, 'dirty-push.sh');
+  fs.writeFileSync(dirtyPush, `#!/bin/bash\nbash "${REAL_PUSH}" "$@" || exit $?\nprintf '%s' '{"showId":"show-2026","fullText":"local edit"}' > "${path.join(env.local, NAMED_REL)}"\n`);
+  const r = retryPendingPushes({ repoDir: env.local, pendingPath: env.pendingPath, pushScript: dirtyPush, retries: 1 });
+  assert.deepEqual(r.deferred.map((d) => d.rel), [REL]);
+  assert.match(r.deferred[0].why, /uncommitted local edits/);
+  assert.deepEqual(readPending(env.pendingPath).map((e) => e.paths.map((p) => p.rel)), [[REL]], 'kept for the next run');
+  // The other writer finishes (clean again): the next run carries it.
+  git(env.local, 'checkout', '--', NAMED_REL);
+  const r2 = retryPendingPushes({ repoDir: env.local, pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1 });
+  assert.equal(r2.renamed.length, 1);
+  assert.equal(JSON.parse(originHas(env, NAMED_REL)).fullText, RECOVERED);
+  assert.deepEqual(readPending(env.pendingPath), []);
+});

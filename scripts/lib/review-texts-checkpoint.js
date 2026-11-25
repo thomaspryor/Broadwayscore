@@ -217,6 +217,26 @@ function groupBy(list, keyOf) {
   return m;
 }
 
+/** Keep only the paths `keepRel` accepts in pending entry `id`; drop it when empty. */
+function trimEntry(pendingPath, id, keepRel) {
+  writePending(pendingPath, readPending(pendingPath).map((e) => (e.id === id ? { ...e, paths: e.paths.filter((p) => keepRel(p.rel)) } : e)).filter((e) => e.paths.length));
+}
+
+/**
+ * Run a carry-over of `rels` (gone paths of pending entry `id`). A failed
+ * successor push has already journaled the successor under its own entry,
+ * so the gone paths leave entry `id` before the error propagates: otherwise
+ * the next run would carry and report the same text twice.
+ */
+function carryGone(pendingPath, id, rels, run) {
+  try {
+    return run();
+  } catch (e) {
+    if (e instanceof ReviewTextsPushError) trimEntry(pendingPath, id, (rel) => !rels.includes(rel));
+    throw e;
+  }
+}
+
 function parseOrNull(text) {
   try { const j = JSON.parse(text); return j && typeof j === 'object' && !Array.isArray(j) ? j : null; } catch { return null; }
 }
@@ -264,37 +284,41 @@ function findSuccessor(repo, rel, { ours, parent }) {
 
 /**
  * Carry the text a run committed to a now-gone path onto its successor
- * (three-way merge: base = what origin held before our push, upstream = the
- * successor, ours = our commit) and write it through safeWriteReview.
- * Call under the review-texts lock with the checkout at origin/main.
- * @returns {{moved: {fromRel, rel, abs, key}[], superseded: {rel, why}[]}}
+ * (three-way merge: base = what origin held before our push, upstream =
+ * origin's successor, ours = our commit) and write it through safeWriteReview.
+ * The local successor must be clean and tracked (its committed copy may be
+ * older than origin's: the push rebases it the same field-wise way). Call
+ * under the review-texts lock.
+ * @returns {{moved: {fromRel, rel, abs, key}[], superseded: {rel, why}[], deferred: {rel, why}[]}}
+ *   deferred = cannot carry from this checkout yet; the caller keeps it pending.
  */
 function carryOntoSuccessors(repo, gone) {
   const moved = [];
   const superseded = [];
-  if (!gone.length) return { moved, superseded };
+  const deferred = [];
+  if (!gone.length) return { moved, superseded, deferred };
   let synced = null;
+  const blobText = (sha) => { try { return sha ? git(repo, ['cat-file', 'blob', sha]) : null; } catch { return null; } };
   for (const g of gone) {
-    const blobText = (sha) => { try { return sha ? git(repo, ['cat-file', 'blob', sha]) : null; } catch { return null; } };
     const ours = parseOrNull(blobText(g.blob));
     const parent = parseOrNull(blobText(g.parentBlob));
     if (!ours) { superseded.push({ rel: g.rel, why: 'committed blob no longer in the object store' }); continue; }
     const succ = findSuccessor(repo, g.rel, { ours, parent });
     if (!succ) { superseded.push({ rel: g.rel, why: 'removed upstream, no successor file' }); continue; }
     const abs = path.join(repo, succ.rel);
-    // The checkout must hold origin's successor before we write over it.
-    if (blobOrNull(repo, 'HEAD', succ.rel) !== blobOrNull(repo, 'origin/main', succ.rel)) {
-      if (!synced) synced = syncCheckoutToOrigin(repo, { fetch: false });
-      if (blobOrNull(repo, 'HEAD', succ.rel) !== blobOrNull(repo, 'origin/main', succ.rel)) {
-        superseded.push({ rel: g.rel, why: `successor ${succ.rel} not in this checkout (${synced.reason})` });
-        continue;
-      }
+    if (landingKey(succ.rec) === landingKey(ours)) {
+      // Already on origin (someone carried it): report it landed via a no-op checkpoint.
+      moved.push({ fromRel: g.rel, rel: succ.rel, abs, key: landingKey(succ.rec) });
+      continue;
     }
-    const onDisk = fs.existsSync(abs) ? parseOrNull(fs.readFileSync(abs, 'utf8')) : null;
-    if (!onDisk) { superseded.push({ rel: g.rel, why: `successor ${succ.rel} unreadable` }); continue; }
-    if (landingKey(onDisk) === landingKey(ours)) { moved.push({ fromRel: g.rel, rel: succ.rel, abs, key: landingKey(onDisk), alreadyThere: true }); continue; }
+    if (!blobOrNull(repo, 'HEAD', succ.rel)) {
+      if (!synced) synced = syncCheckoutToOrigin(repo, { fetch: false });
+      if (!blobOrNull(repo, 'HEAD', succ.rel)) { deferred.push({ rel: g.rel, why: `successor ${succ.rel} not in this checkout yet (${synced.reason})` }); continue; }
+    }
+    const wtBlob = fs.existsSync(abs) ? git(repo, ['hash-object', '--', abs]).trim() : null;
+    if (wtBlob !== blobOrNull(repo, 'HEAD', succ.rel)) { deferred.push({ rel: g.rel, why: `successor ${succ.rel} has uncommitted local edits` }); continue; }
     const { mergeReviewJson } = require('./review-json-three-way-merge');
-    const { merged } = mergeReviewJson(parent, onDisk, ours, { tie: 'upstream' });
+    const { merged } = mergeReviewJson(parent, succ.rec, ours, { tie: 'upstream' });
     if (merged.fullText !== ours.fullText) {
       superseded.push({ rel: g.rel, why: `successor ${succ.rel} holds a newer text` });
       continue;
@@ -303,31 +327,39 @@ function carryOntoSuccessors(repo, gone) {
     const w = safeWriteReview(abs, merged, { merge: false });
     const after = parseOrNull(fs.readFileSync(abs, 'utf8'));
     if ((w && w.wrote === false) || !after || after.fullText !== ours.fullText) {
+      if (wtBlob && blobText(wtBlob) != null) fs.writeFileSync(abs, blobText(wtBlob)); // leave the checkout as it was
       superseded.push({ rel: g.rel, why: `write to successor ${succ.rel} refused${w && w.skipped ? ` (${w.skipped})` : ''}` });
       continue;
     }
     moved.push({ fromRel: g.rel, rel: succ.rel, abs, key: landingKey(after) });
   }
-  return { moved, superseded };
+  return { moved, superseded, deferred };
 }
 
 /**
  * Land carried-over text on the successor files (re-entrant under the lock).
- * onLanded fires for the successor with renamedFrom = the gone path.
- * @returns {{landed: object[], superseded: object[]}}
+ * onLanded fires for the successor with renamedFrom = the gone path. A
+ * successor the push could not land stays in that checkpoint's own pending
+ * entry and is reported deferred: never thrown, so one file never stops a run.
+ * @returns {{landed: object[], superseded: object[], deferred: object[]}}
  */
 function landOnSuccessors(repo, gone, { onLanded, meta, pendingPath, pushScript, pushEnv, retries }) {
-  const { moved, superseded } = carryOntoSuccessors(repo, gone);
-  if (!moved.length) return { landed: [], superseded };
-  const res = checkpointReviewTexts({
-    repoDir: repo,
-    paths: moved.map((m) => m.abs),
-    expected: new Map(moved.map((m) => [m.abs, m.key])),
-    renamedFrom: new Map(moved.map((m) => [m.rel, m.fromRel])),
-    message: `fix: land recovered text on ${moved.length} renamed review file(s) (BRO-8276)`,
-    onLanded, meta, pendingPath, pushScript, pushEnv, retries,
-  });
-  return { landed: res.landed, superseded: [...superseded, ...(res.superseded || [])] };
+  const { moved, superseded, deferred } = carryOntoSuccessors(repo, gone);
+  if (!moved.length) return { landed: [], superseded, deferred };
+  try {
+    const res = checkpointReviewTexts({
+      repoDir: repo,
+      paths: moved.map((m) => m.abs),
+      expected: new Map(moved.map((m) => [m.abs, m.key])),
+      renamedFrom: new Map(moved.map((m) => [m.rel, m.fromRel])),
+      message: `fix: land recovered text on ${moved.length} renamed review file(s) (BRO-8276)`,
+      onLanded, meta, pendingPath, pushScript, pushEnv, retries,
+    });
+    return { landed: res.landed, superseded: [...superseded, ...(res.superseded || [])], deferred: [...deferred, ...(res.deferred || [])] };
+  } catch (e) {
+    if (!(e instanceof ReviewTextsLandingError)) throw e; // a failed push: journaled, the caller stops as for any push failure
+    return { landed: e.landed || [], superseded, deferred: [...deferred, ...(e.notLanded || []).map((r) => ({ rel: r.rel, why: r.why || 'successor not on origin/main after push' }))] };
+  }
 }
 
 /**
@@ -426,7 +458,7 @@ function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onL
         writePending(pendingPath, [...readPending(pendingPath), { ...entry, paths: entry.paths.filter((p) => keep.has(p.rel)) }]);
       }
       if (lost.length || vanished.length) failLanding([], landed, false);
-      return { committed: false, pushed: false, commit, landed, notLanded, renamed: [], superseded: [] };
+      return { committed: false, pushed: false, commit, landed, notLanded, renamed: [], superseded: [], deferred: [] };
     }
     const pending = readPending(pendingPath);
     pending.push(entry);
@@ -444,12 +476,14 @@ function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onL
     const notLanded = res.filter((r) => !r.landed && !isGoneUpstream(r));
     // Paths still missing from origin/main after a successful push stay in the
     // ledger for the next run's retry; only landed (or resolved) ones leave it.
-    const keep = new Set(notLanded.map((r) => r.rel));
-    writePending(pendingPath, readPending(pendingPath).map((e) => (e.id === entry.id ? { ...e, paths: e.paths.filter((p) => keep.has(p.rel)) } : e)).filter((e) => e.paths.length));
     fireLanded(onLanded, landed, entry);
-    const moved = landOnSuccessors(repo, gone, { onLanded, meta: entry.meta, pendingPath, pushScript, pushEnv, retries });
+    const goneRels = gone.map((g) => g.rel);
+    const moved = carryGone(pendingPath, entry.id, goneRels, () => landOnSuccessors(repo, gone, { onLanded, meta: entry.meta, pendingPath, pushScript, pushEnv, retries }));
+    // A gone path we could not carry yet stays journaled for the next run.
+    const keep = new Set([...notLanded.map((r) => r.rel), ...moved.deferred.filter((d) => goneRels.includes(d.rel)).map((d) => d.rel)]);
+    trimEntry(pendingPath, entry.id, (rel) => keep.has(rel));
     if (notLanded.length || lost.length || vanished.length) failLanding(notLanded, [...landed, ...moved.landed], true);
-    return { committed, pushed: true, commit, landed, notLanded, renamed: moved.landed, superseded: moved.superseded };
+    return { committed, pushed: true, commit, landed, notLanded, renamed: moved.landed, superseded: moved.superseded, deferred: moved.deferred };
   });
 }
 
@@ -472,7 +506,7 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
         throw new ReviewTextsPushError(`review-texts pending push still failing (exit ${push.status}); ${entries.length} pending checkpoint(s) in ${pendingPath}`, { pendingPath, output: push.output });
       }
     }
-    const out = { entries: entries.length, landed: [], restored: [], notLanded: [], renamed: [], superseded: [] };
+    const out = { entries: entries.length, landed: [], restored: [], notLanded: [], renamed: [], superseded: [], deferred: [] };
     if (!entries.length) return out;
     const toRestore = [];
     const gone = [];
@@ -514,14 +548,23 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
     // failure before that keeps the original record for the next run.
     // Carried onto successors before the journal forgets the gone paths; a
     // push failure here throws with the journal still holding them.
-    for (const list of groupBy(gone, (g) => g.entry.id).values()) {
-      const moved = landOnSuccessors(repo, list, { onLanded, meta: list[0].entry.meta, pendingPath, pushScript, pushEnv, retries });
+    const keepGone = new Map(); // entry id -> gone rels still to carry (deferred)
+    for (const [id, list] of groupBy(gone, (g) => g.entry.id)) {
+      const moved = carryGone(pendingPath, id, list.map((g) => g.rel), () => landOnSuccessors(repo, list, { onLanded, meta: list[0].entry.meta, pendingPath, pushScript, pushEnv, retries }));
       out.renamed.push(...moved.landed);
       out.superseded.push(...moved.superseded);
+      out.deferred.push(...moved.deferred);
+      const ownRels = new Set(list.map((g) => g.rel));
+      const still = moved.deferred.filter((d) => ownRels.has(d.rel)).map((d) => d.rel);
+      if (still.length) keepGone.set(id, new Set(still));
     }
-    const restoring = new Set(toRestore.map((r) => r.entry.id));
+    // Deferred gone paths stay in their entry (trimmed to them) for the next run.
+    if (keepGone.size) writePending(pendingPath, readPending(pendingPath).map((e) => (keepGone.has(e.id) ? { ...e, paths: e.paths.filter((p) => keepGone.get(e.id).has(p.rel)) } : e)));
+    // An entry trimmed to deferred gone paths is never dropped here (even when
+    // its other paths are being restored: the restore journals its own entry).
+    const restoring = new Set(toRestore.map((r) => r.entry.id).filter((id) => !keepGone.has(id)));
     const dropEntries = (ids) => writePending(pendingPath, readPending(pendingPath).filter((e) => !ids.has(e.id)));
-    dropEntries(new Set(entries.filter((e) => !restoring.has(e.id)).map((e) => e.id)));
+    dropEntries(new Set(entries.filter((e) => !restoring.has(e.id) && !keepGone.has(e.id)).map((e) => e.id)));
     if (toRestore.length) {
       let res;
       try {

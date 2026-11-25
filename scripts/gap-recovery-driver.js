@@ -324,7 +324,7 @@ async function runRetryPending({ dir, ledgerPath }) {
   try {
     const pend = retryPendingPushes({ repoDir: dir, onLanded });
     recordGoneUpstream(pend.superseded, (key) => earlier.get(key), ledgerPath);
-    console.log(`retry-pending: ${pend.entries} pending checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${(pend.renamed || []).length} moved to a renamed file, ${(pend.superseded || []).length} gone upstream, ${pend.notLanded.length} not landed`);
+    console.log(`retry-pending: ${pend.entries} pending checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${(pend.renamed || []).length} moved to a renamed file, ${(pend.superseded || []).length} gone upstream, ${(pend.deferred || []).length} deferred, ${pend.notLanded.length} not landed`);
     SUMMARY.landed = landedN;
     SUMMARY.pushFailed = pend.notLanded.length > 0;
     return pend.notLanded.length ? 1 : 0;
@@ -470,7 +470,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
   let pend;
   try { pend = retryPendingPushes({ repoDir: dir, onLanded }); } catch (e) { SUMMARY.pushFailed = true; SUMMARY.error = String(e.message).slice(0, 300); throw e; } // BRO-7944: counts as a failed push for the batch runner
   closeGone(pend.superseded);
-  if (pend.entries) console.log(`  [pending] ${pend.entries} earlier checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${(pend.renamed || []).length} moved to a renamed file, ${(pend.superseded || []).length} gone upstream, ${pend.notLanded.length} not landed`);
+  if (pend.entries) console.log(`  [pending] ${pend.entries} earlier checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${(pend.renamed || []).length} moved to a renamed file, ${(pend.superseded || []).length} gone upstream, ${(pend.deferred || []).length} deferred, ${pend.notLanded.length} not landed`);
 
   let urlFindRuns = 0;
   const envInt = (k, d) => { const n = parseInt(process.env[k] || String(d), 10); return Number.isFinite(n) && n >= 0 ? n : d; };
@@ -551,7 +551,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
         onLanded, meta: { source: 'gap-recovery-driver', runId: RUN_ID, attempts },
       });
       closeGone(res.superseded);
-      console.log(`  [checkpoint] ${res.pushed ? 'pushed' : 'nothing to push'}; ${res.landed.length} file(s) confirmed on origin/main${(res.renamed || []).length ? `; ${res.renamed.length} moved onto a file renamed upstream` : ''}${(res.superseded || []).length ? `; ${res.superseded.length} gone upstream` : ''}`);
+      console.log(`  [checkpoint] ${res.pushed ? 'pushed' : 'nothing to push'}; ${res.landed.length} file(s) confirmed on origin/main${(res.renamed || []).length ? `; ${res.renamed.length} moved onto a file renamed upstream` : ''}${(res.superseded || []).length ? `; ${res.superseded.length} gone upstream` : ''}${(res.deferred || []).length ? `; ${res.deferred.length} deferred to the next run (${res.deferred.map((d) => d.why).join('; ').slice(0, 200)})` : ''}`);
     } finally {
       for (const p of paths) { tracker.delete(p); if (tracker.expected) tracker.expected.delete(p); }
     }
