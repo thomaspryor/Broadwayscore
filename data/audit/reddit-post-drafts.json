@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "postedDetection": "ok",
-    "postedDetectionFailingSince": null,
+    "postedDetection": "skipped",
+    "postedDetectionFailingSince": "2026-11-25T05:00:14.480Z",
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-25T01:38:13.014Z"
+    "lastRun": "2026-11-25T05:00:29.841Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -3955,32 +3955,35 @@
       "market": "broadway",
       "subreddit": "Broadway",
       "score": 66,
-      "reviewCount": 22,
+      "reviewCount": 24,
       "url": "https://broadwayscorecard.com/show/its-a-wonderful-life-a-live-radio-play",
-      "notability": 44,
+      "notability": 45,
       "createdAt": "2026-11-24T00:13:16.218Z",
       "status": "ready",
       "source": "claude-sonnet-5-5",
       "lintProblems": [],
-      "title": "22 reviews are in for It’s A Wonderful Life: A Live Radio Play. 66/100, with a Talkin' Broadway rave for the Foley artist and a Vulture pan",
-      "body": "It opened at the Broadhurst with Andrew Rannells, Megan Hilty, Tituss Burgess, and Harry Hamlin, and I found 22 reviews: 4 raves, 11 positive, 3 mixed, 4 negative. Audiences are at a B+ (across Mezzanine, Show Score, Theatr, and Broadway.com).\n\nhttps://broadwayscorecard.com/show/its-a-wonderful-life-a-live-radio-play\n\nSamuel L. Leiter at Theater Scene called it \"a wonderful show and a wonderful cast.\" Howard Miller at Talkin' Broadway gave credit to \"the very busy Foley artist Leslie Bloome.\" Meanwhile Sara Holdren at Vulture wrote \"this It’s a Wonderful Life isn’t so much theater as it is activity or commodity.\"\n\nRannells gets a lot of the love. The skeptical reviews are mostly about the celebrity casting and the stagecraft. Which I kind of GET, it's a holiday radio play.\n\nI haven't seen this one yet, and I'm still undecided on going. Anyone seen it?",
-      "why": "It leads with the show and the number, then uses the contrast between the Foley artist praise and Vulture's 'activity or commodity' line as the hook, since a cozy holiday show getting a split reaction is easy to have an opinion on.",
-      "expectedPushback": "It's a cozy holiday radio play, who cares what critics think, people just want a fun Christmas night out.",
-      "suggestedReply": "Totally fair, and a lot of the reviews did call it pleasant. I just like seeing what everyone wrote, and the audience B+ says people are having a good time.",
+      "title": "Reviews are in for It’s A Wonderful Life: A Live Radio Play. 66/100 from 24 critics, with a Theater Scene rave and a Vulture pan in the same pile",
+      "body": "It opened at the Broadhurst with Andrew Rannells, Megan Hilty, Tituss Burgess, and Harry Hamlin, and I found 24 reviews: 4 raves, 12 positive, 4 mixed, 4 negative. Audiences are at a B+ (across Mezzanine, Show Score, Theatr, and Broadway.com).\n\nhttps://broadwayscorecard.com/show/its-a-wonderful-life-a-live-radio-play\n\nSamuel L. Leiter at Theater Scene wrote \"Whatever you may think of the title, be assured it’s a wonderful show and a wonderful cast.\" Meanwhile Sara Holdren at Vulture said this version \"isn’t so much theater as it is activity or commodity.\" Howard Miller at Talkin' Broadway was one of the happier ones, and gave \"creds to the very busy Foley artist Leslie Bloome.\"\n\nSo it sounds charming and very much a holiday outing, and some critics clearly wanted more than that. Which I GET.\n\nI haven't seen this one yet, and I remain undecided on going. Anyone seen it?",
+      "why": "It pairs a four-star cast with a score that doesn't match the pile of positive reviews, plus a real rave and a real pan quoted side by side, which invites people who've seen it to weigh in.",
+      "expectedPushback": "It's a holiday radio play with celebrities, of course it's a tourist trap, and nobody needs a score to know that.",
+      "suggestedReply": "Ha, fair, and a lot of the reviews say something similar. The Critic Score is just a weighted average of what the critics published, so I'm mostly curious how it plays for people who've actually been.",
       "personalLines": [
-        "I haven't seen this one yet, and I'm still undecided on going.",
-        "I haven't seen it yet. Sounds like a nice holiday night out, but I'm not sure it's for me.",
-        "I haven't seen this one yet, but the cast has me curious. Would you go?"
+        "I haven't seen it, and I'm still undecided on going.",
+        "Not sure this one's for me, but the Rannells praise is tempting.",
+        "I haven't seen it yet, and the reviews have me curious about whether it's a fun night out."
       ],
-      "submitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=22+reviews+are+in+for+It%E2%80%99s+A+Wonderful+Life%3A+A+Live+Radio+Play.+66%2F100%2C+with+a+Talkin%27+Broadway+rave+for+the+Foley+artist+and+a+Vulture+pan&text=It+opened+at+the+Broadhurst+with+Andrew+Rannells%2C+Megan+Hilty%2C+Tituss+Burgess%2C+and+Harry+Hamlin%2C+and+I+found+22+reviews%3A+4+raves%2C+11+positive%2C+3+mixed%2C+4+negative.+Audiences+are+at+a+B%2B+%28across+Mezzanine%2C+Show+Score%2C+Theatr%2C+and+Broadway.com%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fits-a-wonderful-life-a-live-radio-play%0A%0ASamuel+L.+Leiter+at+Theater+Scene+called+it+%22a+wonderful+show+and+a+wonderful+cast.%22+Howard+Miller+at+Talkin%27+Broadway+gave+credit+to+%22the+very+busy+Foley+artist+Leslie+Bloome.%22+Meanwhile+Sara+Holdren+at+Vulture+wrote+%22this+It%E2%80%99s+a+Wonderful+Life+isn%E2%80%99t+so+much+theater+as+it+is+activity+or+commodity.%22%0A%0ARannells+gets+a+lot+of+the+love.+The+skeptical+reviews+are+mostly+about+the+celebrity+casting+and+the+stagecraft.+Which+I+kind+of+GET%2C+it%27s+a+holiday+radio+play.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+still+undecided+on+going.+Anyone+seen+it%3F",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/Broadway/submit?selftext=true&title=22+reviews+are+in+for+It%E2%80%99s+A+Wonderful+Life%3A+A+Live+Radio+Play.+66%2F100%2C+with+a+Talkin%27+Broadway+rave+for+the+Foley+artist+and+a+Vulture+pan&text=It+opened+at+the+Broadhurst+with+Andrew+Rannells%2C+Megan+Hilty%2C+Tituss+Burgess%2C+and+Harry+Hamlin%2C+and+I+found+22+reviews%3A+4+raves%2C+11+positive%2C+3+mixed%2C+4+negative.+Audiences+are+at+a+B%2B+%28across+Mezzanine%2C+Show+Score%2C+Theatr%2C+and+Broadway.com%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fits-a-wonderful-life-a-live-radio-play%0A%0ASamuel+L.+Leiter+at+Theater+Scene+called+it+%22a+wonderful+show+and+a+wonderful+cast.%22+Howard+Miller+at+Talkin%27+Broadway+gave+credit+to+%22the+very+busy+Foley+artist+Leslie+Bloome.%22+Meanwhile+Sara+Holdren+at+Vulture+wrote+%22this+It%E2%80%99s+a+Wonderful+Life+isn%E2%80%99t+so+much+theater+as+it+is+activity+or+commodity.%22%0A%0ARannells+gets+a+lot+of+the+love.+The+skeptical+reviews+are+mostly+about+the+celebrity+casting+and+the+stagecraft.+Which+I+kind+of+GET%2C+it%27s+a+holiday+radio+play.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+still+undecided+on+going.+Anyone+seen+it%3F",
+      "submitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=Reviews+are+in+for+It%E2%80%99s+A+Wonderful+Life%3A+A+Live+Radio+Play.+66%2F100+from+24+critics%2C+with+a+Theater+Scene+rave+and+a+Vulture+pan+in+the+same+pile&text=It+opened+at+the+Broadhurst+with+Andrew+Rannells%2C+Megan+Hilty%2C+Tituss+Burgess%2C+and+Harry+Hamlin%2C+and+I+found+24+reviews%3A+4+raves%2C+12+positive%2C+4+mixed%2C+4+negative.+Audiences+are+at+a+B%2B+%28across+Mezzanine%2C+Show+Score%2C+Theatr%2C+and+Broadway.com%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fits-a-wonderful-life-a-live-radio-play%0A%0ASamuel+L.+Leiter+at+Theater+Scene+wrote+%22Whatever+you+may+think+of+the+title%2C+be+assured+it%E2%80%99s+a+wonderful+show+and+a+wonderful+cast.%22+Meanwhile+Sara+Holdren+at+Vulture+said+this+version+%22isn%E2%80%99t+so+much+theater+as+it+is+activity+or+commodity.%22+Howard+Miller+at+Talkin%27+Broadway+was+one+of+the+happier+ones%2C+and+gave+%22creds+to+the+very+busy+Foley+artist+Leslie+Bloome.%22%0A%0ASo+it+sounds+charming+and+very+much+a+holiday+outing%2C+and+some+critics+clearly+wanted+more+than+that.+Which+I+GET.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+remain+undecided+on+going.+Anyone+seen+it%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/Broadway/submit?selftext=true&title=Reviews+are+in+for+It%E2%80%99s+A+Wonderful+Life%3A+A+Live+Radio+Play.+66%2F100+from+24+critics%2C+with+a+Theater+Scene+rave+and+a+Vulture+pan+in+the+same+pile&text=It+opened+at+the+Broadhurst+with+Andrew+Rannells%2C+Megan+Hilty%2C+Tituss+Burgess%2C+and+Harry+Hamlin%2C+and+I+found+24+reviews%3A+4+raves%2C+12+positive%2C+4+mixed%2C+4+negative.+Audiences+are+at+a+B%2B+%28across+Mezzanine%2C+Show+Score%2C+Theatr%2C+and+Broadway.com%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fits-a-wonderful-life-a-live-radio-play%0A%0ASamuel+L.+Leiter+at+Theater+Scene+wrote+%22Whatever+you+may+think+of+the+title%2C+be+assured+it%E2%80%99s+a+wonderful+show+and+a+wonderful+cast.%22+Meanwhile+Sara+Holdren+at+Vulture+said+this+version+%22isn%E2%80%99t+so+much+theater+as+it+is+activity+or+commodity.%22+Howard+Miller+at+Talkin%27+Broadway+was+one+of+the+happier+ones%2C+and+gave+%22creds+to+the+very+busy+Foley+artist+Leslie+Bloome.%22%0A%0ASo+it+sounds+charming+and+very+much+a+holiday+outing%2C+and+some+critics+clearly+wanted+more+than+that.+Which+I+GET.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+remain+undecided+on+going.+Anyone+seen+it%3F",
       "crosspostSubreddit": null,
       "crosspostSubmitUrl": null,
       "emailedAt": "2026-11-24T22:55:01.335Z",
       "reminderAt": "2026-11-24T22:55:01.335Z",
       "emailedScore": 66,
       "emailedReviewCount": 22,
-      "updateCount": 4
+      "updateCount": 4,
+      "refreshedAt": "2026-11-25T05:00:29.841Z",
+      "previousScore": 66,
+      "previousReviewCount": 22
     },
     "seven-guitars-off-broadway-2026": {
       "showId": "seven-guitars-off-broadway-2026",
