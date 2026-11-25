@@ -1204,6 +1204,21 @@
     "queuedAt": "2026-11-25T05:00:36.436Z"
   },
   {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'review: David Dougill, Jane Edwardes, Thomas W Hodgkinson (1) -> Jane Edwardes, Thomas W Hodgkinson (5) [extra words, both pages sizeable]',\n+   'review: David Dougill, Jane Edwardes, Thomas W Hodgkinson (1) -> Thomas W. Hodgkinson (4) [extra words, both pages sizeable]'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "fields": [],
+    "queuedAt": "2026-11-25T05:13:16.391Z"
+  },
+  {
     "conditionKey": "land:land/bro-8283-e2e-test",
     "title": "Landing blocked: lint-workflows red on land/bro-8283-e2e-test",
     "description": "land.yml did not land land/bro-8283-e2e-test: the lint-workflows gate went red at 143bf00101. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45547705948",
