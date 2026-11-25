@@ -178,12 +178,16 @@ test('CLI smoke: a dry run over no matching commits reads git, writes nothing, e
   const { fileURLToPath } = await import('node:url');
   const root = fileURLToPath(new URL('../..', import.meta.url));
   if (spawnSync('git', ['rev-parse', '--verify', '-q', 'origin/main'], { cwd: root }).status !== 0) return t.skip('no origin/main in this checkout');
-  const r = spawnSync('node', ['scripts/landed-change-proof-audit.js', '--dry-run', '--days=1', '--sha=ffffffffffff'], { cwd: root, encoding: 'utf8', timeout: 60000, env: { ...process.env, GH_TOKEN: '', VERCEL_TOKEN: '' } });
-  assert.equal(r.status, 0, r.stderr);
+  // BRO-8111: 2s on a quiet box, but it ran inside an 800s test gauntlet on a loaded runner and once hit the old 60s
+  // cap (a kill leaves status null and empty stderr, so the failure said nothing). Generous cap, and a kill is named.
+  const CAP_MS = 300000;
+  const why = (x) => `${x.error ? x.error.message : ''} signal=${x.signal} status=${x.status} stderr=${x.stderr}`;
+  const r = spawnSync('node', ['scripts/landed-change-proof-audit.js', '--dry-run', '--days=1', '--sha=ffffffffffff'], { cwd: root, encoding: 'utf8', timeout: CAP_MS, env: { ...process.env, GH_TOKEN: '', VERCEL_TOKEN: '' } });
+  assert.equal(r.status, 0, why(r));
   assert.match(r.stdout, /all: 0 code commits/);
   assert.match(r.stdout, /dry run: would append 0 row\(s\) \+ run marker, card for 0 change\(s\)/);
-  const v = spawnSync('node', ['scripts/landed-change-proof-audit.js', '--dry-run', '--sha=ffffffffffff', '--expect-proven'], { cwd: root, encoding: 'utf8', timeout: 60000, env: { ...process.env, GH_TOKEN: '', VERCEL_TOKEN: '' } });
-  assert.equal(v.status, 1, 'a card VERIFY over a sha that is not on main must fail, not pass on zero rows');
+  const v = spawnSync('node', ['scripts/landed-change-proof-audit.js', '--dry-run', '--sha=ffffffffffff', '--expect-proven'], { cwd: root, encoding: 'utf8', timeout: CAP_MS, env: { ...process.env, GH_TOKEN: '', VERCEL_TOKEN: '' } });
+  assert.equal(v.status, 1, why(v) + ' a card VERIFY over a sha that is not on main must fail, not pass on zero rows');
 });
 
 test('dispatchPlan: allowlisted workflows only, one per workflow, capped, never twice for a sha (BRO-7796)', async () => {
@@ -310,4 +314,12 @@ test('noRunReason covers src, allowlisted-not-dispatched, failed safe run; cardB
   const row = (files) => ({ sha: 'a'.repeat(12), source: 'cloud', verdict: 'not_run', subject: 's', files });
   assert.match(cardBody([row([{ file: 'f.js', verdict: 'not_run', noRunReason: 'why-x' }])], { auditDay: 'd' }), /f\.js: why-x/);
   assert.match(cardBody([row([{ file: 'g.js', verdict: 'failed' }])], { auditDay: 'd' }), /n\/a/);
+});
+
+test('CLI smoke keeps a loaded-runner timeout and names a kill (BRO-8111 class guard)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL(import.meta.url), 'utf8');
+  const smoke = src.slice(src.indexOf("test('CLI smoke:"), src.indexOf("test('dispatchPlan:"));
+  assert.doesNotMatch(smoke, /timeout:\s*60000/, 'a 60s cap flaked once inside the 800s land gauntlet');
+  assert.match(smoke, /signal=\$\{x\.signal\}/, 'a killed child must say so, not fail with an empty stderr');
 });
