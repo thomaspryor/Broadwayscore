@@ -1291,6 +1291,21 @@
     "queuedAt": "2026-11-25T05:33:43.518Z"
   },
   {
+    "conditionKey": "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)",
+    "title": "Live-data test failing: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) (tests/unit/opening-night-lane-sources.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)\" in tests/unit/opening-night-lane-sources.test.mjs is red against the live corpus.\n\non-time outlets with no lane source:\n2026-11-23  its-a-wonderful-life-a-live-radio-play-2026       23 outlets   18 polled   4 gaps   1 missing: stagebuddy (ON TIME)\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)",
+    "fields": [],
+    "queuedAt": "2026-11-25T05:46:33.104Z"
+  },
+  {
     "conditionKey": "dispatch-flow-dead",
     "title": "Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched (still open — BRO-7700)",
     "description": "Still firing after 41 notifications since it was filed. Tracked at BRO-7700.\n\n6 new-work claim(s) in the last 6h with 1 card(s) the sweep would dispatch right now (eligible P0/P1 queue depth: 1); 0 live 🤖 auto-dispatch workspace(s) and 0 ledger launch(es) in the last 45 min. The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and linear-next.js/bsc-next.js for a stuck sweep. (Claims are the sweep taking on NEW work; launches alone kept flowing from retries through the 76.4h stall of 16-19 Sep 2026.)",

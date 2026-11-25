@@ -38048,12 +38048,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-25T05:13:16.391Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:13:16.391Z",
+      "lastSeen": "2026-11-25T05:46:33.088Z",
       "lastNotifiedAt": "2026-11-25T05:13:16.391Z",
       "lastSurfacedAt": "2026-11-25T05:13:16.391Z",
       "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -42400,21 +42401,18 @@
       "resolveReason": "BRO-6082: no automated path left; reported on the digest FYI line"
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) (tests/unit/opening-night-lane-sources.test.mjs)",
       "firstSeen": "2026-11-11T15:05:44.026Z",
-      "incidentOpenedAt": "2026-11-20T13:18:48.265Z",
+      "incidentOpenedAt": "2026-11-25T05:46:33.104Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-21T07:29:36.068Z",
-      "lastNotifiedAt": "2026-11-20T13:18:48.265Z",
-      "lastSurfacedAt": "2026-11-20T13:18:48.265Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-25T05:46:33.104Z",
+      "lastNotifiedAt": "2026-11-25T05:46:33.104Z",
+      "lastSurfacedAt": "2026-11-25T05:46:33.104Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6,
-      "resolvedAt": "2026-11-21T13:03:39.035Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "land:land/bro-7373-cost": {
       "status": "open",
@@ -46814,13 +46812,13 @@
       "firstSeen": "2026-11-20T13:18:47.633Z",
       "incidentOpenedAt": "2026-11-20T13:18:47.633Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:13:16.126Z",
+      "lastSeen": "2026-11-25T05:46:32.755Z",
       "lastNotifiedAt": "2026-11-25T03:46:50.381Z",
       "lastSurfacedAt": "2026-11-23T02:00:01.244Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-8101",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::live history (when data/reviews.json is present): every on-time outlet has a source or a gap": {
       "status": "resolved",
@@ -48138,13 +48136,13 @@
       "firstSeen": "2026-11-22T01:44:47.666Z",
       "incidentOpenedAt": "2026-11-24T19:15:48.377Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:13:16.409Z",
+      "lastSeen": "2026-11-25T05:46:33.122Z",
       "lastNotifiedAt": "2026-11-24T19:15:48.377Z",
       "lastSurfacedAt": "2026-11-24T19:15:48.377Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "land:land/bro-7101-arm-gates": {
       "status": "resolved",
@@ -49187,13 +49185,13 @@
       "firstSeen": "2026-11-23T14:53:31.566Z",
       "incidentOpenedAt": "2026-11-23T14:53:31.566Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:13:16.425Z",
+      "lastSeen": "2026-11-25T05:46:33.137Z",
       "lastNotifiedAt": "2026-11-24T15:14:59.748Z",
       "lastSurfacedAt": "2026-11-24T15:14:59.748Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "land:land/bro-8150-fn-size-guard": {
       "status": "resolved",
@@ -49536,13 +49534,13 @@
       "firstSeen": "2026-11-23T18:37:33.367Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.367Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:13:16.095Z",
+      "lastSeen": "2026-11-25T05:46:32.724Z",
       "lastNotifiedAt": "2026-11-24T19:15:47.999Z",
       "lastSurfacedAt": "2026-11-24T19:15:47.999Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "live-data-test:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd": {
       "status": "open",
@@ -49551,13 +49549,13 @@
       "firstSeen": "2026-11-23T18:37:33.463Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.463Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:13:16.112Z",
+      "lastSeen": "2026-11-25T05:46:32.740Z",
       "lastNotifiedAt": "2026-11-24T19:15:48.027Z",
       "lastSurfacedAt": "2026-11-24T19:15:48.027Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "land:land/bro-8163-score-gate": {
       "status": "open",
@@ -50046,13 +50044,13 @@
       "firstSeen": "2026-11-24T07:48:45.483Z",
       "incidentOpenedAt": "2026-11-24T07:48:45.483Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T05:13:16.075Z",
+      "lastSeen": "2026-11-25T05:46:32.706Z",
       "lastNotifiedAt": "2026-11-24T07:48:45.483Z",
       "lastSurfacedAt": "2026-11-24T07:48:45.483Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "opening-night-remediation-exhausted-t1-missing:the-afronauts-west-end-2026": {
       "status": "open",
