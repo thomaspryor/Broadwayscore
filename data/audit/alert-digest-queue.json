@@ -207,20 +207,6 @@
     "queuedAt": "2026-11-25T13:18:35.081Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 26 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +20 more). Checked 2026-11-25.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-25T14:18:42.484Z"
-  },
-  {
     "conditionKey": "outlet-ground-truth:king-lear-off-broadway-2026:https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
     "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania — still happening after 7 days",
     "description": "Filed BRO-8322: this has been happening for 7+ days without clearing.\n\ntheatermania lists a review we don't hold (https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/), and automatic ingest did not recover it.",
@@ -430,5 +416,47 @@
       }
     ],
     "queuedAt": "2026-11-25T16:01:52.463Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphan-production-clusters",
+    "title": "Corpus drift: wrongProduction reviews of a production missing from shows.json (cluster baseline-diff)",
+    "description": "check-corpus-drift.js audit \"orphan-production-clusters\" (node scripts/cluster-orphan-productions.js --gate) has been drifting. Latest output:\n\norphan wrongProduction reviews: 562; clusters: 393; clusters >=3: 37 (147 reviews)\nFAIL: 1 orphan production cluster(s) new or grown vs baseline (a production is missing from shows.json):\n  whenwearemarried|west-end count=6 baseline=5 hosts=when-we-are-married-west-end-2010",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T16:51:13.631Z"
+  },
+  {
+    "conditionKey": "corpus-drift:duplicate-shows",
+    "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff) (still open — BRO-6280)",
+    "description": "Still firing after 49 notifications since it was filed. Tracked at BRO-6280.\n\ncheck-corpus-drift.js audit \"duplicate-shows\" (node scripts/audit-duplicate-shows.js --strict --include-closed) has been drifting. Latest output:\n\nFound 8 duplicate-show cluster(s), 8 pair(s) (baselined: 3, new: 5):\n\n  [shared-venue-token:soho] lost in del valle|2026\n    lost-in-del-valle-off-broadway-2026  (SoHo Playhouse, 5 review files)\n    lost-in-del-valle-return-off-broadway-2026  (SoHo Playhouse, 5 review files)\n  [shared-venue-token:marjorie,deane,little] going bacharach|2026\n    going-bacharach-the-songs-of-an-icon-off-broadway-2026  (The Marjorie S. Deane Little Theater, 13 review files)\n    going-bacharach-the-songs-of-an-icon-return-off-broadway-2026  (The Marjorie S. Deane Little Theater, 1 review files)\n  [shared-venue-token:king,head] america the beautiful|2026\n    america-the-beautiful-chapter-2-off-west-end-2026  (King's Head Theatre, 1 review files)\n    america-the-beautiful-chapter-1-off-west-end-2026  (King's Head Theatre, 5 review files)\n  [shared-venue-token:chicago] winters tale|2026\n    the-winters-tale-regional-2026  (Jentes Family Courtyard Theater, Chicago, IL, 3 review files)\n    the-winters-tale-mrs-regional-2026  (Mrs. Murphy and Sons Irish Bistro, Chicago, IL, 2 review files)\n  [shared-venue-token:san] north by northwest|2026\n    north-by-northwest-regional-2026  (American Conservatory Theater (Toni Rembe Theater), San Francisco, CA, 12 review files)\n    north-by-northwest-old-regional-2026  (The Old Globe, San Diego, CA, 11 review files)\n  [shared-venue-token:shakespeare] hamlet|2025\n    hamlet-royal-shakespeare-regional-2025  (Royal Shakespeare Theatre, Stratford-upon-Avon, 3 review files)\n    hamlet-regional-2025  (Chicago Shakespeare Theater, Chicago, IL, 7 review files)\n  [shared-venue-token:chicago] topdog underdog|2024\n    topdog-underdog-regional-2024-windy-city-playhouse  (Windy City Playhouse, Chicago, IL, 10 review files)\n    topdog-underdog-regional-2024  (Filament Theatre, Chicago, IL, 3 review files)\n  [shared-venue-token:chicago] richard iii|2022\n    richard-iii-regional-2022-2  (The Edge Theatre, Chicago, IL, 6 review files)\n    richard-iii-regional-2022  (Factory Theater, Chicago, IL, 5 review files)\n\nDetail written to data/audit/duplicate-shows.json\n\n⚠️  NEW duplicate pair(s) not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/duplicate-shows-baseline.json):\n  [shared-venue-token:chicago] winters tale|2026: the-winters-tale-regional-2026 <-> the-winters-tale-mrs-regional-2026\n  [shared-venue-token:san] north by northwest|2026: north-by-northwest-regional-2026 <-> north-by-northwest-old-regional-2026\n  [shared-venue-token:shakespeare] hamlet|2025: hamlet-royal-shakespeare-regional-2025 <-> hamlet-regional-2025\n  [shared-venue-token:chicago] topdog underdog|2024: topdog-underdog-regional-2024-windy-city-playhouse <-> topdog-underdog-regional-2024\n  [shared-venue-token:chicago] richard iii|2022: richard-iii-regional-2022-2 <-> richard-iii-regional-2022\n\nIf this is deliberate progress (an intentional carve-out for a genuinely distinct\nproduction), refresh the baseline: node scripts/audit-duplicate-shows.js --update-baseline",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6280",
+    "fields": [],
+    "queuedAt": "2026-11-25T16:51:14.003Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 26 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +20 more). Checked 2026-11-25.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T16:51:15.419Z"
   }
 ]
