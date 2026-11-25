@@ -661,6 +661,8 @@ jobs:
           INPUT_BWW_ROUNDUP_URL: ${{ inputs.bww_roundup_url }}
           # BRO-7198 kill switch: 'true' restores the pre-2026-11-10 dispatch (auto-discovery only for multi-show selections).
           POLLER_PER_SHOW_DISABLED: ${{ vars.POLLER_PER_SHOW_DISABLED }}
+          # BRO-8294 kill switch: 'true' restores targeted runs for non-Broadway shows too (default: Broadway only, the rest ride the auto run).
+          POLLER_NON_BROADWAY_TARGETED: ${{ vars.POLLER_NON_BROADWAY_TARGETED }}
           # BRO-7306: every value this script needs comes in through env. The script must hold NO ${{ }}:
           # GitHub evaluates a run block that contains one as a single expression with a size cap, and BRO-7198
           # grew this block past it, which made the whole workflow file invalid (no run could start) for a day.
@@ -824,7 +826,7 @@ jobs:
           # BRO-7443: --rotation = iteration-1 round-robins in-window shows past the targeted cap (hottest stays fixed).
           plan_dispatch() {
             local out
-            out=$(timeout 30 node scripts/lib/poller-dispatch-plan.js --shows="$SHOWS" --disabled="${POLLER_PER_SHOW_DISABLED:-}" --rotation="$(( ${ITERATION:-1} - 1 ))" 2>/tmp/dispatch-plan.err) || out=""
+            out=$(timeout 30 node scripts/lib/poller-dispatch-plan.js --shows="$SHOWS" --disabled="${POLLER_PER_SHOW_DISABLED:-}" --non-broadway-targeted="${POLLER_NON_BROADWAY_TARGETED:-}" --rotation="$(( ${ITERATION:-1} - 1 ))" 2>/tmp/dispatch-plan.err) || out=""
             cat /tmp/dispatch-plan.err 2>/dev/null || true
             PLAN_MODE=$(echo "$out" | sed -n 's/^mode=//p')
             PLAN_TARGETS=$(echo "$out" | sed -n 's/^targeted=//p')

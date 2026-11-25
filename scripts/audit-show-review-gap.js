@@ -1531,7 +1531,7 @@ async function auditShow(show, opts = {}) {
   // shows that opened 3-8 weeks earlier still lacked 53 reviews a round-up linked.
   if (process.env.WE_GAP_REFERENCE_DISABLED !== '1' && isWeShow(show) && inOpeningWindow(show, Date.now(), WE_REFERENCE_WINDOW_DAYS)) {
     try {
-      const weRef = await getWeReferenceRows(show, { log: (m) => { if (verbose) console.log(m); } });
+      const weRef = await getWeReferenceRows(show, { dryRun, log: (m) => { if (verbose) console.log(m); } });
       weRefData = weRef;
       result.weReference = { rowCount: weRef.rows.length, sources: weRef.sources, allSourcesFailed: weRef.allSourcesFailed };
       // Health floors (plan-review 2026-07-09): a broken detector must ALARM,
