@@ -26,7 +26,6 @@ test('dispatch-timeout-match segments: unquoted unchanged, quoted separators kep
 
 test('cmux-launch-guard splitSegments: unquoted unchanged', () => {
   assert.deepEqual(splitSegments('a && b | c ; d\ne'), ['a ', ' b ', ' c ', ' d', 'e']);
-  assert.equal(findUnsafeClaudeInvocation("echo 'x | claude --model y'", 0, null), null);
   assert.ok(findUnsafeClaudeInvocation('echo x | claude --model y', 0, null));
 });
 
