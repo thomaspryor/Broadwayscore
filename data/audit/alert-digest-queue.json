@@ -1044,20 +1044,6 @@
     "queuedAt": "2026-11-25T02:58:29.820Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +18 more). Checked 2026-11-25.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-25T03:33:13.243Z"
-  },
-  {
     "conditionKey": "watchdog-park:linear:BRO-7315",
     "title": "Watchdog parked #linear:BRO-7315 — redispatch never produced a launch",
     "description": "Watchdog: card \"Guardrail slim-down: cut hooks, rules and CI gates, prove the survivors with tests\" was claimed for redispatch at 2026-11-25T03:19:28.420Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7315), then re-arm with node scripts/linear-next.js --id BRO-7315 --force once fixed.",
@@ -1202,5 +1188,19 @@
       }
     ],
     "queuedAt": "2026-11-25T04:43:16.700Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +18 more). Checked 2026-11-25.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T05:00:36.436Z"
   }
 ]
