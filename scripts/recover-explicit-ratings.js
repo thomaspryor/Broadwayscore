@@ -732,7 +732,11 @@ function isArchiveFirstSite(url) {
 async function fetchFromArchiveOrg(url) {
   try {
     const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=5&from=2008`;
-    const cdxData = await httpGet(cdxUrl);
+    // BRO-8099: archive-cdx types the IA 403; it is logged as a blocked route below, not "no capture".
+    const cdxData = await require('./lib/archive-cdx').fetchArchiveIndexText(cdxUrl, { timeoutMs: 30000 }).catch((e) => {
+      if (require('./lib/archive-cdx').isArchiveAuthError(e)) throw e;
+      return null;
+    });
     if (!cdxData) return null;
 
     let rows;

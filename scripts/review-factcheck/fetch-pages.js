@@ -8,6 +8,8 @@
  *
  * Usage: node scripts/review-factcheck/fetch-pages.js [--sample=...] [--concurrency=6] [--only=WE-001,BW-002]
  */
+// BRO-8099: --help prints usage; it used to run the script (live fetches).
+require('../lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const os = require('os');
 const { getExcerpts } = require('../lib/excerpt-fields');
@@ -79,6 +81,8 @@ async function wayback(url, publishDate) {
   const ts = String(publishDate || '').replace(/-/g, '').slice(0, 8) || '2015';
   const api = await archiveCurl(`https://archive.org/wayback/available?url=${encodeURIComponent(url)}&timestamp=${ts}`);
   if (api.status === 429) return { status: 429, html: '', archiveUrl: null, rateLimited: true };
+  // BRO-8099: the IA auth refusal is a blocked route, recorded as such, never "no snapshot".
+  if (require('../lib/archive-cdx').classifyArchiveResponse(api.status, api.html)) return { status: 403, html: '', archiveUrl: null, archiveAuthRequired: true };
   let snap = null;
   try { snap = JSON.parse(api.html).archived_snapshots.closest; } catch { snap = null; }
   if (!snap || !snap.available) return null;
@@ -107,7 +111,7 @@ async function getOne(item) {
     } else {
       const wb = await wayback(item.url, item.publishDate);
       const wt = wb ? textOf(wb.html, item.url) : '';
-      rec.attempts.push({ kind: 'archive', status: wb ? wb.status : null, archiveUrl: wb ? wb.archiveUrl : null, textLen: wt.length });
+      rec.attempts.push({ kind: 'archive', status: wb ? wb.status : null, archiveUrl: wb ? wb.archiveUrl : null, textLen: wt.length, ...(wb && wb.archiveAuthRequired ? { blocked: 'archive_auth_required' } : {}) });
       if (wb && wb.archiveUrl && wt.length >= 1200) Object.assign(rec, { source: 'archive.org', sourceUrl: wb.archiveUrl, text: wt, meta: pageMeta(wb.html, item.url) });
       else if (live.status === 200 && t.length >= 400) Object.assign(rec, { source: 'live-short', sourceUrl: live.finalUrl, text: t, meta: pageMeta(live.html, live.finalUrl) });
     }

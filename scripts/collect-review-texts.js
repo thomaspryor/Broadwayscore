@@ -3162,10 +3162,11 @@ async function fetchFromArchive(url) {
   archiveOrgLastRequestTime = Date.now();
 
   // Check if snapshots exist
-  const availabilityUrl = `http://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
-  const availability = await axios.get(availabilityUrl, { timeout: 15000 });
+  const availabilityUrl = `https://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
+  // BRO-8099: archive-cdx throws e.kind === 'archive_auth_required' for the IA refusal (route blocked, not "no snapshot").
+  const availability = await require('./lib/archive-cdx').fetchArchiveIndexJson(availabilityUrl, { timeoutMs: 15000 });
 
-  const snapshot = availability.data?.archived_snapshots?.closest;
+  const snapshot = availability?.archived_snapshots?.closest;
   if (!snapshot || !snapshot.url) {
     throw new Error('No archive snapshot available');
   }
@@ -3219,10 +3220,9 @@ async function fetchFromArchiveCDX(url) {
   const isPaywalledSite = url.includes('newyorker.com') || url.includes('nytimes.com') || url.includes('wsj.com');
   const fromYear = isPaywalledSite ? '2008' : '2014';
   const snapshotLimit = isPaywalledSite ? 20 : 10;
-  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=${snapshotLimit}&from=${fromYear}`;
-  const cdxResp = await axios.get(cdxUrl, { timeout: 15000 });
-
-  const rows = cdxResp.data;
+  const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=${snapshotLimit}&from=${fromYear}`;
+  // BRO-8099: archive-cdx throws e.kind === 'archive_auth_required' for the IA refusal (route blocked, not "no snapshots").
+  const rows = await require('./lib/archive-cdx').fetchArchiveIndexJson(cdxUrl, { timeoutMs: 15000 });
   if (!Array.isArray(rows) || rows.length < 2) {
     throw new Error('No CDX snapshots found');
   }

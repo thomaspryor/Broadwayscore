@@ -331,6 +331,8 @@ async function enumerateCdx(src, since, until) {
       for (let attempt = 0; attempt < 3 && !got; attempt++) {
         try {
           const { status, body } = await get(q, 180000);
+          // BRO-8099: the IA auth refusal is a blocked route; retrying cannot clear it.
+          if (require('./lib/archive-cdx').classifyArchiveResponse(status, body)) { notes.push(`${prefix} ${y}: archive_auth_required (route blocked, not evidence)`); break; }
           if (status === 200) got = body.trim() ? JSON.parse(body).slice(1) : [];
           else if (attempt === 2) notes.push(`${prefix} ${y}: HTTP ${status}`);
         } catch (e) { if (attempt === 2) notes.push(`${prefix} ${y}: ${e.message}`); }

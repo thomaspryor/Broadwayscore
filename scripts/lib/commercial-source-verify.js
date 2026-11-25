@@ -106,9 +106,14 @@ function verifyFigure(figure, page, context = {}) {
 const SHORT_PAGE_CHARS = 1500;
 
 async function defaultWaybackLookup(url) {
-  const res = await fetch(`https://archive.org/wayback/available?url=${encodeURIComponent(url)}`, { signal: AbortSignal.timeout(20000) });
-  if (!res.ok) return null;
-  return res.json();
+  // BRO-8099: archive-cdx types the IA auth refusal (throws e.kind === 'archive_auth_required');
+  // any other HTTP failure stays "no snapshot" (null) as before.
+  const AC = require('./archive-cdx');
+  const q = `https://archive.org/wayback/available?url=${encodeURIComponent(url)}`;
+  const r = await AC.fetchArchiveIndex(q, { timeoutMs: 20000 });
+  if (r.ok) return JSON.parse(r.text);
+  if (r.kind === AC.ARCHIVE_AUTH_REQUIRED) throw AC.authRequiredError(q);
+  return null;
 }
 
 /** The raw (toolbar-free) web.archive.org snapshot URL closest to `url`, or null when none is archived. */

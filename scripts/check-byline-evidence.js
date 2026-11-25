@@ -46,6 +46,11 @@ function get(url, timeoutMs = 25000, redirects = 4) {
 async function wayback(url, ts) {
   const api = `https://archive.org/wayback/available?url=${encodeURIComponent(url)}&timestamp=${ts}`;
   const r = await get(api);
+  // BRO-8099: name the IA auth refusal (a blocked route), never a silent "no snapshot".
+  if (require('./lib/archive-cdx').classifyArchiveResponse(r.status, r.body)) {
+    console.warn(`wayback: archive_auth_required for ${url} (route blocked, not evidence)`);
+    return null;
+  }
   if (r.status !== 200) return null;
   let snap;
   try { snap = JSON.parse(r.body).archived_snapshots.closest; } catch { return null; }
