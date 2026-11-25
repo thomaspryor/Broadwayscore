@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7683-d261125-r17",
   "planId": "9e350da9-80f5-4586-9558-26defd94c5b8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-25T20:34:30.169Z",
   "submitter": {
     "name": null,
@@ -72,5 +72,19 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-25T20:40:10.381Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added we-the-people-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-last-victorian-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
