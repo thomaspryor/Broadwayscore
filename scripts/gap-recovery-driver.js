@@ -816,7 +816,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
     for (const s of sessions.values()) if (s && s.close) await s.close().catch(() => {});
   }
 
-  try { SUMMARY.spend = { bd: require('./lib/scraper').getScraperStats().bdRequests || 0, serp: require('./lib/url-discovery').getSerpQueryCount() }; } catch { SUMMARY.spend = null; }
+  recordSpend();
   Object.assign(SUMMARY, { mode: 'live', attempted: stats.attempted, accepted: stats.accepted, landed: landedKeys.size, landedImproved: improvedKeys.size, urlFindSpentMin: Math.round(urlFindSpentMs / 6000) / 10, urlFindSliceSkipped, byStrategy: stats.byStrategy, runId: RUN_ID });
   if (runError) {
     SUMMARY.error = String(runError.message).slice(0, 300); SUMMARY.pushFailed = runError instanceof ReviewTextsPushError;
@@ -839,13 +839,31 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
   return 0;
 }
 
+/**
+ * BRO-8277: the paid calls this process made, read from the in-process counters.
+ * Called on EVERY exit path (normal end, error, early refusal, SIGTERM) so the
+ * batch's spend cap never has to guess: a summary with no spend field used to be
+ * booked as the round's whole BD/SERP allowance. A counter module that was never
+ * loaded made no calls (0). Only a summary-less (SIGKILLed) round stays unknown.
+ */
+function measuredSpend() {
+  const loaded = (m) => !!require.cache[require.resolve(m)];
+  const bd = loaded('./lib/scraper') ? (require('./lib/scraper').getScraperStats().bdRequests || 0) : 0;
+  const serp = loaded('./lib/url-discovery') ? (require('./lib/url-discovery').getSerpQueryCount() || 0) : 0;
+  return { bd, serp };
+}
+function recordSpend() {
+  try { SUMMARY.spend = measuredSpend(); } catch { SUMMARY.spend = null; }
+}
+
 // BRO-7944: a timed-out/killed round (batch runner SIGTERM) still leaves its summary behind.
-process.on('SIGTERM', () => { SUMMARY.error = SUMMARY.error || 'terminated (SIGTERM)'; writeSummary(); process.exit(143); });
+process.on('SIGTERM', () => { SUMMARY.error = SUMMARY.error || 'terminated (SIGTERM)'; recordSpend(); writeSummary(); process.exit(143); });
 
 main()
   .then((code) => { process.exitCode = code || 0; })
   .catch((e) => { console.error('FATAL:', e.stack || e.message); if (!SUMMARY.error) SUMMARY.error = String(e.message).slice(0, 300); process.exitCode = 1; })
   .finally(() => {
+    recordSpend();
     writeSummary();
     // Every attempt reaches the published data/audit mirror, not only nightly
     // ones (BRO-7171 2026-11-10). Plumbing push of the ledger file only; a
