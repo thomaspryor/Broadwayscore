@@ -22,6 +22,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { THRESHOLDS, computeScorecard, formatScorecard } = require('./lib/model-quality-scorecard.js');
 const { readLedger } = require('./lib/claude-session-cost.js');
+const { exitFlushed } = require('./lib/exit-flushed');
 
 const REPO = path.resolve(__dirname, '..');
 const DEFAULT_SWITCH = '2026-11-25';
@@ -110,4 +111,4 @@ async function main() {
   return 0;
 }
 
-main().then((c) => process.exit(c), (e) => { console.error(`[scorecard] ${e && e.stack ? e.stack : e}`); process.exit(2); });
+main().then((c) => exitFlushed(c), (e) => { console.error(`[scorecard] ${e && e.stack ? e.stack : e}`); exitFlushed(2); });
