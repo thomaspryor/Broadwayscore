@@ -614,5 +614,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T19:09:09.921Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows",
+    "title": "Live-data test failing: live build yields season and deep-dive prompts with shows (scripts/tests/research-prompts.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"live build yields season and deep-dive prompts with shows\" in scripts/tests/research-prompts.test.mjs is red against the live corpus.\n\nnode <root>/scripts/research-prompts/gen-batches.js /tmp/rp-WOwdu7 failed:\np5 commercial 9\np5b commercial 30\np6 commercial 7\np4 nonprofit 10\np4b nonprofit 12\np7 commercial 20\np8 commercial 23\np9 commercial 38\np10 commercial 68\np10b commercial 30\np11 nonprofit 12\np12 nonprofit 12\np12b nonprofit 24\nrows 296 placed 295\n<root>/scripts/research-prompts/gen-batches.js:57\nif (used < all) throw new Error(`gen-batches: ${all - used} gap rows fit no prompt group (add or widen a group)`);\n^\n\nError: gen-batches: 1 gap rows fit no prompt group (add or widen a group)\nat Object.<anonymous> (<root>/scripts/research-prompts/gen-batches.js:57:23)\nat Module._compile (node:internal/modules/cjs/loader:1781:14)\nat Object..js (node:internal/modules/cjs/loader:1913:10)\nat Module.load (node:internal/modules/cjs/loader:1505:32)\nat Function._load (node:internal/modules/cjs/loader:1309:12)\nat wrapModuleLoad (node:internal/modules/cjs/loader:254:19)\nat Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\nat node:internal/main/run_main_module:36:49\n\nNode.js v22.23.5\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows",
+    "fields": [],
+    "queuedAt": "2026-11-25T19:21:17.075Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd",
+    "title": "Live-data test failing: build refuses to splice without Form D files unless --no-formd (scripts/tests/research-prompts.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"build refuses to splice without Form D files unless --no-formd\" in scripts/tests/research-prompts.test.mjs is red against the live corpus.\n\nThe input did not match the regular expression /refusing to splice/. Input:\n\n'<root>/scripts/research-prompts/build.js:23\\n' +\n\"  if (r.status !== 0) throw new Error(`${cmd} ${args.join(' ')} failed:\\\\n${(r.stderr || '').slice(-1500)}`);\\n\" +\n'                      ^\\n' +\n'\\n' +\n'Error: node <root>/scripts/research-prompts/gen-batches.js /tmp/rp-refuse-Ul710P failed:\\n' +\n'p5 commercial 9\\n' +\n'p5b commercial 30\\n' +\n'p6 commercial 7\\n' +\n'p4 nonprofit 10\\n' +\n'p4b nonprofit 12\\n' +\n'p7 commercial 20\\n' +\n'p8 commercial 23\\n' +\n'p9 commercial 38\\n' +\n'p10 commercial 68\\n' +\n'p10b commercial 30\\n' +\n'p11 nonprofit 12\\n' +\n'p12 nonprofit 12\\n' +\n'p12b nonprofit 24\\n' +\n'rows 296 placed 295\\n' +\n'<root>/scripts/research-prompts/gen-batches.js:57\\n' +\n'if (used < all) throw new Error(`gen-batches: ${all - used} gap rows fit no prompt group (add or widen a group)`);\\n' +\n'                ^\\n' +\n'\\n' +\n'Error: gen-batches: 1 gap rows fit no prompt group (add or widen a group)\\n' +\n'    at Object.<anonymous> (<root>/scripts/research-prompts/gen-batches.js:57:23)\\n' +\n'    at Module._compile (node:internal/modules/cjs/loader:1781:14)\\n' +\n'    at Object..js (node:internal/modules/cjs/loader:1913:10)\\n' +\n'    at Module.load (node:internal/modules/cjs/loader:1505:32)\\n' +\n'    at Function._load (node:internal/modules/cjs/loader:1309:12)\\n' +\n'    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)\\n' +\n'    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd",
+    "fields": [],
+    "queuedAt": "2026-11-25T19:21:17.090Z"
   }
 ]
