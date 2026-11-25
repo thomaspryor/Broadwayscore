@@ -243,7 +243,12 @@ async function runChecks() {
   // poller's tryTbDirectUrl tries BOTH. Pre-opening, TB can publish early
   // (Lost Boys' Howard Miller landed 24h pre-opening), so the bare-slug
   // variant is worth checking now.
-  if (isBroadway) {
+  if (isBroadway && show.category === 'off-broadway') {
+    // Off-Broadway TB pages are dated, not titled; the poller builds them from openingDate (BRO-8148).
+    const obUrls = require('./lib/tb-direct-url').buildTbObOpeningCandidates(show.openingDate);
+    if (obUrls.length) report(SKIP, 'Talkin\' Broadway URL', `Off-Broadway: poller tries ${obUrls.length} dated pages from ${obUrls[0]}`);
+    else report(WARN, 'Talkin\' Broadway URL', 'Off-Broadway show has no openingDate, so the poller cannot build its dated TB url');
+  } else if (isBroadway) {
     const baseSlug = show.title.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
     const baseSlugCamel = show.title.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, ' ').trim()
       .split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');

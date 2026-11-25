@@ -1,5 +1,5 @@
 // BRO-7944: chained batch runner decisions. Run: node --test scripts/lib/gap-recovery-batch.test.mjs
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -60,6 +60,62 @@ test('BRO-7962: a round that is allowed to run never gets a 0 budget (0 means "n
     const rem = B.remainingBudget(cap, spend);
     assert.ok(rem.bd !== 0 && rem.serp !== 0, JSON.stringify({ cap, spend, rem }));
   }
+});
+
+// BRO-8288: parallel outlet lanes. Real processes, real lock files in a scratch dir.
+import { spawn, spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const LOCK = path.join(path.dirname(fileURLToPath(import.meta.url)), 'recovery-run-lock.js');
+const { makeTmpDir } = require('./tmpdir-for-tests.js');
+const lockDir = makeTmpDir(after, 'lanes-');
+const lenv = { ...process.env, RECOVERY_RUN_LOCK_PATH: path.join(lockDir, 'run.lock') };
+const probe = (code) => spawnSync(process.execPath, ['-e', `const L=require(${JSON.stringify(LOCK)});try{${code}}catch(e){console.log(e.code+' '+e.message)}`], { env: lenv, encoding: 'utf8' }).stdout.trim();
+const holdLane = async (outlets, browser) => {
+  const p = spawn(process.execPath, ['-e', `const r=require(${JSON.stringify(LOCK)}).acquireLaneLock('lane',${JSON.stringify(outlets)},{browser:${browser}});console.log('HELD '+r.browser);setTimeout(()=>{},20000)`], { env: lenv });
+  const out = await new Promise((res) => p.stdout.once('data', (d) => res(String(d).trim())));
+  return { p, out };
+};
+const kill = (h) => new Promise((res) => { h.p.once('exit', res); h.p.kill('SIGTERM'); });
+
+test('outletsFromArgs mirrors the driver parse (--outlet=a,b)', () => {
+  assert.deepEqual(B.outletsFromArgs(['--outlet=a,b', '--limit=3']), ['a', 'b']);
+  assert.deepEqual(B.outletsFromArgs(['--outlet', 'x', '--outlet=y,x', '--outlet=z']), ['y', 'x'], 'mirrors the driver: first --outlet= only');
+  assert.deepEqual(B.outletsFromArgs(['--outlet', 'x']), [], 'bare form is not a scope the driver honours');
+  assert.deepEqual(B.outletsFromArgs(['--class=NO_URL']), []);
+});
+
+test('lanes: disjoint outlets both acquire; overlapping refused; one browser owner; nightly sees busy', async () => {
+  const a = await holdLane(['nytimes', 'washpost'], true);
+  const b = await holdLane(['thestage'], true);
+  try {
+    assert.equal(a.out, 'HELD true');
+    assert.equal(b.out, 'HELD false', 'second lane runs browser-less: one Chrome');
+    assert.match(probe(`L.acquireLaneLock('c',['washpost','variety'],{browser:false});console.log('ACQUIRED')`), /^ERUNLOCKBUSY/, 'overlap refused');
+    assert.equal(probe(`const r=L.acquireLaneLock('c',['variety'],{browser:false});console.log('ACQUIRED');r.release()`), 'ACQUIRED', 'refused overlap left no partial locks');
+    assert.match(probe(`L.acquireRunLock('gap-recovery-nightly');console.log('ACQUIRED')`), /^ERUNLOCKBUSY/, 'nightly/whole-run sees the lanes');
+  } finally { await kill(a); await kill(b); }
+  assert.equal(probe(`L.acquireRunLock('gap-recovery-nightly');console.log('ACQUIRED')`), 'ACQUIRED', 'dead lanes are stale');
+});
+
+test('lane refused while the whole-run lock is live; refusal leaves no lane locks', async () => {
+  const w = spawn(process.execPath, ['-e', `require(${JSON.stringify(LOCK)}).acquireRunLock('nightly');console.log('HELD');setTimeout(()=>{},20000)`], { env: lenv });
+  await new Promise((res) => w.stdout.once('data', res));
+  try {
+    assert.match(probe(`L.acquireLaneLock('c',['nytimes'],{});console.log('ACQUIRED')`), /^ERUNLOCKBUSY .*nightly/);
+    assert.equal(probe(`console.log(L.readLaneHolders().filter(h=>h.alive).length)`), '0');
+  } finally { await new Promise((res) => { w.once('exit', res); w.kill('SIGTERM'); }); }
+});
+
+test('class guard: lanes skip the global pending-retry/adopt steps; batch sets GAP_RECOVERY_LANE for scoped runs', () => {
+  const root = path.join(path.dirname(LOCK), '..');
+  const drv = fs.readFileSync(path.join(root, 'gap-recovery-driver.js'), 'utf8');
+  assert.match(drv, /LANE \? \{ entries: 0[^}]*\} : retryPendingPushes\(/);
+  assert.match(drv, /if \(!LANE\) try \{\s*\n\s*const \{ orphanAccepts \}/);
+  assert.match(fs.readFileSync(path.join(root, 'gap-recovery-batch.js'), 'utf8'), /laneOutlets\.length \? \{ GAP_RECOVERY_LANE: '1' \}/);
 });
 
 test('roundSpend: a dry-run round spends nothing; a missing summary books the whole allowance (BRO-8277)', () => {

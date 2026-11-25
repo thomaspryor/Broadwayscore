@@ -44,7 +44,8 @@
       "market": "broadway",
       "queuedAt": "2026-11-24T17:06:33.520Z",
       "dueAt": "2026-11-25T04:15:00.000Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-25T04:32:14.298Z"
     },
     {
       "showId": "adia-and-clora-snatch-joy-regional-2026",
@@ -67,6 +68,42 @@
       "dueAt": "2026-11-24T19:22:30.780Z",
       "attempted": true,
       "attemptedAt": "2026-11-24T21:28:38.421Z"
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "the-dead-1904-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-25T04:32:14.298Z",
+      "dueAt": "2026-11-25T05:32:14.298Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "timeout"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "the-dead-1904-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-25T04:32:14.298Z",
+      "dueAt": "2026-11-25T07:32:14.298Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "timeout"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "the-dead-1904-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-25T04:32:14.298Z",
+      "dueAt": "2026-11-25T16:32:14.298Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "timeout"
+      ],
+      "attempted": false
     }
   ]
 }

@@ -858,20 +858,6 @@
     "queuedAt": "2026-11-25T00:51:10.073Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-25.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-25T02:27:13.015Z"
-  },
-  {
     "conditionKey": "land:land/bro-8280-sb-cooldown",
     "title": "Landing blocked: unit-tests-node red on land/bro-8280-sb-cooldown",
     "description": "land.yml did not land land/bro-8280-sb-cooldown: the unit-tests-node gate went red at 9f1eb967ba. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45526436555",
@@ -1086,6 +1072,20 @@
     "queuedAt": "2026-11-25T03:35:59.213Z"
   },
   {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-25.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T04:29:06.366Z"
+  },
+  {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:attention-off-west-end-2026",
     "title": "Auto-remediation gave up on attention-off-west-end-2026",
     "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"attention-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
@@ -1126,5 +1126,50 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T04:03:42.051Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8289-sonnet-scorecard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8289-sonnet-scorecard",
+    "description": "land.yml did not land land/bro-8289-sonnet-scorecard: the unit-tests-node gate went red at 1b2c9cb332. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45544283408",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8289-sonnet-scorecard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1b2c9cb33264cb6267e77d229d39f8d928e55ecd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45544283408"
+      }
+    ],
+    "queuedAt": "2026-11-25T04:15:41.067Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:in-my-own-little-world-off-west-end-2026",
+    "title": "Auto-remediation gave up on in-my-own-little-world-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"in-my-own-little-world-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T04:23:31.000Z"
   }
 ]

@@ -22,6 +22,7 @@ const MIN_CONTENT_BYTES = 800; // TB 404 pages are <500 bytes; real reviews are 
 const { foldDiacritics } = require('./title-match');
 const { shortTitleCandidate } = require('./title-normalization');
 const { containsAsWords } = require('./title-containment');
+const { pageTitleMatchesShow } = require('./talkinbroadway-index');
 
 // Same floor used by verifyTbPage's short-title fallback below — short titles under this
 // length (e.g. "Oh, Mary!" → "Oh") are too generic to build a reliable URL slug from.
@@ -111,8 +112,11 @@ function extractTitle(html) {
 }
 
 function hasBylineSignal(html) {
-  // Real TB reviews credit: "reviewed by Matthew Murray" or "by Matthew Murray"
-  return /(?:reviewed\s+)?by\s+[A-Z][a-z]+\s+[A-Z][a-z]+/.test(html || '');
+  // Real TB reviews credit: "reviewed by Matthew Murray" or "by Matthew Murray". The name is
+  // often a mailto link ("Theatre Review by <a href=...>Howard Miller</a>"), so test the text
+  // with tags removed (BRO-8148: The Reservoir's real page failed the raw-HTML check).
+  const text = String(html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+  return /(?:reviewed\s+)?by\s+[A-Z][a-z]+\s+[A-Z][a-z]+/.test(text);
 }
 
 function hasStarRatingSignal(html) {
@@ -231,13 +235,56 @@ function verifyTbIndexPage(content, { show, isRevival }) {
   return v.ok ? { ...v, indexShowTitle } : v;
 }
 
-async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = false, logger = console, budgetMs, now = Date.now }) {
+// BRO-8148: off-Broadway TB reviews are filed by review date (/page/ob/M_D_YY[a-c].html), not
+// by title, so the opening-night poller can construct them from show.openingDate. Before this
+// the poller skipped TB entirely for off-Broadway and waited on Google News, which first
+// surfaced Fantasma's review (press night 2026-11-22) at 11:47pm, 13 minutes before the grade
+// mark, too late to publish. Order follows reviews.json (303 OB rows, 2026-11-24): same day
+// 227, next day 14, day before 5. Same-day suffixes come first; a/b/c is a second, third or
+// fourth review that day. The day-after page is only tried for the plain name.
+function buildTbObOpeningCandidates(openingDate) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(openingDate || ''));
+  if (!m) return [];
+  const base = Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  const day = (offset) => {
+    const d = new Date(base + offset * 86400000);
+    return { y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate() };
+  };
+  const sameDay = buildTbObCandidateUrls(day(0));
+  const plainOnly = (urls) => urls.filter(u => /_\d{2}\.html$/.test(u));
+  return [...new Set([...sameDay, ...plainOnly(buildTbObCandidateUrls(day(1))), ...plainOnly(buildTbObCandidateUrls(day(-1)))])];
+}
+
+// Does an existing talkinbroadway--*.json file already hold this show's review, so the poller can
+// skip direct discovery? Broadway: TB's CamelCase /page/world/ url (lowercased slugs are 404s).
+// Off-Broadway: a dated /page/ob/ page, never the front page (BRO-4437). A file flagged as another
+// show or production holds nothing (BRO-8148).
+const TB_WORLD_HELD_RE = /^https?:\/\/(www\.)?talkinbroadway\.com\/page\/world\/[A-Z][A-Za-z0-9]*\.html$/;
+const TB_OB_HELD_RE = /^https?:\/\/(www\.)?talkinbroadway\.com\/page\/ob\/\d{1,2}_\d{1,2}_\d{2}[a-z]?\.html(?:[?#].*)?$/;
+function tbFileHoldsReview(rec, { offBroadway = false } = {}) {
+  if (!rec || typeof rec.url !== 'string' || !rec.url) return false;
+  if (rec.wrongShow || rec.wrongProduction || rec.isRoundupArticle) return false;
+  return (offBroadway ? TB_OB_HELD_RE : TB_WORLD_HELD_RE).test(rec.url);
+}
+
+async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = false, offBroadway = false, logger = console, budgetMs, now = Date.now }) {
   if (!show || !show.title) return { found: false, reason: 'no show title' };
+  // An OB front-page override would be stored as a listing url that goes stale (BRO-4437): build the dated pages instead.
+  if (offBroadway && isTbObIndexUrl(overrideUrl)) {
+    logger.log(`  Talkin' Broadway: ignoring Off-Broadway index override ${overrideUrl}, trying dated pages`);
+    overrideUrl = '';
+  }
+  if (offBroadway && !overrideUrl && !buildTbObOpeningCandidates(show.openingDate).length) {
+    return { found: false, reason: 'no opening date to build Off-Broadway TB urls from' };
+  }
   const candidates = overrideUrl
     ? [overrideUrl]
-    : buildTbCandidateUrls(show.title, year);
+    : (offBroadway ? buildTbObOpeningCandidates(show.openingDate) : buildTbCandidateUrls(show.title, year));
   const indexUrl = `${TB_HOST}/page/world/index.html`;
-  const urls = overrideUrl ? candidates : [...candidates, indexUrl];
+  // No index fallback off-Broadway: the OB front page only shows the newest review, so a stored
+  // index url goes stale the next day (BRO-4437). The dated candidates cover it instead.
+  const useIndex = !overrideUrl && !offBroadway;
+  const urls = useIndex ? [...candidates, indexUrl] : candidates;
 
   // BRO-6589: every candidate is a ~60 s paid unlocker fetch behind Cloudflare, and before
   // the review publishes all of them miss on every poll pass. Fetching up to TB_PARALLEL at
@@ -245,6 +292,17 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
   // as before: no new fetch starts once it is spent, and a fetch already started is awaited
   // (fetchPage has its own provider timeouts). Once a candidate verifies, nothing of lower
   // priority starts; the first verified candidate in priority order wins, then the index.
+  // An OB url carries no title, so a same-date page for another show ("Art of Leaving" vs "Art")
+  // passes the loose word-containment check. Off-Broadway also needs the quoted show title in the
+  // page <title> to equal the show's title or its main/comma short form (BRO-8148 review).
+  const verifyCandidate = (content) => {
+    const v = verifyTbPage(content, { showTitle: show.title, openingDate: show.openingDate, isRevival });
+    if (!v.ok || !offBroadway) return v;
+    const pageTitle = extractTitle(content);
+    const forms = [show.title, show.title.split(/[;:]/)[0].trim(), shortTitleCandidate(show.title)].filter(Boolean);
+    if (forms.some(f => pageTitleMatchesShow(pageTitle, f))) return v;
+    return { ok: false, reason: `quoted page title is not this show (page="${pageTitle.slice(0, 80)}", show="${show.title}")` };
+  };
   const deadline = now() + tbBudgetMs(budgetMs);
   const answered = urls.map(() => 'budget');
   let next = 0;
@@ -256,7 +314,7 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
       logger.log(urls[i] === indexUrl ? `  Talkin' Broadway: trying index.html fallback...` : `  Checking Talkin' Broadway: ${urls[i]}`);
       answered[i] = await fetchPage(urls[i], { renderJs: false }).then(page => ({ page }), err => ({ err }));
       const content = answered[i].page && answered[i].page.content;
-      if (i < candidates.length && content && verifyTbPage(content, { showTitle: show.title, openingDate: show.openingDate, isRevival }).ok) {
+      if (i < candidates.length && content && verifyCandidate(content).ok) {
         bestVerified = Math.min(bestVerified, i);
       }
     }
@@ -269,11 +327,7 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
     if (r === 'budget') continue;
     if (r.err) { logger.log(`    fetch error (${candidates[i]}): ${r.err.message}`); continue; }
     if (!r.page || !r.page.content) continue;
-    const v = verifyTbPage(r.page.content, {
-      showTitle: show.title,
-      openingDate: show.openingDate,
-      isRevival,
-    });
+    const v = verifyCandidate(r.page.content);
     if (v.ok) {
       logger.log(`  Talkin' Broadway: verified — ${candidates[i]}`);
       return {
@@ -286,7 +340,7 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
     logger.log(`    rejected (${candidates[i]}): ${v.reason}`);
   }
 
-  if (!overrideUrl) {
+  if (useIndex) {
     const r = answered[candidates.length];
     if (r !== 'budget' && r.err) logger.log(`    index fetch error: ${r.err.message}`);
     else if (r !== 'budget' && r.page) {
@@ -308,7 +362,7 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
     logger.log(`  Talkin' Broadway: time budget exhausted with ${timedOut}/${urls.length} fetch(es) never started — stopping so the poll cycle can finish`);
     return { found: false, reason: `time budget exhausted with ${timedOut} of ${urls.length} fetches never started` };
   }
-  return { found: false, reason: `all ${candidates.length} candidates${overrideUrl ? '' : ' + index fallback'} failed verification` };
+  return { found: false, reason: `all ${candidates.length} candidates${useIndex ? ' + index fallback' : ''} failed verification` };
 }
 
 // Off-Broadway TB reviews live at /page/ob/MM_DD_YY.html (optional b/c suffix for a second
@@ -383,6 +437,8 @@ module.exports = {
   isTbObIndexUrl,
   extractTbReviewDate,
   buildTbObCandidateUrls,
+  buildTbObOpeningCandidates,
+  tbFileHoldsReview,
   resolveTbObIndexUrl,
   _internal: { toCamelSlug, toLowerSlug, extractTitle, hasBylineSignal, hasStarRatingSignal, extractPublishDateCandidate, withinDateWindow, tbBudgetMs, DEFAULT_TB_BUDGET_MS },
 };

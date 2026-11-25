@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T03:42:04.094Z",
+  "generatedAt": "2026-11-25T04:28:08.658Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -418,9 +418,9 @@
       "status": "open",
       "slug": "a-christmas-carol-west-end",
       "thumbnail": "/images/shows/a-christmas-carol-west-end-2026/thumbnail.webp",
-      "siteScore": 81.43,
-      "liveScore": 81,
-      "scoreDrift": -0.4300000000000068,
+      "siteScore": 79.64,
+      "liveScore": 80,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -436,9 +436,9 @@
         "reasons": [
           "5/8 total",
           "T1:0/3",
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -651,6 +651,18 @@
           "t": "2026-11-25T03:42:04.094Z",
           "rc": 5,
           "s": 81.43,
+          "t1": 0,
+          "t2": 2,
+          "t3": 3,
+          "p": 5,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T04:28:08.658Z",
+          "rc": 5,
+          "s": 79.64,
           "t1": 0,
           "t2": 2,
           "t3": 3,
@@ -2437,9 +2449,9 @@
       "status": "open",
       "slug": "seven-guitars-off-broadway",
       "thumbnail": "/images/shows/seven-guitars-off-broadway-2026/thumbnail.webp",
-      "siteScore": 85.64,
+      "siteScore": 85.96,
       "liveScore": 86,
-      "scoreDrift": 0.35999999999999943,
+      "scoreDrift": 0.04000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2828,6 +2840,18 @@
           "t": "2026-11-24T18:28:17.717Z",
           "rc": 16,
           "s": 85.64,
+          "t1": 2,
+          "t2": 8,
+          "t3": 6,
+          "p": 16,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T04:28:08.658Z",
+          "rc": 16,
+          "s": 85.96,
           "t1": 2,
           "t2": 8,
           "t3": 6,

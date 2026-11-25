@@ -79,7 +79,7 @@ const { fetchPage } = require('./lib/scraper');
 const { discoverLboRoundupHtml } = require('./lib/lbo-roundup-discover');
 const { discoverTrRoundupHtml } = require('./lib/tr-roundup-discover');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
-const { tryTbDirectUrl } = require('./lib/tb-direct-url');
+const { tryTbDirectUrl, tbFileHoldsReview } = require('./lib/tb-direct-url');
 const { isInOpeningWindow, nextPollDelayMs } = require('./lib/opening-window-backoff');
 const { getLondonSupplementalOutlets, rotateMissingOutlets, advanceSerpOutletOffset, warnStalledReviewStubs } = require('./lib/opening-night-discovery-policy');
 const {
@@ -859,11 +859,12 @@ async function runAggregators(show) {
     console.log(`  Playbill Verdict error: ${err.message}`);
   }
 
-  // 1c2. Talkin' Broadway direct URL (Broadway only, not off-Broadway)
+  // 1c2. Talkin' Broadway direct URL (Broadway and off-Broadway)
   // SERP returns forum posts (All That Chat) instead of the review, so we construct the URL.
   // Verification (title match + byline + date window) lives in scripts/lib/tb-direct-url.js
   // so the gate is tight enough to reject soft-404s and old-production revival pages.
-  if (!isOffBroadway && !isWestEnd) {
+  // Off-Broadway pages are dated (/page/ob/M_D_YY.html), built from openingDate (BRO-8148).
+  if (!isWestEnd) {
     try {
       const showReviewDir = path.join(REVIEW_TEXTS_DIR, show.id);
       const tbFiles = fs.existsSync(showReviewDir)
@@ -875,13 +876,13 @@ async function runAggregators(show) {
       // re-run discovery. FA had fallenangels2026.html hand-entered but TB
       // published it as FallenAngels.html — lowercased slugs are 404s on TB.
       // Regex requires first slug char to be uppercase (TB's actual URL convention).
-      const TB_URL_PATTERN = /^https?:\/\/(www\.)?talkinbroadway\.com\/page\/world\/[A-Z][A-Za-z0-9]*\.html$/;
-      const looksOk = (url) => typeof url === 'string' && url && TB_URL_PATTERN.test(url);
+      // Off-Broadway: a dated review page counts; the OB front page (index.html) does not (BRO-4437).
+      // Logic in tb-direct-url.js tbFileHoldsReview (BRO-8148).
       let anyGoodUrl = false;
       for (const f of tbFiles) {
         try {
           const rec = JSON.parse(fs.readFileSync(path.join(showReviewDir, f), 'utf8'));
-          if (looksOk(rec.url)) { anyGoodUrl = true; break; }
+          if (tbFileHoldsReview(rec, { offBroadway: isOffBroadway })) { anyGoodUrl = true; break; }
         } catch { /* ignore parse errors, treat as no good URL */ }
       }
       const hasTbReview = tbFiles.length > 0 && anyGoodUrl;
@@ -903,6 +904,7 @@ async function runAggregators(show) {
           overrideUrl,
           fetchPage,
           isRevival,
+          offBroadway: isOffBroadway,
         });
         if (tb.found) {
           results.push({

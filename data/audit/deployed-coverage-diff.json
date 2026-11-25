@@ -1,62 +1,30 @@
 {
-  "generatedAt": "2026-11-25T02:27:33.418Z",
+  "generatedAt": "2026-11-25T04:32:42.535Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 377,
-  "clean": 374,
-  "defective": 3,
+  "clean": 376,
+  "defective": 1,
   "byType": {
-    "score-drift": 3
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "the-dead-1904-off-broadway-2026",
-      "title": "The Dead, 1904",
-      "openingDate": "2026-11-24",
+      "showId": "matilda-the-musical-west-end-2021",
+      "title": "Matilda The Musical",
+      "openingDate": "2011-11-24",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 76.53 vs local 75.96 (Δ0.57)"
+          "detail": "deployed cs 91.37 vs local 91.28 (Δ0.09)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 3,
-      "deployedCount": 3,
-      "firstDefectAt": "2026-11-25T02:27:27.633Z"
-    },
-    {
-      "showId": "candide-regional-2026",
-      "title": "Candide",
-      "openingDate": "2026-11-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.75 vs local 79 (Δ4.25)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-25T02:27:27.633Z"
-    },
-    {
-      "showId": "a-midsummer-nights-dream-jentes-regional-2026",
-      "title": "A Midsummer Night's Dream",
-      "openingDate": "2026-11-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.83 vs local 81.92 (Δ0.91)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-25T02:27:27.633Z"
+      "localCount": 18,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-11-25T04:32:37.103Z"
     }
   ],
   "persistentDefective": 0,

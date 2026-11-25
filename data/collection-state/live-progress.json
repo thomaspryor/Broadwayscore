@@ -1,27 +1,21 @@
 {
-  "updatedAt": "2026-11-25T03:53:16.829Z",
-  "processed": 132,
-  "failed": 79,
-  "successRate": "62.6%",
+  "updatedAt": "2026-11-25T04:33:09.931Z",
+  "processed": 171,
+  "failed": 128,
+  "successRate": "57.2%",
   "tierBreakdown": {
-    "playwright": 79,
-    "amp": 1,
-    "browserbase": 5,
+    "playwright": 98,
+    "amp": 0,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 16,
-    "scrapingbee": 12,
+    "scrapingdog": 18,
+    "scrapingbee": 19,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 28
+    "archive": 41
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 0,
   "recentActivity": [
-    {
-      "t": "2026-11-25T02:52:55.288Z",
-      "event": "bb-session",
-      "session": "7dfcc8e7",
-      "url": "http://www.hollywoodreporter.com/review/bullets-broadway-theater-review-695186"
-    },
     {
       "t": "2026-11-25T02:53:13.066Z",
       "event": "bb-session",
@@ -72,6 +66,68 @@
       "t": "2026-11-25T03:40:13.687Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T03:56:11.786Z",
+      "event": "bb-session",
+      "session": "863f0e4d",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-25T03:56:12.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-25T03:57:01.302Z",
+      "event": "bb-session",
+      "session": "230281d5",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-25T03:57:23.303Z",
+      "event": "bb-session",
+      "session": "2f657321",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-25T03:58:25.984Z",
+      "event": "bb-session",
+      "session": "2edeb8a7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-25T04:04:23.024Z",
+      "event": "bb-session",
+      "session": "5d2a0047",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-25T04:04:23.643Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-25T04:16:00.528Z",
+      "event": "bb-session",
+      "session": "56610c31",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-25T04:16:01.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-25T04:16:18.093Z",
+      "event": "bb-session",
+      "session": "1a8df4d0",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-25T04:16:18.744Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
