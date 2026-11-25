@@ -315,6 +315,13 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
   if (existing.wrongShow || existing.wrongProduction) {
     return refuse('excluded_record', 'record is flagged wrongShow/wrongProduction');
   }
+  // BRO-8292: a multi-show split parent/child holds its own SECTION on purpose. Recovering
+  // the page puts the whole multi-show article back under split markers with no fan-out
+  // to re-trim it (Plaza Suite, All the World's a Stage), and the next rescore scores
+  // every show's text as this one. collect-review-texts force: refetches re-run the split.
+  if (existing.multiShowSplitParent === true || existing.multiShowSplitChild === true) {
+    return refuse('multi_show_split', 'multi-show split record: its short text is its own section, not a gap');
+  }
   if (ctx.blocklisted) return refuse('blocklisted', `url is in ${showId}/_blocklist.json`);
   // BRO-7569: an interview / opinion / lifestyle / shop page is not the review, whatever it says about the show.
   {

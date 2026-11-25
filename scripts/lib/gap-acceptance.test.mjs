@@ -59,6 +59,14 @@ test('refuses records a person or a verdict owns', () => {
   assert.equal(acceptRecoveredText(base(), { rawText: GOOD }, { ...ctx, blocklisted: true }).code, 'blocklisted');
 });
 
+// BRO-8292: gap recovery put whole multi-show articles back onto joint split parents (Plaza Suite,
+// All the World's a Stage) with no fan-out to re-trim them; the rescore then scored both shows' text.
+test('refuses multi-show split parents and children (their short text is their section)', () => {
+  assert.equal(acceptRecoveredText(base({ multiShowSplitParent: true, multiShowSplitAnchorKind: 'joint' }), { rawText: GOOD }, ctx).code, 'multi_show_split');
+  assert.equal(acceptRecoveredText(base({ multiShowSplitChild: true }), { rawText: GOOD }, ctx).code, 'multi_show_split');
+  assert.equal(acceptRecoveredText(base({ multiShowUnsplitAt: '2026-11-01T00:00:00Z' }), { rawText: GOOD }, ctx).accept, true, 'an undone split is a normal record');
+});
+
 test('refuses short, paywalled, off-topic and not-longer texts with the old stats phrases', () => {
   const short = acceptRecoveredText(base(), { rawText: 'Joe Turner. Too short.' }, ctx);
   assert.equal(short.code, 'too_short');
