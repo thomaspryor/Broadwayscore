@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7917-b",
   "planId": "a5b574d6-5d4d-4563-b443-ab66be9a3623",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-25T09:03:09.886Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "shows.json: deep-heat-rivalry-off-west-end-2026.runtime from https://theotherpalace.co.uk/deep-heat-rivalry/, read via fetchPage 2026-11-25"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-25T09:54:13.960Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for deep-heat-rivalry-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
