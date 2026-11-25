@@ -44,7 +44,14 @@ function createSbHostCooldown({ readRows = readLedgerTail, now = Date.now, env =
     if (host) rows.push({ provider: 'scrapingbee', host, ts: new Date(now()).toISOString(), success });
   }
 
-  return { consult, record };
+  // BRO-8280: an outcome that says nothing about the host (bad key, no credits, rate limit,
+  // connection error) frees an in-flight probe without adding a row either way.
+  function release(url) {
+    const host = hostOf(url);
+    if (host) pendingProbes.delete(host);
+  }
+
+  return { consult, record, release };
 }
 
 const sbHostCooldown = createSbHostCooldown();

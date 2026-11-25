@@ -14,6 +14,7 @@
 
 const { titleMatchWords, textHasWord } = require('./title-word-match');
 const { creditsFor } = require('./provider-credits');
+const { sbHostCooldown } = require('./scrapingbee-host-cooldown');
 const https = require('https');
 require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 const http = require('http');
@@ -1372,6 +1373,12 @@ function extractVultureTheaterArticleUrls(html) {
 function fetchWithScrapingBee(url, timeoutMs = 30000) {
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_KEY) return reject(new Error('No ScrapingBee key'));
+    // BRO-8280: this direct render bypassed the shared SB host cooldown, so a host that
+    // never renders (ew.com: 404 on every render, ~12k credits/mo) was re-paid on every
+    // poll tick. Consult it like fetchPage does; a blocked host rejects exactly as a
+    // failed render would, and a 6h probe still detects recovery.
+    const _cd = sbHostCooldown.consult(url);
+    if (!_cd.allowed) return reject(new Error(`ScrapingBee host cooldown: ${_cd.reason}`));
     const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=true&wait=3000`;
     // render_js=true bills 5 credits per attempt regardless of status. This
     // path is the poller's JS site-search tier: it re-renders every
@@ -1388,6 +1395,10 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
       _recorded = true;
       const billed = (status === 401 || status === 402 || status === 'error') ? 0 : creditsFor('sb', 'render');
       try { recordSbCall({ url, fn: 'render', success, status, credits: billed }); } catch (_) {}
+      // 401/402/429/connection errors say nothing about the host (account or network state):
+      // free the probe slot, add no row. Timeouts are billed and the ledger row says failure, so record false.
+      if (status === 401 || status === 402 || status === 429 || status === 'error') sbHostCooldown.release(url);
+      else sbHostCooldown.record(url, success);
     };
     const req = https.get(apiUrl, (res) => {
       let data = '';
