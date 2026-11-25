@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T21:38:57.067Z",
+  "generatedAt": "2026-11-25T21:52:40.898Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2488,6 +2488,10 @@
         {
           "name": "TheaterMania",
           "isDualMarket": false
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -5807,27 +5811,27 @@
       "slug": "we-the-people-regional-2026",
       "thumbnail": "/images/shows/we-the-people-regional-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 79,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "T2:1/3",
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -6165,6 +6169,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-25T21:52:40.898Z",
+          "rc": 1,
+          "s": 79,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
