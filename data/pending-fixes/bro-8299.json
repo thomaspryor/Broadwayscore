@@ -1,0 +1,148 @@
+{
+  "issueNumber": "bro-8299",
+  "planId": "f61867c6-3b27-4437-b0cb-d558c3be70fe",
+  "status": "pending",
+  "createdAt": "2026-11-25T10:01:17.145Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8299: close 5 stale open off-West-End/off-Broadway shows (dates from venue/listing pages), move NT West Side Story to upcoming with its real 2027 dates",
+    "steps": [
+      "shows.json: the-smile-of-her-off-west-end-2026.closingDate",
+      "shows.json: the-smile-of-her-off-west-end-2026.status",
+      "shows.json: tartuffe-remixed-off-west-end-2026.closingDate",
+      "shows.json: tartuffe-remixed-off-west-end-2026.status",
+      "shows.json: deep-heat-rivalry-off-west-end-2026.closingDate",
+      "shows.json: deep-heat-rivalry-off-west-end-2026.status",
+      "shows.json: night-city-off-west-end-2026.closingDate",
+      "shows.json: night-city-off-west-end-2026.status",
+      "shows.json: marilyn-exposed-off-broadway-2026.closingDate",
+      "shows.json: marilyn-exposed-off-broadway-2026.status",
+      "shows.json: west-side-story-west-end-2026.previewsStartDate",
+      "shows.json: west-side-story-west-end-2026.openingDate",
+      "shows.json: west-side-story-west-end-2026.status"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-smile-of-her-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-29",
+        "description": "shows.json: the-smile-of-her-off-west-end-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-smile-of-her-off-west-end-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "shows.json: the-smile-of-her-off-west-end-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tartuffe-remixed-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-24",
+        "description": "shows.json: tartuffe-remixed-off-west-end-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tartuffe-remixed-off-west-end-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "shows.json: tartuffe-remixed-off-west-end-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deep-heat-rivalry-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-11",
+        "description": "shows.json: deep-heat-rivalry-off-west-end-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deep-heat-rivalry-off-west-end-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "shows.json: deep-heat-rivalry-off-west-end-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "night-city-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-03",
+        "description": "shows.json: night-city-off-west-end-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "night-city-off-west-end-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "shows.json: night-city-off-west-end-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "marilyn-exposed-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-11-02",
+        "description": "shows.json: marilyn-exposed-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "marilyn-exposed-off-broadway-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "shows.json: marilyn-exposed-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "west-side-story-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-11-12",
+        "newValue": "2027-11-05",
+        "description": "shows.json: west-side-story-west-end-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "west-side-story-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2027-11-25",
+        "description": "shows.json: west-side-story-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "west-side-story-west-end-2026",
+        "field": "status",
+        "oldValue": "previews",
+        "newValue": "upcoming",
+        "description": "shows.json: west-side-story-west-end-2026.status"
+      }
+    ]
+  }
+}
