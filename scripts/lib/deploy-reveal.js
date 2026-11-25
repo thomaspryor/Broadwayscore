@@ -280,7 +280,7 @@ function classifyRange(base, head, { codePaths = [], revealCategories = DEFAULT_
   }
 }
 
-module.exports = { DEFAULT_REVEAL_CATEGORIES, NON_BROADWAY_CATEGORIES, revealCategoriesFromEnv, skipForCategory, reviewProjection, classifyReveal, isShowFile, openingIdsFrom, nytPicksChanged, resolveUrgency, classifyRange, catFileBatch, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES, STATUS_MAX_AGE_SEC, REVEAL_DATA_FILES };
+module.exports = { NON_BROADWAY_ID_RE, DEFAULT_REVEAL_CATEGORIES, NON_BROADWAY_CATEGORIES, revealCategoriesFromEnv, skipForCategory, reviewProjection, classifyReveal, isShowFile, openingIdsFrom, nytPicksChanged, resolveUrgency, classifyRange, catFileBatch, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES, STATUS_MAX_AGE_SEC, REVEAL_DATA_FILES };
 
 // CLI: `node scripts/lib/deploy-reveal.js <base> <head>` prints reveal=true|false
 // and reason=..., one per line (GITHUB_OUTPUT-ready). Used by the opening-night

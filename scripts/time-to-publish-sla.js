@@ -288,7 +288,11 @@ async function main() {
     windows = s ? selectRecentOpeningWindows([s], { now, count: 1, includeIncomplete: true }) : [];
     if (!s) console.warn(`[time-to-publish-sla] WARNING: show ${args.show} not found in shows.json.`);
   } else if (!args.days) {
-    windows = selectRecentOpeningWindows(showList, { now, count: args.windows, records });
+    // BRO-8281: only Broadway reveals ship-now, so the opening-night SLA judges Broadway openings. Non-Broadway
+    // shows ride the routine deploy path (6-8h is the owner's target) and would read as false "too slow".
+    const { NON_BROADWAY_ID_RE, revealCategoriesFromEnv } = require('./lib/deploy-reveal');
+    const slaShows = revealCategoriesFromEnv() ? showList.filter((x) => !(x && NON_BROADWAY_ID_RE.test(String(x.id || '')))) : showList;
+    windows = selectRecentOpeningWindows(slaShows, { now, count: args.windows, records });
   }
 
   let scope;

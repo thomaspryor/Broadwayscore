@@ -324,3 +324,13 @@ test('BRO-8281: kill switch env maps to null policy and the workflows wire it in
   assert.equal(deploy.split(wire).length - 1, 2, 'gate job + pre-warm step');
   assert.equal(poller.split(wire).length - 1, 1, 'poller classification step');
 });
+
+// BRO-8281: the time-to-publish SLA must not judge non-Broadway openings (they ride the routine deploy path).
+test('BRO-8281 SLA script scopes opening windows with the real NON_BROADWAY_ID_RE', () => {
+  const dr = require('./deploy-reveal.js');
+  assert.ok(dr.NON_BROADWAY_ID_RE.test('hamlet-west-end-2026'));
+  assert.ok(!dr.NON_BROADWAY_ID_RE.test('hamilton-2015'));
+  const src = fs.readFileSync(new URL('../time-to-publish-sla.js', import.meta.url), 'utf8');
+  assert.match(src, /NON_BROADWAY_ID_RE/);
+  assert.match(src, /revealCategoriesFromEnv\(\)/);
+});
