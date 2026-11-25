@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T15:37:58.963Z",
+  "generatedAt": "2026-11-25T15:53:53.030Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -418,17 +418,17 @@
       "status": "open",
       "slug": "a-christmas-carol-west-end",
       "thumbnail": "/images/shows/a-christmas-carol-west-end-2026/thumbnail.webp",
-      "siteScore": 76.01,
-      "liveScore": 76,
-      "scoreDrift": -0.010000000000005116,
+      "siteScore": 77.64,
+      "liveScore": 78,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
+      "total": 11,
       "t1": 0,
       "t2": 6,
-      "t3": 4,
-      "positive": 9,
+      "t3": 5,
+      "positive": 10,
       "mixed": 1,
       "negative": 0,
       "readiness": {
@@ -717,6 +717,18 @@
           "t2": 6,
           "t3": 4,
           "p": 9,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T15:53:53.030Z",
+          "rc": 11,
+          "s": 77.64,
+          "t1": 0,
+          "t2": 6,
+          "t3": 5,
+          "p": 10,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -2246,18 +2258,18 @@
       "status": "open",
       "slug": "the-afronauts-west-end",
       "thumbnail": "/images/shows/the-afronauts-west-end-2026/thumbnail.webp",
-      "siteScore": 62.33,
+      "siteScore": 62.13,
       "liveScore": 62,
-      "scoreDrift": -0.3299999999999983,
+      "scoreDrift": -0.13000000000000256,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 15,
-      "t1": 6,
+      "total": 16,
+      "t1": 7,
       "t2": 5,
       "t3": 4,
       "positive": 12,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 2,
       "readiness": {
         "ready": true,
@@ -2282,10 +2294,6 @@
         {
           "name": "The Sunday Times",
           "isDualMarket": true
-        },
-        {
-          "name": "Evening Standard",
-          "isDualMarket": false
         },
         {
           "name": "The Independent",
@@ -2554,6 +2562,18 @@
           "m": 1,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T15:53:53.030Z",
+          "rc": 16,
+          "s": 62.13,
+          "t1": 7,
+          "t2": 5,
+          "t3": 4,
+          "p": 12,
+          "m": 2,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -2567,17 +2587,17 @@
       "status": "open",
       "slug": "seven-guitars-off-broadway",
       "thumbnail": "/images/shows/seven-guitars-off-broadway-2026/thumbnail.webp",
-      "siteScore": 85.96,
+      "siteScore": 86.28,
       "liveScore": 86,
-      "scoreDrift": 0.04000000000000625,
+      "scoreDrift": -0.28000000000000114,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 17,
       "t1": 2,
       "t2": 8,
-      "t3": 6,
-      "positive": 16,
+      "t3": 7,
+      "positive": 17,
       "mixed": 0,
       "negative": 0,
       "readiness": {
@@ -2585,7 +2605,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 16,
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3010,6 +3030,18 @@
           "t2": 8,
           "t3": 6,
           "p": 16,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T15:53:53.030Z",
+          "rc": 17,
+          "s": 86.28,
+          "t1": 2,
+          "t2": 8,
+          "t3": 7,
+          "p": 17,
           "m": 0,
           "n": 0,
           "bc": "waiting"
