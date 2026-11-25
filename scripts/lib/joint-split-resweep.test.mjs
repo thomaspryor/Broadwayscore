@@ -36,29 +36,47 @@ test('isJointParent only matches joint-anchored parents', () => {
 
 test('pickWholeText prefers current fullText at original length, else history match', () => {
   assert.equal(pickWholeText(parent({ fullText: WHOLE })).source, 'current');
-  const h = [{ fullText: WHOLE.slice(0, 900) }, { fullText: WHOLE }];
+  const U = 'https://example.com/w';
+  const h = [{ url: U, fullText: WHOLE.slice(0, 900) }, { url: U, fullText: WHOLE }];
   assert.equal(pickWholeText(parent(), h).source, 'history:1:fullText');
-  assert.equal(pickWholeText(parent(), [{ fullText: WHOLE.slice(0, 900) }]), null);
+  assert.equal(pickWholeText(parent(), [{ url: U, fullText: WHOLE.slice(0, 900) }]), null);
+});
+
+test('pickWholeText ignores a revision that held another article in the same slot', () => {
+  assert.equal(pickWholeText(parent(), [{ url: 'https://example.com/other', fullText: WHOLE }]), null);
+  assert.equal(pickWholeText(parent(), [{ fullText: WHOLE }]), null, 'no url = unknown provenance');
+});
+
+test('pickWholeText reads a trimmed sibling\'s multiShowWholeArticleText for the same URL', () => {
+  const sib = { showId: 'leopoldstadt-2022', url: 'https://example.com/w', multiShowWholeArticleText: WHOLE };
+  assert.match(pickWholeText(parent(), [], [sib]).source, /^child:leopoldstadt-2022/);
+  assert.equal(pickWholeText(parent(), [], [{ ...sib, url: 'https://example.com/x' }]), null);
+});
+
+test('a partial content tier on the trimmed section does not hide the recovered article', () => {
+  const r = replanJointParent(parent({ contentTier: 'truncated' }), [{ url: 'https://example.com/w', fullText: WHOLE }], SHOWS);
+  assert.equal(r.verdict, 'lede-cousin');
 });
 
 test('a lede-comparison mis-split re-plans as lede-cousin from git history', () => {
-  const r = replanJointParent(parent(), [{ fullText: WHOLE }], SHOWS);
+  const r = replanJointParent(parent(), [{ url: 'https://example.com/w', fullText: WHOLE }], SHOWS);
   assert.equal(r.verdict, 'lede-cousin');
   assert.equal(r.holdsWhole, false);
 });
 
 test('a planner null for another reason is no-split (keep), not a repair', () => {
   const other = `Go for the acting this week. ${filler('falstaff', 14)} Leopoldstadt is long. ${filler('pitch', 12)} Wanderers is short.`;
-  const r = replanJointParent(parent({ multiShowSplitOriginalLength: other.length }), [{ fullText: other }], SHOWS);
+  const r = replanJointParent(parent({ multiShowSplitOriginalLength: other.length }), [{ url: 'https://example.com/w', fullText: other }], SHOWS);
   assert.equal(r.verdict, 'no-split');
 });
 
 test('reconstructed sections: refetch when an order is a lede cousin', () => {
   const cut = WHOLE.indexOf('Why is this');
-  const child = { multiShowSplitChild: true, fullText: WHOLE.slice(0, cut).trim() };
+  const child = { multiShowSplitChild: true, multiShowSplitParentShowId: 'wanderers-off-broadway-2023', url: 'https://example.com/w', fullText: WHOLE.slice(0, cut).trim() };
   const r = replanReconstructed(parent({ fullText: WHOLE.slice(cut) }), [child], SHOWS);
   assert.equal(r.orders, 2);
   assert.equal(r.verdict, 'refetch');
+  assert.equal(replanReconstructed(parent({ fullText: WHOLE.slice(cut) }), [{ ...child, multiShowSplitParentShowId: 'someone-else' }], SHOWS).verdict, 'no-whole-text');
 });
 
 test('no whole text anywhere is reported, not guessed', () => {
