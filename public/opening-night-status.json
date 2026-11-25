@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T12:33:59.345Z",
+  "generatedAt": "2026-11-25T13:04:38.432Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -418,25 +418,25 @@
       "status": "open",
       "slug": "a-christmas-carol-west-end",
       "thumbnail": "/images/shows/a-christmas-carol-west-end-2026/thumbnail.webp",
-      "siteScore": 78.9,
-      "liveScore": 79,
-      "scoreDrift": 0.09999999999999432,
+      "siteScore": 77.55,
+      "liveScore": 78,
+      "scoreDrift": 0.45000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
+      "total": 14,
       "t1": 0,
-      "t2": 7,
-      "t3": 4,
-      "positive": 11,
-      "mixed": 0,
+      "t2": 8,
+      "t3": 6,
+      "positive": 13,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -694,6 +694,18 @@
           "t3": 4,
           "p": 11,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T13:04:38.432Z",
+          "rc": 14,
+          "s": 77.55,
+          "t1": 0,
+          "t2": 8,
+          "t3": 6,
+          "p": 13,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
@@ -2210,23 +2222,23 @@
       "status": "open",
       "slug": "the-afronauts-west-end",
       "thumbnail": "/images/shows/the-afronauts-west-end-2026/thumbnail.webp",
-      "siteScore": 62.36,
-      "liveScore": 62,
-      "scoreDrift": -0.35999999999999943,
+      "siteScore": 60.95,
+      "liveScore": 61,
+      "scoreDrift": 0.04999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 13,
       "t1": 6,
-      "t2": 2,
-      "t3": 1,
-      "positive": 8,
-      "mixed": 0,
-      "negative": 1,
+      "t2": 4,
+      "t3": 3,
+      "positive": 10,
+      "mixed": 1,
+      "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 9,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2275,10 +2287,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -2478,6 +2486,18 @@
           "m": 0,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T13:04:38.432Z",
+          "rc": 13,
+          "s": 60.95,
+          "t1": 6,
+          "t2": 4,
+          "t3": 3,
+          "p": 10,
+          "m": 1,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -2491,9 +2511,9 @@
       "status": "open",
       "slug": "seven-guitars-off-broadway",
       "thumbnail": "/images/shows/seven-guitars-off-broadway-2026/thumbnail.webp",
-      "siteScore": 84.85,
-      "liveScore": 85,
-      "scoreDrift": 0.15000000000000568,
+      "siteScore": 85.96,
+      "liveScore": 86,
+      "scoreDrift": 0.04000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2509,7 +2529,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 15,
+        "highConfidence": 16,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2918,6 +2938,18 @@
           "t": "2026-11-25T07:01:46.882Z",
           "rc": 16,
           "s": 84.85,
+          "t1": 2,
+          "t2": 8,
+          "t3": 6,
+          "p": 16,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T13:04:38.432Z",
+          "rc": 16,
+          "s": 85.96,
           "t1": 2,
           "t2": 8,
           "t3": 6,
@@ -3582,10 +3614,6 @@
         {
           "name": "The Spectator (UK)",
           "isDualMarket": false
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
         },
         {
           "name": "The Sunday Times",
