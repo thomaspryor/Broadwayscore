@@ -1,14 +1,94 @@
 {
-  "generatedAt": "2026-11-24T16:07:40.341Z",
-  "total": 492,
-  "armedCount": 456,
-  "refusedCount": 36,
+  "generatedAt": "2026-11-25T16:01:19.609Z",
+  "total": 506,
+  "armedCount": 462,
+  "refusedCount": 44,
   "byKind": {
-    "shape": 27,
-    "no-section": 4,
-    "no-command": 5
+    "shape": 33,
+    "no-command": 6,
+    "no-section": 5
   },
   "refused": [
+    {
+      "id": "BRO-8325",
+      "name": "SB gate cousins: unattributed SB rows (45% have no showId) and West End aggregator page fetches still use ScrapingBee",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8325/sb-gate-cousins-unattributed-sb-rows-45percent-have-no-showid-and-west",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/sb-market-gate-replay.js | grep 'Broadway rows dropped: 0')",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8324",
+      "name": "Preview-period reviews counted inconsistently (Afronauts Monstagigz counted, Rolandcat excluded; ~439 counted corpus-wide)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8324/preview-period-reviews-counted-inconsistently-afronauts-monstagigz",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/linear-brain.js get [BRO-8324](https://linear.app/broadway-scorecard/issue/BRO-8324/preview-period-reviews-)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8307",
+      "name": "Press-night probe: treat remounts with only older-year aggregator reviews as not applicable, not FAIL",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8307/press-night-probe-treat-remounts-with-only-older-year-aggregator",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-8306",
+      "name": "Opening-night audit 2026-11-25",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8306/opening-night-audit-2026-11-25",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-8295",
+      "name": "Land preflight: run timeout-audit and audit-run-budget-slack locally before the land push",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8295/land-preflight-run-timeout-audit-and-audit-run-budget-slack-locally",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-run-budget-slack.js --help)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8294",
+      "name": "Cost follow-up: non-Broadway poller targeting + Bright Data theatre.reviews repeats",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8294/cost-follow-up-non-broadway-poller-targeting-bright-data",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/spend-effect-check.js --since=2026-11-25T06:00:00Z --hosts=theatre.reviews --json)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8293",
+      "name": "Land preflight should run live-data-lane --verify-changed before a land push",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8293/land-preflight-should-run-live-data-lane-verify-changed-before-a-land",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-8284",
+      "name": "Volunteer data-check sheet for Isabella Holland (weekly new/changed shows + correction status)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8284/volunteer-data-check-sheet-for-isabella-holland-weekly-newchanged",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: manual owner confirmation (external volunteer workflow))",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8274",
+      "name": "P2: Opening night miss: The Afronauts (2026-11-23)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8274/p2-opening-night-miss-the-afronauts-2026-11-23",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/produce-press-night-digest-snapshot.js --night=2026-11-23 --check=the-afronauts-west-end-2026)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8264",
+      "name": "Pages on Stages subscriber-only posts are scored as not_a_review instead of being marked paywalled",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8264/pages-on-stages-subscriber-only-posts-are-scored-as-not-a-review",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/press-night-record.js --show=its-a-wonderful-life-a-live-radio-play-2026 --night=2026-11-23 --check (Pages )",
+      "kind": "shape"
+    },
     {
       "id": "BRO-8260",
       "name": "Feedback proposals: already-fixed close can strand open; daily cap races; fallback closes closed-show matches",
@@ -74,14 +154,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-8188",
-      "name": "It's a Wonderful Life opening: missed reviews (wrong opening date 11-18 vs real 11-23) + systemic fix",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8188/its-a-wonderful-life-opening-missed-reviews-wrong-opening-date-11-18",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const r=require('./data/reviews.json');const a=(Array.isArray(r)?r:r.reviews).filter(x=>x.showId==='its-a-wonde)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-8186",
       "name": "Missing show: Tales from Ovid",
       "priority": null,
@@ -134,14 +206,6 @@
       "name": "Rage clicks on 'NEWEST ↑' sort button on homepage",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8180/rage-clicks-on-newest-sort-button-on-homepage",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-8177",
-      "name": "Visual gate: logic-only .tsx changes still ask the owner for visual approval",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8177/visual-gate-logic-only-tsx-changes-still-ask-the-owner-for-visual",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
     },
@@ -299,12 +363,39 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 320,
-    "checked": 320,
+    "total": 333,
+    "checked": 333,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-8287",
+      "name": "Cost review: GitHub Actions minutes ($150.74 of $200 November budget used by Nov 25)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8287/cost-review-github-actions-minutes-dollar15074-of-dollar200-november",
+      "cmd": "node --test scripts/github-actions-audit.test.mjs",
+      "missingPaths": [
+        "scripts/github-actions-audit.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-8281",
+      "name": "Cost review: hosting and small tools (Vercel, Resend, Expo, others)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8281/cost-review-hosting-and-small-tools-vercel-resend-expo-others",
+      "cmd": "test -f scripts/hosting-cost-review.md",
+      "missingPaths": [
+        "scripts/hosting-cost-review.md"
+      ]
+    },
+    {
+      "id": "BRO-8262",
+      "name": "BWW discovery: skip paid Browserbase reviews.php fetch when the cheap fetch already returned the listing",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8262/bww-discovery-skip-paid-browserbase-reviewsphp-fetch-when-the-cheap",
+      "cmd": "node --test scripts/lib/bww-rr-discover-paid-gate.test.mjs",
+      "missingPaths": [
+        "scripts/lib/bww-rr-discover-paid-gate.test.mjs"
+      ]
+    },
     {
       "id": "BRO-8213",
       "name": "Land preflight: check CLAUDE.md byte cap before land/** push",
@@ -312,6 +403,15 @@
       "cmd": "node --test scripts/lib/land-preflight.test.mjs",
       "missingPaths": [
         "scripts/lib/land-preflight.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-8177",
+      "name": "Visual gate: logic-only .tsx changes still ask the owner for visual approval",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8177/visual-gate-logic-only-tsx-changes-still-ask-the-owner-for-visual",
+      "cmd": "node --test scripts/visual-design-diff.test.mjs",
+      "missingPaths": [
+        "scripts/visual-design-diff.test.mjs"
       ]
     },
     {
@@ -357,15 +457,6 @@
       "cmd": "node --test scripts/video-proto/tts.test.mjs",
       "missingPaths": [
         "scripts/video-proto/tts.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-8014",
-      "name": "Register the Mac Studio as the free self-hosted runner for app Maestro E2E",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8014/register-the-mac-studio-as-the-free-self-hosted-runner-for-app-maestro",
-      "cmd": "node --test scripts/verify-mac-runner-registration.test.mjs",
-      "missingPaths": [
-        "scripts/verify-mac-runner-registration.test.mjs"
       ]
     },
     {
@@ -429,15 +520,6 @@
       "cmd": "node --test tests/unit/cv-wrongproduction-triage.test.mjs",
       "missingPaths": [
         "tests/unit/cv-wrongproduction-triage.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7829",
-      "name": "Opening-night audit 2026-11-19",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7829/opening-night-audit-2026-11-19",
-      "cmd": "node --test tests/unit/press-night-audit-logging.test.mjs",
-      "missingPaths": [
-        "tests/unit/press-night-audit-logging.test.mjs"
       ]
     },
     {
@@ -582,15 +664,6 @@
       "cmd": "node --test scripts/verify-annual-task-docs.test.mjs",
       "missingPaths": [
         "scripts/verify-annual-task-docs.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7060",
-      "name": "Audit url_content_mismatch rejections for false positives (74 files from BRO-7055 re-collect)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7060/audit-url-content-mismatch-rejections-for-false-positives-74-files",
-      "cmd": "node --test tests/unit/url-content-mismatch.test.mjs",
-      "missingPaths": [
-        "tests/unit/url-content-mismatch.test.mjs"
       ]
     },
     {
