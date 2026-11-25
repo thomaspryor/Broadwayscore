@@ -70,7 +70,7 @@ ${optionHtml}
 ${block.recommendation ? `<p style="margin:16px 0 6px;"><strong>My recommendation:</strong> ${esc(noDash(block.recommendation))}</p>` : ''}
 ${block.defaultText ? `<p style="margin:0 0 12px;"><strong>If you do not answer:</strong> ${esc(noDash(block.defaultText))}</p>` : ''}
 ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
-<p style="margin:16px 0 0;color:#666;font-size:13px;">Each button asks you to confirm before anything is saved. This link works for 14 days. If you already answered this in a Claude chat, tell that chat 'record my answer' and it will be saved here.</p>
+<p style="margin:16px 0 0;color:#666;font-size:13px;">Each button asks you to confirm before anything is saved, and a comment on the card is also read within minutes. This link works for 14 days. If you already answered this in a Claude chat, tell that chat 'record my answer' and it will be saved here.</p>
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
   return { subject, html, tokenHash: hash };
@@ -82,7 +82,7 @@ function talkHtml(sessionUrl) {
   const ok = Boolean(sessionUrl) && SESSION_URL_OK.test(sessionUrl);
   const link = ok
     ? `<p style="margin:0 0 10px;font-size:14px;"><a href="${esc(sessionUrl)}" style="color:#1a1208;font-weight:600;">Talk to the Claude session that asked</a> (opens the chat; type your question there)</p>` : '';
-  return `${link}<p style="margin:0 0 12px;color:#666;font-size:13px;">${ok ? 'Your button answer goes to the card and a fresh Claude picks it up within minutes. To chat about it first, open the session. ' : ''}Buttons record an answer. A comment on the card is also read within minutes.</p>`;
+  return `${link}${ok ? '<p style="margin:0 0 12px;color:#666;font-size:14px;">Your button answer goes to the card and a fresh Claude picks it up within minutes. To chat about it first, open the session.</p>' : ''}`;
 }
 
 // BRO-8199: the plain-words background ("A star deal is ...") right under the question.
