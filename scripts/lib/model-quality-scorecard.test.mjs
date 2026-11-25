@@ -64,3 +64,12 @@ test('reopened cards need the minimum count before they can fail the check', () 
   const many = [...reopens, { ms: SW + 3 * D, card: 'BRO-3' }, { ms: SW + 4 * D, card: 'BRO-4' }];
   assert.strictEqual(computeScorecard({ sessionRows: [], landings, reopens: many, switchDate: SWITCH, nowMs: SW + 10 * D }).verdict, 'WORSE');
 });
+
+test('minAfterDays boundary: just under 7 days is INSUFFICIENT DATA, exactly 7 days is judged', () => {
+  const landings = [...window(SW - 28 * D, 30, 0), ...window(SW, 20, 0)];
+  const under = computeScorecard({ sessionRows: [], landings, switchDate: SWITCH, nowMs: SW + 7 * D - 3600 * 1000 });
+  assert.strictEqual(under.verdict, 'INSUFFICIENT DATA');
+  const exact = computeScorecard({ sessionRows: [], landings, switchDate: SWITCH, nowMs: SW + 7 * D });
+  assert.notStrictEqual(exact.verdict, 'INSUFFICIENT DATA');
+  assert.strictEqual(THRESHOLDS.minAfterDays, 7);
+});
