@@ -9,6 +9,7 @@ const shows = [
   { id: 'hairy-ape-2022', title: 'The Hairy Ape', openingDate: '2022-04-11' },
   { id: 'bach-orig', title: 'Going Bacharach', openingDate: '2026-01-12' }, { id: 'bach-return', title: 'Going Bacharach', openingDate: '2026-09-16' },
 ];
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([...shows]));
 const index = [
   { url: `${B}10_05_26.html`, title: 'The Hairy Ape' }, { url: `${B}10_05_26b.html`, title: 'Falls for Jodie' },
   { url: `${B}01_12_26.html`, title: 'Going Bacharach' },
