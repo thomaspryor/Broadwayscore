@@ -1,16 +1,20 @@
 {
-  "generatedAt": "2026-11-25T08:07:25.447Z",
+  "generatedAt": "2026-11-25T12:17:05.256Z",
   "night": "2026-11-24",
   "counts": {
     "total": 6,
     "passed": 0,
-    "failed": 0,
-    "notGraded": 6
+    "failed": 2,
+    "notGraded": 4
   },
   "lines": [
     {
-      "verdict": "UNKNOWN",
-      "line": "A Christmas Carol: published by the regular pipeline; opening-night email draft not due until 9:00am. Not graded: could not check when the first review went live or the critics list at the 2-hour mark or which reviews came in that night."
+      "verdict": "FAIL",
+      "line": "A Christmas Carol: published by the regular pipeline; opening-night email draft not due until 9:00am; Reddit draft emailed to you is out of date (score 76 from 8 reviews, the site shows score 78 from 11 reviews). Failed."
+    },
+    {
+      "verdict": "FAIL",
+      "line": "The Dead, 1904: published by the regular pipeline; 0 of 14 reviews live by 12:00am; Time Out New York not live by 3:57am; The New York Times not live by 3:57am; The Hollywood Reporter not live by 3:57am; amNewYork not live by 3:57am; TheaterMania not live by 3:57am; Talkin' Broadway not live by 3:57am; Stage Buddy not live by 3:57am; Cititour not live by 3:57am; NorthJersey.com not live by 3:57am; The Epoch Times not live by 3:57am; Adrian Dimanlig not live by 3:57am; Irish Central not live by 3:57am; Village Voice not live by 3:57am; Metro US not live by 3:57am. Failed."
     },
     {
       "verdict": "UNKNOWN",
@@ -27,16 +31,28 @@
     {
       "verdict": "UNKNOWN",
       "line": "The Jungle Book: published by the regular pipeline; 1 of 1 review live by 6:00pm; opening-night email draft not due until 9:00am. Not graded: no reviews were published overnight."
-    },
-    {
-      "verdict": "PENDING",
-      "line": "The Dead, 1904: not graded yet, still being checked."
     }
   ],
   "scoreboard": {
-    "graded": 28,
+    "graded": 29,
     "passed": 4,
     "passedOnOwn": 3
   },
-  "missFirstSeen": {}
+  "missFirstSeen": {
+    "a-christmas-carol-west-end-2026|2026-11-24|email:reddit:stale": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:timeout:Unknown": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:nytimes:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:hollywood-reporter:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:amny:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:theatermania:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:talkinbroadway:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:stagebuddy:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:cititour:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:northjerseycom:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:epoch-times:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:adriandimanlig:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:irish-central:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:village-voice:": "2026-11-25T12:17:05.256Z",
+    "the-dead-1904-off-broadway-2026|2026-11-24|review:metro-us:": "2026-11-25T12:17:05.256Z"
+  }
 }
