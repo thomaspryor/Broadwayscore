@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T00:06:28.365Z",
+  "generatedAt": "2026-11-25T23:43:45.692Z",
   "promoted": [
     {
       "id": "jack-and-the-beanstalk-off-west-end-2027",
@@ -15,6 +15,16 @@
       "id": "two-names-that-meet-and-part-off-west-end-2027",
       "source": "venue-page:arcola-theatre",
       "sourceUrl": "https://www.arcolatheatre.com/whats-on/"
+    },
+    {
+      "id": "concrete-off-west-end-2027",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
+    },
+    {
+      "id": "kara-mickey-and-pol-too-off-west-end-2027",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
     }
   ],
   "rejected": [
@@ -345,6 +355,22 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as nine-night-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Black Writers' Collective (2026/27)",
+      "venue": "Southwark Playhouse",
+      "source": "venue-page:southwark-playhouse",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-07))"
+    },
+    {
+      "title": "Black Writers' Collective Showcase",
+      "venue": "Southwark Playhouse",
+      "source": "venue-page:southwark-playhouse",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (taping/work-in-progress/showcase: \"Black Writers' Collective Showcase\")"
     },
     {
       "title": "Brixton Calling",
@@ -1161,14 +1187,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as are-you-even-indian-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Concrete",
-      "venue": "Riverside Studios",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: only 4 performance(s) listed — a short booking, not a run"
     },
     {
       "title": "Happy Families (Rehearsed Reading)",
