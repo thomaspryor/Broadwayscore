@@ -1233,5 +1233,19 @@
       }
     ],
     "queuedAt": "2026-11-25T05:02:42.724Z"
+  },
+  {
+    "conditionKey": "watchdog-heartbeat-stale",
+    "title": "Dispatch watchdog is DOWN — nobody owns in-flight dispatches (still open — BRO-4816)",
+    "description": "Still firing after 77 notifications since it was filed. Tracked at BRO-4816.\n\nThe 👑 OWNER watchdog heartbeat is 48 min old (bar: 30 min). If cmux restarted, open any Claude session (its Stop hook resurrects the tab) or run: node scripts/dispatch-watchdog.js --ensure-tab",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-4816",
+    "fields": [],
+    "queuedAt": "2026-11-25T04:57:30.546Z"
   }
 ]
