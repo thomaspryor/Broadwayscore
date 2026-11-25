@@ -728,8 +728,21 @@ function llmQuoteHardRejectReason(quote, fullText) {
 function hasUsableLlmQuote(data) {
   return !!(data && data.llmPullQuote && !llmQuoteHardRejectReason(data.llmPullQuote, data.fullText)
     && !quoteOutsideTargetSection(data.llmPullQuote, data)
+    && !quoteFromOtherShowPassage(data.llmPullQuote, data)
     && (data.llmPullQuoteContextCheckedAt || (!isContextDependentQuote(data.llmPullQuote, { showTitle: data.showTitle })
       && !startsMidClause(data.llmPullQuote, data.fullText))));
+}
+
+/**
+ * BRO-8326: the quote sits in another show's part of the article, or in a news
+ * column's lede ahead of this show (scripts/lib/pull-quote-other-show.js).
+ * Returns the reason string or null. `show` is optional: a stored record only
+ * carries its title, so cast evidence is used when the caller has the show.
+ */
+function quoteFromOtherShowPassage(quote, data, show) {
+  const r = require('./pull-quote-other-show').quoteInOtherShowPassage(
+    quote, data, show || { id: data && data.showId, title: data && data.showTitle });
+  return r ? `${r.rule}: ${r.detail}` : null;
 }
 
 /**
@@ -1532,6 +1545,7 @@ module.exports = {
   hasUsableLlmQuote,
   pullQuoteSourceText,
   quoteOutsideTargetSection,
+  quoteFromOtherShowPassage,
   HEDGE_OPENER_RE,
   MID_SENTENCE_PIVOT_RE,
   MIN_QUOTE_LENGTH,

@@ -68,7 +68,7 @@ const {
   isContiguousInSource, snapToSourceSpan, isExcerptAnchoredInSource, isTrustedContiguitySource, startsWithPageChrome,
   phraseContradictsScore, EXCERPT_SOURCE_RANK, RAW_SOURCE_RANK, pickExcerptCandidate,
   isClippedAggregatorBlurb, startsAsFragment, stripLeadingParenAside, stripCaptionChrome, PAREN_ASIDE_START_RE,
-  combinedColumnQuoteLacksOwnShow, hasBodyFurniture,
+  combinedColumnQuoteLacksOwnShow, quoteFromOtherShowPassage, hasBodyFurniture,
 } = require('./lib/pull-quote-guards');
 const { isTrailerOnlyTruncation, isKnownTrailerComplete, trailerSafeBody, PAYWALL_PROMPT_TAIL_RE } = require('./lib/trailer-signatures');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter, SHOW_HELD_REASONS, isHeldBeforeOpening } = require('./lib/stage-latency');
@@ -880,6 +880,16 @@ function selectBestExcerpt(data, showTitle) {
       if (!stats.combinedColumnQuoteRejected) stats.combinedColumnQuoteRejected = [];
       stats.combinedColumnQuoteRejected.push({ showId, source, excerpt: excerpt.slice(0, 80) });
       console.log(`  🚫 [combined-column] ${showId}: "${source}" does not name this show`);
+      return null;
+    }
+
+    // Layer 0b (BRO-8326): a quote from another show's section of the column (Village Voice: Feingold's paragraph on The Price shown on
+    // Come From Away) or from the lede of a news column ahead of this show's blurb (Out Magazine). Dropping it lets the next source win.
+    const otherShowPassage = quoteFromOtherShowPassage(excerpt, data, showById[showId]);
+    if (otherShowPassage) {
+      if (!stats.otherShowPassageRejected) stats.otherShowPassageRejected = [];
+      stats.otherShowPassageRejected.push({ showId, source, reason: otherShowPassage, excerpt: excerpt.slice(0, 80) });
+      console.log(`  🚫 [other-show-passage] ${showId}: "${source}" ${otherShowPassage}`);
       return null;
     }
 

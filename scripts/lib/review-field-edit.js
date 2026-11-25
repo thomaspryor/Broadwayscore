@@ -340,6 +340,8 @@ const FIELD_VALUE_CHECKS = {
     if (reject) return `llmPullQuote rejected: ${reject}`;
     // BRO-7346: in a multi-show column the quote must come from this show's section.
     if (guards.quoteOutsideTargetSection(v, record)) return 'llmPullQuote must come from this show\'s section of the multi-show column';
+    const otherShow = guards.quoteFromOtherShowPassage(v, record); // BRO-8326
+    if (otherShow) return `llmPullQuote must be about this show (${otherShow})`;
     return null;
   },
   // A url edit is allowed only when the CURRENT url is provably wrong for this

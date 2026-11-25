@@ -28,7 +28,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shouldRejectAsReservation, isContextDependentQuote, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, startsMidClause, expandToSentenceStart, hasUsableLlmQuote, pullQuoteSourceText, snapToSourceSpan, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isContextDependentQuote, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, startsMidClause, expandToSentenceStart, hasUsableLlmQuote, quoteFromOtherShowPassage, pullQuoteSourceText, snapToSourceSpan, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
@@ -540,6 +540,22 @@ async function processReview(entry) {
       stats.serviceSectionRejected = (stats.serviceSectionRejected || 0) + 1;
       if (VERBOSE) console.log(`  SERVICE-SECTION rejected after retry: ${path.basename(filePath)}`);
       reject('service-section');
+      return;
+    }
+
+    // Other-show check (BRO-8326): the quote sits in another show's part of the
+    // column, or in a news column's lede ahead of this show's blurb.
+    const otherShowPassage = quoteFromOtherShowPassage(quote, data);
+    if (otherShowPassage) {
+      if (attempt === 1) {
+        stats.otherShowRetried = (stats.otherShowRetried || 0) + 1;
+        if (VERBOSE) console.log(`  OTHER-SHOW: "${quote.slice(0, 80)}..." (${otherShowPassage}) — retrying`);
+        hint = `Your previous attempt ("${quote}") is about a different show or topic in the same article, not ${data.showTitle || 'this show'}. Pick a sentence from the part of the article that reviews ${data.showTitle || 'this show'}.`;
+        continue;
+      }
+      stats.otherShowRejected = (stats.otherShowRejected || 0) + 1;
+      if (VERBOSE) console.log(`  OTHER-SHOW rejected after retry: ${path.basename(filePath)}`);
+      reject('other-show-passage');
       return;
     }
 
