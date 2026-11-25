@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8271-f",
   "planId": "a0cd439b-e1f9-4ef7-95da-689ed62e39dc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-24T23:52:44.279Z",
   "submitter": {
     "name": null,
@@ -134,5 +134,69 @@
         "description": "shows.json: this-is-my-favorite-song-off-broadway-2024.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-25T01:35:35.972Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for little-women-the-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for little-women-the-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-other-place-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for the-other-place-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for hate-radio-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for hate-radio-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for not-nobody-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for not-nobody-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for gobstopper-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for gobstopper-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for mj-the-musical-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for this-is-my-favorite-song-off-broadway-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
