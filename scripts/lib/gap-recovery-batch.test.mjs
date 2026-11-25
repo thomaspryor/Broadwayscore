@@ -67,5 +67,8 @@ test('roundSpend: a dry-run round spends nothing; a missing summary books the wh
   assert.deepEqual(B.roundSpend({ mode: 'dry_run', attempted: 0 }, rem), { bd: 0, serp: 0 });
   assert.deepEqual(B.roundSpend({ spend: { bd: 3, serp: 7 } }, rem), { bd: 3, serp: 7 });
   assert.deepEqual(B.roundSpend(null, rem), { bd: 25, serp: 60 });
+  // Live early exits (mode null) and a failed spend read (mode live, spend null) still book the whole allowance.
+  assert.deepEqual(B.roundSpend({ mode: null, attempted: 0 }, rem), { bd: 25, serp: 60 });
+  assert.deepEqual(B.roundSpend({ mode: 'live', spend: null }, rem), { bd: 25, serp: 60 });
   assert.deepEqual(B.roundSpend(null, { bd: null, serp: null }), { bd: 0, serp: 0 });
 });
