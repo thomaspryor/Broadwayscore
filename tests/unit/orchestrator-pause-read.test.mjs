@@ -114,6 +114,13 @@ describe('BRO-6643: no fail-open ORCHESTRATOR_PAUSED reads remain', () => {
       assert.match(body, /if PAUSED=\$\(READ_ATTEMPTS=\d+[^)]*read-actions-variable\.sh ORCHESTRATOR_PAUSED\); then[\s\S]*\n\s*else\s*\n\s*echo "preempted=true"/, f);
     }
   });
+  test('BRO-8300: orchestrator check_preemption suppresses the hang alert for runs cancelled before 300 min', () => {
+    const body = stepBody(code('opening-night-orchestrator.yml'), 'Check for Express preemption');
+    assert.match(body, /RUN_STARTED_AT: \$\{\{ github\.run_started_at \}\}/);
+    assert.match(body, /\[ "\$RUN_AGE_MIN" -lt 300 \][\s\S]*?preempted=true[\s\S]*?exit 0/);
+    // the age gate must come before the ORCHESTRATOR_PAUSED read
+    assert.ok(body.indexOf('RUN_AGE_MIN') < body.indexOf('read-actions-variable.sh'));
+  });
   test('Express Set retries then falls back to the job-start snapshot (never blocks on a blip)', () => {
     const wf = code('opening-night-express.yml');
     const body = stepBody(wf, 'Set ORCHESTRATOR_PAUSED');
