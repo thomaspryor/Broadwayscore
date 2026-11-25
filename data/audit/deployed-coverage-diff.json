@@ -1,16 +1,38 @@
 {
-  "generatedAt": "2026-11-25T15:41:40.558Z",
+  "generatedAt": "2026-11-25T17:01:39.631Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 372,
-  "clean": 367,
-  "defective": 5,
+  "clean": 363,
+  "defective": 9,
   "byType": {
-    "score-drift": 4,
-    "missing-from-prod": 2
+    "score-drift": 8,
+    "missing-from-prod": 4
   },
   "shows": [
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "openingDate": "2026-11-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: all-that-dazzles-uk"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.53 vs local 78.14 (Δ0.61)"
+        }
+      ],
+      "missingFromProd": [
+        "all-that-dazzles-uk"
+      ],
+      "localCount": 11,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-25T15:41:35.786Z"
+    },
     {
       "showId": "the-afronauts-west-end-2026",
       "title": "The Afronauts",
@@ -19,19 +41,43 @@
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: london-theatre"
+          "detail": "3 scored outlet(s) absent from the deployed payload: london-theatre, standard, theatreandtonic"
         },
         {
           "type": "score-drift",
-          "detail": "deployed cs 60.95 vs local 60.87 (Δ0.08)"
+          "detail": "deployed cs 60.95 vs local 61.77 (Δ0.82)"
         }
       ],
       "missingFromProd": [
-        "london-theatre"
+        "london-theatre",
+        "standard",
+        "theatreandtonic"
       ],
-      "localCount": 14,
+      "localCount": 16,
       "deployedCount": 13,
       "firstDefectAt": "2026-11-25T15:41:35.786Z"
+    },
+    {
+      "showId": "seven-guitars-off-broadway-2026",
+      "title": "Seven Guitars",
+      "openingDate": "2026-11-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: off-off-online"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.96 vs local 86.28 (Δ0.32)"
+        }
+      ],
+      "missingFromProd": [
+        "off-off-online"
+      ],
+      "localCount": 16,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-11-25T17:01:31.203Z"
     },
     {
       "showId": "death-and-the-maiden-regional-2026",
@@ -52,22 +98,6 @@
       "firstDefectAt": "2026-11-25T15:41:35.786Z"
     },
     {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "openingDate": "2026-11-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.53 vs local 76.32 (Δ1.21)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-11-25T15:41:35.786Z"
-    },
-    {
       "showId": "nine-night-off-west-end-2026",
       "title": "Nine Night",
       "openingDate": "2026-11-12",
@@ -84,6 +114,54 @@
       "firstDefectAt": "2026-11-25T15:41:35.786Z"
     },
     {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "title": "Million Dollar Quartet",
+      "openingDate": "2026-09-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.31 vs local 74.25 (Δ1.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-11-25T17:01:31.203Z"
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "openingDate": "2026-04-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.12 vs local 82.19 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 39,
+      "deployedCount": 39,
+      "firstDefectAt": "2026-11-25T17:01:31.203Z"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "title": "Oh, Mary!",
+      "openingDate": "2024-07-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.57 vs local 87.74 (Δ0.17)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 32,
+      "deployedCount": 32,
+      "firstDefectAt": "2026-11-25T17:01:31.203Z"
+    },
+    {
       "showId": "witness-for-the-prosecution-off-west-end-2022",
       "title": "Witness for the Prosecution",
       "openingDate": "2017-10-23",
@@ -91,7 +169,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 75.69 vs local 75.85 (Δ0.16)"
+          "detail": "deployed cs 75.69 vs local 75.84 (Δ0.15)"
         }
       ],
       "missingFromProd": [],
