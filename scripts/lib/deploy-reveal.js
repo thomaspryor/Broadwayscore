@@ -112,7 +112,7 @@ const DEFAULT_REVEAL_CATEGORIES = ['broadway'];
 const NON_BROADWAY_CATEGORIES = ['off-broadway', 'west-end', 'off-west-end', 'regional', 'tour'];
 // Broadway ids carry no market hint; every other market's id does. A show is skipped only when the `cat` field AND
 // the id agree it is not Broadway, so one mislabeled `cat` cannot demote a Broadway opening (BRO-8281 pre-mortem).
-const NON_BROADWAY_ID_RE = /(off-broadway|west-end|off-west-end|regional|tour|london|uk-tour)/;
+const NON_BROADWAY_ID_RE = /(^|-)(off-broadway|west-end|off-west-end|regional|tour|london|uk-tour)(-|$)/;
 
 /** Pure: env switch -> categories policy. GATE_REVEAL_ALL_CATEGORIES=true restores the old all-categories reveal. */
 function revealCategoriesFromEnv(env = process.env) {
@@ -124,6 +124,13 @@ function revealCategoriesFromEnv(env = process.env) {
  * that exists has a top-level `cat` that is a KNOWN non-reveal category, and the id also looks non-Broadway.
  * Missing/unknown/mixed cat, or an id with no market hint, fails open (counts).
  */
+// Pure: should the SLA / reporting skip this shows.json entry as non-Broadway? Same id hint as the gate, and an
+// entry whose own category says broadway is never skipped.
+function isNonBroadwayShowEntry(show) {
+  if (!show || !NON_BROADWAY_ID_RE.test(String(show.id || ''))) return false;
+  const c = show.category;
+  return !(typeof c === 'string' && /^broadway$/i.test(c));
+}
 function skipForCategory(showId, before, after, revealCategories) {
   if (!revealCategories) return false;
   if (!NON_BROADWAY_ID_RE.test(String(showId || ''))) return false;
@@ -280,7 +287,7 @@ function classifyRange(base, head, { codePaths = [], revealCategories = DEFAULT_
   }
 }
 
-module.exports = { NON_BROADWAY_ID_RE, DEFAULT_REVEAL_CATEGORIES, NON_BROADWAY_CATEGORIES, revealCategoriesFromEnv, skipForCategory, reviewProjection, classifyReveal, isShowFile, openingIdsFrom, nytPicksChanged, resolveUrgency, classifyRange, catFileBatch, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES, STATUS_MAX_AGE_SEC, REVEAL_DATA_FILES };
+module.exports = { isNonBroadwayShowEntry, NON_BROADWAY_ID_RE, DEFAULT_REVEAL_CATEGORIES, NON_BROADWAY_CATEGORIES, revealCategoriesFromEnv, skipForCategory, reviewProjection, classifyReveal, isShowFile, openingIdsFrom, nytPicksChanged, resolveUrgency, classifyRange, catFileBatch, MAX_SHOW_FILES, MAX_ANY_SHOW_FILES, STATUS_MAX_AGE_SEC, REVEAL_DATA_FILES };
 
 // CLI: `node scripts/lib/deploy-reveal.js <base> <head>` prints reveal=true|false
 // and reason=..., one per line (GITHUB_OUTPUT-ready). Used by the opening-night

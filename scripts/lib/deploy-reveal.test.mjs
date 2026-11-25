@@ -326,11 +326,16 @@ test('BRO-8281: kill switch env maps to null policy and the workflows wire it in
 });
 
 // BRO-8281: the time-to-publish SLA must not judge non-Broadway openings (they ride the routine deploy path).
-test('BRO-8281 SLA script scopes opening windows with the real NON_BROADWAY_ID_RE', () => {
+test('BRO-8281 id hint is segment-anchored and the SLA helper never drops a Broadway entry', () => {
   const dr = require('./deploy-reveal.js');
   assert.ok(dr.NON_BROADWAY_ID_RE.test('hamlet-west-end-2026'));
+  assert.ok(dr.NON_BROADWAY_ID_RE.test('cats-uk-tour-2026'));
   assert.ok(!dr.NON_BROADWAY_ID_RE.test('hamilton-2015'));
-  const src = fs.readFileSync(new URL('../time-to-publish-sla.js', import.meta.url), 'utf8');
-  assert.match(src, /NON_BROADWAY_ID_RE/);
-  assert.match(src, /revealCategoriesFromEnv\(\)/);
+  assert.ok(!dr.NON_BROADWAY_ID_RE.test('detour-2026'));
+  assert.ok(!dr.NON_BROADWAY_ID_RE.test('the-tourist-2026'));
+  assert.equal(dr.isNonBroadwayShowEntry({ id: 'hamlet-west-end-2026', category: 'west-end' }), true);
+  assert.equal(dr.isNonBroadwayShowEntry({ id: 'hamlet-west-end-2026' }), true);
+  assert.equal(dr.isNonBroadwayShowEntry({ id: 'london-road-2026', category: 'broadway' }), false);
+  assert.equal(dr.isNonBroadwayShowEntry({ id: 'detour-2026', category: 'off-broadway' }), false);
+  assert.equal(dr.isNonBroadwayShowEntry(null), false);
 });
