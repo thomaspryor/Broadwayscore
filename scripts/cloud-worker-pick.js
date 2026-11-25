@@ -368,6 +368,8 @@ function pickJson(chosen, nowMs, verifyCommand, isStartNow, modelOf) {
   if (!chosen) return null;
   const { issue: pick, resume, tier } = chosen;
   const { model, reason: modelReason } = modelOf(pick);
+  // BRO-7639: Codex's change was held for visual approval; start from its ref (CLOUD.md "Cloud card worker").
+  const uiHold = require('./lib/codex-ui-hold.js').uiHoldFromComments(pick.comments && pick.comments.nodes);
   return {
     identifier: pick.identifier,
     title: pick.title,
@@ -380,6 +382,7 @@ function pickJson(chosen, nowMs, verifyCommand, isStartNow, modelOf) {
     verify: verifyCommand(pick),
     // START-NOW is not applied to the P2/P3 tiers (the lib's skipReason), so never report it there.
     startNow: tier === require('./lib/cloud-worker-pick.js').TIER_P0P1 && isStartNow(pick, nowMs),
+    ...(uiHold && { uiHold }),
     ...(resume && {
       resume: {
         landRef: resume.ref,
