@@ -976,6 +976,9 @@ function isDatedGuardNote(note) {
  */
 function restoreParkedFullText(data) {
   if (!data || data.fullText) return false;
+  // The body may have been parked for a content reason too: keep it parked.
+  if (data.wrongAttribution || data.wrongShow || data.wrongArticle
+    || (data.contentVerification && data.contentVerification.wrongArticle)) return false;
   if (typeof data.wrongFullText !== 'string' || data.wrongFullText.length <= 300) return false;
   data.fullText = data.wrongFullText;
   delete data.wrongFullText;

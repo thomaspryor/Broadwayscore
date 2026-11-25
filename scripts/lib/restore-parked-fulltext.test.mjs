@@ -28,6 +28,21 @@ test('ignores short or missing parked text', () => {
   assert.equal(restoreParkedFullText(null), false);
 });
 
+test('keeps the body parked while a content flag is still live', () => {
+  for (const flag of [{ wrongAttribution: true }, { wrongShow: true }, { wrongArticle: true }, { contentVerification: { wrongArticle: true } }]) {
+    const d = { fullText: null, wrongFullText: body, ...flag };
+    assert.equal(restoreParkedFullText(d), false);
+    assert.equal(d.fullText, null);
+  }
+});
+
+test('wiring: the prior-run / tour-leg anticipatory clear calls it too', () => {
+  const src = fs.readFileSync(new URL('../rebuild-all-reviews.js', import.meta.url), 'utf8');
+  const i = src.indexOf("reason === 'anticipatory_pre_opening_post'");
+  assert.ok(i > 0);
+  assert.match(src.slice(i, i + 600), /restoreParkedFullText\(d\)/);
+});
+
 test('wiring: the anticipatory auto-clear in rebuild calls it', () => {
   const src = fs.readFileSync(new URL('../rebuild-all-reviews.js', import.meta.url), 'utf8');
   const i = src.indexOf('shouldAutoClearAnticipatoryGrace(d,');
