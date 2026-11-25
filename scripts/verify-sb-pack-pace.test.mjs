@@ -5,8 +5,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const FROM = '2026-11-26';
-const rows = fs.readFileSync(new URL('../data/audit/provider-spend-daily.jsonl', import.meta.url), 'utf8')
-  .trim().split('\n').map((l) => JSON.parse(l)).filter((r) => r.day >= FROM && r.providers?.scrapingbee?.dayCredits != null);
+const text = fs.readFileSync(new URL('../data/audit/provider-spend-daily.jsonl', import.meta.url), 'utf8').trim();
+const all = (text ? text.split('\n') : []).map((l) => JSON.parse(l))
+  .filter((r) => r.day >= FROM && Number.isFinite(r.providers?.scrapingbee?.dayCredits) && Number.isFinite(r.providers?.scrapingbee?.cap));
+// Only the newest pack cycle: a renewal resets the counter and understates that day's credits.
+const renewal = all.at(-1)?.providers.scrapingbee.renewalDate;
+const rows = all.filter((r) => r.providers.scrapingbee.renewalDate === renewal);
 test('ScrapingBee daily credits average stays inside the pack', { skip: rows.length < 5 && 'fewer than 5 days since landing' }, () => {
   const cap = rows.at(-1).providers.scrapingbee.cap;
   const avg = rows.reduce((a, r) => a + r.providers.scrapingbee.dayCredits, 0) / rows.length;
