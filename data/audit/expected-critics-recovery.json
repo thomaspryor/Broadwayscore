@@ -625,18 +625,6 @@
         }
       ]
     },
-    "the-fantasticks-2026::theater-scene": {
-      "showId": "the-fantasticks-2026",
-      "outletId": "theater-scene",
-      "openingDate": "2026-11-16",
-      "firstSeenMissingAt": "2026-11-20T17:59:37.610Z",
-      "attempts": [
-        {
-          "at": "2026-11-21T16:57:38.885Z",
-          "outcome": "no_evidence"
-        }
-      ]
-    },
     "the-fantasticks-2026::theatrely": {
       "showId": "the-fantasticks-2026",
       "outletId": "theatrely",
@@ -645,9 +633,11 @@
       "attempts": [
         {
           "at": "2026-11-21T16:57:38.885Z",
-          "outcome": "rejected",
-          "reason": "file-exists",
-          "url": "https://www.theatrely.com/post/nathan-levy-and-maxim-chlumecky-have-been-waiting-to-do-broadway-together-since-college-now-they-get-their-shot-in-reimagined-the-fantasticks"
+          "outcome": "no_evidence",
+          "reason": "existing-file-not-this-production",
+          "url": "https://www.theatrely.com/post/nathan-levy-and-maxim-chlumecky-have-been-waiting-to-do-broadway-together-since-college-now-they-get-their-shot-in-reimagined-the-fantasticks",
+          "collectorOutcome": "rejected",
+          "collectorReason": "file-exists"
         }
       ]
     },
@@ -776,23 +766,33 @@
       "attempts": [
         {
           "at": "2026-11-22T17:20:32.755Z",
-          "outcome": "rejected",
-          "reason": "cross-show-url-owned:harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-          "url": "https://www.londontheatre.co.uk/reviews/harry-potter-and-the-cursed-child-review-of-harry-potter-play-at-londons-palace-theatre"
+          "outcome": "no_evidence",
+          "reason": "url-owned-by-earlier-production",
+          "url": "https://www.londontheatre.co.uk/reviews/harry-potter-and-the-cursed-child-review-of-harry-potter-play-at-londons-palace-theatre",
+          "collectorOutcome": "rejected",
+          "collectorReason": "cross-show-url-owned:harry-potter-and-the-cursed-child-both-parts-west-end-2021"
         },
         {
           "at": "2026-11-23T21:43:30.454Z",
-          "outcome": "rejected",
-          "reason": "onMerge-aborted",
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/opinion-how-did-harry-potter-and-the-cursed-child-bewitch-the-west-end"
+          "outcome": "no_evidence",
+          "reason": "existing-file-not-this-production",
+          "url": "https://www.londontheatre.co.uk/theatre-news/news/opinion-how-did-harry-potter-and-the-cursed-child-bewitch-the-west-end",
+          "collectorOutcome": "rejected",
+          "collectorReason": "onMerge-aborted"
         },
         {
           "at": "2026-11-24T20:40:01.082Z",
-          "outcome": "rejected",
-          "reason": "cross-show-url-owned:harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-          "url": "https://www.londontheatre.co.uk/reviews/harry-potter-and-the-cursed-child-review-of-harry-potter-play-at-londons-palace-theatre"
+          "outcome": "no_evidence",
+          "reason": "url-owned-by-earlier-production",
+          "url": "https://www.londontheatre.co.uk/reviews/harry-potter-and-the-cursed-child-review-of-harry-potter-play-at-londons-palace-theatre",
+          "collectorOutcome": "rejected",
+          "collectorReason": "cross-show-url-owned:harry-potter-and-the-cursed-child-both-parts-west-end-2021"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-25T11:51:14.360Z",
+        "note": "auto (BRO-7312): 3 targeted searches of london-theatre for harry-potter-and-the-cursed-child-one-part-west-end-2026 found no review (2026-11-22, 2026-11-23, 2026-11-24)"
+      }
     },
     "harry-potter-and-the-cursed-child-one-part-west-end-2026::thestage": {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
@@ -802,15 +802,19 @@
       "attempts": [
         {
           "at": "2026-11-22T17:20:32.755Z",
-          "outcome": "rejected",
-          "reason": "file-exists",
-          "url": "https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original"
+          "outcome": "no_evidence",
+          "reason": "existing-file-not-this-production",
+          "url": "https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
+          "collectorOutcome": "rejected",
+          "collectorReason": "file-exists"
         },
         {
           "at": "2026-11-23T21:43:30.454Z",
-          "outcome": "rejected",
-          "reason": "file-exists",
-          "url": "https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-the-palace-theatre-london--entirely-distinctive"
+          "outcome": "non_evidence",
+          "reason": "filename-collision-rejudge",
+          "url": "https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-the-palace-theatre-london--entirely-distinctive",
+          "collectorOutcome": "rejected",
+          "collectorReason": "file-exists"
         },
         {
           "at": "2026-11-24T20:40:01.082Z",
@@ -833,15 +837,19 @@
         },
         {
           "at": "2026-11-23T21:43:30.454Z",
-          "outcome": "rejected",
-          "reason": "onMerge-aborted",
-          "url": "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review"
+          "outcome": "no_evidence",
+          "reason": "existing-file-not-this-production",
+          "url": "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review",
+          "collectorOutcome": "rejected",
+          "collectorReason": "onMerge-aborted"
         },
         {
           "at": "2026-11-24T20:40:01.082Z",
-          "outcome": "rejected",
-          "reason": "onMerge-aborted",
-          "url": "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review"
+          "outcome": "no_evidence",
+          "reason": "existing-file-not-this-production",
+          "url": "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review",
+          "collectorOutcome": "rejected",
+          "collectorReason": "onMerge-aborted"
         }
       ]
     },
@@ -867,7 +875,11 @@
           "reason": "cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i",
           "url": "https://www.whatsonstage.com/news/west-end-vs-broadway-harry-potter-and-the-cursed-child-two-scorpius-malfoys-duel-it-out_1618315/"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-25T11:51:14.360Z",
+        "note": "auto (BRO-7312): 3 targeted searches of whatsonstage for harry-potter-and-the-cursed-child-one-part-west-end-2026 found no review (2026-11-22, 2026-11-23, 2026-11-24)"
+      }
     },
     "much-ado-about-nothing-2026::talkinbroadway": {
       "showId": "much-ado-about-nothing-2026",

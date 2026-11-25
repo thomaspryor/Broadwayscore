@@ -268,7 +268,7 @@ const EARLIER_PRODUCTION_MS = 90 * DAY_MS; // the owner's copy must predate this
  *     reading the article's date -> non_evidence, so the next search judges it.
  *   - cross-show-url-owned:<other> where the other show's copy is dated 90+
  *     days before this opening -> empty (url-owned-by-earlier-production).
- * Anything else is left alone. filesForShow(showId) returns that show's review
+ * Any cell that now reads as acked gets its autoAck stamped. Anything else is left alone. filesForShow(showId) returns that show's review
  * records, or null when its directory is not on this machine: then nothing is
  * changed (absence is never evidence).
  * @returns {{state: object, changed: number}}
@@ -302,7 +302,9 @@ function reclassifyFileFinds(state, filesForShow, nowMs) {
       }
       return a;
     });
-    if (!touched) continue;
+    // A cell the read-time rule (normalizedAttempt) settles needs its autoAck
+    // stamped too, or it reads as missing to everything that merges acks.
+    if (!touched && cellPhase(cell, nowMs).phase !== 'acked') continue;
     changed++;
     const updated = { ...cell, attempts };
     if (cellPhase(updated, nowMs).phase === 'acked') {

@@ -339,7 +339,9 @@ test('an earlier production\'s article never makes an owner item: cross-market, 
   for (const k of ['s::london-theatre', 's::thestage', 's::telegraph']) assert.equal(R.cellPhase(state.cells[k], at(15)).phase, 'dead-end', k);
 
   const { state: next, changed } = R.reclassifyFileFinds(state, lookup, at(15));
-  assert.equal(changed, 2); // london-theatre, thestage (whatsonstage needs no rewrite: read-time rule)
+  assert.equal(changed, 3); // london-theatre, thestage rewritten; whatsonstage only stamped (read-time rule)
+  assert.match(next.cells['s::whatsonstage'].autoAck.note, /3 targeted searches/);
+  assert.deepEqual(next.cells['s::whatsonstage'].attempts, state.cells['s::whatsonstage'].attempts);
   assert.equal(R.cellPhase(next.cells['s::london-theatre'], at(15)).phase, 'acked');
   assert.match(next.cells['s::london-theatre'].autoAck.note, /3 targeted searches/);
   assert.equal(R.cellPhase(next.cells['s::whatsonstage'], at(15)).phase, 'acked');
@@ -352,7 +354,8 @@ test('an earlier production\'s article never makes an owner item: cross-market, 
   assert.equal(R.cellPhase(next.cells['s::telegraph'], at(15)).phase, 'dead-end');
 
   // Absence is never evidence: with no review-texts on this machine nothing changes.
-  assert.equal(R.reclassifyFileFinds(state, () => null, at(15)).changed, 0);
+  const blind = R.reclassifyFileFinds(state, () => null, at(15)).state;
+  for (const k of ['s::london-theatre', 's::thestage', 's::telegraph']) assert.deepEqual(blind.cells[k], state.cells[k], k);
   // A URL owned by another show whose copy is from this run's own dates is a real conflict: left alone.
   const recent = { 'hp-2021': [{ url: OLD_URL, publishDate: '2026-09-28' }], s: [] };
   const r2 = R.reclassifyFileFinds({ cells: { k: state.cells['s::london-theatre'] } }, (id) => recent[id] || null, at(15));
