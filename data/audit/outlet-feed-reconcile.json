@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T06:46:46.012Z",
+  "generatedAt": "2026-11-25T08:33:27.243Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -180,6 +180,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "west-end-wilma",
+      "error": "HTTP 429 for https://westendwilma.com/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -192,10 +196,19 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 908,
-  "matchedGaps": 2,
+  "itemsScanned": 898,
+  "matchedGaps": 3,
   "possibleGaps": 3,
   "gaps": [
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/26-a-christmas-carol-old-vic-london-2/",
+      "headline": "A Christmas Carol &#8211; Old Vic, London",
+      "publishDate": "2026-11-25"
+    },
     {
       "showId": "candide-regional-2026",
       "title": "Candide",

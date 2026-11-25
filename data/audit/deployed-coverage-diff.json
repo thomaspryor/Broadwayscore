@@ -1,55 +1,13 @@
 {
-  "generatedAt": "2026-11-25T06:46:45.574Z",
+  "generatedAt": "2026-11-25T08:33:26.798Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 377,
-  "clean": 375,
-  "defective": 2,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "openingDate": "2026-11-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: nytimes"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.24 vs local 84.76 (Δ0.48)"
-        }
-      ],
-      "missingFromProd": [
-        "nytimes"
-      ],
-      "localCount": 15,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-11-25T06:08:28.615Z"
-    },
-    {
-      "showId": "home-im-darling-regional-2026",
-      "title": "Home, I'm Darling",
-      "openingDate": "2026-11-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 80.4 vs local 80.47 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-11-25T06:08:28.615Z"
-    }
-  ],
+  "clean": 377,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
