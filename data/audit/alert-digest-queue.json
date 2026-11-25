@@ -977,5 +977,36 @@
       }
     ],
     "queuedAt": "2026-11-25T02:08:49.511Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8285-birthright-redirect",
+    "title": "Landing blocked: lint-workflows red on land/bro-8285-birthright-redirect",
+    "description": "land.yml did not land land/bro-8285-birthright-redirect: the lint-workflows gate went red at 07f01801d2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45526120993",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8285-birthright-redirect"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "07f01801d29f0f94da0e9051fca5e7ce34fe4878"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45526120993"
+      }
+    ],
+    "queuedAt": "2026-11-25T02:45:23.862Z"
   }
 ]
