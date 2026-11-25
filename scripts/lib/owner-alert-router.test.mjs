@@ -1215,9 +1215,16 @@ test('local ledger seeds from the committed CI ledger on first use (no cooldown 
   // not read the live tracked ledger), so point HOME at a temp dir and load with no ALERT_LEDGER_PATH.
   const localLedger = path.join(stateDir, '.broadwayscore-state', 'alert-ledger.json');
   const priorHome = process.env.HOME;
+  const priorCi = { CI: process.env.CI, GITHUB_ACTIONS: process.env.GITHUB_ACTIONS };
   process.env.HOME = stateDir;
+  // On a runner LEDGER_PATH is the tracked file itself and nothing seeds: test the local-default path.
+  delete process.env.CI; delete process.env.GITHUB_ACTIONS;
   const { router, calls, restore: restoreRouter, trackedLedgerPath } = loadRouterWithFakes({ ledgerEnvPath: null });
-  const restore = () => { restoreRouter(); if (priorHome === undefined) delete process.env.HOME; else process.env.HOME = priorHome; };
+  const restore = () => {
+    restoreRouter();
+    if (priorHome === undefined) delete process.env.HOME; else process.env.HOME = priorHome;
+    for (const [k, v] of Object.entries(priorCi)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+  };
   try {
     // The local ledger does not exist yet; the committed one already records
     // this condition as notified 10 minutes ago.
@@ -1248,7 +1255,7 @@ test('local ledger seeds from the committed CI ledger on first use (no cooldown 
     });
     assert.equal(result.action, 'silent', 'CI already notified this inside the cooldown');
     assert.equal(calls.createLinearIssue.length, 0, 'no duplicate dispatch on the local sender');
-    // (saveLedger refuses the real home path under node:test, so persistence is not asserted here.)
+    // (saveLedger throws without an ALERT_LEDGER_PATH under node:test, so persistence is not asserted here.)
   } finally {
     restore();
     fs.rmSync(stateDir, { recursive: true, force: true });
