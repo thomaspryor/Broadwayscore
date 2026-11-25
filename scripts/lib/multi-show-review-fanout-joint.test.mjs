@@ -750,3 +750,24 @@ test('BRO-8292: a whole-text joint parent the planner declines for another reaso
     assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).multiShowSplitParent, true);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+// BRO-8292 (Theater Life, Present Laughter / Amelie / How to Transcend a Happy Marriage, 2017): the
+// lede compares the first play to a PERSON ("a vain stage star, not unlike Coward himself"). The
+// BRO-8272 lede-comparison rule needs the cue sentence to name another show in the piece; a
+// comparison to a person leaves a real multi-show column split.
+test('BRO-8292: a lede cue comparing to a person, not another show, still joint-splits the column', () => {
+  const SHOWS = [
+    { id: 'present-laughter-test-2017', title: 'Present Laughter', category: 'broadway', openingDate: '2017-04-05' },
+    { id: 'how-to-transcend-a-happy-marriage-test-2017', title: 'How to Transcend a Happy Marriage', category: 'off-broadway', openingDate: '2017-03-13' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const text = [
+    `Charm and whimsy are the main ingredients in two recent offerings. The more familiar is Present Laughter , a romp about a vain stage star, not unlike the author himself, as he prepares for a tour. ${filler('laughter', 10)} Present Laughter ends happily.`,
+    `How to Transcend a Happy Marriage starts out as neither whimsical nor charming. ${filler('marriage', 10)} How to Transcend a Happy Marriage is a strange souffle.`,
+    'Present Laughter Through July 2, St. James Theatre, 246 W. 44th St. How to Transcend a Happy Marriage Through April 30, Mitzi Newhouse Theater, Lincoln Center.',
+  ].join(' ');
+  const p = planMultiShowFanout(base({ showId: SHOWS[1].id, publishDate: '2017-04-10', fullText: text }), SHOWS, { joint: true });
+  assert.ok(p, 'column still splits');
+  assert.equal(p.strategy, 'joint');
+  assert.deepEqual(p.otherSections.map((s) => s.showId), ['present-laughter-test-2017']);
+});

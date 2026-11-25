@@ -745,7 +745,15 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
         stop.lastIndex = r.at;
         const e = stop.exec(text);
         const sentenceEnd = e && e.index - r.at < 400 ? e.index + e[0].length : Math.min(text.length, r.at + 200);
-        if (LEDE_COMPARISON_RE.test(text.slice(from, sentenceEnd))) return [];
+        // The cue must compare to ANOTHER show in the piece: "a stage star, not unlike Coward
+        // himself" in a three-show Theater Life column compares the play to a person (BRO-8292).
+        const sentence = text.slice(from, sentenceEnd);
+        const namesOther = [...byShow.values()].some(({ show }) => {
+          if (show.id === r.id) return false;
+          const jm = buildJointMatcher(show);
+          return !!jm && new RegExp(jm.re.source, jm.re.flags.replace('g', '')).test(sentence);
+        });
+        if (namesOther && LEDE_COMPARISON_RE.test(sentence)) return [];
       }
     }
     const minShare = tailAll ? MIN_SECTION_SHARE : HEAD_ONLY_MIN_SHARE;
