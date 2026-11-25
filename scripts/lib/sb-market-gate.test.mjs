@@ -1,15 +1,15 @@
 // BRO-8323: ScrapingBee market gate. Real functions only (CLAUDE.md rule 15).
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const g = require('./sb-market-gate.js');
 const { serpChainOrder } = require('./url-discovery.js');
 
-const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sbgate-'));
+const { makeTmpDir } = require('./tmpdir-for-tests.js');
+const dir = makeTmpDir(after, 'sbgate-');
 const showsPath = path.join(dir, 'shows.json');
 fs.writeFileSync(showsPath, JSON.stringify({ shows: [
   { id: 'bway-show', category: 'broadway' },

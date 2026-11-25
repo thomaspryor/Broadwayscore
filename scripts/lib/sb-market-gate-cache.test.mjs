@@ -1,12 +1,10 @@
 // BRO-8323: a gated (no-ScrapingBee) chain's SERP answers must not be served to a full chain.
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import os from 'node:os';
-import path from 'node:path';
 import { createRequire } from 'node:module';
-process.env.BD_SERP_CACHE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'serpc-'));
 const require = createRequire(import.meta.url);
+const { makeTmpDir } = require('./tmpdir-for-tests.js');
+process.env.BD_SERP_CACHE_DIR = makeTmpDir(after, 'serpc-');
 const neg = require('./serp-negative-cache.js');
 const cache = require('./serp-cache.js');
 
