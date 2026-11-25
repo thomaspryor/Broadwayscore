@@ -1,22 +1,40 @@
 {
-  "generatedAt": "2026-11-24T12:42:57.298Z",
+  "generatedAt": "2026-11-25T11:46:24.578Z",
   "shadow": true,
-  "checkoutSha": "407048f78aa4d5061bb4478dfc78b071065aba61",
-  "totalCandidates": 487,
-  "eligibleCandidates": 184,
+  "checkoutSha": "4cadde91e9a04e1ca9e43ba6edd48fecadcd19ea",
+  "totalCandidates": 489,
+  "eligibleCandidates": 177,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
     "pass": 11,
-    "fail": 16,
-    "unverifiable": 3
+    "fail": 15,
+    "unverifiable": 4
   },
   "alreadyDone": [
     {
-      "id": "BRO-8237",
-      "name": "Land push with [skip ci] in the commit message never starts land.yml; wait-for-land waits silently",
-      "verifyCmd": "node --test scripts/lib/wait-for-land.test.mjs",
+      "id": "BRO-8297",
+      "name": "Sentry regression: UgcError: UGC functions mezzanine-search failed (500)",
+      "verifyCmd": "npx tsx --test tests/unit/sentry-7815060800.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8276",
+      "name": "P1: nightly text recovery aborts the whole run when one file was renamed upstream (backlog stalled)",
+      "verifyCmd": "node --test scripts/lib/review-texts-checkpoint.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8269",
+      "name": "Weekly commercial sweeps fail silently for weeks (Broadway Journal sweep failed 3 runs, no card or alert)",
+      "verifyCmd": "node scripts/audit-cron-health-coverage.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-8268",
+      "name": "Scraping spend audit: skip paid outlet site-search renders in markets the outlet never covered; fix Browserbase $ in weekly report",
+      "verifyCmd": "node --test tests/unit/site-search-market-history.test.mjs",
       "detail": null
     },
     {
@@ -44,12 +62,6 @@
       "detail": null
     },
     {
-      "id": "BRO-8200",
-      "name": "Confirm Resend draft exists for It's a Wonderful Life opening (deadline 2026-11-24 14:00 UTC)",
-      "verifyCmd": "node --test scripts/lib/ibdb-opening-refresh.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-8198",
       "name": "BRO-8056 phase 3b: 3h backstop for list pages, owner-approved lag (R8)",
       "verifyCmd": "node --test scripts/lib/should-deploy-gate.test.mjs",
@@ -62,36 +74,30 @@
       "detail": null
     },
     {
-      "id": "BRO-8179",
-      "name": "P1: /private/tmp fills ~20GB/day with test and session temp litter (384k items, 40GB) — nothing reaps it",
-      "verifyCmd": "node --test scripts/lib/reap-temp-checkouts.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-8176",
       "name": "BRO-8056 phase 4 pre-flip: flag-on UI patch (gap 3 + refresh note)",
       "verifyCmd": "npx tsx --test tests/unit/reviews-more.test.ts",
-      "detail": null
-    },
-    {
-      "id": "BRO-8159",
-      "name": "Calibrate the function trace-size gate against packaged .func sizes, then arm it",
-      "verifyCmd": "node --test scripts/lib/check-function-trace-size.test.mjs",
       "detail": null
     }
   ],
   "failing": [
     {
+      "id": "BRO-8301",
+      "name": "Auto-fix: Opening Night Orchestrator Failed",
+      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=opening-night-orchestrator.yml --expect=success",
+      "detail": "(gh not authenticated; read runs from the public GitHub API)\nopening-night-orchestrator.yml: MISMATCH — most recent run concluded 'cancelled', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/45600721939)"
+    },
+    {
       "id": "BRO-8245",
       "name": "Root cause: \"Data: published scores outside the critic's rating\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class published-scores-outside-critic-rating --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-8244",
       "name": "Root cause: \"Cron stale + consecutive days: Replay Push Rescue\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class replay-push-rescue --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-8243",
@@ -103,82 +109,76 @@
       "id": "BRO-8230",
       "name": "Recheck 2026-11-24: 1 done claim no longer hold on main",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 aW1hZ2VsZXNzLXNjb3JlZC1zaG93OnN0aWxsLWltYWdlbGVzczphbGw",
-      "detail": "[check-alert-condition-absent] FAIL: \"imageless-scored-show:still-imageless:all\" still firing — open, last fired 2026-11-24T04:32:52.300Z (8.2h ago, within 168h)"
+      "detail": "[check-alert-condition-absent] FAIL: \"imageless-scored-show:still-imageless:all\" still firing — open, last fired 2026-11-24T19:26:12.325Z (16.3h ago, within 168h)"
     },
     {
       "id": "BRO-8229",
       "name": "Root cause: \"Data audit failing: Audit review contamination\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class audit-review-contamination --quiet",
-      "detail": "FAIL: last case 0d ago, needs 21\n"
+      "detail": "FAIL: last case 1d ago, needs 21\n"
     },
     {
       "id": "BRO-8228",
       "name": "Root cause: \"Data audit failing: Run data validation\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class run-data-validation --quiet",
-      "detail": "FAIL: last case 0d ago, needs 21\n"
+      "detail": "FAIL: last case 1d ago, needs 21\n"
     },
     {
       "id": "BRO-8227",
       "name": "Root cause: \"Production show pages disagree with deployed critic data\" keeps coming back (4 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class production-show-pages-disagree-deployed-critic-data --quiet",
-      "detail": "FAIL: last case 0d ago, needs 21\n"
+      "detail": "FAIL: last case 1d ago, needs 21\n"
     },
     {
       "id": "BRO-8217",
       "name": "Root cause: \"Live-data test failing: reviews.json: no NEW critic page split by a byline spelling varian\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class reviews-json-new-critic-page-split-byline-spelling --quiet",
-      "detail": "FAIL: last case 0d ago, needs 21\n"
+      "detail": "FAIL: last case 1d ago, needs 21\n"
     },
     {
       "id": "BRO-8216",
       "name": "Root cause: first pass keeps missing theatreandtonic reviews (Off-West End, 3 shows in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-west-end-theatreandtonic --quiet",
-      "detail": "FAIL: last case 4d ago, needs 21\n"
+      "detail": "FAIL: last case 5d ago, needs 21\n"
     },
     {
       "id": "BRO-8215",
       "name": "Root cause: first pass keeps getting no full text from thestage (Off-West End, 3 shows in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class text-missed-at-first-pass-off-west-end-thestage --quiet",
-      "detail": "FAIL: last case 3d ago, needs 21\n"
+      "detail": "FAIL: last case 4d ago, needs 21\n"
     },
     {
       "id": "BRO-8191",
       "name": "Root cause: \"Press night: score gate undecided\" keeps coming back (5 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class score-gate-undecided --quiet",
-      "detail": "FAIL: last case 0d ago, needs 21\n"
+      "detail": "FAIL: last case 1d ago, needs 21\n"
     },
     {
       "id": "BRO-8190",
       "name": "Root cause: first pass keeps missing theatermania reviews (all markets, 3 shows in 60 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-theatermania --quiet",
-      "detail": "FAIL: last case 6d ago, needs 21\n"
+      "detail": "FAIL: last case 7d ago, needs 21\n"
     },
     {
       "id": "BRO-8189",
       "name": "Root cause: first pass keeps missing new-york-sun reviews (all markets, 3 shows in 60 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-new-york-sun --quiet",
-      "detail": "FAIL: last case 6d ago, needs 21\n"
+      "detail": "FAIL: last case 7d ago, needs 21\n"
     },
     {
       "id": "BRO-8187",
       "name": "Opening-night readiness check failed for its-a-wonderful-life-a-live-radio-play-2026",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 b3BlbmluZy1yZWFkaW5lc3M6ZmFpbGVkOml0cy1hLXdvbmRlcmZ1bC1saWZlLWEtbGl2ZS1yYWRpby1wbGF5LTIwMjY",
-      "detail": "[check-alert-condition-absent] FAIL: \"opening-readiness:failed:its-a-wonderful-life-a-live-radio-play-2026\" still firing — open, last fired 2026-11-23T20:12:59.205Z (16.5h ago, within 168h)"
-    },
-    {
-      "id": "BRO-8127",
-      "name": "Root cause: \"The Stage roundups: archive coverage % in 2026Q2+2026Q3 vs % baseline\" keeps coming back (4 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class archive-coverage-2026q2-2026q3-baseline --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-8126",
-      "name": "Root cause: first pass keeps missing broadwayworld reviews (Off-West End, 3 shows in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-west-end-broadwayworld --quiet",
-      "detail": "FAIL: last case 4d ago, needs 21\n"
+      "detail": "[check-alert-condition-absent] FAIL: \"opening-readiness:failed:its-a-wonderful-life-a-live-radio-play-2026\" still firing — open, last fired 2026-11-23T20:12:59.205Z (39.6h ago, within 168h)"
     }
   ],
   "unverifiable": [
+    {
+      "id": "BRO-8262",
+      "name": "BWW discovery: skip paid Browserbase reviews.php fetch when the cheap fetch already returned the listing",
+      "verifyCmd": "node --test scripts/lib/bww-rr-discover-paid-gate.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/bww-rr-discover-paid-gate.test.mjs"
+    },
     {
       "id": "BRO-8213",
       "name": "Land preflight: check CLAUDE.md byte cap before land/** push",
@@ -200,6 +200,20 @@
   ],
   "landedButOpen": [
     {
+      "id": "BRO-8276",
+      "name": "P1: nightly text recovery aborts the whole run when one file was renamed upstream (backlog stalled)",
+      "branch": "land/job/linear-BRO-8276-mwvf833t",
+      "sha": "5067d16077a730e38445bb3acc9ba6aed0cd609c",
+      "landedAt": "2026-11-25T03:11:35.102Z"
+    },
+    {
+      "id": "BRO-8234",
+      "name": "check-cron-health red 3 runs running: Replay Push Rescue stale 98h + deploy-frequency 129/24h",
+      "branch": "land/retro-bro-8234",
+      "sha": "275057c595a624c032a50eb029e0b3dd65e5d9d7",
+      "landedAt": "2026-11-25T01:10:16.826Z"
+    },
+    {
       "id": "BRO-8233",
       "name": "BRO-8056 phase 4 prereq: cron-redispatch coverage for publish-show-refresh + prove rebuild-fast publish path",
       "branch": "land/bro-8233-ledgers",
@@ -219,20 +233,6 @@
       "branch": "land/codex-bro-8196",
       "sha": "25a7bd297d23522047bec57d430bb3409bee5d4c",
       "landedAt": "2026-11-24T04:09:20.761Z"
-    },
-    {
-      "id": "BRO-8179",
-      "name": "P1: /private/tmp fills ~20GB/day with test and session temp litter (384k items, 40GB) — nothing reaps it",
-      "branch": "land/job/linear-BRO-8179-mwto8dhi",
-      "sha": "843c2cf4217714343cc3571ec308049f7db6fc20",
-      "landedAt": "2026-11-23T21:43:17.731Z"
-    },
-    {
-      "id": "BRO-8159",
-      "name": "Calibrate the function trace-size gate against packaged .func sizes, then arm it",
-      "branch": "land/codex-bro-8159",
-      "sha": "86bb9a4e6d908683c3b04e4612fa5d6bb407bb84",
-      "landedAt": "2026-11-24T11:51:38.754Z"
     }
   ]
 }
