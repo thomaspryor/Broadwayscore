@@ -197,8 +197,137 @@ function confirmLanding(repo, paths) {
 function fireLanded(onLanded, landed, entry) {
   if (!onLanded) return;
   for (const p of landed) {
-    onLanded({ path: p.rel, absPath: p.abs, blob: p.landedBlob, fullTextHash: p.fullTextHash, commit: entry.commit, meta: entry.meta || null });
+    onLanded({ path: p.rel, absPath: p.abs, blob: p.landedBlob, fullTextHash: p.fullTextHash, commit: entry.commit, meta: entry.meta || null, ...(p.renamedFrom ? { renamedFrom: p.renamedFrom } : {}) });
   }
+}
+
+/**
+ * BRO-8276: a path we committed content to that origin/main no longer has.
+ * push-with-retry resolves a modify/delete rebase conflict by accepting the
+ * deletion (a byline rename, thestage--unknown -> thestage--dave-fargnoli),
+ * so our text is not lost in git but is not on origin either.
+ */
+function isGoneUpstream(r) {
+  return !r.landed && r.landedBlob == null && r.committedKey != null && !!r.blob;
+}
+
+function groupBy(list, keyOf) {
+  const m = new Map();
+  for (const x of list) { const k = keyOf(x); if (!m.has(k)) m.set(k, []); m.get(k).push(x); }
+  return m;
+}
+
+function parseOrNull(text) {
+  try { const j = JSON.parse(text); return j && typeof j === 'object' && !Array.isArray(j) ? j : null; } catch { return null; }
+}
+
+/**
+ * Fast-forward the review-texts checkout to origin/main when it holds no
+ * unpushed commit (never a reset, never a merge commit). A dirty file the
+ * fast-forward would overwrite makes git refuse: reported, not forced.
+ * Call under the review-texts lock.
+ * @returns {{ok: boolean, reason: string}}
+ */
+function syncCheckoutToOrigin(repo, { fetch = true } = {}) {
+  if (fetch) refreshOrigin(repo);
+  const unpushed = countUnpushedCommits(repo);
+  if (!Number.isFinite(unpushed)) return { ok: false, reason: 'cannot count unpushed commits' };
+  if (unpushed > 0) return { ok: false, reason: `${unpushed} unpushed commit(s)` };
+  try {
+    git(repo, ['merge', '--ff-only', '--quiet', 'origin/main']);
+    return { ok: true, reason: 'fast-forwarded' };
+  } catch (e) {
+    return { ok: false, reason: String(e.stderr || e.message).trim().split('\n')[0].slice(0, 200) };
+  }
+}
+
+/**
+ * The file a gone path's record lives in now: same show dir on origin/main,
+ * stamped `_renamedFrom.file === rel` by safeRenameReview, else the same
+ * outlet's record at the same article url (ours or the pre-push one). Never
+ * an outlet-only match: that could be another critic's review.
+ */
+function findSuccessor(repo, rel, { ours, parent }) {
+  const dir = path.posix.dirname(rel);
+  let names = [];
+  try { names = git(repo, ['ls-tree', '--name-only', 'origin/main', `${dir}/`]).split('\n').filter((n) => n.endsWith('.json')); } catch { return null; }
+  const recs = names.filter((n) => n !== rel).map((n) => ({ rel: n, rec: parseOrNull(showOrNull(repo, 'origin/main', n)) })).filter((x) => x.rec);
+  const stamped = recs.filter((x) => x.rec._renamedFrom && x.rec._renamedFrom.file === rel);
+  if (stamped.length === 1) return stamped[0];
+  const { urlCanonicallyChanged } = require('./url-change-invariant');
+  const urls = [ours && ours.url, parent && parent.url].filter(Boolean);
+  const outletId = (ours && ours.outletId) || (parent && parent.outletId) || path.posix.basename(rel).split('--')[0];
+  const sameUrl = recs.filter((x) => x.rec.url && (x.rec.outletId || path.posix.basename(x.rel).split('--')[0]) === outletId
+    && urls.some((u) => { try { return !urlCanonicallyChanged(u, x.rec.url); } catch { return false; } }));
+  return sameUrl.length === 1 ? sameUrl[0] : null;
+}
+
+/**
+ * Carry the text a run committed to a now-gone path onto its successor
+ * (three-way merge: base = what origin held before our push, upstream = the
+ * successor, ours = our commit) and write it through safeWriteReview.
+ * Call under the review-texts lock with the checkout at origin/main.
+ * @returns {{moved: {fromRel, rel, abs, key}[], superseded: {rel, why}[]}}
+ */
+function carryOntoSuccessors(repo, gone) {
+  const moved = [];
+  const superseded = [];
+  if (!gone.length) return { moved, superseded };
+  let synced = null;
+  for (const g of gone) {
+    const blobText = (sha) => { try { return sha ? git(repo, ['cat-file', 'blob', sha]) : null; } catch { return null; } };
+    const ours = parseOrNull(blobText(g.blob));
+    const parent = parseOrNull(blobText(g.parentBlob));
+    if (!ours) { superseded.push({ rel: g.rel, why: 'committed blob no longer in the object store' }); continue; }
+    const succ = findSuccessor(repo, g.rel, { ours, parent });
+    if (!succ) { superseded.push({ rel: g.rel, why: 'removed upstream, no successor file' }); continue; }
+    const abs = path.join(repo, succ.rel);
+    // The checkout must hold origin's successor before we write over it.
+    if (blobOrNull(repo, 'HEAD', succ.rel) !== blobOrNull(repo, 'origin/main', succ.rel)) {
+      if (!synced) synced = syncCheckoutToOrigin(repo, { fetch: false });
+      if (blobOrNull(repo, 'HEAD', succ.rel) !== blobOrNull(repo, 'origin/main', succ.rel)) {
+        superseded.push({ rel: g.rel, why: `successor ${succ.rel} not in this checkout (${synced.reason})` });
+        continue;
+      }
+    }
+    const onDisk = fs.existsSync(abs) ? parseOrNull(fs.readFileSync(abs, 'utf8')) : null;
+    if (!onDisk) { superseded.push({ rel: g.rel, why: `successor ${succ.rel} unreadable` }); continue; }
+    if (landingKey(onDisk) === landingKey(ours)) { moved.push({ fromRel: g.rel, rel: succ.rel, abs, key: landingKey(onDisk), alreadyThere: true }); continue; }
+    const { mergeReviewJson } = require('./review-json-three-way-merge');
+    const { merged } = mergeReviewJson(parent, onDisk, ours, { tie: 'upstream' });
+    if (merged.fullText !== ours.fullText) {
+      superseded.push({ rel: g.rel, why: `successor ${succ.rel} holds a newer text` });
+      continue;
+    }
+    const { safeWriteReview } = require('./review-write-guard');
+    const w = safeWriteReview(abs, merged, { merge: false });
+    const after = parseOrNull(fs.readFileSync(abs, 'utf8'));
+    if ((w && w.wrote === false) || !after || after.fullText !== ours.fullText) {
+      superseded.push({ rel: g.rel, why: `write to successor ${succ.rel} refused${w && w.skipped ? ` (${w.skipped})` : ''}` });
+      continue;
+    }
+    moved.push({ fromRel: g.rel, rel: succ.rel, abs, key: landingKey(after) });
+  }
+  return { moved, superseded };
+}
+
+/**
+ * Land carried-over text on the successor files (re-entrant under the lock).
+ * onLanded fires for the successor with renamedFrom = the gone path.
+ * @returns {{landed: object[], superseded: object[]}}
+ */
+function landOnSuccessors(repo, gone, { onLanded, meta, pendingPath, pushScript, pushEnv, retries }) {
+  const { moved, superseded } = carryOntoSuccessors(repo, gone);
+  if (!moved.length) return { landed: [], superseded };
+  const res = checkpointReviewTexts({
+    repoDir: repo,
+    paths: moved.map((m) => m.abs),
+    expected: new Map(moved.map((m) => [m.abs, m.key])),
+    renamedFrom: new Map(moved.map((m) => [m.rel, m.fromRel])),
+    message: `fix: land recovered text on ${moved.length} renamed review file(s) (BRO-8276)`,
+    onLanded, meta, pendingPath, pushScript, pushEnv, retries,
+  });
+  return { landed: res.landed, superseded: [...superseded, ...(res.superseded || [])] };
 }
 
 /**
@@ -218,7 +347,7 @@ function fireLanded(onLanded, landed, entry) {
  * @param {object} [args.pushEnv]
  * @returns {{committed: boolean, pushed: boolean, commit: string|null, landed: object[], notLanded: object[]}}
  */
-function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onLanded, meta, pendingPath = pendingPathDefault(), pushScript, pushEnv, retries }) {
+function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onLanded, meta, pendingPath = pendingPathDefault(), pushScript, pushEnv, retries, renamedFrom }) {
   const repo = fs.realpathSync(repoDir);
   const expectedByRel = new Map();
   const deletedSet = deleted || paths.deleted;
@@ -262,6 +391,9 @@ function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onL
           // The baseline a wiped commit may be restored over: what origin/main
           // held before this push (HEAD~1 may itself be an unpushed commit).
           parentBlob: blobOrNull(repo, 'origin/main', rel),
+          // BRO-8276: carried onto this successor from a path gone upstream;
+          // kept in the journal so a later retry still reports the move.
+          ...(renamedFrom && renamedFrom.has(rel) ? { renamedFrom: renamedFrom.get(rel) } : {}),
         };
       }),
     };
@@ -294,7 +426,7 @@ function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onL
         writePending(pendingPath, [...readPending(pendingPath), { ...entry, paths: entry.paths.filter((p) => keep.has(p.rel)) }]);
       }
       if (lost.length || vanished.length) failLanding([], landed, false);
-      return { committed: false, pushed: false, commit, landed, notLanded };
+      return { committed: false, pushed: false, commit, landed, notLanded, renamed: [], superseded: [] };
     }
     const pending = readPending(pendingPath);
     pending.push(entry);
@@ -306,14 +438,18 @@ function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onL
     }
     const res = confirmLanding(repo, entry.paths);
     const landed = res.filter((r) => r.landed);
-    const notLanded = res.filter((r) => !r.landed);
+    // BRO-8276: renamed or removed upstream between plan and push. Not a lost
+    // write and never a reason to stop the run: carry it onto the successor.
+    const gone = res.filter(isGoneUpstream);
+    const notLanded = res.filter((r) => !r.landed && !isGoneUpstream(r));
     // Paths still missing from origin/main after a successful push stay in the
-    // ledger for the next run's retry; only landed ones leave it.
+    // ledger for the next run's retry; only landed (or resolved) ones leave it.
     const keep = new Set(notLanded.map((r) => r.rel));
     writePending(pendingPath, readPending(pendingPath).map((e) => (e.id === entry.id ? { ...e, paths: e.paths.filter((p) => keep.has(p.rel)) } : e)).filter((e) => e.paths.length));
     fireLanded(onLanded, landed, entry);
-    if (notLanded.length || lost.length || vanished.length) failLanding(notLanded, landed, true);
-    return { committed, pushed: true, commit, landed, notLanded };
+    const moved = landOnSuccessors(repo, gone, { onLanded, meta: entry.meta, pendingPath, pushScript, pushEnv, retries });
+    if (notLanded.length || lost.length || vanished.length) failLanding(notLanded, [...landed, ...moved.landed], true);
+    return { committed, pushed: true, commit, landed, notLanded, renamed: moved.landed, superseded: moved.superseded };
   });
 }
 
@@ -336,9 +472,10 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
         throw new ReviewTextsPushError(`review-texts pending push still failing (exit ${push.status}); ${entries.length} pending checkpoint(s) in ${pendingPath}`, { pendingPath, output: push.output });
       }
     }
-    const out = { entries: entries.length, landed: [], restored: [], notLanded: [] };
+    const out = { entries: entries.length, landed: [], restored: [], notLanded: [], renamed: [], superseded: [] };
     if (!entries.length) return out;
     const toRestore = [];
+    const gone = [];
     // Newest first: when two unpushed checkpoints wrote the same file, the
     // newer one is the record to restore and the older one is superseded.
     const claimed = new Set();
@@ -348,7 +485,9 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
       const landed = res.filter((r) => r.landed);
       out.landed.push(...landed);
       fireLanded(onLanded, landed, entry);
-      for (const r of res.filter((x) => !x.landed)) {
+      // BRO-8276: gone from origin (renamed upstream): carried onto the successor below.
+      gone.push(...res.filter(isGoneUpstream).map((r) => ({ ...r, entry })));
+      for (const r of res.filter((x) => !x.landed && !isGoneUpstream(x))) {
         // The commit is gone (reset --hard) or never carried this path.
         // Restore only when nothing moved on since our commit's parent:
         // the remote still holds the parent blob and the working tree holds
@@ -373,6 +512,13 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
     // checkpoint has recorded its own pending entry (it does so before
     // pushing, so a ReviewTextsPushError means it did): a crash or a git
     // failure before that keeps the original record for the next run.
+    // Carried onto successors before the journal forgets the gone paths; a
+    // push failure here throws with the journal still holding them.
+    for (const list of groupBy(gone, (g) => g.entry.id).values()) {
+      const moved = landOnSuccessors(repo, list, { onLanded, meta: list[0].entry.meta, pendingPath, pushScript, pushEnv, retries });
+      out.renamed.push(...moved.landed);
+      out.superseded.push(...moved.superseded);
+    }
     const restoring = new Set(toRestore.map((r) => r.entry.id));
     const dropEntries = (ids) => writePending(pendingPath, readPending(pendingPath).filter((e) => !ids.has(e.id)));
     dropEntries(new Set(entries.filter((e) => !restoring.has(e.id)).map((e) => e.id)));
@@ -409,4 +555,6 @@ module.exports = {
   landingKey,
   readPending,
   pendingPathDefault,
+  syncCheckoutToOrigin,
+  findSuccessor,
 };

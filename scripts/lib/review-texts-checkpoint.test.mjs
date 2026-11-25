@@ -346,3 +346,101 @@ test('two unpushed checkpoints of one file, both wiped by a reset: the NEWER tex
   assert.equal(JSON.parse(originHas(env, REL)).fullText, RECOVERED, 'newest recovery restored, not the older one');
   assert.deepEqual(readPending(env.pendingPath), []);
 });
+
+// BRO-8276: upstream renamed the file we recovered into (byline resolved,
+// --unknown -> --<critic>) between our plan and our push. push-with-retry
+// accepts the deletion, so the old path is gone from origin: the night must
+// go on and the text must land on the successor file.
+const NAMED_REL = 'show-2026/nytimes--named-critic.json';
+const STUB_URL = 'https://www.nytimes.com/2026/01/01/theater/show-review.html';
+function renameInjection(env, { successor = true } = {}) {
+  const script = path.join(env.dir, `inject-rename-${successor}.sh`);
+  const body = path.join(env.dir, 'renamed.body');
+  // Real renames rewrite most of the record (byline + quarantine fields), so
+  // git's similarity detection does not pair the two paths.
+  fs.writeFileSync(body, JSON.stringify({ showId: 'show-2026', outletId: 'nytimes', url: STUB_URL, criticName: 'Named Critic', fullText: 'stub text', _renamedFrom: { file: REL, at: '2026-11-24T03:12:00Z' }, collectorNote: 'x'.repeat(400) }, null, 2) + '\n');
+  const cmd = successor
+    ? `git rm -q "${REL}"\nmkdir -p show-2026\ncp "${body}" "${NAMED_REL}"\n`
+    : `git rm -q "${REL}"\n`;
+  fs.writeFileSync(script, `set -e\ncd "${env.ci}"\ngit pull -q --rebase origin main\n${cmd}git add -A\ngit commit -q -m "chore: Checkpoint review texts (CI rename)"\ngit push -q origin HEAD:main\n`);
+  return script;
+}
+function seedUrl(env) {
+  // The stub carries the article url the successor keeps.
+  fs.writeFileSync(env.file, review('stub text', { outletId: 'nytimes', url: STUB_URL }));
+  git(env.local, 'commit', '-q', '-am', 'seed url');
+  git(env.local, 'push', '-q', 'origin', 'HEAD:main');
+}
+
+test('BRO-8276: file renamed upstream between plan and push: no throw, text lands on the successor', () => {
+  const env = setup();
+  seedUrl(env);
+  fs.writeFileSync(env.file, review(RECOVERED, { outletId: 'nytimes', url: STUB_URL, contentTier: 'complete' }));
+  const calls = [];
+  const res = checkpointReviewTexts({
+    repoDir: env.local, paths: [env.file], message: 'feat: gap-recovery checkpoint', pendingPath: env.pendingPath, pushScript: env.pushScript,
+    pushEnv: { INJECT: renameInjection(env) },
+    onLanded: (l) => calls.push({ path: l.path, renamedFrom: l.renamedFrom || null }),
+  });
+  assert.equal(originHas(env, REL), null, 'old path stays gone');
+  const onOrigin = JSON.parse(originHas(env, NAMED_REL));
+  assert.equal(onOrigin.fullText, RECOVERED, 'recovered text landed on the successor');
+  assert.equal(onOrigin.criticName, 'Named Critic', "the rename's byline survived");
+  assert.equal(onOrigin.contentTier, 'complete');
+  assert.deepEqual(calls, [{ path: NAMED_REL, renamedFrom: REL }]);
+  assert.equal(res.renamed.length, 1);
+  assert.deepEqual(res.superseded, []);
+  assert.deepEqual(readPending(env.pendingPath), [], 'no stale pending entry for the gone path');
+});
+
+test('BRO-8276: file removed upstream with no successor: no throw, reported superseded', () => {
+  const env = setup();
+  seedUrl(env);
+  fs.writeFileSync(env.file, review(RECOVERED, { outletId: 'nytimes', url: STUB_URL }));
+  const res = checkpointReviewTexts({
+    repoDir: env.local, paths: [env.file], message: 'feat: test', pendingPath: env.pendingPath, pushScript: env.pushScript,
+    pushEnv: { INJECT: renameInjection(env, { successor: false }) },
+  });
+  assert.equal(originHas(env, REL), null);
+  assert.deepEqual(res.superseded.map((s) => s.rel), [REL]);
+  assert.deepEqual(readPending(env.pendingPath), []);
+});
+
+test('BRO-8276: the successor push is rejected: the next run lands it and still reports the move', () => {
+  const env = setup();
+  seedUrl(env);
+  const hook = path.join(env.origin, 'hooks', 'pre-receive');
+  fs.writeFileSync(env.file, review(RECOVERED, { outletId: 'nytimes', url: STUB_URL }));
+  // Rename lands upstream first, then our push is rejected: pending entry kept.
+  execFileSync('bash', [renameInjection(env)]);
+  fs.writeFileSync(hook, '#!/bin/bash\nexit 1\n');
+  fs.chmodSync(hook, 0o755);
+  assert.throws(() => checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: test', pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1 }), ReviewTextsPushError);
+  fs.unlinkSync(hook);
+  const calls = [];
+  const r = retryPendingPushes({ repoDir: env.local, pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1, onLanded: (l) => calls.push({ path: l.path, renamedFrom: l.renamedFrom || null }) });
+  assert.equal(JSON.parse(originHas(env, NAMED_REL)).fullText, RECOVERED);
+  assert.deepEqual(calls, [{ path: NAMED_REL, renamedFrom: REL }]);
+  assert.deepEqual(r.landed.map((l) => l.renamedFrom), [REL], 'the journal kept where the text came from');
+  assert.deepEqual(readPending(env.pendingPath), []);
+});
+
+test('BRO-8276: an earlier run\'s pending entry whose path is now gone upstream is carried onto the successor (the 11-24 case)', () => {
+  const env = setup();
+  seedUrl(env);
+  fs.writeFileSync(env.file, review(RECOVERED, { outletId: 'nytimes', url: STUB_URL }));
+  // A "push" that reports success without pushing: the entry stays pending.
+  const fakePush = path.join(env.dir, 'fake-push.sh');
+  fs.writeFileSync(fakePush, '#!/bin/bash\nexit 0\n');
+  assert.throws(() => checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: test', pendingPath: env.pendingPath, pushScript: fakePush }), ReviewTextsLandingError);
+  assert.deepEqual(readPending(env.pendingPath).map((e) => e.paths.map((p) => p.rel)), [[REL]]);
+  execFileSync('bash', [renameInjection(env)]);
+  const calls = [];
+  const r = retryPendingPushes({ repoDir: env.local, pendingPath: env.pendingPath, pushScript: env.pushScript, retries: 1, onLanded: (l) => calls.push({ path: l.path, renamedFrom: l.renamedFrom || null }) });
+  assert.equal(JSON.parse(originHas(env, NAMED_REL)).fullText, RECOVERED);
+  assert.equal(JSON.parse(originHas(env, NAMED_REL)).criticName, 'Named Critic');
+  assert.deepEqual(calls, [{ path: NAMED_REL, renamedFrom: REL }]);
+  assert.equal(r.renamed.length, 1);
+  assert.deepEqual(r.notLanded, []);
+  assert.deepEqual(readPending(env.pendingPath), []);
+});
