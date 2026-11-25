@@ -39902,22 +39902,20 @@
       "resolvedAt": "2026-11-09T02:23:27.087Z"
     },
     "test-yml:data-validation-red:run-data-validation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Data audit failing: Run data validation",
       "firstSeen": "2026-11-09T03:33:12.490Z",
-      "incidentOpenedAt": "2026-11-25T17:25:43.152Z",
+      "incidentOpenedAt": "2026-11-25T21:22:56.023Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T17:25:43.152Z",
-      "lastNotifiedAt": "2026-11-25T17:25:43.152Z",
-      "lastSurfacedAt": "2026-11-25T17:25:43.152Z",
-      "notifyCount": 17,
+      "lastSeen": "2026-11-25T21:22:56.023Z",
+      "lastNotifiedAt": "2026-11-25T21:22:56.023Z",
+      "lastSurfacedAt": "2026-11-25T21:22:56.023Z",
+      "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 16,
-      "sweptTracker": "BRO-8225",
-      "resolvedAt": "2026-11-25T18:01:52.147Z",
-      "resolveReason": "step passed"
+      "sweptTracker": "BRO-8225"
     },
     "gap:iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json": {
       "status": "resolved",
@@ -41653,12 +41651,13 @@
       "firstSeen": "2026-11-10T15:36:09.494Z",
       "incidentOpenedAt": "2026-11-25T20:42:52.862Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T20:42:52.862Z",
+      "lastSeen": "2026-11-25T21:22:56.126Z",
       "lastNotifiedAt": "2026-11-25T20:42:52.862Z",
       "lastSurfacedAt": "2026-11-25T20:42:52.862Z",
       "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
       "status": "resolved",
