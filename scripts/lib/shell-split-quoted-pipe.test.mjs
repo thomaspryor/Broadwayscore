@@ -24,9 +24,8 @@ test('dispatch-timeout-match segments: unquoted unchanged, quoted separators kep
   assert.deepEqual(segments("echo 'timeout 5 && x' && y"), ["echo 'timeout 5 && x' ", ' y']);
 });
 
-test('cmux-launch-guard splitSegments: unquoted unchanged, quoted separators kept', () => {
+test('cmux-launch-guard splitSegments: unquoted unchanged', () => {
   assert.deepEqual(splitSegments('a && b | c ; d\ne'), ['a ', ' b ', ' c ', ' d', 'e']);
-  assert.deepEqual(splitSegments("echo 'x | claude --model y'"), ["echo 'x | claude --model y'"]);
   assert.equal(findUnsafeClaudeInvocation("echo 'x | claude --model y'", 0, null), null);
   assert.ok(findUnsafeClaudeInvocation('echo x | claude --model y', 0, null));
 });
@@ -49,4 +48,10 @@ test('audit-workflow-hygiene findGitDiffOnIgnoredPaths: quoted pipe stays in the
   const wf = (cmd) => `jobs:\n  a:\n    steps:\n      - run: ${cmd}\n`;
   assert.equal(findGitDiffOnIgnoredPaths(wf('git diff --quiet data/x.json | cat'), ignored).length, 1);
   assert.equal(findGitDiffOnIgnoredPaths(wf('git diff --quiet -- "data/a|b" data/x.json'), ignored).length, 1, 'a quoted pipe must not hide the later ignored path');
+});
+
+test('cmux-launch-guard stays quote-blind on purpose: a claude launch wrapped in bash -c is still blocked', () => {
+  const { evaluateCmuxLaunch } = require('./cmux-launch-guard.js');
+  assert.equal(evaluateCmuxLaunch("cmux new-workspace --command \"bash -c 'echo hi; claude --model foo'\"").block, true);
+  assert.equal(evaluateCmuxLaunch('cmux new-workspace --command "echo hi; claude --model foo"').block, true);
 });
