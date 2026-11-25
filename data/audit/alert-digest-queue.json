@@ -220,33 +220,6 @@
     "queuedAt": "2026-11-24T06:16:28.805Z"
   },
   {
-    "conditionKey": "land-preexisting:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does#54f27d9304",
-    "title": "Test red on main: the same week in the Broadway edition does not get the West End exception [testCodeFailure]",
-    "description": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8233-redispatch. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45344940667",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "test",
-        "value": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception [testCodeFailure]"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45344940667"
-      }
-    ],
-    "queuedAt": "2026-11-24T07:28:53.021Z"
-  },
-  {
     "conditionKey": "live-data-test:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception",
     "title": "Live-data test failing: the same week in the Broadway edition does not get the West End exception (scripts/newsletter/editorial-overrides.generate.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the same week in the Broadway edition does not get the West End exception\" in scripts/newsletter/editorial-overrides.generate.test.mjs is red against the live corpus.\n\nThe expression evaluated to a falsy value:\n\nassert.ok(!meta.openingShows.some((s) => s.id === PRIDE))\n",
@@ -1407,5 +1380,32 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T07:23:16.025Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does#54f27d9304",
+    "title": "Test red on main: the same week in the Broadway edition does not get the West End exception [testCodeFailure]",
+    "description": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/job/linear-BRO-8292-mwvoorhp. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45566155961",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45566155961"
+      }
+    ],
+    "queuedAt": "2026-11-25T07:30:10.305Z"
   }
 ]
