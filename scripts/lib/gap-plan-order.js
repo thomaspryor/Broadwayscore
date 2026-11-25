@@ -44,13 +44,67 @@ function bandOf(c) {
   return major ? 3 : 4;
 }
 
-/** Attempt facts from a review's live ledger rows (already past the last reopen). */
-function attemptFacts(liveRows) {
+/**
+ * BRO-8277: recovery tries made before the ledger existed (it starts 2026-11-09).
+ * Older tools left their marks on the review file; without reading them the
+ * planner called 4,000+ long-worked gaps "never attempted".
+ *   recovery tries  a link search given up (fetchDiscoveryAbandoned), a failed
+ *                   fetch (fetchAttempts with success:false), a web search
+ *                   retry (serpRetryCount), a text retry (textRetryAttemptedAt),
+ *                   an abandonment (fetchAbandonmentReason), an archive lookup
+ *                   (archiveOrgUrl). Each kind counts once.
+ *   first fetch     textFetchedAt / fetchMethod / successful fetchAttempts only:
+ *                   the collector's one fetch that produced the stored excerpt.
+ *                   Reported, never counted as a try (it is how a gap starts).
+ * Engine stamps (fetchMethod gap-recovery-*) are ledger tries already: skipped.
+ * Undated tries give lastTryMs 0 (the least recently tried).
+ * @returns {{tries:number, lastTryMs:number, evidence:string[], firstFetchOnly:boolean}}
+ */
+function legacyTryFacts(review) {
+  const r = review || {};
+  const evidence = [];
+  if (r.fetchDiscoveryAbandoned === true) evidence.push('link_search_given_up');
+  const fa = Array.isArray(r.fetchAttempts) ? r.fetchAttempts : [];
+  if (fa.some((a) => a && a.success === false)) evidence.push('fetch_failed');
+  if (Number(r.serpRetryCount) > 0) evidence.push('web_search_retried');
+  if (r.textRetryAttemptedAt) evidence.push('text_retry');
+  if (r.fetchAbandonmentReason) evidence.push('abandoned');
+  if (r.archiveOrgUrl) evidence.push('archive_looked_up');
+  const engine = /^gap-recovery/.test(String(r.fetchMethod || ''));
+  const fetched = !engine && (!!r.textFetchedAt || !!r.fetchMethod || fa.some((a) => a && a.success === true));
+  let lastTryMs = 0;
+  if (evidence.length) for (const k of ['textRetryAttemptedAt', 'fetchAbandonedAt', 'fetchDiscoveryAbandonedAt']) lastTryMs = Math.max(lastTryMs, ms(r[k]));
+  return { tries: evidence.length, lastTryMs, evidence, firstFetchOnly: !evidence.length && fetched };
+}
+
+/**
+ * Attempt facts from a review's live ledger rows (already past the last reopen),
+ * plus its pre-ledger tries (BRO-8277) unless a reopen reset the review.
+ * @param {object[]} liveRows
+ * @param {{review?: object|null, reopened?: boolean}} [o]
+ */
+function attemptFacts(liveRows, { review = null, reopened = false } = {}) {
   // Only real tries: a browser_unavailable / auth_failed / vanished-file row is not an attempt.
   const rows = (liveRows || []).filter((r) => !INERT.has(r.strategy) && ATTEMPT_OUTCOMES.has(r.outcome));
   let lastTryMs = 0;
   for (const r of rows) lastTryMs = Math.max(lastTryMs, ms(r.ts));
-  return { attempts: rows.length, lastTryMs };
+  const legacy = review && !reopened ? legacyTryFacts(review) : { tries: 0, lastTryMs: 0, evidence: [], firstFetchOnly: false };
+  return {
+    attempts: rows.length + legacy.tries, lastTryMs: Math.max(lastTryMs, legacy.lastTryMs),
+    ledgerAttempts: rows.length, legacyTries: legacy.tries, legacyEvidence: legacy.evidence, firstFetchOnly: legacy.firstFetchOnly,
+  };
+}
+
+/**
+ * BRO-8277 one-off batch order (driver --fresh-first): a gap with no try of any
+ * kind goes before every retry, across bands; inside each half the base order holds.
+ */
+function freshFirst(base) {
+  return (a, b) => {
+    const na = (a.attempts || 0) === 0; const nb = (b.attempts || 0) === 0;
+    if (na !== nb) return na ? -1 : 1;
+    return base(a, b);
+  };
 }
 
 /**
@@ -273,7 +327,7 @@ function groupBrowserSessions(work, adapterNameOf) {
 
 module.exports = {
   groupBrowserSessions,
-  bandOf, attemptFacts, compareByBand, noGainStreak, backoffHours, backoffGate, identicalRefetchProof, subscriberReadProof, subscriberReadDetail, equalLengthNotLonger,
+  bandOf, attemptFacts, legacyTryFacts, freshFirst, compareByBand, noGainStreak, backoffHours, backoffGate, identicalRefetchProof, subscriberReadProof, subscriberReadDetail, equalLengthNotLonger,
   slotSplit, urlFindSliceMs, urlFindSliceExhausted, urlFindSliceOpts, runBudgetMin,
   BACKOFF_BASE_H, BACKOFF_CAP_H, IDENTICAL_REFETCH_PROOF,
 };

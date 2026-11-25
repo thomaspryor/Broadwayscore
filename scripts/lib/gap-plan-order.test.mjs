@@ -170,3 +170,45 @@ test('codex review: regex does not backtrack on long name tokens; proof is per u
   const pend = { strategy: 'ARCHIVE', outcome: 'pending_push' };
   assert.equal(PO.noGainStreak([pend, rec, pend, rec], 'ARCHIVE').n, 2);
 });
+
+// BRO-8277: tries made before the ledger (2026-11-09) count. Field shapes copied from real
+// review files in not-tried-recheck.csv (e.g. a link search given up, fetchAttempts rows).
+test('pre-ledger tries on the review file count as tried (BRO-8277)', () => {
+  const abandoned = { fetchDiscoveryAbandoned: true, url: 'https://x.test/a' };
+  const failedFetch = { fetchAttempts: [{ tier: 1, method: 'playwright', success: false }] };
+  const textRetry = { textRetryAttemptedAt: '2026-03-02T10:00:00Z', textFetchedAt: '2026-01-01T00:00:00Z', fetchMethod: 'playwright' };
+  for (const review of [abandoned, failedFetch, textRetry, { serpRetryCount: 2 }, { archiveOrgUrl: 'https://web.archive.org/web/2020/x' }, { fetchAbandonmentReason: 'paywall' }]) {
+    const f = PO.attemptFacts([], { review });
+    assert.ok(f.attempts >= 1, JSON.stringify(review));
+    assert.equal(f.ledgerAttempts, 0);
+  }
+  assert.equal(PO.attemptFacts([], { review: textRetry }).lastTryMs, Date.parse('2026-03-02T10:00:00Z'));
+  assert.deepEqual(PO.legacyTryFacts({ ...abandoned, ...failedFetch }).evidence, ['link_search_given_up', 'fetch_failed']);
+  // Sorts as a retry: an untouched gap goes first.
+  const c = [
+    cand({ reviewKey: 'x-2026/nytimes--old.json', showId: 'x-2026', outletId: 'nytimes', recency: 'recent', ...PO.attemptFacts([], { review: abandoned }) }),
+    cand({ reviewKey: 'x-2026/nytimes--new.json', showId: 'x-2026', outletId: 'nytimes', recency: 'recent', ...PO.attemptFacts([], { review: {} }) }),
+  ].sort(PO.compareByBand());
+  assert.equal(c[0].reviewKey, 'x-2026/nytimes--new.json');
+});
+
+test('the collector first fetch, engine stamps and a reopen are not pre-ledger tries (BRO-8277)', () => {
+  const firstFetch = { textFetchedAt: '2025-05-01T00:00:00Z', fetchMethod: 'playwright', fetchAttempts: [{ tier: 1, method: 'atom-feed', success: true }] };
+  const f = PO.attemptFacts([], { review: firstFetch });
+  assert.equal(f.attempts, 0);
+  assert.equal(f.firstFetchOnly, true);
+  const engine = PO.legacyTryFacts({ textFetchedAt: '2026-11-20T00:00:00Z', fetchMethod: 'gap-recovery-archive' });
+  assert.equal(engine.tries, 0); assert.equal(engine.firstFetchOnly, false);
+  assert.equal(PO.attemptFacts([], { review: { fetchDiscoveryAbandoned: true }, reopened: true }).attempts, 0);
+  // Ledger rows still count on their own.
+  assert.equal(PO.attemptFacts([{ strategy: 'ARCHIVE', outcome: 'no_evidence', ts: '2026-11-20T00:00:00Z' }]).attempts, 1);
+});
+
+test('freshFirst puts every untried gap before every retry, across bands (BRO-8277)', () => {
+  const c = [
+    cand({ reviewKey: 'new-2026/nytimes--retry.json', showId: 'new-2026', outletId: 'nytimes', recency: 'recent', attempts: 1 }),
+    cand({ reviewKey: 'old-2019/blog--fresh.json', showId: 'old-2019', outletId: 'someblog', recency: 'historic', tier: 4 }),
+  ];
+  assert.equal([...c].sort(PO.compareByBand())[0].reviewKey, 'new-2026/nytimes--retry.json');
+  assert.equal([...c].sort(PO.freshFirst(PO.compareByBand()))[0].reviewKey, 'old-2019/blog--fresh.json');
+});

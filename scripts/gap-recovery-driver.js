@@ -23,6 +23,7 @@
  * Options: --class=A,B  --show=ID  --strategy=X (only this strategy)  --recent-only  --historic-only
  *          --verbose (dry run: one line per candidate)  --json=PATH (dry run: plan to a file outside the repo)
  *          --summary=PATH (run stats as JSON, read by scripts/gap-recovery-nightly.js)
+ *          --fresh-first (BRO-8277: gaps with no try of any kind, ledger or pre-ledger, before every retry)
  * Exit codes: 0 ok, 1 failed (incl. push failure), 2 refused live env, 3 another recovery run holds the run lock.
  * Env:
  *   GAP_RECOVERY_DISABLED=1 (or ~/.broadwayscore-state/gap-recovery-disabled)  kill switch
@@ -72,6 +73,7 @@ const OPTS = {
   only: arg('strategy'),
   recentOnly: flag('recent-only'),
   historicOnly: flag('historic-only'),
+  freshFirst: flag('fresh-first'), // BRO-8277: never-tried gaps before every retry, across bands
   jsonOut: arg('json'),
   summaryOut: arg('summary'),
   timeBudgetMs: PO.runBudgetMin() * 60000, // same reader as the URL_FIND slice (BRO-7986)
@@ -122,7 +124,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     const show = shows.get(row.showId) || null;
     const ffEntry = ff.get(reviewKey) || null;
     const live = L.liveRows(ledgerIndex.get(reviewKey) || []);
-    const facts = PO.attemptFacts(live);
+    const facts = PO.attemptFacts(live, { review, reopened: (ledgerIndex.get(reviewKey) || []).some((r) => r.outcome === 'reopened') });
     const baseEligible = (strategy) => {
       // URL_FIND: per-method progress across nights (gap-url-find.urlFindEligibility).
       if (strategy === 'URL_FIND') return require('./lib/gap-url-find').urlFindEligibility(live, { cooldownH: Number(process.env.GAP_URL_FIND_COOLDOWN_H || 20), loginReader: adapterUsable(review.outletId, { explicitOutlets: OPTS.outlets }) });
@@ -184,12 +186,12 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       gapClass: row.gapClass, subclass: row.subclass, recency: row.recency, contentTier: review.contentTier || null,
       showDate: (show && (show.openingDate || show.previewsStartDate)) || null,
       tier: (outlets[review.outletId || row.outletId] && outlets[review.outletId || row.outletId].tier) || null,
-      attempts: facts.attempts, lastTryMs: facts.lastTryMs,
+      attempts: facts.attempts, lastTryMs: facts.lastTryMs, ledgerAttempts: facts.ledgerAttempts, legacyTries: facts.legacyTries, legacyEvidence: facts.legacyEvidence, firstFetchOnly: facts.firstFetchOnly,
       urlFindLastTryMs: L.liveRows(ledgerIndex.get(reviewKey) || []).filter((r) => r.strategy === 'URL_FIND').reduce((m, r) => Math.max(m, Date.parse(r.ts) || 0), 0),
       show, strategy: sel.strategy, skipped: sel.skipped, bytesBefore: (review.fullText || '').length, reselect: owned ? null : reselect,
     });
   }
-  out.sort(compareCandidates);
+  out.sort(OPTS.freshFirst ? PO.freshFirst(compareCandidates) : compareCandidates);
   return out;
 }
 
@@ -219,6 +221,15 @@ function printPlan(cands) {
   const recent = cands.filter((c) => c.recency === 'recent');
   console.log(`\nOpen gaps planned: ${cands.length} (recent ${recent.length}); with a strategy: ${cands.filter((c) => c.strategy).length}`);
   console.log('\nby strategy:', JSON.stringify(byStrategy));
+  // BRO-8277: honest try history (ledger since 2026-11-09 plus pre-ledger marks on the file).
+  const tryHistory = { ledgerTried: 0, olderToolsOnly: 0, fetchedOnceNeverRetried: 0, noTryEver: 0 };
+  for (const c of cands) {
+    if (c.ledgerAttempts > 0) tryHistory.ledgerTried++;
+    else if (c.legacyTries > 0) tryHistory.olderToolsOnly++;
+    else if (c.firstFetchOnly) tryHistory.fetchedOnceNeverRetried++;
+    else tryHistory.noTryEver++;
+  }
+  console.log('\ntry history:', JSON.stringify(tryHistory));
   // BRO-7997: the paid scraper cannot log in; list who still gets it and whether a browser adapter exists.
   const paid = {};
   const { adapterFor: adFor } = require('./lib/browser-outlet-adapters');
@@ -231,7 +242,7 @@ function printPlan(cands) {
   console.log('\nno strategy, by first skip reason chain:', JSON.stringify(skipReasons));
   if (STALE_PINS.length) console.log(`\nSTALE MANUAL TIER PINS (${STALE_PINS.length}): pinned below complete, but the text now classifies complete; clear manualContentTier so the gap can close (BRO-7943):\n  ${STALE_PINS.join('\n  ')}`);
   console.log('\nstrategy flags:', JSON.stringify(Object.fromEntries(Object.entries(FLAGS).map(([k, v]) => [k, v.enabled]))));
-  return { byClass, byStrategy, byClassStrategy, skipReasons };
+  return { byClass, byStrategy, byClassStrategy, skipReasons, tryHistory };
 }
 
 /** Stats for --summary (nightly reads it; never a review file). */
