@@ -562,32 +562,6 @@ async function processReview(entry) {
       return;
     }
 
-    // LLM show check (BRO-8334): after the free heuristic, one cheap yes/no/unclear
-    // call. Only a clear "no" drops the quote; same retry budget and stamp as above.
-    // PULL_QUOTE_LLM_GATE_OFF=1 skips it.
-    if (!LLM_GATE_OFF) {
-      let verdict = 'unclear';
-      try {
-        const gateReply = await callLLMWithRetry(llmGate.GATE_SYSTEM_PROMPT, llmGate.buildGateUserPrompt(data.showTitle || data.showId, quote, sourceText));
-        verdict = llmGate.parseGateVerdict(gateReply);
-      } catch (e) {
-        if (VERBOSE) console.log(`  LLM-GATE error (keeping quote): ${e.message}`);
-      }
-      stats.llmGateCalls = (stats.llmGateCalls || 0) + 1;
-      if (verdict === 'no') {
-        if (attempt === 1) {
-          stats.llmGateRetried = (stats.llmGateRetried || 0) + 1;
-          if (VERBOSE) console.log(`  LLM-GATE no: "${quote.slice(0, 80)}..." — retrying`);
-          hint = llmGate.gateHint(quote, data.showTitle);
-          continue;
-        }
-        stats.llmGateRejected = (stats.llmGateRejected || 0) + 1;
-        if (VERBOSE) console.log(`  LLM-GATE rejected after retry: ${path.basename(filePath)}`);
-        reject('llm-gate-other-show');
-        return;
-      }
-    }
-
     // Reservation check: if the review is positive and the quote opens
     // with a hedge word, reject and retry once with a stronger hint.
     if (shouldRejectAsReservation(quote, score)) {
@@ -708,6 +682,35 @@ async function processReview(entry) {
         if (VERBOSE) console.log(`  NOT IN TEXT (attempt 1): "${quote.slice(0, 80)}..." — retrying`);
         hint = `Your previous attempt ("${quote}") was not copied exactly: words were changed or left out. Return one sentence copied character for character from the review, without shortening it.`;
         continue;
+      }
+    }
+
+    // LLM show check (BRO-8334): after every free check, one cheap yes/no/unclear
+    // call on the quote that would ship (post-snap, verified in text). Only a clear "no" drops the quote; same retry budget and stamp as above.
+    // PULL_QUOTE_LLM_GATE_OFF=1 skips it.
+    if (!LLM_GATE_OFF && verifyInText(quote, sourceText)) {
+      let verdict = 'unclear';
+      let gateReply = null;
+      try {
+        gateReply = await callLLMWithRetry(llmGate.GATE_SYSTEM_PROMPT, llmGate.buildGateUserPrompt(data.showTitle || data.showId, quote, sourceText));
+        verdict = llmGate.parseGateVerdict(gateReply);
+      } catch (e) {
+        stats.llmGateErrors = (stats.llmGateErrors || 0) + 1;
+        if (VERBOSE) console.log(`  LLM-GATE error (keeping quote): ${e.message}`);
+      }
+      if (gateReply == null) stats.llmGateErrors = (stats.llmGateErrors || 0) + 1; // rate-limited out or blocked: quote kept unchecked
+      stats.llmGateCalls = (stats.llmGateCalls || 0) + 1;
+      if (verdict === 'no') {
+        if (attempt === 1) {
+          stats.llmGateRetried = (stats.llmGateRetried || 0) + 1;
+          if (VERBOSE) console.log(`  LLM-GATE no: "${quote.slice(0, 80)}..." — retrying`);
+          hint = llmGate.gateHint(quote, data.showTitle);
+          continue;
+        }
+        stats.llmGateRejected = (stats.llmGateRejected || 0) + 1;
+        if (VERBOSE) console.log(`  LLM-GATE rejected after retry: ${path.basename(filePath)}`);
+        reject('llm-gate-other-show');
+        return;
       }
     }
 
@@ -854,6 +857,7 @@ async function main() {
   if (stats.reservationRejected) console.log(`Hedge-opener rejects (after retry): ${stats.reservationRejected}`);
   if (stats.snappedToSource) console.log(`Snapped to the critic's exact sentence: ${stats.snappedToSource}`);
   if (stats.notInTextRetried) console.log(`Not-in-text retries: ${stats.notInTextRetried}`);
+  if (stats.llmGateCalls) console.log(`LLM show-check: ${stats.llmGateCalls} calls, ${stats.llmGateRetried || 0} retried, ${stats.llmGateRejected || 0} rejected after retry, ${stats.llmGateErrors || 0} unchecked (error/empty)`);
   if (stats.contextRetried) console.log(`Context-dependent retries: ${stats.contextRetried}, rejects after retry: ${stats.contextRejected || 0}`);
   console.log(`Time: ${elapsed}s`);
 

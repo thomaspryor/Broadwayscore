@@ -9,6 +9,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+delete process.env.PULL_QUOTE_LLM_GATE_OFF;
 require('./review-write-guard.js')._setShowsCacheForTest(new Map());
 const gate = require('./pull-quote-llm-gate.js');
 
@@ -77,5 +78,27 @@ test('an unclear verdict keeps the quote', async () => {
   const f = fixture('gate-unclear-2026');
   await run();
   assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).llmPullQuote, S[3]);
+  assert.equal(gateCalls, 1, 'gate was asked');
+  fs.rmSync(path.dirname(f), { recursive: true, force: true });
+});
+
+test('a gate that returns nothing keeps the quote and is counted as unchecked', async () => {
+  gateReply = null;
+  const before = ex.stats.llmGateErrors || 0;
+  const f = fixture('gate-null-2026');
+  await run();
+  assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).llmPullQuote, S[3]);
+  assert.equal((ex.stats.llmGateErrors || 0) - before, 1);
+  fs.rmSync(path.dirname(f), { recursive: true, force: true });
+});
+
+test('a quote that fails a free check never reaches the gate', async () => {
+  gateReply = 'yes';
+  const f = fixture('gate-free-2026');
+  const saved = ex.stats.llmGateCalls || 0;
+  ex._setLLMForTest(async (sys) => { if (sys === gate.GATE_SYSTEM_PROMPT) { gateCalls++; return 'yes'; } extractCalls++; return 'An invented sentence the critic never wrote anywhere here at all, fabricated.'; });
+  await run();
+  assert.equal(gateCalls, 0);
+  assert.equal(JSON.parse(fs.readFileSync(f, 'utf8')).llmPullQuoteRejectReason, 'not-in-text');
   fs.rmSync(path.dirname(f), { recursive: true, force: true });
 });
