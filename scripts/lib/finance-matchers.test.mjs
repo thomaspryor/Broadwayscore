@@ -254,13 +254,14 @@ test('Claude Max subscription books as anthropic-max subscription, not API usage
     body: 'Usage credits Qty 1 $490.00 Total $504.70 Amount paid $504.70',
   }, config);
   assert.equal(api.vendorKey, 'anthropic');
-  // Max subs are excluded outright on any date (personal — 2026-07-05 user
-  // decision); API recharges follow the pre-May family-paid rule.
+  // Max subs are a shared subscription (BRO-8273): booked at 50%, never excluded.
+  // API recharges follow the pre-May family-paid rule.
   const maxRow = { vendorKey: 'anthropic-max', kind: 'subscription', date: '2026-06-21' };
   const apiRow = { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-03-21' };
   const apiRowMay = { vendorKey: 'anthropic', kind: 'usage-recharge', date: '2026-05-21' };
   M.applyExternallyPaid([maxRow, apiRow, apiRowMay], config);
-  assert.equal(maxRow.excludedReason, 'personal');
+  assert.ok(!maxRow.excluded);
+  assert.equal(row.businessPct, 50);
   assert.ok(apiRow.excluded);
   assert.ok(!apiRowMay.excluded);
 });
@@ -273,4 +274,76 @@ test('Vercel Jan–Mar 2026 excluded (family-paid), including the Feb bill and M
   ];
   M.applyExternallyPaid(rows, config);
   assert.deepEqual(rows.map((r) => !!r.excluded), [true, true, false]);
+});
+
+// ---- BRO-8273: OpenAI top-ups, card last-4, shared Claude Max, new vendors ----
+const openaiFunded = {
+  gmailMessageId: 'oai1', date: '2026-03-02T10:00:00Z',
+  from: 'OpenAI <noreply@tm.openai.com>',
+  subject: 'Your OpenAI API account has been funded',
+  body: 'Your OpenAI API account has been funded. We charged $25.00 to your credit card ending in 4242. Credit balance $30.00',
+};
+
+test('OpenAI "account has been funded" email books as llm usage-recharge at the charged amount, with cardLast4', () => {
+  const { row, disposition } = M.toLedgerRow(openaiFunded, config);
+  assert.equal(disposition, 'booked');
+  assert.equal(row.vendorKey, 'openai-api');
+  assert.equal(row.category, 'llm');
+  assert.equal(row.kind, 'usage-recharge');
+  assert.equal(row.amount, 25); // NOT the $30 balance
+  assert.equal(row.cardLast4, '4242');
+  const alt = M.classifyReceipt({ ...openaiFunded, from: 'billing@tm1.openai.com' }, config);
+  assert.equal(alt.vendorKey, 'openai-api');
+});
+
+test('extractCardLast4: "ending in" and Stripe-style "- NNNN", null otherwise', () => {
+  assert.equal(M.extractCardLast4('charged to your credit card ending in 1234.'), '1234');
+  assert.equal(M.extractCardLast4('Payment method Visa - 5678 Amount paid $10.00'), '5678');
+  assert.equal(M.extractCardLast4('Total $12.00 on 2026-01-02'), null);
+  assert.equal(M.extractCardLast4(''), null);
+  assert.equal(M.extractCardLast4(undefined), null);
+});
+
+test('anthropic-max is booked at 50% (shared), not excluded as personal', () => {
+  const rcpt = {
+    gmailMessageId: 'max1', date: '2026-08-05T00:00:00Z',
+    from: 'Anthropic, PBC <invoice+statements@mail.anthropic.com>',
+    subject: 'Your receipt from Anthropic, PBC #1111-2222',
+    body: 'Receipt Max plan $200.00 Total $200.00 Amount paid $200.00',
+  };
+  const { row } = M.toLedgerRow(rcpt, config);
+  assert.equal(row.vendorKey, 'anthropic-max');
+  assert.equal(row.businessPct, 50);
+  assert.equal(row.amountBusiness, 100);
+  const ext = M.applyExternallyPaid([row], config);
+  assert.equal(ext.excluded, 0);
+  assert.notEqual(row.excluded, true);
+});
+
+test('new vendors from the review queue book: Supabase payment mail, ElevenLabs, Wondercraft, Manaflow', () => {
+  const cases = [
+    [{ from: 'invoice+statements@supabase.com', subject: 'Payment received for Supabase Pte. Ltd. invoice (#ABC-1)', body: 'Total $25.00 Amount paid $25.00' }, 'supabase', 25],
+    [{ from: 'invoice+statements+acct_1M07hSLmdOdiMXBs@stripe.com', subject: 'Your receipt from Eleven Labs Inc. #1234-5678-9012', body: 'Total $22.00 Amount paid $22.00' }, 'elevenlabs', 22],
+    [{ from: 'invoice+statements@wondercraft.ai', subject: 'Your receipt from Wondercraft, Inc #1234-5678', body: 'Total $19.00 Amount paid $19.00' }, 'wondercraft', 19],
+    [{ from: 'invoice+statements+acct_1PQa3RGhInAdn3Jb@stripe.com', subject: 'Your receipt from Manaflow, Inc. #1234-5678', body: 'Total $20.00 Amount paid $20.00' }, 'manaflow-cmux', 20],
+  ];
+  for (const [r, key, amt] of cases) {
+    const out = M.toLedgerRow({ gmailMessageId: key, date: '2026-10-01T00:00:00Z', ...r }, config);
+    assert.equal(out.disposition, 'booked', key);
+    assert.equal(out.row.vendorKey, key);
+    assert.equal(out.row.amount, amt);
+  }
+  // issued-invoice, Cloudflare and Buffer notices do not book
+  const notBooked = [
+    { from: 'invoice+statements@supabase.com', subject: 'New invoice from Supabase Pte. Ltd. (#ABC-1)', body: 'Total $25.00' },
+    { from: 'noreply@notify.cloudflare.com', subject: 'Your invoice is available', body: '' },
+    { from: 'hello@youraccount.buffer.com', subject: "We'll be renewing your subscription soon", body: '$6.00' },
+  ];
+  for (const r of notBooked) assert.equal(M.classifyReceipt(r, config).disposition, 'ignore', r.subject);
+});
+
+test('every vendor category in the config is a declared category (class guard)', () => {
+  const declared = new Set(config.categories);
+  const bad = config.expenseVendors.filter((v) => v.kind !== 'ignore' && !declared.has(v.category)).map((v) => v.key);
+  assert.deepEqual(bad, []);
 });

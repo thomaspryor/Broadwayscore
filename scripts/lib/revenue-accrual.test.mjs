@@ -2,7 +2,41 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { computeAffiliateAccrual, priorMonthOf, daysInPriorMonth } = require('./revenue-accrual.js');
+const { computeAffiliateAccrual, priorMonthOf, daysInPriorMonth, monthsNeedingFinalization, monthRange, applyMonthFinalizations } = require('./revenue-accrual.js');
+
+// ---- BRO-8273: a missed finalization window must self-heal ----
+const aff = (month, status, amountUsd = 100) => ({ month, sourceKey: 'affiliate', source: 'Affiliate commissions', amountUsd, status });
+
+test('the 2026-09 gap: Jun/Jul realized, Aug pending, no Sep, run on 2026-11-25 → Aug and Sep need finalizing', () => {
+  const ledger = [aff('2026-06', 'realized'), aff('2026-07', 'realized'), aff('2026-08', 'pending'), aff('2026-10', 'realized'), aff('2026-11', 'pending')];
+  assert.deepEqual(monthsNeedingFinalization({ todayIso: '2026-11-25', ledger }), ['2026-08', '2026-09']);
+});
+
+test('monthsNeedingFinalization: nothing before the first row, current month excluded, capped to most recent', () => {
+  assert.deepEqual(monthsNeedingFinalization({ todayIso: '2026-11-25', ledger: [] }), []);
+  assert.deepEqual(monthsNeedingFinalization({ todayIso: '2026-11-25', ledger: [aff('2026-11', 'pending')] }), []);
+  const capped = monthsNeedingFinalization({ todayIso: '2027-03-02', ledger: [aff('2026-01', 'realized')], maxMonths: 3 });
+  assert.deepEqual(capped, ['2026-12', '2027-01', '2027-02']);
+});
+
+test('applyMonthFinalizations inserts the missing month, realizes the pending one, leaves other sources alone', () => {
+  const ledger = [aff('2026-08', 'pending', 5), { month: '2026-09', sourceKey: 'buymeacoffee', source: 'BMC', amountUsd: 9, status: 'pending' }];
+  const { ledger: out } = applyMonthFinalizations(ledger, [{ month: '2026-08', commission: 321.456 }, { month: '2026-09', commission: 88.1 }, { month: '2026-10', commission: 1 }], '2026-11-25');
+  const get = (m, k) => out.find((r) => r.month === m && r.sourceKey === k);
+  assert.equal(get('2026-08', 'affiliate').status, 'realized');
+  assert.equal(get('2026-08', 'affiliate').amountUsd, 321.46);
+  assert.equal(get('2026-09', 'affiliate').amountUsd, 88.1);
+  assert.equal(get('2026-09', 'buymeacoffee').status, 'pending');
+  assert.deepEqual(monthsNeedingFinalization({ todayIso: '2026-11-25', ledger: out }), []);
+});
+
+test('monthRange is first-of-month to last second, under the 45-day Impact cap', () => {
+  for (let m = 1; m <= 12; m++) {
+    const { start, end } = monthRange(`2026-${String(m).padStart(2, '0')}`);
+    assert.ok((end - start) / 86400000 < 32);
+    assert.equal(start.getUTCDate(), 1);
+  }
+});
 
 test('mid-month run upserts a pending MTD row only', () => {
   const { ledger, changes } = computeAffiliateAccrual({

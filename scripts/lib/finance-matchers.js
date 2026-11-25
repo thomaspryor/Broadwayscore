@@ -147,6 +147,21 @@ function extractReceiptNo(text = '') {
   return m ? m[1] : null;
 }
 
+/**
+ * Last four digits of the card a receipt was charged to, or null.
+ * Handles "ending in 1234" / "ending with 1234" (OpenAI, most SaaS) and
+ * Stripe-style "Visa - 1234" / "Mastercard – 1234" payment-method lines.
+ * Only the 4 digits are returned. Any card-to-person mapping lives in the
+ * private data repo, never here (public repo).
+ */
+function extractCardLast4(body = '') {
+  const text = String(body);
+  const m = text.match(/\bending\s+(?:in|with)\s+(\d{4})\b/i) ||
+    text.match(/\b(?:visa|mastercard|master\s?card|amex|american\s+express|discover|card)\s*[-\u2013\u2014]\s*(\d{4})\b/i) ||
+    text.match(/[-\u2013\u2014]\s(\d{4})\b(?=\s*(?:\$|Amount|Date|Receipt|Invoice|$))/i);
+  return m ? m[1] : null;
+}
+
 function computeDedupHash({ vendorKey, date, amountUsd, receiptNo }) {
   const basis = `${vendorKey}|${date}|${Number(amountUsd).toFixed(2)}|${receiptNo || ''}`;
   return crypto.createHash('sha256').update(basis).digest('hex').slice(0, 16);
@@ -194,6 +209,7 @@ function toLedgerRow(receipt, config = loadVendorConfig(), fx = DEFAULT_FX_TO_US
     amountUsd,
     businessPct,
     amountBusiness: Math.round(amountUsd * (businessPct / 100) * 100) / 100,
+    cardLast4: extractCardLast4(receipt.body || ''),
     source: 'gmail',
     raw: { subject: receipt.subject || '', from: receipt.from || '', receiptNo },
     confidence: 'high',
@@ -272,6 +288,7 @@ module.exports = {
   extractEmailAddress,
   extractAmount,
   extractReceiptNo,
+  extractCardLast4,
   toUsd,
   computeDedupHash,
   toLedgerRow,

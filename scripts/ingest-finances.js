@@ -52,7 +52,7 @@ async function fetchGmailReceipts(days) {
   const auth = new google.auth.OAuth2(GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET);
   auth.setCredentials({ refresh_token: GMAIL_REFRESH_TOKEN });
   const gmail = google.gmail({ version: 'v1', auth });
-  const q = `newer_than:${days}d (subject:(receipt OR invoice OR payment OR subscription OR recharged OR refund) OR from:(brightdata.com OR openrouter.ai OR anthropic.com))`;
+  const q = `newer_than:${days}d (subject:(receipt OR invoice OR payment OR subscription OR recharged OR refund) OR from:(brightdata.com OR openrouter.ai OR anthropic.com OR openai.com))`;
   const out = [];
   let pageToken;
   do {
@@ -102,10 +102,11 @@ async function main() {
   let queue = readJson(queuePath, []);
 
   const seenIds = new Set(ledger.map((r) => r.id).filter(Boolean));
+  const rowById = new Map(ledger.filter((r) => r.id).map((r) => [r.id, r]));
   const rowByHash = new Map(ledger.filter((r) => r.dedupHash).map((r) => [r.dedupHash, r]));
   const seenQueue = new Set(queue.map((q) => q.gmailMessageId).filter(Boolean));
 
-  const stats = { booked: 0, duplicate: 0, personal: 0, ignore: 0, needsReview: 0, unparsed: 0 };
+  const stats = { booked: 0, duplicate: 0, personal: 0, ignore: 0, needsReview: 0, unparsed: 0, cardFilled: 0 };
 
   // The dedupHash (vendor|date|amount|receiptNo) is a FALLBACK for rows whose
   // Gmail id form changed across the MCP→API switch. When BOTH rows carry Gmail
@@ -122,9 +123,17 @@ async function main() {
   for (const receipt of receipts) {
     const { row, disposition } = toLedgerRow(receipt, config);
     if (disposition === 'booked') {
-      if (isDuplicate(row)) { stats.duplicate++; continue; }
+      if (isDuplicate(row)) {
+        stats.duplicate++;
+        // --backfill re-touch: fill ONLY cardLast4 on the already-booked row.
+        if (args.backfill && row.cardLast4) {
+          const existing = (row.id && rowById.get(row.id)) || rowByHash.get(row.dedupHash);
+          if (existing && !existing.cardLast4) { existing.cardLast4 = row.cardLast4; stats.cardFilled++; }
+        }
+        continue;
+      }
       ledger.push(row);
-      if (row.id) seenIds.add(row.id);
+      if (row.id) { seenIds.add(row.id); rowById.set(row.id, row); }
       if (!rowByHash.has(row.dedupHash)) rowByHash.set(row.dedupHash, row);
       stats.booked++;
     } else if (disposition === 'personal') stats.personal++;
@@ -161,7 +170,7 @@ async function main() {
   const drained = queueBefore - queue.length;
 
   console.log(`Receipts in: ${receipts.length}`);
-  console.log(`  booked ${stats.booked} · duplicate ${stats.duplicate} · personal ${stats.personal} · ignored ${stats.ignore} · needs-review ${stats.needsReview} · amount-unparsed ${stats.unparsed}`);
+  console.log(`  booked ${stats.booked} · duplicate ${stats.duplicate} · personal ${stats.personal} · ignored ${stats.ignore} · needs-review ${stats.needsReview} · amount-unparsed ${stats.unparsed} · cardLast4 filled on existing ${stats.cardFilled}`);
   console.log(`  extra-topup retyped ${retyped} · externally-paid marked ${ext.excluded} / cleared ${ext.cleared} (total excluded ${ledger.filter((r) => r.excluded).length}) · queue drained ${drained}`);
 
   const revenue = readJson(path.join(args.out, 'revenue-ledger.json'), []);

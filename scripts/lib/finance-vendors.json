@@ -215,12 +215,12 @@
       "vendor": "Anthropic (Claude Max)",
       "category": "llm",
       "kind": "subscription",
-      "businessPct": 100,
+      "businessPct": 50,
       "match": {
         "from": "invoice+statements@mail.anthropic.com",
         "bodyContains": "Max plan"
       },
-      "note": "Claude Max subscription shares the API receipt sender. MUST precede 'anthropic' (first match wins) so the sub doesn't book as usage-recharge — and doesn't get caught by the pre-May externallyPaid rule, which covers API overages only."
+      "note": "Claude Max is a shared subscription (BRO-8273, owner 2026-11): booked at 50% business, no longer excluded as personal. MUST precede anthropic (first match wins) so the sub does not book as usage-recharge; the pre-May externallyPaid rule covers API overages only."
     },
     {
       "key": "anthropic",
@@ -264,6 +264,97 @@
         "fromContains": "openai.com",
         "subjectContains": "receipt"
       }
+    },
+    {
+      "key": "openai-api",
+      "vendor": "OpenAI (API)",
+      "category": "llm",
+      "kind": "usage-recharge",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "openai.com",
+        "subjectContains": "has been funded"
+      },
+      "amountAnchor": "We charged",
+      "note": "API credit top-ups (\"Your OpenAI API account has been funded\", body \"We charged $X to your credit card ending in NNNN\"). Senders noreply@tm.openai.com and billing@tm1.openai.com. The older openai rule needs subject \"receipt\" and never matched these."
+    },
+    {
+      "key": "supabase",
+      "vendor": "Supabase",
+      "category": "hosting",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "from": "invoice+statements@supabase.com",
+        "subjectContains": "Payment received"
+      },
+      "note": "Book on the payment-received mail, not the \"New invoice\" mail, so each invoice books once."
+    },
+    {
+      "key": "supabase-invoice-ignore",
+      "vendor": "Supabase (invoice issued, payment mail books)",
+      "category": "hosting",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "supabase.com"
+      },
+      "note": "Must stay below the supabase booking rule."
+    },
+    {
+      "key": "cloudflare-invoice-ignore",
+      "vendor": "Cloudflare (invoice available, no amount in body)",
+      "category": "hosting",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "from": "noreply@notify.cloudflare.com"
+      },
+      "note": "\"Your invoice is available\" carries no amount. Needs a receipt source before it can book; ignored so it stops filling the review queue."
+    },
+    {
+      "key": "buffer-notices-ignore",
+      "vendor": "Buffer (plan notices)",
+      "category": "other",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "buffer.com"
+      },
+      "note": "Renewal reminders, cancellation and thank-you notices. No receipt amount."
+    },
+    {
+      "key": "elevenlabs",
+      "vendor": "ElevenLabs",
+      "category": "llm",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "stripeAcct": "acct_1M07hSLmdOdiMXBs"
+      },
+      "note": "Stripe-fronted. Matched by the acct_ id."
+    },
+    {
+      "key": "wondercraft",
+      "vendor": "Wondercraft",
+      "category": "llm",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "from": "invoice+statements@wondercraft.ai"
+      }
+    },
+    {
+      "key": "manaflow-cmux",
+      "vendor": "Manaflow (cmux)",
+      "category": "other",
+      "kind": "subscription",
+      "businessPct": 100,
+      "match": {
+        "stripeAcct": "acct_1PQa3RGhInAdn3Jb",
+        "subjectContains": "Your receipt from"
+      },
+      "note": "Stripe-fronted cmux receipts. The austin@cmux.com refund-request thread is not a receipt and stays in review."
     },
     {
       "key": "brightdata",
@@ -908,11 +999,6 @@
         ],
         "before": "2026-05-01",
         "reason": "paid-by-family"
-      },
-      {
-        "vendorKey": "anthropic-max",
-        "reason": "personal",
-        "_note": "2026-07-05 user decision: Claude Max subscription stays off the business P&L entirely (no date bound)."
       },
       {
         "vendorKey": "vercel",

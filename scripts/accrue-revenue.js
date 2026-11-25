@@ -20,8 +20,10 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { getAffiliateStats } = require('./lib/affiliate-stats');
-const { computeAffiliateAccrual, daysInPriorMonth } = require('./lib/revenue-accrual');
+const { getAffiliateStats, fetchImpactCommissionRange } = require('./lib/affiliate-stats');
+const {
+  computeAffiliateAccrual, daysInPriorMonth, monthsNeedingFinalization, monthRange, applyMonthFinalizations,
+} = require('./lib/revenue-accrual');
 
 function parseArgs(argv) {
   const a = { out: 'data/finances', dryRun: false, today: null };
@@ -65,13 +67,36 @@ async function main() {
   let ledger = [];
   try { ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8')); } catch { /* first run */ }
 
-  const { ledger: next, changes } = computeAffiliateAccrual({ todayIso, mtdCommission, priorWindowCommission, ledger });
+  let { ledger: next, changes } = computeAffiliateAccrual({ todayIso, mtdCommission, priorWindowCommission, ledger });
+
+  // Self-heal (BRO-8273): any closed month still missing or 'pending' is
+  // finalized from an explicit month-sized Impact range, whatever day it is
+  // today. A failed fetch for one month leaves it for the next run and is
+  // surfaced as a workflow error annotation (this step is continue-on-error,
+  // so an annotation is the only thing that makes a stuck month visible).
+  const stuck = [];
+  const finals = [];
+  for (const month of monthsNeedingFinalization({ todayIso, ledger: next })) {
+    try {
+      const { start, end } = monthRange(month);
+      finals.push({ month, commission: await fetchImpactCommissionRange(start, end, { timeoutMs: 60000 }) });
+    } catch (e) {
+      stuck.push(month);
+      console.error(`::error title=Affiliate revenue not finalized::${month}: ${e.message}`);
+    }
+  }
+  if (finals.length) {
+    const healed = applyMonthFinalizations(next, finals, todayIso);
+    next = healed.ledger;
+    changes = changes.concat(healed.changes);
+  }
   for (const c of changes) console.log(`  ${c.month} affiliate $${c.amountUsd} (${c.status}) — ${c.action}`);
 
   if (args.dryRun) { console.log('[dry-run] nothing written.'); return; }
   fs.mkdirSync(args.out, { recursive: true });
   fs.writeFileSync(ledgerPath, JSON.stringify(next, null, 2));
   console.log(`Wrote ${next.length} revenue rows → ${ledgerPath}`);
+  if (stuck.length) process.exit(1); // finalized months are saved above; non-zero fails the step loudly
 }
 
 if (require.main === module) main().catch((e) => { console.error(e.message); process.exit(1); });
