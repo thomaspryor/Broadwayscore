@@ -25,7 +25,7 @@ function parseFrontmatter(text) {
 }
 
 const EXPECTED = {
-  'review-panelist': { model: 'claude-opus-5-5', effort: 'medium' },
+  'review-panelist': { model: 'claude-sonnet-5-5', effort: 'medium' },
   'repo-sweeper': { model: 'claude-sonnet-5-5', effort: 'low' },
 };
 const BUILTIN = new Set(['general-purpose', 'Explore', 'Plan', 'claude', 'claude-code-guide', 'statusline-setup']);
