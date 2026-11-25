@@ -1,7 +1,7 @@
 ---
 name: review-panelist
 description: Independent read-only reviewer for /plan-review, /ship-check, /second-opinion, /right-problem panels. Reports findings with file:line refs.
-model: claude-opus-5-5
+model: claude-sonnet-5-5
 effort: medium
 tools: Read, Glob, Grep, Bash
 disallowedTools: Write, Edit, MultiEdit, NotebookEdit
