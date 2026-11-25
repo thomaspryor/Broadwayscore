@@ -730,5 +730,32 @@
       }
     ],
     "queuedAt": "2026-11-25T20:42:52.864Z"
+  },
+  {
+    "conditionKey": "land-preexisting:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers #759a229310",
+    "title": "Test red on main: real data loads and gives the expected answers for the four JS outlets [testCodeFailure]",
+    "description": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8324-shownotmentioned-guard. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45698791663",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45698791663"
+      }
+    ],
+    "queuedAt": "2026-11-25T21:15:32.321Z"
   }
 ]
