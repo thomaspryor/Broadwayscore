@@ -147,7 +147,12 @@ function wasRefusedByDiskPressure(dispatchLedgerEntries, taskId) {
 function foldCanaryStage({ dateStr, canaryLedgerEntries, dispatchLedgerEntries, now = new Date() } = {}) {
   const entries = Array.isArray(canaryLedgerEntries) ? canaryLedgerEntries : [];
   const filed = entries.find((e) => e && e.event === 'card-filed' && e.date === dateStr);
-  if (!filed) return { stage: 'not-filed', taskId: null };
+  if (!filed) {
+    // The driver ran but fileCard failed (Linear 429/timeout): say so instead of
+    // reading as "pipeline never ran" (BRO-8309: 11-24 canary silently unfiled).
+    const failedFiling = entries.some((e) => e && e.event === 'card-file-failed' && e.date === dateStr);
+    return { stage: failedFiling ? 'file-failed' : 'not-filed', taskId: null };
+  }
 
   const resolvedPass = entries.find((e) => e && e.event === 'canary-pass' && e.date === dateStr);
   if (resolvedPass) return { stage: 'verified-pass', taskId: filed.taskId };
@@ -242,6 +247,17 @@ function assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries, now = new
   // BRO-6822: the dispatcher refused the job for host disk pressure — an
   // infrastructure condition with its own disk-pressure alert, not proof the
   // dispatch pipeline is broken.
+  // BRO-8309: the driver ran but Linear filing failed (rate limit/timeout). A
+  // transient filing failure, not a broken dispatch pipeline; the next run retries.
+  if (stage === 'file-failed') {
+    return {
+      name,
+      status: 'warn',
+      message: `Autofix pipeline canary for ${yesterday} could not be filed (Linear card create failed, likely rate-limited) — the driver ran; the dispatch pipeline itself was not exercised.`,
+      hint: 'Check Linear rate limits (HTTP 429) around the morning digest run.',
+    };
+  }
+
   if (stage === 'disk-pressure') {
     return {
       name,
@@ -637,7 +653,10 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
   // mirror to become dispatchable numbers. The Linear identifier is
   // dispatchable the moment it exists.
   const filedIssue = fileCard(title, buildCanaryCardNotes(today), { log });
-  if (!filedIssue.ok) return { filed: false, reason: 'card create failed' };
+  if (!filedIssue.ok) {
+    appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'card-file-failed', date: today });
+    return { filed: false, reason: 'card create failed' };
+  }
   const canaryTaskId = `linear:${filedIssue.identifier}`;
 
   try {
