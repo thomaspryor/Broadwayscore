@@ -517,6 +517,60 @@
     "queuedAt": "2026-11-25T17:25:43.256Z"
   },
   {
+    "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]",
+    "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
+    "description": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8323-sb-optional. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45663775662",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45663775662"
+      }
+    ],
+    "queuedAt": "2026-11-25T17:45:04.779Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c",
+    "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
+    "description": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8323-sb-optional. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45663775662",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45663775662"
+      }
+    ],
+    "queuedAt": "2026-11-25T17:45:04.809Z"
+  },
+  {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-a-christmas-carol-west-end-2026",
     "title": "Unhandled CV.wrongProduction on A Christmas Carol",
     "description": "thereviewshub/Jim Gillespie (thereviewshub--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 6d of opening, likely correct production] Although this is a valid review of 'A Christmas Carol — https://www.thereviewshub.com/a-christmas-carol-theatre-by-the-lake-keswick/",
