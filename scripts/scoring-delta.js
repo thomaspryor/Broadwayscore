@@ -1085,6 +1085,7 @@ function decideInclusion(review, show, guards, filePath) {
           review.outletId,
           {
             category: show?.category,
+            previewsStartDate: show?.previewsStartDate,
             humanReviewedEarlyPublish: review.humanReviewedEarlyPublish === true,
           }
         ).rejected;

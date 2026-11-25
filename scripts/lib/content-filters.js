@@ -392,6 +392,23 @@ const OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING = 14;
 const PREVIEW_HEAVY_GRACE_DAYS = 0;
 
 /**
+ * Owner decision 2026-11-25 (BRO-8324, option A): reviews of preview
+ * performances count. Once a show has played its first preview a critic can
+ * review a real performance (West End and UK outlets routinely do), so the
+ * anticipatory cutoff moves back to previewsStartDate when that is earlier than
+ * the openingDate grace. This matches the post-publish audit
+ * (opening-night-checks/publish-date-pre-opening.check.js), which already
+ * accepted reviews from previewsStartDate on.
+ *
+ * A previewsStartDate more than this many days before openingDate is ignored:
+ * those are interrupted runs (the 2020 pandemic closures) where the early
+ * window would re-admit the earlier production's reviews.
+ * Preview-heavy outlets are unaffected: their pre-opening pieces are features,
+ * not reviews of a performance.
+ */
+const PREVIEW_START_MAX_LEAD_DAYS = 60;
+
+/**
  * Returns whether a review is an anticipatory pre-opening-night post that
  * should be rejected at ingest. Matches the semantics of the existing
  * post-broadcast audit check (publish-date-pre-opening.check.js) but fires
@@ -408,6 +425,9 @@ const PREVIEW_HEAVY_GRACE_DAYS = 0;
  * @param {boolean} [opts.humanReviewedEarlyPublish] - Manual clear flag from source file
  * @param {number} [opts.graceDays] - Override default 2-day grace (non-preview outlets)
  * @param {number} [opts.gracePreviewHeavyOutlet] - Override 0-day grace for preview-heavy outlets
+ * @param {string} [opts.previewsStartDate] - Show's first preview (YYYY-MM-DD). Reviews dated on/after it
+ *   are not anticipatory for non-preview-heavy outlets (BRO-8324). Ignored when more than
+ *   PREVIEW_START_MAX_LEAD_DAYS before openingDate.
  * @returns {{ rejected: boolean, reason?: string, daysBeforeOpening?: number, outletCategory?: 'preview-heavy'|'default' }}
  */
 function isAnticipatoryPreviewPost(publishDate, openingDate, outletId, opts = {}) {
@@ -442,7 +462,15 @@ function isAnticipatoryPreviewPost(publishDate, openingDate, outletId, opts = {}
     graceDays = DEFAULT_GRACE_DAYS_BEFORE_OPENING;
   }
 
-  const cutoff = new Date(opening.getTime() - graceDays * MS_PER_DAY);
+  let cutoff = new Date(opening.getTime() - graceDays * MS_PER_DAY);
+  if (!isPreviewHeavy && opts.previewsStartDate) {
+    const previewsStart = new Date(require('./date-utils').toDateMs(opts.previewsStartDate));
+    const leadDays = (opening.getTime() - previewsStart.getTime()) / MS_PER_DAY;
+    if (!Number.isNaN(previewsStart.getTime()) && leadDays >= 0 && leadDays <= PREVIEW_START_MAX_LEAD_DAYS
+      && previewsStart < cutoff) {
+      cutoff = previewsStart;
+    }
+  }
   if (publish >= cutoff) {
     return { rejected: false };
   }
@@ -473,5 +501,6 @@ module.exports = {
   PREVIEW_HEAVY_OUTLETS,
   DEFAULT_GRACE_DAYS_BEFORE_OPENING,
   PREVIEW_HEAVY_GRACE_DAYS,
+  PREVIEW_START_MAX_LEAD_DAYS,
   isAnticipatoryPreviewPost,
 };

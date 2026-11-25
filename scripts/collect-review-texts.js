@@ -4976,6 +4976,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     let showPriorRuns = null;
     let showTourLegs = null;
     let showCategory = null;
+    let showPreviewsStart = null;
     try {
       if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
       const showMeta = _showsJsonCache.shows.find(s => s.id === (data.showId || review.showId));
@@ -4983,6 +4984,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       showPriorRuns = showMeta?.priorRuns || null;
       showTourLegs = showMeta?.tourLegs || null;
       showCategory = showMeta?.category || null;
+      showPreviewsStart = showMeta?.previewsStartDate || null; // BRO-8324
     } catch (e) { /* shows.json unavailable — skip gate (fail-open) */ }
 
     // BRO-5351: a URL date is never stored, but the gate still judges on it in
@@ -4998,6 +5000,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           {
             humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true,
             category: showCategory,
+            previewsStartDate: showPreviewsStart,
           }
         );
     // BRO-2770: the body's own byline disagrees with publishDate and is NOT
@@ -5007,7 +5010,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     const bodyMismatch = anticip.rejected ? detectBodyDateMismatch(data) : null;
     const bodyDateClears = bodyMismatch && !isAnticipatoryPreviewPost(
       bodyMismatch.bodyDate, showOpeningDate, data.outletId || review.outletId,
-      { humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true, category: showCategory }
+      { humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true, category: showCategory, previewsStartDate: showPreviewsStart }
     ).rejected;
     if (bodyDateClears) {
       console.log(`  ⚠ STALE publishDate ${bodyMismatch.publishDate}: body byline says ${bodyMismatch.bodyDate} — not flagging anticipatory; held for date/url repair`);

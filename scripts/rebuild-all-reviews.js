@@ -2029,6 +2029,7 @@ const crossShowFingerprints = new Map();
             d.outletId,
             {
               category: showRecord && showRecord.category,
+              previewsStartDate: showRecord && showRecord.previewsStartDate, // BRO-8324
               // BRO-2828: humanReviewedEarlyPublish is the documented operator
               // opt-out for the anticipatory gate, but this recheck used to
               // drop it, so the opt-out could not clear a flag from here. The

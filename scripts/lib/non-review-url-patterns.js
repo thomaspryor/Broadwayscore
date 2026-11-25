@@ -1185,6 +1185,7 @@ function preOpeningNonReviewReason(url, ctx = {}) {
   const verdict = require('./content-filters').isAnticipatoryPreviewPost(publishDate, show.openingDate, outletId || null, {
     humanReviewedEarlyPublish: humanReviewedEarlyPublish === true,
     category: show.category,
+    previewsStartDate: show.previewsStartDate, // BRO-8324
   });
   return verdict.rejected ? 'pre-opening-non-review' : null;
 }
