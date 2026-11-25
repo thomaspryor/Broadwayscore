@@ -102,41 +102,27 @@ function savedCookies(outlet) {
   }
 }
 
-async function probeSavedCookiesInBrowser(p, cookies) {
-  const os = require('os');
-  const fs = require('fs');
-  const path = require('path');
-  const bprobe = require('./lib/cookie-browser-probe');
-  const { launchOtpBrowser } = require('./lib/otp-login-helpers');
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'verify-cookie-login-'));
-  const ctx = await launchOtpBrowser(dir, { headless: true, userAgent: bprobe.UA });
-  try {
-    await ctx.addCookies(cookies.map((c) => ({
-      name: c.name, value: c.value, domain: c.domain, path: c.path || '/',
-      expires: Number(c.expires) > 0 ? Number(c.expires) : undefined,
-      httpOnly: !!c.httpOnly, secure: !!c.secure,
-      sameSite: ['Strict', 'Lax', 'None'].includes(c.sameSite) ? c.sameSite : 'Lax',
-    })));
-    return await bprobe.loadProbe(ctx, p);
-  } finally {
-    await ctx.close().catch(() => {});
-    fs.rmSync(dir, { recursive: true, force: true });
-  }
-}
-
 async function sharedProbe(t) {
   const p = COOKIE_PROBES[t.outlet];
   const bprobe = require('./lib/cookie-browser-probe');
   const base = { outlet: t.outlet, url: p.url, knownLoggedOut: null, error: null };
-  let withCookies, withoutCookies, where;
+  let withCookies, withoutCookies, where, status;
   try {
     if (p.browserOnly) {
       const saved = savedCookies(t.outlet);
       if (!saved.length) return { ...base, ok: false, detail: 'no saved cookies (data/cookies) to test' };
-      withCookies = await probeSavedCookiesInBrowser(p, saved);
-      ({ control: withoutCookies } = await bprobe.classifyWithControl(p, withCookies));
-      where = 'browser, saved cookies';
+      // BRO-8099: the same classifyWithControl deps renew-cookies.js uses (altUrls
+      // rotation + the in-profile control), so both scripts give one verdict.
+      const { RENEW_OUTLETS } = require('./lib/cookie-renew');
+      const r = await bprobe.classifySavedCookies(p, saved, (RENEW_OUTLETS[t.outlet] || {}).authCookies || []);
+      ({ withCookies, control: withoutCookies, status } = r);
+      where = (r.usedUrl ? `browser, saved cookies, rotated to ${r.usedUrl}` : 'browser, saved cookies') + (r.noAuthCookie ? ', no auth cookie in the jar (metered free read)' : '');
     } else {
+      // Fetch mode has no browser context, so there is no profileDeps here
+      // (BRO-8099, decided): no altUrls rotation and no in-profile control. A
+      // bot-walled control reads botBlocked (login unknown, still exit 1), never
+      // logged-out. tests/unit/cookie-renew-outlets.test.mjs pins that no
+      // fetch-mode target carries altUrls, which would need the browser path.
       const r = await fetchPage(p.url, { source: 'verify-cookie-login' });
       const html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : '');
       withCookies = { html, body: bprobe.probeBody(p, html) };
@@ -149,7 +135,10 @@ async function sharedProbe(t) {
     // err.challengeHtml (the cookie tier no longer returns it as a success): still botBlocked.
     return { ...base, ok: false, error: e.message.split('\n')[0], ...(e.challengeHtml && isBotChallenge(e.challengeHtml) ? { botBlocked: true } : {}) };
   }
-  const status = bprobe.classify(p, withCookies, withoutCookies);
+  // Browser path: classifyWithControl's own verdict (it may have rotated urls);
+  // 'control-blocked' is a bot check on the control, so it reads as one below.
+  if (!status) status = bprobe.classify(p, withCookies, withoutCookies);
+  if (status === 'control-blocked') status = 'error';
   const detail = `${where}: ${status}; body ${withCookies.body.length} vs ${withoutCookies.body.length} with no session (need ${p.minBody})`;
   return { ...base, ok: status === 'logged-in', detail, botBlocked: status === 'error' && (isBotChallenge(withCookies.html) || isBotChallenge(withoutCookies.html)), vacuous: status === 'vacuous' };
 }
@@ -191,7 +180,7 @@ async function probe(t) {
   return { outlet: t.outlet, ok, detail, error, url: t.url, knownLoggedOut: t.knownLoggedOut || null, botBlocked };
 }
 
-(async () => {
+async function main() {
   const unknown = onlyOutlets.filter((o) => !TARGETS.some((t) => t.outlet === o));
   if (unknown.length) {
     // Never drop a requested outlet silently (telegraph used to vanish).
@@ -240,7 +229,13 @@ async function probe(t) {
   // knownLoggedOut targets report honestly but don't gate the exit code.
   // A bot-checked outlet still exits 1: its login is unverified, not healthy.
   process.exit(results.some((r) => !r.ok && !r.knownLoggedOut) ? 1 : 0);
-})().catch((e) => {
-  console.error('verify-cookie-login failed:', e.stack || e.message);
-  process.exit(1);
-});
+}
+
+if (require.main === module) {
+  main().catch((e) => {
+    console.error('verify-cookie-login failed:', e.stack || e.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { TARGETS, sharedProbe };
