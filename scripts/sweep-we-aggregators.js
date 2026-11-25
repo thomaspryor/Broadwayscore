@@ -1402,4 +1402,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { writeReview, writePageRows };
+module.exports = { writeReview, writePageRows, CAN_RENDER, RENDER_TIERS };

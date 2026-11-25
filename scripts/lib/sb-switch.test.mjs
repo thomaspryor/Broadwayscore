@@ -168,3 +168,17 @@ test('class guard: a caller that restricts fetchPage to the scrapingbee tier mus
   }
   assert.deepEqual(bad, [], `SB-only fetchPage callers with no off-switch answer: ${bad.join(', ')}`);
 });
+
+test('sweep render fallback: switch on, no key => paid render allowed via default chain; key => SB only; neither => off', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const sweep = path.join(HERE, '..', 'sweep-we-aggregators.js');
+  const probe = (env) => {
+    const r = spawnSync(process.execPath, ['-e',
+      `const m=require(${JSON.stringify(sweep)});console.log(JSON.stringify({c:m.CAN_RENDER,t:m.RENDER_TIERS||null}))`],
+      { env: { PATH: process.env.PATH, ...env }, encoding: 'utf8' });
+    return JSON.parse(r.stdout.trim().split('\n').pop());
+  };
+  assert.deepEqual(probe({ SCRAPINGBEE_DISABLED: '1' }), { c: true, t: null });
+  assert.deepEqual(probe({ SCRAPINGBEE_API_KEY: 'k' }), { c: true, t: ['scrapingbee'] });
+  assert.deepEqual(probe({}), { c: false, t: null });
+});
