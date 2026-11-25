@@ -1,19 +1,38 @@
 {
-  "updatedAt": "2026-11-25T18:41:00.791Z",
-  "processed": 4,
-  "failed": 3,
-  "successRate": "57.1%",
+  "updatedAt": "2026-11-25T18:56:22.716Z",
+  "processed": 49,
+  "failed": 51,
+  "successRate": "49.0%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 29,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 13,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 11
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-25T18:43:58.106Z",
+      "event": "bb-session",
+      "session": "b0384d6f",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-11-25T18:51:23.919Z",
+      "event": "bb-session",
+      "session": "5b1c80da",
+      "url": "https://parade.com/news/neil-patrick-harris-returns-to-broadway-in-revival-of-a-"
+    },
+    {
+      "t": "2026-11-25T18:55:38.733Z",
+      "event": "bb-session",
+      "session": "eae42795",
+      "url": "http://www.publictheater.org/"
+    }
+  ]
 }
