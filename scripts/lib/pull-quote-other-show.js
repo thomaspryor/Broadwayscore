@@ -200,6 +200,11 @@ function quoteInOtherShowPassage(quote, data, show, index) {
   const ownNames = showNames(show || {});
   const ownTitleLower = ownKey.toLowerCase();
   const ownBare = ownTitleLower.replace(/^(?:the|a|an) /, '');
+  // A title in the quote counts only for a multi-word title that neither contains nor sits
+  // inside this show's own title ("Romeo and Juliet" vs "Romeo and Juliet Suite"); a
+  // one-word title ("Caroline") is also a character, a song, a first name.
+  const titleNamedInQuote = (o) => o.titleKey.includes(' ') && !ownTitleLower.includes(o.titleLower)
+    && !o.titleLower.includes(ownTitleLower) && positionsOf(q, o.titleKey, true).length > 0;
   const ownPositions = new Set();
   for (const n of [ownTitleLower, ownBare]) for (const p of positionsOf(text, n, false)) ownPositions.add(p);
   for (const n of ownNames) for (const p of positionsOf(text, n, true)) ownPositions.add(p);
@@ -211,7 +216,10 @@ function quoteInOtherShowPassage(quote, data, show, index) {
   // --- Test 1: another show that opened at the same time is named in this column.
   if (others.length && !quoteHasOwn) {
     for (const o of others) {
-      const named = [...o.names].filter((n) => !ownNames.has(n)).find((n) => positionsOf(q, n, true).length);
+      // A performer of the other show, or its title ("the best rendition of The Price since 1979").
+      // The title counts only through the heading test below, so a comparison in a review of this show stays.
+      const named = [...o.names].filter((n) => !ownNames.has(n)).find((n) => positionsOf(q, n, true).length)
+        || (titleNamedInQuote(o) ? o.title : null);
       if (!named) continue;
       // The other show's title must lead into the quote: a performer's name in a
       // review of this show can be a comparison, a title heading cannot.

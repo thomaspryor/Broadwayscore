@@ -40,12 +40,47 @@ test('wiring: the prior-run / tour-leg anticipatory clear calls it too', () => {
   const src = fs.readFileSync(new URL('../rebuild-all-reviews.js', import.meta.url), 'utf8');
   const i = src.indexOf("reason === 'anticipatory_pre_opening_post'");
   assert.ok(i > 0);
-  assert.match(src.slice(i, i + 600), /restoreParkedFullText\(d\)/);
+  assert.match(src.slice(i, i + 600), /restoreParkedFullText\(d, \{ keepIfCvWrongProduction: true \}\)/);
 });
 
 test('wiring: the anticipatory auto-clear in rebuild calls it', () => {
   const src = fs.readFileSync(new URL('../rebuild-all-reviews.js', import.meta.url), 'utf8');
   const i = src.indexOf('shouldAutoClearAnticipatoryGrace(d,');
   assert.ok(i > 0);
-  assert.match(src.slice(i, i + 1800), /restoreParkedFullText\(d\)/);
+  assert.match(src.slice(i, i + 1800), /restoreParkedFullText\(d, \{ keepIfCvWrongProduction: true \}\)/);
+});
+
+// Found by the BRO-8324 live-data check on a-christmas-carol-west-end-2026/buzznews--ken-payne.json:
+// the date flag cleared, CV still said "reviews the Aurora, Illinois production", and the body was
+// restored under a wrongProduction flag that a later pass re-applied.
+test('anticipatory clears keep the body parked when content verification says another production', () => {
+  const body = 'x'.repeat(400);
+  const mk = () => ({ wrongFullText: body, contentVerification: { wrongProduction: true } });
+  const a = mk();
+  assert.equal(restoreParkedFullText(a, { keepIfCvWrongProduction: true }), false);
+  assert.equal(a.fullText, undefined);
+  assert.equal(a.wrongFullText, body);
+  // the self-heal path (CV flag deliberately cleared by a carve-out) still restores by default
+  const b = mk();
+  assert.equal(restoreParkedFullText(b), true);
+  assert.equal(b.fullText, body);
+});
+
+test('both anticipatory clear blocks in rebuild-all-reviews pass keepIfCvWrongProduction', () => {
+  const src = fs.readFileSync(new URL('../rebuild-all-reviews.js', import.meta.url), 'utf8');
+  assert.equal((src.match(/restoreParkedFullText\(d, \{ keepIfCvWrongProduction: true \}\)/g) || []).length, 2);
+});
+
+// Cousins of the same bug (review of 652cd4aec): two other repair branches also moved
+// wrongFullText back to fullText without looking at a live wrong-content verdict.
+test('the other fullText-restore repair branches respect wrong-content flags', () => {
+  const read = (rel) => fs.readFileSync(new URL(rel, import.meta.url), 'utf8');
+  for (const rel of ['../collect-review-texts.js', '../backfill-review-flags.js']) {
+    const src = read(rel);
+    const i = src.indexOf('data.fullText = data.wrongFullText');
+    assert.ok(i > 0, rel);
+    const before = src.slice(Math.max(0, i - 400), i);
+    assert.match(before, /contentVerification\.wrongProduction === true/, rel);
+    assert.match(before, /!data\.wrongProduction/, rel);
+  }
 });

@@ -588,34 +588,6 @@
     "queuedAt": "2026-11-25T18:03:49.846Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 26 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +20 more). Checked 2026-11-25.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-25T19:09:09.921Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-25.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-25T19:30:16.919Z"
-  },
-  {
     "conditionKey": "live-data-test:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows",
     "title": "Live-data test failing: live build yields season and deep-dive prompts with shows (scripts/tests/research-prompts.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"live build yields season and deep-dive prompts with shows\" in scripts/tests/research-prompts.test.mjs is red against the live corpus.\n\nnode <root>/scripts/research-prompts/gen-batches.js /tmp/rp-WOwdu7 failed:\np5 commercial 9\np5b commercial 30\np6 commercial 7\np4 nonprofit 10\np4b nonprofit 12\np7 commercial 20\np8 commercial 23\np9 commercial 38\np10 commercial 68\np10b commercial 30\np11 nonprofit 12\np12 nonprofit 12\np12b nonprofit 24\nrows 296 placed 295\n<root>/scripts/research-prompts/gen-batches.js:57\nif (used < all) throw new Error(`gen-batches: ${all - used} gap rows fit no prompt group (add or widen a group)`);\n^\n\nError: gen-batches: 1 gap rows fit no prompt group (add or widen a group)\nat Object.<anonymous> (<root>/scripts/research-prompts/gen-batches.js:57:23)\nat Module._compile (node:internal/modules/cjs/loader:1781:14)\nat Object..js (node:internal/modules/cjs/loader:1913:10)\nat Module.load (node:internal/modules/cjs/loader:1505:32)\nat Function._load (node:internal/modules/cjs/loader:1309:12)\nat wrapModuleLoad (node:internal/modules/cjs/loader:254:19)\nat Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\nat node:internal/main/run_main_module:36:49\n\nNode.js v22.23.5\n",
@@ -644,5 +616,91 @@
     "testId": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd",
     "fields": [],
     "queuedAt": "2026-11-25T19:21:17.090Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +18 more). Checked 2026-11-25.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T19:43:01.132Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:the-afronauts-west-end-2026",
+    "title": "Shipped review missing publishDate on The Afronauts",
+    "description": "artsdesk/null SHIPPED with no publishDate — cannot confirm post-opening: https://theartsdesk.com/theatre/afronauts-royal-court-review-final-frontier-remains-elusive",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T19:42:07.638Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8111-cli-smoke-timeout",
+    "title": "Landing blocked: lint-workflows red on land/bro-8111-cli-smoke-timeout",
+    "description": "land.yml did not land land/bro-8111-cli-smoke-timeout: the lint-workflows gate went red at d5bc25e714. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45684962811",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8111-cli-smoke-timeout"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "d5bc25e7141fea4a3ec7f8cd3fe8d0c1fdbbc156"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45684962811"
+      }
+    ],
+    "queuedAt": "2026-11-25T19:50:59.200Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
+    "title": "Data audit failing: Audit outlet-registry gaps",
+    "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45696135332",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit outlet-registry gaps"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45696135332)"
+      }
+    ],
+    "queuedAt": "2026-11-25T20:42:52.864Z"
   }
 ]

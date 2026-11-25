@@ -117,3 +117,34 @@ test('an ordinal publish date ("March 17th, 2017") still lets the other-show tes
   const d = { ...vv, publishDate: 'March 17th, 2017' };
   assert.equal((quoteInOtherShowPassage(QUOTE_PRICE, d, cfa, index) || {}).rule, 'other-show');
 });
+
+test('a quote that names the other show by title and nothing of this one is rejected (live Village Voice, 2026-11-25)', () => {
+  const q = "Coaxing a vital, personalized eccentricity from each of his four equally strong actors, he's come up with the best rendition of The Price since John Stix's 1979 version, with the unforgettable Joseph Buloff as the furniture dealer.";
+  const d = { ...vv, fullText: vv.fullText.replace('As the play', `${q} As the play`) };
+  assert.equal((quoteInOtherShowPassage(q, d, cfa, index) || {}).rule, 'other-show');
+  assert.equal(quoteInOtherShowPassage(q, { ...d, showId: price.id, showTitle: price.title }, price, index), null);
+});
+
+test('a comparison that names the other title is kept when this show is named in between', () => {
+  const q = 'It runs shorter and warmer than The Price, and the cast is better for it.';
+  const d = { ...vv, fullText: `${vv.fullText.slice(0, 60)}${filler(4)} The Price opened this week. Come From Away is the better night out. ${q}${filler(2)}` };
+  assert.equal(quoteInOtherShowPassage(q, d, cfa, index), null);
+});
+
+test('a one-word title in the quote is not an other-show signal (Caroline)', () => {
+  const caroline = { id: 'caroline-2017', title: 'Caroline', openingDate: '2017-03-26', cast: [] };
+  const idx = buildEvidenceIndex([caroline]);
+  const q = 'Caroline is the name of the loyal servant, and she steals every scene she is in.';
+  const d = { ...vv, fullText: `Caroline opens this week.${filler(4)} ${q}${filler(3)}` };
+  assert.equal(quoteInOtherShowPassage(q, d, cfa, idx), null);
+});
+
+test('a title that contains this show\'s own title is not an other-show signal (Romeo and Juliet Suite)', () => {
+  const suite = { id: 'rj-suite', title: 'Romeo and Juliet Suite', openingDate: '2017-03-12', cast: [] };
+  const rj = { id: 'rj', title: 'Romeo and Juliet', openingDate: '2017-03-14', cast: [] };
+  const idx = buildEvidenceIndex([suite, rj]);
+  const q = 'Romeo and Juliet Suite stays close to the text and never loses its pace.';
+  const d = { showId: 'rj-suite', showTitle: suite.title, publishDate: '2017-03-17',
+    fullText: `Romeo and Juliet opens in the same week.${filler(4)} ${q}${filler(3)}` };
+  assert.equal(quoteInOtherShowPassage(q, d, suite, idx), null);
+});

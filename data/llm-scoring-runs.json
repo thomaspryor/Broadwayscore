@@ -427254,28 +427254,8 @@
     "logKeepsSince": "2026-11-24T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-25T19:33:05.751Z",
-    "completedAt": "2026-11-25T19:33:09.760Z",
-    "totalReviews": 78,
-    "processed": 1,
-    "skipped": 77,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5184,
-      "output": 300,
-      "cacheRead": 0,
-      "cacheWrite": 3759,
-      "total": 13754
-    },
-    "costUsd": 0.02206935,
-    "runId": "45685805614",
-    "source": "index",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-24T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-25T19:38:07.575Z",
-    "completedAt": "2026-11-25T19:38:07.625Z",
+    "startedAt": "2026-11-25T19:46:10.078Z",
+    "completedAt": "2026-11-25T19:46:10.080Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -427288,7 +427268,198 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "45685805614",
+    "runId": "45686291005",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T19:49:55.629Z",
+    "completedAt": "2026-11-25T19:49:55.687Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "45688300424",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T19:57:15.741Z",
+    "completedAt": "2026-11-25T19:57:18.740Z",
+    "totalReviews": 17,
+    "processed": 0,
+    "skipped": 16,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4966,
+      "output": 124,
+      "cacheRead": 3762,
+      "cacheWrite": 0,
+      "total": 13252
+    },
+    "costUsd": 0.0071795999999999995,
+    "runId": "45689568787",
+    "source": "index",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T20:02:17.810Z",
+    "completedAt": "2026-11-25T20:02:17.815Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "45689568787",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T20:07:01.614Z",
+    "completedAt": "2026-11-25T20:30:20.150Z",
+    "totalReviews": 85203,
+    "processed": 166,
+    "skipped": 84981,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 1274279,
+      "output": 62750,
+      "cacheRead": 814373,
+      "cacheWrite": 30122,
+      "total": 3250093
+    },
+    "costUsd": 1.18484355,
+    "runId": "45690559779",
+    "source": "index",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T20:30:40.897Z",
+    "completedAt": "2026-11-25T20:34:13.649Z",
+    "totalReviews": 40,
+    "processed": 40,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 106928,
+      "output": 9681,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 116609
+    },
+    "costUsd": 0.09989259999999998,
+    "runId": "45690559779",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T20:30:40.918Z",
+    "completedAt": "2026-11-25T20:30:59.677Z",
+    "totalReviews": 8,
+    "processed": 166,
+    "skipped": 5,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 1270793,
+      "output": 62631,
+      "cacheRead": 806804,
+      "cacheWrite": 33929,
+      "total": 3238888
+    },
+    "costUsd": 2.3546306500000003,
+    "runId": "45695184145",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+        "outletId": "theater-life",
+        "error": "resume_input_hash_mismatch"
+      },
+      {
+        "showId": "the-last-ship-2014",
+        "outletId": "rollingstone",
+        "error": "resume_input_hash_mismatch"
+      }
+    ],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T20:35:56.532Z",
+    "completedAt": "2026-11-25T20:35:56.534Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "45695184145",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T20:48:41.525Z",
+    "completedAt": "2026-11-25T20:48:41.529Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "45697611465",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-24T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-25T20:52:05.427Z",
+    "completedAt": "2026-11-25T20:52:05.474Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "45698460682",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-24T00:00:00.000Z"
