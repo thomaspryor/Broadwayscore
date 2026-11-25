@@ -1,20 +1,20 @@
 {
   "system": "autofix",
   "status": "warn",
-  "lastChecked": "2026-11-24T12:34:03.521Z",
+  "lastChecked": "2026-11-25T11:27:23.914Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Autofix: persistent visitor rows with no open card",
-      "status": "warn",
-      "message": "4 visitor-facing row(s) red for 4+ days with no open card: Data quality: missed opening-night broadcasts (10d, BRO-7592 closed); Quality: opening date vs review dates (5d, BRO-7823 closed); Press night: score gate undecided (5d, BRO-7980 closed); Commercial: rows held for a person (4d, BRO-8050 closed)"
+      "status": "pass",
+      "message": "Every visitor-facing row red for 96h+ has an open card"
     },
     {
       "name": "Autofix: digest rows listed 4+ days with no card",
       "status": "warn",
-      "message": "2 digest row(s) listed 4+ days with no card: Quality: opening date vs review dates (12d); Autofix: digest rows listed 4+ days with no card (9d)"
+      "message": "1 digest row(s) listed 4+ days with no card: Autofix: digest rows listed 4+ days with no card (10d)"
     }
   ]
 }

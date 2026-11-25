@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-24T12:59:15.180Z",
+  "generatedAt": "2026-11-25T12:00:31.223Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 6145,
-  "flaggedShows": 43,
-  "flaggedFiles": 152,
+  "scannedShows": 6154,
+  "flaggedShows": 41,
+  "flaggedFiles": 129,
   "readmissionRiskFiles": 1,
   "readmissionRisks": [
     {
@@ -17,340 +17,10 @@
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 24,
-    "needs-human-review": 19
+    "likely-contamination": 23,
+    "needs-human-review": 18
   },
   "shows": [
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "The Old Vic",
-      "previewsStartDate": "2026-11-12",
-      "openingDate": "2026-11-24",
-      "verdict": "likely-contamination",
-      "reasoning": "23/23 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 23,
-        "distinctYears": [
-          2015,
-          2017,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024,
-          2025
-        ],
-        "spanDays": 3651,
-        "flaggedCount": 23,
-        "venueMentionCount": 5
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "all-that-dazzles-uk--all-that-dazzles.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "all-that-dazzles-uk",
-          "criticName": "All That Dazzles",
-          "publishDate": "2024-11-21",
-          "url": "https://www.allthatdazzles.co.uk/post/review-a-christmas-carol-the-old-vic-2",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "all-that-dazzles-uk--daz-gale.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "all-that-dazzles-uk",
-          "criticName": "All That Dazzles",
-          "publishDate": "2024-11-21",
-          "url": "https://www.allthatdazzles.co.uk/post/review-a-christmas-carol-the-old-vic-2",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "artsdesk--rachel-halliburton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "artsdesk",
-          "criticName": "Rachel Halliburton",
-          "publishDate": "2025-11-28",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "broadwayworld--aliya-al-hassan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Aliya Al-Hassan",
-          "publishDate": "2022-11-24",
-          "url": "https://www.broadwayworld.com/westend/article/Review-A-CHRISTMAS-CAROL-Old-Vic-Theatre-20221124",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "broadwayworld--michael-dale.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Aliya Al-Hassan",
-          "publishDate": "2020-12-18",
-          "url": "https://www.broadwayworld.com/westend/article/BWW-Review-A-CHRISTMAS-CAROL-Old-Vic-In-Camera-20201218",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--chris-wiegand.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Chris Wiegand",
-          "publishDate": "2025-12-15",
-          "url": "https://www.theguardian.com/stage/2025/dec/15/christmas-carol-goes-wrong-review-apollo-mischief-theatre",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "hollywood-reporter--david-rooney.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "hollywood-reporter",
-          "criticName": "David Rooney",
-          "publishDate": "2019-11-20",
-          "url": "https://www.hollywoodreporter.com/news/general-news/a-christmas-carol-theater-review-1256271/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2020-12-18",
-          "url": "https://inews.co.uk/culture/arts/a-christmas-carol-old-vic-review-andrew-lincoln-jack-thorne-how-to-watch-800856?srsltid=AfmBOooVKCEcgDfBL7L3md5hYgUGdAKRL19KM73mw7SqSA7Wi4v4ZTPy",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--paul-taylor.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Paul Taylor",
-          "publishDate": "2017-11-30",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/christmas-carol-old-vic-review-rhys-ifans-a8084296.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--phil-willmott.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Phil Willmott",
-          "publishDate": "2015-12-17",
-          "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--shehrazade-zafar-arif.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Shehrazade Zafar-Arif",
-          "publishDate": "2025-11-26",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-a-christmas-carol-old-vic",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-11-27",
-          "url": "https://www.londonboxoffice.co.uk/news/post/a-christmas-carol-a-ghost-story-alexandra-palace-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-theatre--suzy-evans.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-theatre",
-          "criticName": "Suzy Evans",
-          "publishDate": "2020-12-18",
-          "url": "https://www.londontheatre.co.uk/reviews/andrew-lincoln-a-christmas-carol-the-old-vic-in-camera",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "lost-in-theatreland--amy-rye.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "lost-in-theatreland",
-          "criticName": "Amy Rye",
-          "publishDate": "2023-11-23",
-          "url": "https://lostintheatreland.co.uk/a-christmas-carol-review-the-old-vic/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--india-block.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "India Block",
-          "publishDate": "2025-11-26",
-          "url": "https://www.standard.co.uk/culture/theatre/a-christmas-carol-at-the-old-vic-2025-b1259843.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--claire-allfree.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Claire Allfree",
-          "publishDate": "2024-11-21",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/a-christmas-carol-old-vic-review-john-simm/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thereviewshub--dan-english.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thereviewshub",
-          "criticName": "Dan English",
-          "publishDate": "2025-11-26",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--tom-wicker.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Tom Wicker",
-          "publishDate": "2023-11-23",
-          "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-review-at-the-old-vic-london-starring-christopher-eccleston",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--dominic-maxwell.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Dominic Maxwell",
-          "publishDate": "2025-11-26",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-review-old-vic-2gv5gqs7k",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--rachel-halliburton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Rachel Halliburton",
-          "publishDate": "2025-11-26",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-review-old-vic-2gv5gqs7k",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "west-end-best-friend--lisamarie-lamb.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "west-end-best-friend",
-          "criticName": "Lisamarie Lamb",
-          "publishDate": "2023-11-23",
-          "url": "https://www.westendbestfriend.co.uk/news/review-a-christmas-carol-old-vic-theatre-nov-23",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--alun-hood.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Alun Hood",
-          "publishDate": "2021-11-26",
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/a-christmas-carol-stephen-mangan-old-vic_55426.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--sarah-crompton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Sarah Crompton",
-          "publishDate": "2022-11-24",
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/a-christmas-carol-starring-owen-teale-old-vic_57871.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
     {
       "showId": "private-lives-2025",
       "title": "Private Lives",
@@ -1967,6 +1637,69 @@
       ]
     },
     {
+      "showId": "west-side-story-west-end-2026",
+      "title": "West Side Story",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": "2027-11-05",
+      "openingDate": "2027-11-25",
+      "verdict": "likely-contamination",
+      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 3,
+        "distinctYears": [
+          2021,
+          2026
+        ],
+        "spanDays": 1735,
+        "flaggedCount": 3,
+        "venueMentionCount": 1
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--shehrazade-zafar-arif.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Shehrazade Zafar-Arif",
+          "publishDate": "2026-09-10",
+          "url": "https://www.londonboxoffice.co.uk/news/post/west-side-story-revival-coming-to-national-theatre-in-2027",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "sunday-times--kevin-maher.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "sunday-times",
+          "criticName": "Kevin Maher",
+          "publishDate": "2021-12-10",
+          "url": "https://www.thetimes.com/culture/film/article/west-side-story-review-spielberg-buoyantly-reboots-bernsteins-classic-n99n9xhff",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        },
+        {
+          "file": "sunday-times--unknown.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "sunday-times",
+          "criticName": "Kevin Maher",
+          "publishDate": "2021-12-10",
+          "url": "https://www.thetimes.com/culture/film/article/west-side-story-review-spielberg-buoyantly-reboots-bernsteins-classic-n99n9xhff",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "romeo-and-juliet-west-end-2027",
       "title": "Romeo & Juliet",
       "market": "west-end",
@@ -2228,55 +1961,6 @@
       ]
     },
     {
-      "showId": "west-side-story-west-end-2026",
-      "title": "West Side Story",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Olivier Theatre",
-      "previewsStartDate": "2026-11-12",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 2,
-        "distinctYears": [
-          2021
-        ],
-        "spanDays": 0,
-        "flaggedCount": 2,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "sunday-times--kevin-maher.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "sunday-times",
-          "criticName": "Kevin Maher",
-          "publishDate": "2021-12-10",
-          "url": "https://www.thetimes.com/culture/film/article/west-side-story-review-spielberg-buoyantly-reboots-bernsteins-classic-n99n9xhff",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        },
-        {
-          "file": "sunday-times--unknown.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "sunday-times",
-          "criticName": "Kevin Maher",
-          "publishDate": "2021-12-10",
-          "url": "https://www.thetimes.com/culture/film/article/west-side-story-review-spielberg-buoyantly-reboots-bernsteins-classic-n99n9xhff",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "nutcracker-west-end-2026",
       "title": "Nutcracker",
       "market": "west-end",
@@ -2392,42 +2076,6 @@
           "criticName": "Lyn Gardner",
           "publishDate": "2016-04-13",
           "url": "https://www.theguardian.com/stage/2016/apr/12/the-brink-review-brad-birch-orange-tree",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "the-jungle-book-west-end-2026",
-      "title": "The Jungle Book",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "National Theatre (Olivier)",
-      "previewsStartDate": "2026-11-13",
-      "openingDate": "2026-11-24",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"National Theatre (Olivier)\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2016
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "standard--lyndsey-winship.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Lyndsey Winship",
-          "publishDate": "2016-08-15",
-          "url": "https://www.standard.co.uk/culture/the-jungle-book-dance-review-kiplings-classic-transported-to-an-urban-jungle-a3320066.html",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

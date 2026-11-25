@@ -1,35 +1,35 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-24T12:34:03.516Z",
+  "lastChecked": "2026-11-25T11:27:23.910Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Quality: opening date vs review dates",
-      "status": "warn",
-      "message": "2 show(s) store an opening date later than their reviews: a-christmas-carol-west-end-2026 (stored 2026-11-24, reviews 2026-11-18); a-midsummer-nights-dream-jentes-regional-2026 (stored 2026-11-21, reviews 2026-11-17)"
+      "status": "pass",
+      "message": "No opening date contradicts its reviews (1 acked)"
     },
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "warn",
-      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: vanya-west-end-2023 The Sunday Times 4/5 stars→80 vs LLM 43, gap 37)"
+      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: the-little-foxes-off-west-end-2024 The Reviews Hub A→90 vs LLM 59, gap 31)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.2% scored (52705/53686)"
+      "message": "98.4% scored (53121/53994)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "33 audit(s) drifting, each reported on its own card or the digest FYI line (5h ago)"
+      "message": "32 audit(s) drifting, each reported on its own card or the digest FYI line (4h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "23772 messages, 3 auth failures (p=reject)"
+      "message": "28082 messages, 3 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -38,8 +38,8 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "pass",
-      "message": "No probable domain moves in 413 unregistered host(s)"
+      "status": "warn",
+      "message": "1 unregistered host(s) name-match a registered outlet (e.g. danceinforma.co.uk → dance-informa-usa) — probable domain move dropping reviews via domain-mismatch"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,22 +49,22 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1904 outlet(s), 84535 review(s)"
+      "message": "No broken-extractor signature in 1907 outlet(s), 84679 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1904 outlet(s), 84535 review(s)"
+      "message": "No broken-extractor signature in 1907 outlet(s), 84679 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
-      "status": "warn",
-      "message": "1 outlet(s) drifted from outlet-registry.json standingCoverage flags (broadway demote: chicagotribune)"
+      "status": "pass",
+      "message": "No standingCoverage drift"
     },
     {
       "name": "Quality: expected critics missing",
       "status": "warn",
-      "message": "4 usual-critic review(s) the automatic search could not settle (36 more still being searched for automatically): Theatrely on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. TheWrap on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Time Out New York on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Variety on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running."
+      "message": "7 usual-critic review(s) the automatic search could not settle (21 more still being searched for automatically): London Theatre on Harry Potter and the Cursed Child: no review on the site, and the automatic searches could not settle it. The Stage on Harry Potter and the Cursed Child: no review on the site, and we have a copy on file, but it never made it onto the site. WhatsOnStage on Harry Potter and the Cursed Child: no review on the site, and the automatic searches could not settle it. Theatrely on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. TheWrap on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Time Out New York on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Variety on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running."
     },
     {
       "name": "Quality: coverageExpectation drift",
@@ -74,7 +74,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "152 outlet×market rows checked, none NEW silent 2+ consecutive weeks (15 known/baselined, 33 dormant 1y+, 15h ago)"
+      "message": "152 outlet×market rows checked, none NEW silent 2+ consecutive weeks (15 known/baselined, 33 dormant 1y+, 2d ago)"
     },
     {
       "name": "Quality: outlet feed staleness",
