@@ -628,3 +628,60 @@ test('BRO-7044: backstory naming a sibling show in separate sentences is not a j
   const p = planMultiShowFanout({ outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: 'b-2026', publishDate: '2026-10-20', fullText: text }, SHOWS, { joint: true });
   assert.ok(!p || (p.otherSections || []).length === 0);
 });
+
+// BRO-8272: Talkin' Broadway 02_16_23 (The Wanderers). ONE review whose lede names
+// the neighbouring show once as a "cousin" and whose footer lists both shows. The
+// strict path read the lede mention as the neighbour's stretch (the longest run of
+// its title), the review's own verdict paragraph as the second stretch, and the
+// footer as a per-show listing, so it cut the whole review onto the neighbour.
+// The prose is invented; only the shape (order, counts, footer) is the real page's.
+test('BRO-8272: lede that names a cousin show once, with a footer listing both, stays one review', () => {
+  const SHOWS = [
+    { id: 'the-wanderers-test-2023', title: 'The Wanderers', category: 'off-broadway', openingDate: '2023-02-16' },
+    { id: 'leopoldstadt-test-2022', title: 'Leopoldstadt', category: 'broadway', openingDate: '2022-10-02', closingDate: '2023-07-02' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const text = [
+    `The Wanderers , a new family drama downtown, shares much with its famous cousin a couple of blocks away, Leopoldstadt : a long single act and a restless timeline. ${filler('setting', 14)}`,
+    `Why is this called The Wanderers ? (An explanation does arrive.) ${filler('verdict', 8)} The Wanderers has some sharp observations, but I might have enjoyed it more with fewer questions.`,
+    `The Wanderers Through April 2, 2023 Roundabout Theatre Company Laura Pels Theatre, 111 West 46th Street, New York NY Tickets online: example.org Leopoldstadt . The Wanderers Through April 2, 2023 Roundabout Theatre Company Laura Pels Theatre, 111 West 46th Street, New York NY`,
+  ].join(' ');
+  const own = 'the-wanderers-test-2023';
+  const p = planMultiShowFanout({ outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: own, publishDate: '2023-02-16', fullText: text }, SHOWS, { joint: true });
+  assert.ok(!p || (p.otherSections || []).length === 0, 'no neighbour child may be cut from a comparison lede');
+  const q = planMultiShowFanout({ outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: 'leopoldstadt-test-2022', publishDate: '2023-02-16', fullText: text }, SHOWS, { joint: true });
+  assert.ok(!q || (q.otherSections || []).length === 0, 'same from the neighbour side');
+});
+
+// BRO-8272 (reviewer finding): the comparison cue may come AFTER the neighbour's title.
+test('BRO-8272: cue after the neighbour title in the same sentence is still a comparison', () => {
+  const SHOWS = [
+    { id: 'the-wanderers-test-2023', title: 'The Wanderers', category: 'off-broadway', openingDate: '2023-02-16' },
+    { id: 'leopoldstadt-test-2022', title: 'Leopoldstadt', category: 'broadway', openingDate: '2022-10-02' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const text = [
+    `The Wanderers , a new family drama downtown, invites comparison with Leopoldstadt , its cousin a couple of blocks away. ${filler('setting', 14)}`,
+    `Why is this called The Wanderers ? (An explanation does arrive.) ${filler('verdict', 8)} The Wanderers has some sharp observations, but I might have enjoyed it more with fewer questions.`,
+    `The Wanderers Through April 2, 2023 Roundabout Theatre Company Laura Pels Theatre, 111 West 46th Street, New York NY Tickets online: example.org Leopoldstadt . The Wanderers Through April 2, 2023 Roundabout Theatre Company Laura Pels Theatre, 111 West 46th Street, New York NY`,
+  ].join(' ');
+  const p = planMultiShowFanout({ outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: 'the-wanderers-test-2023', publishDate: '2023-02-16', fullText: text }, SHOWS, { joint: true });
+  assert.ok(!p || (p.otherSections || []).length === 0);
+});
+
+test('BRO-8272: a lede naming the cousin twice is still one review; a later "Unlike X" pivot still joint-splits', () => {
+  const SHOWS = [
+    { id: 'the-wanderers-test-2023', title: 'The Wanderers', category: 'off-broadway', openingDate: '2023-02-16' },
+    { id: 'leopoldstadt-test-2022', title: 'Leopoldstadt', category: 'broadway', openingDate: '2022-10-02' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const foot = `The Wanderers Through April 2, 2023 Roundabout Theatre Company Laura Pels Theatre, 111 West 46th Street, New York NY Tickets online: example.org Leopoldstadt . The Wanderers Through April 2, 2023 Roundabout Theatre Company Laura Pels Theatre, 111 West 46th Street, New York NY`;
+  const text = [
+    `The Wanderers , a new family drama downtown, shares much with its cousin Leopoldstadt : one act. Like Leopoldstadt it sprawls. ${filler('setting', 14)}`,
+    `Why is this called The Wanderers ? ${filler('verdict', 8)} The Wanderers has some sharp observations, but I might have enjoyed it more with fewer questions.`,
+    foot,
+  ].join(' ');
+  const mk = (t) => planMultiShowFanout({ outletId: 'x', outlet: 'X', criticName: 'C', url: 'https://e.com/a', contentTier: 'complete', showId: 'the-wanderers-test-2023', publishDate: '2023-02-16', fullText: t }, SHOWS, { joint: true });
+  const p = mk(text);
+  assert.ok(!p || (p.otherSections || []).length === 0);
+});

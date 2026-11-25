@@ -731,6 +731,21 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
         if (runs[i].count < 2 && /[\p{L}\p{N}]/u.test(text.slice(sentenceStart(text, runs[i].at), runs[i].at))) return [];
       }
     }
+    // With a closing listing, the EARLIEST stretch (the lede position) named only once or twice, in
+    // a sentence carrying a comparison cue ("shares much with its ... cousin ..., Leopoldstadt"), is
+    // a lede that compares to another show, not that show's stretch; a footer naming both shows does
+    // not make it one (BRO-8272). Later stretches are left alone: "Unlike X, Y ..." is a normal pivot.
+    if (tailAll) {
+      const r = runs[bodyIdx[0]];
+      if (r.count <= 2) {
+        const from = sentenceStart(text, r.at);
+        const stop = /[.!?]["”’]?(?=\s|$)/g;
+        stop.lastIndex = r.at;
+        const e = stop.exec(text);
+        const sentenceEnd = e && e.index - r.at < 400 ? e.index + e[0].length : Math.min(text.length, r.at + 200);
+        if (LEDE_COMPARISON_RE.test(text.slice(from, sentenceEnd))) return [];
+      }
+    }
     const minShare = tailAll ? MIN_SECTION_SHARE : HEAD_ONLY_MIN_SHARE;
     const cutAt = (runIdx) => {
       const r = runs[runIdx];
