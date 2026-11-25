@@ -180,7 +180,9 @@
     "hadestown-2019/theater-life--isa-goldberg.json",
     "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
     "now-you-see-me-live-2026/culturesauce--unknown.json",
-    "cloud-9-west-end-2026/standard--unknown.json"
+    "cloud-9-west-end-2026/standard--unknown.json",
+    "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/nytimes--casey-schwartz.json"
   ],
   "failed": [
     "_superseded-misattributed/coal-country-off-broadway-2022--theatermania--hayley-levitt--1794252956291.json",
@@ -496,7 +498,9 @@
       "dog-mom-off-west-end-2026/ground--unknown.json",
       "truly-howard-hughes-off-broadway-2026/cititour--unknown.json",
       "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "the-humanities-regional-2026/broadwayworld--unknown.json"
+      "the-humanities-regional-2026/broadwayworld--unknown.json",
+      "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/nytimes--casey-schwartz.json"
     ],
     "brightdata": [
       "the-wanderers-off-broadway-2023/talkinbroadway--marc-miller.json"
@@ -579,7 +583,7 @@
     ]
   },
   "startTime": "2026-11-25T02:34:05.538Z",
-  "lastProcessed": "cloud-9-west-end-2026/standard--unknown.json",
+  "lastProcessed": "its-a-wonderful-life-a-live-radio-play-2026/nytimes--casey-schwartz.json",
   "log": [
     {
       "t": "2026-11-25T02:52:55.288Z",
@@ -764,6 +768,28 @@
       "event": "bb-session",
       "session": "9acaa09f",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-25T05:45:48.712Z",
+      "event": "bb-session",
+      "session": "6281c193",
+      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago"
+    },
+    {
+      "t": "2026-11-25T05:45:49.622Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T05:46:42.535Z",
+      "event": "bb-session",
+      "session": "7b421068",
+      "url": "https://www.nytimes.com/2026/10/25/books/review/sam-wasson-frank-capra.html"
+    },
+    {
+      "t": "2026-11-25T05:46:43.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
