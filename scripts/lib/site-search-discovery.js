@@ -1429,7 +1429,23 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
  * @returns {Promise<string>} HTML
  */
 async function fetchJsSearchHtml(config, url, deps = {}) {
-  const sbFetch = deps.sbFetch || fetchWithScrapingBee;
+  // BRO-8323: ScrapingBee is optional. When its key is absent, or its render rejects or comes
+  // back empty (cooldown, quota, 4xx), fall through to the free local Playwright render, then a
+  // 1-credit Scrapingdog plain page, each accepted only if it shows a result link for this outlet.
+  // Playwright matched SB on deadline (10/10 links), timeout (4 vs 2-5) and hollywood-reporter
+  // (3/3) in the 2026-11-25 rehearsal; Scrapingdog returned 0 links on deadline and timeout.
+  const realSb = deps.sbFetch || fetchWithScrapingBee;
+  const sbFetch = async (u) => {
+    let sbErr = null;
+    try {
+      const h = await realSb(u);
+      if (h) return h;
+    } catch (e) { sbErr = e; }
+    const rescued = await rescueJsSearchHtml(config, u, deps);
+    if (rescued) return rescued;
+    if (sbErr) throw sbErr;
+    return '';
+  };
   // SCRAPER_USE_SCRAPINGDOG=0 is the global Scrapingdog off switch (scraper.js); fetchWithScrapingdog
   // itself does not read it, so honour it here. It is also the rollback for this reroute.
   if (config.fetchVia !== 'scrapingdog-page' || process.env.SCRAPER_USE_SCRAPINGDOG === '0') return sbFetch(url);
@@ -1452,6 +1468,37 @@ async function fetchJsSearchHtml(config, url, deps = {}) {
     if (probe.test(html) && echoes >= 3) return html;
   }
   return sbFetch(url);
+}
+
+/** True when html shows a result link for this outlet and echoes the query (not a nav-only shell). */
+function looksLikeSearchResults(config, html, url) {
+  if (!html || typeof html !== 'string') return false;
+  const probe = new RegExp(config.linkPattern.source, config.linkPattern.flags.replace('g', ''));
+  if (!probe.test(html)) return false;
+  let word = '';
+  try { word = (new URL(url).searchParams.get('q') || '').toLowerCase().split(/[^a-z0-9]+/).find(w => w.length >= 3) || ''; } catch (_) { word = ''; }
+  return word ? html.toLowerCase().split(word).length - 1 >= 3 : true;
+}
+
+/**
+ * BRO-8323: the no-ScrapingBee path for a JS-rendered search page. Free Playwright render first,
+ * then a Scrapingdog plain page (1 credit). Returns html that passes looksLikeSearchResults, else ''.
+ * Injectable (deps.pwFetch, deps.sdPlainFetch) for tests. SB_RESCUE_DISABLED=1 turns it off.
+ */
+async function rescueJsSearchHtml(config, url, deps = {}) {
+  if (process.env.SB_RESCUE_DISABLED === '1') return '';
+  const pwFetch = deps.pwFetch || ((u) => require('./scraper').fetchWithPlaywright(u, {}));
+  const sdPlain = deps.sdPlainFetch || deps.sdFetch || ((u) => require('./scraper').fetchWithScrapingdog(u, { renderJs: false }));
+  const tiers = [pwFetch];
+  if (process.env.SCRAPER_USE_SCRAPINGDOG !== '0') tiers.push(sdPlain);
+  for (const t of tiers) {
+    try {
+      const res = await t(url);
+      const html = typeof res === 'string' ? res : (res && typeof res.content === 'string' ? res.content : '');
+      if (looksLikeSearchResults(config, html, url)) return html;
+    } catch (_) { /* next tier */ }
+  }
+  return '';
 }
 
 /**
@@ -1895,6 +1942,7 @@ module.exports = {
   selectApplicableSiteSearchOutlets,
   SITE_SEARCH_ENDPOINTS,
   fetchJsSearchHtml,
+  rescueJsSearchHtml,
   tryFreeWpSearch,
   extractVultureTheaterArticleUrls,
   extractGuardianRssReviewUrls,

@@ -382,3 +382,44 @@ test('BRO-7532: only deadline and hollywood-reporter carry freeWp, each with a p
   }
   assert.ok(SITE_SEARCH_ENDPOINTS.deadline.freeWp && SITE_SEARCH_ENDPOINTS['hollywood-reporter'].freeWp);
 });
+
+test('BRO-8323: JS site-search works with no ScrapingBee: Playwright then Scrapingdog plain, SB still first', async (t) => {
+  const { fetchJsSearchHtml, rescueJsSearchHtml } = require('./site-search-discovery.js');
+  const dl = SITE_SEARCH_ENDPOINTS.deadline;
+  const url = 'https://deadline.com/?s=Hamilton+review';
+  const good = '<a href="https://deadline.com/2026/11/hamilton-review-123/">x</a>';
+  const shell = '<html>loading</html>';
+  const noKey = async () => { throw new Error('No ScrapingBee key'); };
+  const calls = [];
+  const pw = async () => { calls.push('pw'); return { content: good, source: 'playwright' }; };
+  const sd = async () => { calls.push('sd'); return { content: good }; };
+
+  // SB key absent: the free render answers, and Scrapingdog is never paid.
+  assert.equal(await fetchJsSearchHtml(dl, url, { sbFetch: noKey, pwFetch: pw, sdPlainFetch: sd }), good);
+  assert.deepEqual(calls, ['pw']);
+
+  // SB empty or rejecting counts the same as absent; Playwright shell then SD plain.
+  calls.length = 0;
+  const pwShell = async () => { calls.push('pw'); return { content: shell }; };
+  assert.equal(await fetchJsSearchHtml(dl, url, { sbFetch: async () => '', pwFetch: pwShell, sdPlainFetch: sd }), good);
+  assert.deepEqual(calls, ['pw', 'sd']);
+
+  // SB working: unchanged, no rescue call at all (Broadway behaviour with the key present).
+  calls.length = 0;
+  assert.equal(await fetchJsSearchHtml(dl, url, { sbFetch: async () => 'SB-HTML', pwFetch: pw, sdPlainFetch: sd }), 'SB-HTML');
+  assert.deepEqual(calls, []);
+
+  // Everything fails: the original SB error surfaces so the caller reports it as before.
+  await assert.rejects(fetchJsSearchHtml(dl, url, { sbFetch: noKey, pwFetch: pwShell, sdPlainFetch: async () => null }), /No ScrapingBee key/);
+
+  // Kill switch and the Scrapingdog off switch.
+  const prev = { r: process.env.SB_RESCUE_DISABLED, s: process.env.SCRAPER_USE_SCRAPINGDOG };
+  t.after(() => { for (const [k, v] of [['SB_RESCUE_DISABLED', prev.r], ['SCRAPER_USE_SCRAPINGDOG', prev.s]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; } });
+  process.env.SB_RESCUE_DISABLED = '1';
+  assert.equal(await rescueJsSearchHtml(dl, url, { pwFetch: pw }), '');
+  delete process.env.SB_RESCUE_DISABLED;
+  process.env.SCRAPER_USE_SCRAPINGDOG = '0';
+  calls.length = 0;
+  assert.equal(await rescueJsSearchHtml(dl, url, { pwFetch: pwShell, sdPlainFetch: sd }), '');
+  assert.deepEqual(calls, ['pw']);
+});
