@@ -56,9 +56,10 @@ test('render gap: edges and fail-open cases', () => {
   assert.equal(d({ category: 'west-end', lastRenderMs: NOW - 5 * H, env: { SB_RENDER_GAP_HOURS: '6' } }).skip, true);
 });
 
-test('lastSbRenderMs: newest matching SB render for show+host only', () => {
+test('lastSbRenderMs: newest successful SB render for show+host only', () => {
+  g._resetIndexForTests();
   const led = path.join(dir, 'ledger.jsonl');
-  const row = (o) => JSON.stringify({ provider: 'scrapingbee', fn: 'render', host: 'thestage.co.uk', showId: 'we-show', ...o });
+  const row = (o) => JSON.stringify({ provider: 'scrapingbee', fn: 'render', success: true, host: 'thestage.co.uk', showId: 'we-show', ...o });
   fs.writeFileSync(led, [
     row({ ts: '2026-11-25T08:00:00Z' }),
     row({ ts: '2026-11-25T10:00:00Z' }),
@@ -66,11 +67,20 @@ test('lastSbRenderMs: newest matching SB render for show+host only', () => {
     row({ ts: '2026-11-25T11:40:00Z', host: 'other.com' }),
     row({ ts: '2026-11-25T11:50:00Z', provider: 'scrapingdog' }),
     row({ ts: '2026-11-25T11:55:00Z', fn: 'serp' }),
+    row({ ts: '2026-11-25T11:58:00Z', success: false }), // failed render must not count
+    row({ ts: '2026-11-25T09:00:00Z', host: 'www.news.example.org' }),
     'not json "scrapingbee"',
   ].join('\n') + '\n');
   assert.equal(g.lastSbRenderMs(led, 'we-show', 'thestage.co.uk'), Date.parse('2026-11-25T10:00:00Z'));
   assert.equal(g.lastSbRenderMs(led, 'we-show', 'nothere.com'), null);
+  assert.equal(g.lastSbRenderMs(led, 'we-show', 'news.example.org'), Date.parse('2026-11-25T09:00:00Z')); // www. ignored
+  assert.equal(g.lastSbRenderMs(led, 'we-show', 'www.thestage.co.uk'), Date.parse('2026-11-25T10:00:00Z'));
   assert.equal(g.lastSbRenderMs(path.join(dir, 'missing'), 'we-show', 'x'), null);
+});
+
+test('unknown category is never gated', () => {
+  assert.equal(g.skipSbSerpForCategory('some-new-market', {}), false);
+  assert.equal(g.renderGapDecision({ category: 'some-new-market', lastRenderMs: NOW - 60000, nowMs: NOW, env: {} }).skip, false);
 });
 
 test('wiring: url-discovery and site-search call the gate', () => {
@@ -78,3 +88,5 @@ test('wiring: url-discovery and site-search call the gate', () => {
   assert.match(fs.readFileSync(path.join(root, 'url-discovery.js'), 'utf8'), /sbSerpMarketSkips\(currentSpendShowId\(\)\)/);
   assert.match(fs.readFileSync(path.join(root, 'site-search-discovery.js'), 'utf8'), /renderGapDecision/);
 });
+
+test.after(() => g._setShowsPathForTests(null));

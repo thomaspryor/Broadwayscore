@@ -35,6 +35,9 @@ const DEFAULT_SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json'
 // 3h of ledger at the 2026-11 peak (~10MB/day) is ~1.3MB; read well past that.
 const LEDGER_TAIL_BYTES = 6 * 1024 * 1024;
 
+// Only these are ever gated. Anything else (broadway, null, a category added later) is untouched.
+const GATED_CATEGORIES = new Set(['off-broadway', 'west-end', 'off-west-end', 'regional', 'tour']);
+
 let _showsPath = DEFAULT_SHOWS_PATH;
 let _categoryById = null;
 
@@ -52,7 +55,7 @@ function _loadCategories() {
   const map = new Map();
   try {
     const d = JSON.parse(fs.readFileSync(_showsPath, 'utf8'));
-    for (const s of (d.shows || d)) if (s && s.id) map.set(s.id, s.category || s.market || null);
+    for (const s of (d.shows || d)) if (s && s.id) map.set(s.id, s.category || null);
   } catch (_) { /* unreadable: empty map => every lookup is null => fail open */ }
   _categoryById = map;
   return map;
@@ -71,8 +74,7 @@ function categoryForShowId(showId) {
  */
 function skipSbSerpForCategory(category, env = process.env) {
   if (gateDisabled(env)) return false;
-  if (!category) return false;
-  return !isBroadwayCategory(category);
+  return GATED_CATEGORIES.has(category); // unknown or missing category fails open
 }
 
 /** Skip set for the SERP chain, from the show the current call is spending for. */
@@ -98,7 +100,7 @@ function renderGapMs(env = process.env) {
 function renderGapDecision({ category, lastRenderMs, nowMs = Date.now(), env = process.env }) {
   const gap = renderGapMs(env);
   if (!gap) return { skip: false, reason: 'gap-off' };
-  if (!category || isBroadwayCategory(category)) return { skip: false, reason: category ? 'broadway' : 'unclassified' };
+  if (!GATED_CATEGORIES.has(category)) return { skip: false, reason: category === 'broadway' ? 'broadway' : 'unclassified' };
   if (!Number.isFinite(lastRenderMs)) return { skip: false, reason: 'no-prior-render' };
   const age = nowMs - lastRenderMs;
   // A future timestamp (clock skew) is not evidence of a recent render: render.
@@ -106,12 +108,15 @@ function renderGapDecision({ category, lastRenderMs, nowMs = Date.now(), env = p
   return { skip: true, reason: 'rendered-within-gap', ageMs: age, gapMs: gap };
 }
 
-/**
- * Newest ScrapingBee render row for (showId, host) in the tail of the ledger, as
- * epoch ms, or null. Reads only the tail so the 30MB+ ledger is never parsed whole.
- */
-function lastSbRenderMs(ledgerPath, showId, host, { tailBytes = LEDGER_TAIL_BYTES } = {}) {
-  if (!ledgerPath || !showId || !host) return null;
+const _normHost = (h) => String(h || '').toLowerCase().replace(/^www\./, '');
+
+// One tail read builds an index of newest successful SB render per show|host; reused for
+// INDEX_TTL_MS so a poller tick that checks many outlets reads the ledger once, not per outlet.
+const INDEX_TTL_MS = 15 * 1000;
+let _index = null; // { path, builtAt, tailBytes, map: Map<showId, Map<host, ms>> }
+
+function _buildIndex(ledgerPath, tailBytes) {
+  const map = new Map();
   let fd;
   try {
     fd = fs.openSync(ledgerPath, 'r');
@@ -121,23 +126,48 @@ function lastSbRenderMs(ledgerPath, showId, host, { tailBytes = LEDGER_TAIL_BYTE
     fs.readSync(fd, buf, 0, buf.length, start);
     const lines = buf.toString('utf8').split('\n');
     if (start > 0) lines.shift(); // first line may be cut mid-row
-    let newest = null;
     for (const line of lines) {
       if (!line || line.indexOf('"scrapingbee"') === -1) continue;
       let r;
       try { r = JSON.parse(line); } catch (_) { continue; }
-      if (r.provider !== 'scrapingbee' || r.fn !== 'render' || r.showId !== showId) continue;
-      if (r.host !== host && !(typeof r.host === 'string' && r.host.endsWith('.' + host))) continue;
+      // A failed render (401/429/timeout) found nothing, so it must not suppress the next try.
+      if (r.provider !== 'scrapingbee' || r.fn !== 'render' || r.success !== true || !r.showId || !r.host) continue;
       const t = Date.parse(r.ts);
-      if (Number.isFinite(t) && (newest === null || t > newest)) newest = t;
+      if (!Number.isFinite(t)) continue;
+      const h = _normHost(r.host);
+      let m = map.get(r.showId);
+      if (!m) map.set(r.showId, (m = new Map()));
+      if (!(m.get(h) >= t)) m.set(h, t);
     }
-    return newest;
   } catch (_) {
-    return null;
+    return new Map(); // unreadable ledger: empty index => every check fails open
   } finally {
     if (fd !== undefined) { try { fs.closeSync(fd); } catch (_) { /* ignore */ } }
   }
+  return map;
 }
+
+/**
+ * Newest successful ScrapingBee render row for (showId, host) in the tail of the ledger, as
+ * epoch ms, or null. Reads only the tail (the ledger is 30MB+), once per INDEX_TTL_MS.
+ * Host match ignores a leading www. and accepts a subdomain of the outlet domain.
+ */
+function lastSbRenderMs(ledgerPath, showId, host, { tailBytes = LEDGER_TAIL_BYTES, nowMs = Date.now() } = {}) {
+  if (!ledgerPath || !showId || !host) return null;
+  if (!_index || _index.path !== ledgerPath || _index.tailBytes !== tailBytes || nowMs - _index.builtAt >= INDEX_TTL_MS || nowMs < _index.builtAt) {
+    _index = { path: ledgerPath, tailBytes, builtAt: nowMs, map: _buildIndex(ledgerPath, tailBytes) };
+  }
+  const m = _index.map.get(showId);
+  if (!m) return null;
+  const want = _normHost(host);
+  let newest = null;
+  for (const [h, t] of m) {
+    if (h === want || h.endsWith('.' + want)) { if (newest === null || t > newest) newest = t; }
+  }
+  return newest;
+}
+
+function _resetIndexForTests() { _index = null; }
 
 /** Test-only: point the category lookup at a fixture (falsy restores the real file). */
 function _setShowsPathForTests(p) {
@@ -155,4 +185,5 @@ module.exports = {
   renderGapDecision,
   lastSbRenderMs,
   _setShowsPathForTests,
+  _resetIndexForTests,
 };

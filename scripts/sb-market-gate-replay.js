@@ -49,6 +49,7 @@ for (const r of rows) {
     const d = g.renderGapDecision({ category: g.categoryForShowId(r.showId), lastRenderMs: lastKept.get(key) ?? null, nowMs: t, env: { SB_RENDER_GAP_HOURS: String(gapMs / 3600000) } });
     if (d.skip && cat === 'broadway') broadwayDropped++;
     if (d.skip) { if (!pendingDrop.has(key)) pendingDrop.set(key, t); }
+    else if (r.success !== true) { /* a failed render does not start a gap (matches the gate) */ }
     else {
       lastKept.set(key, t);
       if (pendingDrop.has(key)) { (dropEvents.get(key) || dropEvents.set(key, []).get(key)).push({ delay: t - pendingDrop.get(key) }); pendingDrop.delete(key); }

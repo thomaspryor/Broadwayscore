@@ -36,6 +36,7 @@ function _normOpts(opts = {}) {
     dateMin: opts.dateMin || '',
     dateMax: opts.dateMax || '',
     page: opts.page ? String(opts.page) : '',
+    ...(opts.nosb ? { nosb: '1' } : {}), // BRO-8323, mirrors serp-cache.js
   };
 }
 

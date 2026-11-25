@@ -41,6 +41,9 @@ function _normOpts(opts = {}) {
     dateMin: opts.dateMin || '',
     dateMax: opts.dateMax || '',
     page: opts.page ? String(opts.page) : '',
+    // BRO-8323: chain without ScrapingBee (non-Broadway); its empties must not answer a full chain.
+    // (only when set, so every existing key is unchanged)
+    ...(opts.nosb ? { nosb: '1' } : {}),
   };
 }
 

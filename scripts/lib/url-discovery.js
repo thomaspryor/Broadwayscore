@@ -1000,8 +1000,10 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     return new Date(Math.floor(d.getTime() / wkMs) * wkMs).toISOString().split('T')[0];
   };
   const resolvedGeo = _resolveGeo(query, geoOverride);
+  const _marketSkips = sbSerpMarketSkips(currentSpendShowId());
   const cacheOpts = {
     geo: resolvedGeo,
+    ...(_marketSkips.size ? { nosb: '1' } : {}),
     dateMin: dateRange ? dateRange.dateMin.toISOString().split('T')[0] : '',
     dateMax: dateRange ? _weeklyBucket(dateRange.dateMax) : '',
     // Page MUST be part of the key or page 2/3 of a paginated sweep returns
@@ -1152,10 +1154,10 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     scrapingbee: { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' },
     brightdata: { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' },
   };
-  // BRO-8323: ScrapingBee is Broadway's tier. A non-Broadway show's chain drops it. Kept out of
-  // _skips on purpose: _chainTruncated (above) would stop caching that market's empty answers,
-  // and this drop is deterministic per show, not a mode that could poison a later run.
-  const _marketSkips = sbSerpMarketSkips(currentSpendShowId());
+  // BRO-8323: ScrapingBee is Broadway's tier. A non-Broadway show's chain drops it (_marketSkips,
+  // computed with the cache key above). Kept out of _skips on purpose: _chainTruncated would stop
+  // caching that market's empty answers. Those answers sit under their own cache partition (nosb)
+  // so a Broadway lookup of the same query text never reads an empty that SB was never asked.
   const _chainSkips = _marketSkips.size ? new Set([..._skips, ..._marketSkips]) : _skips;
   const _chain = serpChainOrder(effectivePreferSpeed({ preferSpeed, emptyAuthoritative, sdAnswered: _sdAnswered }), _chainSkips).map(name => _entries[name]);
   if (_chain.length === 0) {
