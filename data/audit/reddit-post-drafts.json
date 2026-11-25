@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "postedDetection": "skipped",
-    "postedDetectionFailingSince": "2026-11-25T19:27:17.346Z",
+    "postedDetection": "ok",
+    "postedDetectionFailingSince": null,
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-25T19:27:48.887Z"
+    "lastRun": "2026-11-25T20:25:26.556Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -4051,47 +4051,47 @@
       "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+The+Afronauts+at+the+Royal+Court.+63%2F100+from+20+critics%2C+with+a+WhatsOnStage+rave+and+a+Times+pan&text=I+found+20+reviews%3A+3+raves%2C+12+positive%2C+3+mixed%2C+2+negative.+Audiences+are+at+a+B+%28across+Show+Score+and+Mezzanine%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fthe-afronauts-west-end%0A%0ASonny+Waheed+at+WhatsOnStage+called+it+%22a+funny%2C+bruising+and+beautifully+realised+play+that+earns+its+running+time+and+then+some.%22+Sarah+Hemming+at+the+FT+was+won+over+by+the+staging%2C+writing+that+%22imagination+can+indeed+turn+a+scrap-metal+capsule+into+a+soaring+rocket.%22+Meanwhile+Clive+Davis+at+The+Times+called+it+%22the+most+tedious+evening+at+the+Royal+Court+in+London%22+in+a+sentence+that+goes+on+to+take+a+swipe+at+the+venue%27s+previous+management.%0A%0ALucian+Msamati%27s+performance+gets+consistent+praise.+It%27s+the+big+ideas+that+some+critics+felt+never+quite+lift+off.%0A%0ASame+play%2C+wildly+different+evenings.+I+haven%27t+seen+this+one+yet%2C+and+the+split+has+me+curious.+Anyone+seen+it%3F",
       "crosspostSubreddit": null,
       "crosspostSubmitUrl": null,
-      "emailedAt": "2026-11-25T13:28:37.969Z",
-      "reminderAt": "2026-11-25T13:28:37.969Z",
-      "emailedScore": 61,
-      "emailedReviewCount": 13,
-      "updateCount": 3,
-      "refreshedAt": "2026-11-25T19:27:33.222Z",
-      "previousScore": 61,
-      "previousReviewCount": 13
+      "emailedAt": "2026-11-25T20:28:19.912Z",
+      "reminderAt": "2026-11-25T20:28:19.912Z",
+      "emailedScore": 63,
+      "emailedReviewCount": 20,
+      "updateCount": 4
     },
     "a-christmas-carol-west-end-2026": {
       "showId": "a-christmas-carol-west-end-2026",
       "showTitle": "A Christmas Carol",
       "market": "west-end",
       "subreddit": "TheWestEnd",
-      "score": 79,
-      "reviewCount": 11,
+      "score": 78,
+      "reviewCount": 13,
       "url": "https://westendscorecard.com/show/a-christmas-carol-west-end",
-      "notability": 44,
+      "notability": 45,
       "createdAt": "2026-11-25T11:18:25.596Z",
       "status": "ready",
       "source": "claude-sonnet-5-5",
       "lintProblems": [],
-      "title": "Reviews are in for A Christmas Carol at the Old Vic. 79/100 from 11 critics, and audiences are at an A+",
-      "body": "I found 11 reviews: 6 raves, 4 positive, 1 mixed, zero negative. It's the Old Vic's 10th anniversary run, and audiences are at an A+ (across London Theatre Direct, Mezzanine, Seatplan, and London Box Office).\n\nhttps://westendscorecard.com/show/a-christmas-carol-west-end\n\nRachel Halliburton at The Arts Desk wrote \"Terera is a sensational Scrooge\", and Giles Terera comes up in the praise a lot. Meanwhile Aliya Al-Hassan at London Theatre wrote \"this is a Christmas production that still warms you to your core.\" Apparently there are mince pies and satsumas handed out as you walk in.\n\nRebecca Clifton at the British Theatre Guide was more reserved: \"This production is missing hues and shadows of previous ones.\"\n\nI haven't seen this one yet, but it sounds like the cozy option and I'm tempted. Anyone been?",
-      "why": "The hook is the A+ audience grade sitting next to a 79 with zero negatives, plus a festive, low-stakes show with a few charming details (mince pies, falling snow) that give people something to react to.",
-      "expectedPushback": "Why does A Christmas Carol need a score at all? It's a Christmas tradition, not a math test.",
-      "suggestedReply": "Ha, fair, putting a number on mince pies is a little silly. I mostly like having all the reviews in one place, and the Critic Score is just a weighted average of the published critic reviews. The quotes are the fun part anyway.",
+      "title": "Reviews are in for the Old Vic's A Christmas Carol. 78/100 from 13 critics, with an A+ from audiences",
+      "body": "It's back at the Old Vic for its 10th anniversary, and I found 13 reviews: 6 raves, 6 positive, 1 mixed, zero negative. Audiences are at an A+ (across London Theatre Direct, Mezzanine, Seatplan, and London Box Office).\n\nhttps://westendscorecard.com/show/a-christmas-carol-west-end\n\nGiles Terera's Scrooge gets most of the love. Rachel Halliburton at The Arts Desk wrote \"Terera is a sensational Scrooge\". Aliya Al-Hassan at London Theatre called it \"a Christmas production that still warms you to your core.\"\n\nRebecca Clifton at the British Theatre Guide was more reserved, writing \"This production is missing hues and shadows of previous ones.\"\n\nAlso, mince pies come up in a couple of the reviews. Very on brand.\n\nI haven't seen this one yet, and I'm pretty tempted. Anyone been?",
+      "why": "It leads with the show, the score, and the A+ audience grade, then lets the Terera praise and one reserved review carry the post, with a light mince pie aside for personality.",
+      "expectedPushback": "It's A Christmas Carol at Christmas, of course it's well reviewed, it's basically snow and mince pies.",
+      "suggestedReply": "Ha, fair, the mince pies do seem to be doing a lot of work. I just thought it was fun that the reviews were this warm, and there's at least one reviewer who wanted more shadows.",
       "personalLines": [
-        "I haven't seen this one yet, and I'm leaning toward going.",
-        "Still undecided on this one, but the A+ from audiences is tempting.",
-        "I haven't seen this one yet, and the mince pies are doing a lot of work on me."
+        "I haven't seen this one yet, and I'm pretty tempted.",
+        "I haven't seen this one yet, and Terera's reviews have me leaning toward yes.",
+        "I haven't seen this one yet. Still undecided on whether it's for me."
       ],
-      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+A+Christmas+Carol+at+the+Old+Vic.+79%2F100+from+11+critics%2C+and+audiences+are+at+an+A%2B&text=I+found+11+reviews%3A+6+raves%2C+4+positive%2C+1+mixed%2C+zero+negative.+It%27s+the+Old+Vic%27s+10th+anniversary+run%2C+and+audiences+are+at+an+A%2B+%28across+London+Theatre+Direct%2C+Mezzanine%2C+Seatplan%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fa-christmas-carol-west-end%0A%0ARachel+Halliburton+at+The+Arts+Desk+wrote+%22Terera+is+a+sensational+Scrooge%22%2C+and+Giles+Terera+comes+up+in+the+praise+a+lot.+Meanwhile+Aliya+Al-Hassan+at+London+Theatre+wrote+%22this+is+a+Christmas+production+that+still+warms+you+to+your+core.%22+Apparently+there+are+mince+pies+and+satsumas+handed+out+as+you+walk+in.%0A%0ARebecca+Clifton+at+the+British+Theatre+Guide+was+more+reserved%3A+%22This+production+is+missing+hues+and+shadows+of+previous+ones.%22%0A%0AI+haven%27t+seen+this+one+yet%2C+but+it+sounds+like+the+cozy+option+and+I%27m+tempted.+Anyone+been%3F",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+A+Christmas+Carol+at+the+Old+Vic.+79%2F100+from+11+critics%2C+and+audiences+are+at+an+A%2B&text=I+found+11+reviews%3A+6+raves%2C+4+positive%2C+1+mixed%2C+zero+negative.+It%27s+the+Old+Vic%27s+10th+anniversary+run%2C+and+audiences+are+at+an+A%2B+%28across+London+Theatre+Direct%2C+Mezzanine%2C+Seatplan%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fa-christmas-carol-west-end%0A%0ARachel+Halliburton+at+The+Arts+Desk+wrote+%22Terera+is+a+sensational+Scrooge%22%2C+and+Giles+Terera+comes+up+in+the+praise+a+lot.+Meanwhile+Aliya+Al-Hassan+at+London+Theatre+wrote+%22this+is+a+Christmas+production+that+still+warms+you+to+your+core.%22+Apparently+there+are+mince+pies+and+satsumas+handed+out+as+you+walk+in.%0A%0ARebecca+Clifton+at+the+British+Theatre+Guide+was+more+reserved%3A+%22This+production+is+missing+hues+and+shadows+of+previous+ones.%22%0A%0AI+haven%27t+seen+this+one+yet%2C+but+it+sounds+like+the+cozy+option+and+I%27m+tempted.+Anyone+been%3F",
+      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+the+Old+Vic%27s+A+Christmas+Carol.+78%2F100+from+13+critics%2C+with+an+A%2B+from+audiences&text=It%27s+back+at+the+Old+Vic+for+its+10th+anniversary%2C+and+I+found+13+reviews%3A+6+raves%2C+6+positive%2C+1+mixed%2C+zero+negative.+Audiences+are+at+an+A%2B+%28across+London+Theatre+Direct%2C+Mezzanine%2C+Seatplan%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fa-christmas-carol-west-end%0A%0AGiles+Terera%27s+Scrooge+gets+most+of+the+love.+Rachel+Halliburton+at+The+Arts+Desk+wrote+%22Terera+is+a+sensational+Scrooge%22.+Aliya+Al-Hassan+at+London+Theatre+called+it+%22a+Christmas+production+that+still+warms+you+to+your+core.%22%0A%0ARebecca+Clifton+at+the+British+Theatre+Guide+was+more+reserved%2C+writing+%22This+production+is+missing+hues+and+shadows+of+previous+ones.%22%0A%0AAlso%2C+mince+pies+come+up+in+a+couple+of+the+reviews.+Very+on+brand.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+pretty+tempted.+Anyone+been%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+the+Old+Vic%27s+A+Christmas+Carol.+78%2F100+from+13+critics%2C+with+an+A%2B+from+audiences&text=It%27s+back+at+the+Old+Vic+for+its+10th+anniversary%2C+and+I+found+13+reviews%3A+6+raves%2C+6+positive%2C+1+mixed%2C+zero+negative.+Audiences+are+at+an+A%2B+%28across+London+Theatre+Direct%2C+Mezzanine%2C+Seatplan%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fa-christmas-carol-west-end%0A%0AGiles+Terera%27s+Scrooge+gets+most+of+the+love.+Rachel+Halliburton+at+The+Arts+Desk+wrote+%22Terera+is+a+sensational+Scrooge%22.+Aliya+Al-Hassan+at+London+Theatre+called+it+%22a+Christmas+production+that+still+warms+you+to+your+core.%22%0A%0ARebecca+Clifton+at+the+British+Theatre+Guide+was+more+reserved%2C+writing+%22This+production+is+missing+hues+and+shadows+of+previous+ones.%22%0A%0AAlso%2C+mince+pies+come+up+in+a+couple+of+the+reviews.+Very+on+brand.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+pretty+tempted.+Anyone+been%3F",
       "crosspostSubreddit": "Broadway",
-      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=Reviews+are+in+for+A+Christmas+Carol+at+the+Old+Vic.+79%2F100+from+11+critics%2C+and+audiences+are+at+an+A%2B&text=I+found+11+reviews%3A+6+raves%2C+4+positive%2C+1+mixed%2C+zero+negative.+It%27s+the+Old+Vic%27s+10th+anniversary+run%2C+and+audiences+are+at+an+A%2B+%28across+London+Theatre+Direct%2C+Mezzanine%2C+Seatplan%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fa-christmas-carol-west-end%0A%0ARachel+Halliburton+at+The+Arts+Desk+wrote+%22Terera+is+a+sensational+Scrooge%22%2C+and+Giles+Terera+comes+up+in+the+praise+a+lot.+Meanwhile+Aliya+Al-Hassan+at+London+Theatre+wrote+%22this+is+a+Christmas+production+that+still+warms+you+to+your+core.%22+Apparently+there+are+mince+pies+and+satsumas+handed+out+as+you+walk+in.%0A%0ARebecca+Clifton+at+the+British+Theatre+Guide+was+more+reserved%3A+%22This+production+is+missing+hues+and+shadows+of+previous+ones.%22%0A%0AI+haven%27t+seen+this+one+yet%2C+but+it+sounds+like+the+cozy+option+and+I%27m+tempted.+Anyone+been%3F",
+      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=Reviews+are+in+for+the+Old+Vic%27s+A+Christmas+Carol.+78%2F100+from+13+critics%2C+with+an+A%2B+from+audiences&text=It%27s+back+at+the+Old+Vic+for+its+10th+anniversary%2C+and+I+found+13+reviews%3A+6+raves%2C+6+positive%2C+1+mixed%2C+zero+negative.+Audiences+are+at+an+A%2B+%28across+London+Theatre+Direct%2C+Mezzanine%2C+Seatplan%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fa-christmas-carol-west-end%0A%0AGiles+Terera%27s+Scrooge+gets+most+of+the+love.+Rachel+Halliburton+at+The+Arts+Desk+wrote+%22Terera+is+a+sensational+Scrooge%22.+Aliya+Al-Hassan+at+London+Theatre+called+it+%22a+Christmas+production+that+still+warms+you+to+your+core.%22%0A%0ARebecca+Clifton+at+the+British+Theatre+Guide+was+more+reserved%2C+writing+%22This+production+is+missing+hues+and+shadows+of+previous+ones.%22%0A%0AAlso%2C+mince+pies+come+up+in+a+couple+of+the+reviews.+Very+on+brand.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+pretty+tempted.+Anyone+been%3F",
       "emailedAt": "2026-11-25T18:23:52.947Z",
       "reminderAt": "2026-11-25T18:23:52.947Z",
       "emailedScore": 79,
       "emailedReviewCount": 11,
-      "updateCount": 2
+      "updateCount": 2,
+      "refreshedAt": "2026-11-25T20:25:26.556Z",
+      "previousScore": 79,
+      "previousReviewCount": 11
     }
   }
 }
