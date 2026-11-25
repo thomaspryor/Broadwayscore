@@ -51,7 +51,7 @@ describe('buildMergedStructuredTips preserves hand-curated seating sections', ()
   test('verified accessibility text still overrides seating.accessibility alongside preserved sections', () => {
     const draftTips = { lastUpdated: '2026-10-01T06:00:00.000Z', seating: { bestSeats: 'Great sightlines.' } };
     const existingTheaterMetadata = {
-      accessibility: { verified: true, notes: '5 wheelchair spaces in Orchestra.' },
+      accessibility: { verified: true, sourceUrl: 'https://theatre.example/access', notes: '5 wheelchair spaces in Orchestra.' },
       structuredTips: {
         lastUpdated: '2026-04-16T20:58:43.117Z',
         seating: { bestSeats: 'Great sightlines.', sections: existingSections },

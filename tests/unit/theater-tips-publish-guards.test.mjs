@@ -13,7 +13,7 @@ import {
   validateMergedMetadata,
 } from '../../scripts/lib/theater-tips-merge.js';
 
-const verified = { accessibility: { verified: true, wheelchair: true, elevator: true } };
+const verified = { accessibility: { verified: true, sourceUrl: 'https://theatre.example/access', wheelchair: true, elevator: true } };
 
 describe('draftHasContent', () => {
   test('empty / missing drafts have no content', () => {
