@@ -52,10 +52,11 @@ test('apply hands each repair to the review-field-edit path as a url edit', () =
   assert.equal(out[0].ok, true);
 });
 
-test('loadTbReviewFiles reads real files and marks flagged ones', async () => {
-  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+test('loadTbReviewFiles reads real files and marks flagged ones', async (t) => {
+  const fs = await import('node:fs'); const path = await import('node:path');
+  const { makeTmpDir } = require('./tmpdir-for-tests.js');
   const { loadTbReviewFiles } = require('./tb-dated-collision.js');
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tbc-'));
+  const dir = makeTmpDir(t, 'tbc-');
   fs.mkdirSync(path.join(dir, 's1'));
   fs.writeFileSync(path.join(dir, 's1', 'talkinbroadway--a.json'), JSON.stringify({ url: `${B}10_05_26.html` }));
   fs.writeFileSync(path.join(dir, 's1', 'talkinbroadway--b.json'), JSON.stringify({ url: `${B}10_05_26.html`, wrongShow: true }));
