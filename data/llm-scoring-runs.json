@@ -427334,61 +427334,41 @@
     "logKeepsSince": "2026-11-24T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-25T20:06:48.003Z",
-    "completedAt": "2026-11-25T20:06:53.688Z",
-    "totalReviews": 5,
-    "processed": 1,
-    "skipped": 4,
+    "startedAt": "2026-11-25T20:07:01.614Z",
+    "completedAt": "2026-11-25T20:30:20.150Z",
+    "totalReviews": 85203,
+    "processed": 166,
+    "skipped": 84981,
     "errors": 0,
     "tokensUsed": {
-      "input": 6107,
-      "output": 374,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 15269
+      "input": 1274279,
+      "output": 62750,
+      "cacheRead": 814373,
+      "cacheWrite": 30122,
+      "total": 3250093
     },
-    "costUsd": 0.02495015,
-    "runId": "45691248440",
+    "costUsd": 1.18484355,
+    "runId": "45690559779",
     "source": "index",
     "errorDetails": [],
     "logKeepsSince": "2026-11-24T00:00:00.000Z"
   },
   {
-    "startedAt": "2026-11-25T20:11:50.166Z",
-    "completedAt": "2026-11-25T20:11:50.168Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-25T20:30:40.897Z",
+    "completedAt": "2026-11-25T20:34:13.649Z",
+    "totalReviews": 40,
+    "processed": 40,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 106928,
+      "output": 9681,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 116609
     },
-    "costUsd": 0,
-    "runId": "45691248440",
-    "source": "comparative-rescore",
-    "errorDetails": [],
-    "logKeepsSince": "2026-11-24T00:00:00.000Z"
-  },
-  {
-    "startedAt": "2026-11-25T20:17:26.341Z",
-    "completedAt": "2026-11-25T20:17:26.344Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "45692862107",
+    "costUsd": 0.09989259999999998,
+    "runId": "45690559779",
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-24T00:00:00.000Z"
