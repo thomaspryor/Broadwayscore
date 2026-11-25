@@ -74,10 +74,10 @@ function checkIsDue({ lastCheckedAt, now, minIntervalMin }) {
   return now.getTime() - last >= minIntervalMin * 60 * 1000;
 }
 
-function readShowReviews(reviewTextsDir, showId) {
+function readShowReviews(reviewTextsDir, showId, filePrefix = '') {
   const dir = path.join(reviewTextsDir, showId);
   let files;
-  try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch { return []; }
+  try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f.startsWith(filePrefix)); } catch { return []; }
   const reviews = [];
   for (const f of files) {
     try { reviews.push(JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))); } catch { /* skip unreadable */ }
@@ -85,7 +85,7 @@ function readShowReviews(reviewTextsDir, showId) {
   return reviews;
 }
 
-module.exports = { canonicalPickUrl, findUnpickedNytUrls, checkIsDue, isFlagged };
+module.exports = { canonicalPickUrl, findUnpickedNytUrls, checkIsDue, isFlagged, readShowReviews };
 
 // CLI: node scripts/lib/nyt-pick-refresh-needed.js --shows=a,b [--min-interval-min=30] [--mark-checked]
 // Prints `refresh_needed=true|false` (GITHUB_OUTPUT format) and the reason. Always exits 0.

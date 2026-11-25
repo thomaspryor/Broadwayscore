@@ -27,6 +27,18 @@
  * Usage:
  *   node scripts/refresh-nyt-critics-picks.js [--dry-run] [--max-pages=N]
  *
+ * Review-page pass (BRO-8286): the spotlight page lags NYT's own review pages
+ * (Seven Guitars carried "Critic's Pick" in its header while the list still
+ * ended five days earlier). After the spotlight merge, recent NYT reviews we
+ * hold that are not on the list are fetched and judged by the label above
+ * their own headline (scripts/lib/nyt-review-page-pick.js). It runs even when
+ * the spotlight fetch fails. Candidates come from data/review-texts: the
+ * shows in $SHOWS (the poller sets it) or, when unset, every show. Negative
+ * results are cached in the picks file's _meta.pageChecks so a review is
+ * fetched at most twice. Add --review-url=<url> (repeatable) to check
+ * specific URLs, e.g. to confirm one by hand with --dry-run.
+ * --no-review-pages skips the pass.
+ *
  * --max-pages=1 checks only the newest ~10 picks. The opening-night poller
  * uses it so a pick published on opening night gets its badge in the same
  * run (scripts/lib/nyt-pick-refresh-needed.js decides when).
@@ -36,6 +48,11 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { findUnpickedNytUrls, readShowReviews, canonicalPickUrl } = require('./lib/nyt-pick-refresh-needed');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const {
+  selectUrlsToCheck, classifyReviewPages, recordChecks,
+} = require('./lib/nyt-review-page-pick');
 
 const OUTPUT_PATH = path.join(__dirname, '../data/nyt-critics-picks.json');
 const BASE_URL = 'https://www.nytimes.com/spotlight/theater-critics-picks';
@@ -194,46 +211,125 @@ async function main() {
     if (page < maxPages) await sleep(DELAY_MS);
   }
 
-  if (_scraper && typeof _scraper.cleanup === 'function') {
-    try { await _scraper.cleanup(); } catch { /* best effort */ }
-  }
-
   const scraped = [...allUrls].sort();
   console.log(`\nScraped unique URLs: ${scraped.length}`);
 
   const prev = readExisting();
   const existingUrls = (prev && Array.isArray(prev.urls)) ? prev.urls : [];
   const verdict = evaluateScrape({ urls: scraped, existingUrls, firstPageError });
+  let spotlightRefused = false;
+  let urls = existingUrls;
+  let added = [];
+  let metaPatch = {};
   if (!verdict.ok) {
-    console.error(`REFUSING to update ${OUTPUT_PATH}: ${verdict.reason}. Keeping the ${existingUrls.length} URLs on file.`);
-    process.exit(1);
+    // Keep the file as it is, but still run the review-page pass below: a
+    // blocked spotlight page is exactly when the second source matters.
+    console.error(`REFUSING to merge the spotlight scrape into ${OUTPUT_PATH}: ${verdict.reason}. Keeping the ${existingUrls.length} URLs on file.`);
+    spotlightRefused = true;
+  } else {
+    ({ urls, added } = mergePicks(existingUrls, scraped));
+    console.log(`New picks: ${added.length}`);
+    added.forEach(u => console.log('  + ' + u));
+    metaPatch = { source: BASE_URL, lastScrapeCount: scraped.length };
   }
 
-  const { urls, added } = mergePicks(existingUrls, scraped);
-  console.log(`New picks: ${added.length}`);
-  added.forEach(u => console.log('  + ' + u));
+  let pageState = (prev && prev._meta && prev._meta.pageChecks) || {};
+  if (!process.argv.includes('--no-review-pages')) {
+    const pass = await reviewPagePass({ urls, pageState, budget, argv: process.argv.slice(2) });
+    pageState = pass.pageState;
+    if (pass.picks.length) {
+      const merged = mergePicks(urls, pass.picks);
+      urls = merged.urls;
+      added = [...added, ...merged.added];
+    }
+  }
 
   if (dryRun) {
-    console.log(`[DRY RUN] Would write ${urls.length} URLs to`, OUTPUT_PATH);
-    return;
+    console.log(`[DRY RUN] Would write ${urls.length} URLs (${added.length} new) to`, OUTPUT_PATH);
+  } else if (spotlightRefused && added.length === 0 && JSON.stringify(pageState) === JSON.stringify((prev && prev._meta && prev._meta.pageChecks) || {})) {
+    console.log('Nothing to write.');
+  } else {
+    const data = {
+      _meta: {
+        ...((prev && prev._meta) || {}),
+        ...metaPatch,
+        lastUpdated: new Date().toISOString(),
+        count: urls.length,
+        pageChecks: pageState,
+      },
+      urls,
+    };
+    if (!Object.keys(pageState).length) delete data._meta.pageChecks;
+    fs.writeFileSync(OUTPUT_PATH, JSON.stringify(data, null, 2) + '\n');
+    console.log(`Wrote ${urls.length} URLs (${added.length} new) to ${OUTPUT_PATH}`);
   }
 
-  const data = {
-    _meta: {
-      ...((prev && prev._meta) || {}),
-      lastUpdated: new Date().toISOString(),
-      source: BASE_URL,
-      count: urls.length,
-      lastScrapeCount: scraped.length,
-    },
-    urls,
-  };
-
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(data, null, 2) + '\n');
-  console.log(`Wrote ${urls.length} URLs (${added.length} new) to ${OUTPUT_PATH}`);
+  if (_scraper && typeof _scraper.cleanup === 'function') {
+    try { await _scraper.cleanup(); } catch { /* best effort */ }
+  }
+  if (spotlightRefused) process.exit(1);
 }
 
-module.exports = { extractReviewUrls, looksLikeSpotlightPage, evaluateScrape, mergePicks, parseMaxPages, MAX_NEW_PER_RUN, MAX_PAGES };
+function parseReviewUrlArgs(argv) {
+  return argv.filter(a => a.startsWith('--review-url=')).map(a => a.slice('--review-url='.length)).filter(Boolean);
+}
+
+/** Recent NYT reviews we hold (3-day window) that are not on the pick list. */
+function findUnpickedCandidates(pickUrls, now = new Date()) {
+  const root = path.join(__dirname, '..');
+  const reviewTextsDir = path.join(root, 'data', 'review-texts');
+  const fromEnv = (process.env.SHOWS || '').split(',').map(s => s.trim()).filter(Boolean);
+  const showIds = fromEnv.length ? fromEnv : listShowDirs(reviewTextsDir, { silent: true });
+  const shows = showIds.map(showId => ({ showId, reviews: readShowReviews(reviewTextsDir, showId, 'nytimes') }));
+  return findUnpickedNytUrls({ shows, pickUrls, now });
+}
+
+async function fetchReviewPage(url) {
+  if (!_scraper) _scraper = require('./lib/scraper');
+  const result = await _scraper.fetchPage(url, { skipVerify: true });
+  const content = (result && (result.content || result.html)) || '';
+  if (!content) throw new Error('empty response');
+  return content;
+}
+
+/**
+ * Judge recent unpicked NYT reviews by the label on the review page itself.
+ * Returns { picks, pageState }; never throws (a failed fetch is logged and
+ * retried on the next run).
+ */
+async function reviewPagePass({ urls, pageState, budget, argv, now = new Date(), fetch = fetchReviewPage, listCandidates = findUnpickedCandidates }) {
+  const explicit = parseReviewUrlArgs(argv);
+  let candidates = explicit;
+  if (!explicit.length) {
+    try {
+      candidates = listCandidates(urls, now);
+    } catch (err) {
+      console.warn(`Review-page pass: could not list candidates (${err.message}); skipping.`);
+      return { picks: [], pageState };
+    }
+  }
+  const onFile = new Set(urls.map(canonicalPickUrl));
+  const todo = selectUrlsToCheck({
+    urls: candidates.filter(u => !onFile.has(canonicalPickUrl(u))),
+    state: explicit.length ? {} : pageState,
+    now,
+  });
+  if (!todo.length) {
+    console.log(`Review-page pass: nothing to check (${candidates.length} unpicked candidate(s), rest cached or capped).`);
+    return { picks: [], pageState };
+  }
+  console.log(`Review-page pass: checking ${todo.length} review page(s)`);
+  const result = await classifyReviewPages({ urls: todo, fetch, shouldStop: () => budget.exceeded() });
+  result.picks.forEach(u => console.log('  + (review page label) ' + u));
+  result.negatives.forEach(u => console.log('  - not a pick: ' + u));
+  result.failures.forEach(f => console.warn(`  ! ${f.url}: ${f.reason}`));
+  return {
+    picks: result.picks,
+    pageState: explicit.length ? pageState : recordChecks(pageState, result, now),
+  };
+}
+
+module.exports = { extractReviewUrls, looksLikeSpotlightPage, evaluateScrape, mergePicks, parseMaxPages, parseReviewUrlArgs, reviewPagePass, MAX_NEW_PER_RUN, MAX_PAGES };
 
 if (require.main === module) {
   main().catch(err => {
