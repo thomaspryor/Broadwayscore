@@ -292,21 +292,39 @@ async function runReconcile({ dir, ledgerPath }) {
  * retried by the NEXT night, so the night ended 'failed' and its accepts
  * landed a day late. This lands them now and records the recovered rows.
  */
+/**
+ * BRO-8276: a pending text whose file was removed upstream with no successor
+ * is closed with a non_evidence 'gone_upstream' row (never a night-stopper).
+ * @returns {string[]} the review keys closed
+ */
+function recordGoneUpstream(superseded, lookup, ledgerPath) {
+  const keys = [];
+  for (const s of superseded || []) {
+    const key = L.reviewKeyOf(s.rel);
+    const info = lookup(key);
+    console.log(`  [gone upstream] ${key}: ${s.why}`);
+    if (!info) continue;
+    L.appendRows([L.goneUpstreamRow(s.rel, info, s.why)], ledgerPath);
+    keys.push(key);
+  }
+  return keys;
+}
+
 async function runRetryPending({ dir, ledgerPath }) {
   const { retryPendingPushes } = require('./lib/review-texts-checkpoint');
   SUMMARY.mode = 'retry_pending';
   const earlier = L.pendingPushInfo(L.readRows(ledgerPath));
   let landedN = 0;
   const onLanded = (landed) => {
-    const key = L.reviewKeyOf(landed.path);
-    const info = (landed.meta && landed.meta.source === 'gap-recovery-driver' && landed.meta.attempts && landed.meta.attempts[key]) || earlier.get(key);
+    const info = L.landingInfo(landed, (key) => (landed.meta && landed.meta.source === 'gap-recovery-driver' && landed.meta.attempts && landed.meta.attempts[key]) || earlier.get(key));
     if (!info) return;
-    L.appendRows([L.recoveredRowFromLanding(landed, info)], ledgerPath);
+    L.appendRows(L.landingRows(landed, info), ledgerPath);
     landedN++;
   };
   try {
     const pend = retryPendingPushes({ repoDir: dir, onLanded });
-    console.log(`retry-pending: ${pend.entries} pending checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${pend.notLanded.length} not landed`);
+    recordGoneUpstream(pend.superseded, (key) => earlier.get(key), ledgerPath);
+    console.log(`retry-pending: ${pend.entries} pending checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${(pend.renamed || []).length} moved to a renamed file, ${(pend.superseded || []).length} gone upstream, ${pend.notLanded.length} not landed`);
     SUMMARY.landed = landedN;
     SUMMARY.pushFailed = pend.notLanded.length > 0;
     return pend.notLanded.length ? 1 : 0;
@@ -363,6 +381,18 @@ async function main() {
   console.log(`gap-recovery-driver ${OPTS.dryRun ? 'DRY RUN' : 'LIVE'} run ${RUN_ID}`);
   console.log(`  review-texts: ${dir}\n  ledger: ${ledgerPath} (${rows.length} rows)\n  GUI: ${gui.available ? 'available' : `unavailable (${gui.reason})`}\n  SERP keys: ${serpKeys.scrapingBeeKey || serpKeys.brightDataKey ? 'yes' : 'no'}  BD_REQ_BUDGET=${process.env.BD_REQ_BUDGET} SERP_QUERY_BUDGET=${process.env.SERP_QUERY_BUDGET}`);
 
+  // BRO-8276: plan against the review-texts origin holds now, so a file
+  // renamed upstream since the last pull is never planned under its old name.
+  // Fast-forward only (no reset, no merge); refused when unpushed commits
+  // remain, which runLive's retryPendingPushes lands first.
+  if (!OPTS.dryRun) {
+    try {
+      const { syncCheckoutToOrigin } = require('./lib/review-texts-checkpoint');
+      const sync = require('./lib/review-texts-lock').withReviewTextsLock('gap-recovery:pre-plan-sync', () => syncCheckoutToOrigin(fs.realpathSync(dir)));
+      SUMMARY.reviewTextsSync = sync;
+      console.log(`  review-texts sync before planning: ${sync.ok ? 'up to date with origin/main' : `skipped (${sync.reason})`}`);
+    } catch (e) { SUMMARY.reviewTextsSync = { ok: false, reason: String(e.message).slice(0, 200) }; console.log(`  review-texts sync before planning failed: ${e.message}`); }
+  }
   const cands = planCandidates({ dir, shows, outlets, ledgerIndex, runGates });
   if (OPTS.dryRun) {
     SUMMARY.mode = 'dry_run';
@@ -421,22 +451,26 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
   const earlierPending = L.pendingPushInfo(rows); // accepted by an earlier run, not yet landed
   const landedKeys = new Set();
   const improvedKeys = new Set(); // BRO-7942: recovered counts only when the tier went up
+  const infoFor = (key, meta) => pendingInfo.get(key)
+    || (meta && meta.source === 'gap-recovery-driver' && meta.attempts && meta.attempts[key])
+    || earlierPending.get(key);
   const onLanded = (landed) => {
     const key = L.reviewKeyOf(landed.path);
-    const info = pendingInfo.get(key)
-      || (landed.meta && landed.meta.source === 'gap-recovery-driver' && landed.meta.attempts && landed.meta.attempts[key])
-      || earlierPending.get(key);
+    const info = L.landingInfo(landed, (k) => infoFor(k, landed.meta));
     if (!info) return; // another script's pending entry
-    const row = L.recoveredRowFromLanding(landed, info);
-    L.appendRows([row], ledgerPath);
+    const rows = L.landingRows(landed, info); // BRO-8276: a renamed file also closes the old key
+    L.appendRows(rows, ledgerPath);
     landedKeys.add(key);
-    if (row.detail && row.detail.tierImproved) improvedKeys.add(key);
+    if (landed.renamedFrom) landedKeys.add(L.reviewKeyOf(landed.renamedFrom));
+    if (rows[0].detail && rows[0].detail.tierImproved) improvedKeys.add(key);
   };
+  const closeGone = (superseded) => { for (const k of recordGoneUpstream(superseded, (key) => infoFor(key, null), ledgerPath)) landedKeys.add(k); };
 
   // Land what an earlier run committed but could not push, before new work.
   let pend;
   try { pend = retryPendingPushes({ repoDir: dir, onLanded }); } catch (e) { SUMMARY.pushFailed = true; SUMMARY.error = String(e.message).slice(0, 300); throw e; } // BRO-7944: counts as a failed push for the batch runner
-  if (pend.entries) console.log(`  [pending] ${pend.entries} earlier checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${pend.notLanded.length} not landed`);
+  closeGone(pend.superseded);
+  if (pend.entries) console.log(`  [pending] ${pend.entries} earlier checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${(pend.renamed || []).length} moved to a renamed file, ${(pend.superseded || []).length} gone upstream, ${pend.notLanded.length} not landed`);
 
   let urlFindRuns = 0;
   const envInt = (k, d) => { const n = parseInt(process.env[k] || String(d), 10); return Number.isFinite(n) && n >= 0 ? n : d; };
@@ -516,7 +550,8 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
         message: `feat: gap-recovery driver ${label} - ${accepted} accepted (BRO-7171 Stage 2)`,
         onLanded, meta: { source: 'gap-recovery-driver', runId: RUN_ID, attempts },
       });
-      console.log(`  [checkpoint] ${res.pushed ? 'pushed' : 'nothing to push'}; ${res.landed.length} file(s) confirmed on origin/main`);
+      closeGone(res.superseded);
+      console.log(`  [checkpoint] ${res.pushed ? 'pushed' : 'nothing to push'}; ${res.landed.length} file(s) confirmed on origin/main${(res.renamed || []).length ? `; ${res.renamed.length} moved onto a file renamed upstream` : ''}${(res.superseded || []).length ? `; ${res.superseded.length} gone upstream` : ''}`);
     } finally {
       for (const p of paths) { tracker.delete(p); if (tracker.expected) tracker.expected.delete(p); }
     }

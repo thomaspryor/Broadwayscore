@@ -513,3 +513,31 @@ test('floors report reads the ledger the driver writes (ledgerPathDefault), not 
   assert.match(src, /ledgerPathDefault\(\)/);
   assert.doesNotMatch(src, /path\.join\([^)]*'gap-recovery-attempts\.jsonl'\)/);
 });
+
+test('BRO-8276: a landing moved onto a renamed file closes the old key and records recovered on the new one', () => {
+  const L2 = require('./gap-recovery-ledger.js');
+  const info = { reviewKey: 's/thestage--unknown.json', gapClass: 'NEVER_FETCHED', strategy: 'BROWSER_SESSION', url: 'https://x/y', runId: 'r1', priorTier: 'excerpt', newTier: 'complete' };
+  const pending = L2.makeRow({ ts: '2026-11-24T06:31:00.000Z', reviewKey: info.reviewKey, strategy: info.strategy, outcome: 'pending_push', reason: 'accepted' });
+  const landed = { path: 's/thestage--dave-fargnoli.json', blob: 'abc', renamedFrom: 's/thestage--unknown.json' };
+  const lookup = (k) => (k === info.reviewKey ? info : null);
+  assert.equal(L2.landingInfo(landed, lookup), info, 'info found through renamedFrom');
+  const rows = L2.landingRows(landed, info);
+  assert.deepEqual(rows.map((r) => [r.reviewKey, r.outcome, r.reason]), [
+    ['s/thestage--dave-fargnoli.json', 'recovered', 'landed_on_origin_main'],
+    ['s/thestage--unknown.json', 'non_evidence', 'renamed_upstream'],
+  ]);
+  assert.equal(rows[0].detail.tierImproved, true);
+  const idx = L2.indexRows([pending, ...rows]);
+  assert.equal(L2.pendingPushInfo([pending, ...rows]).size, 0, 'the old pending_push row is closed');
+  assert.equal(idx.get(info.reviewKey).slice(-1)[0].reason, 'renamed_upstream');
+  // A plain landing is one recovered row, as before.
+  assert.equal(L2.landingRows({ path: info.reviewKey }, info).length, 1);
+});
+
+test('BRO-8276: a pending text whose file was removed upstream is closed with gone_upstream', () => {
+  const L2 = require('./gap-recovery-ledger.js');
+  const pending = L2.makeRow({ reviewKey: 's/a.json', strategy: 'REFETCH_FREE', outcome: 'pending_push', reason: 'accepted' });
+  const row = L2.goneUpstreamRow('s/a.json', { strategy: 'REFETCH_FREE', runId: 'r' }, 'removed upstream, no successor file');
+  assert.equal(row.outcome, 'non_evidence');
+  assert.equal(L2.pendingPushInfo([pending, row]).size, 0);
+});

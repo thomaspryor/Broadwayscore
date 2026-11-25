@@ -393,6 +393,32 @@ function recoveredRowFromLanding(landed, info = {}) {
   });
 }
 
+/**
+ * BRO-8276: rows for a landing. A text carried onto a successor file (the
+ * path was renamed upstream) closes the old key's pending_push row with a
+ * non_evidence 'renamed_upstream' row and records 'recovered' on the new key.
+ * @param {object} landed  checkpoint onLanded payload (renamedFrom optional)
+ * @param {object} info    attempt info (recoveredRowFromLanding)
+ */
+function landingRows(landed, info = {}) {
+  const rec = recoveredRowFromLanding(landed, info);
+  if (!landed.renamedFrom) return [rec];
+  // One ms after the recovered row, so it never sorts before the pending_push it closes.
+  const ts = new Date(Date.parse(rec.ts) + 1).toISOString();
+  return [rec, makeRow({ ts, reviewKey: reviewKeyOf(landed.renamedFrom), gapClass: info.gapClass, strategy: info.strategy, outcome: 'non_evidence', reason: 'renamed_upstream', url: info.url, runId: info.runId, detail: { successor: rec.reviewKey } })];
+}
+
+/** BRO-8276: the attempt info for a landing, looked up by its key or the key it was renamed from. */
+function landingInfo(landed, lookup) {
+  const key = reviewKeyOf(landed.path || landed.absPath);
+  return lookup(key) || (landed.renamedFrom ? lookup(reviewKeyOf(landed.renamedFrom)) : null) || null;
+}
+
+/** BRO-8276: closes a pending_push row whose file was removed upstream with no successor. */
+function goneUpstreamRow(rel, info = {}, why = null) {
+  return makeRow({ ts: new Date(Date.now() + 1).toISOString(), reviewKey: reviewKeyOf(rel), gapClass: info.gapClass, strategy: info.strategy, outcome: 'non_evidence', reason: 'gone_upstream', url: info.url, runId: info.runId, detail: why ? { why } : undefined });
+}
+
 function tierDetail(landed, info) {
   const d = {
       ...(landed.commit ? { commit: landed.commit } : {}),
@@ -588,6 +614,9 @@ function isVanishedReviewFile(err, filePath) {
 }
 
 module.exports = {
+  landingRows,
+  landingInfo,
+  goneUpstreamRow,
   isStaleManualTierPin,
   tierImproved,
   recentNonEvidence,
