@@ -18,6 +18,15 @@ test('prefilter: drops tour houses, virtual, empty', () => {
   assert.equal(s.prefilter(page({ venue: 'Online Stream' })).reason, 'virtual');
   assert.equal(s.prefilter({ empty: true }).reason, 'empty');
 });
+test('buildShowEntry: keeps the theatre website as officialUrl only when first-party (BRO-7668)', () => {
+  const detail = (website) => ({ venue: 'Steppenwolf Theatre', address: '1650 N Halsted St Chicago', showType: 'Play', website });
+  const own = s.buildShowEntry({ page: page(), detail: detail('http://www.steppenwolf.org'), dates: { openingDate: '2024-03-02' }, discoveredAt: '2026-10-29' });
+  assert.equal(own.officialUrl, 'https://www.steppenwolf.org');
+  const other = s.buildShowEntry({ page: page(), detail: detail('http://www.chicagotribune.com/x'), dates: { openingDate: '2024-03-02' }, discoveredAt: '2026-10-29' });
+  assert.equal(other.officialUrl, undefined);
+  const none = s.buildShowEntry({ page: page(), detail: detail(null), dates: { openingDate: '2024-03-02' }, discoveredAt: '2026-10-29' });
+  assert.equal('officialUrl' in none, false);
+});
 test('buildShowEntry: regional local-only entry with -regional-<year> id', () => {
   const e = s.buildShowEntry({ page: page(), detail: { venue: 'Steppenwolf Theatre', address: '1650 N Halsted St Chicago', showType: 'Play' }, dates: { openingDate: '2024-03-02' }, discoveredAt: '2026-10-29' });
   assert.equal(e.id, 'topdogunderdog-regional-2024'.replace('topdogunderdog', 'topdog-underdog'));

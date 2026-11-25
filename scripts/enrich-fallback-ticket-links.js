@@ -18,6 +18,11 @@
  *
  * BRO-7368: before any SERP spend, shows at an allowlisted regional venue are
  * looked up on that venue's own sitemap / what's-on page (free direct reads).
+ *
+ * BRO-7668: then, for shows still with no ticket link and no officialUrl, the
+ * theatre's own page already in hand (a first-party evidenceUrl, or the
+ * website the theatreinX listing prints) becomes officialUrl, which the site
+ * renders as "Visit Official Site" (BRO-166). Free direct reads only.
  */
 
 const https = require('https');
@@ -50,6 +55,7 @@ const {
   needsListingConfirmation,
 } = require('./lib/ticket-link-discovery');
 const { parseSitemapLocs } = require('./lib/gap-url-find');
+const { isFirstPartyVenueUrl, pickFirstPartyVenueUrl } = require('./lib/first-party-venue-url');
 const { parseSitemapLines } = require('./lib/sitemap-urls');
 const { findTicketUrlHolder } = require('./lib/show-duplicate-detection');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -219,6 +225,75 @@ async function discoverVenuePage(show, { cache = new Map(), fetchText = fetchVen
   return pickVenuePageUrl(requireListed ? listed : all, show);
 }
 
+// ---------------------------------------------------------------------------
+// BRO-7668: the theatre's own page as officialUrl (free, no SERP).
+// ---------------------------------------------------------------------------
+
+const HUB_DETAIL_RE = /^https?:\/\/(?:www\.)?theatrein(?:chicago|dc|la)\.com\/[^/]+\/\d+\/?$/i;
+
+/** Open/previews, no ticket link and no official link: the page has no buy button at all. */
+function needsOfficialPage(show) {
+  return !!show && (show.status === 'open' || show.status === 'previews') &&
+    (!show.ticketLinks || show.ticketLinks.length === 0) &&
+    !(typeof show.officialUrl === 'string' && show.officialUrl.trim());
+}
+
+/** The theatreinX listing detail page this show was staged from, or null. */
+function hubDetailUrl(show) {
+  return ((show && show.evidenceUrls) || []).find((u) => HUB_DETAIL_RE.test(u || '')) || null;
+}
+
+/** The website link a theatreinX detail page prints for the production, or null. */
+function parseHubWebsite(html) {
+  const { parseDetailPage } = require('./lib/theatreinchicago');
+  const d = parseDetailPage(html || '');
+  return (d && d.website) || null;
+}
+
+/**
+ * Liveness for a first-party page: https only (http is upgraded first),
+ * redirects followed, and the page must END on the same theatre's site (a
+ * dead domain parked on a reseller fails). 403 passes, as for venue sites in
+ * probeUrl. Returns the https URL to store (the starting one), or null.
+ */
+async function probeFirstPartyUrl(url, venue, timeout = 15000, fetchStatusFn = fetchStatus) {
+  if (typeof url !== 'string') return null;
+  const start = url.trim().replace(/^http:/i, 'https:');
+  let current = start;
+  for (let hop = 0; hop < 4; hop++) {
+    if (!isFirstPartyVenueUrl(current, venue)) return null;
+    const { status, location } = await fetchStatusFn(current, timeout);
+    // Store the URL we were given, not the redirect target: a box-office
+    // redirect chain can end on a one-time session URL (arenastage.org ->
+    // tickets.arenastage.org/components/sharedsession?...).
+    if ((status >= 200 && status < 300) || status === 403) return start;
+    if (status >= 300 && status < 400 && location) {
+      current = new URL(location, current).toString().replace(/^http:/i, 'https:');
+      continue;
+    }
+    return null;
+  }
+  return null;
+}
+
+/**
+ * One show: the first-party page to store as officialUrl, or null.
+ * fetchText / fetchStatusFn are injectable for the tests.
+ */
+async function discoverOfficialPage(show, { fetchText = fetchVenueText, fetchStatusFn = fetchStatus } = {}) {
+  const extra = [];
+  const detail = hubDetailUrl(show);
+  if (detail && !pickFirstPartyVenueUrl(show)) {
+    let html = null;
+    try { html = await fetchText(detail); } catch { html = null; }
+    const site = parseHubWebsite(html);
+    if (site) extra.push(site.trim());
+  }
+  const cand = pickFirstPartyVenueUrl(show, extra);
+  if (!cand) return null;
+  return probeFirstPartyUrl(cand, show.venue, 15000, fetchStatusFn);
+}
+
 async function main() {
   const data = loadShows();
   const shows = Array.isArray(data) ? data : data.shows;
@@ -264,6 +339,28 @@ async function main() {
     added++;
   }
   targets = targets.filter((s) => !s.ticketLinks || s.ticketLinks.length === 0);
+
+  // Phase 2 (BRO-7668): the theatre's own page as officialUrl.
+  // Only shows with a source to read (a first-party evidenceUrl or a theatreinX
+  // listing); the cap then never spends itself on shows with nothing to read.
+  const officialTargets = targets
+    .filter((s) => needsOfficialPage(s) && (pickFirstPartyVenueUrl(s) || hubDetailUrl(s)))
+    .slice(0, VENUE_LIMIT);
+  console.log(`\nFirst-party official page: ${officialTargets.length} show(s) with no ticket or official link and a page to read.`);
+  let officialAdded = 0;
+  for (const show of officialTargets) {
+    if (!timeBudget.canStartItem(SERP_PHASE_RESERVE_MS + 60_000)) {
+      console.log('\n⏱ Official-page phase stopped to leave the SERP phase its time budget.');
+      break;
+    }
+    const url = await discoverOfficialPage(show);
+    if (!url) { console.log(`  ✗ ${show.id}: no live first-party page`); continue; }
+    console.log(`  ✓ ${show.id}: officialUrl ${url}`);
+    if (!DRY_RUN) {
+      show.officialUrl = url;
+    }
+    officialAdded++;
+  }
   console.log(`\nSERP phase: ${targets.length} show(s) still without ticketLinks.`);
 
   if (targets.length > LIMIT) {
@@ -324,8 +421,8 @@ async function main() {
     await new Promise((r) => setTimeout(r, 500));
   }
 
-  console.log(`\nDone: ${added} link(s) discovered, ${misses} miss(es).`);
-  if (added > 0 && !DRY_RUN) {
+  console.log(`\nDone: ${added} link(s) discovered, ${officialAdded} official page(s) set, ${misses} miss(es).`);
+  if (added + officialAdded > 0 && !DRY_RUN) {
     saveShows(data);
     console.log('shows.json updated.');
   } else if (DRY_RUN) {
@@ -336,7 +433,10 @@ async function main() {
 // Exported for the colocated test suite; the sweep only runs when invoked
 // directly (requiring this module must never trigger a live SERP run —
 // the cousin --help bug class, in require() form).
-module.exports = { probeUrl, isVenueSiteHost, collectVenueUrls, discoverVenuePage };
+module.exports = {
+  probeUrl, isVenueSiteHost, collectVenueUrls, discoverVenuePage,
+  needsOfficialPage, hubDetailUrl, parseHubWebsite, probeFirstPartyUrl, discoverOfficialPage,
+};
 
 if (require.main === module) {
   main().catch((err) => {

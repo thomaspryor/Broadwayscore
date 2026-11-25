@@ -11,6 +11,7 @@ const { foldDiacritics } = require('./title-match');
 const { getCity } = require('./tic-cities');
 const { resolveMetro } = require('./venue-metro');
 const { normalizeShowTitle } = require('./show-title-normalize');
+const { isFirstPartyVenueUrl } = require('./first-party-venue-url');
 
 const MIN_REVIEWS = 3;
 const CHICAGO_METRO = 'chicago-il'; // data/venue-metros.json metro slug (BRO-6515)
@@ -188,6 +189,13 @@ function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chi
     evidenceUrls: [`${city.base}/${page.slug || 'show'}/${page.id}/`],
   };
   if (closing) entry.closingDate = closing;
+  // BRO-7668: keep the theatre's own website the listing printed, when it is the
+  // venue's site, so the show page has a "Visit Official Site" button from day one
+  // instead of a missing_tickets gap no ticket enricher could fill.
+  const website = detail && detail.website ? detail.website.replace(/^http:/i, 'https:') : null;
+  if (website && isFirstPartyVenueUrl(website, venue)) {
+    entry.officialUrl = website;
+  }
   // Keep what the site printed: search matches title + akaTitles, and a later scrape
   // of the same listing can see the flip.
   if (title !== page.title) {

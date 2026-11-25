@@ -36,6 +36,8 @@ const ALLOWED = new Set([
   // BRO-8054: title-normalization provenance (scripts/lib/show-title-normalize.js applyNormalizedTitle).
   // A listing source that strips a title artifact records what it printed, so search still finds it.
   'titleNormalizedFrom', 'titleNormalizedAt', 'akaTitles',
+  // BRO-7668: the theatre's own site from the listing (tic-stage.js), the show page's buy button.
+  'officialUrl',
 ]);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const STATUSES = ['upcoming', 'announced', 'previews', 'open', 'closed'];

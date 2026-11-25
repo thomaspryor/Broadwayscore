@@ -159,6 +159,9 @@ function parseDetailPage(html) {
     dateText,
     closingDate: parseSiteDate(dateText),
     poster: $('.playdetail-mobile-img img').first().attr('src') || null,
+    // BRO-7668: the website the listing prints for this production (often the
+    // producing theatre's homepage). Callers decide whether it is first-party.
+    website: (String($('.bodyDetailLink a').first().attr('href') || '').trim()) || null,
   };
 }
 

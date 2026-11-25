@@ -68,6 +68,12 @@ test('detail page: show type, venue, address, closing date', () => {
   assert.equal(t.isExcludedType(d.showType), true);
 });
 
+test('detail page: website link the listing prints (BRO-7668)', () => {
+  const d = t.parseDetailPage(read('detail-12000-physician-magician.html'));
+  assert.equal(d.website, 'http://www.rhapsodytheater.com');
+  assert.equal(t.parseDetailPage('<div class="post-title"><h2 class="section-title">X</h2></div>').website, null);
+});
+
 test('type filter and mapping', () => {
   for (const x of ['Cabaret', 'Magic', 'Comedy', 'Stand-up Comedy', 'Improv']) assert.equal(t.isExcludedType(x), true, x);
   for (const x of ['Play', 'Musical', 'Drama', 'Comedy/Drama', 'Musical Comedy']) assert.equal(t.isExcludedType(x), false, x);

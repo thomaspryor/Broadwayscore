@@ -158,3 +158,58 @@ test('discoverVenuePage: requireListed rejects a sitemap-only (archived) hit, ac
   });
   assert.equal((await discoverVenuePage(rscHamlet, { fetchText: listed.fetchText, gapMs: 0, requireListed: true })).url, 'https://www.rsc.org.uk/whats-on/hamlet/');
 });
+
+// BRO-7668: the theatre's own page becomes officialUrl for open shows with no
+// buy button. Drives the real functions with injected fetchers.
+const { needsOfficialPage, hubDetailUrl, probeFirstPartyUrl, discoverOfficialPage } = require('./enrich-fallback-ticket-links.js');
+
+test('needsOfficialPage: open, no ticket link, no official link', () => {
+  assert.equal(needsOfficialPage({ status: 'open', ticketLinks: [] }), true);
+  assert.equal(needsOfficialPage({ status: 'previews' }), true);
+  assert.equal(needsOfficialPage({ status: 'open', officialUrl: 'https://x.org' }), false);
+  assert.equal(needsOfficialPage({ status: 'open', ticketLinks: [{ url: 'https://x' }] }), false);
+  assert.equal(needsOfficialPage({ status: 'closed' }), false);
+});
+
+test('probeFirstPartyUrl: upgrades http, keeps the given URL across a box-office redirect', async () => {
+  const got = await probeFirstPartyUrl('http://www.arenastage.org', 'Arena Stage, Washington, DC', 1000, stub({
+    'https://www.arenastage.org': { status: 302, location: 'https://tickets.arenastage.org/session?x=1' },
+    'https://tickets.arenastage.org/session?x=1': { status: 200 },
+  }));
+  assert.equal(got, 'https://www.arenastage.org');
+});
+
+test('probeFirstPartyUrl: a redirect off the theatre site, or a dead page, fails', async () => {
+  assert.equal(await probeFirstPartyUrl('https://www.citylit.org', 'City Lit Theater', 1000, stub({
+    'https://www.citylit.org': { status: 301, location: 'https://parked-domains.example/x' },
+    'https://parked-domains.example/x': { status: 200 },
+  })), null);
+  assert.equal(await probeFirstPartyUrl('https://www.citylit.org', 'City Lit Theater', 1000, stub({})), null);
+  assert.equal(await probeFirstPartyUrl('https://www.bostonglobe.com/x', 'Lyric Stage Company of Boston', 1000, stub({
+    'https://www.bostonglobe.com/x': { status: 200 },
+  })), null);
+});
+
+test('discoverOfficialPage: reads the theatreinX listing website when no evidenceUrl is first-party', async () => {
+  const show = {
+    id: 'king-hedley-ii-regional-2026', venue: 'City Lit Theater, Chicago, IL',
+    evidenceUrls: ['https://www.theatreinchicago.com/king-hedley-ii/13356/'],
+  };
+  assert.equal(hubDetailUrl(show), 'https://www.theatreinchicago.com/king-hedley-ii/13356/');
+  const html = '<div class="post-title"><h2 class="section-title">King Hedley II</h2></div>'
+    + "<span class='bodyDetailLink'><a href='http://www.citylit.org' target='_blank'>www.citylit.org</a></span>";
+  const fetchText = async (u) => (u === show.evidenceUrls[0] ? html : null);
+  const got = await discoverOfficialPage(show, { fetchText, fetchStatusFn: stub({ 'https://www.citylit.org': { status: 200 } }) });
+  assert.equal(got, 'https://www.citylit.org');
+  // A listing that prints a press or producer link stays unfilled.
+  const other = html.replace(/citylit\.org/g, 'chicagoreader.com');
+  assert.equal(await discoverOfficialPage(show, { fetchText: async () => other, fetchStatusFn: stub({ 'https://www.chicagoreader.com': { status: 200 } }) }), null);
+});
+
+test('discoverOfficialPage: a first-party evidenceUrl needs no listing read', async () => {
+  const show = { venue: 'North Coast Repertory Theatre, Solana Beach, CA', evidenceUrls: ['https://northcoastrep.org/production/the-cottage/'] };
+  let reads = 0;
+  const got = await discoverOfficialPage(show, { fetchText: async () => { reads++; return ''; }, fetchStatusFn: stub({ 'https://northcoastrep.org/production/the-cottage/': { status: 200 } }) });
+  assert.equal(got, 'https://northcoastrep.org/production/the-cottage/');
+  assert.equal(reads, 0);
+});
