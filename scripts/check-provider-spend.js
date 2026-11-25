@@ -385,7 +385,7 @@ async function main() {
         conditionKey: key,
         title,
         description: `${title}: $${sessionVerdict.worstUsd} on ${sessionVerdict.worstDay}, above the $${sessionVerdict.threshold} llmSessionDailyUsd line.`,
-        hint: 'Rows: data/audit/llm-session-usage.jsonl (kind=session). They reach CI only after a wrap-up folds and commits them (node scripts/record-claude-session-cost.js --fold-only on a Mac), so this can lag a day. Per-caller detail: node scripts/gemini-usage-summary.js.',
+        hint: 'Rows: the committed session-usage ledger under data/audit (kind=session). They reach CI only after a wrap-up folds and commits them (node scripts/record-claude-session-cost.js --fold-only on a Mac), so this can lag a day. Per-caller detail: node scripts/gemini-usage-summary.js.',
         severity: 'warning',
         disposition: 'digest',
         cooldownHours: 20,
