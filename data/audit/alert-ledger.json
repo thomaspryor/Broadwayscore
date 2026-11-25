@@ -38055,13 +38055,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-25T05:13:16.391Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T14:35:12.994Z",
+      "lastSeen": "2026-11-25T17:08:16.711Z",
       "lastNotifiedAt": "2026-11-25T05:13:16.391Z",
       "lastSurfacedAt": "2026-11-25T05:13:16.391Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -39322,7 +39322,7 @@
       "resolvedAt": "2026-11-08T10:15:43.140Z"
     },
     "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
       "firstSeen": "2026-11-08T11:49:18.462Z",
@@ -39333,7 +39333,9 @@
       "lastSurfacedAt": "2026-11-25T14:35:12.614Z",
       "notifyCount": 14,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-25T17:08:16.774Z",
+      "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)": {
       "status": "resolved",
@@ -42415,13 +42417,13 @@
       "firstSeen": "2026-11-11T15:05:44.026Z",
       "incidentOpenedAt": "2026-11-25T05:46:33.104Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T14:35:13.013Z",
+      "lastSeen": "2026-11-25T17:08:16.732Z",
       "lastNotifiedAt": "2026-11-25T05:46:33.104Z",
       "lastSurfacedAt": "2026-11-25T05:46:33.104Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-7373-cost": {
       "status": "open",
@@ -43540,21 +43542,18 @@
       "resolveReason": "absent"
     },
     "live-data-test:scripts/lib/default-critic-home.live.test.mjs::allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS)": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS) (scripts/lib/default-critic-home.live.test.mjs)",
       "firstSeen": "2026-11-14T02:43:17.309Z",
-      "incidentOpenedAt": "2026-11-14T02:43:17.309Z",
+      "incidentOpenedAt": "2026-11-25T17:08:16.388Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-16T00:13:12.755Z",
-      "lastNotifiedAt": "2026-11-15T07:37:10.045Z",
-      "lastSurfacedAt": "2026-11-15T07:37:10.045Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-25T17:08:16.388Z",
+      "lastNotifiedAt": "2026-11-25T17:08:16.388Z",
+      "lastSurfacedAt": "2026-11-25T17:08:16.388Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 5,
-      "resolvedAt": "2026-11-16T03:44:50.003Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "express-retry-still-thin:potus-off-broadway-2026": {
       "status": "resolved",
@@ -46858,13 +46857,13 @@
       "firstSeen": "2026-11-20T13:18:47.633Z",
       "incidentOpenedAt": "2026-11-20T13:18:47.633Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T14:35:12.687Z",
+      "lastSeen": "2026-11-25T17:08:16.482Z",
       "lastNotifiedAt": "2026-11-25T03:46:50.381Z",
       "lastSurfacedAt": "2026-11-23T02:00:01.244Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-8101",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::live history (when data/reviews.json is present): every on-time outlet has a source or a gap": {
       "status": "resolved",
@@ -49233,13 +49232,12 @@
       "firstSeen": "2026-11-23T14:53:31.566Z",
       "incidentOpenedAt": "2026-11-23T14:53:31.566Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T14:35:13.028Z",
-      "lastNotifiedAt": "2026-11-24T15:14:59.748Z",
-      "lastSurfacedAt": "2026-11-24T15:14:59.748Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-25T17:08:16.753Z",
+      "lastNotifiedAt": "2026-11-25T17:08:16.753Z",
+      "lastSurfacedAt": "2026-11-25T17:08:16.753Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 15
+      "linearIdentifier": null
     },
     "land:land/bro-8150-fn-size-guard": {
       "status": "resolved",
@@ -49582,13 +49580,13 @@
       "firstSeen": "2026-11-23T18:37:33.367Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.367Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T14:35:12.656Z",
+      "lastSeen": "2026-11-25T17:08:16.441Z",
       "lastNotifiedAt": "2026-11-24T19:15:47.999Z",
       "lastSurfacedAt": "2026-11-24T19:15:47.999Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "live-data-test:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd": {
       "status": "open",
@@ -49597,13 +49595,13 @@
       "firstSeen": "2026-11-23T18:37:33.463Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.463Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T14:35:12.672Z",
+      "lastSeen": "2026-11-25T17:08:16.462Z",
       "lastNotifiedAt": "2026-11-24T19:15:48.027Z",
       "lastSurfacedAt": "2026-11-24T19:15:48.027Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "land:land/bro-8163-score-gate": {
       "status": "open",
@@ -50090,12 +50088,13 @@
       "firstSeen": "2026-11-24T07:48:45.483Z",
       "incidentOpenedAt": "2026-11-24T07:48:45.483Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-25T14:35:12.637Z",
+      "lastSeen": "2026-11-25T17:08:16.416Z",
       "lastNotifiedAt": "2026-11-25T14:35:12.637Z",
       "lastSurfacedAt": "2026-11-25T14:35:12.637Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:the-afronauts-west-end-2026": {
       "status": "open",
