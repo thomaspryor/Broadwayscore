@@ -121,3 +121,39 @@ test('walledVerdictToResult: only logged-out fails', () => {
   assert.equal(health.walledVerdictToResult('vacuous', 3000, 3000, 1200).status, 'warn');
   assert.equal(health.walledVerdictToResult('error', 0, 0, 1200).status, 'warn');
 });
+
+// BRO-8099: every check-cookie-health call site passed markers by hand and
+// dropped subscriberMarker (588 also dropped gateMarker). One helper now maps a
+// config to classifyWalledProbe, filling markers from the shared probe.
+test('walledProbeArgs: every config on a shared probe url carries all of that probe\'s markers', () => {
+  let shared = 0;
+  for (const [k, cfg] of Object.entries(health.CRITICAL_OUTLETS)) {
+    const probe = Object.values(COOKIE_PROBES).find((p) => p.url === cfg.testUrl);
+    if (!probe) continue;
+    shared++;
+    const a = health.walledProbeArgs(cfg);
+    for (const m of ['wallMarker', 'gateMarker', 'subscriberMarker']) {
+      if (probe[m]) assert.ok(a[m], `${k}: ${m} from the shared probe reaches classifyWalledProbe`);
+    }
+    assert.equal(a.minBody, cfg.minBodyChars);
+  }
+  assert.ok(shared >= 3, 'nytimes, wapo, ft, thestage test shared probe urls');
+});
+
+test('walledVerdict: a subscriberMarker probe is not vacuous on a metered free read (marker reaches the vacuous check)', () => {
+  const tg = COOKIE_PROBES.telegraph;
+  const cfg = { testUrl: tg.url, minBodyChars: tg.minBody }; // no markers on the config itself
+  const sub = { html: '<div class="is-subscriber--true"></div>', body: 'x'.repeat(3000) };
+  const freeRead = { html: '<div class="is-subscriber--false"></div>', body: 'x'.repeat(3000) };
+  assert.equal(health.walledVerdict(cfg, sub, freeRead), 'logged-in');
+  // The pre-fix hand call (no subscriberMarker) called the same pair vacuous.
+  const { classifyWalledProbe } = require('../../scripts/lib/cookie-probes.js');
+  assert.equal(classifyWalledProbe({ withCookies: sub, withoutCookies: freeRead, minBody: tg.minBody, wallMarker: tg.wallMarker }), 'vacuous');
+});
+
+test('check-cookie-health calls classifyWalledProbe in one place only (walledVerdict)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../../scripts/check-cookie-health.js', import.meta.url), 'utf8');
+  const calls = src.split('\n').filter((l) => /classifyWalledProbe\(\{/.test(l) && !/^\s*\/\//.test(l));
+  assert.equal(calls.length, 1, `hand-built classifyWalledProbe call(s) drift from the probe markers:\n${calls.join('\n')}`);
+});

@@ -425,7 +425,29 @@ function checkGeneralHealth(cookies) {
 
 // --- Layer 3: Live Access Test via ScrapingBee ---
 
-async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyChars, { wallMarker, vacuousControl } = {}) {
+/**
+ * The one mapping from a CRITICAL_OUTLETS config to classifyWalledProbe
+ * (BRO-8099). Call sites used to pass markers by hand and dropped
+ * subscriberMarker everywhere (and gateMarker on the vacuous re-check), the
+ * BRO-7705 drift class. Markers come from the config, else from the shared
+ * probe whose url the config tests (COOKIE_PROBES), so a marker added there
+ * reaches CI without touching this file.
+ * @param {{testUrl?:string, minBodyChars:number, wallMarker?:RegExp, gateMarker?:RegExp, subscriberMarker?:RegExp}} config
+ */
+function walledProbeArgs(config) {
+  const shared = Object.values(COOKIE_PROBES).find((p) => p.url === config.testUrl) || {};
+  const pick = (k) => (config[k] !== undefined ? config[k] : shared[k]);
+  return { minBody: config.minBodyChars, wallMarker: pick('wallMarker'), gateMarker: pick('gateMarker'), subscriberMarker: pick('subscriberMarker') };
+}
+
+/** classifyWalledProbe for a CRITICAL_OUTLETS config. Pure. */
+function walledVerdict(config, withCookies, withoutCookies) {
+  return classifyWalledProbe({ withCookies, withoutCookies, ...walledProbeArgs(config) });
+}
+
+async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyChars, config = {}) {
+  const { vacuousControl } = config;
+  const { wallMarker } = walledProbeArgs({ ...config, testUrl, minBodyChars });
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
   if (!apiKey) {
     return { status: 'skip', message: 'SCRAPINGBEE_API_KEY not set' };
@@ -495,12 +517,9 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyCh
         // If it also clears the floor, the pass above proves nothing.
         const ctl = await httpsGet(testUrl, { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36' }, 20000);
         if (ctl.status === 200) {
-          const verdict = classifyWalledProbe({
-            withCookies: { html, body },
-            withoutCookies: { html: ctl.body, body: extractArticleTextFromUrl(ctl.body, testUrl) || '' },
-            minBody: minBodyChars,
-            wallMarker,
-          });
+          const verdict = walledVerdict({ ...config, testUrl, minBodyChars },
+            { html, body },
+            { html: ctl.body, body: extractArticleTextFromUrl(ctl.body, testUrl) || '' });
           if (verdict === 'vacuous') {
             return { status: 'warn', message: `OK (body ${body.length}) but VACUOUS: testUrl is readable without cookies — pick a recent walled article in scripts/lib/cookie-probes.js` };
           }
@@ -560,7 +579,9 @@ async function fetchControlPage(url) {
   return res.text();
 }
 
-async function checkLiveAccessWalledPlain(testUrl, { minBodyChars, wallMarker, gateMarker }) {
+async function checkLiveAccessWalledPlain(testUrl, config) {
+  const { minBodyChars } = config;
+  const { gateMarker } = walledProbeArgs({ ...config, testUrl });
   // Independent legs: a failed control must never hide a logout seen with cookies.
   const [withRes, ctlRes] = await Promise.allSettled([fetchWithCookiesPlain(testUrl), fetchControlPage(testUrl)]);
   const withHtml = withRes.status === 'fulfilled' && withRes.value ? withRes.value.content : null;
@@ -582,10 +603,10 @@ async function checkLiveAccessWalledPlain(testUrl, { minBodyChars, wallMarker, g
     return walledVerdictToResult('logged-out', withCookies.body.length, withoutLen, minBodyChars);
   }
   // Cookie verdict first, from the with-cookies page alone.
-  let verdict = classifyWalledProbe({ withCookies, minBody: minBodyChars, wallMarker, gateMarker });
+  const cfg = { ...config, testUrl };
+  let verdict = walledVerdict(cfg, withCookies);
   // Vacuous check only when the control actually came back.
-  if (verdict === 'logged-in' && withoutCookies
-      && classifyWalledProbe({ withCookies, withoutCookies, minBody: minBodyChars, wallMarker }) === 'vacuous') {
+  if (verdict === 'logged-in' && withoutCookies && walledVerdict(cfg, withCookies, withoutCookies) === 'vacuous') {
     verdict = 'vacuous';
   }
   return walledVerdictToResult(verdict, withCookies.body.length, withoutLen, minBodyChars);
@@ -1037,4 +1058,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { CRITICAL_OUTLETS, unverifiableLiveResult, checkAuthExpiry, walledVerdictToResult, checkLiveAccessWalledPlain, withBodyCheck };
+module.exports = { CRITICAL_OUTLETS, unverifiableLiveResult, checkAuthExpiry, walledVerdictToResult, checkLiveAccessWalledPlain, withBodyCheck, walledProbeArgs, walledVerdict };
