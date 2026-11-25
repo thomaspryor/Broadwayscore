@@ -173,7 +173,7 @@ let _defaultIndex;
 function defaultRivalIndex() {
   if (_defaultIndex !== undefined) return _defaultIndex;
   try {
-    const S = require(require('path').join(__dirname, '..', '..', 'data', 'shows.json'));
+    const S = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
     _defaultIndex = buildRivalIndex(S.shows || S);
   } catch (e) {
     _defaultIndex = null;
