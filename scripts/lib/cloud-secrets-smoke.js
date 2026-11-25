@@ -66,6 +66,7 @@ function judgeApi(group, status, data) {
 function selectChecks(env, only) {
   return Object.entries(GROUPS)
     .filter(([g]) => !only || only.includes(g))
+    .filter(([g]) => !(g === 'scrapingbee' && require('./sb-switch').isScrapingBeeOff(env))) // BRO-8330: intentionally off, nothing to smoke
     .map(([group, keys]) => ({ group, missing: keys.filter((k) => !env[k]) }));
 }
 

@@ -1195,7 +1195,8 @@ const SITE_SEARCH_ENDPOINTS = {
   },
 };
 
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+const { scrapingBeeKey: sbSwitchKey } = require('./sb-switch'); // BRO-8330
+const SCRAPINGBEE_KEY = sbSwitchKey();
 
 /**
  * Resolve {MARKET_KEYWORD} placeholder based on market.
@@ -1480,7 +1481,7 @@ const STOP_WORDS = new Set(['the', 'and', 'for', 'new', 'review', 'theatre', 'br
  * rescue (local Playwright, Scrapingdog plain). Callers used to gate on the SB key alone.
  */
 function jsSiteSearchAvailable(env = process.env) {
-  return Boolean(env.SCRAPINGBEE_API_KEY) || env.SB_RESCUE_DISABLED !== '1';
+  return Boolean(sbSwitchKey(env)) || env.SB_RESCUE_DISABLED !== '1';
 }
 
 /** True when html shows a result link for this outlet and echoes the query (not a nav-only shell). */
@@ -1505,6 +1506,11 @@ async function rescueJsSearchHtml(config, url, deps = {}) {
   const tiers = [pwFetch];
   // scrapingdog-page outlets (EW) already tried this exact plain page in fetchJsSearchHtml.
   if (process.env.SCRAPER_USE_SCRAPINGDOG !== '0' && config.fetchVia !== 'scrapingdog-page') tiers.push(sdPlain);
+  // BRO-8330 (parent benchmark 2026-11-25): SD render with NO wait returns HTTP 200 and big HTML with zero
+  // result links on timeout.com and deadline.com; renderJs + wait:5000 recovers them. The
+  // looksLikeSearchResults probe below rejects any shell, so a bare 200 never counts as success.
+  const sdRender = deps.sdRenderFetch || ((deps.sdPlainFetch || deps.sdFetch) ? null : (u) => require('./scraper').fetchWithScrapingdog(u, { renderJs: true, wait: 5000 }));
+  if (sdRender && process.env.SCRAPER_USE_SCRAPINGDOG !== '0') tiers.push(sdRender);
   for (const t of tiers) {
     try {
       const res = await t(url);

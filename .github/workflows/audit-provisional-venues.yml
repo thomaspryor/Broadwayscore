@@ -136,7 +136,7 @@ jobs:
         # Scoped to `schedule` so a fork's manual dispatch still degrades quietly.
         if: github.event_name == 'schedule' && env.HAS_SCRAPE_SECRETS != 'true'
         env:
-          HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
+          HAS_SCRAPE_SECRETS: ${{ ((vars.SCRAPINGBEE_DISABLED == '1' || secrets.SCRAPINGBEE_API_KEY != '') && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
         run: |
           echo "::error::Provisional venue audit cannot run — SCRAPINGBEE_API_KEY and/or BRIGHTDATA_TOKEN is unset. The daily Playbill cross-validation (CLAUDE.md §3) has NOT run. Restore the secrets or set PROVISIONAL_VENUE_AUDIT_DISABLED=true to stop this alert deliberately."
           exit 1
@@ -180,8 +180,9 @@ jobs:
         if: env.HAS_SCRAPE_SECRETS == 'true'
         timeout-minutes: 30
         env:
-          HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          HAS_SCRAPE_SECRETS: ${{ ((vars.SCRAPINGBEE_DISABLED == '1' || secrets.SCRAPINGBEE_API_KEY != '') && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           # fetchPage()'s cheapest tier (~3x less than Bright Data), enforced by
@@ -254,7 +255,7 @@ jobs:
         if: always() && env.HAS_SCRAPE_SECRETS == 'true'
         timeout-minutes: 35
         env:
-          HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
+          HAS_SCRAPE_SECRETS: ${{ ((vars.SCRAPINGBEE_DISABLED == '1' || secrets.SCRAPINGBEE_API_KEY != '') && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
           PUSH_DEADLINE_SEC: '900'
         run: |
           git config user.name "github-actions[bot]"

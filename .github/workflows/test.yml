@@ -192,6 +192,7 @@ on:
       - 'scripts/audit-artsdesk-banner.js'
       - 'scripts/audit-url-critic-slug-filenames.js'
       - 'scripts/export-cookies.js'
+      - 'scripts/evaluate-brightdata-serp.js' # BRO-8330 SB switch class guard, tested by scripts/lib/sb-switch.test.mjs
       # scripts/backtest-recoupment-ground-truth.js runs in unit-tests (advisory model backtest, BRO-4989)
       - 'scripts/backtest-recoupment-ground-truth.js'
       # scripts/backtest-cap-comparables.js is run by tests/unit/cap-comparables.test.mjs (BRO-5849)

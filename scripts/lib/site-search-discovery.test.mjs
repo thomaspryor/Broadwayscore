@@ -450,3 +450,19 @@ test('BRO-8323: rescue echo check reads s= too, skips stop words, no SD repeat o
   assert.equal(jsSiteSearchAvailable({ SB_RESCUE_DISABLED: '1' }), false);
   assert.equal(jsSiteSearchAvailable({ SB_RESCUE_DISABLED: '1', SCRAPINGBEE_API_KEY: 'k' }), true);
 });
+
+test('BRO-8330: keyless rescue falls through to Scrapingdog render+wait, and a 200 shell never counts', async () => {
+  const { rescueJsSearchHtml } = require('./site-search-discovery.js');
+  const dl = SITE_SEARCH_ENDPOINTS.deadline;
+  const url = 'https://deadline.com/?s=Hamilton+review';
+  const good = '<a href="https://deadline.com/2026/11/hamilton-review-1/">x</a> hamilton hamilton hamilton hamilton';
+  const shell = '<html>' + 'x'.repeat(5000) + '</html>';
+  const seen = [];
+  const out = await rescueJsSearchHtml(dl, url, {
+    pwFetch: async () => null,
+    sdRenderFetch: async (u) => { seen.push(u); return { content: good }; },
+  });
+  assert.equal(out, good);
+  assert.deepEqual(seen, [url]);
+  assert.equal(await rescueJsSearchHtml(dl, url, { pwFetch: async () => null, sdRenderFetch: async () => ({ content: shell }) }), '', 'large 200 shell with no result links is rejected');
+});

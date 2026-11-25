@@ -160,7 +160,7 @@ async function main() {
     fetchBbUsageForDay(process.env.BROWSERBASE_API_KEY, process.env.BROWSERBASE_PROJECT_ID, DAY),
     fetchBdZoneCostDay('serp_api1', DAY, process.env.BRIGHTDATA_TOKEN),
     fetchBdZoneCostDay(zone, DAY, process.env.BRIGHTDATA_TOKEN),
-    fetchSbUsage(process.env.SCRAPINGBEE_API_KEY),
+    fetchSbUsage(process.env.SCRAPINGBEE_USAGE_KEY || require('./lib/sb-switch').scrapingBeeKey()), // BRO-8330: usage meter is read-only, stays live when fetch key is blanked
     fetchSdAccount(process.env.SCRAPINGDOG_API_KEY),
   ]);
 

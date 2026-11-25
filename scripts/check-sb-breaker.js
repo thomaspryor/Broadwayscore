@@ -72,6 +72,10 @@ function topSpenders(day) {
 }
 
 async function main() {
+  if (require('./lib/sb-switch').isScrapingBeeOff()) { // BRO-8330
+    console.log('ScrapingBee intentionally off (SCRAPINGBEE_DISABLED=1): breaker check skipped, state untouched');
+    return;
+  }
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
   if (!apiKey) {
     console.log('SCRAPINGBEE_API_KEY not set — skipping breaker check (state left untouched)');

@@ -17,6 +17,9 @@ const fs = require('fs');
 require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 const path = require('path');
 const scraper = require('./scraper');
+const { isScrapingBeeOff } = require('./sb-switch'); // BRO-8330: global SB off switch
+// Explicit option key wins over the env key (original precedence); the switch blanks both.
+const sbSwitchKey = (_env, cand) => (isScrapingBeeOff() ? '' : (cand || process.env.SCRAPINGBEE_API_KEY || ''));
 const { domainMatchesExpected, setRegistryDomainAliases } = scraper;
 const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filters');
 const { isLondonMarket } = require('./venue-classification');
@@ -2009,7 +2012,7 @@ function validateUrlDomain(url, outletId) {
  * Callers use this instead of testing SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN themselves.
  */
 function hasSerpProvider(opts = {}) {
-  const sb = opts.scrapingBeeKey ?? process.env.SCRAPINGBEE_API_KEY;
+  const sb = sbSwitchKey(process.env, opts.scrapingBeeKey ?? process.env.SCRAPINGBEE_API_KEY);
   const bd = opts.brightDataKey ?? process.env.BRIGHTDATA_TOKEN;
   const sdKey = opts.scrapingdogKey ?? process.env.SCRAPINGDOG_API_KEY;
   const sdOn = opts.useScrapingdog ?? (process.env.SCRAPER_USE_SCRAPINGDOG !== '0');
@@ -2035,7 +2038,7 @@ function hasSerpProvider(opts = {}) {
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if all providers unavailable
  */
 async function serpQuery(query, options = {}) {
-  const sbKey = options.scrapingBeeKey || process.env.SCRAPINGBEE_API_KEY || '';
+  const sbKey = sbSwitchKey(process.env, options.scrapingBeeKey);
   const bdKey = options.brightDataKey || process.env.BRIGHTDATA_TOKEN || '';
   const log = options.log || console.log;
   const dateRange = options.dateRange || null;
@@ -2138,7 +2141,7 @@ async function _serpTypedViaScrapingBee(query, apiKey, searchType, nbResults, lo
  *   `exhausted` — see _serpTypedViaScrapingBee's doc comment.
  */
 async function serpNewsQuery(query, options = {}) {
-  const sbKey = options.scrapingBeeKey || process.env.SCRAPINGBEE_API_KEY || '';
+  const sbKey = sbSwitchKey(process.env, options.scrapingBeeKey);
   const log = options.log || console.log;
   const nbResults = options.nbResults || 10;
   if (!sbKey) {
@@ -2257,7 +2260,7 @@ async function _serpImagesViaScrapingdog(query, sdKey, nbResults, log, attempt =
  *   credit/auth failure only. `failed:true` means every tier broke.
  */
 async function serpImagesQuery(query, options = {}) {
-  const sbKey = options.scrapingBeeKey || process.env.SCRAPINGBEE_API_KEY || '';
+  const sbKey = sbSwitchKey(process.env, options.scrapingBeeKey);
   const sdKey = options.scrapingdogKey || process.env.SCRAPINGDOG_API_KEY || '';
   const log = options.log || console.log;
   const nbResults = options.nbResults || 20;

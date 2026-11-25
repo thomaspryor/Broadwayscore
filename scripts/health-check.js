@@ -4033,7 +4033,9 @@ function checkAPICredits() {
 
   // No early return on a missing SB key — the SD/BD/BB checks below must
   // still run (each provider is monitored independently).
-  if (!apiKey) {
+  if (require('./lib/sb-switch').isScrapingBeeOff()) { // BRO-8330: intentionally off is healthy
+    results.push({ name: 'Credits: ScrapingBee', status: 'pass', message: require('./lib/sb-switch').offStatusLine() });
+  } else if (!apiKey) {
     results.push({ name: 'Credits: ScrapingBee', status: 'warn', message: 'Skipped — no SCRAPINGBEE_API_KEY available' });
   } else results.push(runCheck('Credits: ScrapingBee', () => {
     try {

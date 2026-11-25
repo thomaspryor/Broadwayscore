@@ -326,7 +326,8 @@ jobs:
           WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
           NYDAILYNEWS_EMAIL: ${{ secrets.NYDAILYNEWS_EMAIL }}
           NYDAILYNEWS_PASSWORD: ${{ secrets.NYDAILYNEWS_PASSWORD }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
@@ -781,7 +782,8 @@ jobs:
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}

@@ -32,6 +32,10 @@ function httpsGetJson(url, timeoutMs = 8000) {
 }
 
 async function fetchSBCreditStatus() {
+  // BRO-8330: intentionally off. ok:true + skipped so no caller treats it as a failed read.
+  if (require('./sb-switch').isScrapingBeeOff()) {
+    return { ok: true, skipped: true, reason: 'sb-off', message: require('./sb-switch').offStatusLine() };
+  }
   const key = process.env.SCRAPINGBEE_API_KEY;
   if (!key) {
     return { ok: false, reason: 'no-key', message: 'SCRAPINGBEE_API_KEY not set' };

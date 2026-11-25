@@ -47,7 +47,9 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           COST_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ vars.SCRAPINGBEE_DISABLED != '1' && secrets.SCRAPINGBEE_API_KEY || '' }}
+          SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
+          SCRAPINGBEE_USAGE_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }} # BRO-8330 read-only usage meter
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
@@ -267,8 +269,8 @@ jobs:
           # --- ScrapingBee cap % direct from API (replaces log-scraping) ---
           # Outputs: pct_used | proj_pct_of_current_cap | used | cap | projected_absolute
           SB_PCT="—"; SB_PROJECTED="—"; SB_PROJECTED_ABS=0; SB_CAP_NUM=0; SB_USED_NUM=0; SB_RENEWAL="unknown"
-          if [ -n "$SCRAPINGBEE_API_KEY" ]; then
-            SB_USAGE=$(curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=$SCRAPINGBEE_API_KEY" 2>/dev/null || echo "{}")
+          if [ -n "$SCRAPINGBEE_USAGE_KEY" ]; then
+            SB_USAGE=$(curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=$SCRAPINGBEE_USAGE_KEY" 2>/dev/null || echo "{}")
             # BRO-3010: parsed by provider-billing.js (the one /usage field reader), not inline python.
             SB_RENEWAL=$(echo "$SB_USAGE" | node scripts/lib/provider-billing.js --sb-renewal 2>/dev/null || echo "unknown")
             SB_PARSED=$(echo "$SB_USAGE" | node scripts/lib/provider-billing.js --sb-report-line 2>/dev/null || echo "—|—|0|0|0")
@@ -313,7 +315,7 @@ jobs:
           SB_COLOR="#6b7280"
           if [ -n "$HEALTH_RUN" ]; then
             SB_RAW=$(gh run view "$HEALTH_RUN" --log 2>&1 | grep -oP 'ScrapingBee: .*' | head -1 || echo "")
-            if grep -qi "exhausted\|0%\|fail" <<<"$SB_RAW"; then
+            if grep -qiE "exhausted|(^|[^0-9])0%|fail" <<<"$SB_RAW"; then
               SB_STATUS="Exhausted — renews $SB_RENEWAL"
               SB_COLOR="#dc2626"
             elif grep -qi "warn\|90%" <<<"$SB_RAW"; then

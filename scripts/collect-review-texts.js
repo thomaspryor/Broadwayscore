@@ -464,7 +464,7 @@ const CONFIG = {
   maxDurationMs: process.env.MAX_DURATION_MS ? parseInt(process.env.MAX_DURATION_MS) : 0,
 
   // API Keys
-  scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '',
+  scrapingBeeKey: require('./lib/sb-switch').scrapingBeeKey(), // BRO-8330
   brightDataKey: process.env.BRIGHTDATA_TOKEN || '',
   brightDataCustomerId: process.env.BRIGHTDATA_CUSTOMER_ID || '',
   browserbaseApiKey: process.env.BROWSERBASE_API_KEY || '',

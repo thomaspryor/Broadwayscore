@@ -21,6 +21,7 @@
 const { isTransientScrapingdogError, parseScrapingdogHttpError } = require('./sd-transient-error');
 
 const https = require('https');
+const { scrapingBeeKey } = require('./sb-switch'); // BRO-8330: global ScrapingBee off switch
 require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 require('./ipv4-connections'); // BRO-6872: no 250 ms happy-eyeballs cut-off (runners cannot reach IPv6)
 const path = require('path');
@@ -409,7 +410,7 @@ function setRegistryDomainAliases(aliases) {
 const _envTopUp = readEnvKeys(['BRIGHTDATA_TOKEN', 'BRIGHTDATA_ZONE', 'SCRAPINGBEE_API_KEY']);
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN || _envTopUp.BRIGHTDATA_TOKEN;
 const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || _envTopUp.BRIGHTDATA_ZONE || 'web_unlocker2';
-const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY || _envTopUp.SCRAPINGBEE_API_KEY;
+const SCRAPINGBEE_KEY = scrapingBeeKey(process.env, _envTopUp.SCRAPINGBEE_API_KEY); // BRO-8330: '' when SCRAPINGBEE_DISABLED=1, also blocks the .env top-up
 
 // Scrapingdog — cheap tier inserted AHEAD of Bright Data. BD Web Unlocker is
 // ~$1.50/1k req; Scrapingdog plain HTML is ~$0.09/1k (1 credit), dynamic

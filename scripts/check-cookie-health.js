@@ -448,7 +448,7 @@ function walledVerdict(config, withCookies, withoutCookies) {
 async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyChars, config = {}) {
   const { vacuousControl } = config;
   const { wallMarker } = walledProbeArgs({ ...config, testUrl, minBodyChars });
-  const apiKey = process.env.SCRAPINGBEE_API_KEY;
+  const apiKey = require('./lib/sb-switch').scrapingBeeKey(); // BRO-8330
   if (!apiKey) {
     return { status: 'skip', message: 'SCRAPINGBEE_API_KEY not set' };
   }
