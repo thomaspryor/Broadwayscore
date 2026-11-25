@@ -1,24 +1,36 @@
 {
-  "generatedAt": "2026-11-25T00:51:37.375Z",
-  "night": "2026-11-23",
+  "generatedAt": "2026-11-25T08:07:25.447Z",
+  "night": "2026-11-24",
   "counts": {
-    "total": 3,
+    "total": 6,
     "passed": 0,
-    "failed": 3,
-    "notGraded": 0
+    "failed": 0,
+    "notGraded": 6
   },
   "lines": [
     {
-      "verdict": "FAIL",
-      "line": "It’s A Wonderful Life: A Live Radio Play: published by the new lane; 16 of 18 reviews live by 12:00am; Vulture came out later and went live at 12:17am, on time; Pages on Stages not live by 3:57am; emails ready. Failed."
+      "verdict": "UNKNOWN",
+      "line": "A Christmas Carol: published by the regular pipeline; opening-night email draft not due until 9:00am. Not graded: could not check when the first review went live or the critics list at the 2-hour mark or which reviews came in that night."
     },
     {
-      "verdict": "FAIL",
-      "line": "Seven Guitars: published by the regular pipeline; 8 of 12 reviews live by 12:00am; Front Row Center went live at 12:27am (late); Pages on Stages went live at 12:32am (late); Talkin' Broadway went live at 12:32am (late); Theater Pizzazz went live at 12:32am (late); emails ready. Failed."
+      "verdict": "UNKNOWN",
+      "line": "Attention: published by the regular pipeline; 9 of 9 reviews live by 6:00pm. Not graded: could not check the critics list at the 2-hour mark or which reviews came in that night."
     },
     {
-      "verdict": "FAIL",
-      "line": "The Afronauts: published by the regular pipeline; no opening-night email draft. Failed."
+      "verdict": "UNKNOWN",
+      "line": "Fourteen Again: published by the regular pipeline; 1 of 1 review live by 6:00pm. Not graded: could not check the critics list at the 2-hour mark or which reviews came in that night."
+    },
+    {
+      "verdict": "UNKNOWN",
+      "line": "In My Own Little World: published by the regular pipeline; 2 of 2 reviews live by 6:00pm. Not graded: could not check the critics list at the 2-hour mark or which reviews came in that night."
+    },
+    {
+      "verdict": "UNKNOWN",
+      "line": "The Jungle Book: published by the regular pipeline; 1 of 1 review live by 6:00pm; opening-night email draft not due until 9:00am. Not graded: no reviews were published overnight."
+    },
+    {
+      "verdict": "PENDING",
+      "line": "The Dead, 1904: not graded yet, still being checked."
     }
   ],
   "scoreboard": {
@@ -26,12 +38,5 @@
     "passed": 4,
     "passedOnOwn": 3
   },
-  "missFirstSeen": {
-    "its-a-wonderful-life-a-live-radio-play-2026|2026-11-23|review:pages-on-stages:": "2026-11-24T11:02:40.233Z",
-    "seven-guitars-off-broadway-2026|2026-11-23|review:front-row-center:Kendra Jones": "2026-11-24T11:02:40.233Z",
-    "seven-guitars-off-broadway-2026|2026-11-23|review:pages-on-stages:Mason Pilevsky": "2026-11-24T11:02:40.233Z",
-    "seven-guitars-off-broadway-2026|2026-11-23|review:talkinbroadway:Howard Miller": "2026-11-24T11:02:40.233Z",
-    "seven-guitars-off-broadway-2026|2026-11-23|review:theater-pizzazz:Unknown": "2026-11-24T11:02:40.233Z",
-    "the-afronauts-west-end-2026|2026-11-23|email:broadcast:missing": "2026-11-24T21:22:16.755Z"
-  }
+  "missFirstSeen": {}
 }
