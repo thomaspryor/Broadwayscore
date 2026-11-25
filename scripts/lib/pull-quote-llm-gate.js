@@ -22,7 +22,9 @@ const CONTEXT_CHARS = 600;
 function buildGateUserPrompt(showTitle, quote, sourceText) {
   const title = String(showTitle || 'this show').trim() || 'this show';
   const text = String(sourceText || '');
-  const idx = quote ? text.indexOf(quote) : -1;
+  let idx = quote ? text.indexOf(quote) : -1;
+  // verifyInText tolerates typographic variants; fall back to the opening words so context survives.
+  if (idx < 0 && quote) idx = text.indexOf(quote.slice(0, 40));
   let context = '';
   if (idx >= 0) {
     const before = text.slice(Math.max(0, idx - CONTEXT_CHARS), idx).trim();

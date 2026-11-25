@@ -695,16 +695,15 @@ async function processReview(entry) {
         gateReply = await callLLMWithRetry(llmGate.GATE_SYSTEM_PROMPT, llmGate.buildGateUserPrompt(data.showTitle || data.showId, quote, sourceText));
         verdict = llmGate.parseGateVerdict(gateReply);
       } catch (e) {
-        stats.llmGateErrors = (stats.llmGateErrors || 0) + 1;
         if (VERBOSE) console.log(`  LLM-GATE error (keeping quote): ${e.message}`);
       }
-      if (gateReply == null) stats.llmGateErrors = (stats.llmGateErrors || 0) + 1; // rate-limited out or blocked: quote kept unchecked
+      if (!gateReply) stats.llmGateErrors = (stats.llmGateErrors || 0) + 1; // rate-limited out or blocked: quote kept unchecked
       stats.llmGateCalls = (stats.llmGateCalls || 0) + 1;
       if (verdict === 'no') {
         if (attempt === 1) {
           stats.llmGateRetried = (stats.llmGateRetried || 0) + 1;
           if (VERBOSE) console.log(`  LLM-GATE no: "${quote.slice(0, 80)}..." — retrying`);
-          hint = llmGate.gateHint(quote, data.showTitle);
+          hint = llmGate.gateHint(quote, data.showTitle || data.showId);
           continue;
         }
         stats.llmGateRejected = (stats.llmGateRejected || 0) + 1;
