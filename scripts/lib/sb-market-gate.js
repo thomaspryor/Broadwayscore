@@ -35,6 +35,7 @@ const DEFAULT_SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json'
 // 3h of ledger at the 2026-11 peak (~10MB/day) is ~1.3MB; read well past that.
 const LEDGER_TAIL_BYTES = 6 * 1024 * 1024;
 
+// Allowlist of the markets that are gated (never a test for Broadway itself).
 // Only these are ever gated. Anything else (broadway, null, a category added later) is untouched.
 const GATED_CATEGORIES = new Set(['off-broadway', 'west-end', 'off-west-end', 'regional', 'tour']);
 
@@ -43,11 +44,6 @@ let _categoryById = null;
 
 function gateDisabled(env = process.env) {
   return env.SB_MARKET_GATE_DISABLED === '1';
-}
-
-/** Pure: only a category of exactly 'broadway' is protected. null/unknown => caller fails open. */
-function isBroadwayCategory(category) {
-  return category === 'broadway';
 }
 
 function _loadCategories() {
@@ -100,7 +96,7 @@ function renderGapMs(env = process.env) {
 function renderGapDecision({ category, lastRenderMs, nowMs = Date.now(), env = process.env }) {
   const gap = renderGapMs(env);
   if (!gap) return { skip: false, reason: 'gap-off' };
-  if (!GATED_CATEGORIES.has(category)) return { skip: false, reason: category === 'broadway' ? 'broadway' : 'unclassified' };
+  if (!GATED_CATEGORIES.has(category)) return { skip: false, reason: category ? 'not-gated-category' : 'unclassified' };
   if (!Number.isFinite(lastRenderMs)) return { skip: false, reason: 'no-prior-render' };
   const age = nowMs - lastRenderMs;
   // A future timestamp (clock skew) is not evidence of a recent render: render.
@@ -177,7 +173,6 @@ function _setShowsPathForTests(p) {
 
 module.exports = {
   DEFAULT_RENDER_GAP_HOURS,
-  isBroadwayCategory,
   categoryForShowId,
   skipSbSerpForCategory,
   sbSerpMarketSkips,
