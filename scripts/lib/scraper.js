@@ -82,7 +82,7 @@ function effectiveDomainSkips(skips, ignore) {
   return out;
 }
 
-function _getDomainSkips(url) {
+function _getDomainSkips(url, kind) {
   if (!_domainTierSkip) {
     try {
       const skipPath = path.join(__dirname, '..', 'config', 'domain-tier-skip.json');
@@ -91,7 +91,7 @@ function _getDomainSkips(url) {
   }
   try {
     const hostname = new URL(url).hostname.replace(/^www\./, '');
-    return getSkippedTiers(_domainTierSkip, hostname);
+    return getSkippedTiers(_domainTierSkip, hostname, kind);
   } catch { return new Set(); }
 }
 
@@ -2044,7 +2044,7 @@ async function fetchJSON(url, options = {}) {
   // fetchPage() consults this same domain-tier-skip registry for SD/SB/BD —
   // fetchJSON must too, or an empirically-dead tier for a given host keeps
   // getting tried on every call (ship-check finding, task #203 reopen).
-  const skips = _getDomainSkips(url);
+  const skips = _getDomainSkips(url, 'json');
   // BRO-6364: the BRO-4296 run memo too. Without it every bwayrush.com
   // /api/calendar call re-tried SD 400 -> SD stealth 500 -> SB 500 (~40s) before
   // Bright Data answered; 8 weekly calls ate ~5.5 of update-lottery-rush's 10
