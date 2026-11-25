@@ -24,6 +24,7 @@ const { castDisjointFromBilling } = require('./lib/cast-billing-overlap');
 const fs = require('fs');
 const path = require('path');
 const { showsMissingOrigin, ORIGIN_GRACE_DAYS } = require('./lib/show-origins');
+const { liveShowsMissingRuntime } = require('./lib/live-runtime-gaps');
 const { tourImageProblems, tourLinkProblems } = require('./lib/tour-family');
 const { transferLinkProblems } = require('./lib/transfer-link-rules');
 const { tourAggregateProblems } = require('./lib/tour-aggregate-rules');
@@ -4605,6 +4606,20 @@ function validateRuntimeFormats(shows) {
   }
 }
 
+// BRO-7917: the iOS reminder and Stats use each show's runtime. Advisory
+// (warn-level, rule 19) count of live shows that have none.
+function validateLiveRuntimeCoverage(shows) {
+  info('Checking live shows for missing runtimes...');
+  const { core, regional } = liveShowsMissingRuntime(shows);
+  if (core.length === 0) {
+    ok('Every open/previews NYC/London show has a runtime');
+  } else {
+    const sample = core.slice(0, 10).map((s) => s.id).join(', ');
+    warn(`[live-runtime-missing] ${core.length} open/previews NYC/London show(s) have no runtime (iOS reminder/Stats fall back to a default): ${sample}${core.length > 10 ? ', ...' : ''}`);
+  }
+  if (regional.length > 0) info(`[live-runtime-missing] ${regional.length} open/previews regional show(s) have no runtime`);
+}
+
 // ===========================================
 // CREATIVE TEAM DUPLICATE NAME DETECTION
 // Catches same person listed multiple times with different roles
@@ -5776,6 +5791,7 @@ function runValidation() {
   validateConsensusQuality();
   console.log('');
   validateRuntimeFormats(shows);
+  validateLiveRuntimeCoverage(shows);
   console.log('');
   validateCreativeTeamDuplicateNames(shows);
   console.log('');
