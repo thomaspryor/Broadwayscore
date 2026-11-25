@@ -141,5 +141,52 @@
       }
     ],
     "queuedAt": "2026-11-25T12:42:01.186Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-the-afronauts-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on The Afronauts",
+    "description": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a valid review of 'The Afronauts' with approp — https://thestage.co.uk/reviews/the-afronauts-review-royal-court-theatre-london-ryan-calais-cameron-monique-touko",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T13:14:11.111Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:the-afronauts-west-end-2026",
+    "title": "Content mismatch on The Afronauts",
+    "description": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Afronauts' (3334 chars, textIssues flag set): https://thestage.co.uk/reviews/the-afronauts-review-royal-court-theatre-london-ryan-calais-cameron-monique-touko",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-25T13:14:11.135Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:a-christmas-carol-west-end-2026,the-afronauts-west-end-2026",
+    "title": "Opening-night email draft on hold: a quality check flagged a review",
+    "description": "The opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Nothing is sent while it is on hold. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email listing which reviews to check before you press Send.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "A Christmas Carol, The Afronauts"
+      }
+    ],
+    "queuedAt": "2026-11-25T13:14:11.455Z"
   }
 ]
