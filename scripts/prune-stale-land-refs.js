@@ -30,7 +30,8 @@ const CARD_QUERY = 'query($id: String!) { issue(id: $id) { identifier state { ty
 
 async function cardState(branch, cache) {
   const { landRefCardNumber } = require('./lib/cloud-worker-pick.js');
-  const n = landRefCardNumber(branch);
+  // codex-ui-hold/bro-N names the card the same way land/bro-N-... does (BRO-7639).
+  const n = landRefCardNumber(branch.replace(/^codex-ui-hold\//, 'land/'));
   if (n == null) return { type: null, failed: false };
   if (cache.has(n)) return cache.get(n);
   let out;

@@ -58,9 +58,10 @@ function decideUiHoldRefPrune({ tipCommittedAt, cardStateType = null, cardLookup
   const age = (now - Date.parse(tipCommittedAt)) / 86400000;
   if (age < UI_HOLD_MIN_AGE_DAYS) return keep('too-young');
   if (!cardLookupFailed && (cardStateType === 'completed' || cardStateType === 'canceled')) return { prune: true, reason: 'ui-hold-card-done' };
-  if (age < UI_HOLD_MAX_AGE_DAYS) return keep(cardLookupFailed ? 'card-unreadable' : 'ui-hold-recent');
+  if (cardLookupFailed) return keep('card-unreadable');
+  if (age < UI_HOLD_MAX_AGE_DAYS) return keep('ui-hold-recent');
   // A worker is on it right now: its ref outlives the age limit.
-  if (!cardLookupFailed && cardStateType === 'started') return keep('ui-hold-card-in-progress');
+  if (cardStateType === 'started') return keep('ui-hold-card-in-progress');
   return { prune: true, reason: 'ui-hold-stale' };
 }
 

@@ -299,7 +299,9 @@ test('stale or Done codex-ui-hold refs are swept, fresh and in-use ones are kept
   assert.deepEqual(decide({ tipCommittedAt: daysAgo(3), cardStateType: 'completed' }), { prune: true, reason: 'ui-hold-card-done' });
   assert.equal(decide({ tipCommittedAt: daysAgo(3), cardStateType: 'canceled' }).prune, true);
   assert.equal(decide({ tipCommittedAt: daysAgo(uiHoldLib.UI_HOLD_MAX_AGE_DAYS + 1), cardStateType: 'unstarted' }).reason, 'ui-hold-stale');
-  assert.equal(decide({ tipCommittedAt: daysAgo(uiHoldLib.UI_HOLD_MAX_AGE_DAYS + 1), cardStateType: null, cardLookupFailed: true }).prune, true);
+  assert.equal(decide({ tipCommittedAt: daysAgo(uiHoldLib.UI_HOLD_MAX_AGE_DAYS + 1), cardStateType: null, cardLookupFailed: true }).reason, 'card-unreadable');
+  assert.ok(require('../../scripts/lib/cloud-worker-pick.js').landRefCardNumber('land/bro-7639-x') === 7639);
+  assert.match(readFileSync(join(ROOT, 'scripts/prune-stale-land-refs.js'), 'utf8'), /replace\(\/\^codex-ui-hold/);
   // Kept: fresh, card still open, a worker on it, or the date unreadable.
   assert.equal(decide({ tipCommittedAt: daysAgo(0.2), cardStateType: 'completed' }).reason, 'too-young');
   assert.equal(decide({ tipCommittedAt: daysAgo(5), cardStateType: 'unstarted' }).reason, 'ui-hold-recent');
