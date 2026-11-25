@@ -1,6 +1,7 @@
 {
   "_note": "Shared critic display-name fixes (audit S7-T1, BRO-4204). ONE map read by both sides of the build: scripts/lib/critic-display-name.js (displayCriticName, the emission-time helper) and src/lib/data-reviews.ts (critic/outlet profile grouping). Keys are the exact raw criticName strings as they appear in reviews.json; values are the canonical display spelling. Never add a second copy of this map in src/ or scripts/ — add pairs here. 'Nancy Sasso Janis' is the correct Patch.com byline and is deliberately absent (it was once wrongly remapped to 'Sasso Janis'; removed 2026-04-11 after /ship-check audit).",
   "fixes": {
+    "CurtainUp, Elyse Sommer": "Elyse Sommer",
     "Bree Samani": "Bree Samani-McGrath",
     "Ben Brantly": "Ben Brantley",
     "Ben Branley": "Ben Brantley",

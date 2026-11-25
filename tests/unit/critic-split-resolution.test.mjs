@@ -69,6 +69,22 @@ test('BRO-7855 cousin: the Roma Tore typo shares Roma Torre identity at ingestio
   assert.equal(displayCriticName('Roma Tore', 'NY1'), 'Roma Torre');
 });
 
+test('BRO-7855: outlet prefix resolves and combined credits remain separate pages', () => {
+  assert.equal(displayCriticName('CurtainUp, Elyse Sommer', 'CurtainUp'), 'Elyse Sommer');
+  const p = pair({ ...page('Elyse Sommer', 106), outlets: ['CurtainUp'] },
+    { ...page('CurtainUp, Elyse Sommer', 2), outlets: ['CurtainUp'] });
+  assert.deepEqual(newSplitPairs([p], new Set()), []);
+  for (const [combined, other] of [
+    ['David Dougill, Helen Hawkins', 'Helen Hawkins'],
+    ['David Dougill, Jane Edwardes, Thomas W Hodgkinson', 'Jane Edwardes, Thomas W Hodgkinson'],
+    ['David Dougill, Jane Edwardes, Thomas W Hodgkinson', 'Thomas W. Hodgkinson'],
+  ]) {
+    const a = { ...page(combined), outlets: ['The Times (UK)'] };
+    const b = { ...page(other, 20), outlets: ['The Times (UK)'] };
+    assert.equal(classifyVariantPair(a, b, { distinct: new Set(distinctPairs) }).verdict, 'distinct', combined + ' / ' + other);
+  }
+});
+
 test('BRO-7855 cousin: verified joint credit stays distinct from either solo author', () => {
   const joint = { ...page('David Fox and Cameron Kelsall'), outlets: ['Parterre Box'] };
   for (const name of ['David Fox', 'Cameron Kelsall']) {
