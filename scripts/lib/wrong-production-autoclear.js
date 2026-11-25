@@ -966,6 +966,19 @@ function isDatedGuardNote(note) {
 }
 
 /**
+ * True when a review still carries a live "another production / show" verdict, so a body parked in
+ * wrongFullText must stay parked (BRO-8324). Covers the flag, wrongShow and the content-verification
+ * verdict. The showNotMentioned auto-clears use it: they lift only the "show not mentioned" objection.
+ * @param {object} d - the review JSON object
+ * @returns {boolean}
+ */
+function hasLiveWrongProductionVerdict(d) {
+  if (!d) return false;
+  return d.wrongProduction === true || !!d.wrongShow
+    || !!(d.contentVerification && d.contentVerification.wrongProduction === true);
+}
+
+/**
  * collect-review-texts parks the body of a flagged review in wrongFullText and
  * nulls fullText. When the anticipatory flag is cleared the body is the right
  * one again (the flag was date-only), so put it back; otherwise the review is
@@ -1393,6 +1406,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 
 module.exports = {
   restoreParkedFullText,
+  hasLiveWrongProductionVerdict,
   priorRunWindow,
   bwwExcerptContradictsText,
   DATE_GUARD_PREFIXES,

@@ -123,6 +123,7 @@ const {
   isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,
   restoreParkedFullText,
+  hasLiveWrongProductionVerdict,
   shouldAutoClearWrongProductionUkDualMarket,
   shouldAutoClearStaleLondonOutletCrossMarket,
   isInOwnWindowByDateOrUrlYear,
@@ -5094,7 +5095,7 @@ showDirs.forEach(showId => {
             data.showNotMentioned = false;
             delete data._showNotMentionedDiscoveryAttempted;
             // Restore fullText from wrongFullText if it was nulled out
-            if (!data.fullText && data.wrongFullText) {
+            if (!data.fullText && data.wrongFullText && !hasLiveWrongProductionVerdict(data)) { // BRO-8324
               data.fullText = data.wrongFullText;
               delete data.wrongFullText;
             }
@@ -5105,7 +5106,7 @@ showDirs.forEach(showId => {
               const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
               sourceData.showNotMentioned = false;
               delete sourceData._showNotMentionedDiscoveryAttempted;
-              if (!sourceData.fullText && sourceData.wrongFullText) {
+              if (!sourceData.fullText && sourceData.wrongFullText && !hasLiveWrongProductionVerdict(sourceData)) { // BRO-8324
                 sourceData.fullText = sourceData.wrongFullText;
                 delete sourceData.wrongFullText;
               }
@@ -5135,7 +5136,7 @@ showDirs.forEach(showId => {
             if (matchedKeyword) {
               data.showNotMentioned = false;
               delete data._showNotMentionedDiscoveryAttempted;
-              if (!data.fullText && data.wrongFullText) {
+              if (!data.fullText && data.wrongFullText && !hasLiveWrongProductionVerdict(data)) { // BRO-8324
                 data.fullText = data.wrongFullText;
                 delete data.wrongFullText;
               }
@@ -5144,7 +5145,7 @@ showDirs.forEach(showId => {
                 const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
                 sourceData.showNotMentioned = false;
                 delete sourceData._showNotMentionedDiscoveryAttempted;
-                if (!sourceData.fullText && sourceData.wrongFullText) {
+                if (!sourceData.fullText && sourceData.wrongFullText && !hasLiveWrongProductionVerdict(sourceData)) { // BRO-8324
                   sourceData.fullText = sourceData.wrongFullText;
                   delete sourceData.wrongFullText;
                 }

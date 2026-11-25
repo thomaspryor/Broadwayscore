@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 
 const require = createRequire(import.meta.url);
-const { restoreParkedFullText } = require('./wrong-production-autoclear.js');
+const { restoreParkedFullText, hasLiveWrongProductionVerdict } = require('./wrong-production-autoclear.js');
 const body = 'x'.repeat(500);
 
 test('restores a body parked in wrongFullText', () => {
@@ -82,5 +82,31 @@ test('the other fullText-restore repair branches respect wrong-content flags', (
     const before = src.slice(Math.max(0, i - 400), i);
     assert.match(before, /contentVerification\.wrongProduction === true/, rel);
     assert.match(before, /!data\.wrongProduction/, rel);
+  }
+});
+
+// Found by the independent review of 9e485a442: the showNotMentioned auto-clears in the rebuild
+// restored wrongFullText with no wrong-production check, so a review of another staging got its
+// body back when only the "show not mentioned" objection was lifted.
+test('hasLiveWrongProductionVerdict sees the flag, wrongShow and the CV verdict', () => {
+  assert.equal(hasLiveWrongProductionVerdict({ wrongProduction: true }), true);
+  assert.equal(hasLiveWrongProductionVerdict({ wrongShow: true }), true);
+  assert.equal(hasLiveWrongProductionVerdict({ contentVerification: { wrongProduction: true } }), true);
+  assert.equal(hasLiveWrongProductionVerdict({ wrongProduction: false, contentVerification: { wrongProduction: false } }), false);
+  assert.equal(hasLiveWrongProductionVerdict({}), false);
+  assert.equal(hasLiveWrongProductionVerdict(null), false);
+});
+
+test('every wrongFullText restore in rebuild-all-reviews is guarded or goes through the helper', () => {
+  const src = fs.readFileSync(new URL('../rebuild-all-reviews.js', import.meta.url), 'utf8');
+  const lines = src.split('\n');
+  const raw = [];
+  lines.forEach((l, n) => {
+    if (/\.fullText = \w+\.wrongFullText/.test(l)) raw.push(n);
+  });
+  assert.equal(raw.length, 4, 'expected the four showNotMentioned restores');
+  for (const n of raw) {
+    // the restore sits one line below its `if` guard
+    assert.match(lines[n - 1], /hasLiveWrongProductionVerdict\(/, `unguarded restore at rebuild-all-reviews.js:${n + 1}`);
   }
 });
