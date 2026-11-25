@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-25T15:48:23.523Z",
-  "processed": 165,
-  "failed": 106,
-  "successRate": "60.9%",
+  "updatedAt": "2026-11-25T16:12:49.720Z",
+  "processed": 207,
+  "failed": 144,
+  "successRate": "59.0%",
   "tierBreakdown": {
-    "playwright": 94,
+    "playwright": 125,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 15,
-    "scrapingbee": 18,
+    "scrapingdog": 21,
+    "scrapingbee": 21,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 40
+    "archive": 45
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-11-25T12:42:26.802Z",
@@ -78,6 +78,34 @@
       "t": "2026-11-25T15:37:41.739Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-25T15:50:06.967Z",
+      "event": "bb-session",
+      "session": "ae389f47",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-25T15:50:07.785Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-25T15:50:24.787Z",
+      "event": "bb-session",
+      "session": "95b6918f",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-25T15:50:25.405Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-25T16:11:58.034Z",
+      "event": "bb-session",
+      "session": "eb769111",
+      "url": "https://alltrippers.com/en/united-kingdom/shows/play-jane-eyre-rose-theatre-king"
     }
   ]
 }
