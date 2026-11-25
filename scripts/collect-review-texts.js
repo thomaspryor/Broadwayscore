@@ -5380,7 +5380,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         // Restore fullText from wrongFullText if a prior run nulled it. Not
         // when a live wrong-content verdict quarantined it (this run's
         // anticipatory gate, BRO-5261 S11).
-        if (!data.fullText && data.wrongFullText && !data.wrongProduction && !data.wrongShow) {
+        if (!data.fullText && data.wrongFullText && !data.wrongProduction && !data.wrongShow
+          && !(data.contentVerification && data.contentVerification.wrongProduction === true)) { // BRO-8324: another production stays parked
           data.fullText = data.wrongFullText;
           data.wrongFullText = null;
           repaired = true;

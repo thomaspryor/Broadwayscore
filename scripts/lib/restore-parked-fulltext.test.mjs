@@ -70,3 +70,17 @@ test('both anticipatory clear blocks in rebuild-all-reviews pass keepIfCvWrongPr
   const src = fs.readFileSync(new URL('../rebuild-all-reviews.js', import.meta.url), 'utf8');
   assert.equal((src.match(/restoreParkedFullText\(d, \{ keepIfCvWrongProduction: true \}\)/g) || []).length, 2);
 });
+
+// Cousins of the same bug (review of 652cd4aec): two other repair branches also moved
+// wrongFullText back to fullText without looking at a live wrong-content verdict.
+test('the other fullText-restore repair branches respect wrong-content flags', () => {
+  const read = (rel) => fs.readFileSync(new URL(rel, import.meta.url), 'utf8');
+  for (const rel of ['../collect-review-texts.js', '../backfill-review-flags.js']) {
+    const src = read(rel);
+    const i = src.indexOf('data.fullText = data.wrongFullText');
+    assert.ok(i > 0, rel);
+    const before = src.slice(Math.max(0, i - 400), i);
+    assert.match(before, /contentVerification\.wrongProduction === true/, rel);
+    assert.match(before, /!data\.wrongProduction/, rel);
+  }
+});
