@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T06:29:54.980Z",
+  "generatedAt": "2026-11-25T07:01:46.882Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2445,9 +2445,9 @@
       "status": "open",
       "slug": "seven-guitars-off-broadway",
       "thumbnail": "/images/shows/seven-guitars-off-broadway-2026/thumbnail.webp",
-      "siteScore": 84.76,
+      "siteScore": 84.85,
       "liveScore": 85,
-      "scoreDrift": 0.23999999999999488,
+      "scoreDrift": 0.15000000000000568,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2463,7 +2463,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 16,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2860,6 +2860,18 @@
           "t": "2026-11-25T06:00:43.884Z",
           "rc": 16,
           "s": 84.76,
+          "t1": 2,
+          "t2": 8,
+          "t3": 6,
+          "p": 16,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T07:01:46.882Z",
+          "rc": 16,
+          "s": 84.85,
           "t1": 2,
           "t2": 8,
           "t3": 6,
@@ -3278,23 +3290,23 @@
       "status": "open",
       "slug": "its-a-wonderful-life-a-live-radio-play",
       "thumbnail": "/images/shows/its-a-wonderful-life-a-live-radio-play-2026/thumbnail.webp",
-      "siteScore": 65.68,
-      "liveScore": 66,
-      "scoreDrift": 0.3199999999999932,
+      "siteScore": 65.39,
+      "liveScore": 65,
+      "scoreDrift": -0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 24,
+      "total": 25,
       "t1": 4,
       "t2": 12,
-      "t3": 8,
+      "t3": 9,
       "positive": 16,
       "mixed": 4,
-      "negative": 4,
+      "negative": 5,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 22,
+        "highConfidence": 23,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3733,6 +3745,18 @@
           "p": 16,
           "m": 4,
           "n": 4,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-11-25T07:01:46.882Z",
+          "rc": 25,
+          "s": 65.39,
+          "t1": 4,
+          "t2": 12,
+          "t3": 9,
+          "p": 16,
+          "m": 4,
+          "n": 5,
           "bc": "complete"
         }
       ]
