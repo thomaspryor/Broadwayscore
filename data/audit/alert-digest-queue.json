@@ -1126,5 +1126,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-25T04:03:42.051Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8289-sonnet-scorecard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8289-sonnet-scorecard",
+    "description": "land.yml did not land land/bro-8289-sonnet-scorecard: the unit-tests-node gate went red at 1b2c9cb332. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45544283408",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8289-sonnet-scorecard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1b2c9cb33264cb6267e77d229d39f8d928e55ecd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45544283408"
+      }
+    ],
+    "queuedAt": "2026-11-25T04:15:41.067Z"
   }
 ]
