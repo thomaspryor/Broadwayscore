@@ -1351,6 +1351,33 @@
     "queuedAt": "2026-11-25T05:53:23.662Z"
   },
   {
+    "conditionKey": "feedback-outcomes:2026-11-25T06:07:58.670044+00:00",
+    "title": "Feedback: 1 of 1 needs you",
+    "description": "1 message from users came in. 1 of them stalled and needs a person.\n\nThe Good Thief — The site deliberately did not act on this: show \"The Good Thief\" already in catalog as \"The Good Thief\" and is already live on the site (nothing to add); ask is not a recognised image or review-gap request. Decide whether it should happen anyway — the hold is a guardrail, not a verdict.\n  They wrote: \"Here’s another review to add. Thanks so much. Love the website. \r\n\r\nhttps://www.tawkofnewyawk.com/tnyarchive/eda5rg7ckj2uh8o2fb5cns93yc4w24-2026\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1206",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45558348733",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "1"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-11-25T06:10:53.052Z"
+  },
+  {
     "conditionKey": "land:land/bro-8289-json",
     "title": "Landing blocked: unit-tests-node red on land/bro-8289-json",
     "description": "land.yml did not land land/bro-8289-json: the unit-tests-node gate went red at 27f17b9880. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45557742169",
