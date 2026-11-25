@@ -2,6 +2,33 @@
   "_comment": "BRO-6054: show+critic pairs shipped at two outlets that are legitimately separate reviews. scripts/audit-syndicated-critic-pairs.js fails --strict on any same-critic multi-outlet pair not listed here or explained by scripts/lib/syndication-pairs.js.",
   "pairs": [
     {
+      "showId": "the-country-girl-west-end-2010",
+      "critic": "Michael Coveney",
+      "outlets": [
+        "independent",
+        "whatsonstage"
+      ],
+      "reason": "Separate reviews with different text: http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-country-girl-apollo-theatre-london-2106960.html and https://www.whatsonstage.com/news/the-country-girl_11298/"
+    },
+    {
+      "showId": "aladdin-west-end-2016",
+      "critic": "Sarah Crompton",
+      "outlets": [
+        "observer",
+        "whatsonstage"
+      ],
+      "reason": "Separate reviews with different text: https://www.theguardian.com/stage/2016/jun/19/aladdin-review-musical-disney-west-end-energetic-outrageous and https://www.whatsonstage.com/london-theatre/reviews/aladdin-prince-edward-theatre_40988.html"
+    },
+    {
+      "showId": "betty-blue-eyes-west-end-2011",
+      "critic": "Michael Coveney",
+      "outlets": [
+        "independent",
+        "whatsonstage"
+      ],
+      "reason": "Separate reviews with different text: http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/first-night-betty-blue-eyes-novello-theatre-london-2267577.html and https://www.whatsonstage.com/news/betty-blue-eyes_9272/"
+    },
+    {
       "showId": "a-dolls-house-part-2-2017",
       "critic": "Jesse Green",
       "outlets": [
