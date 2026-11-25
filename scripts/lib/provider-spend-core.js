@@ -244,6 +244,36 @@ function llmScoringBreach(record, history, thresholdUsd) {
   return { avg, days: costs.length, today: today.cost, threshold: thresholdUsd, breached: avg > thresholdUsd };
 }
 
+/**
+ * BRO-8116: reviewer (session) LLM spend, kind=session rows from llm.readRows()
+ * (already de-duplicated across the tracked and home ledgers). Sums costUsd per
+ * UTC day for `day` and the `days-1` days before it (Mac rows reach CI at
+ * wrap-up, up to a day late). Returns null when there is no line, else
+ * { perDay, worstDay, worstUsd, threshold, breached, unpriced }. Pure.
+ */
+function llmSessionBreach(rows, day, thresholdUsd, { days = 2 } = {}) {
+  if (typeof thresholdUsd !== 'number' || !Number.isFinite(thresholdUsd) || thresholdUsd <= 0) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day || '')) return null;
+  const base = Date.parse(`${day}T00:00:00Z`);
+  const wanted = [];
+  for (let i = 0; i < days; i++) wanted.push(new Date(base - i * DAY_MS).toISOString().slice(0, 10));
+  const perDay = Object.fromEntries(wanted.map((d) => [d, 0]));
+  let unpriced = 0;
+  for (const r of rows || []) {
+    if (!r || r.kind !== 'session') continue;
+    const t = Date.parse(r.ts);
+    if (!Number.isFinite(t)) continue;
+    const d = new Date(t).toISOString().slice(0, 10);
+    if (!(d in perDay)) continue;
+    if (r.auth === 'oauth') continue; // subscription login, not billed per call
+    if (typeof r.costUsd !== 'number') { unpriced += 1; continue; }
+    perDay[d] += r.costUsd;
+  }
+  for (const d of wanted) perDay[d] = +perDay[d].toFixed(2);
+  const worstDay = wanted.reduce((a, d) => (perDay[d] > perDay[a] ? d : a), wanted[0]);
+  return { perDay, worstDay, worstUsd: perDay[worstDay], threshold: thresholdUsd, breached: perDay[worstDay] > thresholdUsd, unpriced };
+}
+
 // A renewal further out than this is not a monthly cycle (e.g. an expiry date
 // on rolled-over credits), so the pace check would be meaningless.
 const MAX_PACE_RENEWAL_DAYS = 40;
@@ -645,7 +675,7 @@ function attributionWindowVerdict(series, provider, { min = 0.8, days = 2 } = {}
 module.exports = {
   attributionGaps,
   attributionWindowVerdict,
-  computeDayRecord, budgetBreaches, llmScoringBreach, computeStreak, renderSnapshot,
+  computeDayRecord, budgetBreaches, llmScoringBreach, llmSessionBreach, computeStreak, renderSnapshot,
   utcYesterday, isNextUtcDay, aggregateLedgerByDay, rebuildDailyAggregate, bbCost,
   BB_BASE_MONTHLY_USD, BB_BASE_AMORTIZED_DAYS, BB_OVERAGE_PER_BROWSER_HOUR_USD,
   ledgerFreshnessHours, lastLedgerDay, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,

@@ -153,3 +153,76 @@ test('BRO-5526: resolve only after a multi-day clean, fully-measured window', ()
   const unm = ok('2026-10-23'); unm.providers.brightdata = { status: 'unknown' };
   assert.deepEqual(run([ok('2026-10-21'), ok('2026-10-22'), unm]).out, []);
 });
+
+// ---- BRO-8116: reviewer (session LLM) spend alarm + --fold-only ----
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+
+const { llmSessionBreach } = require('./lib/provider-spend-core.js');
+const { foldSessionRows } = require('./lib/gemini-usage-ledger.js');
+const { mergeRowSets } = require('./lib/llm-usage-summary.js');
+const sessRow = (ts, costUsd, extra = {}) => ({ ts, kind: 'session', provider: 'gemini', model: 'gemini-4-carbon', calls: 1, costUsd, ...extra });
+
+test('BRO-8116: $40 of session rows on one day breaches the $25 line', () => {
+  const rows = [sessRow('2026-11-23T10:00:00Z', 15), sessRow('2026-11-23T20:00:00Z', 25)];
+  const v = llmSessionBreach(rows, '2026-11-23', 25);
+  assert.equal(v.breached, true);
+  assert.equal(v.worstDay, '2026-11-23');
+  assert.equal(v.worstUsd, 40);
+});
+
+test('BRO-8116: under the line, and non-session rows, do not breach', () => {
+  const rows = [sessRow('2026-11-23T10:00:00Z', 20), { ts: '2026-11-23T10:00:00Z', kind: 'api', costUsd: 500 }];
+  assert.equal(llmSessionBreach(rows, '2026-11-23', 25).breached, false);
+});
+
+test('BRO-8116: the window covers DAY and the day before, not older or later days', () => {
+  const rows = [sessRow('2026-11-22T23:00:00Z', 30), sessRow('2026-11-21T10:00:00Z', 90), sessRow('2026-11-24T01:00:00Z', 90)];
+  const v = llmSessionBreach(rows, '2026-11-23', 25);
+  assert.deepEqual(v.perDay, { '2026-11-23': 0, '2026-11-22': 30 });
+  assert.equal(v.breached, true);
+});
+
+test('BRO-8116: oauth rows, null costs and bad timestamps are not summed', () => {
+  const rows = [sessRow('2026-11-23T10:00:00Z', 99, { auth: 'oauth' }), sessRow('2026-11-23T10:00:00Z', null), sessRow('garbage', 99)];
+  const v = llmSessionBreach(rows, '2026-11-23', 25);
+  assert.equal(v.worstUsd, 0);
+  assert.equal(v.unpriced, 1);
+});
+
+test('BRO-8116: no or invalid threshold returns null (neither alarms nor clears)', () => {
+  assert.equal(llmSessionBreach([], '2026-11-23', undefined), null);
+  assert.equal(llmSessionBreach([], '2026-11-23', 0), null);
+});
+
+test('BRO-8116: the same row in the tracked and home ledgers is counted once via mergeRowSets', () => {
+  const r = sessRow('2026-11-23T10:00:00Z', 20);
+  const v = llmSessionBreach(mergeRowSets([[r], [r]]), '2026-11-23', 25);
+  assert.equal(v.worstUsd, 20);
+  assert.equal(v.breached, false);
+});
+
+test('BRO-8116: the shipped threshold file defines llmSessionDailyUsd', () => {
+  const t = JSON.parse(fs.readFileSync(new URL('./config/provider-spend-thresholds.json', import.meta.url), 'utf8'));
+  assert.equal(typeof t.llmSessionDailyUsd, 'number');
+});
+
+test('BRO-8116: foldSessionRows twice adds no duplicates', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fold8116-'));
+  const from = path.join(dir, 'home.jsonl');
+  const to = path.join(dir, 'tracked.jsonl');
+  fs.writeFileSync(from, [JSON.stringify(sessRow('2026-11-23T10:00:00Z', 3)), JSON.stringify({ kind: 'api', costUsd: 1 })].join('\n') + '\n');
+  assert.equal(foldSessionRows({ from, to }), 1);
+  assert.equal(foldSessionRows({ from, to }), 0);
+  assert.equal(fs.readFileSync(to, 'utf8').split('\n').filter(Boolean).length, 1);
+});
+
+test('BRO-8116: record-claude-session-cost.js --fold-only exits 0 and is a no-op without home rows', () => {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'fold8116h-'));
+  const r = spawnSync(process.execPath, [new URL('./record-claude-session-cost.js', import.meta.url).pathname, '--fold-only'],
+    { encoding: 'utf8', env: { ...process.env, HOME: home, LLM_SESSION_LEDGER_PATH: path.join(home, 'none.jsonl') } });
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /nothing new to fold/);
+});

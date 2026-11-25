@@ -285,6 +285,18 @@ async function main() {
     ? `$${record.llmScoring.cost} (${record.llmScoring.runs} run summaries)` : 'could not measure (run log does not cover the day)'}${llmVerdict
     ? `; ${llmVerdict.days}-day average $${llmVerdict.avg} vs $${llmVerdict.threshold} line: ${llmVerdict.breached ? 'OVER' : 'ok'}` : ''}`);
 
+  // BRO-8116: reviewer (session LLM) spend, fed by readRows() so the tracked and home ledgers count once.
+  let sessionVerdict = null;
+  try {
+    sessionVerdict = require('./lib/provider-spend-core').llmSessionBreach(
+      require('./lib/llm-usage-summary').readRows(), DAY, thresholds.llmSessionDailyUsd);
+  } catch (err) {
+    console.log(`::warning::session LLM spend check skipped: ${err.message}`);
+  }
+  if (sessionVerdict) {
+    console.log(`[provider-spend] ${DAY}: session LLM (reviewer) spend ${Object.entries(sessionVerdict.perDay).map(([d, v]) => `${d} $${v}`).join(', ')} vs $${sessionVerdict.threshold} line: ${sessionVerdict.breached ? 'OVER' : 'ok'}${sessionVerdict.unpriced ? ` (${sessionVerdict.unpriced} unpriced row(s) not counted)` : ''}`);
+  }
+
   if (DRY_RUN) {
     console.log('[provider-spend] --dry-run: no writes, no alerts');
     return;
@@ -361,6 +373,30 @@ async function main() {
     }
   } catch (err) {
     console.log(`::warning::LLM scoring spend alarm failed (non-fatal): ${err.message}`);
+  }
+
+  // BRO-8116: advisory (digest) alarm on reviewer spend. A null verdict neither alarms nor clears.
+  try {
+    const router = require('./lib/owner-alert-router');
+    const key = 'llm-session:daily-spend';
+    if (sessionVerdict?.breached) {
+      const title = 'LLM reviewer daily spend over budget';
+      await router.routeAlert({
+        conditionKey: key,
+        title,
+        description: `${title}: $${sessionVerdict.worstUsd} on ${sessionVerdict.worstDay}, above the $${sessionVerdict.threshold} llmSessionDailyUsd line.`,
+        hint: 'Rows: data/audit/llm-session-usage.jsonl (kind=session). They reach CI only after a wrap-up folds and commits them (node scripts/record-claude-session-cost.js --fold-only on a Mac), so this can lag a day. Per-caller detail: node scripts/gemini-usage-summary.js.',
+        severity: 'warning',
+        disposition: 'digest',
+        cooldownHours: 20,
+        decision: true,
+        decisionPrompt: `${title}: $${sessionVerdict.worstUsd} on ${sessionVerdict.worstDay} against a $${sessionVerdict.threshold}/day line. Raise the line, or switch the reviewers to a cheaper model?`,
+      });
+    } else if (sessionVerdict) {
+      router.resolveCondition(key, { reason: `Reviewer spend $${sessionVerdict.worstUsd} (worst of the last ${Object.keys(sessionVerdict.perDay).length} days to ${DAY}), at or below the $${sessionVerdict.threshold} line.` });
+    }
+  } catch (err) {
+    console.log(`::warning::session LLM spend alarm failed (non-fatal): ${err.message}`);
   }
 
   // BRO-5526: a clean day resolves the budget conditions. Only the attribution-gap

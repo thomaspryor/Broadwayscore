@@ -49,8 +49,16 @@ function main() {
     console.log(JSON.stringify([...sessions].map(([session, e]) => ({ session, cards: [...e.cards].sort() })), null, 2));
     return 0;
   }
+  if (args['fold-only']) {
+    // BRO-8116: a Mac wrap-up has no cost row, but its reviewer rows still need to reach the tracked ledger.
+    try {
+      const n = require('./lib/gemini-usage-ledger.js').foldSessionRows();
+      console.log(n ? `${SESSION_USAGE_REL}: ${n} session LLM row(s) added; commit it (BRO-8116).` : `${SESSION_USAGE_REL}: nothing new to fold.`);
+      return 0;
+    } catch (e) { console.error(`session LLM rows NOT folded: ${e.message}`); return 1; }
+  }
   if (!args['from-json']) {
-    console.error('Usage: record-claude-session-cost.js --list [--hours=24] | --from-json=<file> [--date=YYYY-MM-DD] [--hours=24] [--cards=BRO-N,...] [--dry-run]');
+    console.error('Usage: record-claude-session-cost.js --fold-only | --list [--hours=24] | --from-json=<file> [--date=YYYY-MM-DD] [--hours=24] [--cards=BRO-N,...] [--dry-run]');
     return 2;
   }
   const date = args.date || new Date().toISOString().slice(0, 10);
