@@ -317,7 +317,10 @@
     "the-importance-of-being-oscar-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json",
     "the-enormous-crocodile-off-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
-    "cloud-9-west-end-2026/standard--unknown.json"
+    "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/nytimes--casey-schwartz.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "_superseded-misattributed/coal-country-off-broadway-2022--theatermania--hayley-levitt--1794252956291.json",
@@ -684,7 +687,8 @@
       "masticate-off-broadway-2026/nyu--unknown.json",
       "now-you-see-me-live-off-west-end-2026/londontheatre1--ryan-collins.json",
       "the-enormous-crocodile-off-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
-      "cloud-9-west-end-2026/standard--unknown.json"
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [
       "data/review-texts/the-outsiders-2024/hollywood-reporter--angie-han.json"
@@ -753,7 +757,9 @@
       "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [
-      "the-wanderers-off-broadway-2023/talkinbroadway--marc-miller.json"
+      "the-wanderers-off-broadway-2023/talkinbroadway--marc-miller.json",
+      "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/nytimes--casey-schwartz.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -842,7 +848,7 @@
     ]
   },
   "startTime": "2026-11-25T02:34:05.538Z",
-  "lastProcessed": "cloud-9-west-end-2026/standard--unknown.json",
+  "lastProcessed": "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
   "log": [
     {
       "t": "2026-11-25T02:52:55.288Z",
@@ -1047,6 +1053,28 @@
     },
     {
       "t": "2026-11-25T05:46:43.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T06:26:29.672Z",
+      "event": "bb-session",
+      "session": "66281d9e",
+      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago"
+    },
+    {
+      "t": "2026-11-25T06:26:30.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T06:27:38.384Z",
+      "event": "bb-session",
+      "session": "fd6b3624",
+      "url": "https://www.nytimes.com/2026/10/25/books/review/sam-wasson-frank-capra.html"
+    },
+    {
+      "t": "2026-11-25T06:27:38.871Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

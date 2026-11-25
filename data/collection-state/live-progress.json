@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-11-25T06:30:02.844Z",
-  "processed": 318,
+  "updatedAt": "2026-11-25T06:29:11.593Z",
+  "processed": 321,
   "failed": 174,
-  "successRate": "64.6%",
+  "successRate": "64.8%",
   "tierBreakdown": {
-    "playwright": 187,
+    "playwright": 188,
     "amp": 1,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 25,
     "scrapingbee": 29,
-    "brightdata": 1,
+    "brightdata": 3,
     "archiveToday": 0,
     "archive": 82
   },
   "browserbaseSessions": 0,
   "recentActivity": [
-    {
-      "t": "2026-11-25T04:04:23.643Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-11-25T04:16:00.528Z",
-      "event": "bb-session",
-      "session": "56610c31",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-11-25T04:16:01.220Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-11-25T04:16:18.093Z",
-      "event": "bb-session",
-      "session": "1a8df4d0",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
     {
       "t": "2026-11-25T04:16:18.744Z",
       "event": "bb-cookie-inject",
@@ -127,6 +105,28 @@
     },
     {
       "t": "2026-11-25T05:46:43.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T06:26:29.672Z",
+      "event": "bb-session",
+      "session": "66281d9e",
+      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago"
+    },
+    {
+      "t": "2026-11-25T06:26:30.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T06:27:38.384Z",
+      "event": "bb-session",
+      "session": "fd6b3624",
+      "url": "https://www.nytimes.com/2026/10/25/books/review/sam-wasson-frank-capra.html"
+    },
+    {
+      "t": "2026-11-25T06:27:38.871Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
