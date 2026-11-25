@@ -42,13 +42,16 @@ function recordAccepted(candidate, { bytesBefore = null, url = null, via = 'arch
 /** onLanded callback for checkpointReviewTexts / retryPendingPushes: the recovered row, once on origin/main. */
 function onLanded(landed, ledgerPath) {
   return safe(() => {
-    const key = L.reviewKeyOf(landed.path || landed.abs || landed.rel);
-    const info = PENDING.get(key)
+    // BRO-8276: a text carried onto a file renamed upstream lands under the
+    // successor's key; its attempt info is under the old key (renamedFrom).
+    let earlier = null;
+    const lookup = (key) => PENDING.get(key)
       || (landed.meta && landed.meta.attempts && landed.meta.attempts[key])
-      || L.pendingPushInfo(L.readRows(ledgerPath || L.ledgerPathDefault())).get(key);
+      || (earlier = earlier || L.pendingPushInfo(L.readRows(ledgerPath || L.ledgerPathDefault()))).get(key);
+    const info = L.landingInfo({ ...landed, path: landed.path || landed.abs || landed.rel }, lookup);
     if (!info) return;
-    L.appendRows([L.recoveredRowFromLanding(landed, info)], ledgerPath);
-    PENDING.delete(key);
+    L.appendRows(L.landingRows({ ...landed, path: landed.path || landed.abs || landed.rel }, info), ledgerPath);
+    PENDING.delete(info.reviewKey || L.reviewKeyOf(landed.path || landed.abs || landed.rel));
   });
 }
 

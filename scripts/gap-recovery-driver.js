@@ -301,13 +301,34 @@ function recordGoneUpstream(superseded, lookup, ledgerPath) {
   const keys = [];
   for (const s of superseded || []) {
     const key = L.reviewKeyOf(s.rel);
-    const info = lookup(key);
+    const info = lookup(key, s.meta);
     console.log(`  [gone upstream] ${key}: ${s.why}`);
     if (!info) continue;
     L.appendRows([L.goneUpstreamRow(s.rel, info, s.why)], ledgerPath);
     keys.push(key);
   }
   return keys;
+}
+
+/**
+ * BRO-8276: when the shared clone could not fast-forward (other writers'
+ * uncommitted files block it), still never plan a file origin/main no longer
+ * has (renamed or removed upstream): its successor is planned once the clone
+ * catches up. Fail-open: no origin listing -> the plan stands.
+ */
+function dropGoneUpstream(cands, dir) {
+  let onOrigin;
+  try {
+    const repo = fs.realpathSync(dir);
+    const out = require('child_process').execFileSync('git', ['-C', repo, 'ls-tree', '-r', '--name-only', 'origin/main'], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+    onOrigin = new Set(out.split('\n'));
+    if (onOrigin.size < 1000) return cands; // not a real listing (sparse/empty ref): keep the plan
+  } catch { return cands; }
+  const kept = cands.filter((c) => onOrigin.has(c.reviewKey));
+  const dropped = cands.length - kept.length;
+  SUMMARY.plannedGoneUpstream = dropped;
+  if (dropped) console.log(`  ${dropped} planned review file(s) no longer on origin/main (renamed or removed upstream): not planned tonight`);
+  return kept;
 }
 
 async function runRetryPending({ dir, ledgerPath }) {
@@ -323,7 +344,9 @@ async function runRetryPending({ dir, ledgerPath }) {
   };
   try {
     const pend = retryPendingPushes({ repoDir: dir, onLanded });
-    recordGoneUpstream(pend.superseded, (key) => earlier.get(key), ledgerPath);
+    recordGoneUpstream(pend.superseded, (key, meta) => (meta && meta.source === 'gap-recovery-driver' && meta.attempts && meta.attempts[key]) || earlier.get(key), ledgerPath);
+    for (const d of pend.deferred || []) console.log(`  [rename deferred] ${d.rel}: ${d.why}`);
+    SUMMARY.renameDeferred = (pend.deferred || []).length;
     console.log(`retry-pending: ${pend.entries} pending checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${(pend.renamed || []).length} moved to a renamed file, ${(pend.superseded || []).length} gone upstream, ${(pend.deferred || []).length} deferred, ${pend.notLanded.length} not landed`);
     SUMMARY.landed = landedN;
     SUMMARY.pushFailed = pend.notLanded.length > 0;
@@ -393,7 +416,7 @@ async function main() {
       console.log(`  review-texts sync before planning: ${sync.ok ? 'up to date with origin/main' : `skipped (${sync.reason})`}`);
     } catch (e) { SUMMARY.reviewTextsSync = { ok: false, reason: String(e.message).slice(0, 200) }; console.log(`  review-texts sync before planning failed: ${e.message}`); }
   }
-  const cands = planCandidates({ dir, shows, outlets, ledgerIndex, runGates });
+  const cands = dropGoneUpstream(planCandidates({ dir, shows, outlets, ledgerIndex, runGates }), dir);
   if (OPTS.dryRun) {
     SUMMARY.mode = 'dry_run';
     const summary = printPlan(cands);
@@ -461,15 +484,23 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
     const rows = L.landingRows(landed, info); // BRO-8276: a renamed file also closes the old key
     L.appendRows(rows, ledgerPath);
     landedKeys.add(key);
-    if (landed.renamedFrom) landedKeys.add(L.reviewKeyOf(landed.renamedFrom));
+    if (landed.renamedFrom) closedKeys.add(L.reviewKeyOf(landed.renamedFrom));
     if (rows[0].detail && rows[0].detail.tierImproved) improvedKeys.add(key);
   };
-  const closeGone = (superseded) => { for (const k of recordGoneUpstream(superseded, (key) => infoFor(key, null), ledgerPath)) landedKeys.add(k); };
+  // BRO-8276: keys resolved without a landing of their own (renamed or gone
+  // upstream): out of the adopt-orphans pass, never counted as landed.
+  const closedKeys = new Set();
+  const renameDeferred = new Set();
+  const closeGone = (res) => {
+    for (const k of recordGoneUpstream(res.superseded, (key, meta) => infoFor(key, meta), ledgerPath)) closedKeys.add(k);
+    for (const d of res.deferred || []) { renameDeferred.add(d.rel); console.log(`  [rename deferred] ${d.rel}: ${d.why}`); }
+    SUMMARY.renameDeferred = renameDeferred.size;
+  };
 
   // Land what an earlier run committed but could not push, before new work.
   let pend;
   try { pend = retryPendingPushes({ repoDir: dir, onLanded }); } catch (e) { SUMMARY.pushFailed = true; SUMMARY.error = String(e.message).slice(0, 300); throw e; } // BRO-7944: counts as a failed push for the batch runner
-  closeGone(pend.superseded);
+  closeGone(pend);
   if (pend.entries) console.log(`  [pending] ${pend.entries} earlier checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${(pend.renamed || []).length} moved to a renamed file, ${(pend.superseded || []).length} gone upstream, ${(pend.deferred || []).length} deferred, ${pend.notLanded.length} not landed`);
 
   let urlFindRuns = 0;
@@ -550,7 +581,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
         message: `feat: gap-recovery driver ${label} - ${accepted} accepted (BRO-7171 Stage 2)`,
         onLanded, meta: { source: 'gap-recovery-driver', runId: RUN_ID, attempts },
       });
-      closeGone(res.superseded);
+      closeGone(res);
       console.log(`  [checkpoint] ${res.pushed ? 'pushed' : 'nothing to push'}; ${res.landed.length} file(s) confirmed on origin/main${(res.renamed || []).length ? `; ${res.renamed.length} moved onto a file renamed upstream` : ''}${(res.superseded || []).length ? `; ${res.superseded.length} gone upstream` : ''}${(res.deferred || []).length ? `; ${res.deferred.length} deferred to the next run (${res.deferred.map((d) => d.why).join('; ').slice(0, 200)})` : ''}`);
     } finally {
       for (const p of paths) { tracker.delete(p); if (tracker.expected) tracker.expected.delete(p); }
@@ -565,7 +596,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
     const repo = fs.realpathSync(dir);
     const { landingKey } = require('./lib/review-texts-checkpoint');
     // Only this driver's accepts: recover-wayback-reviews (runId wayback-*) owns its own uncommitted files.
-    const stillPending = new Map([...L.pendingPushInfo(L.readRows(ledgerPath))].filter(([k, v]) => !landedKeys.has(k) && !String(v.runId || '').startsWith('wayback-')));
+    const stillPending = new Map([...L.pendingPushInfo(L.readRows(ledgerPath))].filter(([k, v]) => !landedKeys.has(k) && !closedKeys.has(k) && !String(v.runId || '').startsWith('wayback-')));
     const o = orphanAccepts(stillPending, {
       readText: (k) => { try { return readJson(path.join(dir, k)).fullText || ''; } catch { return null; } },
       hashText: (t) => require('crypto').createHash('sha256').update(String(t)).digest('hex'),

@@ -21,7 +21,7 @@ const path = require('path');
 
 const { recoverReviewText } = require('./gap-acceptance');
 const { withReviewTextsLock } = require('./review-texts-lock');
-const { checkpointReviewTexts, retryPendingPushes, createWriteTracker } = require('./review-texts-checkpoint');
+const { checkpointReviewTexts, retryPendingPushes, createWriteTracker, logRenameOutcomes } = require('./review-texts-checkpoint');
 
 // Overridable so a worktree session (which has no gitignored data/review-texts
 // clone of its own — that private repo isn't part of this repo's git tree)
@@ -321,6 +321,7 @@ function startRun(opts = {}) {
   if (r.entries) {
     console.log(`  [Pending] ${r.entries} earlier checkpoint(s): ${r.landed.length} landed, ${r.restored.length} restored, ${r.notLanded.length} not landed`);
     for (const n of r.notLanded) console.log(`    not landed: ${n.rel} (${n.why || 'text not on origin/main'})`);
+    logRenameOutcomes(r, '    ');
   }
   return r;
 }
@@ -349,6 +350,7 @@ function checkpoint(stats, commitMessagePrefix, opts = {}) {
   for (const p of paths) { tracker.delete(p); if (tracker.expected) tracker.expected.delete(p); }
   console.log(`  [Checkpoint] ${res.pushed ? 'Pushed' : 'Nothing new to push'} (${stats.recovered} recovered so far; ${res.landed.length} file(s) confirmed on origin/main)`);
   for (const n of res.notLanded) console.log(`  [Checkpoint] NOT on origin/main after push: ${n.rel}`);
+  logRenameOutcomes(res, '  [Checkpoint] ');
   return res;
 }
 

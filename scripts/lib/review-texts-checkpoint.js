@@ -619,7 +619,16 @@ function retryPendingPushes({ repoDir, onLanded, pendingPath = pendingPathDefaul
   });
 }
 
+/** BRO-8276: one log line per path renamed or removed upstream (moved, superseded, deferred). */
+function logRenameOutcomes(res, prefix = '  ') {
+  if (!res) return;
+  for (const l of res.renamed || []) console.log(`${prefix}moved onto a file renamed upstream: ${l.renamedFrom} -> ${l.rel || l.path}`);
+  for (const s of res.superseded || []) console.log(`${prefix}gone upstream, not landed: ${s.rel} (${s.why})`);
+  for (const d of res.deferred || []) console.log(`${prefix}renamed upstream, carry deferred to the next run: ${d.rel} (${d.why})`);
+}
+
 module.exports = {
+  logRenameOutcomes,
   checkpointReviewTexts,
   retryPendingPushes,
   createWriteTracker,

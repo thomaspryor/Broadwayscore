@@ -110,6 +110,7 @@ function checkpointReviewTexts(label) {
   for (const p of paths) { RUN_WRITES.delete(p); RUN_WRITES.expected.delete(p); }
   console.log(`  [checkpoint] ${res.pushed ? 'pushed' : 'nothing new to push'}; ${res.landed.length} file(s) confirmed on origin/main`);
   for (const n of res.notLanded) console.log(`  [checkpoint] NOT on origin/main after push: ${n.rel}`);
+  require('./lib/review-texts-checkpoint').logRenameOutcomes(res, '  [checkpoint] ');
   return res;
 }
 
