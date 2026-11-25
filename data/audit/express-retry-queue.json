@@ -79,7 +79,8 @@
       "outletIds": [
         "timeout"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-25T08:05:00.403Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -91,7 +92,8 @@
       "outletIds": [
         "timeout"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-25T08:05:00.403Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -102,6 +104,42 @@
       "offsetHours": 12,
       "outletIds": [
         "timeout"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "seven-guitars-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-25T08:05:00.403Z",
+      "dueAt": "2026-11-25T09:05:00.403Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "seven-guitars-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-25T08:05:00.403Z",
+      "dueAt": "2026-11-25T11:05:00.403Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "seven-guitars-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-25T08:05:00.403Z",
+      "dueAt": "2026-11-25T20:05:00.403Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "nytimes"
       ],
       "attempted": false
     }
