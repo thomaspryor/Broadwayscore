@@ -405,7 +405,10 @@
     "burnt-up-love-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "public-charge-off-broadway-2026/timeout--unknown.json",
     "giant-2026/hollywood-reporter--caitlin-huston.json",
-    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json"
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/pages-on-stages--mason-pilevsky.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "_superseded-misattributed/coal-country-off-broadway-2022--theatermania--hayley-levitt--1794252956291.json",
@@ -656,7 +659,8 @@
     "public-charge-off-broadway-2026/theater-life--david-sheward.json",
     "public-charge-off-broadway-2026/talkinbroadway--howard-miller.json",
     "giant-2026/timeout--adam-feldman.json",
-    "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json"
+    "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/broadwaynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -883,7 +887,10 @@
       "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
       "inter-alia-west-end-2026/londontheatre1--chris-omaweng.json",
       "dog-day-afternoon-2026/people--dave-quinn.json",
-      "public-charge-off-broadway-2026/timeout--unknown.json"
+      "public-charge-off-broadway-2026/timeout--unknown.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/pages-on-stages--mason-pilevsky.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [
       "data/review-texts/the-outsiders-2024/hollywood-reporter--angie-han.json"
@@ -962,7 +969,8 @@
     "brightdata": [
       "the-wanderers-off-broadway-2023/talkinbroadway--marc-miller.json",
       "its-a-wonderful-life-a-live-radio-play-2026/nytimes--casey-schwartz.json",
-      "cats-the-jellicle-ball-2026/variety--brent-lang.json"
+      "cats-the-jellicle-ball-2026/variety--brent-lang.json",
+      "seven-guitars-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1096,7 +1104,7 @@
     ]
   },
   "startTime": "2026-11-25T02:34:05.538Z",
-  "lastProcessed": "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+  "lastProcessed": "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
   "log": [
     {
       "t": "2026-11-25T02:52:55.288Z",
@@ -1301,6 +1309,17 @@
     },
     {
       "t": "2026-11-25T05:46:43.395Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-25T07:17:49.060Z",
+      "event": "bb-session",
+      "session": "56f2abac",
+      "url": "https://www.nytimes.com/2026/11/24/theater/seven-guitars-review-hornsby-santiago"
+    },
+    {
+      "t": "2026-11-25T07:17:49.751Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
