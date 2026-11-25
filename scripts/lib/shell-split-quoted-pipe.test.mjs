@@ -37,9 +37,11 @@ test('always-commit-after-validate: a quoted pipe does not create a validate com
   assert.deepEqual(protectedStaged("git add 'a|b' data/shows.json"), ['data/shows.json'], 'quoted pipe must not hide the later protected path');
 });
 
-test('infra-review-scope shellSegments: unquoted unchanged, quoted separators kept', () => {
+test('infra-review-scope stays quote-blind on purpose: a write wrapped in bash -c is still seen', () => {
+  const { bashWriteTargets } = require('./infra-review-scope.js');
+  assert.ok(bashWriteTargets('bash -c "cd x; tee .github/workflows/x.yml"').some((t) => t.includes('.github/workflows/x.yml')));
+  assert.ok(bashWriteTargets("bash -c 'echo hi && sed -i s/a/b/ .github/workflows/x.yml'").some((t) => t.includes('.github/workflows/x.yml')));
   assert.deepEqual(shellSegments('a || b && c ; d | e\nf'), ['a ', ' b ', ' c ', ' d ', ' e', 'f']);
-  assert.deepEqual(shellSegments("printf 'a|b;c' > f && g"), ["printf 'a|b;c' > f ", ' g']);
 });
 
 test('audit-workflow-hygiene findGitDiffOnIgnoredPaths: quoted pipe stays in the git args', () => {

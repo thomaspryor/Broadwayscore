@@ -44,7 +44,7 @@ test('BRO-8095 skeptic: live consumers keep their verdicts on known-good and kno
 
 test('class guard: no gate in scripts/lib splits a command with a raw && || ; | regex', () => {
   const RAW = /\.split\(\/(?:&&\|\\\|\\\||\(\?:\\\|\\\|\|&&)/;
-  const allow = new Set([]); // BRO-8106 migrated the last five; never grow
+  const allow = new Set(['infra-review-scope.js']); // BRO-8106 migrated four; this one stays quote-blind on purpose (the plan-review and merge gates must see writes/merges wrapped in bash -c); never grow
   const hits = fs.readdirSync(new URL('.', import.meta.url)).filter((f) => /\.(m?js)$/.test(f) && !/\.test\./.test(f) && !allow.has(f) && RAW.test(fs.readFileSync(new URL(f, import.meta.url), 'utf8')));
   assert.deepEqual(hits, [], 'use shell-split-unquoted.js instead of a raw command regex split');
 });
