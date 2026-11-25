@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-25T07:34:41.272Z",
+    "lastUpdated": "2026-11-25T12:54:14.562Z",
     "version": "2.1.0",
-    "lastChange": "BRO-6122: standingCoverage[broadway] demote chicagotribune (audit-standing-coverage --market=broadway lists chicagotribune under demote (14% overall, floor not met); a Chicago outl)"
+    "lastChange": "BRO-6632: notDomainMoves dance-informa-usa += danceinforma.co.uk (UK edition of Dance Informa (events listing), separate paper from the USA site; not a domain move)"
   },
   "outlets": {
     "westendtheatre": {
@@ -14920,7 +14920,10 @@
         "dance informa usa"
       ],
       "domain": "danceinforma.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "notDomainMoves": [
+        "danceinforma.co.uk"
+      ]
     },
     "theatre-reviews-paul-seven": {
       "displayName": "Theatre Reviews with Paul Seven",
