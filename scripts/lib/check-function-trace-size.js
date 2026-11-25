@@ -294,8 +294,8 @@ function main() {
   const nextDir = path.resolve(args.find((a, i) => !used.has(i) && !a.startsWith('--')) || '.next');
   const repoRoot = path.dirname(nextDir);
   const serverDir = path.join(nextDir, 'server');
-  // Every fail-closed exit also prints an annotation: with continue-on-error a
-  // broken check must still be visible on the run, not a green step.
+  // Every exit-2 path also prints an annotation: the workflow step passes on exit 2,
+  // so a broken check must still be visible on the run.
   const bail = (msg) => { console.log(`::warning title=Trace size check could not run::${msg}`); console.log(msg); process.exit(2); };
   if (!Number.isFinite(limitMb) || limitMb <= 0) bail(`bad --limit-mb: ${limitArg}`);
   if (!fs.existsSync(serverDir)) bail(`no build output at ${serverDir}`);
@@ -329,4 +329,14 @@ function main() {
 
 module.exports = { sizeTrace, scanTraces, findNftFiles, fsStatSize, sizeFuncDir, findFuncDirs, scanFuncOutput, DEFAULT_LIMIT_MB };
 
-if (require.main === module) main();
+// BRO-8159: the workflow arms only exit 1 (over the limit). A crash in this checker
+// would also exit 1 and block a healthy deploy, so any unexpected throw is reported as
+// "measurement broken" (exit 2, a visible ::warning) instead.
+if (require.main === module) {
+  try { main(); } catch (e) {
+    const msg = `size check crashed: ${e && e.stack ? e.stack.split('\n')[0] : e}`;
+    console.log(`::warning title=Function size check crashed::${msg}`);
+    console.log(msg);
+    process.exit(2);
+  }
+}

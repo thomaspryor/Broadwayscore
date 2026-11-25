@@ -257,3 +257,18 @@ test('BRO-8165 review: functions under a symlinked route directory are found; un
     assert.equal(over.status, 1, over.stdout);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+// BRO-8159: vercel-deploy.yml arms only exit 1. A crash in the checker must come out as
+// exit 2 (a ::warning), never as Node's default exit 1, or it would block a healthy deploy.
+test('an unexpected throw inside the checker exits 2 with a ::warning, not 1', () => {
+  const root = fixture();
+  try {
+    const next = join(root, '.next');
+    const preload = join(root, 'boom.cjs');
+    writeFileSync(preload, "const fs=require('fs');const r=fs.readdirSync;fs.readdirSync=function(p,...a){if(String(p).endsWith('.next'))throw new Error('boom');return r.call(this,p,...a);};");
+    const res = spawnSync('node', ['-r', preload, SCRIPT, next], { encoding: 'utf8' });
+    assert.equal(res.status, 2, res.stdout + res.stderr);
+    assert.match(res.stdout, /::warning title=Function size check crashed/);
+    assert.match(res.stdout, /boom/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
