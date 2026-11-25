@@ -19,17 +19,15 @@ function sessionUrlOf(body, withKind = false) {
 function findAskingSessionUrl(comments = []) {
   const sorted = [...comments].filter((c) => c && c.body).sort((a, b) => String(a.createdAt || '').localeCompare(String(b.createdAt || '')));
   let latest = null;
-  let latestReport = null;
   let withBlock = null;
   for (const c of sorted) {
     const hit = sessionUrlOf(c.body, true);
     if (!hit) continue;
     latest = hit.url;
-    if (hit.isReport) latestReport = hit.url;
     if (/^\s*(?:\*\*)?DECISION NEEDED:/im.test(c.body)) withBlock = hit.url;
   }
-  // A report comment (the asker's own words) outranks a later session's bare claim.
-  return withBlock || latestReport || latest;
+  // No block in a comment: the most recently active session knows the card's state best.
+  return withBlock || latest;
 }
 
 module.exports = { findAskingSessionUrl, sessionUrlOf };

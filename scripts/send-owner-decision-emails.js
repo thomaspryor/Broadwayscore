@@ -239,7 +239,7 @@ async function main(argv = process.argv.slice(2)) {
   // same told marker the per-decision path writes (the ANSWER: sweep and the
   // roundup both key on it).
   if (sendMode(fresh, { backlogMin: BACKLOG_MIN }) === 'backlog') {
-    const email = buildBacklogEmail({ decisions: fresh, secret });
+    const email = buildBacklogEmail({ decisions: fresh.map((d) => ({ ...d, sessionUrl: findAskingSessionUrl((((byId.get(d.identifier) || {}).comments || {}).nodes) || []) })), secret });
     if (opts.dryRun) { console.log(`[dry-run] would send ONE backlog email "${email.subject}" covering ${fresh.map((d) => d.identifier).join(', ')}`); return 0; }
     // Keyed on the exact set of cards, so a partly failed marker write cannot re-send the same list inside Resend's 24h dedupe window.
     const day = new Date().toISOString().slice(0, 10);
