@@ -79,9 +79,10 @@ ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
 // BRO-8282: how the owner can talk to the session that asked, plus a plain line on the answer paths.
 const SESSION_URL_OK = /^https:\/\/claude\.ai\/code\/session_[A-Za-z0-9_-]+$/;
 function talkHtml(sessionUrl) {
-  const link = sessionUrl && SESSION_URL_OK.test(sessionUrl)
+  const ok = Boolean(sessionUrl) && SESSION_URL_OK.test(sessionUrl);
+  const link = ok
     ? `<p style="margin:0 0 10px;font-size:14px;"><a href="${esc(sessionUrl)}" style="color:#1a1208;font-weight:600;">Talk to the Claude session that asked</a> (opens the chat; type your question there)</p>` : '';
-  return `${link}<p style="margin:0 0 12px;color:#666;font-size:13px;">${sessionUrl ? 'Your button answer goes to the card and a fresh Claude picks it up within minutes. To chat about it first, open the session. ' : ''}Buttons record an answer. A comment on the card is also read within minutes.</p>`;
+  return `${link}<p style="margin:0 0 12px;color:#666;font-size:13px;">${ok ? 'Your button answer goes to the card and a fresh Claude picks it up within minutes. To chat about it first, open the session. ' : ''}Buttons record an answer. A comment on the card is also read within minutes.</p>`;
 }
 
 // BRO-8199: the plain-words background ("A star deal is ...") right under the question.
@@ -180,7 +181,8 @@ function buildRoundupEmail({ decisions, secret, now = Date.now(), baseUrl = BASE
   const rows = decisions.map((d) => {
     const hash = questionHash(d.question || d.title);
     const token = signToken({ id: d.identifier, hash, secret, now });
-    return `<div style="margin:0 0 14px;"><div style="font-weight:600;">${esc(noDash(displayQuestion(d.question || d.title)))}</div>${button(answerUrl(token, 'none', baseUrl), 'Open and answer', true)}</div>`;
+    const talk = d.sessionUrl && SESSION_URL_OK.test(d.sessionUrl) ? `<div style="margin:6px 0 0;font-size:14px;"><a href="${esc(d.sessionUrl)}" style="color:#1a1208;">Talk to the Claude session that asked</a></div>` : '';
+    return `<div style="margin:0 0 14px;"><div style="font-weight:600;">${esc(noDash(displayQuestion(d.question || d.title)))}</div>${button(answerUrl(token, 'none', baseUrl), 'Open and answer', true)}${talk}</div>`;
   }).join('');
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:20px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5;color:#222;"><div style="max-width:520px;margin:0 auto;">

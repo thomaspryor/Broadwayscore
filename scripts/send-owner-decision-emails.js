@@ -165,7 +165,7 @@ async function main(argv = process.argv.slice(2)) {
     // A decision emailed before BRO-8199 that now reads as unclear drops out of reminders; say so on its card.
     if (!opts.dryRun) for (const { d, muddled } of roundupUnclear) { if (!(await noteUnclear(d, muddled))) failures++; }
     if (!stale.length) { console.log('[roundup] nothing has waited more than 3 days'); return 0; }
-    const email = buildRoundupEmail({ decisions: stale, secret });
+    const email = buildRoundupEmail({ decisions: stale.map((d) => ({ ...d, sessionUrl: findAskingSessionUrl((((byId.get(d.identifier) || {}).comments || {}).nodes) || []) })), secret });
     if (opts.dryRun) { console.log(`[roundup] would email: ${email.subject}`); return 0; }
     const { sendEmailAlert } = require('./lib/discord-notify.js');
     const day = new Date().toISOString().slice(0, 10);

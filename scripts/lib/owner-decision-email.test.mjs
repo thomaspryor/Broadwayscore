@@ -248,3 +248,18 @@ test('email renders the session link only when found, always the paths line', ()
   const c = buildDecisionEmail({ decision, description: DESC, secret, now: 0, sessionUrl: 'https://evil.example/x' }).html;
   assert.doesNotMatch(c, /evil\.example/);
 });
+
+test('asking session: a report marker outranks a later bare claim; "no DECISION NEEDED here" is not a block', () => {
+  const comments = [
+    { createdAt: '2026-11-01', body: `Session report (paused)\n<!-- session: ${S1} -->` },
+    { createdAt: '2026-11-02', body: `Claimed by ${S2} at later` },
+  ];
+  assert.equal(findAskingSessionUrl(comments), S1);
+  assert.equal(findAskingSessionUrl([{ createdAt: '1', body: `no DECISION NEEDED here <!-- session: ${S2} -->` }, { createdAt: '2', body: `DECISION NEEDED: q <!-- session: ${S1} -->` }]), S1);
+});
+
+test('roundup rows carry the session link only when known', () => {
+  const { buildRoundupEmail } = require('./owner-decision-email.js');
+  const html = buildRoundupEmail({ decisions: [{ identifier: 'BRO-1', title: 'a', sessionUrl: S1 }, { identifier: 'BRO-2', title: 'b' }], secret, now: 0 }).html;
+  assert.equal(html.split('Talk to the Claude session that asked').length - 1, 1);
+});
