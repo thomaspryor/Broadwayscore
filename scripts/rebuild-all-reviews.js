@@ -122,6 +122,7 @@ const {
   shouldAutoClearStaleDateGuard,
   isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,
+  restoreParkedFullText,
   shouldAutoClearWrongProductionUkDualMarket,
   shouldAutoClearStaleLondonOutletCrossMarket,
   isInOwnWindowByDateOrUrlYear,
@@ -2052,6 +2053,7 @@ const crossShowFingerprints = new Map();
             delete d.wrongProductionDetectedBy;
             delete d.anticipatoryGateOutletCategory;
             delete d.anticipatoryGateDaysBeforeOpening;
+            restoreParkedFullText(d); // BRO-8324: put the parked body back
             if (isStaleScoreInput(d, showRecord, fp)) {
               markRescoreNeeded(d, 'wrongProduction false-positive cleared (anticipatory grace re-evaluated)');
             }

@@ -966,6 +966,23 @@ function isDatedGuardNote(note) {
 }
 
 /**
+ * collect-review-texts parks the body of a flagged review in wrongFullText and
+ * nulls fullText. When the anticipatory flag is cleared the body is the right
+ * one again (the flag was date-only), so put it back; otherwise the review is
+ * re-admitted as a text-less stub (BRO-8324: 35 of 68 re-admitted files).
+ * Pure: mutates and returns the same object. Returns true when it restored.
+ * @param {object} data - the review JSON object
+ * @returns {boolean}
+ */
+function restoreParkedFullText(data) {
+  if (!data || data.fullText) return false;
+  if (typeof data.wrongFullText !== 'string' || data.wrongFullText.length <= 300) return false;
+  data.fullText = data.wrongFullText;
+  delete data.wrongFullText;
+  return true;
+}
+
+/**
  * Decide whether a STALE anticipatory_pre_opening_post wrongProduction flag
  * should be auto-cleared because re-running isAnticipatoryPreviewPost on the
  * review's CURRENT publishDate/showCategory/openingDate no longer rejects it.
@@ -1368,6 +1385,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  restoreParkedFullText,
   priorRunWindow,
   bwwExcerptContradictsText,
   DATE_GUARD_PREFIXES,
