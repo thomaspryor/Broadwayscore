@@ -41689,7 +41689,7 @@
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:validate-review-text-files": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Data audit failing: Validate review-text files",
       "firstSeen": "2026-11-10T15:36:09.546Z",
@@ -41703,7 +41703,9 @@
       "linearIdentifier": "BRO-8263",
       "silentRefires": 24,
       "escalatedAt": "2026-11-25T16:30:44.285Z",
-      "escalationLane": "cloud-start-now"
+      "escalationLane": "cloud-start-now",
+      "resolvedAt": "2026-11-25T16:43:56.976Z",
+      "resolveReason": "step passed"
     },
     "land:land/bro-7291": {
       "status": "resolved",
