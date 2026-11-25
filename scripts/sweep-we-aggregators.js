@@ -272,7 +272,8 @@ function curlJson(url) {
  * through fetchPage() restricted to the scrapingbee tier (BRO-6008). These are
  * UK-only West End aggregators (WET/TS/Stagedoor/etc.) geo-pinned with
  * countryCode 'gb' (SB country_code). premium_proxy stays off: render_js=true
- * alone (5cr) is cheaper than Bright Data. Returns HTML or null on a miss.
+ * alone (5cr) is cheaper than Bright Data. With SB switched off the same call
+ * runs the default fetchPage chain (SD, Bright Data, Playwright). Returns HTML or null on a miss.
  */
 async function scrapingBeeRender(url) {
   if (!CAN_RENDER) return null;
@@ -891,7 +892,7 @@ async function sweepTheatreReviews(show) {
   // SB render fallback — only for index URL
   if (CAN_RENDER && indexUrl) {
     await sleep(2000);
-    console.log(`    [TR] Trying ScrapingBee for ${indexUrl.split('/reviews-roundup/')[1] || indexUrl}`);
+    console.log(`    [TR] Trying paid render for ${indexUrl.split('/reviews-roundup/')[1] || indexUrl}`);
     const html = await scrapingBeeRender(indexUrl);
     if (html && html.length > 1000 && !html.includes('<title>Page not found') && !html.includes('404')) {
       if (verifyPage('theatre-reviews', indexUrl, html, show)) {
@@ -1211,7 +1212,7 @@ async function sweepTheStage(show) {
   if (CAN_RENDER) {
     for (const { tier, url } of tiered) {
       if (tier === 'tier3') bumpUrlGuessTier('thestage', 'tier3Attempted', show.id);
-      console.log(`    [TS] Trying ScrapingBee render: ${url.split('/review-round-ups/')[1] || url}`);
+      console.log(`    [TS] Trying paid render: ${url.split('/review-round-ups/')[1] || url}`);
       const html = await scrapingBeeRender(url);
       if (!html || html.length < 2000) continue;
       if (html.includes('Page not found') || html.includes('404 -')) continue;
@@ -1266,10 +1267,10 @@ async function main() {
       // one exiting on "SB credit check failed: 0% remaining" while BrightData
       // was healthy in the same run (e.g. run 30530145995).
       //
-      // NOTE for whoever touches this next: this script does NOT go through
-      // fetchPage(), so there is no automatic BD -> SB -> Playwright fallback
-      // here. It calls ScrapingBee directly (scrapingBeeRender at ~:252 and the
-      // WET WP-JSON fallback at ~:484), and in BOTH places SB is already a
+      // NOTE for whoever touches this next: the paid renders here
+      // (scrapingBeeRender and the WET WP-JSON fallback) go through fetchPage
+      // restricted to the SB tier (BRO-6008), or its default chain when SB is
+      // switched off (BRO-8330); in BOTH places they are already a
       // second-choice path behind curlJson/direct fetch. So running with SB
       // exhausted degrades to "curl-only": the WET WordPress API still works,
       // and only the WAF/Cloudflare-blocked pages are lost. Partial coverage
