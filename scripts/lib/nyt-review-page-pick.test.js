@@ -58,6 +58,11 @@ test('straight and curly apostrophes both match', () => {
   assert.equal(isCriticsPickPage(mk("'")), true);
 });
 
+test('HTML-entity apostrophes match too', () => {
+  const mk = (q) => `<div class="l"><p class="c">Critic${q}s Pick</p></div><div class="d"><h1 id="x" data-testid="headline">T</h1>`;
+  for (const q of ['&#x27;', '&#39;', '&#8217;', '&rsquo;']) assert.equal(isCriticsPickPage(mk(q)), true, q);
+});
+
 test('JSON header-block encoding alone is enough when the DOM label moved', () => {
   const html = '<h1 data-testid="headline">T</h1><script>{"__typename":"HeaderBasicBlock","label":'
     + '{"textAlign":"LEFT","content":[{"__typename":"TextInline","text":"Critic’s Pick"}]}}</script>';

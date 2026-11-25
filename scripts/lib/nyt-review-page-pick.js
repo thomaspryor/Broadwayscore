@@ -47,7 +47,7 @@ const MAX_URLS_PER_RUN = 6;
 const STATE_RETENTION_MS = 14 * 24 * 60 * 60 * 1000;
 
 function normalizeQuotes(s) {
-  return String(s || '').replace(/[‘’ʼ]/g, "'");
+  return String(s || '').replace(/[‘’ʼ]|&#x27;|&#39;|&#8217;|&rsquo;|&apos;/gi, "'");
 }
 
 /** True when the page is an NYT article (has the headline element). */

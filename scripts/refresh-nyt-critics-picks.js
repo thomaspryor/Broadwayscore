@@ -298,7 +298,7 @@ function findUnpickedCandidates(pickUrls, now = new Date()) {
 
 async function fetchReviewPage(url) {
   if (!_scraper) _scraper = require('./lib/scraper');
-  const result = await _scraper.fetchPage(url, { skipVerify: true });
+  const result = await _scraper.fetchPage(url);
   const content = (result && (result.content || result.html)) || '';
   if (!content) throw new Error('empty response');
   return content;
@@ -336,6 +336,7 @@ async function reviewPagePass({ urls, pageState, budget, argv, now = new Date(),
   result.picks.forEach(u => console.log('  + (review page label) ' + u));
   result.negatives.forEach(u => console.log('  - not a pick: ' + u));
   result.failures.forEach(f => console.warn(`  ! ${f.url}: ${f.reason}`));
+  if (result.failures.length) console.warn(`::warning::NYT review-page pass could not read ${result.failures.length} page(s); retries back off and stop after a few tries`);
   return {
     picks: result.picks,
     pageState: explicit.length ? pageState : recordChecks(pageState, result, now),

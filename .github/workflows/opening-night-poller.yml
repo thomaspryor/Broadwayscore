@@ -1207,7 +1207,7 @@ jobs:
         # Kill switch: repo variable DISABLE_NYT_PICK_FASTPATH=1.
         if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && vars.DISABLE_NYT_PICK_FASTPATH != '1'
         continue-on-error: true
-        timeout-minutes: 10  # spotlight fetch (<=2 min budget) + push-with-retry (240s deadline) + buffer
+        timeout-minutes: 15  # spotlight (<=2 min budget, one ~2.5 min fetch overrun) + review-page pass (3 min budget + one fetch overrun) + push-with-retry (240s) + buffer (BRO-8286)
         env:
           SHOWS: ${{ steps.find.outputs.shows }}
           # Union-merge the append-only spend ledger on push conflicts
