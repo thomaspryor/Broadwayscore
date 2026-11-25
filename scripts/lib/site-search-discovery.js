@@ -1393,14 +1393,15 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
     const _rec = (success, status) => {
       if (_recorded) return;
       _recorded = true;
-      const billed = (status === 401 || status === 402 || status === 'error') ? 0 : creditsFor('sb', 'render');
+      const billed = (status === 401 || status === 402 || status === 429 || status === 'error') ? 0 : creditsFor('sb', 'render');
       try { recordSbCall({ url, fn: 'render', success, status, credits: billed }); } catch (_) {}
       // 401/402/429/connection errors say nothing about the host (account or network state):
       // free the probe slot, add no row. Timeouts are billed and the ledger row says failure, so record false.
       if (status === 401 || status === 402 || status === 429 || status === 'error') sbHostCooldown.release(url);
       else sbHostCooldown.record(url, success);
     };
-    const req = https.get(apiUrl, (res) => {
+    let req;
+    try { req = https.get(apiUrl, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -1408,7 +1409,7 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
         else { _rec(false, res.statusCode); reject(new Error(`ScrapingBee HTTP ${res.statusCode}`)); }
       });
       res.on('error', (err) => { _rec(false, 'error'); reject(err); });
-    });
+    }); } catch (err) { _rec(false, 'error'); return reject(err); }
     req.on('error', (err) => { _rec(false, 'error'); reject(err); });
     req.setTimeout(timeoutMs, () => { req.destroy(); _rec(false, 'timeout'); reject(new Error('Timeout')); });
   });

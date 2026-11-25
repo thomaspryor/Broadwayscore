@@ -12,7 +12,7 @@ const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sb-cd-'));
 const ledger = path.join(dir, 'ledger.jsonl');
 const hoursAgo = (h) => new Date(Date.now() - h * 3600e3).toISOString();
 const rows = (host, n, success, h) => Array.from({ length: n }, () => JSON.stringify({ provider: 'scrapingbee', host, success, ts: hoursAgo(h) }));
-fs.writeFileSync(ledger, [...rows('ew.com', 6, false, 1), ...rows('thestage.co.uk', 6, false, 1), ...rows('thestage.co.uk', 1, true, 2)].join('\n') + '\n');
+fs.writeFileSync(ledger, [...rows('ew.com', 6, false, 1), ...rows('thestage.co.uk', 6, false, 1), ...rows('thestage.co.uk', 1, true, 2), ...['s401','s429','serr','s404','stmo'].flatMap((h) => rows(`${h}.test`, 6, false, 7))].join('\n') + '\n');
 process.env.SCRAPER_SPEND_LEDGER_PATH = ledger;
 process.env.SCRAPINGBEE_API_KEY = 'dummy';
 process.env.SCRAPER_SPEND_LEDGER_DISABLED = '1';
@@ -57,3 +57,50 @@ test('release frees the probe slot without adding a success', () => {
   g.release(u);
   assert.equal(g.consult(u).probe, true);
 });
+
+// Drives the real fetchJsSearchHtml through each failure branch with a stubbed transport.
+import { EventEmitter } from 'node:events';
+function stub(kind) {
+  return (_u, cb) => {
+    const req = new EventEmitter();
+    let t = null;
+    req.setTimeout = (_ms, fn) => { t = fn; };
+    req.destroy = () => {};
+    setImmediate(() => {
+      if (kind === 'error') return req.emit('error', new Error('ECONNRESET'));
+      if (kind === 'timeout') return t && t();
+      const res = new EventEmitter();
+      res.statusCode = kind;
+      cb(res);
+      res.emit('data', 'x');
+      res.emit('end');
+    });
+    return req;
+  };
+}
+async function probeTwice(host, kind) {
+  const orig = https.get;
+  const u = `https://${host}.test/search?q=x`;
+  const first = []; const second = [];
+  try {
+    https.get = stub(kind);
+    await fetchJsSearchHtml({}, u).catch((e) => first.push(e.message));
+    let calls = 0;
+    https.get = (...a) => { calls++; return stub(kind)(...a); };
+    await fetchJsSearchHtml({}, u).catch((e) => second.push(e.message));
+    return { first: first[0], second: second[0], secondTouchedNetwork: calls === 1 };
+  } finally { https.get = orig; }
+}
+for (const [host, kind] of [['s401', 401], ['s429', 429], ['serr', 'error']]) {
+  test(`neutral outcome ${kind} frees the probe slot (a later call may probe again)`, async () => {
+    const r = await probeTwice(host, kind);
+    assert.equal(r.secondTouchedNetwork, true, JSON.stringify(r));
+  });
+}
+for (const [host, kind] of [['s404', 404], ['stmo', 'timeout']]) {
+  test(`host outcome ${kind} consumes the probe (second call is cooled down)`, async () => {
+    const r = await probeTwice(host, kind);
+    assert.equal(r.secondTouchedNetwork, false, JSON.stringify(r));
+    assert.match(r.second, /host cooldown/);
+  });
+}
