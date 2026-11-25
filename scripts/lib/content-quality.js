@@ -2223,7 +2223,34 @@ function endsWithSentencePunctuation(s) {
  * so a review truncated mid-sentence right before an address stays flagged.
  */
 const LISTINGS_TRAILER_RE = /\s*Listings?\s+and\s+ticket\s+information\s+can\s+be\s+found\s+here\.?\s*$/i;
+
+// BRO-8013: classifyContentTier strips the same trimmed fullText twice per call
+// (once inside detectTruncationSignals, once for its own ending check), and the
+// rebuild classifies most files twice (tier safety net, then the pull-quote copy).
+// The strip was ~55% of the classifier's time on the corpus. It is a pure
+// function of (text, outletId, the three trailer kill switches), so a small
+// in-process memo keyed on exactly those returns the identical string. Bounded:
+// oldest entry evicted past STRIP_MEMO_MAX. Off: STRIP_TRAILER_MEMO_DISABLED=true.
+const STRIP_MEMO_MAX = 512;
+const stripMemo = new Map();
+const stripMemoStats = { hits: 0, misses: 0 };
+function stripMemoEnvKey() {
+  const e = process.env;
+  return `${e.TRAILER_FIXES_DISABLED || ''}\0${e.FURNITURE_TAIL_DISABLED || ''}\0${e.RUN_INFO_TRAILER_DISABLED || ''}`;
+}
 function stripVenueListingsTrailer(text, outletId) {
+  if (typeof text !== 'string' || process.env.STRIP_TRAILER_MEMO_DISABLED === 'true') return stripVenueListingsTrailerUncached(text, outletId);
+  const envKey = stripMemoEnvKey();
+  const hit = stripMemo.get(text);
+  if (hit && hit.outletId === outletId && hit.envKey === envKey) { stripMemoStats.hits++; return hit.result; }
+  stripMemoStats.misses++;
+  const result = stripVenueListingsTrailerUncached(text, outletId);
+  stripMemo.delete(text);
+  stripMemo.set(text, { outletId, envKey, result });
+  if (stripMemo.size > STRIP_MEMO_MAX) stripMemo.delete(stripMemo.keys().next().value);
+  return result;
+}
+function stripVenueListingsTrailerUncached(text, outletId) {
   let t = text;
   for (let i = 0; i < 3; i++) {
     // BRO-8012: the literal check skips a full-text scan; the regex cannot match without it.
@@ -4442,6 +4469,8 @@ module.exports = { outletBylineOverride, withPrintedCredit, extractTheRecsByline
   detectListingPageText,
   URL_CONTENT_CHECK_VERSION,
   stripVenueListingsTrailer,
+  stripVenueListingsTrailerUncached,
+  stripMemoStats,
   isGarbageContent,
   stripLeadingJsonBlob,
   stripLeadingCookieConsentBlock,
