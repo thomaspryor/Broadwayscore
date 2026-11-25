@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T08:51:15.094Z",
+  "generatedAt": "2026-11-25T09:17:03.756Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -490,6 +490,14 @@
         {
           "name": "Time Out London",
           "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
         },
         {
           "name": "The Stage",
@@ -4603,28 +4611,28 @@
       "status": "open",
       "slug": "purpose-geffen-regional-2026",
       "thumbnail": "/images/shows/purpose-geffen-regional-2026/thumbnail.webp",
-      "siteScore": 90.65,
-      "liveScore": 91,
-      "scoreDrift": 0.3499999999999943,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 89.25,
+      "liveScore": 89,
+      "scoreDrift": -0.25,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 5,
       "t1": 1,
       "t2": 1,
-      "t3": 1,
-      "positive": 3,
+      "t3": 3,
+      "positive": 5,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "5/12 total",
           "T1:1/3",
           "T2:1/3",
-          "hi-conf:3/8"
+          "hi-conf:5/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -4992,6 +5000,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T09:17:03.756Z",
+          "rc": 5,
+          "s": 89.25,
+          "t1": 1,
+          "t2": 1,
+          "t3": 3,
+          "p": 5,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -5005,28 +5025,28 @@
       "status": "open",
       "slug": "home-im-darling-regional-2026",
       "thumbnail": "/images/shows/home-im-darling-regional-2026/thumbnail.jpg",
-      "siteScore": 80.47,
-      "liveScore": 80,
-      "scoreDrift": -0.46999999999999886,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 81.45,
+      "liveScore": 81,
+      "scoreDrift": -0.45000000000000284,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 0,
       "t2": 2,
-      "t3": 2,
-      "positive": 4,
+      "t3": 3,
+      "positive": 5,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/12 total",
+          "5/12 total",
           "T1:0/3",
           "T2:2/3",
-          "hi-conf:4/8"
+          "hi-conf:5/8"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -5395,6 +5415,18 @@
           "t2": 2,
           "t3": 2,
           "p": 4,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T09:17:03.756Z",
+          "rc": 5,
+          "s": 81.45,
+          "t1": 0,
+          "t2": 2,
+          "t3": 3,
+          "p": 5,
           "m": 0,
           "n": 0,
           "bc": "waiting"
