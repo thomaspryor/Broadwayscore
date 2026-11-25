@@ -380,10 +380,11 @@ test('an earlier production\'s article never makes an owner item: cross-market, 
   assert.equal(R.cellPhase(r2.state.cells.k, at(15)).phase, 'dead-end');
 });
 
-test('the collector judges the date before refusing on a rejected copy\'s filename', async () => {
-  const fs = require('fs'); const os = require('os'); const path = require('path');
+test('the collector judges the date before refusing on a rejected copy\'s filename', async (t) => {
+  const fs = require('fs'); const path = require('path');
   const { writeReviewFile } = require('../../scripts/collect-outlet-reviews.js');
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ecr-wrf-'));
+  const { makeTmpDir } = require('../../scripts/lib/tmpdir-for-tests.js');
+  const dir = makeTmpDir(t, 'ecr-wrf-');
   fs.mkdirSync(path.join(dir, 'hp'));
   const SAME = 'https://ts.example/hp-recast-2017';
   fs.writeFileSync(path.join(dir, 'hp', 'thestage--unknown.json'), JSON.stringify({ url: SAME, wrongProduction: true, rejectionReason: 'not_a_review' }));
