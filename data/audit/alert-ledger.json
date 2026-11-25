@@ -49493,13 +49493,13 @@
       "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.296Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.296Z",
-      "lastSeen": "2026-11-25T19:53:23.342Z",
+      "lastSeen": "2026-11-25T20:17:16.994Z",
       "lastNotifiedAt": "2026-11-25T17:48:26.175Z",
       "lastSurfacedAt": "2026-11-25T17:48:26.175Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c": {
       "status": "open",
@@ -49507,13 +49507,13 @@
       "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.324Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.324Z",
-      "lastSeen": "2026-11-25T19:53:23.366Z",
+      "lastSeen": "2026-11-25T20:17:17.021Z",
       "lastNotifiedAt": "2026-11-25T17:48:26.200Z",
       "lastSurfacedAt": "2026-11-25T17:48:26.200Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/job/linear-BRO-8167-mwtgpag4": {
       "status": "resolved",
@@ -50085,13 +50085,13 @@
       "title": "Test red on main: the same week in the Broadway edition does not get the West End exception [testCodeFailure]",
       "firstSeen": "2026-11-24T07:28:53.020Z",
       "incidentOpenedAt": "2026-11-24T07:28:53.020Z",
-      "lastSeen": "2026-11-25T19:53:23.315Z",
+      "lastSeen": "2026-11-25T20:17:16.961Z",
       "lastNotifiedAt": "2026-11-25T07:30:10.304Z",
       "lastSurfacedAt": "2026-11-25T07:30:10.304Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 28
+      "silentRefires": 29
     },
     "live-data-test:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception": {
       "status": "open",
@@ -50577,13 +50577,13 @@
       "title": "Test red on main: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a ",
       "firstSeen": "2026-11-25T05:33:43.517Z",
       "incidentOpenedAt": "2026-11-25T05:33:43.517Z",
-      "lastSeen": "2026-11-25T19:53:23.389Z",
+      "lastSeen": "2026-11-25T20:17:17.047Z",
       "lastNotifiedAt": "2026-11-25T05:33:43.517Z",
       "lastSurfacedAt": "2026-11-25T05:33:43.517Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 32
+      "silentRefires": 33
     },
     "land:land/bro-8289-retro": {
       "status": "open",
@@ -50924,13 +50924,13 @@
       "title": "Test red on main: allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS) [testCodeFailure]",
       "firstSeen": "2026-11-25T15:34:42.083Z",
       "incidentOpenedAt": "2026-11-25T15:34:42.083Z",
-      "lastSeen": "2026-11-25T19:53:23.412Z",
+      "lastSeen": "2026-11-25T20:17:17.081Z",
       "lastNotifiedAt": "2026-11-25T15:34:42.083Z",
       "lastSurfacedAt": "2026-11-25T15:34:42.083Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "opening-night-remediation-exhausted-explicit-ratings:the-dead-1904-off-broadway-2026:timeout": {
       "status": "open",
@@ -51014,7 +51014,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-8111-cli-smoke-timeout": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: lint-workflows red on land/bro-8111-cli-smoke-timeout",
       "firstSeen": "2026-11-25T19:50:59.200Z",
@@ -51024,7 +51024,8 @@
       "lastSurfacedAt": "2026-11-25T19:50:59.200Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-25T20:17:16.821Z"
     }
   }
 }
