@@ -156,9 +156,10 @@ function extractReceiptNo(text = '') {
  */
 function extractCardLast4(body = '') {
   const text = String(body);
-  const m = text.match(/\bending\s+(?:in|with)\s+(\d{4})\b/i) ||
-    text.match(/\b(?:visa|mastercard|master\s?card|amex|american\s+express|discover|card)\s*[-\u2013\u2014]\s*(\d{4})\b/i) ||
-    text.match(/[-\u2013\u2014]\s(\d{4})\b(?=\s*(?:\$|Amount|Date|Receipt|Invoice|$))/i);
+  // "<card word> ... ending in 1234": the card word must sit just before, so
+  // "trial ending in 2026" never reads as a card.
+  const m = text.match(/\b(?:credit|debit)?\s*card\b[^.\d]{0,30}?\bending\s+(?:in|with)\s+(\d{4})\b/i) ||
+    text.match(/\b(?:visa|mastercard|master\s?card|amex|american\s+express|discover)\b\s*(?:card)?\s*[-\u2013\u2014]?\s*(?:ending\s+(?:in|with)\s+)?(\d{4})\b/i);
   return m ? m[1] : null;
 }
 
@@ -247,6 +248,26 @@ function reclassifyMonthlyDupes(rows) {
 }
 
 /**
+ * Re-apply each vendor's configured businessPct to rows already in the ledger
+ * (idempotent). A split change (Claude Max 100 -> 50, BRO-8273) must reach rows
+ * booked before it; ingest skips existing rows, so nothing else would.
+ * Returns the number of rows changed.
+ */
+function applyVendorBusinessPct(rows, config = loadVendorConfig()) {
+  const pct = new Map((config.expenseVendors || []).filter((v) => v.kind !== 'ignore' && v.businessPct != null).map((v) => [v.key, v.businessPct]));
+  let changed = 0;
+  for (const r of rows) {
+    if (!pct.has(r.vendorKey) || r.amountUsd == null) continue;
+    const want = pct.get(r.vendorKey);
+    const amountBusiness = Math.round(r.amountUsd * (want / 100) * 100) / 100;
+    if (r.businessPct !== want || r.amountBusiness !== amountBusiness) {
+      r.businessPct = want; r.amountBusiness = amountBusiness; changed++;
+    }
+  }
+  return changed;
+}
+
+/**
  * Mark rows matching config.externallyPaid.rules as excluded (paid by someone
  * other than the business). Recomputes the flag on EVERY row each run so a
  * config edit retroactively updates the whole ledger. finance-stats skips
@@ -281,6 +302,7 @@ module.exports = {
   loadVendorConfig,
   reclassifyMonthlyDupes,
   applyExternallyPaid,
+  applyVendorBusinessPct,
   classifyReceipt,
   matchesRule,
   isPersonal,

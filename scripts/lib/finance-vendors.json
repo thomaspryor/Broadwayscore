@@ -1,5 +1,5 @@
 {
-  "_note": "Vendor allowlist + match rules for the BWSC finance tracker. Committed as code-adjacent config (no dollar amounts, no PII — vendor names already appear in scraper-cost-report.yml / check-secrets-health.js). The actual ledgers (with amounts) live in the PRIVATE repo under data/finances/, gitignored here. A receipt is booked only on a confident positive match; anything else → review queue (never auto-booked). businessPct is the share booked to the business (per-vendor split); mixed-domain vendors (Google) are separated per-charge via match rules, not by percent.",
+  "_note": "Vendor allowlist + match rules for the BWSC finance tracker. Committed as code-adjacent config (no dollar amounts, no PII \u2014 vendor names already appear in scraper-cost-report.yml / check-secrets-health.js). The actual ledgers (with amounts) live in the PRIVATE repo under data/finances/, gitignored here. A receipt is booked only on a confident positive match; anything else \u2192 review queue (never auto-booked). businessPct is the share booked to the business (per-vendor split); mixed-domain vendors (Google) are separated per-charge via match rules, not by percent.",
   "categories": [
     "hosting",
     "scraping",
@@ -207,7 +207,7 @@
       "sethmcnew@gmail.com",
       "googleone-noreply@google.com"
     ],
-    "_note2": "2026-07-06: bulk additions from the user's tagged review-queue spreadsheet (256 'personal' rows). Stripe-fronted personal apps are excluded by acct_ id, NOT stripe.com wholesale — scrapingdog/browserbase/x book via Stripe."
+    "_note2": "2026-07-06: bulk additions from the user's tagged review-queue spreadsheet (256 'personal' rows). Stripe-fronted personal apps are excluded by acct_ id, NOT stripe.com wholesale \u2014 scrapingdog/browserbase/x book via Stripe."
   },
   "expenseVendors": [
     {
@@ -255,17 +255,6 @@
       }
     },
     {
-      "key": "openai",
-      "vendor": "OpenAI (API)",
-      "category": "llm",
-      "kind": "usage",
-      "businessPct": 100,
-      "match": {
-        "fromContains": "openai.com",
-        "subjectContains": "receipt"
-      }
-    },
-    {
       "key": "openai-api",
       "vendor": "OpenAI (API)",
       "category": "llm",
@@ -277,6 +266,28 @@
       },
       "amountAnchor": "We charged",
       "note": "API credit top-ups (\"Your OpenAI API account has been funded\", body \"We charged $X to your credit card ending in NNNN\"). Senders noreply@tm.openai.com and billing@tm1.openai.com. The older openai rule needs subject \"receipt\" and never matched these."
+    },
+    {
+      "key": "openai",
+      "vendor": "OpenAI (API)",
+      "category": "llm",
+      "kind": "usage",
+      "businessPct": 100,
+      "match": {
+        "fromContains": "openai.com",
+        "subjectContains": "receipt"
+      }
+    },
+    {
+      "key": "openai-notices-ignore",
+      "vendor": "OpenAI (non-receipt notices)",
+      "category": "llm",
+      "kind": "ignore",
+      "businessPct": 0,
+      "match": {
+        "fromContains": "openai.com"
+      },
+      "note": "Usage alerts, product mail. Must stay below openai-api and openai booking rules (openai.com is in the Gmail query since BRO-8273)."
     },
     {
       "key": "supabase",
@@ -297,9 +308,10 @@
       "kind": "ignore",
       "businessPct": 0,
       "match": {
-        "fromContains": "supabase.com"
+        "from": "invoice+statements@supabase.com",
+        "subjectContains": "New invoice from"
       },
-      "note": "Must stay below the supabase booking rule."
+      "note": "Invoice-issued mail only; the payment-received mail books. Other Supabase mail (receipts, refunds) falls to review."
     },
     {
       "key": "cloudflare-invoice-ignore",
@@ -308,7 +320,8 @@
       "kind": "ignore",
       "businessPct": 0,
       "match": {
-        "from": "noreply@notify.cloudflare.com"
+        "from": "noreply@notify.cloudflare.com",
+        "subjectContains": "Your invoice is available"
       },
       "note": "\"Your invoice is available\" carries no amount. Needs a receipt source before it can book; ignored so it stops filling the review queue."
     },
@@ -319,9 +332,14 @@
       "kind": "ignore",
       "businessPct": 0,
       "match": {
-        "fromContains": "buffer.com"
+        "from": "hello@youraccount.buffer.com",
+        "subjectContainsAny": [
+          "renewing your subscription",
+          "Plan cancelled",
+          "Thank you for your payment"
+        ]
       },
-      "note": "Renewal reminders, cancellation and thank-you notices. No receipt amount."
+      "note": "Renewal, cancellation and thank-you notices with no amount. A real receipt from Buffer falls to review."
     },
     {
       "key": "elevenlabs",
@@ -367,11 +385,11 @@
         "subjectContains": "recharged"
       },
       "amountAnchor": "recharged for",
-      "note": "Book the recharge emails; amount is 'recharged for $X' (whole-dollar, with a decoy balance figure in the same line). The monthly 'bill (paid)' PDF is a SUMMARY — see brightdata-invoice-ignore."
+      "note": "Book the recharge emails; amount is 'recharged for $X' (whole-dollar, with a decoy balance figure in the same line). The monthly 'bill (paid)' PDF is a SUMMARY \u2014 see brightdata-invoice-ignore."
     },
     {
       "key": "brightdata-invoice-ignore",
-      "vendor": "Bright Data (monthly summary — DO NOT BOOK)",
+      "vendor": "Bright Data (monthly summary \u2014 DO NOT BOOK)",
       "category": "scraping",
       "kind": "ignore",
       "businessPct": 0,
@@ -383,7 +401,7 @@
     },
     {
       "key": "brightdata-order-ignore",
-      "vendor": "Bright Data (order-complete companion — DO NOT BOOK)",
+      "vendor": "Bright Data (order-complete companion \u2014 DO NOT BOOK)",
       "category": "scraping",
       "kind": "ignore",
       "businessPct": 0,
@@ -391,7 +409,7 @@
         "from": "noreply@brightdata.com",
         "subjectContains": "your order is complete"
       },
-      "note": "Each recharge sends TWO emails: 'recharged for $X' (booked) and 'Your order is complete… receipt is attached' (amount only in the PDF). Ignoring the companion prevents double-booking; 22 of these sat in the review queue after the 2026-07-05 backfill."
+      "note": "Each recharge sends TWO emails: 'recharged for $X' (booked) and 'Your order is complete\u2026 receipt is attached' (amount only in the PDF). Ignoring the companion prevents double-booking; 22 of these sat in the review queue after the 2026-07-05 backfill."
     },
     {
       "key": "brightdata-notices-ignore",
@@ -402,7 +420,7 @@
       "match": {
         "fromContains": "brightdata.com"
       },
-      "note": "Catch-all AFTER the booking + ignore rules above: security notices, token-expiry reminders, product marketing. Order matters — this must stay below brightdata/brightdata-invoice-ignore/brightdata-order-ignore."
+      "note": "Catch-all AFTER the booking + ignore rules above: security notices, token-expiry reminders, product marketing. Order matters \u2014 this must stay below brightdata/brightdata-invoice-ignore/brightdata-order-ignore."
     },
     {
       "key": "scrapingbee",
@@ -905,14 +923,14 @@
     },
     {
       "key": "browserbase-native-ignore",
-      "vendor": "Browserbase (native confirmation — DO NOT BOOK)",
+      "vendor": "Browserbase (native confirmation \u2014 DO NOT BOOK)",
       "category": "scraping",
       "kind": "ignore",
       "businessPct": 0,
       "match": {
         "fromContains": "browserbase.com"
       },
-      "note": "Browserbase charges book via the Stripe receipt (stripeAcct rule); the 'payment was successful' email from browserbase.com is a companion — booking it would double-count."
+      "note": "Browserbase charges book via the Stripe receipt (stripeAcct rule); the 'payment was successful' email from browserbase.com is a companion \u2014 booking it would double-count."
     },
     {
       "key": "scrapingdog-notices-ignore",
@@ -956,7 +974,7 @@
       "match": {
         "fromContains": "broadwayworld.com"
       },
-      "note": "Free review-alert subscription confirmations — no billing."
+      "note": "Free review-alert subscription confirmations \u2014 no billing."
     },
     {
       "key": "impact-notices-ignore",
@@ -967,7 +985,7 @@
       "match": {
         "fromContains": "impact.com"
       },
-      "note": "Revenue side — booked by accrue-revenue.js from the Impact API, not from emails."
+      "note": "Revenue side \u2014 booked by accrue-revenue.js from the Impact API, not from emails."
     },
     {
       "key": "anthropic-notices-ignore",
@@ -978,11 +996,11 @@
       "match": {
         "fromContains": "anthropic.com"
       },
-      "note": "Catch-all AFTER anthropic-max/anthropic booking rules: spend-threshold alerts, API-access notices, failed-payment warnings, login links. Order matters — must stay below the booking rules."
+      "note": "Catch-all AFTER anthropic-max/anthropic booking rules: spend-threshold alerts, API-access notices, failed-payment warnings, login links. Order matters \u2014 must stay below the booking rules."
     }
   ],
   "externallyPaid": {
-    "_note": "Charges someone other than the business paid (family covered early costs — 2026-07-05 user request). Matching rows stay in the ledger for audit but get excluded:true and are skipped by finance-stats. Rules only, no amounts (public repo). 'kinds' omitted = all kinds; 'before' is an exclusive YYYY-MM-DD upper bound on row.date. scrapingbee 'extra-topup' rows are produced by reclassifyMonthlyDupes (2nd+ subscription charge in the same calendar month = credit top-up / early renewal).",
+    "_note": "Charges someone other than the business paid (family covered early costs \u2014 2026-07-05 user request). Matching rows stay in the ledger for audit but get excluded:true and are skipped by finance-stats. Rules only, no amounts (public repo). 'kinds' omitted = all kinds; 'before' is an exclusive YYYY-MM-DD upper bound on row.date. scrapingbee 'extra-topup' rows are produced by reclassifyMonthlyDupes (2nd+ subscription charge in the same calendar month = credit top-up / early renewal).",
     "rules": [
       {
         "vendorKey": "anthropic",
@@ -1004,7 +1022,7 @@
         "vendorKey": "vercel",
         "before": "2026-04-01",
         "reason": "paid-by-family",
-        "_note": "2026-07-06 user decision: family covered the first three Vercel months (Jan–Mar 2026). No kinds filter, so the Feb accidental-builds bill AND its Mar refund both drop — removing the cross-month refund artifact from the trend."
+        "_note": "2026-07-06 user decision: family covered the first three Vercel months (Jan\u2013Mar 2026). No kinds filter, so the Feb accidental-builds bill AND its Mar refund both drop \u2014 removing the cross-month refund artifact from the trend."
       }
     ]
   },

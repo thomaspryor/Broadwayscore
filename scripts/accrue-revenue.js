@@ -76,13 +76,24 @@ async function main() {
   // so an annotation is the only thing that makes a stuck month visible).
   const stuck = [];
   const finals = [];
-  for (const month of monthsNeedingFinalization({ todayIso, ledger: next })) {
-    try {
-      const { start, end } = monthRange(month);
-      finals.push({ month, commission: await fetchImpactCommissionRange(start, end, { timeoutMs: 60000 }) });
-    } catch (e) {
-      stuck.push(month);
-      console.error(`::error title=Affiliate revenue not finalized::${month}: ${e.message}`);
+  const allStuck = monthsNeedingFinalization({ todayIso, ledger: next, maxMonths: 1000 });
+  const todo = allStuck.slice(-6);
+  if (allStuck.length > todo.length) {
+    console.error(`::warning title=Affiliate revenue backlog::${allStuck.length - todo.length} older month(s) not finalized this run (6 per run)`);
+  }
+  for (const month of todo) {
+    const { start, end } = monthRange(month);
+    let done = false;
+    for (let attempt = 1; attempt <= 2 && !done; attempt++) {
+      try {
+        finals.push({ month, commission: await fetchImpactCommissionRange(start, end, { timeoutMs: 60000 }) });
+        done = true;
+      } catch (e) {
+        if (attempt === 2) {
+          stuck.push(month);
+          console.error(`::error title=Affiliate revenue not finalized::${month}: ${e.message}`);
+        }
+      }
     }
   }
   if (finals.length) {
@@ -92,7 +103,7 @@ async function main() {
   }
   for (const c of changes) console.log(`  ${c.month} affiliate $${c.amountUsd} (${c.status}) — ${c.action}`);
 
-  if (args.dryRun) { console.log('[dry-run] nothing written.'); return; }
+  if (args.dryRun) { console.log('[dry-run] nothing written.'); if (stuck.length) process.exit(1); return; }
   fs.mkdirSync(args.out, { recursive: true });
   fs.writeFileSync(ledgerPath, JSON.stringify(next, null, 2));
   console.log(`Wrote ${next.length} revenue rows → ${ledgerPath}`);

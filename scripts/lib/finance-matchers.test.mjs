@@ -347,3 +347,33 @@ test('every vendor category in the config is a declared category (class guard)',
   const bad = config.expenseVendors.filter((v) => v.kind !== 'ignore' && !declared.has(v.category)).map((v) => v.key);
   assert.deepEqual(bad, []);
 });
+
+// ---- BRO-8273 ship-check findings ----
+test('extractCardLast4 ignores years and phone-like digits', () => {
+  for (const b of ['Anthropic, PBC – 2026', 'Nov 1 - 2026 Amount', 'Gift card - 5000', 'trial ending in 2026', '1-800-555 - 1234 Date']) {
+    assert.equal(M.extractCardLast4(b), null, b);
+  }
+  assert.equal(M.extractCardLast4('Visa - 4242'), '4242');
+  assert.equal(M.extractCardLast4('charged to your credit card ending in 0007'), '0007');
+});
+
+test('applyVendorBusinessPct re-applies a changed split to rows booked earlier', () => {
+  const rows = [
+    { vendorKey: 'anthropic-max', amountUsd: 200, businessPct: 100, amountBusiness: 200 },
+    { vendorKey: 'anthropic', amountUsd: 50, businessPct: 100, amountBusiness: 50 },
+  ];
+  assert.equal(M.applyVendorBusinessPct(rows, config), 1);
+  assert.equal(rows[0].businessPct, 50);
+  assert.equal(rows[0].amountBusiness, 100);
+  assert.equal(M.applyVendorBusinessPct(rows, config), 0); // idempotent
+});
+
+test('ignore rules are narrow: real receipts from Supabase/Buffer/Cloudflare reach review, OpenAI notices ignored', () => {
+  const nr = (from, subject) => M.classifyReceipt({ from, subject, body: '' }, config).disposition;
+  assert.equal(nr('invoice+statements@supabase.com', 'Your receipt from Supabase Inc #1234'), 'needs-review');
+  assert.equal(nr('hello@youraccount.buffer.com', 'Your receipt from Buffer #1234'), 'needs-review');
+  assert.equal(nr('noreply@notify.cloudflare.com', 'Your payment receipt'), 'needs-review');
+  assert.equal(nr('noreply@tm.openai.com', 'Your API usage limit'), 'ignore');
+  // funded mail whose subject also says "receipt" still books under openai-api
+  assert.equal(M.classifyReceipt({ from: 'noreply@tm.openai.com', subject: 'Receipt: your OpenAI API account has been funded', body: '' }, config).vendorKey, 'openai-api');
+});
