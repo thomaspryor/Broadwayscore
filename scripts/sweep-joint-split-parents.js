@@ -12,7 +12,8 @@
  * Usage: node scripts/sweep-joint-split-parents.js [--review-texts=DIR] [--json] [--out=FILE] [--fetch]
  * --fetch: for parents with no whole text in git or in their split sections,
  * fetch the article (fetchPage + article-extractor) and re-plan it. Read-only:
- * nothing is written to review-texts.
+ * nothing is written to review-texts. Exits 1 when any parent needs repair
+ * (REPAIR rows) or holds its whole article under split markers (WHOLE-TEXT-ON-SPLIT).
  * Needs full git history in the review-texts checkout (not a shallow clone).
  */
 const fs = require('fs');
@@ -77,7 +78,7 @@ async function main() {
           else r.fetchError = 'no article text';
         } catch (e) { r.fetchError = String(e.message || e).slice(0, 200); }
       }
-      rows.push({ file: rel, children: data.multiShowSplitChildShowIds || [], currentChars: (data.fullText || '').length,
+      rows.push({ file: rel, children: data.multiShowSplitChildShowIds || [], currentChars: (data.fullText || '').length, textLengthNow: data.multiShowSplitTextLength,
         originalChars: data.multiShowSplitOriginalLength, ...r });
     }
   }
@@ -87,12 +88,16 @@ async function main() {
   for (const r of rows) summary[r.verdict] = (summary[r.verdict] || 0) + 1;
   const report = { generatedAt: new Date().toISOString(), summary, repair, noSplit, rows };
   if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(report, null, 2));
-  if (process.argv.includes('--json')) { console.log(JSON.stringify(report, null, 2)); return; }
+  if (process.argv.includes('--json')) { console.log(JSON.stringify(report, null, 2)); return repair.length; }
   console.log(JSON.stringify(summary));
   for (const r of repair) console.log(`REPAIR\t${r.verdict}\t${r.file}\tchildren=${r.children.join(',')}`);
   for (const r of noSplit) console.log(`NO-SPLIT(keep)\t${r.verdict}\t${r.file}\tchildren=${r.children.join(',')}\twhole=${r.wholeChars ?? '-'}(${r.source})\tcurrent=${r.currentChars}`);
   for (const r of rows.filter((x) => x.verdict === 'no-whole-text')) console.log(`NO-WHOLE-TEXT\t${r.file}${r.fetchError ? `\tfetch: ${r.fetchError}` : ''}`);
+  // Split markers over a whole regrown article: scored as one review of every show in it.
+  const wholeOnSplit = rows.filter((r) => Number.isFinite(r.textLengthNow) && r.currentChars > r.textLengthNow + 200);
+  for (const r of wholeOnSplit) console.log(`WHOLE-TEXT-ON-SPLIT\t${r.file}\t${r.currentChars}/${r.textLengthNow}`);
   for (const r of rows.filter((x) => String(x.source || '').startsWith('fetched'))) console.log(`FETCHED\t${r.verdict}\t${r.file}\t${r.fetchedChars}/${r.originalChars}`);
+  return repair.length + wholeOnSplit.length;
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+main().then((bad) => { if (bad) process.exitCode = 1; }).catch((e) => { console.error(e); process.exit(1); });
