@@ -390,9 +390,10 @@ async function main() {
         disposition: 'digest',
         cooldownHours: 20,
         decision: true,
-        decisionPrompt: `${title}: $${sessionVerdict.worstUsd} on ${sessionVerdict.worstDay} against a $${sessionVerdict.threshold}/day line. Raise the line, or switch the reviewers to a cheaper model?`,
+        decisionPrompt: `${title}: an estimated $${sessionVerdict.worstUsd} (list prices, not the invoice) on ${sessionVerdict.worstDay} against a $${sessionVerdict.threshold}/day line. Raise the line, or switch the reviewers to a cheaper model?`,
       });
-    } else if (sessionVerdict) {
+    } else if (sessionVerdict && !sessionVerdict.unpriced) {
+      // Unpriced rows hide spend: incomplete evidence never clears an open alert.
       router.resolveCondition(key, { reason: `Reviewer spend $${sessionVerdict.worstUsd} (worst of the last ${Object.keys(sessionVerdict.perDay).length} days to ${DAY}), at or below the $${sessionVerdict.threshold} line.` });
     }
   } catch (err) {

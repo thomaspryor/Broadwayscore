@@ -52,6 +52,7 @@ function main() {
   if (args['fold-only']) {
     // BRO-8116: a Mac wrap-up has no cost row, but its reviewer rows still need to reach the tracked ledger.
     try {
+      if (process.env.GITHUB_ACTIONS || process.env.GEMINI_USAGE_LEDGER_PATH) { console.log('fold disabled here (CI or GEMINI_USAGE_LEDGER_PATH set): nothing folded.'); return 0; }
       const n = require('./lib/gemini-usage-ledger.js').foldSessionRows();
       console.log(n ? `${SESSION_USAGE_REL}: ${n} session LLM row(s) added; commit it (BRO-8116).` : `${SESSION_USAGE_REL}: nothing new to fold.`);
       return 0;
