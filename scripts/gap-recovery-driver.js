@@ -391,6 +391,7 @@ async function main() {
   const serpKeys = { scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '', brightDataKey: process.env.BRIGHTDATA_TOKEN || '' };
   const runGates = {};
   if (!gui.available) runGates.BROWSER_SESSION = { ok: false, reason: `browser_unavailable:${gui.reason}` };
+  if (process.env.GAP_RECOVERY_DISABLE_BROWSER === '1' && !runGates.BROWSER_SESSION) runGates.BROWSER_SESSION = { ok: false, reason: 'browser_unavailable:another_lane_owns_browser' };
   if (!serpKeys.scrapingBeeKey && !serpKeys.brightDataKey) runGates.URL_REDISCOVER = { ok: false, reason: 'no_serp_key' };
   const env = require('./lib/gap-strategy-table').liveEnvironmentGates({
     showsJsonReadable: (() => { try { fs.accessSync(path.join(ROOT, 'data', 'shows.json'), fs.constants.R_OK); return true; } catch { return false; } })(),
@@ -499,7 +500,12 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
 
   // Land what an earlier run committed but could not push, before new work.
   let pend;
-  try { pend = retryPendingPushes({ repoDir: dir, onLanded }); } catch (e) { SUMMARY.pushFailed = true; SUMMARY.error = String(e.message).slice(0, 300); throw e; } // BRO-7944: counts as a failed push for the batch runner
+  // BRO-8288: in a parallel lane the pending journal and uncommitted files belong to ALL lanes;
+  // retry/restore/adopt would land or reset another live lane's in-flight accepts. Lanes skip both
+  // (strands are drained by the next unscoped run: the nightly or a whole-run batch).
+  const LANE = process.env.GAP_RECOVERY_LANE === '1';
+  if (LANE) console.log('  [lane] parallel lane: skipping pending-push retry and orphan adoption (owned by whole-run batches)');
+  try { pend = LANE ? { entries: 0, landed: [], restored: [], notLanded: [], superseded: [], renamed: [], deferred: [] } : retryPendingPushes({ repoDir: dir, onLanded }); } catch (e) { SUMMARY.pushFailed = true; SUMMARY.error = String(e.message).slice(0, 300); throw e; } // BRO-7944: counts as a failed push for the batch runner
   closeGone(pend);
   if (pend.entries) console.log(`  [pending] ${pend.entries} earlier checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${(pend.renamed || []).length} moved to a renamed file, ${(pend.superseded || []).length} gone upstream, ${(pend.deferred || []).length} deferred, ${pend.notLanded.length} not landed`);
 
@@ -590,7 +596,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui, runGates =
 
   // BRO-7944: a round killed between an accept and its checkpoint leaves the accepted text
   // uncommitted in the clone with a pending_push row. Adopt and land it (no lost text, no refetch).
-  try {
+  if (!LANE) try {
     const { orphanAccepts } = require('./lib/gap-recovery-batch');
     const { execFileSync } = require('child_process');
     const repo = fs.realpathSync(dir);

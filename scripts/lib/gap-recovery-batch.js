@@ -87,4 +87,13 @@ function roundSpend(summary, rem) {
   return { bd: rem.bd == null ? 0 : rem.bd, serp: rem.serp == null ? 0 : rem.serp };
 }
 
-module.exports = { roundSpend, checkpointCadence, orphanAccepts, stopDecision, remainingBudget, buildRoundRow, MAX_ACCEPTS_BETWEEN_CHECKPOINTS, MAX_MINUTES_BETWEEN_CHECKPOINTS, MAX_FAILED_PUSHES };
+/**
+ * Outlet ids the DRIVER will scope to: exactly its own parse (first `--outlet=a,b` only; a bare
+ * `--outlet x` is not scoped by the driver). The lane lock must cover what the child really runs.
+ */
+function outletsFromArgs(args) {
+  const hit = args.find((a) => a.startsWith('--outlet='));
+  return hit ? [...new Set(hit.slice(9).split(',').map((x) => x.trim()).filter(Boolean))] : [];
+}
+
+module.exports = { roundSpend, outletsFromArgs, checkpointCadence, orphanAccepts, stopDecision, remainingBudget, buildRoundRow, MAX_ACCEPTS_BETWEEN_CHECKPOINTS, MAX_MINUTES_BETWEEN_CHECKPOINTS, MAX_FAILED_PUSHES };

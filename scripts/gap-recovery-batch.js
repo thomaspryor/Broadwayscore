@@ -3,8 +3,10 @@
  * gap-recovery-batch.js (BRO-7944): chained, checkpointed rounds of the gap-recovery driver.
  *
  *   node scripts/gap-recovery-batch.js --rounds=3 [--round-budget-min=20] [--bd-cap=25] [--serp-cap=60]  (batch-wide totals; these are the defaults)
- *        [--round-ceiling=40] [-- <driver args: --outlet=a,b --class=X --strategy=Y --recent-only --limit=N>]
+ *        [--round-ceiling=40] [--browser=0] [-- <driver args: --outlet=a,b --class=X --strategy=Y --recent-only --limit=N>]
  *
+ * - Lanes (BRO-8288): `-- --outlet=a,b` takes per-outlet locks, so batches with disjoint outlets run in
+ *   parallel; one lane owns the browser, others (or --browser=0) run with BROWSER_SESSION off.
  * - Rounds run in series under ONE whole-run lock (the driver children inherit it).
  * - Each round is a driver run with its own time budget; every round resumes from the
  *   ledger (strategy cooldowns/backoff are the driver's own eligibility logic, so a review
@@ -13,6 +15,11 @@
  * - Checkpoints: the driver commits+pushes every <=10 accepted reviews or <=10 minutes.
  * - Stops after two failed pushes, when the spend cap is used up, or when a round attempts nothing.
  * - One counts-only summary row per round -> <state dir>/batch-rounds.jsonl (and stdout).
+ *
+ * Lane spend caps (--bd-cap/--serp-cap) are PER LANE: give each lane its share of the nightly's budget.
+ *
+ * Known lane limits: the daily ceiling is read per item so N lanes can overshoot it by up to N-1; a
+ * killed lane's pending pushes are drained by the next UNSCOPED run (lanes skip adopt/retry).
  *
  * Env: GAP_RECOVERY_STATE_DIR, GAP_RECOVERY_LEDGER_PATH (a scratch ledger is fine).
  */
@@ -58,8 +65,20 @@ function main() {
   fs.mkdirSync(STATE_DIR, { recursive: true });
   const ks = L.killSwitchActive();
   if (ks.active) { log(`kill switch active (${ks.why}); nothing run`); return 0; }
-  const { acquireRunLock, RunLockBusyError } = require('./lib/recovery-run-lock');
-  try { acquireRunLock('gap-recovery-batch'); } catch (e) {
+  const { acquireRunLock, acquireLaneLock, RunLockBusyError } = require('./lib/recovery-run-lock');
+  // BRO-8288: a batch scoped with --outlet=a,b is a lane (per-outlet locks, lanes run in parallel;
+  // exactly one lane gets the Chrome). An unscoped batch keeps the whole-run lock.
+  const laneOutlets = B.outletsFromArgs(passthrough);
+  if (passthrough.includes('--outlet')) { log('use --outlet=a,b (the driver ignores the space form)'); return 2; }
+  if (laneOutlets.length && passthrough.some((a) => a === '--reconcile' || a === '--retry-pending')) { log('--reconcile/--retry-pending touch every outlet: run them unscoped, not as a lane'); return 2; }
+  let noBrowser = false;
+  try {
+    if (laneOutlets.length) {
+      const lane = acquireLaneLock(`gap-recovery-batch lane ${laneOutlets.join(',')}`, laneOutlets, { browser: opt('browser', '1') !== '0' });
+      noBrowser = !lane.browser;
+      log(`lane ${laneOutlets.join(',')}: ${lane.browser ? 'owns the browser session' : 'browser-less (another lane or --browser=0)'}`);
+    } else acquireRunLock('gap-recovery-batch');
+  } catch (e) {
     if (e instanceof RunLockBusyError) { log(e.message); return 3; }
     throw e;
   }
@@ -76,6 +95,8 @@ function main() {
     const env = {
       ...process.env,
       GAP_RECOVERY_RUN_LOCK_PARENT: String(process.pid),
+      ...(laneOutlets.length ? { GAP_RECOVERY_LANE: '1' } : {}),
+      ...(noBrowser ? { GAP_RECOVERY_DISABLE_BROWSER: '1' } : {}),
       TIME_BUDGET_MIN: String(ROUND_BUDGET_MIN),
       ...(rem.bd != null ? { BD_REQ_BUDGET: String(rem.bd) } : {}),
       ...(rem.serp != null ? { SERP_QUERY_BUDGET: String(rem.serp) } : {}),
