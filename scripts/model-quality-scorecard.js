@@ -12,15 +12,15 @@
  * attempts, reverts, cards reopened after Done (Linear, skipped with --no-linear or no key), plus the
  * latest site-health snapshot. Thresholds live in scripts/lib/model-quality-scorecard.js (THRESHOLDS).
  *
- * Verdict line: OK / WORSE / INSUFFICIENT DATA. Exit 0 for OK and INSUFFICIENT DATA (the recheck
- * must be re-run later; the verdict says so), 1 for WORSE, 2 for usage errors.
+ * Verdict line: OK / WORSE / INSUFFICIENT DATA. Exit 0 only for OK, 1 for WORSE, 3 for INSUFFICIENT DATA
+ * (never a pass), 2 for usage errors. Only landings on branches named after a card are counted.
  * Not covered, and said so: prod runtime errors (no keyless read), per-show review coverage.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { computeScorecard, formatScorecard } = require('./lib/model-quality-scorecard.js');
+const { THRESHOLDS, computeScorecard, formatScorecard } = require('./lib/model-quality-scorecard.js');
 const { readLedger } = require('./lib/claude-session-cost.js');
 
 const REPO = path.resolve(__dirname, '..');
@@ -39,9 +39,9 @@ function readJson(file) {
 
 /** Done -> reopened transitions since `sinceIso`, from Linear issue history. null when unreadable. */
 async function fetchReopens(sinceIso) {
-  if (!process.env.LINEAR_API_KEY) return null;
   try {
     require('./lib/load-env').loadEnv();
+    if (!process.env.LINEAR_API_KEY) { console.error('[scorecard] no LINEAR_API_KEY; reopen metric skipped'); return null; }
     const { graphql } = require('./lib/linear-client.js');
     const q = `query($since: DateTimeOrDuration!, $after: String) { issues(first: 100, after: $after, filter: { team: { key: { eq: "BRO" } }, updatedAt: { gte: $since } }) { pageInfo { hasNextPage endCursor } nodes { identifier history(first: 50) { nodes { createdAt fromState { type } toState { type } } } } } }`;
     const out = [];
@@ -95,13 +95,17 @@ async function main() {
   if (!landings.length) { console.error('[scorecard] data/audit/landings.jsonl missing or empty'); return 2; }
   const { rows: sessionRows } = readLedger({ file: path.join(REPO, 'data/audit/claude-session-cost.jsonl') });
   const nowMs = Date.now();
-  const reopens = opts['no-linear'] ? null : await fetchReopens(new Date(Date.parse(`${switchDate}T00:00:00Z`) - 28 * 86400 * 1000).toISOString());
+  const reopens = opts['no-linear'] ? null : await fetchReopens(new Date(Date.parse(`${switchDate}T00:00:00Z`) - THRESHOLDS.baselineDays * 86400 * 1000).toISOString());
   const sc = computeScorecard({ sessionRows, landings, reopens, switchDate, nowMs });
   if (opts.json) console.log(JSON.stringify(sc, null, 2));
   else console.log(formatScorecard(sc, { siteHealth: siteHealthLines() }));
   if (sc.verdict === 'WORSE') {
-    console.log('ROLLBACK (one line): revert the BRO-8289 landing commit (restores review-panelist to Opus and drops the "model" key in .claude/settings.json), then land it.');
+    console.log('ROLLBACK (one line): in .claude/settings.json delete the "model" key and its "_comment_model" line, set model: claude-opus-5-5 in .claude/agents/review-panelist.md and in EXPECTED in tests/unit/claude-agent-models.test.mjs, then land it. Keep this scorecard.');
     return 1;
+  }
+  if (sc.verdict === 'INSUFFICIENT DATA') {
+    console.log('Not a pass: re-run after the windows fill (exit 3).');
+    return 3;
   }
   return 0;
 }

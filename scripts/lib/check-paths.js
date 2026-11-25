@@ -171,6 +171,8 @@ const BASH_INTEGRATION_TEST_SH_ALLOWED = new Set([
 const GH_VALUE_RE = `(?:"[^"\\\\]*"|'[^'\\\\]*'|[^\\s'"\\\\]+)`;
 
 const SAFE_CHECK_FORMS = [
+  // BRO-8289: read-only model quality scorecard (exit 0 OK, 1 WORSE, 3 INSUFFICIENT DATA). Fixed script; date and one flag only.
+  { re: /^node scripts\/model-quality-scorecard\.js( --switch=\d{4}-\d{2}-\d{2})?( --no-linear)?$/ },
   // BRO-6484: read-only, per-filing UX resolution evidence from Linear. One fixed opaque key, no extra flags.
   { re: /^node scripts\/lib\/ux-walkthrough-resolution\.js --key=[a-f0-9]{32}$/ },
   // BRO-5266: read-only world-state acceptance, outside the blocking unit batch.
