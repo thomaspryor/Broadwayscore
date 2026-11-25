@@ -58,6 +58,34 @@ test('humanReviewedEarlyPublish still bypasses everything', () => {
   assert.equal(isAnticipatoryPreviewPost('2026-01-01', OPEN, 'x', { ...WE, humanReviewedEarlyPublish: true }).rejected, false);
 });
 
+test('rejection reason names the first preview when the cutoff was lowered', () => {
+  const r = isAnticipatoryPreviewPost('2026-11-10', OPEN, 'rolandcat', WE);
+  assert.match(r.reason, /before the first preview \(2026-11-14\)/);
+});
+
+test('an explicit graceDays override is not lowered by previewsStartDate', () => {
+  assert.equal(isAnticipatoryPreviewPost('2026-11-17', OPEN, 'rolandcat', { ...WE, graceDays: 2 }).rejected, true);
+});
+
+test('boundaries: first preview day accepted, day before rejected', () => {
+  assert.equal(isAnticipatoryPreviewPost('2026-11-14', OPEN, 'x', WE).rejected, false);
+  assert.equal(isAnticipatoryPreviewPost('2026-11-13', OPEN, 'x', WE).rejected, true);
+});
+
+test('lead of exactly the max is honoured, one more day is ignored', () => {
+  const day = (n) => new Date(Date.parse(OPEN) - n * 86400000).toISOString().slice(0, 10);
+  const at = { category: 'west-end', previewsStartDate: day(PREVIEW_START_MAX_LEAD_DAYS) };
+  const over = { category: 'west-end', previewsStartDate: day(PREVIEW_START_MAX_LEAD_DAYS + 1) };
+  assert.equal(isAnticipatoryPreviewPost(day(PREVIEW_START_MAX_LEAD_DAYS - 1), OPEN, 'x', at).rejected, false);
+  assert.equal(isAnticipatoryPreviewPost(day(PREVIEW_START_MAX_LEAD_DAYS - 1), OPEN, 'x', over).rejected, true);
+});
+
+test('off-west-end keeps its 14-day grace when previews started later than that', () => {
+  const o = { category: 'off-west-end', previewsStartDate: '2026-11-13' }; // 10d before opening
+  assert.equal(isAnticipatoryPreviewPost('2026-11-11', OPEN, 'x', o).rejected, false); // 12d, inside 14d grace
+  assert.equal(isAnticipatoryPreviewPost('2026-11-03', OPEN, 'x', o).rejected, true); // 20d
+});
+
 // Class guard: any caller that forgets previewsStartDate would re-reject (or re-flag on
 // rebuild) the reviews this gate now admits. Scan every non-test caller.
 test('every isAnticipatoryPreviewPost caller passes previewsStartDate', () => {

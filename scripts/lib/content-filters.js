@@ -463,12 +463,15 @@ function isAnticipatoryPreviewPost(publishDate, openingDate, outletId, opts = {}
   }
 
   let cutoff = new Date(opening.getTime() - graceDays * MS_PER_DAY);
-  if (!isPreviewHeavy && opts.previewsStartDate) {
+  let loweredToFirstPreview = false;
+  // An explicit opts.graceDays override stays strict (tests + callers that know).
+  if (!isPreviewHeavy && opts.graceDays == null && opts.previewsStartDate) {
     const previewsStart = new Date(require('./date-utils').toDateMs(opts.previewsStartDate));
     const leadDays = (opening.getTime() - previewsStart.getTime()) / MS_PER_DAY;
     if (!Number.isNaN(previewsStart.getTime()) && leadDays >= 0 && leadDays <= PREVIEW_START_MAX_LEAD_DAYS
       && previewsStart < cutoff) {
       cutoff = previewsStart;
+      loweredToFirstPreview = true;
     }
   }
   if (publish >= cutoff) {
@@ -480,7 +483,9 @@ function isAnticipatoryPreviewPost(publishDate, openingDate, outletId, opts = {}
     rejected: true,
     reason: isPreviewHeavy
       ? `preview-heavy outlet "${outletId}" published ${daysBeforeOpening}d before openingDate (${openingDate}); require publish on/after opening unless cleared`
-      : `published ${daysBeforeOpening}d before openingDate (${openingDate}); exceeds ${graceDays}-day grace`,
+      : loweredToFirstPreview
+        ? `published ${daysBeforeOpening}d before openingDate (${openingDate}), before the first preview (${opts.previewsStartDate})`
+        : `published ${daysBeforeOpening}d before openingDate (${openingDate}); exceeds ${graceDays}-day grace`,
     daysBeforeOpening,
     outletCategory: isPreviewHeavy ? 'preview-heavy' : 'default',
   };
