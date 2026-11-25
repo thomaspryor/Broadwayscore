@@ -32,12 +32,12 @@ function pickWholeText(data, history = []) {
   if (near(cur) || (Number.isFinite(orig) && cur.length > orig)) return { text: cur, source: 'current' };
   for (let i = 0; i < history.length; i++) {
     const h = history[i] || {};
-    for (const k of ['fullText', 'wrongFullText']) if (near(h[k])) return { text: h[k], source: `history:${i}:${k}` };
+    for (const k of ['fullText', 'wrongFullText']) if (near(h[k])) return { text: h[k], source: `history:${h._rev || i}:${k}` };
   }
   let best = null;
   for (let i = 0; i < history.length; i++) {
     const t = (history[i] || {}).fullText;
-    if (typeof t === 'string' && t.length > cur.length + 200 && (!best || t.length > best.text.length)) best = { text: t, source: `history:${i}:longest` };
+    if (typeof t === 'string' && t.length > cur.length + 200 && (!best || t.length > best.text.length)) best = { text: t, source: `history:${history[i]._rev || i}:longest` };
   }
   return best;
 }

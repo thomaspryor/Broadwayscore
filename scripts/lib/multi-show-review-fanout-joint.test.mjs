@@ -726,3 +726,27 @@ test('BRO-8272: a whole-text joint parent with stale split markers is unsplit; w
     assert.equal(c.fullText, child.fullText, 'wrongShow child is not given the whole article');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+// BRO-8292: the stale-marker unsplit needs positive evidence. A joint parent holding its whole text
+// again whose planner null is NOT the lede-comparison rule (here: a real two-show column the joint
+// strategy simply does not read) keeps its split; refetching it must not merge the column onto one show.
+test('BRO-8292: a whole-text joint parent the planner declines for another reason is not unsplit', () => {
+  const SHOWS = [
+    { id: 'red-pitch-test-2024', title: 'Red Pitch', category: 'west-end', openingDate: '2024-04-10' },
+    { id: 'player-kings-test-2024', title: 'Player Kings', category: 'west-end', openingDate: '2024-04-11' },
+  ];
+  const filler = (t, n) => Array.from({ length: n }, (_, i) => `The ${t} passage number ${i + 1} moves along at a patient, deliberate pace that the cast keeps up with real care.`).join(' ');
+  const text = `Go for the acting this week. ${filler('falstaff', 14)} Player Kings is long. ${filler('pitch', 12)} Red Pitch is short and sharp.`;
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8292-'));
+  fs.mkdirSync(path.join(dir, 'red-pitch-test-2024'));
+  const file = path.join(dir, 'red-pitch-test-2024', 'g--c.json');
+  const parent = { outletId: 'g', outlet: 'G', criticName: 'C', url: 'https://e.com/w', contentTier: 'complete', showId: 'red-pitch-test-2024', publishDate: '2024-04-14', fullText: text,
+    multiShowSplitParent: true, multiShowSplitAnchorKind: 'joint', multiShowSplitTextLength: 900, multiShowSplitOriginalLength: text.length, multiShowSplitChildShowIds: ['player-kings-test-2024'] };
+  fs.writeFileSync(file, JSON.stringify(parent));
+  try {
+    assert.equal(planMultiShowFanout(parent, SHOWS, { joint: true }), null, 'fixture: planner declines');
+    const res = applyMultiShowFanoutToFile(file, { shows: SHOWS, reviewTextsDir: dir, joint: true });
+    assert.equal(res.unsplit, undefined, 'no unsplit without lede-comparison evidence');
+    assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).multiShowSplitParent, true);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});

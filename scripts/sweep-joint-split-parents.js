@@ -26,7 +26,7 @@ function history(rel) {
   } catch { return []; }
   const out = [];
   for (const h of revs.slice(1)) {
-    try { out.push(JSON.parse(execFileSync('git', ['-C', ROOT, 'show', `${h}:${rel}`], { encoding: 'utf8', maxBuffer: 64 << 20, stdio: ['ignore', 'pipe', 'ignore'] }))); } catch { /* deleted/renamed rev */ }
+    try { out.push(Object.assign(JSON.parse(execFileSync('git', ['-C', ROOT, 'show', `${h}:${rel}`], { encoding: 'utf8', maxBuffer: 64 << 20, stdio: ['ignore', 'pipe', 'ignore'] })), { _rev: h.slice(0, 10) })); } catch { /* deleted/renamed rev */ }
   }
   return out;
 }

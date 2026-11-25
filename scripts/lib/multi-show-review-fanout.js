@@ -735,7 +735,9 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     // a sentence carrying a comparison cue ("shares much with its ... cousin ..., Leopoldstadt"), is
     // a lede that compares to another show, not that show's stretch; a footer naming both shows does
     // not make it one (BRO-8272). Later stretches are left alone: "Unlike X, Y ..." is a normal pivot.
-    if (tailAll) {
+    // opts.skipLedeComparison turns this rule off: isStaleJointSplitOnWholeText asks whether it is
+    // the rule (and nothing else) that stops the split (BRO-8292).
+    if (tailAll && !opts.skipLedeComparison) {
       const r = runs[bodyIdx[0]];
       if (r.count <= 2) {
         const from = sentenceStart(text, r.at);
@@ -1169,7 +1171,7 @@ function planMultiShowFanout(data, shows, opts = {}) {
   const wholePostVerdict = autoExcluded && !humanJudged && !fromRejected;
   if ((!headerOnly || wholePostVerdict) && !trimOnly && sections.length < 2 && !interwoven && jointEnabled(opts, data)) {
     strategy = 'joint';
-    sections = jointSections(text, shows, ownShowId, data.publishDate || data.firstSeenAt, { dateIsFirstSeen: !data.publishDate, strictLede: headerOnly });
+    sections = jointSections(text, shows, ownShowId, data.publishDate || data.firstSeenAt, { dateIsFirstSeen: !data.publishDate, strictLede: headerOnly, skipLedeComparison: opts.skipLedeComparison === true });
     if (headerOnly && !verdictNamesOtherSection(data, sections.filter((x) => x.showId !== ownShowId))) sections = [];
   }
   if (sections.length < 2 && !trimOnly) return null;
@@ -1463,7 +1465,7 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
   if (!plan) {
     if (!dryRun && isWholeArticleBackOnBadSplit(data, shows)) {
       result.unsplit = unsplitArticle(filePath, data, reviewTextsDir, ownShowId);
-    } else if (!dryRun && isStaleJointSplitOnWholeText(data)) {
+    } else if (!dryRun && isStaleJointSplitOnWholeText(data, shows, ownShowId)) {
       // BRO-8272: a joint split the planner no longer makes (a lede that only compares to
       // the other show) left a parent holding the whole article again with split markers.
       result.unsplit = unsplitArticle(filePath, data, reviewTextsDir, ownShowId, { combined: false });
@@ -1559,16 +1561,24 @@ function isWholeArticleBackOnBadSplit(data, shows) {
 /**
  * A joint-split parent that holds its whole original article again while the planner returns no
  * split for it (BRO-8272). Narrow on purpose: joint anchor only, text back at the original length,
- * nothing a human or another verdict owns.
+ * nothing a human or another verdict owns, and positive evidence (BRO-8292): with the lede-
+ * comparison rule off the planner WOULD split it, so that rule is the only thing undoing the split.
+ * A planner null for any other reason (a real multi-show column the joint strategy no longer reads,
+ * a show missing from the catalogue) must not merge a whole column onto one show.
  */
-function isStaleJointSplitOnWholeText(data) {
+function isStaleJointSplitOnWholeText(data, shows, ownShowId) {
   if (!(data && data.multiShowSplitParent === true && data.multiShowSplitAnchorKind === 'joint'
     && typeof data.fullText === 'string' && Number.isFinite(data.multiShowSplitOriginalLength)
     && Number.isFinite(data.multiShowSplitTextLength)
     && data.fullText.length >= data.multiShowSplitOriginalLength - 50
     && data.fullText.length > data.multiShowSplitTextLength + 200)) return false;
-  return !(data._locked === true || data.manualContentTier || data.humanReviewScore != null
-    || data.wrongProduction === true || data.isRoundupArticle === true || data.duplicateOf);
+  if (data._locked === true || data.manualContentTier || data.humanReviewScore != null
+    || data.wrongProduction === true || data.isRoundupArticle === true || data.duplicateOf) return false;
+  if (!Array.isArray(shows)) return false;
+  const opts = { ownShowId: ownShowId || data.showId, joint: true };
+  if (planMultiShowFanout(data, shows, opts)) return false;
+  const without = planMultiShowFanout(data, shows, { ...opts, skipLedeComparison: true });
+  return !!(without && without.strategy === 'joint' && without.otherSections.length > 0);
 }
 
 const SPLIT_FIELDS = [
