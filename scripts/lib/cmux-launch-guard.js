@@ -56,6 +56,7 @@
 // Tested by tests/unit/cmux-launch-guard.test.mjs (CLAUDE.md rule 15).
 
 'use strict';
+const { splitUnquoted } = require('./shell-split-unquoted.js');
 
 const SAFE_SHELLS = new Set(['bash', 'sh', 'zsh', 'dash']);
 const MAX_WRAPPER_READ_BYTES = 16 * 1024;
@@ -78,11 +79,10 @@ function extractFlagValue(cmd, flag) {
 }
 
 // Splits a shell command string into top-level statement segments on
-// ; / && / || / | / newline. Not a real shell parser (doesn't track nested
-// quotes across separators) — good enough for the narrow claude-invocation
+// ; / && / || / | / newline outside quotes (BRO-8106). Not a full shell parser — good enough for the narrow claude-invocation
 // scan below, which only needs each segment's leading tokens.
 function splitSegments(str) {
-  return str.split(/&&|\|\||[;\n|]/);
+  return splitUnquoted(str, { newline: true });
 }
 
 function stripEnvPrefix(segment) {

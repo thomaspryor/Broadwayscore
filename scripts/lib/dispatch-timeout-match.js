@@ -1,4 +1,5 @@
 'use strict';
+const { splitUnquoted } = require('./shell-split-unquoted.js');
 /**
  * dispatch-timeout-match.js — pure predicate: does this shell command wrap a
  * NON-detached headless dispatcher in a wall-clock killer?
@@ -64,7 +65,7 @@ const DETACH_RE = switchOnRe('detach');
  * @returns {string[]}
  */
 function segments(cmd) {
-  return String(cmd || '').split(/&&|\|\||(?<!&)&(?!&)|[;\n]/);
+  return splitUnquoted(String(cmd || ''), { pipe: false, newline: true, background: true });
 }
 
 /**

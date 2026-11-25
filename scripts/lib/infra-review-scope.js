@@ -51,6 +51,7 @@
 // the test require()s these functions, it does not restate them).
 
 'use strict';
+const { splitUnquoted } = require('./shell-split-unquoted.js');
 
 // How long a recorded pre-implementation review covers subsequent edits in the
 // same session. Long enough that one review covers a normal implementation run;
@@ -403,11 +404,10 @@ function maskQuotedRedirectOperatorsAndComments(command) {
 }
 
 // Split a command line into rough segments so `printf x | tee f && sed -i … g`
-// is seen as three commands. Quote-blind by design: a `|` inside a quoted
-// string over-splits, which can only ever produce an extra candidate path, and
-// a candidate that matches no rule is discarded anyway.
+// is seen as three commands. Quote-aware (BRO-8106): a `|`, `&&` or `;` inside
+// quotes stays in its segment instead of producing a bogus extra command.
 function shellSegments(command) {
-  return String(command).split(/(?:\|\||&&|[;|\n])/);
+  return splitUnquoted(String(command), { newline: true });
 }
 
 // Tokenise one segment, dropping surrounding quotes and remembering which

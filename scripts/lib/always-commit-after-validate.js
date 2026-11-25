@@ -19,6 +19,7 @@
  * items under a job's `steps:` key.
  */
 'use strict';
+const { splitUnquoted } = require('./shell-split-unquoted.js');
 
 // An actual invocation, not a mention in an echo/comment.
 const VALIDATE_RE = /\bnode\s+(?:[\w./-]*\/)?validate-data\.js\b/;
@@ -32,7 +33,7 @@ const HARD_EXIT_RE = /\bexit\s+(?:[1-9]|"?\$)/;
  */
 function invokesValidate(text) {
   for (const line of String(text).split('\n')) {
-    for (const seg of line.split(/&&|\|\||[;|]/)) {
+    for (const seg of splitUnquoted(line)) {
       const t = seg.trim().replace(/^(?:-\s+)?(?:run:\s*)?/, '');
       if (/^(?:echo|printf)\b/.test(t)) continue;
       if (VALIDATE_RE.test(t)) return true;
@@ -184,7 +185,7 @@ function protectedStaged(text) {
   const out = new Set();
   for (const raw of text.split('\n')) {
     const line = raw.replace(/\s#.*$/, '').replace(/\$\{\{[^}]*\}\}/g, 'EXPR');
-    for (const seg of line.split(/&&|\|\||[;|]/)) {
+    for (const seg of splitUnquoted(line)) {
       const m = seg.match(STAGE_CMD_RE);
       if (!m) continue;
       const isStageData = /stage-data-changes\.sh/.test(m[0]);
@@ -327,6 +328,7 @@ function auditWorkflowDir(dir, fs = require('fs'), path = require('path')) {
 
 module.exports = {
   parseJobs,
+  invokesValidate,
   stagesData,
   protectedStaged,
   PROTECTED_FILES,
