@@ -312,7 +312,7 @@ test('an earlier production\'s article never makes an owner item: cross-market, 
   const files = {
     s: [
       { __file: 'london-theatre--critic.json', url: NEWS, wrongProduction: true, rejectionReason: 'not_a_review' },
-      { __file: 'thestage--unknown.json', url: 'https://ts.example/hp-recast-2017', wrongProduction: true, incompleteReason: 'wrong_content' },
+      { __file: 'thestage--unknown.json', url: 'https://ts.example/hp-recast-2017', wrongProduction: true, incompleteReason: 'wrong_content', publishDate: '2017-06-13' },
       { __file: 'telegraph--unknown.json', url: 'https://tg.example/hp', contentTier: 'invalid' }, // failed fetch: not a verdict
     ],
     'hp-2021': [{ __file: 'london-theatre--x.json', url: OLD_URL, publishDate: '2022-01-25' }],
@@ -357,6 +357,16 @@ test('an earlier production\'s article never makes an owner item: cross-market, 
   const blind = R.reclassifyFileFinds(state, () => null, at(15)).state;
   for (const k of ['s::london-theatre', 's::thestage', 's::telegraph']) assert.deepEqual(blind.cells[k], state.cells[k], k);
   // A URL owned by another show whose copy is from this run's own dates is a real conflict: left alone.
+  // A wrong-production flag alone (no date well before opening) is not trusted; nor is a human-cleared non-review.
+  assert.equal(R.isNotThisProduction({ wrongProduction: true, publishDate: '2026-09-28' }, { openedMs: Date.parse(OPEN) }), false);
+  assert.equal(R.isNotThisProduction({ wrongProduction: true }, { openedMs: Date.parse(OPEN) }), false);
+  assert.equal(R.isNotThisProduction({ wrongProduction: true, publishDate: '2017-06-13' }, { openedMs: Date.parse(OPEN) }), true);
+  assert.equal(R.isNotThisProduction({ rejectionReason: 'not_a_review', nonReviewManualClear: true }, {}), false);
+  assert.equal(R.isNotThisProduction({ rejectionReason: 'not_a_review' }, {}), true);
+  // Failed-fetch signals are not verdicts.
+  assert.equal(R.isNotThisProduction({ contentTier: 'invalid' }, {}), false);
+  assert.equal(R.isNotThisProduction({ rejectionReason: 'garbage_text', contentTier: 'invalid' }, {}), false);
+  assert.equal(R.sameUrl('https://x/post.cfm?p=1', 'https://x/post.cfm?p=2'), false);
   const recent = { 'hp-2021': [{ url: OLD_URL, publishDate: '2026-09-28' }], s: [] };
   const r2 = R.reclassifyFileFinds({ cells: { k: state.cells['s::london-theatre'] } }, (id) => recent[id] || null, at(15));
   assert.equal(R.cellPhase(r2.state.cells.k, at(15)).phase, 'dead-end');
@@ -368,7 +378,7 @@ test('the collector judges the date before refusing on a rejected copy\'s filena
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ecr-wrf-'));
   fs.mkdirSync(path.join(dir, 'hp'));
   const SAME = 'https://ts.example/hp-recast-2017';
-  fs.writeFileSync(path.join(dir, 'hp', 'thestage--unknown.json'), JSON.stringify({ url: SAME, wrongProduction: true }));
+  fs.writeFileSync(path.join(dir, 'hp', 'thestage--unknown.json'), JSON.stringify({ url: SAME, wrongProduction: true, rejectionReason: 'not_a_review' }));
   const window = { dateMin: new Date('2026-10-01'), dateMax: new Date('2026-12-31'), requireDate: true };
   const run = async (url, publishDate, publishWindow = window) => {
     let reason = null;
@@ -380,6 +390,10 @@ test('the collector judges the date before refusing on a rejected copy\'s filena
   };
   assert.equal(await run('https://ts.example/hp-2016', '2016-07-30'), 'outside-publish-window');
   assert.equal(await run(SAME, '2026-10-25'), 'existing-file-not-this-production');
+  // In window and only flagged wrong production (the flag may be the error): stays a find, never an ack.
+  fs.writeFileSync(path.join(dir, 'hp', 'thestage--unknown.json'), JSON.stringify({ url: SAME, wrongProduction: true }));
+  assert.equal(await run(SAME, '2026-10-25'), 'flagged-file-collision');
+  fs.writeFileSync(path.join(dir, 'hp', 'thestage--unknown.json'), JSON.stringify({ url: SAME, wrongProduction: true, rejectionReason: 'not_a_review' }));
   assert.equal(await run('https://ts.example/hp-2026', '2026-10-25'), 'flagged-file-collision');
   assert.equal(await run('https://ts.example/hp-2026', '2026-10-25', null), 'file-exists'); // ordinary runs: unchanged
   assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'existing-file-not-this-production' }, 'x').outcome, 'no_evidence');

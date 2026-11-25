@@ -79,7 +79,8 @@ function makeFilesForShow(dir = path.join(ROOT, 'data', 'review-texts')) {
       out = [];
       for (const f of fs.readdirSync(showDir)) {
         if (!f.endsWith('.json') || f.startsWith('_')) continue;
-        try { out.push({ ...JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')), __file: f }); } catch { /* unreadable: skip */ }
+        const fp = path.join(showDir, f);
+        try { out.push({ ...JSON.parse(fs.readFileSync(fp, 'utf8')), __file: f, __path: fp }); } catch { /* unreadable: skip */ }
       }
     }
     cache.set(showId, out);
@@ -103,11 +104,14 @@ function main() {
   const budgetMs = Number(arg('budget-minutes') || 22) * 60 * 1000;
   const only = arg('cells') ? new Set(arg('cells').split(',').filter(Boolean)) : null;
 
-  // Re-judge stored "already on file" refusals first: a cell that settles here
-  // gets its autoAck before syncState, which keeps only acked or missing cells.
-  const re = R.reclassifyFileFinds(R.loadRecoveryState(), makeFilesForShow(), nowMs);
+  const loaded = R.loadRecoveryState();
+  let state = R.syncState(loaded, currentGaps(loaded, nowMs), nowMs);
+  // Re-judge stored "already on file" refusals after the sync, so a corrected
+  // opening date is the one judged; settled cells get their autoAck here.
+  const showsById = new Map(readJson('data/shows.json').shows.map((s) => [s.id, s]));
+  const re = R.reclassifyFileFinds(state, makeFilesForShow(), nowMs, { showById: (id) => showsById.get(id) || null });
   if (re.changed) console.log(`Re-judged stored file refusals on ${re.changed} cell(s)`);
-  let state = R.syncState(re.state, currentGaps(re.state, nowMs), nowMs);
+  state = re.state;
   const scoped = only
     ? { ...state, cells: Object.fromEntries(Object.entries(state.cells).filter(([k]) => only.has(k))) }
     : state;

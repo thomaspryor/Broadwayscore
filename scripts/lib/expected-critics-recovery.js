@@ -241,19 +241,49 @@ function applyResults(state, { plan, rows, nowMs, dryRun = false }) {
   return next;
 }
 
+const PREDATES_OPENING_MS = 30 * DAY_MS;
+
 /**
  * A review file already judged to be about something other than this
- * production (a different run, a non-review). Narrower than "flagged": an
- * invalid tier from a failed fetch is NOT this, so a real review whose text
- * did not load never auto-acks its cell.
+ * production. Canonical predicates only (review-guards.js): a file the
+ * rebuild would include is a review of this run, full stop; otherwise it
+ * counts only when it is a ruled non-review (isRuledNonReview, which honors
+ * human clears and the json-ld star exemption) or carries a wrong-production /
+ * wrong-show flag AND is dated 30+ days before this opening. A flag alone
+ * (LLM flags are ~15% false positive) or an invalid tier from a failed fetch
+ * never auto-acks a cell.
+ * @param {object} data review file record
+ * @param {{show?: object, filePath?: string, openedMs?: number|null}} ctx
  */
-function isNotThisProduction(data) {
+/**
+ * Someone read the page and ruled it not a review (ensemble not_a_review, a
+ * high-confidence content-verifier verdict), with review-guards.js's human
+ * clears and star exemptions applied. isRejectedNonReview also counts an
+ * invalid tier and garbage_text, which a failed fetch of a real review
+ * produces, so those two signals are masked here.
+ */
+function isRuledNonReview(data) {
   if (!data) return false;
-  if (data.wrongProduction || data.wrongShow || data.isNonReview || data.isRoundupArticle) return true;
-  return data.rejectionReason === 'not_a_review' || data.incompleteReason === 'wrong_content';
+  const g = require('./review-guards');
+  if (g.nonReviewRejectionHumanCleared(data) || g.cvNonReviewHumanCleared(data)) return false;
+  const masked = { ...data, contentTier: data.contentTier === 'invalid' ? undefined : data.contentTier };
+  if (masked.rejectionReason === 'garbage_text') delete masked.rejectionReason;
+  return g.isRejectedNonReview(masked);
 }
 
-const sameUrl = (a, b) => !!a && !!b && String(a).replace(/[?#].*$/, '').replace(/\/+$/, '') === String(b).replace(/[?#].*$/, '').replace(/\/+$/, '');
+function isNotThisProduction(data, { show = null, filePath, openedMs = null } = {}) {
+  if (!data) return false;
+  const g = require('./review-guards');
+  if (show && g.isIncludableForRebuild(data, show, filePath)) return false;
+  if (isRuledNonReview(data)) return true;
+  if (!(data.wrongProduction || data.wrongShow)) return false;
+  const t = data.publishDate ? Date.parse(data.publishDate) : NaN;
+  return Number.isFinite(t) && openedMs != null && t < openedMs - PREDATES_OPENING_MS;
+}
+
+/** Same article: fragment and trailing slash ignored; the query is kept (post.cfm?p=N names the article). */
+const normUrl = (u) => String(u).replace(/#.*$/, '').replace(/\/+(?=\?|$)/, '');
+const sameUrl = (a, b) => !!a && !!b && normUrl(a) === normUrl(b);
 const FILE_FIND_REASONS = new Set(['file-exists', 'onMerge-aborted']);
 const EARLIER_PRODUCTION_MS = 90 * DAY_MS; // the owner's copy must predate this opening by this much
 
@@ -268,17 +298,22 @@ const EARLIER_PRODUCTION_MS = 90 * DAY_MS; // the owner's copy must predate this
  *     reading the article's date -> non_evidence, so the next search judges it.
  *   - cross-show-url-owned:<other> where the other show's copy is dated 90+
  *     days before this opening -> empty (url-owned-by-earlier-production).
- * Any cell that now reads as acked gets its autoAck stamped. Anything else is left alone. filesForShow(showId) returns that show's review
- * records, or null when its directory is not on this machine: then nothing is
- * changed (absence is never evidence).
+ * Any cell that now reads as acked gets its autoAck stamped; anything else is
+ * left alone. filesForShow(showId) returns that show's review records (each
+ * with __file and __path), or null when its directory is not on this machine:
+ * then nothing is changed (absence is never evidence). showById(id) supplies
+ * the show for the canonical includability check. Run it after syncState, so
+ * a corrected opening date is the one judged.
  * @returns {{state: object, changed: number}}
  */
-function reclassifyFileFinds(state, filesForShow, nowMs) {
+function reclassifyFileFinds(state, filesForShow, nowMs, { showById = () => null } = {}) {
   let changed = 0;
   const next = { ...state, cells: { ...(state.cells || {}) } };
   for (const [key, cell] of Object.entries(next.cells)) {
     if (cell.autoAck || !Array.isArray(cell.attempts)) continue;
     const opened = openedMs(cell.openingDate);
+    const show = showById(cell.showId);
+    const notThis = (f) => isNotThisProduction(f, { show, filePath: f.__path, openedMs: opened });
     let touched = false;
     const attempts = cell.attempts.map((a) => {
       if (!a || a.outcome !== 'rejected' || !a.url) return a;
@@ -287,9 +322,9 @@ function reclassifyFileFinds(state, filesForShow, nowMs) {
         const files = filesForShow(cell.showId);
         if (!files) return a;
         const byUrl = files.find((f) => sameUrl(f.url, a.url));
-        if (byUrl) return isNotThisProduction(byUrl) ? relabel('no_evidence', 'existing-file-not-this-production') : a;
+        if (byUrl) return notThis(byUrl) ? relabel('no_evidence', 'existing-file-not-this-production') : a;
         const stub = files.find((f) => f.__file === `${cell.outletId}--unknown.json`);
-        if (a.reason === 'file-exists' && stub && isNotThisProduction(stub)) return relabel('non_evidence', 'filename-collision-rejudge');
+        if (a.reason === 'file-exists' && stub && notThis(stub)) return relabel('non_evidence', 'filename-collision-rejudge');
         return a;
       }
       const owned = /^cross-show-url-owned:(.+)$/.exec(String(a.reason || ''));
@@ -395,6 +430,6 @@ module.exports = {
   STATE_PATH, SCHEDULE_DAYS, ATTEMPTS_FOR_ACK, ACK_SOURCE,
   emptyState, loadRecoveryState,
   cellPhase, syncState, planRecovery, collectorArgs, applyResults,
-  isEmptyFindReason, isNotThisProduction, reclassifyFileFinds,
+  isEmptyFindReason, isNotThisProduction, isRuledNonReview, sameUrl, reclassifyFileFinds,
   mergedAcks, ownerVisibility, splitForOwner, ownerLine,
 };

@@ -358,8 +358,11 @@ async function writeReviewFile(showId, outletId, url, showTitle, outletName, opt
     return skip(verdict);
   }
   if (flagged) {
-    const { isNotThisProduction } = require('./lib/expected-critics-recovery');
-    const reason = flagged.url === url && isNotThisProduction(flagged) ? 'existing-file-not-this-production' : 'flagged-file-collision';
+    // The article passed the date check, so only a ruled non-review copy of
+    // this same URL (canonical, human clears honored) settles it; a wrong-
+    // production flag on an in-window article may be the flag that is wrong.
+    const { sameUrl, isRuledNonReview } = require('./lib/expected-critics-recovery');
+    const reason = sameUrl(flagged.url, url) && isRuledNonReview(flagged) ? 'existing-file-not-this-production' : 'flagged-file-collision';
     console.log(`    SKIP (${reason}): ${fileName}`);
     return skip(reason);
   }
