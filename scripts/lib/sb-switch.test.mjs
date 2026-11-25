@@ -147,3 +147,24 @@ test('class guard: every workflow SB key line is blanked by the switch and follo
   }
   assert.deepEqual(bad, [], `unguarded SB key lines: ${bad.slice(0, 10).join(', ')}`);
 });
+
+test('class guard: a caller that restricts fetchPage to the scrapingbee tier must have an answer for the switch being on (BRO-8330)', () => {
+  // `tiers: ['scrapingbee']` returns "All scraping methods failed" when SB is off, so each
+  // such caller either reads isScrapingBeeOff/sb-switch and widens its chain, or is listed
+  // here with the reason its miss is already safe.
+  const allowed = {
+    // A miss falls through to Playwright, then Bright Data (fetchWithFallback).
+    'scripts/scrape-show-score-audience.js': 'miss falls through to Playwright',
+  };
+  const bad = [];
+  for (const f of listFiles(path.join(ROOT, 'scripts'), ['.js', '.mjs', '.cjs'])) {
+    const rel = path.relative(ROOT, f);
+    if (/\.test\.|\/test-|__tests__/.test(rel)) continue;
+    const src = fs.readFileSync(f, 'utf8');
+    if (!/tiers:\s*\[\s*'scrapingbee'\s*\]/.test(src)) continue;
+    if (/isScrapingBeeOff|sb-switch/.test(src)) continue;
+    if (allowed[rel]) continue;
+    bad.push(rel);
+  }
+  assert.deepEqual(bad, [], `SB-only fetchPage callers with no off-switch answer: ${bad.join(', ')}`);
+});

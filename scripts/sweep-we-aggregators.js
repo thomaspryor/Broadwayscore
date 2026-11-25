@@ -33,6 +33,7 @@ const { isAggregatorPageUrl } = require('./lib/review-slot-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { serpQuery } = require('./lib/url-discovery');
+const { isScrapingBeeOff } = require('./lib/sb-switch');
 
 // Reuse extraction functions from existing scrapers
 const { extractStarRatings, extractSectionReviews, extractShowTitle, fetchRenderedPageHtml } = require('./scrape-westendtheatre-roundups');
@@ -98,6 +99,13 @@ const TS_KNOWN_URLS = {
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
 const COOKIE_JAR = '/tmp/sweep-we-cookies.txt';
 const SB_KEY = process.env.SCRAPINGBEE_API_KEY || '';
+// BRO-8330: with ScrapingBee switched off its key is blank, and the "SB render"
+// fallbacks below used to vanish with it. Run them through the normal fetchPage
+// chain instead (measured 2026-11-25: The Stage round-ups and the theatre.reviews
+// index return the same pages from it). Only the off switch widens this; a plain
+// missing key still skips them.
+const CAN_RENDER = !!SB_KEY || isScrapingBeeOff(process.env);
+const RENDER_TIERS = SB_KEY ? ['scrapingbee'] : undefined;
 const BD_KEY = process.env.BRIGHTDATA_TOKEN || '';
 
 // CLI args
@@ -267,9 +275,9 @@ function curlJson(url) {
  * alone (5cr) is cheaper than Bright Data. Returns HTML or null on a miss.
  */
 async function scrapingBeeRender(url) {
-  if (!SB_KEY) return null;
+  if (!CAN_RENDER) return null;
   try {
-    const r = await fetchPage(url, { tiers: ['scrapingbee'], renderJs: true, countryCode: 'gb', skipVerify: true });
+    const r = await fetchPage(url, { tiers: RENDER_TIERS, renderJs: true, countryCode: 'gb', skipVerify: true });
     return r && r.content ? r.content : null;
   } catch (err) {
     console.log(`    [SB] Render failed for ${url}: ${(err.message || '').substring(0, 60)}`);
@@ -522,9 +530,9 @@ async function sweepWET(show) {
     let posts = curlJson(apiUrl);
 
     // ScrapingBee fallback if Sucuri WAF blocks curl (common in CI)
-    if (!posts && SB_KEY) {
+    if (!posts && CAN_RENDER) {
       try {
-        const r = await fetchPage(apiUrl, { tiers: ['scrapingbee'], renderJs: false, skipVerify: true });
+        const r = await fetchPage(apiUrl, { tiers: RENDER_TIERS, renderJs: false, skipVerify: true });
         try { posts = JSON.parse(r.content); } catch {}
       } catch (err) {
         console.log(`    [SB] JSON fetch failed for ${apiUrl}: ${(err.message || '').substring(0, 60)}`);
@@ -685,7 +693,7 @@ async function _buildTRIndex(weShows) {
       ? 'https://theatre.reviews/category/reviews-roundup/'
       : `https://theatre.reviews/category/reviews-roundup/page/${page}/`;
     let html = await nodeFetch(pageUrl);
-    if (!html && SB_KEY) html = await scrapingBeeRender(pageUrl);
+    if (!html && CAN_RENDER) html = await scrapingBeeRender(pageUrl);
     if (!html) break;
     const $ = cheerio.load(html);
     let found = 0;
@@ -881,7 +889,7 @@ async function sweepTheatreReviews(show) {
   }
 
   // SB render fallback — only for index URL
-  if (SB_KEY && indexUrl) {
+  if (CAN_RENDER && indexUrl) {
     await sleep(2000);
     console.log(`    [TR] Trying ScrapingBee for ${indexUrl.split('/reviews-roundup/')[1] || indexUrl}`);
     const html = await scrapingBeeRender(indexUrl);
@@ -1200,7 +1208,7 @@ async function sweepTheStage(show) {
   }
 
   // Fallback: ScrapingBee render for ALL tiered URLs (verifier-gated).
-  if (SB_KEY) {
+  if (CAN_RENDER) {
     for (const { tier, url } of tiered) {
       if (tier === 'tier3') bumpUrlGuessTier('thestage', 'tier3Attempted', show.id);
       console.log(`    [TS] Trying ScrapingBee render: ${url.split('/review-round-ups/')[1] || url}`);
