@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T07:36:44.912Z",
+  "generatedAt": "2026-11-25T08:51:15.094Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -418,27 +418,27 @@
       "status": "open",
       "slug": "a-christmas-carol-west-end",
       "thumbnail": "/images/shows/a-christmas-carol-west-end-2026/thumbnail.webp",
-      "siteScore": 79.64,
-      "liveScore": 80,
-      "scoreDrift": 0.35999999999999943,
+      "siteScore": 80.53,
+      "liveScore": 81,
+      "scoreDrift": 0.46999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 2,
+      "t2": 3,
       "t3": 3,
-      "positive": 5,
+      "positive": 6,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
+          "6/8 total",
           "T1:0/3",
-          "hi-conf:2/6"
+          "hi-conf:3/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -492,14 +492,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Mail on Sunday",
-          "isDualMarket": true
-        },
-        {
           "name": "The Stage",
           "isDualMarket": true
         }
@@ -543,10 +535,6 @@
         },
         {
           "name": "LondonTheatre1",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Box Office",
           "isDualMarket": false
         }
       ],
@@ -667,6 +655,18 @@
           "t2": 2,
           "t3": 3,
           "p": 5,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-25T08:51:15.094Z",
+          "rc": 6,
+          "s": 80.53,
+          "t1": 0,
+          "t2": 3,
+          "t3": 3,
+          "p": 6,
           "m": 0,
           "n": 0,
           "bc": "waiting"
