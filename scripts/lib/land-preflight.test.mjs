@@ -5,7 +5,7 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { checkClaudeMdByteCap, blockMessage } from './land-preflight.mjs';
+import { checkClaudeMdByteCap, blockMessage, judgeLand } from './land-preflight.mjs';
 
 const ENV = { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t', GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' };
 const tmps = [];
@@ -62,4 +62,53 @@ test('no byteLimit configured is clean', () => {
   const d = repo(0);
   commit(d, 'CLAUDE.md', 'a'.repeat(5000));
   assert.equal(checkClaudeMdByteCap({ base: 'base', tip: 'HEAD', cwd: d }).status, 'clean');
+});
+
+test('lowering byteLimit alone (CLAUDE.md untouched) blocks', () => {
+  const d = repo(100);
+  commit(d, 'scripts/lib/claude-md-anchors.json', JSON.stringify({ byteLimit: 10 }));
+  assert.equal(checkClaudeMdByteCap({ base: 'base', tip: 'HEAD', cwd: d }).status, 'fail');
+});
+
+test('CLAUDE.md that was already over the cap on base and did not grow is not blocked', () => {
+  const d = repo(40); // base has 50B > 40B
+  commit(d, 'CLAUDE.md', 'a'.repeat(45));
+  assert.equal(checkClaudeMdByteCap({ base: 'base', tip: 'HEAD', cwd: d }).status, 'clean');
+  commit(d, 'CLAUDE.md', 'a'.repeat(60));
+  assert.equal(checkClaudeMdByteCap({ base: 'base', tip: 'HEAD', cwd: d }).status, 'fail');
+});
+
+test('landedTip (rebased tree) is what gets judged', () => {
+  const d = repo();
+  commit(d, 'other.txt', 'x');
+  const clean = sh(d, 'git rev-parse HEAD');
+  sh(d, 'git checkout -q -b over base');
+  commit(d, 'CLAUDE.md', 'a'.repeat(150));
+  const over = sh(d, 'git rev-parse HEAD');
+  assert.equal(checkClaudeMdByteCap({ base: 'base', tip: clean, cwd: d, landedTip: over }).status, 'fail');
+});
+
+test('unreadable config at the tip is a skip, not a working-tree fallback', () => {
+  const d = repo();
+  sh(d, 'git rm -q scripts/lib/claude-md-anchors.json && git commit -qm rm');
+  commit(d, 'CLAUDE.md', 'a'.repeat(150));
+  fs.mkdirSync(path.join(d, 'scripts/lib'), { recursive: true });
+  fs.writeFileSync(path.join(d, 'scripts/lib/claude-md-anchors.json'), JSON.stringify({ byteLimit: 100 }));
+  assert.equal(checkClaudeMdByteCap({ base: 'base', tip: 'HEAD', cwd: d }).status, 'skip');
+});
+
+test('judgeLand blocks on the claudeMd verdict (wiring)', () => {
+  const none = { status: 'clean' };
+  const seams = {
+    fetch: () => null,
+    preview: () => ({ status: 'clean', tip: 'abc' }),
+    checkBotOwned: () => none, checkStaleRevert: () => none, checkRebasedManifests: () => none,
+    checkWorkflowChecks: () => none, checkPendingPlans: () => none, checkToplevelPushPaths: () => none,
+    mergeCommitWarnings: () => ({ count: 0, carrying: 0, warnings: [] }), retiredManifestWarnings: () => [],
+  };
+  const bad = judgeLand({ cwd: '.', src: 'HEAD', target: 'land/x', checkTests: false, seams: { ...seams, checkClaudeMdByteCap: () => ({ status: 'fail', problems: ['CLAUDE.md is 9B, over the 5B cap'] }) } });
+  assert.equal(bad.decision, 'block');
+  assert.match(bad.message, /over the 5B cap/);
+  const good = judgeLand({ cwd: '.', src: 'HEAD', target: 'land/x', checkTests: false, seams: { ...seams, checkClaudeMdByteCap: () => none } });
+  assert.notEqual(good.decision, 'block');
 });

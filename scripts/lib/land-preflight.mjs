@@ -137,28 +137,39 @@ const out = (r) => r.stdout.trim();
  */
 export function checkClaudeMdByteCap({ base, tip, cwd, landedTip = null }) {
   const rev = landedTip || tip;
-  const diff = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${tip}`, '--', 'CLAUDE.md']);
+  const CAP_FILES = ['CLAUDE.md', 'scripts/lib/claude-md-anchors.json']; // CI reads both: a lowered byteLimit alone can fail it
+  const diff = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${tip}`, '--', ...CAP_FILES]);
   if (!ok(diff)) return { status: 'skip', reason: 'diff vs base failed' };
-  const landedDiff = landedTip ? git(cwd, ['diff', '--name-only', '--no-renames', base, landedTip, '--', 'CLAUDE.md']) : null;
-  if (!out(diff) && !(landedDiff && ok(landedDiff) && out(landedDiff))) return { status: 'clean', reason: 'CLAUDE.md not changed' };
-  const md = git(cwd, ['show', `${rev}:CLAUDE.md`]);
-  if (!ok(md)) return { status: 'skip', reason: 'CLAUDE.md not readable at the tip' };
-  let cfgText = git(cwd, ['show', `${rev}:scripts/lib/claude-md-anchors.json`]);
-  let cfg = null;
-  try {
-    cfg = ok(cfgText) ? JSON.parse(cfgText.stdout) : JSON.parse(fs.readFileSync(path.join(cwd, 'scripts/lib/claude-md-anchors.json'), 'utf8'));
-  } catch {
-    return { status: 'skip', reason: 'claude-md-anchors.json unreadable' };
+  let touched = !!out(diff);
+  if (landedTip) {
+    const landedDiff = git(cwd, ['diff', '--name-only', '--no-renames', base, landedTip, '--', ...CAP_FILES]);
+    if (!ok(landedDiff)) return { status: 'skip', reason: 'landed diff vs base failed' };
+    touched = touched || !!out(landedDiff);
   }
-  const { checkByteCap } = require('./check-claude-md-byte-cap.js');
-  const r = checkByteCap(md.stdout, cfg);
-  if (r.ok) return { status: 'clean', bytes: r.bytes, limit: r.limit };
-  return {
-    status: 'fail',
-    bytes: r.bytes,
-    limit: r.limit,
-    problems: [`CLAUDE.md is ${r.bytes}B, over the ${r.limit}B cap in scripts/lib/claude-md-anchors.json (${r.bytes - r.limit}B too many). Trim it or move detail to memory/.`],
-  };
+  if (!touched) return { status: 'clean', reason: 'CLAUDE.md and its cap config not changed' };
+  try {
+    const md = git(cwd, ['show', `${rev}:CLAUDE.md`]);
+    const cfgText = git(cwd, ['show', `${rev}:scripts/lib/claude-md-anchors.json`]);
+    if (!ok(md) || !ok(cfgText)) return { status: 'skip', reason: 'CLAUDE.md or the cap config is not readable at the tip' };
+    const cfg = JSON.parse(cfgText.stdout);
+    const { checkByteCap } = require('./check-claude-md-byte-cap.js');
+    const r = checkByteCap(md.stdout, cfg);
+    if (r.ok) return { status: 'clean', bytes: r.bytes, limit: r.limit };
+    // land.yml judges NEW failures: a CLAUDE.md already over the cap on base, and not grown by this branch, is not this push's.
+    const baseMd = git(cwd, ['show', `${base}:CLAUDE.md`]);
+    const baseCfg = git(cwd, ['show', `${base}:scripts/lib/claude-md-anchors.json`]);
+    if (ok(baseMd) && ok(baseCfg) && !checkByteCap(baseMd.stdout, JSON.parse(baseCfg.stdout)).ok && r.bytes <= Buffer.byteLength(baseMd.stdout, 'utf8')) {
+      return { status: 'clean', reason: 'already over the cap on base and not larger', bytes: r.bytes, limit: r.limit };
+    }
+    return {
+      status: 'fail',
+      bytes: r.bytes,
+      limit: r.limit,
+      problems: [`CLAUDE.md is ${r.bytes}B, over the ${r.limit}B cap in scripts/lib/claude-md-anchors.json (${r.bytes - r.limit}B too many). Trim it or move detail to memory/.`],
+    };
+  } catch (e) {
+    return { status: 'skip', reason: `cap check could not run: ${e.message}` };
+  }
 }
 
 /**
