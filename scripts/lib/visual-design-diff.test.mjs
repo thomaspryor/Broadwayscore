@@ -100,6 +100,70 @@ const FIX_CASES = {
 for (const [name, [a, b]] of Object.entries(FIX_CASES)) {
   test(`fix: ${name}`, { skip: SKIP_TS }, () => assert.equal(cls(a, b), false));
 }
+// ---------- Part 2b (BRO-8177): logic-only edits (named handlers, URL builders, log/analytics strings) ----------
+// Class guard: every LOGIC_FIX case was classed as design before BRO-8177 (checked by the RED test below with the
+// exemption switched off), so reverting the exemption fails these tests.
+const LINK_HEAD = "import {A,B} from 'a'; import Link from 'next/link'; import {u} from './u';";
+const cls8177 = (a, b, env = {}) => D.classifyFile({ file: 'src/x.tsx', oldSource: wrap(a, LINK_HEAD), newSource: wrap(b, LINK_HEAD), env });
+const LOGIC_FIX = {
+  'named handler logic changed': [`const h=()=>{ if(!a) return; run(a); }; return <button onClick={h}/>;`, `const h=()=>{ if(!a||!b) return; run(a); }; return <button onClick={h}/>;`],
+  'useCallback handler changed': [`const h=useCallback(()=>{ go(a) },[a]); return <button onClick={h}/>;`, `const h=useCallback(()=>{ if(b) go(a) },[a,b]); return <button onClick={h}/>;`],
+  'href URL string on <a>': [`return <a href={\`/s/\${id}?utm=a\`}>go</a>;`, `return <a href={\`/s/\${id}?utm=b\`}>go</a>;`],
+  'href URL string on next/link Link': [`return <Link href="/shows/a">go</Link>;`, `return <Link href="/shows/b">go</Link>;`],
+  'URL builder const used only in href': [`const s=\`https://x.com/s/\${id}?utm=a\`; return <a href={s}>go</a>;`, `const s=\`https://x.com/s/\${id}?utm=b\`; return <a href={s}>go</a>;`],
+  'URL builder function used only in href': [`const mk=(s)=>"/shows/"+s; return <a href={mk(id)}>go</a>;`, `const mk=(s)=>"/show/"+s+"?x=1"; return <a href={mk(id)}>go</a>;`],
+  'module-level URL builder': [`return <a href={mk(id)}>go</a>;`, `return <a href={mk(id)}>go</a>;`],
+  'window.open URL in a named handler': [`const h=()=>window.open(\`https://t.co/?u=\${a}\`); return <button onClick={h}/>;`, `const h=()=>window.open(\`https://t.co/?u=\${b}&v=1\`); return <button onClick={h}/>;`],
+  'router.push path in a handler': [`return <button onClick={()=>router.push("/a")}/>;`, `return <button onClick={()=>router.push("/b")}/>;`],
+  'copy-only string in a non-rendered position: analytics event name': [`return <button onClick={()=>track("share_a",{via:"x"})}/>;`, `return <button onClick={()=>track("share_b",{via:"y"})}/>;`],
+  'copy-only string in a non-rendered position: console message in an effect': [`useEffect(()=>{ console.error("bad a") },[]); return <A/>;`, `useEffect(()=>{ console.error("bad b") },[]); return <A/>;`],
+  'new named handler wired to an existing element': [`return <button>x</button>;`, `const h=()=>run(a); return <button onClick={h}>x</button>;`],
+};
+// The module-level builder case differs in the head, not the body.
+const MODULE_HEADS = { 'module-level URL builder': [`${LINK_HEAD} function mk(s){ return "/shows/"+s; }`, `${LINK_HEAD} function mk(s){ return "/show/"+s+"?ref=x"; }`] };
+const run8177 = (name, [a, b], env) => {
+  const h = MODULE_HEADS[name];
+  return h ? D.classifyFile({ file: 'src/x.tsx', oldSource: wrap(a, h[0]), newSource: wrap(b, h[1]), env }) : cls8177(a, b, env);
+};
+for (const [name, pair] of Object.entries(LOGIC_FIX)) {
+  test(`BRO-8177 fix (no owner approval): ${name}`, { skip: SKIP_TS }, () => {
+    const o = run8177(name, pair, {});
+    assert.equal(o.design, false, o.reason);
+  });
+}
+test('BRO-8177 RED: with VISUAL_LOGIC_ONLY_DISABLED=1 every logic-only case is design again (the exemption is what clears them)', { skip: SKIP_TS }, () => {
+  for (const [name, pair] of Object.entries(LOGIC_FIX)) {
+    assert.equal(run8177(name, pair, { VISUAL_LOGIC_ONLY_DISABLED: '1' }).design, true, name);
+  }
+});
+const LOGIC_DESIGN = {
+  'className change': [`return <div className="p-2"/>;`, `return <div className="p-4"/>;`],
+  'JSX structure change next to a handler edit': [`const h=()=>run(a); return <div><button onClick={h}/></div>;`, `const h=()=>run(b); return <div><button onClick={h}/><A/></div>;`],
+  'rendered string literal in JSX': [`return <p>{"Hi"}</p>;`, `return <p>{"Hello"}</p>;`],
+  'same-page query href (switches what the page shows)': [`return <Link href="?tab=a">go</Link>;`, `return <Link href="?tab=b">go</Link>;`],
+  'hash href': [`return <a href="#a">go</a>;`, `return <a href="#b">go</a>;`],
+  'href built from an unknown base': [`return <a href={\`\${base}/a\`}>go</a>;`, `return <a href={\`\${base}/b\`}>go</a>;`],
+  'href on a custom component (may derive an active class)': [`return <NavItem href="/a"/>;`, `return <NavItem href="/b"/>;`],
+  'href on <link> (a stylesheet)': [`return <link href="/a.css"/>;`, `return <link href="/b.css"/>;`],
+  'named handler sets different state': [`const h=()=>setS("a"); return <button onClick={h}/>;`, `const h=()=>setS("b"); return <button onClick={h}/>;`],
+  'handler also used for a class': [`const h=()=>"a"; return <button onClick={h} className={h()}/>;`, `const h=()=>"b"; return <button onClick={h} className={h()}/>;`],
+  'URL const also passed to a component prop': [`const s="/a"; return <><a href={s}/><A url={s}/></>;`, `const s="/b"; return <><a href={s}/><A url={s}/></>;`],
+  'URL const rendered as text': [`const t="/a"; return <p>{t}</p>;`, `const t="/b"; return <p>{t}</p>;`],
+  'handler that returns JSX': [`const h=()=><A big={true}/>; return <B onRender={h}/>;`, `const h=()=><A big={false}/>; return <B onRender={h}/>;`],
+  'error message (error.tsx can draw it)': [`return <button onClick={()=>{ throw new Error("a") }}/>;`, `return <button onClick={()=>{ throw new Error("b") }}/>;`],
+  'hook-backed value only used in href': [`const s=useThing("a"); return <a href={s}/>;`, `const s=useThing("b"); return <a href={s}/>;`],
+};
+for (const [name, [a, b]] of Object.entries(LOGIC_DESIGN)) {
+  test(`BRO-8177 design (owner approval still needed): ${name}`, { skip: SKIP_TS }, () => {
+    const o = cls8177(a, b);
+    assert.equal(o.design, true, o.reason);
+  });
+}
+test('BRO-8177: an exported handler is recorded in full (callers live in other files)', { skip: SKIP_TS }, () => {
+  const src = (v) => `${LINK_HEAD} export const h=()=>run("${v}"); export default function X(){ return <button onClick={h}/>; }`;
+  assert.equal(D.classifyFile({ file: 'src/x.tsx', oldSource: src('a'), newSource: src('b') }).design, true);
+});
+
 test('CSS, new files and deleted files are always design', { skip: SKIP_TS }, () => {
   assert.equal(D.classifyFile({ file: 'src/app/globals.css', oldSource: 'a{}', newSource: 'a{}' }).design, true);
   assert.equal(D.classifyFile({ file: 'src/x.tsx', oldSource: null, newSource: 'export const a=1' }).design, true);

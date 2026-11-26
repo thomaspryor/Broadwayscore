@@ -22,6 +22,15 @@
 //      whose body has no JSX, awaits on its own, and whose every use in the file is `await name(...)`. Removing any
 //      of these stays design (a Promise would then reach a condition or a class). `for await` is not exempt.
 //      Kill switch for just this exemption: VISUAL_AWAIT_TRANSPARENT_DISABLED=1.
+//   5. (BRO-8177) logic-only edits are treated like inline handlers: (a) a non-exported, JSX-free function binding
+//      (incl. useCallback) whose every use sits in a quiet root is recorded as quiet (a named handler); (b) a JSX-free,
+//      hook-free binding whose value starts with a path/scheme and whose every use lands in a URL or log position is
+//      quiet with its strings skipped (a URL builder); (c) inside quiet code, a string that lands in href/to on <a> or
+//      next/link Link, router.push/replace/prefetch, window.open, location.assign/replace/href, fetch (URL must start
+//      with "/" or a scheme: "?tab=", "#x", "${base}" stay design), or in console.*, track*, captureEvent, gtag,
+//      posthog.capture, Sentry.capture*, navigator.clipboard/share/sendBeacon, is not recorded. State setters, DOM
+//      writes, classes, styles, rendered literals, error messages and custom-component props all still count.
+//      Kill switch for just this exemption: VISUAL_LOGIC_ONLY_DISABLED=1.
 //
 // One entry point (selfClear) is shared by .claude/hooks/pre-push-visual-gate.sh and scripts/land-ready.mjs, both
 // running the main checkout's copy (the pushing checkout runs the main checkout copy of the hook and this file, so a pushed branch cannot loosen it), so the two never disagree.
@@ -61,7 +70,12 @@ function skeleton(ts, sf, env = process.env) {
   const K = ts.SyntaxKind;
   const QUIET_ATTR = /^(on[A-Z]\w*|key|ref|href|to)$/;
   const QUIET_DOM_ATTR = /^(name|htmlFor)$/; // quiet on intrinsic (lowercase) tags only: <Icon name={x}/> picks what draws
-  const DOM_WRITE = /\b(style|className|classList|cssText|dataset|innerHTML|outerHTML|textContent|insertAdjacentHTML|hidden|open|scrollTop|scrollLeft)\b|\.(setProperty|setAttribute|toggle|add|remove|showModal|close|show|scrollTo)\(/;
+  // BRO-8177: logic-only exemptions (see the header, rule 5). Kill switch for just these: VISUAL_LOGIC_ONLY_DISABLED=1.
+  const logicOn = env.VISUAL_LOGIC_ONLY_DISABLED !== '1';
+  // `window.open(url)` opens a tab and draws nothing on this page; `dialog.open = true` and a hook's `open()` still count.
+  const DOM_WRITE = logicOn
+    ? /\b(style|className|classList|cssText|dataset|innerHTML|outerHTML|textContent|insertAdjacentHTML|hidden|(?<!window\.)open|scrollTop|scrollLeft)\b|\.(setProperty|setAttribute|toggle|add|remove|showModal|close|show|scrollTo)\(/
+    : /\b(style|className|classList|cssText|dataset|innerHTML|outerHTML|textContent|insertAdjacentHTML|hidden|open|scrollTop|scrollLeft)\b|\.(setProperty|setAttribute|toggle|add|remove|showModal|close|show|scrollTo)\(/;
   // Inside quiet roots a state setter or timer still decides what shows (setS(true), a 99999ms delay): recorded in full.
   const STATE_CALL = /^(?:[\w$.?]*\.)?(set[A-Z]\w*|dispatch|setTimeout|setInterval|requestAnimationFrame)$/;
   let quiet = 0;
@@ -132,7 +146,130 @@ function skeleton(ts, sf, env = process.env) {
   };
   const isQuietRoot = (n) => (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && /^use(Layout|Insertion)?Effect$/.test(n.expression.text))
     || (ts.isJsxAttribute(n) && (QUIET_ATTR.test(n.name.getText(sf)) || (QUIET_DOM_ATTR.test(n.name.getText(sf)) && /^[a-z]/.test(n.parent.parent.tagName.getText(sf)))));
+
+  // ---- BRO-8177: logic-only edits (URL builders, named handlers, log/analytics strings) ----
+  // Strings that can only reach a URL, a log line or an analytics event cannot change a pixel on this page.
+  // URL sinks and safe href/to need the URL to START with a path or scheme: `?tab=x` / `#id` / `${x}...` can switch
+  // what this same page shows, so they stay design. Error messages are NOT a sink (error.tsx can draw error.message).
+  const URL_SINK = /^((?:router|navigation)\.(push|replace|prefetch)|window\.open|(?:window\.)?location\.(assign|replace)|fetch)$/;
+  const LOG_SINK = /^(console\.(log|info|warn|error|debug)|track(?:[A-Z]\w*)?|captureEvent|gtag|posthog\.capture|Sentry\.(captureException|captureMessage|addBreadcrumb)|navigator\.(clipboard\.writeText|share|sendBeacon))$/;
+  const URL_LEAD = /^(\/(?!\/)|https?:\/\/|mailto:|tel:|sms:)/;
+  const linkNames = new Set();
+  for (const st of sf.statements) {
+    if (ts.isImportDeclaration(st) && ts.isStringLiteral(st.moduleSpecifier) && st.moduleSpecifier.text === 'next/link' && st.importClause && st.importClause.name) linkNames.add(st.importClause.name.text);
+  }
+  // href/to on a plain <a> or next/link's Link only (a custom component may derive an active class from href).
+  const safeHrefAttr = (a) => /^(href|to)$/.test(a.name.getText(sf)) && (() => { const t = a.parent.parent.tagName.getText(sf); return t === 'a' || linkNames.has(t); })();
+  const strip = (e) => { while (e && ts.isParenthesizedExpression(e)) e = e.expression; return e; };
+  const leadsWithUrl = (e0) => {
+    const e = strip(e0);
+    if (!e) return false;
+    if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e)) return URL_LEAD.test(e.text);
+    if (ts.isTemplateExpression(e)) return URL_LEAD.test(e.head.text);
+    if (ts.isBinaryExpression(e) && e.operatorToken.kind === K.PlusToken) return leadsWithUrl(e.left);
+    if (ts.isConditionalExpression(e)) return leadsWithUrl(e.whenTrue) && leadsWithUrl(e.whenFalse);
+    return false;
+  };
+  // Walk up from an expression through value-preserving wrappers (parens, template, `+`, ternary branches, a call of it,
+  // encodeURI*, an object property for log sinks) to where the value lands. -> { kind: 'url'|'log', top } or null.
+  const landing = (x0, opts = {}) => {
+    let x = x0, viaObject = false;
+    for (let guard = 0; guard < 64; guard++) {
+      const p = x.parent;
+      if (!p) return null;
+      if (ts.isParenthesizedExpression(p) || ts.isTemplateSpan(p) || ts.isTemplateExpression(p) || ts.isJsxExpression(p)
+        || (ts.isBinaryExpression(p) && p.operatorToken.kind === K.PlusToken)
+        || (ts.isConditionalExpression(p) && p.condition !== x)
+        || (opts.callee && ts.isCallExpression(p) && p.expression === x)
+        || (ts.isCallExpression(p) && /^encodeURI(Component)?$/.test(p.expression.getText(sf)) && p.arguments.includes(x))) { x = p; continue; }
+      if (ts.isPropertyAssignment(p) && p.initializer === x && ts.isObjectLiteralExpression(p.parent)) { viaObject = true; x = p.parent; continue; }
+      if (ts.isCallExpression(p) && p.arguments.includes(x)) {
+        const callee = p.expression.getText(sf);
+        if (LOG_SINK.test(callee)) return { kind: 'log', top: x };
+        if (URL_SINK.test(callee) && !viaObject && p.arguments[0] === x) return { kind: 'url', top: x };
+        return null;
+      }
+      if (ts.isJsxAttribute(p) && p.initializer === x) return !viaObject && safeHrefAttr(p) ? { kind: 'url', top: ts.isJsxExpression(x) ? x.expression : x } : null;
+      if (ts.isBinaryExpression(p) && p.operatorToken.kind === K.EqualsToken && p.right === x && !viaObject
+        && /^(window\.)?location(\.href)?$/.test(p.left.getText(sf))) return { kind: 'url', top: x };
+      return null;
+    }
+    return null;
+  };
+  const urlishString = (n) => { const l = landing(n); return !!l && (l.kind === 'log' || leadsWithUrl(l.top)); };
+
+  // Named handlers and URL builders: a non-exported, JSX-free binding whose every use sits in a quiet root (an on*
+  // handler, href/key/ref, an effect) is a handler (H): recorded as quiet, exactly like an inline handler. One whose
+  // every use lands in a URL/log position (above) is a URL builder (U): also quiet, and its strings are skipped. A
+  // non-function value runs at render, so it can only be U; hook calls never qualify. Anything else: recorded in full.
+  const candidates = new Map(); // name -> { stmt, fn, ok }
+  const isFnInit = (e) => !!e && (ts.isArrowFunction(e) || ts.isFunctionExpression(e)
+    || (ts.isCallExpression(e) && ts.isIdentifier(e.expression) && e.expression.text === 'useCallback' && e.arguments[0] && (ts.isArrowFunction(e.arguments[0]) || ts.isFunctionExpression(e.arguments[0]))));
+  const callsHook = (n) => { let f = false; const w = (x) => { if (f) return; if (isFn(x)) return; if (ts.isCallExpression(x) && /^use[A-Z]/.test(x.expression.getText(sf).replace(/^.*\./, '')) && !(ts.isIdentifier(x.expression) && x.expression.text === 'useCallback' && x === n)) { f = true; return; } ts.forEachChild(x, w); }; w(n); return f; };
+  const valueLeadsWithUrl = (init) => {
+    let fn = init;
+    if (ts.isCallExpression(fn) && fn.arguments[0]) fn = fn.arguments[0]; // useCallback(fn)
+    if (!isFn(fn)) return leadsWithUrl(init);
+    if (fn.body && !ts.isBlock(fn.body)) return leadsWithUrl(fn.body);
+    const rets = []; const w = (x) => { if (x !== fn && isFn(x)) return; if (ts.isReturnStatement(x)) rets.push(x.expression); ts.forEachChild(x, w); }; if (fn.body) w(fn.body);
+    return rets.length > 0 && rets.every((r) => r && leadsWithUrl(r));
+  };
+  if (logicOn) {
+    const addCand = (x) => {
+      if (exported(x) || hasJsx(x)) return;
+      if (ts.isFunctionDeclaration(x) && x.name && x.body) candidates.set(x.name.text, { stmt: x, fn: true, urlLead: valueLeadsWithUrl(x), dup: candidates.has(x.name.text) });
+      else if (ts.isVariableStatement(x) && x.declarationList.declarations.length === 1) {
+        const d = x.declarationList.declarations[0];
+        if (!ts.isIdentifier(d.name) || !d.initializer) return;
+        const fn = isFnInit(d.initializer);
+        if (!fn && callsHook(d.initializer)) return;
+        candidates.set(d.name.text, { stmt: x, fn, urlLead: valueLeadsWithUrl(d.initializer), dup: candidates.has(d.name.text) });
+      }
+    };
+    const w = (x) => { if (ts.isFunctionDeclaration(x) || ts.isVariableStatement(x)) addCand(x); ts.forEachChild(x, w); };
+    w(sf);
+    for (const [k, c] of [...candidates]) if (c.dup) candidates.delete(k); // two bindings, one name: cannot tell them apart
+  }
+  const H = new Set(), U = new Set();
+  if (candidates.size) {
+    const uses = new Map(); // name -> [{ q, url, owner }]
+    const declName = (x) => { const p = x.parent; return p && (ts.isFunctionDeclaration(p) || ts.isVariableDeclaration(p)) && p.name === x; };
+    const notRef = (x) => { const p = x.parent; return p && ((ts.isPropertyAccessExpression(p) && p.name === x) || (ts.isPropertyAssignment(p) && p.name === x) || (ts.isJsxAttribute(p) && p.name === x)); };
+    const walk = (x, q, owner) => {
+      if (isQuietRoot(x)) q = true;
+      const own = (ts.isFunctionDeclaration(x) && x.name && candidates.get(x.name.text)?.stmt === x && x.name.text)
+        || (ts.isVariableStatement(x) && x.declarationList.declarations.length === 1 && ts.isIdentifier(x.declarationList.declarations[0].name)
+          && candidates.get(x.declarationList.declarations[0].name.text)?.stmt === x && x.declarationList.declarations[0].name.text);
+      if (own) owner = own;
+      if (ts.isIdentifier(x) && candidates.has(x.text) && !(declName(x) && candidates.get(x.text).stmt === (ts.isVariableDeclaration(x.parent) ? x.parent.parent.parent : x.parent)) && !notRef(x)) {
+        const l = landing(x, { callee: true });
+        const direct = l && (strip(l.top) === x || (ts.isCallExpression(strip(l.top)) && strip(l.top).expression === x));
+        const url = !!l && (l.kind === 'log' || direct || leadsWithUrl(l.top));
+        if (!uses.has(x.text)) uses.set(x.text, []);
+        uses.get(x.text).push({ q, url, owner });
+      }
+      ts.forEachChild(x, (c) => walk(c, q, owner));
+    };
+    walk(sf, false, null);
+    for (const [name, c] of candidates) {
+      if (!uses.has(name)) continue; // unused: recorded in full
+      if (c.fn) H.add(name);
+      if (c.urlLead) U.add(name);
+    }
+    for (let changed = true; changed;) {
+      changed = false;
+      for (const name of [...H]) if (!uses.get(name).every((u) => u.q || (u.owner && u.owner !== name && H.has(u.owner)) || u.owner === name)) { H.delete(name); changed = true; }
+      for (const name of [...U]) if (!uses.get(name).every((u) => u.url || (u.owner && U.has(u.owner)))) { U.delete(name); changed = true; }
+    }
+  }
+  const bindingName = (n) => (ts.isFunctionDeclaration(n) && n.name && candidates.get(n.name.text)?.stmt === n && n.name.text)
+    || (ts.isVariableStatement(n) && n.declarationList.declarations.length === 1 && ts.isIdentifier(n.declarationList.declarations[0].name)
+      && candidates.get(n.declarationList.declarations[0].name.text)?.stmt === n && n.declarationList.declarations[0].name.text) || null;
+  let urlQuiet = 0;
   const visit = (n) => {
+    const bn = candidates.size ? bindingName(n) : null;
+    if (bn && U.has(bn)) { quiet++; urlQuiet++; try { inner(n); } finally { quiet--; urlQuiet--; } return; }
+    if (bn && H.has(bn)) { quiet++; try { inner(n); } finally { quiet--; } return; }
     if (isQuietRoot(n)) { quiet++; try { inner(n); } finally { quiet--; } return; }
     inner(n);
   };
@@ -170,7 +307,10 @@ function skeleton(ts, sf, env = process.env) {
       // Logic only: strings still count (a class set through the DOM), and so does any DOM style/class write.
       if (ts.isExpressionStatement(n) && DOM_WRITE.test(n.getText(sf))) { out.push(`dom ${norm(n.getText(sf))}`); return; }
       if (ts.isCallExpression(n) && STATE_CALL.test(n.expression.getText(sf))) { out.push(`call ${norm(n.getText(sf))}`); return; }
-      if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out.push(`"${norm(n.text)}"`);
+      // BRO-8177: a string inside a URL builder, or one that lands in a URL/log/analytics position, draws nothing.
+      const silent = logicOn && (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n) || ts.isTemplateExpression(n)) && (urlQuiet > 0 || urlishString(n));
+      if (silent) { /* not recorded; the template's ${} expressions are still visited below */ }
+      else if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out.push(`"${norm(n.text)}"`);
       else if (ts.isTemplateExpression(n)) out.push(`\`${[n.head.text, ...n.templateSpans.map((x) => x.literal.text)].map(norm).join('${}')}\``);
       else if (ts.isJsxOpeningElement(n) || ts.isJsxSelfClosingElement(n)) {
         // A render prop (onRenderItem={() => <B big={true}/>}) draws: its element's own attributes count in full.
