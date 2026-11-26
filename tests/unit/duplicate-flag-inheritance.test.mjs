@@ -186,3 +186,15 @@ describe('explainExclusion parity with the rebuild (BRO-5501)', () => {
     assert.notEqual(pair(words('alpha', 300), words('omega', 300)), 'duplicateOf');
   });
 });
+
+describe('ownContentFlagExclusion (BRO-8346)', () => {
+  const { ownContentFlagExclusion } = require('../../scripts/lib/review-guards.js');
+  test('self-flagged wrongProduction copy is reported, so the audit skips it', () => {
+    const d = basePayload({ wrongProduction: true, duplicateOf: 'twin.json' });
+    assert.strictEqual(ownContentFlagExclusion(d, {}, path.join(tmpDir, 'a.json')), 'wrongProduction');
+  });
+  test('an unflagged duplicateOf copy is still a candidate (null)', () => {
+    const d = basePayload({ duplicateOf: 'twin.json' });
+    assert.strictEqual(ownContentFlagExclusion(d, {}, path.join(tmpDir, 'a.json')), null);
+  });
+});

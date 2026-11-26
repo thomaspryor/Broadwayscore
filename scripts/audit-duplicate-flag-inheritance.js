@@ -29,7 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { duplicateOfInheritedFlag } = require('./lib/review-guards');
+const { duplicateOfInheritedFlag, ownContentFlagExclusion } = require('./lib/review-guards');
 const { normalizeUrl } = require('./lib/review-normalization');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
@@ -138,6 +138,11 @@ function main() {
       const show = showsById[showId];
       const inheritedFlag = duplicateOfInheritedFlag(data, refData, show, refPath);
       if (!inheritedFlag) continue;
+
+      // BRO-8346: already self-flagged (own wrongProduction/wrongShow/nonReview)
+      // means this file is excluded on its own; the live URL belongs to another
+      // file, so it is not a leak.
+      if (ownContentFlagExclusion(data, show, filePath)) continue;
 
       // Mirror rebuild-all-reviews.js's circular-different-text carve-out
       // (task #1256 ship-check finding): a mutual circular pair with

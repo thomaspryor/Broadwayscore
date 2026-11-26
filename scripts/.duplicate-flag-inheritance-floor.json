@@ -1,5 +1,5 @@
 {
-  "floor": 8,
+  "floor": 2,
   "evidenceFile": "data/audit/duplicate-flag-inheritance-baseline.json",
-  "note": "Ratcheted 205 -> 8 on 2026-10-19 (BRO-5501): node scripts/audit-duplicate-flag-inheritance.js run on main after duplicateOfInheritedFlag stopped inheriting onto different-text files found 8 candidates (57807 files scanned). Spot-checked 3 shows: the candidates are empty-text or self-flagged stubs, none live. Ratchet down further as counts drop; do not raise without a fresh measurement."
+  "note": "Ratcheted 8 -> 2 on 2026-11-26 (BRO-8346): the audit now skips copies that carry their own wrongProduction/wrongShow/nonReview flag (excluded on their own; their URL is live via another file). Fresh run on main data: 9 hits (6 files) before, 2 after (timeout-london--isobel-lewis, times-uk--unknown, both zero-text stubs). Ratchet down further as counts drop; do not raise without a fresh measurement."
 }

@@ -6555,6 +6555,18 @@ function duplicateOfInheritedFlag(data, refData, show, refPath) {
   return null;
 }
 
+/**
+ * BRO-8346: a copy that already carries its OWN content-wrongness verdict
+ * (wrongShow / wrongProduction / isNonReview) is excluded by that verdict, so
+ * it cannot be the file behind a live review. Its URL being live comes from
+ * another file for the same article (the twin the pointer names, or a
+ * corrected-URL sibling). The inherited-flag audit must not count it as a leak.
+ */
+function ownContentFlagExclusion(data, show, filePath) {
+  const reason = explainExclusion(data, show, filePath);
+  return reason === 'wrongShow' || reason === 'wrongProduction' || reason === 'nonReview' ? reason : null;
+}
+
 /** This file's own contentVerification: a valid, correct-production review at high confidence. */
 function ownCvAffirmsReview(data) {
   const cv = data && data.contentVerification;
@@ -7412,6 +7424,7 @@ module.exports = {
   duplicateOfCopyRefVerdict,
   DUPLICATE_OF_COPY_REF_REASONS,
   duplicateOfInheritedFlag,
+  ownContentFlagExclusion,
   textsConfirmedDifferent,
   hasStructuralStarScore,
   hasIndependentExcerptScore,
