@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8352",
   "planId": "4e0a6a65-5b80-4ad5-a124-fbfdf793150f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-26T13:17:11.617Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "shows.json: the-truth-a-comedy-by-florian-zeller-west-end-2027.isRevival"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-26T13:26:47.283Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-truth-a-comedy-by-florian-zeller-west-end-2027 (tags: [\"upcoming\",\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
 }
