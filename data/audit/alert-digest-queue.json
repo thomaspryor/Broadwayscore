@@ -535,11 +535,11 @@
     "queuedAt": "2026-11-25T20:42:52.864Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red:run-data-validation",
-    "title": "Data audit failing: Run data validation",
-    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "conditionKey": "land-preexisting:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers #759a229310",
+    "title": "Test red on main: real data loads and gives the expected answers for the four JS outlets [testCodeFailure]",
+    "description": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8324-shownotmentioned-guard. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45698791663",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45702644394",
+    "url": null,
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -547,19 +547,19 @@
     "tracked": null,
     "fields": [
       {
-        "name": "Job",
-        "value": "Data Validation"
+        "name": "gate",
+        "value": "unit-tests-node"
       },
       {
-        "name": "Step",
-        "value": "Run data validation"
+        "name": "test",
+        "value": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets [testCodeFailure]"
       },
       {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45702644394)"
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45698791663"
       }
     ],
-    "queuedAt": "2026-11-25T21:22:56.097Z"
+    "queuedAt": "2026-11-25T21:15:32.321Z"
   },
   {
     "conditionKey": "live-data-test:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
@@ -1514,6 +1514,33 @@
       }
     ],
     "queuedAt": "2026-11-26T21:48:02.466Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-data-validation",
+    "title": "Data audit failing: Run data validation — already tracked at BRO-8359",
+    "description": "This condition already has an open tracker (BRO-8359); not filing a duplicate. It will go quiet in the digest from here.\n\nThe \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45902000514",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8359",
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run data validation"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45902000514)"
+      }
+    ],
+    "queuedAt": "2026-11-26T22:09:57.173Z"
   },
   {
     "conditionKey": "star-band:regressions",
