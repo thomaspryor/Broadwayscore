@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Integration test for scripts/flag-wrong-production-by-date.js's current-run
  * corroboration guard (scripts/lib/wrong-production-corroboration.js).
@@ -11,6 +10,7 @@
  * shape and asserts the flag is HELD (not written) with a warning emitted —
  * see card #1572.
  */
+import './lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4414: URLs folded into a survivor by a merge must never be re-adopted.
  * Culture Sauce "How Shakespeare Saved My Life" (2026-09-30): the merge deleted
@@ -6,6 +5,7 @@
  * survivor via mergeReviews and applyUrlChangeInvariant wiped text + score.
  * Requires the real functions (CLAUDE.md §15).
  */
+import './shows-json-empty-fixture.mjs';
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';

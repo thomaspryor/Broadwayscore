@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Listing pages scored as reviews (2026 data audit, S1-T0).
 //
 // Four listing-page URL shapes were live-scored as reviews: Talkin' Broadway's
@@ -17,6 +16,7 @@
 // a rule that would have claimed the file first.
 //
 // Run: node --test tests/unit/listing-page-url.test.mjs
+import '../../scripts/lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';

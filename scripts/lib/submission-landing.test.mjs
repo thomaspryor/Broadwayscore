@@ -1,8 +1,8 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4141: an approved submission that only lacks an LLM score is a wait,
 // not a failure. All 11 "approved review submission #N is not on the site"
 // owner emails of 9/23-9/24 were this case; each went live on its own once
 // llm-ensemble-score scored it ~45 min later.
+import './shows-json-empty-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

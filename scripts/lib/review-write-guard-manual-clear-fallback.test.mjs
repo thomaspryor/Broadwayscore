@@ -1,10 +1,10 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4656: the push-review-texts restore copied cleared manualClearFallback*
 // give-up markers back from the committed file, because a null PROTECTED field
 // looks like data loss unless isIntentionalClear() says otherwise. Three
 // Spamalot tour reviews stayed blocked from scoring after the tour sweep had
 // cleared them. These cases pin the two legitimate clears and the one restore
 // that must still happen.
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

@@ -1,6 +1,6 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5887: tests for the pre-send review check (scripts/lib/reddit-review-check.js
 // and the runner's runShowCheck). Each test require()s the real functions.
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test: a registration-walled The Stage page still yields the
  * article's date, byline and standfirst (reader report 2026-09-26: Man to Man,
@@ -7,6 +6,7 @@
  * same classes, so the FIRST occurrence must win. Per CLAUDE.md rule 15 this
  * require()s the real functions.
  */
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

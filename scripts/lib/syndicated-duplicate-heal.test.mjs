@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4415: a syndicated secondary loses its isSyndicatedDuplicate mark when its
  * primary is excluded for a PRIMARY-ONLY reason (wrongProduction of a misfiled
@@ -6,6 +5,7 @@
  * applies to the duplicate (wrongShow, nonReview). Drives the real helper and the
  * real explainExclusion; shapes are the live cases (2026-10-15).
  */
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-719 — BWW roundup extraction misses reviews without hyperlinks.
  *
@@ -18,6 +17,7 @@
  * outlet/critic/excerpt and url: null, alongside linked entries, and
  * malformed HTML/JSON-LD doesn't crash extraction or corrupt other rows.
  */
+import '../../scripts/lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';

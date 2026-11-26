@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Unit tests for review-guards.js — isLikelyStaleWrongShow + wrongShowCleared.
  *
@@ -12,6 +11,7 @@
  * (isIncludableForRebuild, isScoreable, llm-scoring/is-scoreable.ts).
  */
 
+import '../../scripts/lib/shows-json-empty-fixture.mjs';
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';

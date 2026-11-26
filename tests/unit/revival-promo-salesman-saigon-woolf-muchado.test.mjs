@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4890 (revival promo: Salesman, Saigon, Woolf, Much Ado): acceptance tests
  * for the two inclusion rules the audit found missing. Per CLAUDE.md rule 15
@@ -12,6 +11,7 @@
  * The rebuild loop does NOT delegate to explainExclusion, and scoring-delta.js
  * keeps its own decideInclusion mirror, so each rule is also pinned in both.
  */
+import '../../scripts/lib/shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

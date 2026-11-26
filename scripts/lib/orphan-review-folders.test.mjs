@@ -1,10 +1,10 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4317: review-text folders whose name is not a shows.json id never reach
  * the site (rebuild-all-reviews.js skips them). Covers the scanner, the
  * publish-date matcher used to rehome their files, and the writer guard that
  * stops createOrMergeReviewFile from minting new orphan folders.
  */
+import './shows-json-empty-fixture.mjs';
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

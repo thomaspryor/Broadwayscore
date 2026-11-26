@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4502: ~45 reviews displayed junk critic names ("Read more articles by
  * Carol Rocamora", "Sam - Admin", "nick730", "National Theatre", "Huffington
@@ -14,6 +13,7 @@
  *
  * Run: node --test tests/unit/junk-critic-name-backfill.test.mjs
  */
+import '../../scripts/lib/shows-json-empty-fixture.mjs';
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

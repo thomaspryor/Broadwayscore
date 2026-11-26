@@ -1,4 +1,3 @@
-// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-2559 — a scraper RECREATING a review file drops PROTECTED_FIELDS.
 //
 // safeWriteReview's merge/preserve loop only has something to preserve FROM when
@@ -26,6 +25,7 @@
 //
 // These tests drive the REAL exported functions, per CLAUDE.md rule 15 — no
 // copied logic.
+import './shows-json-empty-fixture.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
