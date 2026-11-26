@@ -1,49 +1,21 @@
 {
-  "updatedAt": "2026-11-26T01:59:10.935Z",
-  "processed": 191,
-  "failed": 135,
-  "successRate": "58.6%",
+  "updatedAt": "2026-11-26T02:29:40.167Z",
+  "processed": 247,
+  "failed": 177,
+  "successRate": "58.3%",
   "tierBreakdown": {
-    "playwright": 113,
+    "playwright": 147,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 23,
+    "scrapingdog": 29,
     "scrapingbee": 18,
-    "brightdata": 2,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 39
+    "archive": 56
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-11-26T00:07:58.226Z",
-      "event": "bb-session",
-      "session": "08e81407",
-      "url": "https://www.nytimes.com/alfred-hitchcocks-the-39-steps-theater-review"
-    },
-    {
-      "t": "2026-11-26T00:07:58.808Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-26T00:09:52.504Z",
-      "event": "bb-session",
-      "session": "7502e0a1",
-      "url": "https://www.nytimes.com/2026/10/22/movies/possible-love-review-the-lives-of-othe"
-    },
-    {
-      "t": "2026-11-26T00:09:53.045Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-26T00:23:03.609Z",
-      "event": "bb-session",
-      "session": "adceb501",
-      "url": "https://deadline.com/2026/11/daredevil-charlie-cox-audition-james-bond-robert-pa"
-    },
     {
       "t": "2026-11-26T00:41:17.249Z",
       "event": "bb-session",
@@ -111,6 +83,50 @@
       "t": "2026-11-26T01:27:57.681Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-26T02:00:49.528Z",
+      "event": "bb-session",
+      "session": "4ebea276",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656173"
+    },
+    {
+      "t": "2026-11-26T02:00:50.459Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-26T02:03:12.796Z",
+      "event": "bb-session",
+      "session": "2f3308a2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656176"
+    },
+    {
+      "t": "2026-11-26T02:03:13.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-26T02:03:46.013Z",
+      "event": "bb-session",
+      "session": "1ae42914",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656222"
+    },
+    {
+      "t": "2026-11-26T02:03:46.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-26T02:18:33.747Z",
+      "event": "bb-session",
+      "session": "b3d024c4",
+      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-w"
+    },
+    {
+      "t": "2026-11-26T02:18:34.690Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
