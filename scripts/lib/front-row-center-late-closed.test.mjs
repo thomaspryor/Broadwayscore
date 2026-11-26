@@ -77,3 +77,17 @@ test('outlet-listing-poller wires the daily feed pool and the closed-show check'
   assert.match(src, /const matchedShows = confirmAll \? \[\] : feedMatched\.filter\(show => show\.status !== 'closed'\);/);
   assert.match(src, /\.\.\.feedMatched\.filter\(show => confirmAll \|\| show\.status === 'closed'\)\.map\(show => \(\{ show, form: 'feed-match' \}\)\)/);
 });
+
+test('boundaries: 7 days before the run, 14-day close grace, missing date', () => {
+  // Run starts 2026-11-19: an item exactly 7 days earlier passes, a day earlier than that does not.
+  assert.equal(ow.closedShowMatchOk(wuthering, { publishDate: '2026-11-12' }), true);
+  assert.equal(ow.closedShowMatchOk(wuthering, { publishDate: '2026-11-11' }), false);
+  assert.equal(ow.closedShowMatchOk(wuthering, { publishDate: undefined }), false);
+  assert.equal(ow.closedShowMatchOk(wuthering, { publishDate: 'not a date' }), false);
+  // Closed 2026-11-22: in the pool while closingDate >= cutoff - 14 days.
+  assert.equal(ow.selectRecentlyClosedShows([wuthering], new Date('2026-12-06T00:00:00Z')).length, 1, 'cutoff exactly 14 days after close');
+  assert.equal(ow.selectRecentlyClosedShows([wuthering], new Date('2026-12-07T00:00:00Z')).length, 0, '15 days after close');
+  assert.equal(ow.selectRecentlyClosedShows([wuthering], 'garbage').length, 0);
+  assert.equal(ow.selectRecentlyClosedShows([{ ...wuthering, closingDate: null }], new Date('2026-11-18')).length, 0, 'closed without a date');
+  assert.equal(ow.closedShowMatchOk(running, { publishDate: null }), true, 'running shows are never gated');
+});
