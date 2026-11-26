@@ -1444,20 +1444,6 @@
     "queuedAt": "2026-11-26T18:18:38.568Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +18 more). Checked 2026-11-26.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-26T19:38:23.999Z"
-  },
-  {
     "conditionKey": "live-data-test:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception",
     "title": "Live-data test failing: the same week in the Broadway edition does not get the West End exception (scripts/newsletter/editorial-overrides.generate.test.mjs) — still happening after 3 days",
     "description": "Filed BRO-8386: this has been happening for 3+ days without clearing.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"the same week in the Broadway edition does not get the West End exception\" in scripts/newsletter/editorial-overrides.generate.test.mjs is red against the live corpus.\n\nThe expression evaluated to a falsy value:\n\nassert.ok(!meta.openingShows.some((s) => s.id === PRIDE))\n",
@@ -1491,57 +1477,17 @@
     "queuedAt": "2026-11-26T19:42:05.420Z"
   },
   {
-    "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]",
-    "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
-    "description": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8381-coverage-b. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45885215925",
-    "severity": "warning",
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +17 more). Checked 2026-11-26.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
     "url": null,
     "decision": false,
-    "info": false,
+    "info": true,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "test",
-        "value": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45885215925"
-      }
-    ],
-    "queuedAt": "2026-11-26T20:02:00.481Z"
-  },
-  {
-    "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c",
-    "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
-    "description": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8381-coverage-b. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45885215925",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "test",
-        "value": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd [testCodeFailure]"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45885215925"
-      }
-    ],
-    "queuedAt": "2026-11-26T20:02:00.511Z"
+    "fields": [],
+    "queuedAt": "2026-11-26T20:21:00.945Z"
   }
 ]
