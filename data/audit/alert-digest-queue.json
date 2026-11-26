@@ -1295,5 +1295,32 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-26T06:53:42.065Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does#54f27d9304",
+    "title": "Test red on main: the same week in the Broadway edition does not get the West End exception [testCodeFailure]",
+    "description": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8346-dup-flag-audit. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45775625164",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45775625164"
+      }
+    ],
+    "queuedAt": "2026-11-26T07:51:03.670Z"
   }
 ]
