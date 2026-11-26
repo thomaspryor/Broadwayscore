@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T16:47:58.829Z",
+  "generatedAt": "2026-11-26T17:55:21.493Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -157,33 +157,41 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+      "outletId": "exeunt-magazine",
+      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
     },
     {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+      "outletId": "fringereview",
+      "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     },
     {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 908,
+  "itemsScanned": 772,
   "matchedGaps": 2,
-  "possibleGaps": 5,
+  "possibleGaps": 3,
   "gaps": [
     {
       "showId": "a-christmas-carol-west-end-2026",
@@ -216,15 +224,6 @@
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
       "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/christmas-carol-shakespeare-north-playhouse-prescot/",
-      "headline": "Christmas Carol &#8211; Shakespeare North Playhouse, Prescot",
-      "publishDate": "2026-11-25"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "possible",
       "outletId": "west-end-best-friend",
       "url": "https://www.westendbestfriend.co.uk/news/review-its-a-wonderful-life-jermyn-street-theatre",
       "headline": "Review: IT’S A WONDERFUL LIFE, Jermyn Street Theatre",
@@ -238,15 +237,6 @@
       "url": "https://www.allthatdazzles.co.uk/post/review-pink-rabbit-soho-theatre",
       "headline": "Review: Pink Rabbit (Soho Theatre)",
       "publishDate": "2026-11-26"
-    },
-    {
-      "showId": "purpose-geffen-regional-2026",
-      "title": "Purpose",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/alicias-amazing-adventure-to-find-the-first-black-britons-the-grove-hall-south-kirkby/",
-      "headline": "Alicia’s Amazing Adventure to Find the First Black Britons &#8211; The Grove Hall, South Kirkby",
-      "publishDate": "2026-11-22"
     }
   ]
 }

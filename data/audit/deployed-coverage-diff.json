@@ -1,53 +1,62 @@
 {
-  "generatedAt": "2026-11-26T16:47:58.395Z",
+  "generatedAt": "2026-11-26T17:55:21.185Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 370,
-  "clean": 368,
-  "defective": 2,
+  "clean": 367,
+  "defective": 3,
   "byType": {
-    "score-drift": 2,
-    "missing-from-prod": 1
+    "score-drift": 3
   },
   "shows": [
     {
-      "showId": "the-afronauts-west-end-2026",
-      "title": "The Afronauts",
-      "openingDate": "2026-11-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theatremonkey"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 63.65 vs local 63.36 (Δ0.29)"
-        }
-      ],
-      "missingFromProd": [
-        "theatremonkey"
-      ],
-      "localCount": 23,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-11-26T16:47:49.844Z"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "openingDate": "2026-11-24",
+      "showId": "peter-pan-off-west-end-2026",
+      "title": "Peter Pan",
+      "openingDate": "2026-11-14",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.12 vs local 78.02 (Δ0.1)"
+          "detail": "deployed cs 77.12 vs local 76.36 (Δ0.76)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 16,
-      "firstDefectAt": "2026-11-26T16:47:49.844Z"
+      "localCount": 7,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-26T17:55:17.522Z"
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "title": "Oliver!",
+      "openingDate": "2025-01-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.34 vs local 85.44 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-26T17:55:17.522Z"
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "title": "The Book of Mormon",
+      "openingDate": "2013-03-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.13 vs local 70 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 20,
+      "deployedCount": 20,
+      "firstDefectAt": "2026-11-26T17:55:17.522Z"
     }
   ],
   "persistentDefective": 0,
