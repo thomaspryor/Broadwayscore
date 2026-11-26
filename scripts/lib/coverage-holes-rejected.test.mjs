@@ -10,7 +10,7 @@ process.on('exit', require('./shows-json-fixture.js').useShowsFixture([]));
 const { approvedFixBinding } = require('./approved-fix-flag.js');
 
 const show = { id: 'example-show-2026', title: 'Example Show', category: 'broadway' };
-const cv = { articleType: 'review', articleTypeConfidence: 'high', isValid: true, wrongArticle: false };
+const cv = { articleType: 'review', articleTypeConfidence: 'high', confidence: 'high', isValid: true, wrongArticle: false };
 const base = { outletId: 'example', url: 'https://example.com/example-show-review', isNonReview: true, contentVerification: cv, fullText: 'x' };
 const f = 'data/review-texts/example-show-2026/example--a.json';
 
@@ -40,6 +40,22 @@ test('wrongProduction is skipped only when the verification also reports it', ()
 test('a stamp stops binding once the body changes (a refetched real review surfaces again)', () => {
   const stamped = stamp({ ...base, isNonReviewReason: 'manual (not a review): forum thread post' });
   assert.ok(rejectedYetVerified({ ...stamped, fullText: 'a different, refetched body' }, show, f));
+});
+
+test('wrongProduction needs high CV confidence and no human override', () => {
+  const wp = { ...base, wrongProduction: true, contentVerification: { ...cv, wrongProduction: true } };
+  assert.equal(rejectedYetVerified(wp, show, f), null);
+  assert.ok(rejectedYetVerified({ ...wp, contentVerification: { ...wp.contentVerification, confidence: 'low', articleTypeConfidence: 'high' } }, show, f));
+  assert.ok(rejectedYetVerified({ ...wp, wrongProductionOverride: true }, show, f));
+  assert.ok(rejectedYetVerified({ ...wp, humanReviewedWrongProduction: false }, show, f));
+});
+
+test('a legacy stamp with no boundTo, or for another field, never hides a row', () => {
+  const m = { ...base, isNonReviewReason: 'manual (not a review): x' };
+  const legacy = { ...m, approvedFixes: [{ fixId: 'f', field: 'isNonReview', newValue: true }] };
+  const other = { ...m, approvedFixes: [{ fixId: 'f', field: 'wrongShow', newValue: true, boundTo: approvedFixBinding(m) }] };
+  assert.ok(rejectedYetVerified(legacy, show, f));
+  assert.ok(rejectedYetVerified(other, show, f));
 });
 
 test('a cleared rejection is not a B row', () => {

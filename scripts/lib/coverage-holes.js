@@ -54,9 +54,23 @@ function cvSaysReview(d) {
   return !!cv && cv.articleType === 'review' && (cv.articleTypeConfidence || cv.confidence) === 'high';
 }
 
-/** A recorded person/sweep verdict stamped by an approved plan that the file is not a review (isNonReviewReason "manual (not a review): ..."). */
-const isBoundManualVerdict = (d) => /^manual \(not a review/i.test(String(d.isNonReviewReason || ''))
-  && d.isNonReview === true && require('./approved-fix-flag').hasApprovedFlag(d, 'isNonReview');
+/**
+ * A recorded manual verdict that an approved data plan stamped for THIS content (BRO-8381). The reason string alone is
+ * never trusted, and a legacy stamp with no boundTo is not either: it could still be hiding a refetched real review.
+ */
+function isBoundManualVerdict(d) {
+  if (!/^manual \(not a review/i.test(String(d.isNonReviewReason || '')) || d.isNonReview !== true) return false;
+  const { approvedFixStillBound } = require('./approved-fix-flag');
+  return Array.isArray(d.approvedFixes) && d.approvedFixes.some((f) => f && f.field === 'isNonReview' && f.newValue === true && f.boundTo && approvedFixStillBound(f, d));
+}
+
+/** The verification itself reports the text reviews another production, with high confidence, and no person overrode it. */
+function isConfirmedWrongProduction(d) {
+  const cv = d.contentVerification;
+  if (d.wrongProduction !== true || !cv || cv.wrongProduction !== true) return false;
+  if ((cv.confidence || cv.articleTypeConfidence) !== 'high') return false;
+  return !(d.wrongProductionManualClear || d.wrongProductionOverride || d.humanReviewedWrongProduction === false);
+}
 
 /** B: rejected as a non-review although the verification says review, and still kept off the site. */
 function rejectedYetVerified(d, show, filePath) {
@@ -68,7 +82,7 @@ function rejectedYetVerified(d, show, filePath) {
   // so a real review that replaced it surfaces again; the reason string alone is never trusted). (2) wrongProduction
   // that the verification ITSELF also reports (the text reviews another production, e.g. a London run filed under the
   // Broadway show): the repair is the URL, not a clear. A wrongProduction flag the verification does not back stays B.
-  if (isBoundManualVerdict(d) || (d.wrongProduction === true && d.contentVerification.wrongProduction === true)) return null;
+  if (isBoundManualVerdict(d) || isConfirmedWrongProduction(d)) return null;
   // A stale isNonReview flag the rebuild already ignores (a newer high-confidence review verdict beats an older
   // classifier verdict) reaches the site, so it is not a hole. rejectionReason has no such demotion yet: those stay.
   if (d.isNonReview === true && !d.rejectionReason && guards().isNonReviewDemotedByFreshCV(d)) return null;
