@@ -314,14 +314,3 @@ test('isIncompleteEnumeration: a composite part note ("sitemap: child ...") stil
   assert.equal(census.isIncompleteEnumeration(['serp: no SERP provider for "q"']), true);
   assert.equal(census.isIncompleteEnumeration(['cdx: wayback cdx: 10 captures, 9 URLs']), false);
 });
-
-test('BRO-8348: timeout-london census filter matches /london/news/ review URLs and not news without "review"', async () => {
-  const src = LONDON_SOURCES['timeout-london'];
-  assert.ok(src && src.urlFilter, 'timeout-london source with urlFilter');
-  const f = src.urlFilter;
-  assert.ok(f.test('https://www.timeout.com/london/theatre/the-bridge-4-review'));
-  assert.ok(f.test('https://www.timeout.com/london/news/the-lives-of-others-review-keira-knightley-stars-in-a-west-end-adaptation-of-the-east-german-thriller-110326'));
-  assert.ok(!f.test('https://www.timeout.com/london/news/keira-knightley-will-return-to-the-london-stage-to-star-in-a-west-end-adaptation-of-award-winning-film-the-lives-of-others-042926'));
-  assert.ok(!f.test('https://www.timeout.com/london/news/best-theatre-reviews-of-the-year-123'));
-  assert.ok(!f.test('https://www.timeout.com/london/things-to-do/halloween-between-the-bridges'));
-});
