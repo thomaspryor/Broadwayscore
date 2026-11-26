@@ -22,7 +22,8 @@
 //      whose body has no JSX, awaits on its own, and whose every use in the file is `await name(...)`. Removing any
 //      of these stays design (a Promise would then reach a condition or a class). `for await` is not exempt.
 //      Kill switch for just this exemption: VISUAL_AWAIT_TRANSPARENT_DISABLED=1.
-//   5. (BRO-8177) logic-only edits are treated like inline handlers: (a) a non-exported, JSX-free function binding
+//   5. (BRO-8177
+// Known accepted gap (review 2026-11-26): a named handler calling a non-set*/non-DOM opener (store.show()) stays quiet, same as inline handlers always did.) logic-only edits are treated like inline handlers: (a) a non-exported, JSX-free function binding
 //      (incl. useCallback) whose every use sits in a quiet root is recorded as quiet (a named handler); (b) a JSX-free,
 //      hook-free binding whose value starts with a path/scheme and whose every use lands in a URL or log position is
 //      quiet with its strings skipped (a URL builder); (c) inside quiet code, a string that lands in href/to on <a> or
@@ -151,9 +152,13 @@ function skeleton(ts, sf, env = process.env) {
   // Strings that can only reach a URL, a log line or an analytics event cannot change a pixel on this page.
   // URL sinks and safe href/to need the URL to START with a path or scheme: `?tab=x` / `#id` / `${x}...` can switch
   // what this same page shows, so they stay design. Error messages are NOT a sink (error.tsx can draw error.message).
-  const URL_SINK = /^((?:router|navigation)\.(push|replace|prefetch)|window\.open|(?:window\.)?location\.(assign|replace)|fetch)$/;
+  const URL_SINK = /^((?:router|navigation)\.(push|replace|prefetch)|window\.open|(?:window\.)?location\.(assign|replace))$/;
   const LOG_SINK = /^(console\.(log|info|warn|error|debug)|track(?:[A-Z]\w*)?|captureEvent|gtag|posthog\.capture|Sentry\.(captureException|captureMessage|addBreadcrumb)|navigator\.(clipboard\.writeText|share|sendBeacon))$/;
   const URL_LEAD = /^(\/(?!\/)|https?:\/\/|mailto:|tel:|sms:)/;
+  // BRO-8177 review: a query/hash switches what the page shows (view/sort/theme), so it stays design.
+  const TRACK_KEY = /^(utm\w*|ref|source|src|fbclid|gclid|u|v)$/;
+  const QUERY_OK = (t) => { const i = t.search(/[?#]/); if (i < 0) return true; if (t[i] === '#') return false; return t.slice(i + 1).split('&').every((kv) => TRACK_KEY.test(kv.split('=')[0].replace(/\$\{[^}]*\}/g, ''))); };
+  const URL_PLAIN = (t) => URL_LEAD.test(t) && QUERY_OK(t);
   const linkNames = new Set();
   for (const st of sf.statements) {
     if (ts.isImportDeclaration(st) && ts.isStringLiteral(st.moduleSpecifier) && st.moduleSpecifier.text === 'next/link' && st.importClause && st.importClause.name) linkNames.add(st.importClause.name.text);
@@ -164,8 +169,8 @@ function skeleton(ts, sf, env = process.env) {
   const leadsWithUrl = (e0) => {
     const e = strip(e0);
     if (!e) return false;
-    if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e)) return URL_LEAD.test(e.text);
-    if (ts.isTemplateExpression(e)) return URL_LEAD.test(e.head.text);
+    if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e)) return URL_PLAIN(e.text);
+    if (ts.isTemplateExpression(e)) return URL_PLAIN(e.head.text) && e.templateSpans.every((sp) => !/[?#]/.test(sp.literal.text) || QUERY_OK('/x' + sp.literal.text));
     if (ts.isBinaryExpression(e) && e.operatorToken.kind === K.PlusToken) return leadsWithUrl(e.left);
     if (ts.isConditionalExpression(e)) return leadsWithUrl(e.whenTrue) && leadsWithUrl(e.whenFalse);
     return false;

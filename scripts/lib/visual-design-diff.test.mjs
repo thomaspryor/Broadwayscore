@@ -151,6 +151,9 @@ const LOGIC_DESIGN = {
   'URL const rendered as text': [`const t="/a"; return <p>{t}</p>;`, `const t="/b"; return <p>{t}</p>;`],
   'handler that returns JSX': [`const h=()=><A big={true}/>; return <B onRender={h}/>;`, `const h=()=><A big={false}/>; return <B onRender={h}/>;`],
   'error message (error.tsx can draw it)': [`return <button onClick={()=>{ throw new Error("a") }}/>;`, `return <button onClick={()=>{ throw new Error("b") }}/>;`],
+  'same-page query link (view/sort switch)': [`return <a href="/shows?sort=score"/>;`, `return <a href="/shows?sort=date"/>;`],
+  'router.replace with a query': [`return <button onClick={()=>router.replace("/?m=a")}/>;`, `return <button onClick={()=>router.replace("/?m=b")}/>;`],
+  'template URL with a query tail': ["return <a href={`/s/${id}?view=a`}/>;", "return <a href={`/s/${id}?view=b`}/>;"],
   'hook-backed value only used in href': [`const s=useThing("a"); return <a href={s}/>;`, `const s=useThing("b"); return <a href={s}/>;`],
 };
 for (const [name, [a, b]] of Object.entries(LOGIC_DESIGN)) {
