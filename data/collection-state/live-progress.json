@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-26T04:24:30.801Z",
-  "processed": 371,
-  "failed": 8,
-  "successRate": "97.9%",
+  "updatedAt": "2026-11-26T04:41:11.146Z",
+  "processed": 382,
+  "failed": 260,
+  "successRate": "59.5%",
   "tierBreakdown": {
     "playwright": 222,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 15,
     "directCookies": 0,
     "scrapingdog": 34,
     "scrapingbee": 0,
@@ -14,53 +14,8 @@
     "archiveToday": 0,
     "archive": 110
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-11-26T02:18:34.690Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-11-26T02:35:50.628Z",
-      "event": "bb-session",
-      "session": "60564a0d",
-      "url": "https://www.nytimes.com/theater/come-from-away-musical-gander-canada"
-    },
-    {
-      "t": "2026-11-26T02:35:51.441Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-26T02:38:33.420Z",
-      "event": "bb-session",
-      "session": "2c1b18a0",
-      "url": "https://www.nytimes.com/2026/09/16/theater/in-wanted-outlaw-sisters-pass-for-whi"
-    },
-    {
-      "t": "2026-11-26T02:38:34.283Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-26T02:38:49.207Z",
-      "event": "bb-session",
-      "session": "de586766",
-      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
-    },
-    {
-      "t": "2026-11-26T02:42:54.681Z",
-      "event": "bb-session",
-      "session": "66191437",
-      "url": "https://www.hollywoodreporter.com/tv/tv-features/scott-speedman-r-j-decker-greys"
-    },
-    {
-      "t": "2026-11-26T02:43:05.800Z",
-      "event": "bb-session",
-      "session": "7b00559a",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
     {
       "t": "2026-11-26T02:55:48.598Z",
       "event": "bb-session",
@@ -129,6 +84,51 @@
       "t": "2026-11-26T04:06:54.205Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-26T04:13:23.890Z",
+      "event": "bb-session",
+      "session": "e615f474",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-26T04:13:24.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-26T04:13:42.130Z",
+      "event": "bb-session",
+      "session": "9cb9d366",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-26T04:13:43.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-26T04:27:29.831Z",
+      "event": "bb-session",
+      "session": "3208f1c1",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-11-26T04:31:26.276Z",
+      "event": "bb-session",
+      "session": "69ae0f04",
+      "url": "https://deadline.com/2026/02/the-only-living-pickpocket-in-new-york-sony-picture"
+    },
+    {
+      "t": "2026-11-26T04:34:38.902Z",
+      "event": "bb-session",
+      "session": "d179e0a9",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-26T04:34:39.831Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
