@@ -1,21 +1,37 @@
 {
-  "updatedAt": "2026-11-26T14:40:04.151Z",
-  "processed": 394,
-  "failed": 222,
-  "successRate": "64.0%",
+  "updatedAt": "2026-11-26T15:06:22.747Z",
+  "processed": 478,
+  "failed": 253,
+  "successRate": "65.4%",
   "tierBreakdown": {
-    "playwright": 233,
+    "playwright": 267,
     "amp": 0,
-    "browserbase": 13,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 36,
+    "scrapingdog": 42,
     "scrapingbee": 0,
-    "brightdata": 19,
-    "archiveToday": 0,
-    "archive": 116
+    "brightdata": 23,
+    "archiveToday": 4,
+    "archive": 158
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 16,
   "recentActivity": [
+    {
+      "t": "2026-11-26T11:18:52.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-26T12:21:30.936Z",
+      "event": "bb-session",
+      "session": "7b727b43",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-26T12:21:31.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
     {
       "t": "2026-11-26T12:22:25.984Z",
       "event": "bb-session",
@@ -109,26 +125,10 @@
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
     },
     {
-      "t": "2026-11-26T14:37:20.605Z",
+      "t": "2026-11-26T15:00:19.775Z",
       "event": "bb-session",
-      "session": "4bcc1b84",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656173"
-    },
-    {
-      "t": "2026-11-26T14:37:21.069Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-26T14:37:49.367Z",
-      "event": "bb-session",
-      "session": "e79696cd",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656176"
-    },
-    {
-      "t": "2026-11-26T14:37:49.824Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "session": "0d3f5d72",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
     }
   ]
 }
