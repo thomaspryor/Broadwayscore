@@ -59,7 +59,9 @@ test('a short-title show with no credits is reconciled through its venue', () =>
 test('recentlyOpenedShows keeps only shows opened in the last 7 days', () => {
   assert.deepEqual(recentlyOpenedShows(active, NOW).map((s) => s.id), [fish.id]);
   assert.deepEqual(recentlyOpenedShows(active, NOW, 10).map((s) => s.id), [fish.id, soon.id]);
-  assert.deepEqual(recentlyOpenedShows([{ ...fish, status: 'closed' }, { ...fish, id: 'f2', openingDate: null }], NOW), []);
+  assert.deepEqual(recentlyOpenedShows([{ ...fish, status: 'announced' }, { ...fish, id: 'f2', openingDate: null }], NOW), []);
+  // BRO-7402: a short run that already closed inside the window is still reconciled.
+  assert.deepEqual(recentlyOpenedShows([{ ...fish, status: 'closed' }], NOW).map((s) => s.id), [fish.id]);
 });
 
 test('urlKey ignores scheme, www, query, fragment and trailing slash', () => {

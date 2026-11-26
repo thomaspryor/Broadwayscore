@@ -96,7 +96,9 @@ async function main() {
   if (o.help) { console.log(fs.readFileSync(__filename, 'utf8').split('*/')[0].replace(/^[\s\S]*?\/\*\*\n/, '')); return 0; }
   const nowMs = Date.now();
   const { shows } = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-  const activeShows = shows.filter((s) => s.status === 'open' || s.status === 'previews');
+  // BRO-7402: match against recently closed shows too (a review can post after a short run closes).
+  const live = shows.filter((s) => s.status === 'open' || s.status === 'previews');
+  const activeShows = require('./lib/outlet-opening-window').dailyFeedPool(live, shows, new Date(nowMs - o.lookbackDays * 86400000));
   const targets = o.show ? shows.filter((s) => s.id === o.show) : recentlyOpenedShows(activeShows, nowMs, o.windowDays);
   if (o.show && targets.length === 0) { console.error(`unknown show id: ${o.show}`); return 2; }
 

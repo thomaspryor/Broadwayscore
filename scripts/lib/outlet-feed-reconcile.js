@@ -54,7 +54,8 @@ function slugOf(url) {
  */
 function recentlyOpenedShows(shows, nowMs, windowDays = DEFAULT_WINDOW_DAYS) {
   return (shows || []).filter((s) => {
-    if (!s || (s.status !== 'open' && s.status !== 'previews')) return false;
+    // BRO-7402: a short run can close inside the window (Wuthering Heights ran 4 days); keep closed shows too.
+    if (!s || (s.status !== 'open' && s.status !== 'previews' && s.status !== 'closed')) return false;
     const t = Date.parse(s.openingDate || '');
     return !Number.isNaN(t) && t <= nowMs + DAY_MS && nowMs - t <= windowDays * DAY_MS;
   });
