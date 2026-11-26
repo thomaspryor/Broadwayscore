@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-26T17:55:06.472Z",
+  "generatedAt": "2026-11-26T19:41:44.253Z",
   "windowDays": 45,
-  "showsScanned": 308,
+  "showsScanned": 307,
   "gaps": [
     {
       "showId": "msblackforpresident-off-broadway-2026",
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 418.8823575,
+      "fileAgeHours": 420.6594077777778,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 396.33393666666666,
+      "nonTerminalAgeHours": 398.1110977777778,
       "needsManualRecovery": true
     },
     {
@@ -38,30 +38,10 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 388.1142277777778,
+      "fileAgeHours": 389.89133583333336,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 386.96949166666667,
+      "nonTerminalAgeHours": 388.7466527777778,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "fiddler-on-the-roof-regional-2026",
-      "title": "Fiddler on the Roof",
-      "openingDate": "2026-11-19",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": false,
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656222",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 3,
-      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=fiddler-on-the-roof-regional-2026   # follows the thread's Link to the real review page",
-      "firstSeen": "2026-11-26T01:39:28.813Z",
-      "fileAgeHours": 16.26045472222222,
-      "gapSeenAt": "2026-11-26T03:27:08.404Z",
-      "nonTerminalAgeHours": 14.46613,
-      "needsManualRecovery": false
     }
   ],
   "contradictions": []
