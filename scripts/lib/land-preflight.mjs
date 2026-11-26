@@ -129,6 +129,39 @@ const ok = (r) => r.status === 0;
 const out = (r) => r.stdout.trim();
 
 /**
+ * BRO-8213: CLAUDE.md over the claude-md-anchors.json byteLimit makes test.yml's lint job (and so the land run) refuse
+ * 20+ minutes in. Cloud sessions have no pre-push hook, so judge it here, in milliseconds, from git objects only.
+ * Judged on the tree land would apply (landedTip) when the rebase is clean, else the pushed tip. Any git or config
+ * problem is a skip, never a block.
+ * -> { status: 'clean' | 'fail' | 'skip', problems?, bytes?, limit?, reason? }
+ */
+export function checkClaudeMdByteCap({ base, tip, cwd, landedTip = null }) {
+  const rev = landedTip || tip;
+  const diff = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${tip}`, '--', 'CLAUDE.md']);
+  if (!ok(diff)) return { status: 'skip', reason: 'diff vs base failed' };
+  const landedDiff = landedTip ? git(cwd, ['diff', '--name-only', '--no-renames', base, landedTip, '--', 'CLAUDE.md']) : null;
+  if (!out(diff) && !(landedDiff && ok(landedDiff) && out(landedDiff))) return { status: 'clean', reason: 'CLAUDE.md not changed' };
+  const md = git(cwd, ['show', `${rev}:CLAUDE.md`]);
+  if (!ok(md)) return { status: 'skip', reason: 'CLAUDE.md not readable at the tip' };
+  let cfgText = git(cwd, ['show', `${rev}:scripts/lib/claude-md-anchors.json`]);
+  let cfg = null;
+  try {
+    cfg = ok(cfgText) ? JSON.parse(cfgText.stdout) : JSON.parse(fs.readFileSync(path.join(cwd, 'scripts/lib/claude-md-anchors.json'), 'utf8'));
+  } catch {
+    return { status: 'skip', reason: 'claude-md-anchors.json unreadable' };
+  }
+  const { checkByteCap } = require('./check-claude-md-byte-cap.js');
+  const r = checkByteCap(md.stdout, cfg);
+  if (r.ok) return { status: 'clean', bytes: r.bytes, limit: r.limit };
+  return {
+    status: 'fail',
+    bytes: r.bytes,
+    limit: r.limit,
+    problems: [`CLAUDE.md is ${r.bytes}B, over the ${r.limit}B cap in scripts/lib/claude-md-anchors.json (${r.bytes - r.limit}B too many). Trim it or move detail to memory/.`],
+  };
+}
+
+/**
  * Would `git rebase base` with tip checked out conflict?
  * -> { status: 'clean' | 'conflict' | 'skip', commit?, files?, reason?, replayed? }
  */
@@ -749,7 +782,7 @@ function testTreeDirty(cwd) {
   return paths.filter((p) => TEST_FILE_RE.test(p) || isManifest(p) || p.startsWith('.github/workflows/'));
 }
 
-export function blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans, toplevel }) {
+export function blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans, toplevel, claudeMd }) {
   const lines = [`LAND PREFLIGHT: land.yml would refuse this push to ${target}. Fix it on the branch and push again (about 30 minutes saved).`];
   if (rebase?.status === 'conflict') {
     lines.push(
@@ -786,6 +819,10 @@ export function blockMessage({ target, rebase, tests, base, botOwned, staleRever
     lines.push('', '* Pending data plans (execute-approved-fix.js refuses these at apply time, and tests/unit/pending-fix-plans.test.mjs fails on them):');
     for (const p of pendingPlans.problems) lines.push(`   - ${p}`);
     lines.push('   Split an oversized plan by show (each show\'s actions together, in order) into <id>.json, <id>-b.json, ..., each with its own planId.');
+  }
+  if (claudeMd?.status === 'fail') {
+    lines.push('', '* CLAUDE.md size cap (the CI lint job would go red):');
+    for (const p of claudeMd.problems) lines.push(`   - ${p}`);
   }
   if (staleRevert?.status === 'fail') {
     lines.push(
@@ -860,13 +897,15 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   detail.pendingPlans = pendingPlans;
   const toplevel = (seams.checkToplevelPushPaths || checkToplevelPushPaths)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
   detail.toplevel = toplevel;
+  const claudeMd = (seams.checkClaudeMdByteCap || checkClaudeMdByteCap)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
+  detail.claudeMd = claudeMd;
   // A conflicting rebase already gets the merge explanation in blockMessage, so only judge merges when it did not.
   const merges = rebase.status === 'conflict' ? { count: null, carrying: null, warnings: [] } : (seams.mergeCommitWarnings || mergeCommitWarnings)({ base, src, cwd });
   detail.merges = { count: merges.count, carrying: merges.carrying };
   const warnings = [...(tests.warnings || []), ...(workflows.warnings || []), ...(pendingPlans.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd }), ...merges.warnings];
   detail.warnings = warnings;
-  if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status, workflows.status, pendingPlans.status, toplevel.status].some((x) => x === true || x === 'fail')) {
-    const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans, toplevel });
+  if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status, workflows.status, pendingPlans.status, toplevel.status, claudeMd.status].some((x) => x === true || x === 'fail')) {
+    const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans, toplevel, claudeMd });
     return { decision: 'block', message: warnings.length ? `${message}\n\nAlso: ${warnings.join('\n')}` : message, warnings, detail };
   }
   return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', warnings, detail };
