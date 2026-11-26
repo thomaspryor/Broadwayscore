@@ -84,6 +84,7 @@ jobs:
       urgent: ${{ steps.check.outputs.urgent }}
       baseline_url: ${{ steps.check.outputs.baseline_url }}
       baseline_created_ms: ${{ steps.check.outputs.baseline_created_ms }}
+      code_changed: ${{ steps.check.outputs.code_changed }}
     steps:
       # BRO-7766: a pre-warm run must start its setup now, while the rebuild runs.
       # The gate is judged later, inside the deploy job's "Wait for rebuild" step,
@@ -654,6 +655,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           GATE_URGENT: ${{ needs.should-deploy.outputs.urgent }}
           GATE_REASON: ${{ needs.should-deploy.outputs.reason }}
+          GATE_CODE_CHANGED: ${{ needs.should-deploy.outputs.code_changed }}
           GATE_BASELINE_URL: ${{ needs.should-deploy.outputs.baseline_url }}
           GATE_BASELINE_CREATED_MS: ${{ needs.should-deploy.outputs.baseline_created_ms }}
           REDUNDANT_STOP_DISABLED: ${{ vars.DEPLOY_REDUNDANT_STOP_DISABLED }}

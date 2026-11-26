@@ -61,7 +61,7 @@ test('workflow wiring: step runs in deploy job before the build, fail-open, gate
 const { redundantRoutineDeploy, olderRunUploading } = require('./deploy-coalesce.js');
 const T0 = Date.UTC(2026, 10, 26, 6, 0, 0);
 const BASE = 'broadwayscore-base.vercel.app';
-const routine = (o = {}) => ({ urgent: 'false', reason: 'content-changed', selfRunId: 20, runs: [], jobsByRun: {}, deployments: [], baselineUrl: BASE, baselineCreatedMs: T0, ...o });
+const routine = (o = {}) => ({ urgent: 'false', reason: 'content-changed', codeChanged: 'false', nowMs: T0 + 10 * 60e3, selfRunId: 20, runs: [], jobsByRun: {}, deployments: [], baselineUrl: BASE, baselineCreatedMs: T0, ...o });
 const dep = (url, created, state = 'READY') => ({ url, created, state });
 
 test('BRO-8236: routine run stops when Vercel has a newer non-failed prod deploy than its baseline', () => {
@@ -118,4 +118,24 @@ test('BRO-8236 wiring: gate exports urgent + baseline, coalesce step reads them,
   assert.match(body, /if: steps\.coalesce\.outputs\.redundant == 'true'/);
   assert.ok(body.indexOf('-f source=deferred') < body.indexOf('gh run cancel'), 'follow-up dispatched before self-cancel');
   assert.match(body, /dispatch failed, deploying/);
+});
+
+test('BRO-8236: a code change (or unknown code state) is never stopped, whatever the gate reason', () => {
+  const deployments = [dep('other.vercel.app', T0 + 60e3)];
+  for (const codeChanged of ['true', '', undefined, null]) {
+    assert.equal(redundantRoutineDeploy(routine({ codeChanged, deployments })).stop, false, String(codeChanged));
+  }
+});
+test('BRO-8236: a stuck in-flight Vercel deploy (>20 min) does not suppress shipping; a stale READY one still counts', () => {
+  const late = T0 + 60 * 60e3;
+  assert.equal(redundantRoutineDeploy(routine({ nowMs: late, deployments: [dep('stuck.vercel.app', T0 + 60e3, 'BUILDING')] })).stop, false);
+  assert.equal(redundantRoutineDeploy(routine({ nowMs: late, deployments: [dep('done.vercel.app', T0 + 60e3, 'READY')] })).stop, true);
+});
+test('BRO-8236: the gate script decides before cancelling, and a stopping run cancels nothing', () => {
+  const g = readFileSync(new URL('../deploy-coalesce-gate.js', import.meta.url), 'utf8');
+  const verdictAt = g.indexOf('verdict = redundantRoutineDeploy(');
+  const cancelAt = g.indexOf("gh(['run', 'cancel'");
+  assert.ok(verdictAt > 0 && cancelAt > verdictAt, 'verdict computed before any cancel');
+  assert.match(g.slice(verdictAt, cancelAt), /if \(verdict\.stop\) return;/);
+  assert.match(g, /redundant=\$\{verdict\.stop && !dryRun\}/, 'dry run never stops a run');
 });

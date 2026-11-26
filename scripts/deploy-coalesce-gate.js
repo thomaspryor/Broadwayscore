@@ -6,7 +6,7 @@
 // (redundantRoutineDeploy in lib/deploy-coalesce.js) and writes redundant=true|false
 // to GITHUB_OUTPUT; the workflow's next step then stops the run. Errors => redundant=false.
 // Env: GH_TOKEN, GITHUB_REPOSITORY, GITHUB_RUN_ID, GITHUB_REF_NAME, COALESCE_DRY_RUN=1 (log only),
-//   GATE_URGENT, GATE_REASON, GATE_BASELINE_URL, GATE_BASELINE_CREATED_MS (should-deploy outputs),
+//   GATE_URGENT, GATE_REASON, GATE_CODE_CHANGED, GATE_BASELINE_URL, GATE_BASELINE_CREATED_MS (should-deploy outputs),
 //   VERCEL_TOKEN, REDUNDANT_STOP_DISABLED=true (kill switch: never redundant).
 const { execFileSync } = require('child_process');
 const fs = require('fs');
@@ -39,6 +39,7 @@ async function main() {
   const jobsByRun = {};
   const repo = process.env.GITHUB_REPOSITORY;
   const selfRunId = Number(process.env.GITHUB_RUN_ID);
+  let coalesce = null;
   try {
     for (const status of ['queued', 'in_progress']) {
       runs.push(...api(`repos/${repo}/actions/workflows/vercel-deploy.yml/runs?status=${status}&per_page=50`).workflow_runs);
@@ -46,18 +47,15 @@ async function main() {
     // Pre-warm runs are never cancelled (decide() skips them) but can be uploading, so their jobs are read too.
     const older = runs.filter((r) => r.id < selfRunId).slice(0, MAX_JOB_LOOKUPS);
     for (const r of older) jobsByRun[r.id] = api(`repos/${repo}/actions/runs/${r.id}/jobs?per_page=30`).jobs;
-    const d = decide({ selfRunId, selfBranch: process.env.GITHUB_REF_NAME, runs, jobsByRun });
-    console.log(`[coalesce] self=${selfRunId} cancel=[${d.cancel}] kept=${JSON.stringify(d.kept)}`);
-    for (const id of d.cancel) {
-      if (process.env.COALESCE_DRY_RUN) continue;
-      try { gh(['run', 'cancel', String(id), '--repo', repo]); console.log(`[coalesce] cancelled superseded run ${id}`); }
-      catch (e) { console.log(`::warning::[coalesce] cancel ${id} failed: ${String(e.message).split('\n')[0]}`); }
-    }
+    coalesce = decide({ selfRunId, selfBranch: process.env.GITHUB_REF_NAME, runs, jobsByRun });
+    console.log(`[coalesce] self=${selfRunId} cancel=[${coalesce.cancel}] kept=${JSON.stringify(coalesce.kept)}`);
   } catch (e) {
     console.log(`::warning::[coalesce] fail-open, nothing cancelled: ${String(e.message).split('\n')[0]}`);
     runs = null; // run data unknown: the uploading check must not act on a partial list
   }
 
+  // Decide first: a run that stops must cancel nothing, or an urgent predecessor it would
+  // have superseded is lost and its replacement is only a routine follow-up (ship-check).
   let verdict = { stop: false, why: 'disabled' };
   if (process.env.REDUNDANT_STOP_DISABLED !== 'true') {
     const baselineCreatedMs = Number(process.env.GATE_BASELINE_CREATED_MS);
@@ -67,6 +65,7 @@ async function main() {
     verdict = redundantRoutineDeploy({
       urgent: process.env.GATE_URGENT,
       reason: process.env.GATE_REASON,
+      codeChanged: process.env.GATE_CODE_CHANGED,
       selfRunId,
       runs: runs || [],
       jobsByRun,
@@ -75,8 +74,16 @@ async function main() {
       baselineCreatedMs,
     });
   }
-  console.log(`::notice::[redundant] stop=${verdict.stop} (${verdict.why}) urgent=${process.env.GATE_URGENT || '-'} reason=${process.env.GATE_REASON || '-'}`);
-  setOutput(`redundant=${verdict.stop}`);
+  const dryRun = !!process.env.COALESCE_DRY_RUN;
+  console.log(`::notice::[redundant] stop=${verdict.stop}${dryRun ? ' (dry run, not acted on)' : ''} (${verdict.why}) urgent=${process.env.GATE_URGENT || '-'} reason=${process.env.GATE_REASON || '-'} codeChanged=${process.env.GATE_CODE_CHANGED || '-'}`);
+  setOutput(`redundant=${verdict.stop && !dryRun}`);
+  if (verdict.stop) return;
+
+  for (const id of (coalesce ? coalesce.cancel : [])) {
+    if (dryRun) continue;
+    try { gh(['run', 'cancel', String(id), '--repo', repo]); console.log(`[coalesce] cancelled superseded run ${id}`); }
+    catch (e) { console.log(`::warning::[coalesce] cancel ${id} failed: ${String(e.message).split('\n')[0]}`); }
+  }
 }
 
 if (require.main === module) {

@@ -504,3 +504,24 @@ test('BRO-8236: gateOutputLines carries urgent + live baseline url and created t
   assert.match(unknown, /^urgent=$/m, 'unknown urgency is empty, which the redundancy check treats as never-stop');
   assert.match(unknown, /^baseline_created_ms=$/m);
 });
+
+test('BRO-8236: codeChangedFlag is false only on positive proof of no code change', async () => {
+  const { codeChangedFlag, gateOutputLines } = await import('./should-deploy-gate.js').then((m) => m.default || m);
+  const b = { gateDisabled: false, urgent: false, proceed: true, baselineSha: 'a', headSha: 'b' };
+  assert.equal(codeChangedFlag({ ...b, codeDiffResult: 'clean' }), false);
+  assert.equal(codeChangedFlag({ ...b, codeDiffResult: 'dirty' }), true);
+  assert.equal(codeChangedFlag({ ...b, codeDiffResult: 'error' }), null);
+  assert.equal(codeChangedFlag({ ...b, codeDiffResult: null }), null);
+  assert.equal(codeChangedFlag({ ...b, headSha: 'a', codeDiffResult: null }), false, 'same SHA: no code change');
+  assert.equal(codeChangedFlag({ ...b, urgent: true, codeDiffResult: 'clean' }), null, 'urgent: never stoppable');
+  assert.equal(codeChangedFlag({ ...b, proceed: false, codeDiffResult: 'clean' }), null);
+  assert.equal(codeChangedFlag({ ...b, gateDisabled: true, codeDiffResult: 'clean' }), null);
+  assert.match(gateOutputLines({ proceed: true, reason: 'content-changed', codeChanged: false }), /^code_changed=false$/m);
+  assert.match(gateOutputLines({ proceed: true, reason: 'content-changed' }), /^code_changed=$/m);
+});
+test('BRO-8236 wiring: code_changed flows from the gate to the coalesce step', async () => {
+  const fs = await import('node:fs');
+  const y = fs.readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+  assert.ok(y.includes('code_changed: ${{ steps.check.outputs.code_changed }}'));
+  assert.ok(y.includes('GATE_CODE_CHANGED: ${{ needs.should-deploy.outputs.code_changed }}'));
+});

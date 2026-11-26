@@ -69,9 +69,12 @@ function decide({ selfRunId, selfBranch = 'main', runs, jobsByRun }) {
  * code changes and fail-open reasons never stop. Missing data = no stop (fail open).
  */
 const ROUTINE_REDUNDANT_REASONS = ['content-changed', 'data-changed', 'staleness-backstop'];
-const NOT_FAILED_STATES = new Set(['QUEUED', 'INITIALIZING', 'BUILDING', 'READY']);
-// check-prod-deploy.js rounds ageSec to the second; the baseline itself is excluded by url.
-const CREATED_SLACK_MS = 2000;
+const IN_FLIGHT_STATES = new Set(['QUEUED', 'INITIALIZING', 'BUILDING']);
+// A prebuilt deploy is READY within minutes; an older in-flight one is stuck and must not
+// suppress routine shipping indefinitely (Codex ship-check).
+const IN_FLIGHT_MAX_AGE_MS = 20 * 60 * 1000;
+// baseline created time is rebuilt from a whole-second ageSec; the baseline itself is excluded by url.
+const CREATED_SLACK_MS = 5000;
 
 /** Pure: id of an older main run whose "Deploy to Production" step is running, else null. */
 function olderRunUploading({ selfRunId, runs, jobsByRun }) {
@@ -85,14 +88,23 @@ function olderRunUploading({ selfRunId, runs, jobsByRun }) {
   return null;
 }
 
-/** @returns {{stop: boolean, why: string}} */
-function redundantRoutineDeploy({ urgent, reason, selfRunId, runs, jobsByRun, deployments, baselineUrl, baselineCreatedMs }) {
+/**
+ * codeChanged must be the string 'false' (gate positively found no CODE_PATHS change vs the
+ * live baseline); anything else never stops, so a code fix is never discarded.
+ * @returns {{stop: boolean, why: string}}
+ */
+function redundantRoutineDeploy({ urgent, reason, codeChanged, selfRunId, runs, jobsByRun, deployments, baselineUrl, baselineCreatedMs, nowMs = Date.now() }) {
   if (String(urgent) !== 'false') return { stop: false, why: `urgent=${urgent === undefined || urgent === '' ? 'unknown' : urgent}` };
   if (!ROUTINE_REDUNDANT_REASONS.includes(reason)) return { stop: false, why: `reason=${reason || 'unknown'}` };
+  if (String(codeChanged) !== 'false') return { stop: false, why: `code-changed=${codeChanged === undefined || codeChanged === '' ? 'unknown' : codeChanged}` };
   const since = Number(baselineCreatedMs);
   if (Array.isArray(deployments) && baselineUrl && Number.isFinite(since) && since > 0) {
-    const newer = deployments.find((d) => d && d.url && d.url !== baselineUrl &&
-      NOT_FAILED_STATES.has(String(d.state || d.readyState || '')) && Number(d.created) > since - CREATED_SLACK_MS);
+    const newer = deployments.find((d) => {
+      if (!d || !d.url || d.url === baselineUrl || !(Number(d.created) > since - CREATED_SLACK_MS)) return false;
+      const state = String(d.state || d.readyState || '');
+      if (state === 'READY') return true;
+      return IN_FLIGHT_STATES.has(state) && nowMs - Number(d.created) <= IN_FLIGHT_MAX_AGE_MS;
+    });
     if (newer) return { stop: true, why: `newer-deployment ${newer.url} (${newer.state || newer.readyState})` };
   }
   const up = selfRunId ? olderRunUploading({ selfRunId, runs, jobsByRun }) : null;

@@ -545,10 +545,24 @@ function runDiff(baselineSha, headSha, paths = SITE_PATHS) {
  * Pure: the GITHUB_OUTPUT lines. BRO-8236: urgent + the live baseline (url, created ms)
  * feed the deploy job's pre-upload redundancy check (scripts/deploy-coalesce-gate.js).
  */
-function gateOutputLines({ proceed, reason, retryAfterSec = 0, urgent = null, baselineUrl = null, baselineAgeSec = null, nowMs = Date.now() }) {
+function gateOutputLines({ proceed, reason, retryAfterSec = 0, urgent = null, codeChanged = null, baselineUrl = null, baselineAgeSec = null, nowMs = Date.now() }) {
   const createdMs = baselineAgeSec != null && Number.isFinite(Number(baselineAgeSec)) ? nowMs - Number(baselineAgeSec) * 1000 : '';
   return `proceed=${proceed}\nreason=${reason}\nretry_after_sec=${retryAfterSec}\n` +
-    `urgent=${urgent == null ? '' : urgent}\nbaseline_url=${baselineUrl || ''}\nbaseline_created_ms=${createdMs}\n`;
+    `urgent=${urgent == null ? '' : urgent}\ncode_changed=${codeChanged == null ? '' : codeChanged}\n` +
+    `baseline_url=${baselineUrl || ''}\nbaseline_created_ms=${createdMs}\n`;
+}
+
+/**
+ * Pure: 'false' only when a routine proceeding run positively has no CODE_PATHS change vs
+ * the live baseline (same SHA, or a clean code diff); 'true' on a dirty diff; null (unknown,
+ * never stoppable) for urgent/held/kill-switch runs and diff errors.
+ */
+function codeChangedFlag({ gateDisabled, urgent, proceed, baselineSha, headSha, codeDiffResult }) {
+  if (gateDisabled || urgent || !proceed || !baselineSha) return null;
+  if (baselineSha === headSha) return false;
+  if (codeDiffResult === 'clean') return false;
+  if (codeDiffResult === 'dirty') return true;
+  return null;
 }
 
 function writeOutput(proceed, reason, retryAfterSec = 0, extra = {}) {
@@ -570,6 +584,9 @@ async function main() {
   const baseline = gateDisabled
     ? { sha: null, ageSec: null, reviewsBlobSha: null, showsBlobSha: null }
     : getBaseline();
+  // BRO-8236: ageSec was measured now; rebuild the baseline's created time from THIS
+  // moment, not from output time after the fetches/diffs below (ship-check).
+  const baselineFetchedAtMs = Date.now();
 
   // BRO-8236: an urgent trigger keeps ship-now only for a visitor-visible reveal.
   let reveal = null;
@@ -628,10 +645,19 @@ async function main() {
     backstopSec,
   });
 
+  // BRO-8236: the pre-upload redundancy check may only stop a run whose live..HEAD range
+  // positively has no CODE_PATHS change (a gate reason of content-changed does not say that:
+  // the code diff only runs inside the min interval).
+  let codeDiffForFlag = codeDiff.result;
+  if (!gateDisabled && proceed && !urgent && baseline.sha && baseline.sha !== headSha && codeDiffForFlag == null) {
+    codeDiffForFlag = runDiff(baseline.sha, headSha, CODE_PATHS).result;
+  }
+  const codeChanged = codeChangedFlag({ gateDisabled, urgent, proceed, baselineSha: baseline.sha, headSha, codeDiffResult: codeDiffForFlag });
+
   const short = (s) => (s ? s.slice(0, 10) : 'unknown');
   const verb = proceed ? 'DEPLOY' : 'SKIP';
   console.log(
-    `::notice::[content-gate] ${verb} — reason=${reason} baseline=${short(baseline.sha)} head=${short(headSha)} deployAge=${baseline.ageSec != null ? Math.round(baseline.ageSec / 60) + 'm' : 'unknown'} event=${rawEvent} source=${process.env.GATE_SOURCE || '-'} urgent=${urgent} urgency=${urgency.why} dataDiff=${dataDiffResult || 'unknown'} minInterval=${Math.round(minIntervalSec / 60)}m backstop=${Math.round(backstopSec / 60)}m`
+    `::notice::[content-gate] ${verb} — reason=${reason} baseline=${short(baseline.sha)} head=${short(headSha)} deployAge=${baseline.ageSec != null ? Math.round(baseline.ageSec / 60) + 'm' : 'unknown'} event=${rawEvent} source=${process.env.GATE_SOURCE || '-'} urgent=${urgent} urgency=${urgency.why} codeChanged=${codeChanged == null ? '-' : codeChanged} dataDiff=${dataDiffResult || 'unknown'} minInterval=${Math.round(minIntervalSec / 60)}m backstop=${Math.round(backstopSec / 60)}m`
   );
   if (reveal) console.log(`::notice::[content-gate] reveal=${reveal.reveal} (${reveal.reason}${reveal.file ? ' ' + reveal.file : ''})`);
   if (diff.files.length) console.log(`::notice::[content-gate] changed site files (first ${diff.files.length}): ${diff.files.join(', ')}`);
@@ -641,12 +667,12 @@ async function main() {
   // for an unreliable cron (+30s margin).
   const retryAfterSec = !proceed && reason === 'min-interval' && baseline.ageSec != null
     ? Math.max(60, Math.ceil(minIntervalSec - baseline.ageSec) + 30) : 0;
-  writeOutput(proceed, reason, retryAfterSec, { urgent: gateDisabled ? null : urgent, baselineUrl: baseline.url, baselineAgeSec: baseline.ageSec });
+  writeOutput(proceed, reason, retryAfterSec, { urgent: gateDisabled ? null : urgent, codeChanged, baselineUrl: baseline.url, baselineAgeSec: baseline.ageSec, nowMs: baselineFetchedAtMs });
 }
 
 module.exports = {
   // Back-compat alias (pre-BRO-8198 name); the live value comes from resolveGateTiming().
-  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, isAlwaysShip, CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours, gateOutputLines };
+  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, isAlwaysShip, CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours, gateOutputLines, codeChangedFlag };
 
 // `--meta-args`: print `<name>BlobSha=<git blob sha>` for each tracked file
 // present in data/, one per line, for vercel-deploy.yml to stamp onto the
