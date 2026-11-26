@@ -50,4 +50,54 @@ function decide({ selfRunId, selfBranch = 'main', runs, jobsByRun }) {
   return out;
 }
 
-module.exports = { decide, pendingBeforeCoreData, PASSED_STEP };
+/*
+ * BRO-8236 (part 2): a ROUTINE deploy that another deploy has overtaken stops before upload.
+ *
+ * After the reveal fix, routine deploys still came in bursts of 2-6 within ~10 min each
+ * hour (72 READY/24h, target <=60): once the 45-min interval opens, every trigger in the
+ * next few minutes sees the same old READY baseline, because a new deploy only shows up
+ * on Vercel after its ~8 min build on the runner. Same SHA shipped twice at 06:09/06:10,
+ * 10:25/10:26 and 12:26/12:28 on 2026-11-26.
+ *
+ * A routine run (gate urgent=false, reason in ROUTINE_REDUNDANT_REASONS) stops when
+ *   - Vercel has a non-failed production deployment created since this run's gate
+ *     baseline (another deploy got there first), or
+ *   - an OLDER main run is inside its own "Deploy to Production" step right now
+ *     (uploading, not on Vercel yet; older wins so two runs never stop each other).
+ * The caller then dispatches one follow-up run, whose gate holds it to the interval
+ * and ships whatever this run carried. Urgent runs (opening-night reveals, /go-live-now),
+ * code changes and fail-open reasons never stop. Missing data = no stop (fail open).
+ */
+const ROUTINE_REDUNDANT_REASONS = ['content-changed', 'data-changed', 'staleness-backstop'];
+const NOT_FAILED_STATES = new Set(['QUEUED', 'INITIALIZING', 'BUILDING', 'READY']);
+// check-prod-deploy.js rounds ageSec to the second; the baseline itself is excluded by url.
+const CREATED_SLACK_MS = 2000;
+
+/** Pure: id of an older main run whose "Deploy to Production" step is running, else null. */
+function olderRunUploading({ selfRunId, runs, jobsByRun }) {
+  for (const r of runs || []) {
+    if (!r || !(r.id < selfRunId) || r.head_branch !== 'main' || r.status !== 'in_progress') continue;
+    const deploy = ((jobsByRun || {})[r.id] || []).find((j) => j && j.name === 'deploy');
+    if (!deploy || deploy.status !== 'in_progress') continue;
+    const step = (deploy.steps || []).find((s) => s && s.name === PASSED_STEP);
+    if (step && step.status === 'in_progress') return r.id;
+  }
+  return null;
+}
+
+/** @returns {{stop: boolean, why: string}} */
+function redundantRoutineDeploy({ urgent, reason, selfRunId, runs, jobsByRun, deployments, baselineUrl, baselineCreatedMs }) {
+  if (String(urgent) !== 'false') return { stop: false, why: `urgent=${urgent === undefined || urgent === '' ? 'unknown' : urgent}` };
+  if (!ROUTINE_REDUNDANT_REASONS.includes(reason)) return { stop: false, why: `reason=${reason || 'unknown'}` };
+  const since = Number(baselineCreatedMs);
+  if (Array.isArray(deployments) && baselineUrl && Number.isFinite(since) && since > 0) {
+    const newer = deployments.find((d) => d && d.url && d.url !== baselineUrl &&
+      NOT_FAILED_STATES.has(String(d.state || d.readyState || '')) && Number(d.created) > since - CREATED_SLACK_MS);
+    if (newer) return { stop: true, why: `newer-deployment ${newer.url} (${newer.state || newer.readyState})` };
+  }
+  const up = selfRunId ? olderRunUploading({ selfRunId, runs, jobsByRun }) : null;
+  if (up) return { stop: true, why: `older-run-uploading ${up}` };
+  return { stop: false, why: 'not-overtaken' };
+}
+
+module.exports = { decide, pendingBeforeCoreData, PASSED_STEP, redundantRoutineDeploy, olderRunUploading, ROUTINE_REDUNDANT_REASONS };

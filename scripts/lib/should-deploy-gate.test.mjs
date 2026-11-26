@@ -491,3 +491,16 @@ test('constraint: urgent triggers (opening night, /go-live-now) ignore min inter
     assert.deepEqual(decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'clean', backstopSec }), { proceed: false, reason: 'already-live' });
   }
 });
+
+// --- BRO-8236 part 2: outputs for the deploy job's pre-upload redundancy check ---
+test('BRO-8236: gateOutputLines carries urgent + live baseline url and created time', async () => {
+  const { gateOutputLines } = await import('./should-deploy-gate.js').then((m) => m.default || m);
+  const out = gateOutputLines({ proceed: true, reason: 'content-changed', urgent: false, baselineUrl: 'b.vercel.app', baselineAgeSec: 3000, nowMs: 10_000_000 });
+  assert.match(out, /^proceed=true$/m);
+  assert.match(out, /^urgent=false$/m);
+  assert.match(out, /^baseline_url=b\.vercel\.app$/m);
+  assert.match(out, /^baseline_created_ms=7000000$/m);
+  const unknown = gateOutputLines({ proceed: true, reason: 'kill-switch' });
+  assert.match(unknown, /^urgent=$/m, 'unknown urgency is empty, which the redundancy check treats as never-stop');
+  assert.match(unknown, /^baseline_created_ms=$/m);
+});

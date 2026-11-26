@@ -394,6 +394,7 @@ function getBaseline() {
         reviewsBlobSha: j.reviewsBlobSha || null,
         showsBlobSha: j.showsBlobSha || null,
         blobShas: baselineBlobShas(j),
+        url: j.url || null,
       };
     } catch {
       return { sha: null, ageSec: null, reviewsBlobSha: null, showsBlobSha: null, blobShas: {} };
@@ -412,6 +413,7 @@ function getBaseline() {
       reviewsBlobSha: j.reviewsBlobSha || null,
       showsBlobSha: j.showsBlobSha || null,
       blobShas: baselineBlobShas(j),
+      url: j.url || null,
     };
   } catch (e) {
     console.log(`::warning::[content-gate] baseline lookup failed (${e.message.split('\n')[0]}) — failing open`);
@@ -539,8 +541,18 @@ function runDiff(baselineSha, headSha, paths = SITE_PATHS) {
   return { result, files };
 }
 
-function writeOutput(proceed, reason, retryAfterSec = 0) {
-  const lines = `proceed=${proceed}\nreason=${reason}\nretry_after_sec=${retryAfterSec}\n`;
+/**
+ * Pure: the GITHUB_OUTPUT lines. BRO-8236: urgent + the live baseline (url, created ms)
+ * feed the deploy job's pre-upload redundancy check (scripts/deploy-coalesce-gate.js).
+ */
+function gateOutputLines({ proceed, reason, retryAfterSec = 0, urgent = null, baselineUrl = null, baselineAgeSec = null, nowMs = Date.now() }) {
+  const createdMs = baselineAgeSec != null && Number.isFinite(Number(baselineAgeSec)) ? nowMs - Number(baselineAgeSec) * 1000 : '';
+  return `proceed=${proceed}\nreason=${reason}\nretry_after_sec=${retryAfterSec}\n` +
+    `urgent=${urgent == null ? '' : urgent}\nbaseline_url=${baselineUrl || ''}\nbaseline_created_ms=${createdMs}\n`;
+}
+
+function writeOutput(proceed, reason, retryAfterSec = 0, extra = {}) {
+  const lines = gateOutputLines({ proceed, reason, retryAfterSec, ...extra });
   if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, lines);
   else process.stdout.write(lines);
 }
@@ -629,12 +641,12 @@ async function main() {
   // for an unreliable cron (+30s margin).
   const retryAfterSec = !proceed && reason === 'min-interval' && baseline.ageSec != null
     ? Math.max(60, Math.ceil(minIntervalSec - baseline.ageSec) + 30) : 0;
-  writeOutput(proceed, reason, retryAfterSec);
+  writeOutput(proceed, reason, retryAfterSec, { urgent: gateDisabled ? null : urgent, baselineUrl: baseline.url, baselineAgeSec: baseline.ageSec });
 }
 
 module.exports = {
   // Back-compat alias (pre-BRO-8198 name); the live value comes from resolveGateTiming().
-  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, isAlwaysShip, CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours };
+  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, isAlwaysShip, CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours, gateOutputLines };
 
 // `--meta-args`: print `<name>BlobSha=<git blob sha>` for each tracked file
 // present in data/, one per line, for vercel-deploy.yml to stamp onto the

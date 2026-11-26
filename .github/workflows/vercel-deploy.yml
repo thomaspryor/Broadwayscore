@@ -80,6 +80,10 @@ jobs:
       proceed: ${{ steps.check.outputs.proceed || steps.prewarm-gate.outputs.proceed }}
       reason: ${{ steps.check.outputs.reason }}
       retry_after_sec: ${{ steps.check.outputs.retry_after_sec }}
+      # BRO-8236: read by the deploy job's pre-upload redundancy check.
+      urgent: ${{ steps.check.outputs.urgent }}
+      baseline_url: ${{ steps.check.outputs.baseline_url }}
+      baseline_created_ms: ${{ steps.check.outputs.baseline_created_ms }}
     steps:
       # BRO-7766: a pre-warm run must start its setup now, while the rebuild runs.
       # The gate is judged later, inside the deploy job's "Wait for rebuild" step,
@@ -635,12 +639,43 @@ jobs:
       # job start left nothing deploying if this run then failed. Never cancels pre-warm
       # runs; fails open. Own kill switch: repo var DEPLOY_COALESCE_DISABLED=true.
       # Logic + tests: scripts/lib/deploy-coalesce.js (opening night 2026-11-20: 31 stacked builds).
+      # BRO-8236: the same step also asks whether THIS routine run was overtaken
+      # (Vercel already has a newer production deploy than this run's gate baseline,
+      # or an older run is uploading). Hourly bursts of 2-6 routine deploys came from
+      # triggers that all passed the 45-min interval before the first build went live.
+      # Urgent runs (opening-night reveals), code changes and fail-open reasons never
+      # stop. Own kill switch: repo var DEPLOY_REDUNDANT_STOP_DISABLED=true.
       - name: Supersede older pending deploys
+        id: coalesce
         if: inputs.wait_for_run == '' && vars.DEPLOY_COALESCE_DISABLED != 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GATE_URGENT: ${{ needs.should-deploy.outputs.urgent }}
+          GATE_REASON: ${{ needs.should-deploy.outputs.reason }}
+          GATE_BASELINE_URL: ${{ needs.should-deploy.outputs.baseline_url }}
+          GATE_BASELINE_CREATED_MS: ${{ needs.should-deploy.outputs.baseline_created_ms }}
+          REDUNDANT_STOP_DISABLED: ${{ vars.DEPLOY_REDUNDANT_STOP_DISABLED }}
         run: node scripts/deploy-coalesce-gate.js
+
+      # BRO-8236: overtaken routine run. Dispatch one follow-up (its gate holds it to
+      # the min interval, then ships what this run carried), then cancel this run.
+      # A failed dispatch deploys anyway: never strand a change to save a build.
+      - name: Stop overtaken routine deploy
+        if: steps.coalesce.outputs.redundant == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh workflow run vercel-deploy.yml --repo "$GITHUB_REPOSITORY" --ref main -f source=deferred; then
+            echo "::warning::[redundant] follow-up dispatch failed, deploying from this run instead"
+            exit 0
+          fi
+          echo "::notice::[redundant] another deploy overtook this routine run; follow-up dispatched, cancelling (no deploy from this run)"
+          gh run cancel "$GITHUB_RUN_ID" || { echo "::warning::[redundant] self-cancel failed, deploying"; exit 0; }
+          # The cancel lands within seconds; block so Deploy to Production never starts.
+          sleep 600
+          exit 1
 
       - name: Deploy to Production
         id: deploy

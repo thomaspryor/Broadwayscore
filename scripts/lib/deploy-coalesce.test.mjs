@@ -56,3 +56,66 @@ test('workflow wiring: step runs in deploy job before the build, fail-open, gate
   assert.match(y.slice(at - 900, at), /continue-on-error: true/);
   assert.match(y.slice(at - 900, at), /DEPLOY_COALESCE_DISABLED/);
 });
+
+// --- BRO-8236 part 2: overtaken routine runs stop before upload ---
+const { redundantRoutineDeploy, olderRunUploading } = require('./deploy-coalesce.js');
+const T0 = Date.UTC(2026, 10, 26, 6, 0, 0);
+const BASE = 'broadwayscore-base.vercel.app';
+const routine = (o = {}) => ({ urgent: 'false', reason: 'content-changed', selfRunId: 20, runs: [], jobsByRun: {}, deployments: [], baselineUrl: BASE, baselineCreatedMs: T0, ...o });
+const dep = (url, created, state = 'READY') => ({ url, created, state });
+
+test('BRO-8236: routine run stops when Vercel has a newer non-failed prod deploy than its baseline', () => {
+  for (const state of ['READY', 'BUILDING', 'QUEUED', 'INITIALIZING']) {
+    const v = redundantRoutineDeploy(routine({ deployments: [dep(BASE, T0), dep('other.vercel.app', T0 + 9 * 60e3, state)] }));
+    assert.equal(v.stop, true, state);
+    assert.match(v.why, /newer-deployment other\.vercel\.app/);
+  }
+});
+test('BRO-8236: the baseline itself, failed deploys and older deploys do not stop it', () => {
+  const deployments = [dep(BASE, T0), dep('err.vercel.app', T0 + 60e3, 'ERROR'), dep('can.vercel.app', T0 + 60e3, 'CANCELED'), dep('old.vercel.app', T0 - 10 * 60e3)];
+  assert.deepEqual(redundantRoutineDeploy(routine({ deployments })), { stop: false, why: 'not-overtaken' });
+});
+test('BRO-8236: urgent runs (opening-night reveal, go-live-now) never stop', () => {
+  const deployments = [dep('other.vercel.app', T0 + 60e3)];
+  for (const urgent of ['true', true, '', undefined, null]) {
+    assert.equal(redundantRoutineDeploy(routine({ urgent, deployments })).stop, false, String(urgent));
+  }
+});
+test('BRO-8236: code-changed and fail-open reasons never stop', () => {
+  const deployments = [dep('other.vercel.app', T0 + 60e3)];
+  for (const reason of ['code-changed', 'explicit-ship', 'no-baseline-fail-open', 'diff-error-fail-open', 'kill-switch', '', undefined]) {
+    assert.equal(redundantRoutineDeploy(routine({ reason, deployments })).stop, false, String(reason));
+  }
+  for (const reason of ['content-changed', 'data-changed', 'staleness-backstop']) {
+    assert.equal(redundantRoutineDeploy(routine({ reason, deployments })).stop, true, reason);
+  }
+});
+test('BRO-8236: an older run inside Deploy to Production stops a routine run; a newer one does not', () => {
+  const up = [{ name: 'should-deploy', status: 'completed', conclusion: 'success' }, { name: 'deploy', status: 'in_progress', steps: [{ name: 'Deploy to Production', status: 'in_progress' }] }];
+  assert.equal(redundantRoutineDeploy(routine({ runs: [run(10)], jobsByRun: { 10: up } })).why, 'older-run-uploading 10');
+  // pre-warm runs upload too, so they count here (they are only exempt from being cancelled)
+  assert.equal(olderRunUploading({ selfRunId: 20, runs: [run(10, { display_title: 'Deploy to Vercel (pre-warm for run 5)' })], jobsByRun: { 10: up } }), 10);
+  assert.equal(redundantRoutineDeploy(routine({ runs: [run(30)], jobsByRun: { 30: up } })).stop, false, 'newer run: older wins, both never stop');
+  assert.equal(redundantRoutineDeploy(routine({ runs: [run(10)], jobsByRun: { 10: jobs('pending') } })).stop, false, 'not uploading yet');
+  assert.equal(redundantRoutineDeploy(routine({ runs: [run(10, { head_branch: 'x' })], jobsByRun: { 10: up } })).stop, false, 'non-main');
+});
+test('BRO-8236: missing data fails open (no stop)', () => {
+  assert.equal(redundantRoutineDeploy({}).stop, false);
+  assert.equal(redundantRoutineDeploy(routine({ deployments: null })).stop, false);
+  assert.equal(redundantRoutineDeploy(routine({ baselineCreatedMs: NaN, deployments: [dep('o.vercel.app', T0 + 1)] })).stop, false);
+  assert.equal(redundantRoutineDeploy(routine({ baselineUrl: '', deployments: [dep('o.vercel.app', T0 + 1)] })).stop, false);
+});
+test('BRO-8236 wiring: gate exports urgent + baseline, coalesce step reads them, stop step dispatches then cancels before upload', () => {
+  const y = readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+  for (const k of ['urgent', 'baseline_url', 'baseline_created_ms']) {
+    assert.ok(y.includes(`${k}: \${{ steps.check.outputs.${k} }}`), `should-deploy output ${k}`);
+  }
+  assert.match(y, /GATE_URGENT: \$\{\{ needs\.should-deploy\.outputs\.urgent \}\}/);
+  assert.match(y, /GATE_REASON: \$\{\{ needs\.should-deploy\.outputs\.reason \}\}/);
+  const stop = y.indexOf('      - name: Stop overtaken routine deploy\n');
+  assert.ok(stop > y.indexOf('deploy-coalesce-gate.js') && stop < y.indexOf('      - name: Deploy to Production\n'), 'stop step between coalesce and Deploy');
+  const body = y.slice(stop, y.indexOf('      - name: Deploy to Production\n'));
+  assert.match(body, /if: steps\.coalesce\.outputs\.redundant == 'true'/);
+  assert.ok(body.indexOf('-f source=deferred') < body.indexOf('gh run cancel'), 'follow-up dispatched before self-cancel');
+  assert.match(body, /dispatch failed, deploying/);
+});
