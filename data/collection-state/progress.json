@@ -1,12 +1,18 @@
 {
   "processed": [
-    "attention-off-west-end-2026/thestage--unknown.json"
+    "a-christmas-carol-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "a-christmas-carol-west-end-2026/british-theatre--unknown.json"
+  ],
+  "failed": [
+    "a-christmas-carol-west-end-2026/sunday-times--clive-davis.json",
+    "a-christmas-carol-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "attention-off-west-end-2026/thestage--unknown.json"
+      "a-christmas-carol-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "a-christmas-carol-west-end-2026/british-theatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -14,10 +20,12 @@
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/a-christmas-carol-west-end-2026/sunday-times--clive-davis.json"
+    ],
     "archive": []
   },
-  "startTime": "2026-11-26T16:26:04.828Z",
-  "lastProcessed": "attention-off-west-end-2026/thestage--unknown.json",
+  "startTime": "2026-11-26T16:26:02.893Z",
+  "lastProcessed": "a-christmas-carol-west-end-2026/times-uk--clive-davis.json",
   "log": []
 }
