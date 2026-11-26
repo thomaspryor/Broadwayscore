@@ -447,21 +447,6 @@
     "queuedAt": "2026-11-25T17:08:16.389Z"
   },
   {
-    "conditionKey": "live-data-test:tests/unit/trace-excludes-data-dirs-live-data.test.mjs::real detect-route graph stays under the function size budget (when data is present)",
-    "title": "Live-data test failing: real detect-route graph stays under the function size budget (when data is present) (tests/unit/trace-excludes-data-dirs-live-data.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real detect-route graph stays under the function size budget (when data is present)\" in tests/unit/trace-excludes-data-dirs-live-data.test.mjs is red against the live corpus.\n\ndetect route traces 655MB of repo files (budget 200MB); a data/ tree is leaking in",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "testId": "tests/unit/trace-excludes-data-dirs-live-data.test.mjs::real detect-route graph stays under the function size budget (when data is present)",
-    "fields": [],
-    "queuedAt": "2026-11-25T17:08:16.753Z"
-  },
-  {
     "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]",
     "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
     "description": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-7668-venue-url-tighten. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45663664990",
@@ -1268,5 +1253,34 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-26T03:55:40.307Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'merge: CurtainUp, Charles Wright (1) -> Charles Wright (38) [extra words on a 1-review page, shared outlet CurtainUp]'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "fields": [],
+    "queuedAt": "2026-11-26T04:15:04.278Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/trace-excludes-data-dirs-live-data.test.mjs::real detect-route graph stays under the function size budget (when data is present)",
+    "title": "Live-data test failing: real detect-route graph stays under the function size budget (when data is present) (tests/unit/trace-excludes-data-dirs-live-data.test.mjs) — still happening after 3 days",
+    "description": "Filed BRO-8344: this has been happening for 3+ days without clearing.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"real detect-route graph stays under the function size budget (when data is present)\" in tests/unit/trace-excludes-data-dirs-live-data.test.mjs is red against the live corpus.\n\ndetect route traces 650MB of repo files (budget 200MB); a data/ tree is leaking in",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8344",
+    "fields": [],
+    "queuedAt": "2026-11-26T04:15:10.931Z"
   }
 ]
