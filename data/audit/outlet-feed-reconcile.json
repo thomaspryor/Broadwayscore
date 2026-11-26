@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T06:54:02.374Z",
+  "generatedAt": "2026-11-26T08:55:09.212Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -153,6 +153,10 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -173,10 +177,19 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 919,
-  "matchedGaps": 1,
+  "itemsScanned": 911,
+  "matchedGaps": 2,
   "possibleGaps": 4,
   "gaps": [
+    {
+      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
+      "title": "Cinderella",
+      "level": "matched",
+      "outletId": "a-youngish-perspective",
+      "url": "https://ayoungishperspective.co.uk/2026/11/26/review-matthew-bournes-cinderella/",
+      "headline": "REVIEW: Matthew Bourne’s Cinderella",
+      "publishDate": "2026-11-26"
+    },
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
       "title": "Cinderella",
