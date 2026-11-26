@@ -9,7 +9,7 @@ import { checkClaudeMdByteCap, blockMessage, judgeLand } from './land-preflight.
 
 const ENV = { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t', GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' };
 const tmps = [];
-test.after(() => { for (const d of tmps) fs.rmSync(d, { recursive: true, force: true }); });
+test.after(() => { for (const d of tmps) fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); });
 const sh = (cwd, cmd) => { const r = spawnSync('bash', ['-c', cmd], { cwd, env: ENV, encoding: 'utf8' }); assert.equal(r.status, 0, r.stderr); return r.stdout.trim(); };
 
 function repo(limit = 100) {
