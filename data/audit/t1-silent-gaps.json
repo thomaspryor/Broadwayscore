@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T21:22:11.781Z",
+  "generatedAt": "2026-11-26T22:43:13.234Z",
   "windowDays": 45,
   "showsScanned": 307,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 422.3323677777778,
+      "fileAgeHours": 423.67997083333336,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 399.7854111111111,
+      "nonTerminalAgeHours": 401.135815,
       "needsManualRecovery": true
     },
     {
@@ -38,13 +38,13 @@
         "ok": false,
         "reason": "Fetch failed: no usable HTML (254 chars); no archive.org capture"
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-heart-off-broadway-2026 --url=https://www.usatoday.com/2026/11/23/ann-wilson-cancer-heart-documentary --outlet=usatoday   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-26T20:12:59.222Z",
-      "fileAgeHours": 1.1532547222222223,
+      "fileAgeHours": 2.503661388888889,
       "gapSeenAt": "2026-11-26T20:21:10.650Z",
-      "nonTerminalAgeHours": 1.0169805555555556,
+      "nonTerminalAgeHours": 2.3673844444444443,
       "needsManualRecovery": false
     },
     {
@@ -62,9 +62,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 391.56564694444444,
+      "fileAgeHours": 392.9160522222222,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 390.4209661111111,
+      "nonTerminalAgeHours": 391.77137,
       "needsManualRecovery": true
     }
   ],

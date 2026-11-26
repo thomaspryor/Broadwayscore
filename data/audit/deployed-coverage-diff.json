@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T21:22:35.324Z",
+  "generatedAt": "2026-11-26T22:43:36.356Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -11,20 +11,20 @@
   },
   "shows": [
     {
-      "showId": "relative-motion-off-west-end-2026",
-      "title": "Relative Motion",
-      "openingDate": "2026-11-11",
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "title": "Moulin Rouge! The Musical",
+      "openingDate": "2022-01-19",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 75.09 vs local 75.32 (Δ0.23)"
+          "detail": "deployed cs 69.87 vs local 70.16 (Δ0.29)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28,
-      "firstDefectAt": "2026-11-26T21:22:29.876Z"
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-26T22:43:30.151Z"
     }
   ],
   "persistentDefective": 0,

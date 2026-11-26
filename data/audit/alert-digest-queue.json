@@ -1483,20 +1483,6 @@
     "queuedAt": "2026-11-26T21:21:40.676Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-26.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-26T21:22:11.782Z"
-  },
-  {
     "conditionKey": "cron-fire-rate:publish-show-refresh.yml",
     "title": "publish-show-refresh.yml is running 42% of the time it should",
     "description": "In the last 14 days GitHub started 281 scheduled runs of publish-show-refresh.yml where its cron (*/10 * * * *) calls for 672. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
@@ -1555,5 +1541,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-26T22:01:34.700Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-26.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-26T22:43:13.235Z"
   }
 ]
