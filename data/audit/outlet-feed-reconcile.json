@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T05:50:46.195Z",
+  "generatedAt": "2026-11-26T06:54:02.374Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -153,10 +153,6 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -175,13 +171,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londonpubtheatres",
-      "error": "Client network socket disconnected before secure TLS connection was established"
     }
   ],
-  "itemsScanned": 887,
+  "itemsScanned": 919,
   "matchedGaps": 1,
   "possibleGaps": 4,
   "gaps": [
