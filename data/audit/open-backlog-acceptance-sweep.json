@@ -1,18 +1,54 @@
 {
-  "generatedAt": "2026-11-25T11:46:24.578Z",
+  "generatedAt": "2026-11-26T11:52:17.592Z",
   "shadow": true,
-  "checkoutSha": "4cadde91e9a04e1ca9e43ba6edd48fecadcd19ea",
-  "totalCandidates": 489,
-  "eligibleCandidates": 177,
+  "checkoutSha": "1a549a5a2e3501fc58f5a59d66b4064a3be0946f",
+  "totalCandidates": 497,
+  "eligibleCandidates": 168,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 11,
-    "fail": 15,
+    "pass": 9,
+    "fail": 17,
     "unverifiable": 4
   },
   "alreadyDone": [
+    {
+      "id": "BRO-8348",
+      "name": "Root cause: first pass keeps missing timeout-london reviews (all markets, 3 shows in 60 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-timeout-london --quiet",
+      "detail": null
+    },
+    {
+      "id": "BRO-8337",
+      "name": "Guardrail slim-down stage 2: merge resize-show-images steps, cut hook-side redundant gates, with proof tests",
+      "verifyCmd": "node --test scripts/tests/verify-edits-cloud-session-gates.test.mjs scripts/tests/verify-edits-scoring-gate.test.mjs scripts/tests/cloud-settings-guards.test.mjs scripts/tests/global-instructions.test.mjs scripts/V1-V3-dispatch-status.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8332",
+      "name": "BRO-8330 readout: 14-day ScrapingBee-off comparison and GO/NO-GO",
+      "verifyCmd": "node --test scripts/lib/sb-switch.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8330",
+      "name": "ScrapingBee off-switch trial: prove the site runs with SB fully off before the Dec 24 cancel",
+      "verifyCmd": "node --test scripts/lib/sb-switch.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8323",
+      "name": "Cost: fit Scrapingdog/ScrapingBee into lower plan tiers",
+      "verifyCmd": "node --test scripts/lib/sb-market-gate.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8301",
+      "name": "Auto-fix: Opening Night Orchestrator Failed",
+      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=opening-night-orchestrator.yml --expect=success",
+      "detail": null
+    },
     {
       "id": "BRO-8297",
       "name": "Sentry regression: UgcError: UGC functions mezzanine-search failed (500)",
@@ -26,185 +62,163 @@
       "detail": null
     },
     {
-      "id": "BRO-8269",
-      "name": "Weekly commercial sweeps fail silently for weeks (Broadway Journal sweep failed 3 runs, no card or alert)",
-      "verifyCmd": "node scripts/audit-cron-health-coverage.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-8268",
-      "name": "Scraping spend audit: skip paid outlet site-search renders in markets the outlet never covered; fix Browserbase $ in weekly report",
-      "verifyCmd": "node --test tests/unit/site-search-market-history.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8235",
-      "name": "Move job-level vars.*_DISABLED kill switches to step level in 4 CRITICAL_CRONS workflows (skipped run reads as stale)",
-      "verifyCmd": "node --test scripts/check-cron-health-config.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-8234",
       "name": "check-cron-health red 3 runs running: Replay Push Rescue stale 98h + deploy-frequency 129/24h",
       "verifyCmd": "node scripts/audit-cron-health-coverage.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-8233",
-      "name": "BRO-8056 phase 4 prereq: cron-redispatch coverage for publish-show-refresh + prove rebuild-fast publish path",
-      "verifyCmd": "node --test scripts/lib/re-dispatcher.test.mjs scripts/check-cron-health-config.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8224",
-      "name": "Blogger Dynamic Views fallback: wire into collector paths + guard BWW 'New York Theatre Review' typo label",
-      "verifyCmd": "node --test scripts/lib/blogger-dynamic-views.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8198",
-      "name": "BRO-8056 phase 3b: 3h backstop for list pages, owner-approved lag (R8)",
-      "verifyCmd": "node --test scripts/lib/should-deploy-gate.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8196",
-      "name": "Auto-date past-run 'announced' rows that have no dates but collected reviews (stale-announced subclass B)",
-      "verifyCmd": "node --test scripts/enrich-off-broadway-dates.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8176",
-      "name": "BRO-8056 phase 4 pre-flip: flag-on UI patch (gap 3 + refresh note)",
-      "verifyCmd": "npx tsx --test tests/unit/reviews-more.test.ts",
       "detail": null
     }
   ],
   "failing": [
     {
-      "id": "BRO-8301",
-      "name": "Auto-fix: Opening Night Orchestrator Failed",
-      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=opening-night-orchestrator.yml --expect=success",
-      "detail": "(gh not authenticated; read runs from the public GitHub API)\nopening-night-orchestrator.yml: MISMATCH — most recent run concluded 'cancelled', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/45600721939)"
+      "id": "BRO-8356",
+      "name": "Recheck 2026-11-26: 2 done claims no longer hold on main",
+      "verifyCmd": "node --test scripts/verify-bro-8160-recheck.test.mjs",
+      "detail": "not ok: Gemini spend stays under $25 on every full day since the BR… | first failure: no Gemini spend rows since 2026-11-24: no evidence either way (is the session le"
+    },
+    {
+      "id": "BRO-8350",
+      "name": "Root cause: \"Quality: star-vs-score mismatch\" keeps coming back (4 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class star-score-mismatch --quiet",
+      "detail": "FAIL: last case 16d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8349",
+      "name": "Root cause: first pass keeps getting no full text from theatreandtonic (all markets, 3 shows in 60 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class text-missed-at-first-pass-theatreandtonic --quiet",
+      "detail": "FAIL: last case 15d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8308",
+      "name": "P1: Opening night miss: The Dead, 1904 (2026-11-24)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-24 --opened-to=2026-11-24 --check-gaps",
+      "detail": "gap audit generated 2026-11-26T10:27:57.190Z\nPASS     the-dead-1904-off-broadway-2026: 5 live, 0 cited not live; info: 6 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-26T10:27:57.190Z\n         frequent outlets with nothing for this show: front-row-center, nytg, off-off-online, theater-scene\nFAIL     a-christmas-carol-west-end-2026: 14 live, 1 cited not live, 1 automated ex"
+    },
+    {
+      "id": "BRO-8263",
+      "name": "Data audit failing: Validate review-text files",
+      "verifyCmd": "node scripts/validate-data.js",
+      "detail": "⚠️  WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours one of them\n⚠️  WARNING: 1 cast file(s) carry a different ibdbUrl than shows.json (backfill-cast.js will revert shows.json): three-days-of-rain-2026\n⚠️  WARNING: 5 new show(s) cannot be told apart from a same-title music"
     },
     {
       "id": "BRO-8245",
       "name": "Root cause: \"Data: published scores outside the critic's rating\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class published-scores-outside-critic-rating --quiet",
-      "detail": "FAIL: last case 2d ago, needs 21\n"
+      "detail": "FAIL: last case 3d ago, needs 21\n"
     },
     {
       "id": "BRO-8244",
       "name": "Root cause: \"Cron stale + consecutive days: Replay Push Rescue\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class replay-push-rescue --quiet",
-      "detail": "FAIL: last case 2d ago, needs 21\n"
+      "detail": "FAIL: last case 3d ago, needs 21\n"
     },
     {
       "id": "BRO-8243",
       "name": "Root cause: \"Deploy to Vercel\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class deploy-vercel --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8241",
+      "name": "P1: Opening night miss: Seven Guitars (2026-11-23)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-23 --opened-to=2026-11-23 --check-gaps",
+      "detail": "gap audit generated 2026-11-26T10:27:57.190Z\nPASS     the-afronauts-west-end-2026: 22 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-26T08:54:20.844Z\nPASS     seven-guitars-off-broadway-2026: 18 live, 0 cited not live; info: 4 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-26T08:54:20.844Z\n         frequent outlets wit"
     },
     {
       "id": "BRO-8230",
       "name": "Recheck 2026-11-24: 1 done claim no longer hold on main",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 aW1hZ2VsZXNzLXNjb3JlZC1zaG93OnN0aWxsLWltYWdlbGVzczphbGw",
-      "detail": "[check-alert-condition-absent] FAIL: \"imageless-scored-show:still-imageless:all\" still firing — open, last fired 2026-11-24T19:26:12.325Z (16.3h ago, within 168h)"
+      "detail": "[check-alert-condition-absent] FAIL: \"imageless-scored-show:still-imageless:all\" still firing — open, last fired 2026-11-24T19:26:12.325Z (40.4h ago, within 168h)"
     },
     {
       "id": "BRO-8229",
       "name": "Root cause: \"Data audit failing: Audit review contamination\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class audit-review-contamination --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-8228",
       "name": "Root cause: \"Data audit failing: Run data validation\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class run-data-validation --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-8227",
       "name": "Root cause: \"Production show pages disagree with deployed critic data\" keeps coming back (4 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class production-show-pages-disagree-deployed-critic-data --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8223",
+      "name": "Recheck 2026-11-24: 1 done claim no longer hold on main",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-22 --opened-to=2026-11-23 --check-gaps",
+      "detail": "gap audit generated 2026-11-26T10:27:57.190Z\nPASS     the-afronauts-west-end-2026: 22 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-26T08:54:20.844Z\nPASS     seven-guitars-off-broadway-2026: 18 live, 0 cited not live; info: 4 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-26T08:54:20.844Z\n         frequent outlets wit"
     },
     {
       "id": "BRO-8217",
       "name": "Root cause: \"Live-data test failing: reviews.json: no NEW critic page split by a byline spelling varian\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class reviews-json-new-critic-page-split-byline-spelling --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-8216",
       "name": "Root cause: first pass keeps missing theatreandtonic reviews (Off-West End, 3 shows in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-off-west-end-theatreandtonic --quiet",
-      "detail": "FAIL: last case 5d ago, needs 21\n"
+      "detail": "FAIL: last case 6d ago, needs 21\n"
     },
     {
       "id": "BRO-8215",
       "name": "Root cause: first pass keeps getting no full text from thestage (Off-West End, 3 shows in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class text-missed-at-first-pass-off-west-end-thestage --quiet",
-      "detail": "FAIL: last case 4d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-8191",
-      "name": "Root cause: \"Press night: score gate undecided\" keeps coming back (5 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class score-gate-undecided --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-8190",
-      "name": "Root cause: first pass keeps missing theatermania reviews (all markets, 3 shows in 60 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-theatermania --quiet",
-      "detail": "FAIL: last case 7d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-8189",
-      "name": "Root cause: first pass keeps missing new-york-sun reviews (all markets, 3 shows in 60 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-new-york-sun --quiet",
-      "detail": "FAIL: last case 7d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-8187",
-      "name": "Opening-night readiness check failed for its-a-wonderful-life-a-live-radio-play-2026",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 b3BlbmluZy1yZWFkaW5lc3M6ZmFpbGVkOml0cy1hLXdvbmRlcmZ1bC1saWZlLWEtbGl2ZS1yYWRpby1wbGF5LTIwMjY",
-      "detail": "[check-alert-condition-absent] FAIL: \"opening-readiness:failed:its-a-wonderful-life-a-live-radio-play-2026\" still firing — open, last fired 2026-11-23T20:12:59.205Z (39.6h ago, within 168h)"
+      "detail": "FAIL: last case 5d ago, needs 21\n"
     }
   ],
   "unverifiable": [
+    {
+      "id": "BRO-8336",
+      "name": "UX audit: The delete controls are red trash icons in desktop and mobile watchlist list rows, but there is no visible con",
+      "verifyCmd": "node scripts/lib/ux-walkthrough-resolution.js --key=0f8a9eff22cdfd37b3b2fca430d9364f",
+      "detail": "could not run here (credential-withheld): FAIL UX resolution: LINEAR_API_KEY not set in .env or environment"
+    },
+    {
+      "id": "BRO-8281",
+      "name": "Cost review: hosting and small tools (Vercel, Resend, Expo, others)",
+      "verifyCmd": "test -f scripts/hosting-cost-review.md",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/hosting-cost-review.md"
+    },
+    {
+      "id": "BRO-8280",
+      "name": "Cost review: scraping providers (ScrapingBee, Scrapingdog, Bright Data, Browserbase)",
+      "verifyCmd": "node --test scripts/verify-sb-pack-pace.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
+    },
     {
       "id": "BRO-8262",
       "name": "BWW discovery: skip paid Browserbase reviews.php fetch when the cheap fetch already returned the listing",
       "verifyCmd": "node --test scripts/lib/bww-rr-discover-paid-gate.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/bww-rr-discover-paid-gate.test.mjs"
-    },
-    {
-      "id": "BRO-8213",
-      "name": "Land preflight: check CLAUDE.md byte cap before land/** push",
-      "verifyCmd": "node --test scripts/lib/land-preflight.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-preflight.test.mjs"
-    },
-    {
-      "id": "BRO-8164",
-      "name": "Visual approval asks the owner again and again for the same change",
-      "verifyCmd": "node --test tests/unit/visual-approval-repeat-asks.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/visual-approval-repeat-asks.test.mjs"
-    },
-    {
-      "id": "BRO-8160",
-      "name": "Code reviewer: send one packed bundle per review, size/risk-scaled allowance, soft wrap-up (cut Gemini review cost ~10x)",
-      "verifyCmd": "node --test scripts/verify-bro-8160-recheck.test.mjs",
-      "detail": "ran no passing tests (all skipped or none ran)"
     }
   ],
   "landedButOpen": [
     {
+      "id": "BRO-8330",
+      "name": "ScrapingBee off-switch trial: prove the site runs with SB fully off before the Dec 24 cancel",
+      "branch": "land/bro-8330-sweep-test",
+      "sha": "2d56c8d9130149fbd60f7dd06e28aab0e0db07e5",
+      "landedAt": "2026-11-25T23:45:27.269Z"
+    },
+    {
+      "id": "BRO-8323",
+      "name": "Cost: fit Scrapingdog/ScrapingBee into lower plan tiers",
+      "branch": "land/bro-8323-retro",
+      "sha": "77930a084e652ce87a1bdaac16607c706c65700c",
+      "landedAt": "2026-11-25T18:02:53.288Z"
+    },
+    {
       "id": "BRO-8276",
       "name": "P1: nightly text recovery aborts the whole run when one file was renamed upstream (backlog stalled)",
-      "branch": "land/job/linear-BRO-8276-mwvf833t",
-      "sha": "5067d16077a730e38445bb3acc9ba6aed0cd609c",
-      "landedAt": "2026-11-25T03:11:35.102Z"
+      "branch": "land/codex-bro-8276",
+      "sha": "fc5a3a6579bce5729119c6bae38ed586d4574c7f",
+      "landedAt": "2026-11-26T05:04:06.811Z"
     },
     {
       "id": "BRO-8234",
@@ -212,27 +226,6 @@
       "branch": "land/retro-bro-8234",
       "sha": "275057c595a624c032a50eb029e0b3dd65e5d9d7",
       "landedAt": "2026-11-25T01:10:16.826Z"
-    },
-    {
-      "id": "BRO-8233",
-      "name": "BRO-8056 phase 4 prereq: cron-redispatch coverage for publish-show-refresh + prove rebuild-fast publish path",
-      "branch": "land/bro-8233-ledgers",
-      "sha": "51adb8667c023f5eecba56410eea661b2b7fd72c",
-      "landedAt": "2026-11-24T09:10:04.064Z"
-    },
-    {
-      "id": "BRO-8198",
-      "name": "BRO-8056 phase 3b: 3h backstop for list pages, owner-approved lag (R8)",
-      "branch": "land/bro-8198-cost",
-      "sha": "1d4cda2d0424be5ac5375b1a5772141fa3b26440",
-      "landedAt": "2026-11-24T00:22:57.265Z"
-    },
-    {
-      "id": "BRO-8196",
-      "name": "Auto-date past-run 'announced' rows that have no dates but collected reviews (stale-announced subclass B)",
-      "branch": "land/codex-bro-8196",
-      "sha": "25a7bd297d23522047bec57d430bb3409bee5d4c",
-      "landedAt": "2026-11-24T04:09:20.761Z"
     }
   ]
 }
