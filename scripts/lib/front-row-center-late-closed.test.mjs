@@ -43,11 +43,11 @@ test('daily poller: a show that closed before its review posted stays in the fee
   const active = all.filter((s) => s.status === 'open' || s.status === 'previews');
   const pool = ow.dailyFeedPool(active, all, cutoff, {});
   assert.deepEqual(pool.map((s) => s.id).sort(), [running.id, wuthering.id].sort(), 'old 2022 production stays out');
-  const matched = findMatchingShows(item.headline, new URL(item.url).pathname, pool, '', { publishDate: item.publishDate })
+  const matched = findMatchingShows(item.headline, new URL(item.url).pathname, pool, '', { publishDate: item.publishDate, rivalIndex: null })
     .filter((s) => ow.closedShowMatchOk(s, { liveShows: active, publishDate: item.publishDate }));
   assert.deepEqual(matched.map((s) => s.id), [wuthering.id]);
   // Before the fix the pool was `active` alone: nothing matched.
-  assert.deepEqual(findMatchingShows(item.headline, new URL(item.url).pathname, active, '', { publishDate: item.publishDate }), []);
+  assert.deepEqual(findMatchingShows(item.headline, new URL(item.url).pathname, active, '', { publishDate: item.publishDate, rivalIndex: null }), []);
 });
 
 test('market filter applies to recently closed shows', () => {
