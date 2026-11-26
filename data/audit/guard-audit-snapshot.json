@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T11:41:41.780Z",
+  "generatedAt": "2026-11-26T18:19:39.866Z",
   "window": {
     "since": "2026-11-20",
     "until": "2026-11-26"
@@ -12,7 +12,7 @@
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "ACCEPTED: 4 trip day(s); rerouted spend on trip days $0.01 (98 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 1879"
+      "detail": "ACCEPTED: 5 trip day(s); rerouted spend on trip days $0.01 (98 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 1894"
     },
     {
       "title": "sb-circuit-breaker",
@@ -55,7 +55,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 319,
+        "median14d": 390,
         "drift": false,
         "note": null
       }
@@ -66,12 +66,13 @@
       "provider": "brightdata",
       "shadow": false,
       "verdict": "ACCEPTED",
-      "days": 4,
+      "days": 5,
       "dayList": [
         "2026-11-21",
         "2026-11-22",
         "2026-11-23",
-        "2026-11-24"
+        "2026-11-24",
+        "2026-11-26"
       ],
       "lowerBound": false,
       "spend": {
@@ -87,7 +88,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 1879,
+        "median14d": 1894,
         "drift": true,
         "note": null
       }
@@ -114,7 +115,7 @@
         "source": "plan+opening-window-reserve+median-floor",
         "from": "state",
         "currentZero": false,
-        "median14d": 10623,
+        "median14d": 10512,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -141,7 +142,7 @@
         "source": null,
         "from": null,
         "currentZero": false,
-        "median14d": 10623,
+        "median14d": 10512,
         "drift": false,
         "note": "n/a"
       }
@@ -168,7 +169,7 @@
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 101826,
+        "median14d": 101118,
         "drift": false,
         "note": null
       }
@@ -252,12 +253,13 @@
     },
     "providers": {
       "web": {
-        "days": 4,
+        "days": 5,
         "dayList": [
           "2026-11-21",
           "2026-11-22",
           "2026-11-23",
-          "2026-11-24"
+          "2026-11-24",
+          "2026-11-26"
         ],
         "lowerBound": false
       },
