@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-7683-d261126-r18",
+  "planId": "b42fd18a-b4a0-4fc9-a387-54d4ff64044e",
+  "status": "pending",
+  "createdAt": "2026-11-26T20:00:09.023Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7683: 1 hub productions reviewed on BroadwayWorld",
+    "steps": [
+      "add cult-of-love-regional-2026 (BroadwayWorld review 2026-11-25)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add cult-of-love-regional-2026 (BroadwayWorld review 2026-11-25)",
+        "show": {
+          "id": "cult-of-love-regional-2026",
+          "title": "Cult of Love",
+          "slug": "cult-of-love-regional-2026",
+          "venue": "Round House Theatre, Bethesda, MD",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-25",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2026-12-27",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "washington-dc",
+          "discoveredAt": "2026-11-26",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/washington-dc/article/Review-CULT-OF-LOVE-at-Round-House-Theatre-20261125"
+          ],
+          "images": {
+            "poster": "/images/shows/cult-of-love-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/cult-of-love-regional-2026/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  }
+}
