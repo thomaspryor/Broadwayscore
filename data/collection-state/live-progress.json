@@ -1,26 +1,21 @@
 {
-  "updatedAt": "2026-11-26T03:16:40.284Z",
-  "processed": 24,
-  "failed": 4,
-  "successRate": "85.7%",
+  "updatedAt": "2026-11-26T03:26:47.181Z",
+  "processed": 374,
+  "failed": 250,
+  "successRate": "59.9%",
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 214,
     "amp": 0,
-    "browserbase": 14,
+    "browserbase": 15,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 34,
+    "scrapingbee": 18,
+    "brightdata": 9,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 107
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 13,
   "recentActivity": [
-    {
-      "t": "2026-11-26T01:27:57.681Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
     {
       "t": "2026-11-26T02:00:49.528Z",
       "event": "bb-session",
@@ -118,15 +113,21 @@
       "url": "https://deadline.com/2026/02/the-only-living-pickpocket-in-new-york-sony-picture"
     },
     {
-      "t": "2026-11-26T03:05:14.492Z",
+      "t": "2026-11-26T03:06:08.795Z",
       "event": "bb-session",
-      "session": "2bb235ce",
-      "url": "https://www.wsj.com/articles/seven-guitars-review-august-wilsons-bluesman-off-br"
+      "session": "32a3684c",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
     },
     {
-      "t": "2026-11-26T03:05:14.824Z",
+      "t": "2026-11-26T03:06:09.682Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-26T03:25:38.782Z",
+      "event": "bb-session",
+      "session": "6236bce8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/beaches-musical-to-close-2026-t"
     }
   ]
 }
