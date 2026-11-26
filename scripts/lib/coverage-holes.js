@@ -54,11 +54,20 @@ function cvSaysReview(d) {
   return !!cv && cv.articleType === 'review' && (cv.articleTypeConfidence || cv.confidence) === 'high';
 }
 
+/** A recorded person/sweep verdict that the file is not a review (isNonReviewReason "manual (not a review): ..."). */
+const isManualVerdict = (d) => /^manual \(not a review/i.test(String(d.isNonReviewReason || ''));
+
 /** B: rejected as a non-review although the verification says review, and still kept off the site. */
 function rejectedYetVerified(d, show, filePath) {
   if (!d || typeof d !== 'object') return null;
   const rejected = d.isNonReview === true || d.rejectionReason === 'not_a_review';
   if (!rejected || d.nonReviewManualClear === true || !cvSaysReview(d)) return null;
+  // BRO-8381: two rejections that are right however "review-like" the text reads, so the verification's articleType
+  // cannot contradict them. (1) A recorded manual verdict ("manual (not a review): ...", a person or a sweep read the
+  // page): that IS the decision; a wrong one is undone with nonReviewManualClear. (2) wrongProduction: the text is a
+  // real review of another production (a London run filed under the Broadway show), so the repair is the URL, which
+  // class A/D and the URL-recovery pass own. Both kept re-filing one owner card per show (Much Ado, Hamlet, Dogstar).
+  if (isManualVerdict(d) || d.wrongProduction === true || d.contentVerification.wrongProduction === true) return null;
   // A stale isNonReview flag the rebuild already ignores (a newer high-confidence review verdict beats an older
   // classifier verdict) reaches the site, so it is not a hole. rejectionReason has no such demotion yet: those stay.
   if (d.isNonReview === true && !d.rejectionReason && guards().isNonReviewDemotedByFreshCV(d)) return null;
