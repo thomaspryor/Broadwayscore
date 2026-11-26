@@ -35,3 +35,8 @@ test('both fallback scorers use the shared helper, not their own regex', () => {
     assert.doesNotMatch(src, /\(\?:grade\|rating\|score\)\[:\\s\]\+/, f);
   }
 });
+
+test('"rating A-list cast" is not a grade; "rating: A-" still is', () => {
+  assert.equal(ex('a rating A-list cast shines'), null);
+  assert.equal(ex('Overall rating: A- for effort. More text here.').grade, 'A-');
+});

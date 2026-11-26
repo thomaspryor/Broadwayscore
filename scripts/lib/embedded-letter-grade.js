@@ -14,7 +14,7 @@
  */
 const { LETTER_GRADES } = require('./score-conversion-rules');
 
-const KEYWORD_GRADE_RE = /\b(?:grade:\s*|rating[:\s]+)([A-Za-z][+-]?)(?![\w])/gi;
+const KEYWORD_GRADE_RE = /\b(?:grade:\s*|rating[:\s]+)([A-Za-z](?![+-]\w)[+-]?)(?![\w])/gi;
 const END_GRADE_RE = /\s([A-DF][+-]?)\s*$/;
 
 function normalize(letter) {
