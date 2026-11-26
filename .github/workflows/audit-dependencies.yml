@@ -24,8 +24,9 @@ name: Audit Dependencies
 # 2 and 3 fail the job; notify-failure with severity 'warning' is a no-op by
 # design, so the job's own health is watched by check-cron-health.yml's
 # CRITICAL_CRONS entry (36h band, keyed on the last SUCCESSFUL run): a daily
-# red run, a disabled workflow (`vars.DEPENDENCY_AUDIT_DISABLED=true` skips every step, BRO-8235, so the run stays green and the audit no longer counts as stale on purpose;
-# a daily red run or a dead cron still trips staleness → digest row.
+# red run or a dead cron trips staleness → digest row. A deliberate disable
+# (`vars.DEPENDENCY_AUDIT_DISABLED=true`) gates every step, not the job
+# (BRO-8235), so the run stays green and is not counted stale.
 #
 # routeAlert()'s cooldown ledger (data/audit/alert-ledger.json) and attempt
 # log are written to the runner's checkout; "Persist alert-router state"
