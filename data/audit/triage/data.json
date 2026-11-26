@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-26T11:05:42.925Z",
+  "lastChecked": "2026-11-26T17:59:35.449Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -28,43 +28,43 @@
     },
     {
       "name": "Data: tour automation stopped reporting",
-      "status": "warn",
-      "message": "A national-tour job has not run on schedule: daily tour review mover (rebuild-reviews.yml): last report 2 day(s) ago."
+      "status": "pass",
+      "message": "All three national-tour jobs reported on schedule"
     },
     {
       "name": "Data: tour review sweep held",
       "status": "pass",
-      "message": "Skipped (a tour job report is missing or stale): The daily tour sweep held nothing back"
+      "message": "The daily tour sweep held nothing back"
     },
     {
       "name": "Data: tour dates need a look",
       "status": "pass",
-      "message": "Skipped (a tour job report is missing or stale): Every tour was dated automatically"
+      "message": "Every tour was dated automatically"
     },
     {
       "name": "Data: running-tour discovery failed",
       "status": "pass",
-      "message": "Skipped (a tour job report is missing or stale): Running-tour discovery on Tours To You succeeded"
+      "message": "Running-tour discovery on Tours To You succeeded"
     },
     {
       "name": "Data: Tours To You pages not checked",
       "status": "pass",
-      "message": "Skipped (a tour job report is missing or stale): All 223 Tours To You show pages read within 4 days"
+      "message": "All 223 Tours To You show pages read within 4 days"
     },
     {
       "name": "Data: national tours added automatically",
       "status": "pass",
-      "message": "Skipped (a tour job report is missing or stale): No national tours added automatically this run"
+      "message": "No national tours added automatically this run"
     },
     {
       "name": "Data: closed national tours reopened automatically",
       "status": "pass",
-      "message": "Skipped (a tour job report is missing or stale): No closed national tours reopened"
+      "message": "No closed national tours reopened"
     },
     {
       "name": "Data: closed national tour lists new dates",
       "status": "pass",
-      "message": "Skipped (a tour job report is missing or stale): No closed national tour lists new dates"
+      "message": "No closed national tour lists new dates"
     },
     {
       "name": "Data: live show with zero critic reviews on site",
@@ -84,32 +84,32 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "44 of 506 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-8325 SB gate cousins: unattributed SB rows (45% have no showId) and West End aggregator page fetches still use ScrapingBee"
+      "message": "42 of 513 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-8372 Rescued reviews waiting for an owner pick (push-rescue branches)"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-25"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-26"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "84 review(s) with no usable text, 64 rejected although verified as a review, 23 never scored, 14 with a blocked URL (0 published on the site), across 779 current shows"
+      "message": "85 review(s) with no usable text, 64 rejected although verified as a review, 25 never scored, 14 with a blocked URL (0 published on the site), across 781 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (51289 checked)"
+      "message": "No published review score contradicts the critic's rating (51760 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "3 early publish date(s) awaiting recheck (limit 40); 226 already attempted and not yet confirmed"
+      "message": "6 early publish date(s) awaiting recheck (limit 40); 237 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "pass",
-      "message": "0 unexplained approved-fix drift(s) across 3976 files with approvals"
+      "message": "0 unexplained approved-fix drift(s) across 3996 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",

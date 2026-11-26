@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-26T11:05:42.926Z",
+  "lastChecked": "2026-11-26T17:59:35.450Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,17 +14,17 @@
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "warn",
-      "message": "5 NEW review(s) whose explicit rating contradicts the score (worst: when-we-have-sufficiently-tortured-each-other-west-end-2019 The Sunday Times 4/5 stars→80 vs LLM 18, gap 62)"
+      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: when-we-have-sufficiently-tortured-each-other-west-end-2019 The Sunday Times 4/5 stars→80 vs LLM 18, gap 62)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.9% scored (53552/54129)"
+      "message": "99.0% scored (53373/53936)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "33 audit(s) drifting, each reported on its own card or the digest FYI line (7h ago)"
+      "message": "33 audit(s) drifting, each reported on its own card or the digest FYI line (4h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -39,22 +39,22 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "pass",
-      "message": "No probable domain moves in 427 unregistered host(s)"
+      "message": "No probable domain moves in 428 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
-      "status": "warn",
-      "message": "1 opened show(s) have a cached Show Score URL but no Show Score audience score (the-holes-off-broadway-2026)"
+      "status": "pass",
+      "message": "Every opened Broadway/off-Broadway show with a cached Show Score URL has a Show Score audience score"
     },
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1909 outlet(s), 84885 review(s)"
+      "message": "No broken-extractor signature in 1909 outlet(s), 84918 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1909 outlet(s), 84885 review(s)"
+      "message": "No broken-extractor signature in 1909 outlet(s), 84918 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
