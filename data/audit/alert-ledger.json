@@ -274,13 +274,13 @@
       "firstSeen": "2026-07-27T08:00:24.727Z",
       "incidentOpenedAt": "2026-11-21T09:56:56.190Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-26T11:05:44.567Z",
+      "lastSeen": "2026-11-26T17:59:40.381Z",
       "lastNotifiedAt": "2026-11-24T12:34:05.776Z",
       "lastSurfacedAt": "2026-11-24T12:34:05.776Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": "BRO-8246",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Credits: ScrapingBee": {
       "status": "resolved",
@@ -833,20 +833,18 @@
       "silentRefires": 4
     },
     "health-check:Cron failed: Reverse Discovery": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "BSC Daily: Cron failed: Reverse Discovery",
       "firstSeen": "2026-08-09T07:42:46.978Z",
-      "incidentOpenedAt": "2026-11-01T09:17:30.992Z",
+      "incidentOpenedAt": "2026-11-26T17:59:40.548Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-01T09:17:30.992Z",
-      "lastNotifiedAt": "2026-11-01T09:17:30.992Z",
-      "lastSurfacedAt": "2026-11-01T09:17:30.992Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-26T17:59:40.548Z",
+      "lastNotifiedAt": "2026-11-26T17:59:40.548Z",
+      "lastSurfacedAt": "2026-11-26T17:59:40.548Z",
+      "notifyCount": 3,
       "cardId": "3b7637c5-416f-815c-b1db-dfcdfd60023d",
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-05T09:31:11.084Z",
-      "resolveReason": "absent"
+      "linearIdentifier": null
     },
     "opening-night-stale-upcoming-tag-isla-off-broadway-2026": {
       "status": "resolved",
@@ -17057,12 +17055,13 @@
       "firstSeen": "2026-10-13T09:28:34.744Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.744Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-26T11:05:47.982Z",
+      "lastSeen": "2026-11-26T17:59:40.740Z",
       "lastNotifiedAt": "2026-11-26T11:05:47.982Z",
       "lastSurfacedAt": "2026-11-26T11:05:47.982Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": "BRO-6523"
+      "linearIdentifier": "BRO-6523",
+      "silentRefires": 1
     },
     "health-check:Data quality: fulltext-mentions-show lifetime sweep": {
       "status": "open",
@@ -17102,12 +17101,13 @@
       "firstSeen": "2026-10-13T09:28:34.767Z",
       "incidentOpenedAt": "2026-11-23T20:39:13.500Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-26T11:05:48.151Z",
+      "lastSeen": "2026-11-26T17:59:40.904Z",
       "lastNotifiedAt": "2026-11-26T11:05:48.151Z",
       "lastSurfacedAt": "2026-11-26T11:05:48.151Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": "BRO-8352"
+      "linearIdentifier": "BRO-8352",
+      "silentRefires": 1
     },
     "health-check:Data quality: missed opening-night broadcasts": {
       "status": "open",
@@ -17248,13 +17248,13 @@
       "firstSeen": "2026-10-13T09:28:34.841Z",
       "incidentOpenedAt": "2026-10-13T09:28:34.841Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-26T11:05:51.303Z",
+      "lastSeen": "2026-11-26T17:59:40.923Z",
       "lastNotifiedAt": "2026-11-21T09:57:01.314Z",
       "lastSurfacedAt": "2026-11-21T09:57:01.314Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-5455",
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "health-check:Feedback: needs-manual-review backlog": {
       "status": "open",
@@ -27475,12 +27475,13 @@
       "firstSeen": "2026-10-25T23:39:15.843Z",
       "incidentOpenedAt": "2026-11-23T20:39:13.169Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-26T11:05:44.795Z",
+      "lastSeen": "2026-11-26T17:59:40.529Z",
       "lastNotifiedAt": "2026-11-26T11:05:44.795Z",
       "lastSurfacedAt": "2026-11-26T11:05:44.795Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-8351"
+      "linearIdentifier": "BRO-8351",
+      "silentRefires": 1
     },
     "land:land/bro-6242-social-autopost": {
       "status": "resolved",
@@ -46455,7 +46456,7 @@
       "resolvedAt": "2026-11-19T16:50:43.535Z"
     },
     "land:land/bro-7841-retro": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/bro-7841-retro",
       "firstSeen": "2026-11-19T16:06:11.354Z",
@@ -46465,7 +46466,9 @@
       "lastSurfacedAt": "2026-11-19T16:06:11.354Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-26T17:59:41.049Z",
+      "resolveReason": "absent"
     },
     "opening-night-remediation-exhausted-t1-missing:its-a-wonderful-life-a-live-radio-play-2026": {
       "status": "open",
@@ -46482,7 +46485,7 @@
       "silentRefires": 2
     },
     "land:land/bro-7846-archiver-guard": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/bro-7846-archiver-guard",
       "firstSeen": "2026-11-19T17:36:19.333Z",
@@ -46492,7 +46495,9 @@
       "lastSurfacedAt": "2026-11-19T17:36:19.333Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-26T17:59:41.049Z",
+      "resolveReason": "absent"
     },
     "opening-readiness:failed:bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026": {
       "status": "resolved",
@@ -51339,12 +51344,13 @@
       "firstSeen": "2026-11-26T11:05:47.950Z",
       "incidentOpenedAt": "2026-11-26T11:05:47.950Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-26T11:05:47.950Z",
+      "lastSeen": "2026-11-26T17:59:40.716Z",
       "lastNotifiedAt": "2026-11-26T11:05:47.950Z",
       "lastSurfacedAt": "2026-11-26T11:05:47.950Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "express-retry-still-thin:hole-off-broadway-2026": {
       "status": "open",
