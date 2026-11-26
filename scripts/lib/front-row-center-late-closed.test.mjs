@@ -12,11 +12,9 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const ow = require('./outlet-opening-window.js');
-const { findMatchingShows } = require('./outlet-listing-helpers.js');
 const here = path.dirname(fileURLToPath(import.meta.url));
 
-// The real shows.json record (fields the pollers read).
+// Copied from the real shows.json record (fields the pollers read); a fixture registry, not live data.
 const wuthering = {
   id: 'wuthering-heights-off-broadway-2026', title: 'Wuthering Heights', status: 'closed',
   category: 'off-broadway', market: 'broadway', openingDate: '2026-11-19', previewsStartDate: '2026-11-19',
@@ -24,6 +22,10 @@ const wuthering = {
 };
 const oldWuthering = { id: 'wuthering-heights-west-end-2022', title: 'Wuthering Heights', status: 'closed', category: 'west-end', openingDate: '2022-02-09', closingDate: '2022-03-19' };
 const running = { id: 'some-open-show', title: 'Some Open Show', status: 'open', category: 'off-broadway', openingDate: '2026-10-01' };
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([wuthering, oldWuthering, running]));
+require('./show-names').setPressNameShows([wuthering, oldWuthering, running]);
+const ow = require('./outlet-opening-window.js');
+const { findMatchingShows } = require('./outlet-listing-helpers.js');
 const item = { headline: 'Wuthering Heights', url: 'https://thefrontrowcenter.com/2026/11/wuthering-heights-2', publishDate: '2026-11-24' };
 
 test('window poller: front-row-center matches a show 5 days past opening (late-publisher window)', () => {
