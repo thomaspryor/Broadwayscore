@@ -11,7 +11,11 @@
  *
  * Usage:
  *   node scripts/github-actions-audit.mjs [--month=2026-11] [--repos=a,b]
- *        [--owner=thomaspryor] [--json] [--budget=200] [--spent=150.74 --spent-date=2026-11-25]
+ *        [--owner=thomaspryor] [--json]
+ *        [--runs-only=repoA,repoB]   treat each run as ONE ubuntu job timed by the run
+ *                                    (skips the per-run jobs call; only for repos whose
+ *                                    workflows are all single-job Linux)
+ *        [--skip-workflows=NAME,...] workflows to leave out (e.g. a self-hosted heartbeat)
  *
  * Exits 0; prints a table (or JSON). Read-only: GETs only via `gh api`.
  */
@@ -87,6 +91,16 @@ export function projectMonthEnd({ spentToDate, asOf, dailyRate, monthEnd, spikeU
   return +(spentToDate + dailyRate * days + spikeUsd).toFixed(2);
 }
 
+/** A run as a single Linux job (for --runs-only repos): timed run_started_at → updated_at. */
+export function runAsJob(run) {
+  return {
+    labels: ['ubuntu-latest'],
+    started_at: run.run_started_at,
+    completed_at: run.status === 'completed' ? run.updated_at : null,
+    conclusion: run.conclusion,
+  };
+}
+
 function ghJson(path) {
   const out = execFileSync('gh', ['api', path], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   return JSON.parse(out);
@@ -140,6 +154,8 @@ async function main() {
   const vis = Object.fromEntries(meta.map((r) => [r.name, r.private]));
   if (!repos) repos = meta.filter((r) => r.private).map((r) => r.name);
 
+  const runsOnly = new Set(args['runs-only'] ? String(args['runs-only']).split(',') : []);
+  const skip = new Set(args['skip-workflows'] ? String(args['skip-workflows']).split(',') : []);
   const jobs = [];
   for (const repo of repos) {
     const isPrivate = vis[repo] ?? true;
@@ -148,7 +164,9 @@ async function main() {
     for (const run of runs) {
       // Runs that never reached a runner bill nothing; skip the jobs call.
       if (!run.run_started_at) continue;
-      for (const j of fetchJobs(owner, repo, run.id)) {
+      if (skip.has(run.name)) continue;
+      const jobsOfRun = runsOnly.has(repo) ? [runAsJob(run)] : fetchJobs(owner, repo, run.id);
+      for (const j of jobsOfRun) {
         jobs.push({ ...j, repo, isPrivate, workflow: run.name, event: run.event, day: run.created_at.slice(0, 10) });
       }
     }

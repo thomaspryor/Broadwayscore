@@ -54,3 +54,11 @@ test('projectMonthEnd: Nov 25 spend + remaining days + spike allowance', () => {
   assert.equal(projectMonthEnd({ spentToDate: 150.74, asOf: '2026-11-25', dailyRate: 6, monthEnd: '2026-12-01', spikeUsd: 10 }), 196.74);
   assert.equal(projectMonthEnd({ spentToDate: 100, asOf: '2026-12-02', dailyRate: 6, monthEnd: '2026-12-01' }), 100);
 });
+
+test('runAsJob times a completed run as one Linux job', async () => {
+  const { runAsJob } = await import('./github-actions-audit.mjs');
+  const j = runAsJob({ run_started_at: t0, updated_at: plus(70), status: 'completed', conclusion: 'success' });
+  assert.equal(runnerClass(j), 'linux');
+  assert.equal(billableMinutes(j), 2);
+  assert.equal(billableMinutes(runAsJob({ run_started_at: t0, updated_at: plus(70), status: 'in_progress' })), 0);
+});
