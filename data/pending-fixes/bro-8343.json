@@ -1,0 +1,68 @@
+{
+  "issueNumber": "bro-8343",
+  "planId": "01a96e5b-a494-4cf0-a3e8-96b74776608d",
+  "status": "pending",
+  "createdAt": "2026-11-26T03:09:42.064Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear junk officialUrl on 5 announced off-west-end shows (BRO-8343)",
+    "steps": [
+      "shows.json: brink-off-west-end-2026.officialUrl",
+      "shows.json: michael-off-west-end-2026.officialUrl",
+      "shows.json: the-odyssey-off-west-end-2026.officialUrl",
+      "shows.json: babylon-off-west-end-2026.officialUrl",
+      "shows.json: janet-street-porter-off-west-end-2026.officialUrl"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brink-off-west-end-2026",
+        "field": "officialUrl",
+        "oldValue": "https://brinkjh.mooreschools.com/clubs-organizations/band1/brink-band-handbook",
+        "newValue": null,
+        "description": "shows.json: brink-off-west-end-2026.officialUrl"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "michael-off-west-end-2026",
+        "field": "officialUrl",
+        "oldValue": "https://www.themichaelpalin.com/palins-posts/that-time-of-year/",
+        "newValue": null,
+        "description": "shows.json: michael-off-west-end-2026.officialUrl"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-odyssey-off-west-end-2026",
+        "field": "officialUrl",
+        "oldValue": "https://www.theodysseyonline.com/why-being-the-middle-child-rough",
+        "newValue": null,
+        "description": "shows.json: the-odyssey-off-west-end-2026.officialUrl"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "babylon-off-west-end-2026",
+        "field": "officialUrl",
+        "oldValue": "https://www.townofbabylonny.gov/calendar.aspx?view=list&year=2017&month=5&CID=0",
+        "newValue": null,
+        "description": "shows.json: babylon-off-west-end-2026.officialUrl"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "janet-street-porter-off-west-end-2026",
+        "field": "officialUrl",
+        "oldValue": "https://www.janetstreetporter.com/pix-archive",
+        "newValue": null,
+        "description": "shows.json: janet-street-porter-off-west-end-2026.officialUrl"
+      }
+    ]
+  }
+}
