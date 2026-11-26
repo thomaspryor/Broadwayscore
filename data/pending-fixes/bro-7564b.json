@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7564b",
   "planId": "dbbc24a0-8ca0-4756-a7b9-cb995db3a53b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-26T22:54:40.427Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "jekyll-and-hyde-1997/exeunt-magazine--zack-clark.json: wrongProductionReason"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-26T23:41:59.627Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jekyll-and-hyde-1997/exeunt-magazine--zack-clark.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jekyll-and-hyde-1997/exeunt-magazine--zack-clark.json wrongProductionReason: null -> \"Review of the 2013 Jeff Calhoun production at the Marriott Marquis; text names only the 2013 cast (Deborah Cox, Constantine Maroulis, Teal Wicks). The 2013 production page already holds the Exeunt review.\""
+    }
+  ],
+  "executedIn": "ci"
 }
