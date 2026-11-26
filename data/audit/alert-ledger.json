@@ -8791,7 +8791,7 @@
       "resolveReason": "BRO-5076: review file no longer exists (removed or renamed)"
     },
     "provider-spend:attribution-gap:brightdata": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Untracked brightdata spend: ledger explains only 77%, 79% of billed",
       "firstSeen": "2026-09-30T13:04:35.419Z",
@@ -8802,7 +8802,9 @@
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-8132",
-      "silentRefires": 4
+      "silentRefires": 4,
+      "resolvedAt": "2026-11-26T11:41:44.286Z",
+      "resolveReason": "attributedPct 100%, 90% through 2026-11-25"
     },
     "opening-night-remediation-exhausted-t1-missing:the-standard-of-living-west-end-2026": {
       "status": "resolved",
@@ -9987,13 +9989,13 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 15 P0 older than 24h, 73 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 15 P0 older than 24h, 75 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-11-25T11:28:27.041Z",
-      "lastNotifiedAt": "2026-11-25T11:28:27.041Z",
+      "lastSeen": "2026-11-26T11:09:17.604Z",
+      "lastNotifiedAt": "2026-11-26T11:09:17.604Z",
       "lastSurfacedAt": "2026-11-24T12:35:08.342Z",
-      "notifyCount": 53,
+      "notifyCount": 54,
       "cardId": null,
       "linearIdentifier": "BRO-5613"
     },
@@ -12345,10 +12347,12 @@
       "lastSurfacedAt": "2026-11-25T09:20:09.487Z",
       "notifyCount": 39,
       "cardId": null,
-      "linearIdentifier": "BRO-8298",
+      "linearIdentifier": null,
       "silentRefires": 1,
       "resolvedAt": "2026-11-26T08:59:57.170Z",
-      "resolveReason": "detector clean over the whole corpus (BRO-7512)"
+      "resolveReason": "detector clean over the whole corpus (BRO-7512)",
+      "sweptTracker": "BRO-8298",
+      "notifyCountAtRelease": 39
     },
     "land:land/job/linear-BRO-4786-muwt2lon": {
       "status": "resolved",
@@ -17842,12 +17846,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-11-25T11:39:42.895Z",
+      "lastSeen": "2026-11-26T11:41:42.166Z",
       "lastNotifiedAt": "2026-11-25T11:39:42.895Z",
       "lastSurfacedAt": "2026-11-25T11:39:42.895Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-8305"
+      "linearIdentifier": "BRO-8305",
+      "silentRefires": 1
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -40328,13 +40333,13 @@
     "syndicated-critic-pairs:unexplained": {
       "status": "open",
       "disposition": "auto",
-      "title": "Same-critic outlet pairs: 39 show/critic pairs counted at two outlets",
+      "title": "Same-critic outlet pairs: 42 show/critic pairs counted at two outlets",
       "firstSeen": "2026-11-09T09:57:37.244Z",
       "incidentOpenedAt": "2026-11-09T09:57:37.244Z",
-      "lastSeen": "2026-11-25T11:29:30.271Z",
-      "lastNotifiedAt": "2026-11-25T11:29:30.271Z",
+      "lastSeen": "2026-11-26T11:10:25.204Z",
+      "lastNotifiedAt": "2026-11-26T11:10:25.204Z",
       "lastSurfacedAt": null,
-      "notifyCount": 17,
+      "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": "BRO-7207"
     },
@@ -40344,15 +40349,15 @@
       "title": "Default-critic diversity: 2 outlets credit blank bylines to one of several critics",
       "firstSeen": "2026-11-09T09:57:49.316Z",
       "incidentOpenedAt": "2026-11-16T09:49:05.745Z",
-      "lastSeen": "2026-11-25T11:30:33.644Z",
-      "lastNotifiedAt": "2026-11-25T11:30:33.644Z",
+      "lastSeen": "2026-11-26T11:11:23.949Z",
+      "lastNotifiedAt": "2026-11-26T11:11:23.949Z",
       "lastSurfacedAt": null,
-      "notifyCount": 17,
+      "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": "BRO-7586"
     },
     "approved-fix-drift:unexplained": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Approved-fix drift: 4 approved exclusion verdicts silently undone",
       "firstSeen": "2026-11-09T09:58:29.714Z",
@@ -40364,7 +40369,9 @@
       "cardId": null,
       "linearIdentifier": "BRO-8042",
       "notifyCountAtRelease": 3,
-      "sweptTracker": "BRO-7209"
+      "sweptTracker": "BRO-7209",
+      "resolvedAt": "2026-11-26T11:11:53.493Z",
+      "resolveReason": "no unexplained approved-fix drift"
     },
     "express-retry-still-thin:violets-magic-glasses-off-broadway-2026": {
       "status": "resolved",
@@ -46270,16 +46277,16 @@
     },
     "coverage-holes:much-ado-about-nothing-2026": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "much-ado-about-nothing-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-19T10:36:59.089Z",
       "incidentOpenedAt": "2026-11-19T10:36:59.089Z",
-      "lastSeen": "2026-11-25T11:28:46.559Z",
-      "lastNotifiedAt": "2026-11-25T11:28:46.559Z",
-      "lastSurfacedAt": "2026-11-25T11:28:46.559Z",
-      "notifyCount": 7,
+      "lastSeen": "2026-11-26T11:09:38.353Z",
+      "lastNotifiedAt": "2026-11-26T11:09:38.353Z",
+      "lastSurfacedAt": "2026-11-26T11:09:38.353Z",
+      "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-8355"
     },
     "express-retry-still-thin:the-conversation-off-broadway-2026": {
       "status": "resolved",
@@ -49138,10 +49145,10 @@
       "title": "jenufa-off-broadway-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-23T10:58:32.528Z",
       "incidentOpenedAt": "2026-11-23T10:58:32.528Z",
-      "lastSeen": "2026-11-25T11:28:46.416Z",
-      "lastNotifiedAt": "2026-11-25T11:28:46.416Z",
-      "lastSurfacedAt": "2026-11-25T11:28:46.416Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-26T11:09:38.248Z",
+      "lastNotifiedAt": "2026-11-26T11:09:38.248Z",
+      "lastSurfacedAt": "2026-11-26T11:09:38.248Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -49166,10 +49173,10 @@
       "title": "Opening-night timeout headroom: 2 steps near their timeout cap",
       "firstSeen": "2026-11-23T10:59:47.139Z",
       "incidentOpenedAt": "2026-11-23T10:59:47.139Z",
-      "lastSeen": "2026-11-25T11:30:20.992Z",
-      "lastNotifiedAt": "2026-11-25T11:30:20.992Z",
+      "lastSeen": "2026-11-26T11:11:11.360Z",
+      "lastNotifiedAt": "2026-11-26T11:11:11.360Z",
       "lastSurfacedAt": null,
-      "notifyCount": 3,
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-8130"
     },
@@ -49961,10 +49968,10 @@
       "title": "a-christmas-carol-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
       "firstSeen": "2026-11-24T00:28:18.929Z",
       "incidentOpenedAt": "2026-11-24T00:28:18.929Z",
-      "lastSeen": "2026-11-25T11:28:46.325Z",
-      "lastNotifiedAt": "2026-11-25T11:28:46.325Z",
-      "lastSurfacedAt": "2026-11-25T11:28:46.325Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-26T11:09:38.157Z",
+      "lastNotifiedAt": "2026-11-26T11:09:38.157Z",
+      "lastSurfacedAt": "2026-11-26T11:09:38.157Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -50663,8 +50670,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-8296",
-      "resolvedAt": "2026-11-25T15:41:20.166Z"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-25T15:41:20.166Z",
+      "sweptTracker": "BRO-8296",
+      "notifyCountAtRelease": 1
     },
     "express-retry-still-thin:are-you-even-indian-off-west-end-2026": {
       "status": "open",
