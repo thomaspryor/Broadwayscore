@@ -1,34 +1,13 @@
 {
-  "generatedAt": "2026-11-26T10:31:52.125Z",
+  "generatedAt": "2026-11-26T13:11:44.275Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 370,
-  "clean": 369,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "the-good-thief-off-broadway-2026",
-      "title": "The Good Thief",
-      "openingDate": "2026-11-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: lighting-and-sound-america"
-        }
-      ],
-      "missingFromProd": [
-        "lighting-and-sound-america"
-      ],
-      "localCount": 12,
-      "deployedCount": 11,
-      "firstDefectAt": "2026-11-26T10:31:47.656Z"
-    }
-  ],
+  "clean": 370,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T10:31:52.491Z",
+  "generatedAt": "2026-11-26T13:11:44.615Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -153,54 +153,43 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
+      "outletId": "musical-theatre-review",
+      "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     }
   ],
-  "itemsScanned": 906,
-  "matchedGaps": 3,
+  "itemsScanned": 932,
+  "matchedGaps": 4,
   "possibleGaps": 4,
   "gaps": [
     {
-      "showId": "attention-off-west-end-2026",
-      "title": "Attention",
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
       "level": "matched",
-      "outletId": "harry-theatre-life",
-      "url": "https://www.harrytheatrelife.co.uk/post/review-attention-bush-theatre-london",
-      "headline": "REVIEW | Attention, Bush Theatre - London",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/11/26/review-of-a-christmas-carol-old-vic-2026-giles-tereras-humbug-performance-is-haunted-by-the-ghosts-of-christmas-past/",
+      "headline": "Review of &#8216;A Christmas Carol&#8217; (Old Vic, 2026): &#8220;Giles Terera&#8217;s humbug performance is haunted by the ghosts of Christmas past&#8221;",
       "publishDate": "2026-11-26"
     },
     {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "title": "Cinderella",
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
       "level": "matched",
-      "outletId": "a-youngish-perspective",
-      "url": "https://ayoungishperspective.co.uk/2026/11/26/review-matthew-bournes-cinderella/",
-      "headline": "REVIEW: Matthew Bourne’s Cinderella",
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/area/southwark/review-a-christmas-carol-at-the-old-vic/",
+      "headline": "Review: A Christmas Carol at the Old Vic",
+      "publishDate": "2026-11-26"
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "level": "matched",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-a-christmas-carol-reading-rep-2026",
+      "headline": "Review: A CHRISTMAS CAROL, Reading Rep",
       "publishDate": "2026-11-26"
     },
     {
