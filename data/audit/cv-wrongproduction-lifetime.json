@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-25T11:59:53.327Z",
-  "scanned": 4967,
-  "showsWithViolations": 126,
-  "totalViolations": 156,
+  "updatedAt": "2026-11-26T12:06:55.773Z",
+  "scanned": 4975,
+  "showsWithViolations": 121,
+  "totalViolations": 149,
   "newSinceLastRun": 1,
   "handled": {
-    "not-shipped": 67,
-    "temporal-override-low-confidence": 981,
-    "duplicate-not-shipped": 55,
+    "not-shipped": 65,
+    "temporal-override-low-confidence": 997,
+    "duplicate-not-shipped": 57,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 12,
     "self-healed": 75,
-    "prior-run-or-tour-leg": 47
+    "prior-run-or-tour-leg": 48
   },
   "newViolationKeys": [
-    "high-school-musical-off-west-end-2026::aviewfromrowjay--jay.json"
+    "1984-2017::wsj--charles-isherwood.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -32,6 +32,7 @@
     "the-new-one-2018::theater-news-online--joe-dziemianowicz.json",
     "children-of-a-lesser-god-2018::theater-news-online--brian-scott-lipton.json",
     "frozen-2018::jks-theatre-scene--jeff-kyler.json",
+    "1984-2017::wsj--charles-isherwood.json",
     "charlie-and-the-chocolate-factory-2017::stageandcinema--tony-frankel.json",
     "she-loves-me-2016::ap--mark-kennedy.json",
     "she-loves-me-2016::the-clyde-fitch-report--david-finkle.json",
@@ -55,7 +56,6 @@
     "shadowlands-west-end-2026::islingtontribune--unknown.json",
     "all-my-sons-west-end-2025::guardian--arifa-akbar.json",
     "sinatra-the-musical-west-end-2026::musical-theatre-review--unknown.json",
-    "cyrano-de-bergerac-west-end-2026::artsdesk--unknown.json",
     "cyrano-de-bergerac-west-end-2026::london-theatre--matt-wolf.json",
     "wicked-west-end-2021::timeout--honour-bayes.json",
     "the-phantom-of-the-opera-west-end-1986::britishtheatrecom--douglas-mayo.json",
@@ -64,24 +64,18 @@
     "into-the-woods-off-west-end-2025::partially-obstructed-view--view-my-complete.json",
     "into-the-woods-off-west-end-2025::theartsdispatch--the-arts-dispatch.json",
     "witness-for-the-prosecution-off-west-end-2022::london-theatre--will-longman.json",
-    "relics-off-west-end-2026::artsdesk--unknown.json",
-    "sting-off-west-end-2026::artsdesk--aleks-sierz.json",
     "between-the-river-and-the-sea-west-end-2026::artsdesk--aleks-sierz.json",
     "blood-of-my-blood-west-end-2026::guardian--unknown.json",
-    "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-off-west-end-2026::musical-theatre-review--unknown.json",
     "operation-mincemeat-west-end-2024::the-recs--alexandra-taylor.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
     "burlesque-off-west-end-2026::telegraph--claire-allfree.json",
-    "mass-off-west-end-2026::artsdesk--demetrios-matheou.json",
     "cats-off-west-end-2026::jonathan-baz--jonathan-baz.json",
-    "dark-of-the-moon-off-west-end-2026::artsdesk--unknown.json",
     "dark-of-the-moon-off-west-end-2026::musical-theatre-review--unknown.json",
     "sherlock-holmes-off-west-end-2026::standard--nick-curtis.json",
     "tango-after-dark-off-west-end-2026::london-box-office--stuart-king.json",
     "trainspotting-the-musical-west-end-2026::musical-theatre-review--scott-matthewman.json",
     "now-you-see-me-live-off-west-end-2026::london-box-office--stuart-king.json",
-    "the-oresteia-off-west-end-2026::artsdesk--unknown.json",
     "derren-brown-only-human-off-west-end-2026::theatre-weekly--greg-stewart.json",
     "derren-brown-only-human-off-west-end-2026::thereviewshub--katherine-gannon.json",
     "celebrity-autobiography-2026::cititour--brian-scott-lipton.json",
@@ -154,7 +148,6 @@
     "idiots-assemble-spitting-image-the-musical-west-end-2023::lost-in-theatreland--amy-rye.json",
     "dr-semmelweis-west-end-2023::daily-mail--unknown.json",
     "the-way-old-friends-do-west-end-2023::standard--nick-curtis.json",
-    "all-male-as-you-like-it-regional-2026::artsdesk--unknown.json",
     "frozen-west-end-2021::shy-strange-manic--kariss-ainsworth.json",
     "the-mirror-and-the-light-west-end-2021::nytimes--unknown.json",
     "what-if-if-only-west-end-2021::london-theatre--marianka-swain.json",
@@ -466,6 +459,27 @@
           "cvIssues": [
             "Review describes attendance on February 15, 2020, which is nearly 2 years AFTER the expected Broadway opening date of March 22, 2018",
             "Reviewer states 'I was sad to see that it has closed at the St. James' — indicating the review was written AFTER the Broadway run had already closed"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "1984-2017",
+      "title": "1984",
+      "openingDate": "2017-06-22",
+      "message": "wsj/Unknown (wsj--charles-isherwood.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 6d of opening, likely correct production] This is a legitimate theater review with critical ass — https://www.wsj.com/articles/1984-review-a-stunning-dystopia-on-our-telescreens-11585859139?gaa_at=eafs&gaa_n=AWEtsqdQ5jCqg4YOqoV6BPBn1fufz5HUiwgUpKJr-XOBvX5zbvAJ9eCAXob2&gaa_ts=698c8307&gaa_sig=YJ313BCBRScF6wH9HpFyKQtQjCE52F2QXTscbVzfujbiUO2hK2VOikCJsBhjG9cyH1RDqQsPIE0safGgNTf5TQ%3D%3D",
+      "violations": [
+        {
+          "filename": "wsj--charles-isherwood.json",
+          "url": "https://www.wsj.com/articles/1984-review-a-stunning-dystopia-on-our-telescreens-11585859139?gaa_at=eafs&gaa_n=AWEtsqdQ5jCqg4YOqoV6BPBn1fufz5HUiwgUpKJr-XOBvX5zbvAJ9eCAXob2&gaa_ts=698c8307&gaa_sig=YJ313BCBRScF6wH9HpFyKQtQjCE52F2QXTscbVzfujbiUO2hK2VOikCJsBhjG9cyH1RDqQsPIE0safGgNTf5TQ%3D%3D",
+          "outletId": "wsj",
+          "criticName": "Unknown",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 6d of opening, likely correct production] This is a legitimate theater review with critical ass",
+          "cvIssues": [
+            "Review is evaluating the Alley Theatre Houston production (2020, filmed/webcast), not the Broadway production at Hudson Theatre (2017)",
+            "Explicit venue reference: 'Alley Theatre, Houston' and 'the Alley Theatre's Houston premiere'"
           ]
         }
       ]
@@ -866,7 +880,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre's 2019 production of Shadowlands, which is transferring to the Aldwy — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review, but it reviews the wrong production. The critic attended and evaluated the Chichester Fe — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -875,10 +889,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a review of the Chichester Festival Theatre's 2019 production of Shadowlands, which is transferring to the Aldwy",
+          "cvReasoning": "This is a valid theater review, but it reviews the wrong production. The critic attended and evaluated the Chichester Fe",
           "cvIssues": [
             "Review evaluates the 2019 Chichester Festival Theatre production, not the West End run opening 2026-02-12",
-            "Opening sentence explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — critic is reviewing the transferred Chichester production"
+            "Opening sentence explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — the critic is reviewing the transferred Chichester production"
           ]
         }
       ]
@@ -928,20 +942,8 @@
       "showId": "cyrano-de-bergerac-west-end-2026",
       "title": "Cyrano de Bergerac",
       "openingDate": "2026-06-25",
-      "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 4d of opening, likely correct production] The review discusses a production directed by Simon E — https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks\nlondon-theatre/Matt Wolf (london-theatre--matt-wolf.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses an RSC revival of 'Cyrano de Ber — https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
+      "message": "london-theatre/Matt Wolf (london-theatre--matt-wolf.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses an RSC revival of 'Cyrano de Ber — https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
       "violations": [
-        {
-          "filename": "artsdesk--unknown.json",
-          "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
-          "outletId": "artsdesk",
-          "criticName": "Unknown",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 4d of opening, likely correct production] The review discusses a production directed by Simon E",
-          "cvIssues": [
-            "Review is about a different production of Cyrano de Bergerac, not the West End production opening in 2026."
-          ]
-        },
         {
           "filename": "london-theatre--matt-wolf.json",
           "url": "https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
@@ -1077,47 +1079,6 @@
       ]
     },
     {
-      "showId": "relics-off-west-end-2026",
-      "title": "Relics",
-      "openingDate": "2026-06-24",
-      "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 8d of opening, likely correct production] The review discusses a production of 'Relics' but doe — https://theartsdesk.com/theatre/relics-lyric-hammersmith-review-faultless-cast-effortlessly-funny-family-drama",
-      "violations": [
-        {
-          "filename": "artsdesk--unknown.json",
-          "url": "https://theartsdesk.com/theatre/relics-lyric-hammersmith-review-faultless-cast-effortlessly-funny-family-drama",
-          "outletId": "artsdesk",
-          "criticName": "Unknown",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 8d of opening, likely correct production] The review discusses a production of 'Relics' but doe",
-          "cvIssues": [
-            "The review describes a production of 'Relics' that does not match the Off-West End production details provided, including the venue and opening date."
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "sting-off-west-end-2026",
-      "title": "Sting",
-      "openingDate": "2026-06-23",
-      "message": "artsdesk/Aleks Sierz (artsdesk--aleks-sierz.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 8d of opening, likely correct production] This is a legitimate review of Sophie Swithinbank's ' — https://theartsdesk.com/theatre/sting-young-vic-review-emotionally-gruelling-bit-bizarre",
-      "violations": [
-        {
-          "filename": "artsdesk--aleks-sierz.json",
-          "url": "https://theartsdesk.com/theatre/sting-young-vic-review-emotionally-gruelling-bit-bizarre",
-          "outletId": "artsdesk",
-          "criticName": "Aleks Sierz",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 8d of opening, likely correct production] This is a legitimate review of Sophie Swithinbank's '",
-          "cvIssues": [
-            "Review describes production at Young Vic studio space, not The Maria Theatre as specified in expected metadata",
-            "Text is truncated mid-sentence at 5559 characters"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "between-the-river-and-the-sea-west-end-2026",
       "title": "Between The River and The Sea",
       "openingDate": "2026-04-20",
@@ -1152,27 +1113,6 @@
           "matchedBy": "url",
           "cvReasoning": null,
           "cvIssues": null
-        }
-      ]
-    },
-    {
-      "showId": "archduke-west-end-2026",
-      "title": "Archduke",
-      "openingDate": "2026-06-26",
-      "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 3d of opening, likely correct production] The review discusses a production that was first stag — http://theartsdesk.com/theatre/archduke-royal-court-review-gloriously-zany-history-play",
-      "violations": [
-        {
-          "filename": "artsdesk--unknown.json",
-          "url": "http://theartsdesk.com/theatre/archduke-royal-court-review-gloriously-zany-history-play",
-          "outletId": "artsdesk",
-          "criticName": "Unknown",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 3d of opening, likely correct production] The review discusses a production that was first stag",
-          "cvIssues": [
-            "Review is about a New York production, not the West End production.",
-            "The review describes a performance at the Royal Court, which is not a West End venue."
-          ]
         }
       ]
     },
@@ -1261,27 +1201,6 @@
       ]
     },
     {
-      "showId": "mass-off-west-end-2026",
-      "title": "Mass",
-      "openingDate": "2026-04-29",
-      "message": "artsdesk/Demetrios Matheou (artsdesk--demetrios-matheou.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 3d of opening, likely correct production] The review primarily evaluates the film adaptation of — http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
-      "violations": [
-        {
-          "filename": "artsdesk--demetrios-matheou.json",
-          "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
-          "outletId": "artsdesk",
-          "criticName": "Demetrios Matheou",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 3d of opening, likely correct production] The review primarily evaluates the film adaptation of",
-          "cvIssues": [
-            "Review discusses a film adaptation rather than the Off-West End production.",
-            "The review mentions the film version of 'Mass' from 2022."
-          ]
-        }
-      ]
-    },
-    {
       "showId": "cats-off-west-end-2026",
       "title": "Cats",
       "openingDate": "2026-08-06",
@@ -1306,21 +1225,8 @@
       "showId": "dark-of-the-moon-off-west-end-2026",
       "title": "Dark of the Moon",
       "openingDate": "2026-05-26",
-      "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 20d of opening, likely correct production] The review describes a different production of 'Dark — https://theartsdesk.com/theatre/dark-moon-charing-cross-theatre-review-immortals-inject-life-quiet-tennessee-village\nmusical-theatre-review/Unknown (musical-theatre-review--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The review appears to evaluate a different production — https://musicaltheatrereview.com/dark-of-the-moon-a-new-musical-charing-cross-theatre/",
+      "message": "musical-theatre-review/Unknown (musical-theatre-review--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The review appears to evaluate a different production — https://musicaltheatrereview.com/dark-of-the-moon-a-new-musical-charing-cross-theatre/",
       "violations": [
-        {
-          "filename": "artsdesk--unknown.json",
-          "url": "https://theartsdesk.com/theatre/dark-moon-charing-cross-theatre-review-immortals-inject-life-quiet-tennessee-village",
-          "outletId": "artsdesk",
-          "criticName": "Unknown",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 20d of opening, likely correct production] The review describes a different production of 'Dark",
-          "cvIssues": [
-            "Review discusses a different production of 'Dark of the Moon' that is not the Off-West End run at Charing Cross Theatre.",
-            "Review mentions a West End run and does not evaluate the Off-West End production."
-          ]
-        },
         {
           "filename": "musical-theatre-review--unknown.json",
           "url": "https://musicaltheatrereview.com/dark-of-the-moon-a-new-musical-charing-cross-theatre/",
@@ -1413,26 +1319,6 @@
           "matchedBy": "url",
           "cvReasoning": null,
           "cvIssues": null
-        }
-      ]
-    },
-    {
-      "showId": "the-oresteia-off-west-end-2026",
-      "title": "The Oresteia",
-      "openingDate": "2026-07-14",
-      "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 3d of opening, likely correct production] The review discusses a timeline that spans from 2016  — https://theartsdesk.com/theatre/oresteia-bridge-theatre-review-no-turn-left-un-stoned-greek-tragedy",
-      "violations": [
-        {
-          "filename": "artsdesk--unknown.json",
-          "url": "https://theartsdesk.com/theatre/oresteia-bridge-theatre-review-no-turn-left-un-stoned-greek-tragedy",
-          "outletId": "artsdesk",
-          "criticName": "Unknown",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 3d of opening, likely correct production] The review discusses a timeline that spans from 2016 ",
-          "cvIssues": [
-            "Review describes a production set in 2016 to 2026, indicating it is not the West End production opening in July 2026."
-          ]
         }
       ]
     },
@@ -2768,27 +2654,6 @@
           "cvIssues": [
             "Review describes Park Theatre run, not Criterion Theatre West End run",
             "Text states 'After a tour and a run at the Park Theatre it now finds itself improbably filling a hole in the West End for a short run' — critic is reviewing the Park Theatre production, not the West End transfer"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "all-male-as-you-like-it-regional-2026",
-      "title": "As You Like It",
-      "openingDate": "2026-10-06",
-      "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 3d of opening, likely correct production] This is a legitimate theater review of 'As You Like I — https://theartsdesk.com/theatre/you-it-rsc-stratford-review-jonathan-groff-dress",
-      "violations": [
-        {
-          "filename": "artsdesk--unknown.json",
-          "url": "https://theartsdesk.com/theatre/you-it-rsc-stratford-review-jonathan-groff-dress",
-          "outletId": "artsdesk",
-          "criticName": "Unknown",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 3d of opening, likely correct production] This is a legitimate theater review of 'As You Like I",
-          "cvIssues": [
-            "Review describes Royal Shakespeare Theatre production in Stratford-upon-Avon (UK), not a Broadway-feeder regional US theater",
-            "Venue is a UK-based theater company, not a North American regional theater that functions as a Broadway tryout pipeline"
           ]
         }
       ]
