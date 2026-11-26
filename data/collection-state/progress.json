@@ -1,12 +1,14 @@
 {
-  "processed": [],
-  "failed": [
-    "a-christmas-carol-west-end-2026/times-uk--clive-davis.json",
-    "a-christmas-carol-west-end-2026/sunday-times--clive-davis.json"
+  "processed": [
+    "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json",
+    "much-ado-about-nothing-2026/npr--unknown.json"
   ],
+  "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "much-ado-about-nothing-2026/broadwaynews--ashley-lee.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -14,9 +16,11 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "much-ado-about-nothing-2026/npr--unknown.json"
+    ]
   },
-  "startTime": "2026-11-26T08:30:31.432Z",
-  "lastProcessed": "a-christmas-carol-west-end-2026/sunday-times--clive-davis.json",
+  "startTime": "2026-11-26T08:33:50.637Z",
+  "lastProcessed": "much-ado-about-nothing-2026/npr--unknown.json",
   "log": []
 }
