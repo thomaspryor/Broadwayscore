@@ -39921,7 +39921,7 @@
       "firstSeen": "2026-11-09T03:33:12.490Z",
       "incidentOpenedAt": "2026-11-25T21:22:56.023Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-26T17:03:53.537Z",
+      "lastSeen": "2026-11-26T20:09:45.437Z",
       "lastNotifiedAt": "2026-11-25T21:22:56.023Z",
       "lastSurfacedAt": "2026-11-25T21:22:56.023Z",
       "notifyCount": 18,
@@ -39929,7 +39929,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 16,
       "sweptTracker": "BRO-8225",
-      "silentRefires": 29
+      "silentRefires": 30
     },
     "gap:iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json": {
       "status": "resolved",
@@ -41663,7 +41663,7 @@
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-outlet-registry-gaps": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit outlet-registry gaps",
       "firstSeen": "2026-11-10T15:36:09.494Z",
@@ -41675,7 +41675,9 @@
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 30
+      "silentRefires": 30,
+      "resolvedAt": "2026-11-26T20:09:45.396Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
       "status": "resolved",
