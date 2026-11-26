@@ -96,6 +96,7 @@
 const fs = require('fs');
 const path = require('path');
 const { slugify } = require('./lib/deduplication');
+const { isAuRegionalVenue } = require('./lib/market-label');
 
 const { fetchPage, getScraperStats, cleanup } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
@@ -217,6 +218,11 @@ function isExemptFromPlaybillCheck(show) {
   // dated Guardian review of a hub-house production, carried in evidenceUrls.
   if (show.category === 'regional' && src === 'uk-regional-guardian-backfill'
     && (show.evidenceUrls || []).some((u) => /^https:\/\/www\.theguardian\.com\/stage\//.test(u))) return true;
+  // Australian pilot shows (BRO-8389): Playbill has no page for a Sydney/Melbourne house. The
+  // third-party proof is 2+ dated critic reviews at https URLs carried in evidenceUrls, and the
+  // venue must be a known AU house (data/au-regional-venues.json) or an AU state suffix.
+  if (show.category === 'regional' && isAuRegionalVenue(show.venue)
+    && (show.evidenceUrls || []).filter((u) => /^https:\/\//.test(u)).length >= 2) return true;
   // Chicago local productions (BRO-6518): theatreinchicago.com lists them with 3+
   // dated critic reviews; Playbill has no page for most, and the page it does have
   // for a same-title show is usually the Broadway transfer. localOnly shows.
