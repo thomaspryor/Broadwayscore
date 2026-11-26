@@ -1434,5 +1434,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-26T10:59:56.897Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7402-mwxg0uxh",
+    "title": "Landing blocked: toplevel-regression red on land/job/linear-BRO-7402-mwxg0uxh",
+    "description": "land.yml did not land land/job/linear-BRO-7402-mwxg0uxh: the toplevel-regression gate went red at 31ce9cb12f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45811224084",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7402-mwxg0uxh"
+      },
+      {
+        "name": "gate",
+        "value": "toplevel-regression"
+      },
+      {
+        "name": "tip",
+        "value": "31ce9cb12f5a14d2ea31ec64d67202b1d7a61b66"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45811224084"
+      }
+    ],
+    "queuedAt": "2026-11-26T11:50:41.982Z"
   }
 ]
