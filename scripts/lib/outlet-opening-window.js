@@ -110,18 +110,23 @@ function dailyFeedPool(activeShows, allShows, cutoff, opts = {}) {
 
 const foldTitle = (t) => String(t || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, ' ').trim();
 
+const marketOf = (s) => (s && (s.market || s.category)) || '';
+
 /**
- * Whether a match on a recently closed (non-live) show may be filed. Refused when a running show shares
- * the title (a transfer or revival: the review is about the running one) or when the item predates the
- * closed show's run by more than a week. Live shows always pass.
+ * Whether a match on a closed show may be filed (daily pool: recently closed; window pool: any status).
+ * Refused when the item has no publish date (an undated archive article cannot be placed after the run),
+ * when it predates the run by more than a week, or when a running show of the same title in the same
+ * market exists (a transfer or revival: the review is about the running one). Open/previews shows pass.
  */
 function closedShowMatchOk(show, { liveShows = [], publishDate = null } = {}) {
   if (!show || show.status !== 'closed') return true;
-  const title = foldTitle(show.title);
-  if (title && liveShows.some((o) => o.id !== show.id && foldTitle(o.title) === title)) return false;
   const pub = Date.parse(publishDate || '');
+  if (!Number.isFinite(pub)) return false;
   const start = Date.parse(show.previewsStartDate || show.openingDate || '');
-  if (Number.isFinite(pub) && Number.isFinite(start) && pub < start - 7 * DAY_MS) return false;
+  if (Number.isFinite(start) && pub < start - 7 * DAY_MS) return false;
+  const title = foldTitle(show.title);
+  const market = marketOf(show);
+  if (title && liveShows.some((o) => o.id !== show.id && marketOf(o) === market && foldTitle(o.title) === title)) return false;
   return true;
 }
 

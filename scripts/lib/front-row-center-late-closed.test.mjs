@@ -60,6 +60,9 @@ test('a recently closed show yields to a running show of the same title (transfe
   assert.equal(ow.closedShowMatchOk(transfer, { liveShows: [transfer], publishDate: '2026-11-24' }), true);
   assert.equal(ow.closedShowMatchOk(wuthering, { liveShows: [running], publishDate: '2026-11-24' }), true);
   assert.equal(ow.closedShowMatchOk(wuthering, { liveShows: [], publishDate: '2026-10-01' }), false, 'item predates the run');
+  const london = { ...transfer, id: 'wuthering-heights-west-end-2026', category: 'west-end', market: 'west-end' };
+  assert.equal(ow.closedShowMatchOk(wuthering, { liveShows: [london], publishDate: '2026-11-24' }), true, 'a namesake in another market does not veto');
+  assert.equal(ow.closedShowMatchOk(wuthering, { liveShows: [], publishDate: null }), false, 'undated item never files to a closed show');
 });
 
 test('outlet-listing-poller wires the daily feed pool and the closed-show check', () => {
@@ -67,4 +70,6 @@ test('outlet-listing-poller wires the daily feed pool and the closed-show check'
   assert.match(src, /const feedPool = win \? activeShows : ow\.dailyFeedPool\(/);
   assert.match(src, /win \? ow\.poolForOutlet\(outletId, activeShows, lateShows\) : feedPool\)/);
   assert.match(src, /const censusOk = \(show\) => closedOk\(show\) &&/);
+  assert.match(src, /const closedOk = \(show\) => ow\.closedShowMatchOk\(/, 'guard applies in window mode too');
+  assert.match(src, /rivalShows: rivalPool,/);
 });

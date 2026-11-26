@@ -1223,8 +1223,10 @@ async function main() {
       // Census items run report-only unless CENSUS_LISTING_WRITE=1: dry writer, plain fetches, no cache writes.
       const { censusDry, itemDry } = censusListing.censusItemMode({ viaCensus, censusWrite, dryRun: opts.dryRun, added: censusStats.added, maxAdds: CENSUS_MAX_ADDS });
       const showPool = viaCensus ? censusShows : (win ? ow.poolForOutlet(outletId, activeShows, lateShows) : feedPool);
-      // BRO-7402: a recently closed show in the daily pool yields to a running show of the same title.
-      const closedOk = (show) => win || ow.closedShowMatchOk(show, { liveShows, publishDate });
+      // BRO-7402: a closed show in the pool (daily: recently closed; window: by days past opening) needs a dated
+      // item and yields to a running same-market show of the same title. Closed pool shows are page-confirm rivals too.
+      const closedOk = (show) => ow.closedShowMatchOk(show, { liveShows, publishDate });
+      const rivalPool = [...liveShows, ...showPool.filter(s => s.status === 'closed')];
       const censusOk = (show) => closedOk(show) && (!viaCensus || (censusListing.censusMarketOk(outletId, show, outletMarkets) && censusListing.censusItemAccepted({ url, headline, description, publishDate }, show)));
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
       const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};
@@ -1258,7 +1260,7 @@ async function main() {
       let stubDate = publishDate;
       if (candidates.length > 0) {
         const confirmed = await confirmOnPage(url, candidates, viaCensus ? censusPageStats : pageConfirmStats, {
-          activeShows: showPool, rivalShows: liveShows, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
+          activeShows: showPool, rivalShows: rivalPool, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
           titleOnly: viaCensus ? (show) => censusListing.censusTitleOnly({ url, headline, publishDate }, show, showPool, { siblingOk: (o) => censusListing.censusMarketOk(outletId, o, outletMarkets) }) : null, unconfirmedCache: censusDry ? null : unconfirmedCache,
           // A dry run never spends paid scraper fetches: plain fetch only.
           fetcher: itemDry ? (u => fetchSimple(u, 20000)) : viaCensus ? censusFetch.fetcher : fetchArticleHtml,
