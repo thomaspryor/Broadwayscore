@@ -19,3 +19,9 @@ test('rebuild-reviews commits tour-sweep.json even when reviews did not change',
 test('the commit step is gated on that trigger', () => {
   assert.match(yml, /steps\.changes\.outputs\.has_changes == 'true' \|\| steps\.changes\.outputs\.exclusion_state_changed == 'true'/);
 });
+
+test('tour-sweep.json is staged AFTER the fallback-disqualifier unstage helper (BRO-8357 root cause)', () => {
+  const helper = yml.indexOf('node scripts/lib/unstage-api-fallback-disqualifiers.js');
+  const stage = yml.indexOf('git-add-existing.sh data/audit/tour-sweep.json');
+  assert.ok(helper > 0 && stage > helper, 'the helper unstages tour-sweep.json, so it must be re-staged after it');
+});

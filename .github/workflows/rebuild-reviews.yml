@@ -886,6 +886,10 @@ jobs:
           # lint-allow-swallow: the helper only UNSTAGES regenerable diagnostics (it writes nothing); if it crashes the commit proceeds exactly as before, so failing the push over it would be worse
           node scripts/lib/unstage-api-fallback-disqualifiers.js || true
           bash scripts/lib/git-add-existing.sh public/opening-night-status.json public/status.html
+          # BRO-8357: the helper above unstages tour-sweep.json (not Git-Data-API-fallback safe), so on every
+          # rebuild commit the tour heartbeat report was dropped. Stage it after the helper; the commit then
+          # takes the plain push path, which is fine for the at-most-twice-daily heartbeat.
+          bash scripts/lib/git-add-existing.sh data/audit/tour-sweep.json
           git add public/data/shows/ 2>/dev/null || true
           # Mobile index — committed in lockstep with the detail JSONs (regenerated
           # from this run's reviews.json). Staged only inside this has_changes==true
