@@ -22,12 +22,12 @@
 //      whose body has no JSX, awaits on its own, and whose every use in the file is `await name(...)`. Removing any
 //      of these stays design (a Promise would then reach a condition or a class). `for await` is not exempt.
 //      Kill switch for just this exemption: VISUAL_AWAIT_TRANSPARENT_DISABLED=1.
-//   5. (BRO-8177
-// Known accepted gap (review 2026-11-26): a named handler calling a non-set*/non-DOM opener (store.show()) stays quiet, same as inline handlers always did.) logic-only edits are treated like inline handlers: (a) a non-exported, JSX-free function binding
+//   5. (BRO-8177 (known accepted gap, review 2026-11-26: a named handler calling a non-set*/non-DOM opener such as
+//      store.show() stays quiet, as inline handlers always did) logic-only edits are treated like inline handlers: (a) a non-exported, JSX-free function binding
 //      (incl. useCallback) whose every use sits in a quiet root is recorded as quiet (a named handler); (b) a JSX-free,
 //      hook-free binding whose value starts with a path/scheme and whose every use lands in a URL or log position is
 //      quiet with its strings skipped (a URL builder); (c) inside quiet code, a string that lands in href/to on <a> or
-//      next/link Link, router.push/replace/prefetch, window.open, location.assign/replace/href, fetch (URL must start
+//      next/link Link, router.push/replace/prefetch, window.open, location.assign/replace (URL must start
 //      with "/" or a scheme: "?tab=", "#x", "${base}" stay design), or in console.*, track*, captureEvent, gtag,
 //      posthog.capture, Sentry.capture*, navigator.clipboard/share/sendBeacon, is not recorded. State setters, DOM
 //      writes, classes, styles, rendered literals, error messages and custom-component props all still count.
@@ -74,8 +74,10 @@ function skeleton(ts, sf, env = process.env) {
   // BRO-8177: logic-only exemptions (see the header, rule 5). Kill switch for just these: VISUAL_LOGIC_ONLY_DISABLED=1.
   const logicOn = env.VISUAL_LOGIC_ONLY_DISABLED !== '1';
   // `window.open(url)` opens a tab and draws nothing on this page; `dialog.open = true` and a hook's `open()` still count.
+  // Only the bare `window.open(` call is quiet; `mywindow.open = x`, `dlg.open = true` and a hook's `open()` still count.
+  const domText = (t) => (logicOn ? t.replace(/(?<![\w$.])window\.open\s*\(/g, '(') : t);
   const DOM_WRITE = logicOn
-    ? /\b(style|className|classList|cssText|dataset|innerHTML|outerHTML|textContent|insertAdjacentHTML|hidden|(?<!window\.)open|scrollTop|scrollLeft)\b|\.(setProperty|setAttribute|toggle|add|remove|showModal|close|show|scrollTo)\(/
+    ? /\b(style|className|classList|cssText|dataset|innerHTML|outerHTML|textContent|insertAdjacentHTML|hidden|open|scrollTop|scrollLeft)\b|\.(setProperty|setAttribute|toggle|add|remove|showModal|close|show|scrollTo)\(/
     : /\b(style|className|classList|cssText|dataset|innerHTML|outerHTML|textContent|insertAdjacentHTML|hidden|open|scrollTop|scrollLeft)\b|\.(setProperty|setAttribute|toggle|add|remove|showModal|close|show|scrollTo)\(/;
   // Inside quiet roots a state setter or timer still decides what shows (setS(true), a 99999ms delay): recorded in full.
   const STATE_CALL = /^(?:[\w$.?]*\.)?(set[A-Z]\w*|dispatch|setTimeout|setInterval|requestAnimationFrame)$/;
@@ -156,8 +158,8 @@ function skeleton(ts, sf, env = process.env) {
   const LOG_SINK = /^(console\.(log|info|warn|error|debug)|track(?:[A-Z]\w*)?|captureEvent|gtag|posthog\.capture|Sentry\.(captureException|captureMessage|addBreadcrumb)|navigator\.(clipboard\.writeText|share|sendBeacon))$/;
   const URL_LEAD = /^(\/(?!\/)|https?:\/\/|mailto:|tel:|sms:)/;
   // BRO-8177 review: a query/hash switches what the page shows (view/sort/theme), so it stays design.
-  const TRACK_KEY = /^(utm\w*|ref|source|src|fbclid|gclid|u|v)$/;
-  const QUERY_OK = (t) => { const i = t.search(/[?#]/); if (i < 0) return true; if (t[i] === '#') return false; return t.slice(i + 1).split('&').every((kv) => TRACK_KEY.test(kv.split('=')[0].replace(/\$\{[^}]*\}/g, ''))); };
+  const TRACK_KEY = /^(utm\w*|ref|source|fbclid|gclid)$/;
+  const QUERY_OK = (t) => { if (t.includes('#')) return false; const i = t.indexOf('?'); if (i < 0) return true; return t.slice(i + 1).split('&').every((kv) => TRACK_KEY.test(kv.split('=')[0].replace(/\$\{[^}]*\}/g, ''))); };
   const URL_PLAIN = (t) => URL_LEAD.test(t) && QUERY_OK(t);
   const linkNames = new Set();
   for (const st of sf.statements) {
@@ -166,12 +168,14 @@ function skeleton(ts, sf, env = process.env) {
   // href/to on a plain <a> or next/link's Link only (a custom component may derive an active class from href).
   const safeHrefAttr = (a) => /^(href|to)$/.test(a.name.getText(sf)) && (() => { const t = a.parent.parent.tagName.getText(sf); return t === 'a' || linkNames.has(t); })();
   const strip = (e) => { while (e && ts.isParenthesizedExpression(e)) e = e.expression; return e; };
+  // Joined literal text of a string/template/`+` chain, `${}` for an interpolation; null when a piece is not a literal.
+  const flatText = (e0) => { const e = strip(e0); if (!e) return null; if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e)) return e.text; if (ts.isTemplateExpression(e)) return e.head.text + e.templateSpans.map((sp) => '${}' + sp.literal.text).join(''); if (ts.isBinaryExpression(e) && e.operatorToken.kind === K.PlusToken) { const l = flatText(e.left), r = flatText(e.right); return l === null || r === null ? null : l + r; } return '${}'; };
   const leadsWithUrl = (e0) => {
     const e = strip(e0);
     if (!e) return false;
     if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e)) return URL_PLAIN(e.text);
-    if (ts.isTemplateExpression(e)) return URL_PLAIN(e.head.text) && e.templateSpans.every((sp) => !/[?#]/.test(sp.literal.text) || QUERY_OK('/x' + sp.literal.text));
-    if (ts.isBinaryExpression(e) && e.operatorToken.kind === K.PlusToken) return leadsWithUrl(e.left);
+    if (ts.isTemplateExpression(e)) return URL_PLAIN(e.head.text + e.templateSpans.map((sp) => '${}' + sp.literal.text).join(''));
+    if (ts.isBinaryExpression(e) && e.operatorToken.kind === K.PlusToken) { const t = flatText(e); return t !== null && leadsWithUrl(e.left) && URL_PLAIN(t); }
     if (ts.isConditionalExpression(e)) return leadsWithUrl(e.whenTrue) && leadsWithUrl(e.whenFalse);
     return false;
   };
@@ -289,7 +293,7 @@ function skeleton(ts, sf, env = process.env) {
     const fmtName = (ts.isFunctionDeclaration(n) && n.name && n.name.text)
       || (vdecl && ts.isIdentifier(vdecl.name) && vdecl.initializer
         && (ts.isArrowFunction(vdecl.initializer) || ts.isFunctionExpression(vdecl.initializer) || (ts.isIdentifier(vdecl.initializer) && FORMAT_NAME.test(vdecl.initializer.text))) && vdecl.name.text);
-    if (fmtName && FORMAT_NAME.test(fmtName) && !quiet && n.parent === sf && !hasJsx(n) && !DOM_WRITE.test(n.getText(sf)) && !ELEMENT_BUILD.test(n.getText(sf)) && !visualUse.has(fmtName)
+    if (fmtName && FORMAT_NAME.test(fmtName) && !quiet && n.parent === sf && !hasJsx(n) && !DOM_WRITE.test(domText(n.getText(sf))) && !ELEMENT_BUILD.test(n.getText(sf)) && !visualUse.has(fmtName)
       && !(ts.isFunctionDeclaration(n) && n.modifiers && n.modifiers.some((m) => m.kind === K.DefaultKeyword))) { out.push(`fmt ${fmtName}`); return; }
     if (ts.isTypeNode(n) || ts.isInterfaceDeclaration(n) || ts.isTypeAliasDeclaration(n)) return;
     if (ts.isImportDeclaration(n)) {
@@ -310,7 +314,7 @@ function skeleton(ts, sf, env = process.env) {
     if (ts.isExpressionStatement(n) && !quiet && isQuietRoot(n.expression)) { visit(n.expression); return; }
     if (quiet) {
       // Logic only: strings still count (a class set through the DOM), and so does any DOM style/class write.
-      if (ts.isExpressionStatement(n) && DOM_WRITE.test(n.getText(sf))) { out.push(`dom ${norm(n.getText(sf))}`); return; }
+      if (ts.isExpressionStatement(n) && DOM_WRITE.test(domText(n.getText(sf)))) { out.push(`dom ${norm(n.getText(sf))}`); return; }
       if (ts.isCallExpression(n) && STATE_CALL.test(n.expression.getText(sf))) { out.push(`call ${norm(n.getText(sf))}`); return; }
       // BRO-8177: a string inside a URL builder, or one that lands in a URL/log/analytics position, draws nothing.
       const silent = logicOn && (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n) || ts.isTemplateExpression(n)) && (urlQuiet > 0 || urlishString(n));
