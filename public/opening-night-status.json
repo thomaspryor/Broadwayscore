@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T13:46:01.090Z",
+  "generatedAt": "2026-11-26T14:15:38.608Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -431,19 +431,19 @@
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 16,
       "t1": 0,
       "t2": 7,
-      "t3": 7,
-      "positive": 13,
-      "mixed": 1,
+      "t3": 9,
+      "positive": 14,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 14,
+        "highConfidence": 16,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -825,6 +825,18 @@
           "t3": 7,
           "p": 13,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-26T14:15:38.608Z",
+          "rc": 16,
+          "s": 78.02,
+          "t1": 0,
+          "t2": 7,
+          "t3": 9,
+          "p": 14,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
