@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-11-25T11:46:33.733Z",
-  "bannerText": "149/177 Done(14d) verified on main · 3 FAILED · 0 vacuous · 24 stuck-but-done · 1 mis-armed, needs re-arming (BRO-8112) — PARTIAL RUN: 13 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-26T11:52:30.355Z",
+  "bannerText": "136/186 Done(14d) verified on main · 3 FAILED · 0 vacuous · 13 stuck-but-done · 5 mis-armed, needs re-arming (BRO-8155, BRO-8152, BRO-8115, +2 more) — PARTIAL RUN: 51 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
+      "title": "FAILED BRO-8299 — Correct stale open/previews statuses on off-Broadway and London shows",
+      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8299/correct-stale-openpreviews-statuses-on-off-broadway-and-london-shows"
+    },
+    {
+      "title": "FAILED BRO-8150 — P0: prod deploys failing since ~06:00Z 2026-11-23 NOW_SANDBOX_WORKER_MAX_UNCOMPRESSED_FUNCTION_SIZE (prod 8h stale)",
+      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8150/p0-prod-deploys-failing-since-0600z-2026-11-23-now-sandbox-worker-max"
+    },
+    {
       "title": "FAILED BRO-8148 — P1: Opening night miss: Fantasma (2026-11-22)",
-      "detail": "gap audit generated 2026-11-25T10:31:59.079Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
+      "detail": "gap audit generated 2026-11-26T10:27:57.190Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8148/p1-opening-night-miss-fantasma-2026-11-22"
     },
     {
-      "title": "FAILED BRO-8044 — BSC Daily: Quality: outlet domain moves",
-      "detail": "[check-health-row-absent] FAIL: \"Quality: outlet domain moves\" still listed in the 2026-11-25T11:27:29.824Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8044/bsc-daily-quality-outlet-domain-moves"
-    },
-    {
-      "title": "FAILED BRO-7531 — Scraping cost savings: audit vendor spend, re-order fetch chain, evaluate new vendors",
-      "detail": "not ok: BRO-7531: ScrapingBee daily credits fell to a median of 10,…; BRO-7531: Scrapingdog stayed inside its plan (median day 10… | first failure: ScrapingBee median day is 10341…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7531/scraping-cost-savings-audit-vendor-spend-re-order-fetch-chain-evaluate"
-    },
-    {
-      "title": "STUCK BRO-8100 — Numeric show titles (44, 13) still fail url-content-mismatch, rebuild showNotMentioned and headline gates: 44 has 8/16 reviews live, 13 has 1/28",
+      "title": "STUCK BRO-6625 — Main test.yml Data Validation red on Oct 30: girls-off-west-end-2026 the-recs auto-clear violation and Little Shop Guardian class-A cross-market leak",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8100/numeric-show-titles-44-13-still-fail-url-content-mismatch-rebuild"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6625/main-testyml-data-validation-red-on-oct-30-girls-off-west-end-2026-the"
     },
     {
-      "title": "STUCK BRO-8094 — Root-cause audit, infra/gates/discovery fixes from session 12bb3cbc: BRO-7492 7931 7934 7947 7949 7951 7984 8008 7924, plus BRO-3823 live-probe ETIMEDOUT in land floor",
+      "title": "STUCK BRO-8343 — Off-West-End discovery stored junk officialUrl on 5 announced shows",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8094/root-cause-audit-infragatesdiscovery-fixes-from-session-12bb3cbc-bro"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8343/off-west-end-discovery-stored-junk-officialurl-on-5-announced-shows"
     },
     {
-      "title": "STUCK BRO-8091 — Drain the _pending fetch candidates: 33 (2025-26), 166 (2015-24), 747 (pre-2015), chained + checkpointed, subscriber outlets via logged-in browser",
+      "title": "STUCK BRO-8310 — BSC Daily: Quality: outlet domain moves",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8091/drain-the-pending-fetch-candidates-33-2025-26-166-2015-24-747-pre-2015"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8310/bsc-daily-quality-outlet-domain-moves"
     },
     {
-      "title": "STUCK BRO-8089 — P1: _pending keeps refilling: 329 of 593 new stubs in 14 days are junk the triage already recognizes (show-score 162, site-search 109, submit-review-form 36); triage only runs at drain time",
+      "title": "STUCK BRO-8300 — Auto-fix: Opening Night Orchestrator Failed",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8089/p1-pending-keeps-refilling-329-of-593-new-stubs-in-14-days-are-junk"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8300/auto-fix-opening-night-orchestrator-failed"
     },
     {
-      "title": "STUCK BRO-8025 — Recurrence detector: repeat outlets spread across markets never reach a class (guardian 10 shows, whatsonstage 8, thestage 8, timeout-london 8 in 2 months)",
+      "title": "STUCK BRO-8282 — Decision emails: add a 'Talk to the session that asked' link",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8025/recurrence-detector-repeat-outlets-spread-across-markets-never-reach-a"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8282/decision-emails-add-a-talk-to-the-session-that-asked-link"
     }
   ],
-  "moreCount": 19
+  "moreCount": 8
 }
