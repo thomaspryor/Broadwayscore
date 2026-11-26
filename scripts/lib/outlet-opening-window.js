@@ -27,7 +27,10 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 // (16:56 on 11-01, 20:33 on 11-02), so the sweep found them first; The Bridge (posted 11-04 14:14) was the same.
 // The 3-hourly window poller (2026-11-06) now covers the 0-3/0-7 day cases; this 10-day window also covers a
 // West End review posted on day 4+ (Lives of Others, press night 10-29). Same window as One Minute Critic.
-const LATE_PUBLISHER_WINDOW_DAYS = { 'one-minute-critic': 10, londontheatre1: 10 };
+// BRO-7402: Front Row Center posts late too. Of 229 reviews of shows opened since 2025-06, 58% went up
+// within 3 days of opening, 85% within 10 (median day 2, p90 day 12). Tristan & Yseult (+4d) and
+// Wuthering Heights (opened 2026-11-19, reviewed 11-24, +5d) fell past the 3-day window and the sweep found them.
+const LATE_PUBLISHER_WINDOW_DAYS = { 'one-minute-critic': 10, londontheatre1: 10, 'front-row-center': 10 };
 // Markets with a press night. Tours and regional stops have none (BRO-4724).
 const WINDOW_CATEGORIES = new Set(['broadway', 'off-broadway', 'west-end', 'off-west-end']);
 const WINDOW_STRATEGIES = new Set(['rss', 'sitemap', 'listing-html', 'wp-api']);
@@ -80,6 +83,46 @@ function selectWindowShows(allShows, now = Date.now(), { maxDaysPast = null } = 
 function selectLateWindowShows(allShows, now = Date.now()) {
   const max = Math.max(WINDOW_DAYS_PAST, ...Object.values(WINDOW_DAYS_BY_CATEGORY), ...Object.values(LATE_PUBLISHER_WINDOW_DAYS));
   return selectWindowShows(allShows, now, { maxDaysPast: max });
+}
+
+// BRO-7402: shows that closed within this many days before the poller's lookback cutoff stay matchable.
+const RECENTLY_CLOSED_GRACE_DAYS = 14;
+
+/**
+ * Closed shows whose run ended recently enough that a review in the lookback can still be about them.
+ * Front Row Center reviewed Wuthering Heights (Off-Broadway, ran 2026-11-19 to 11-22) on 11-24; the daily
+ * poller matched feed items only against open/previews shows, read the item and dropped it, and the sweep
+ * found it a day later. 4 of FRC's reviews since 2025-06 were posted after the show closed.
+ */
+function selectRecentlyClosedShows(allShows, cutoff, { market = null, graceDays = RECENTLY_CLOSED_GRACE_DAYS } = {}) {
+  const t = cutoff instanceof Date ? cutoff.getTime() : Date.parse(cutoff);
+  if (!Number.isFinite(t)) return [];
+  const since = new Date(t - graceDays * DAY_MS).toISOString().slice(0, 10);
+  return allShows.filter((s) => s.status === 'closed' && (s.closingDate || '') >= since
+    && (!market || s.category === market || s.market === market));
+}
+
+/** Daily (non-window) feed pool: running shows plus recently closed ones (see selectRecentlyClosedShows). */
+function dailyFeedPool(activeShows, allShows, cutoff, opts = {}) {
+  const ids = new Set(activeShows.map((s) => s.id));
+  return [...activeShows, ...selectRecentlyClosedShows(allShows, cutoff, opts).filter((s) => !ids.has(s.id))];
+}
+
+const foldTitle = (t) => String(t || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, ' ').trim();
+
+/**
+ * Whether a match on a recently closed (non-live) show may be filed. Refused when a running show shares
+ * the title (a transfer or revival: the review is about the running one) or when the item predates the
+ * closed show's run by more than a week. Live shows always pass.
+ */
+function closedShowMatchOk(show, { liveShows = [], publishDate = null } = {}) {
+  if (!show || show.status !== 'closed') return true;
+  const title = foldTitle(show.title);
+  if (title && liveShows.some((o) => o.id !== show.id && foldTitle(o.title) === title)) return false;
+  const pub = Date.parse(publishDate || '');
+  const start = Date.parse(show.previewsStartDate || show.openingDate || '');
+  if (Number.isFinite(pub) && Number.isFinite(start) && pub < start - 7 * DAY_MS) return false;
+  return true;
 }
 
 /** Late-publisher outlets with a free window strategy, to poll whenever any late-window show exists. */
@@ -214,5 +257,5 @@ function activeCollectShowIds(runs) {
 module.exports = {
   needsCollection, showsNeedingCollection, activeCollectShowIds,
   WINDOW_DAYS_PAST, WINDOW_DAYS_BY_CATEGORY, windowDaysFor, WINDOW_CATEGORIES, WINDOW_STRATEGIES, DEFAULT_MAX_PAID, WORST_CASE_USD_PER_PAID_CALL,
-  selectWindowShows, selectLateWindowShows, windowAnchor, UNDATED_PRESS_NIGHT_DAYS, lateOutletsToPoll, poolForOutlet, LATE_PUBLISHER_WINDOW_DAYS, windowStrategyFor, selectWindowOutlets, createPaidBudget, projectMonthlyCost,
+  selectWindowShows, selectLateWindowShows, windowAnchor, UNDATED_PRESS_NIGHT_DAYS, lateOutletsToPoll, poolForOutlet, LATE_PUBLISHER_WINDOW_DAYS, selectRecentlyClosedShows, dailyFeedPool, closedShowMatchOk, RECENTLY_CLOSED_GRACE_DAYS, windowStrategyFor, selectWindowOutlets, createPaidBudget, projectMonthlyCost,
 };

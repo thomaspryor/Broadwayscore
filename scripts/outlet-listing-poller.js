@@ -1012,9 +1012,11 @@ async function main() {
   const latestByOutlet = latestReviewDateByOutlet(allReviews);
   // Census reads a whole window, so it also sees shows that closed inside it (a review of a
   // show that just closed is still a real miss). Announced shows have no dates to check.
-  const closedSince = new Date(cutoff.getTime() - 14 * 86400000).toISOString().slice(0, 10);
-  const censusShows = [...activeShows, ...allShows.filter(s => ((s.status === 'closed' && (s.closingDate || '') >= closedSince) || s.status === 'announced')
-    && (!opts.market || s.category === opts.market || s.market === opts.market))];
+  // BRO-7402: feed items get the same recently-closed shows (a show can close before its reviews post).
+  // Window mode already matches by days past opening, whatever the status.
+  const feedPool = win ? activeShows : ow.dailyFeedPool(activeShows, allShows, cutoff, { market: opts.market });
+  const censusShows = [...ow.dailyFeedPool(activeShows, allShows, cutoff, { market: opts.market }),
+    ...allShows.filter(s => s.status === 'announced' && (!opts.market || s.category === opts.market || s.market === opts.market))];
   // Census page checks have their own counters and a per-outlet cap, so they never use up the feed budget.
   const censusPageStats = { fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 };
   const CENSUS_PAGE_MAX = (() => { const n = parseInt(process.env.CENSUS_PAGE_MAX_FETCHES || '80', 10); return Number.isFinite(n) && n >= 0 ? n : 80; })(); // a typo'd value must not remove the cap (BRO-7083)
@@ -1220,8 +1222,10 @@ async function main() {
     for (const { url, headline, publishDate, description, viaSerp: itemViaSerp, viaCensus } of articles) {
       // Census items run report-only unless CENSUS_LISTING_WRITE=1: dry writer, plain fetches, no cache writes.
       const { censusDry, itemDry } = censusListing.censusItemMode({ viaCensus, censusWrite, dryRun: opts.dryRun, added: censusStats.added, maxAdds: CENSUS_MAX_ADDS });
-      const showPool = viaCensus ? censusShows : (win ? ow.poolForOutlet(outletId, activeShows, lateShows) : activeShows);
-      const censusOk = (show) => !viaCensus || (censusListing.censusMarketOk(outletId, show, outletMarkets) && censusListing.censusItemAccepted({ url, headline, description, publishDate }, show));
+      const showPool = viaCensus ? censusShows : (win ? ow.poolForOutlet(outletId, activeShows, lateShows) : feedPool);
+      // BRO-7402: a recently closed show in the daily pool yields to a running show of the same title.
+      const closedOk = (show) => win || ow.closedShowMatchOk(show, { liveShows, publishDate });
+      const censusOk = (show) => closedOk(show) && (!viaCensus || (censusListing.censusMarketOk(outletId, show, outletMarkets) && censusListing.censusItemAccepted({ url, headline, description, publishDate }, show)));
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
       const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};
       const fromFeed = !viaSerp && !itemViaSerp;
