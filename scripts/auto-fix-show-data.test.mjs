@@ -497,3 +497,52 @@ test('thin synopses are upgraded only with a complete candidate and healthy syno
   await fixSynopsis(missing, {}, { fetchTodayTix: async () => ({ text: null, trusted: false }), generate: async () => null });
   assert.equal(missing.synopsis, thin);
 });
+
+// BRO-7833: new regional works are unknown to both models, so the production's
+// own listing page (discovery's evidenceUrls) must reach the writer prompt and
+// the grounding judge as evidence.
+test('generateSynopsisWithLLM writes from the production page text and grounds against it', async () => {
+  const https = require('https');
+  const { EventEmitter } = require('events');
+  const realRequest = https.request;
+  const realLog = console.log;
+  const prevKey = process.env.ANTHROPIC_API_KEY;
+  process.env.ANTHROPIC_API_KEY = 'test-key';
+  const plot = 'Two actors navigate an ever-shifting relationship backstage during the holidays, trying to keep their private lives offstage.';
+  const replies = [plot, 'SUPPORTED: the listing page describes this premise'];
+  const prompts = [];
+  https.request = (_opts, onRes) => {
+    const req = new EventEmitter();
+    req.setTimeout = () => req;
+    req.write = (body) => prompts.push(JSON.parse(body).messages[0].content);
+    req.end = () => {
+      const res = new EventEmitter();
+      res.statusCode = 200;
+      onRes(res);
+      res.emit('data', JSON.stringify({ content: [{ text: replies.shift() }] }));
+      res.emit('end');
+    };
+    return req;
+  };
+  console.log = () => {};
+  const fetched = [];
+  try {
+    const { generateSynopsisWithLLM } = loadWithMocks({ serpQueryImpl: async () => [], ibdbCreativeTeam: [] });
+    const show = {
+      title: 'All the World', type: 'play', venue: 'Northlight Theatre, Evanston, IL', openingDate: '2026-11-20', category: 'regional',
+      evidenceUrls: ['https://www.theatreinchicago.com/all-the-world/13594/'],
+    };
+    const out = await generateSynopsisWithLLM(show, {
+      fetchHtml: async (u) => { fetched.push(u); return '<meta name="description" content="Two actors find themselves in an ever-shifting relationship during the most emotionally charged time of the year: the holidays.">'; },
+    });
+    assert.equal(out, plot);
+  } finally {
+    https.request = realRequest;
+    console.log = realLog;
+    if (prevKey === undefined) delete process.env.ANTHROPIC_API_KEY; else process.env.ANTHROPIC_API_KEY = prevKey;
+  }
+  assert.deepEqual(fetched, ['https://www.theatreinchicago.com/all-the-world/13594/']);
+  assert.match(prompts[0], /own listing page[\s\S]*ever-shifting relationship/);
+  // SERP returned nothing, yet the judge still saw the page as evidence (no NO_RESULTS drop)
+  assert.match(prompts[1], /this production's own listing page[\s\S]*ever-shifting relationship/);
+});
