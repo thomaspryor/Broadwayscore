@@ -1,0 +1,28 @@
+{
+  "issueNumber": "bro-8352",
+  "planId": "4e0a6a65-5b80-4ad5-a124-fbfdf793150f",
+  "status": "pending",
+  "createdAt": "2026-11-26T13:17:11.617Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8352: The Truth (Zeller) 2027 Theatre Royal Haymarket is a later production of a play first staged at Wyndham's in 2016 and again at the Apollo in 2026 (already isRevival true); mark isRevival true so the revival-unverified sweep clears.",
+    "steps": [
+      "shows.json: the-truth-a-comedy-by-florian-zeller-west-end-2027.isRevival"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2027",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: the-truth-a-comedy-by-florian-zeller-west-end-2027.isRevival"
+      }
+    ]
+  }
+}
