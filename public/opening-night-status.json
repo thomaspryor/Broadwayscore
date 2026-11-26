@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T16:44:15.194Z",
+  "generatedAt": "2026-11-26T17:07:50.747Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1054,9 +1054,9 @@
       "status": "open",
       "slug": "attention-off-west-end",
       "thumbnail": "/images/shows/attention-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 65.74,
+      "siteScore": 66.18,
       "liveScore": 66,
-      "scoreDrift": 0.2600000000000051,
+      "scoreDrift": -0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1064,15 +1064,15 @@
       "t1": 1,
       "t2": 4,
       "t3": 11,
-      "positive": 11,
-      "mixed": 3,
+      "positive": 12,
+      "mixed": 2,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 14,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1374,6 +1374,18 @@
           "t3": 11,
           "p": 11,
           "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-26T17:07:50.747Z",
+          "rc": 16,
+          "s": 66.18,
+          "t1": 1,
+          "t2": 4,
+          "t3": 11,
+          "p": 12,
+          "m": 2,
           "n": 2,
           "bc": "waiting"
         }
@@ -6540,7 +6552,7 @@
       "openingDate": "2026-11-27",
       "status": "upcoming",
       "slug": "trilogies-triathlon-off-broadway",
-      "thumbnail": null,
+      "thumbnail": "/images/shows/trilogies-triathlon-off-broadway-2026/thumbnail.jpg",
       "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
