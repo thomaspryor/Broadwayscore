@@ -794,6 +794,14 @@ jobs:
             EXCLUSION_STATE_CHANGED=true
             echo "Changes detected in exclusion totals / mirror summary"
           fi
+          # BRO-8357: the national-tour sweep report is the heartbeat health-check.js reads
+          # ("Data: tour automation stopped reporting", 36h). It was only staged when a rebuild
+          # happened to change reviews, so a quiet day left the committed report days old while
+          # the step ran fine. Persist it on every run, like the exclusion totals above.
+          if [ -n "$(git status --porcelain data/audit/tour-sweep.json 2>/dev/null)" ]; then
+            EXCLUSION_STATE_CHANGED=true
+            echo "Changes detected in tour-sweep report"
+          fi
           # BRO-7182: audit-applied-fix-plans.js --alert writes owner-alert-router state. A card dispatch
           # appends to alert-router-attempts.jsonl and must persist even on a no-diff rebuild (else the next
           # run files it again). The ledger alone moves lastSeen on every call, so it is NOT a trigger: it rides
