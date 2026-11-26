@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T15:03:12.762Z",
+  "generatedAt": "2026-11-26T16:47:58.829Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -157,34 +157,43 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
-      "outletId": "thereviewshub",
-      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
-    },
-    {
-      "outletId": "theatre-weekly",
-      "error": "HTTP 403 for https://theatreweekly.com/feed"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "exeunt-magazine",
-      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
     {
-      "outletId": "fringereview",
-      "error": "HTTP 403 for https://fringereview.co.uk/feed/"
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 823,
-  "matchedGaps": 1,
-  "possibleGaps": 3,
+  "itemsScanned": 908,
+  "matchedGaps": 2,
+  "possibleGaps": 5,
   "gaps": [
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "level": "matched",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-a-christmas-carol-reading-rep-theatre",
+      "headline": "Review: A Christmas Carol (Reading Rep Theatre)",
+      "publishDate": "2026-11-26"
+    },
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
       "title": "Cinderella",
@@ -207,6 +216,15 @@
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
       "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/christmas-carol-shakespeare-north-playhouse-prescot/",
+      "headline": "Christmas Carol &#8211; Shakespeare North Playhouse, Prescot",
+      "publishDate": "2026-11-25"
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "level": "possible",
       "outletId": "west-end-best-friend",
       "url": "https://www.westendbestfriend.co.uk/news/review-its-a-wonderful-life-jermyn-street-theatre",
       "headline": "Review: IT’S A WONDERFUL LIFE, Jermyn Street Theatre",
@@ -220,6 +238,15 @@
       "url": "https://www.allthatdazzles.co.uk/post/review-pink-rabbit-soho-theatre",
       "headline": "Review: Pink Rabbit (Soho Theatre)",
       "publishDate": "2026-11-26"
+    },
+    {
+      "showId": "purpose-geffen-regional-2026",
+      "title": "Purpose",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/alicias-amazing-adventure-to-find-the-first-black-britons-the-grove-hall-south-kirkby/",
+      "headline": "Alicia’s Amazing Adventure to Find the First Black Britons &#8211; The Grove Hall, South Kirkby",
+      "publishDate": "2026-11-22"
     }
   ]
 }

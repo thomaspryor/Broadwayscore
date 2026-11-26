@@ -1,72 +1,53 @@
 {
-  "generatedAt": "2026-11-26T15:03:12.453Z",
+  "generatedAt": "2026-11-26T16:47:58.395Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 370,
-  "clean": 367,
-  "defective": 3,
+  "clean": 368,
+  "defective": 2,
   "byType": {
-    "missing-from-prod": 3
+    "score-drift": 2,
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "dirty-dancing-tour-2026",
-      "title": "Dirty Dancing",
-      "openingDate": "2026-08-12",
+      "showId": "the-afronauts-west-end-2026",
+      "title": "The Afronauts",
+      "openingDate": "2026-11-23",
       "ok": false,
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: boston-globe"
+          "detail": "1 scored outlet(s) absent from the deployed payload: theatremonkey"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.65 vs local 63.36 (Δ0.29)"
         }
       ],
       "missingFromProd": [
-        "boston-globe"
+        "theatremonkey"
       ],
+      "localCount": 23,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-11-26T16:47:49.844Z"
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "openingDate": "2026-11-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.12 vs local 78.02 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
       "localCount": 16,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-11-26T15:03:08.863Z"
-    },
-    {
-      "showId": "the-lion-king-tour-2021",
-      "title": "The Lion King",
-      "openingDate": "2021-10-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "3 scored outlet(s) absent from the deployed payload: berkshire-on-stage, buffalorising, calgary-herald"
-        }
-      ],
-      "missingFromProd": [
-        "berkshire-on-stage",
-        "buffalorising",
-        "calgary-herald"
-      ],
-      "localCount": 65,
-      "deployedCount": 62,
-      "firstDefectAt": "2026-11-26T15:03:08.863Z"
-    },
-    {
-      "showId": "wicked-tour-2021",
-      "title": "Wicked",
-      "openingDate": "2021-08-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "3 scored outlet(s) absent from the deployed payload: buffalorising, the-times-of-israel, this-is-cny"
-        }
-      ],
-      "missingFromProd": [
-        "buffalorising",
-        "the-times-of-israel",
-        "this-is-cny"
-      ],
-      "localCount": 57,
-      "deployedCount": 54,
-      "firstDefectAt": "2026-11-26T15:03:08.863Z"
+      "deployedCount": 16,
+      "firstDefectAt": "2026-11-26T16:47:49.844Z"
     }
   ],
   "persistentDefective": 0,
