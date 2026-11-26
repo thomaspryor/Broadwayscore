@@ -16,13 +16,18 @@
  * prompt, plus a `BUDGET: <hours>h` line (1-12) and a `REPORT-BACK:` line for a
  * Broadwayscore session (BRO-5673, BRO-5781). Exit 1 when Linear can't be read or a card is missing.
  * Exit 3 (JSON has `refused`, no `model`) when a card's description carries a NO-DISPATCH line (BRO-6502).
+ * Codex route (BRO-7627, advisory): the JSON also has `route` ('codex'|'claude') and `routeReason`
+ * (per card in `cards[].routeReason`). On 'codex' it carries `dispatch`, the exact
+ * `node scripts/cloud-dispatch.js codex-runner.yml -f ids=BRO-A,BRO-B -f limit=N` to run instead of
+ * create_session, and `dispatchNote` (leave the card Todo, check for a queued run first). Rules:
+ * scripts/lib/codex-route.js. --no-card and exit 3 print no route.
  */
 
 'use strict';
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = 'Usage: node scripts/session-model.js BRO-N [BRO-M ...] | --no-card\nPrints the create_session model for a worker session on these cards (--no-card: work with no card), with the reason. Read-only.';
+const USAGE = 'Usage: node scripts/session-model.js BRO-N [BRO-M ...] | --no-card\nPrints the create_session model for a worker session on these cards (--no-card: work with no card), with the reason, and the route: codex (with the codex-runner.yml dispatch command to run instead) or claude. Read-only.';
 
 if (hasHelpFlag(process.argv)) {
   console.log(USAGE);
@@ -66,7 +71,20 @@ async function main() {
   else if (!opusCards) modelReason = 'no card needs Opus';
   else if (opusCards === cards.length) modelReason = 'every card needs Opus';
   else modelReason = `batch on Sonnet; hand ${opusIds.join(', ')} to an Opus subagent (Agent tool, model "opus")`;
-  console.log(JSON.stringify({ model, modelReason, cards }, null, 2));
+  // BRO-7627: advisory Codex route. Read through the module object so tests can stub the lane read
+  // with a preload. A routing error never costs the model: it routes to Claude and says why.
+  const codexRoute = require('./lib/codex-route.js');
+  let route;
+  try {
+    route = await codexRoute.decideRoute(issues, { nowMs: Date.now(), laneHealth: () => codexRoute.readGhaLaneHealth() });
+  } catch (err) {
+    route = { route: 'claude', routeReason: `Codex route unreadable (${err && err.message ? err.message : err})`, cards: [] };
+  }
+  const reasonOf = new Map(route.cards.map((c) => [c.identifier, c.routeReason]));
+  for (const c of cards) c.routeReason = reasonOf.has(c.identifier) ? reasonOf.get(c.identifier) : route.routeReason;
+  const out = { model, modelReason, route: route.route, routeReason: route.routeReason };
+  if (route.dispatch) Object.assign(out, { dispatch: route.dispatch, dispatchNote: route.dispatchNote });
+  console.log(JSON.stringify({ ...out, cards }, null, 2));
 }
 
 main().catch((err) => {

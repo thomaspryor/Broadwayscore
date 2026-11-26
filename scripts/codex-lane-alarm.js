@@ -145,4 +145,4 @@ async function main() {
 }
 
 if (require.main === module) main().then((c) => process.exit(c), (e) => { console.error(e.stack || e.message); process.exit(2); });
-module.exports = { toGhRuns, readSummaries };
+module.exports = { toGhRuns, readSummaries, readRuns, readLogin };
