@@ -1,28 +1,69 @@
 {
-  "generatedAt": "2026-11-25T16:01:19.609Z",
-  "total": 506,
-  "armedCount": 462,
-  "refusedCount": 44,
+  "generatedAt": "2026-11-26T15:34:25.575Z",
+  "total": 513,
+  "armedCount": 471,
+  "refusedCount": 42,
   "byKind": {
-    "shape": 33,
-    "no-command": 6,
-    "no-section": 5
+    "no-section": 5,
+    "shape": 34,
+    "path-prefix": 1,
+    "no-command": 2
   },
   "refused": [
+    {
+      "id": "BRO-8372",
+      "name": "Rescued reviews waiting for an owner pick (push-rescue branches)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8372/rescued-reviews-waiting-for-an-owner-pick-push-rescue-branches",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-8345",
+      "name": "Owner step from BRO-8276: P1: nightly text recovery aborts the whole run when one file was renam",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8345/owner-step-from-bro-8276-p1-nightly-text-recovery-aborts-the-whole-run",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-8339",
+      "name": "Scraper spend ledger: record per-call latency (elapsed_ms) so provider speed is answerable from data",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8339/scraper-spend-ledger-record-per-call-latency-elapsed-ms-so-provider",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-provider-spend.js --dry-run)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8335",
+      "name": "Stop gate VE:WAKELESS ignores background waits started in an earlier turn",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8335/stop-gate-vewakeless-ignores-background-waits-started-in-an-earlier",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test .claude/hooks/wakeless.test.mjs)",
+      "kind": "path-prefix"
+    },
+    {
+      "id": "BRO-8329",
+      "name": "P2: Opening night miss: A Christmas Carol (2026-11-24)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8329/p2-opening-night-miss-a-christmas-carol-2026-11-24",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/produce-press-night-digest-snapshot.js --night=2026-11-24 --check=a-christmas-carol-west-end-2026)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-8328",
+      "name": "Recurring session friction: hook:git-check",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8328/recurring-session-friction-hookgit-check",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/lib/session-retro.js --rollup --days=7)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-8325",
       "name": "SB gate cousins: unattributed SB rows (45% have no showId) and West End aggregator page fetches still use ScrapingBee",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8325/sb-gate-cousins-unattributed-sb-rows-45percent-have-no-showid-and-west",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/sb-market-gate-replay.js | grep 'Broadway rows dropped: 0')",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-8324",
-      "name": "Preview-period reviews counted inconsistently (Afronauts Monstagigz counted, Rolandcat excluded; ~439 counted corpus-wide)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8324/preview-period-reviews-counted-inconsistently-afronauts-monstagigz",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/linear-brain.js get [BRO-8324](https://linear.app/broadway-scorecard/issue/BRO-8324/preview-period-reviews-)",
       "kind": "shape"
     },
     {
@@ -130,14 +171,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-8222",
-      "name": "Affiliate: Impact recording 3.5x more TodayTix clicks than real site clicks (bot divergence warn, 2 days running)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8222/affiliate-impact-recording-35x-more-todaytix-clicks-than-real-site",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-affiliate-health.js --dry-run)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-8212",
       "name": "Name the critic on ~210 corpus reviews filed as --unknown whose text prints the byline (Islington Tribune, Aleks Sierz, A Younger Theatre)",
       "priority": null,
@@ -160,54 +193,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8186/missing-show-tales-from-ovid",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
-    },
-    {
-      "id": "BRO-8185",
-      "name": "Missing show: A Knight's Tale — The Musical",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8185/missing-show-a-knights-tale-the-musical",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-8184",
-      "name": "Missing show: Betty Boop — The Musical",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8184/missing-show-betty-boop-the-musical",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-8183",
-      "name": "Missing show: A Knight's Tale — The Musical",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8183/missing-show-a-knights-tale-the-musical",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-8182",
-      "name": "Missing show: Betty Boop — The Musical (tour)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8182/missing-show-betty-boop-the-musical-tour",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-8181",
-      "name": "Rage clicks on Downstate show page button",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8181/rage-clicks-on-downstate-show-page-button",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-8180",
-      "name": "Rage clicks on 'NEWEST ↑' sort button on homepage",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8180/rage-clicks-on-newest-sort-button-on-homepage",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
     },
     {
       "id": "BRO-8117",
@@ -363,21 +348,12 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 333,
-    "checked": 333,
+    "total": 347,
+    "checked": 347,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
-    {
-      "id": "BRO-8287",
-      "name": "Cost review: GitHub Actions minutes ($150.74 of $200 November budget used by Nov 25)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8287/cost-review-github-actions-minutes-dollar15074-of-dollar200-november",
-      "cmd": "node --test scripts/github-actions-audit.test.mjs",
-      "missingPaths": [
-        "scripts/github-actions-audit.test.mjs"
-      ]
-    },
     {
       "id": "BRO-8281",
       "name": "Cost review: hosting and small tools (Vercel, Resend, Expo, others)",
@@ -397,21 +373,39 @@
       ]
     },
     {
-      "id": "BRO-8213",
-      "name": "Land preflight: check CLAUDE.md byte cap before land/** push",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8213/land-preflight-check-claudemd-byte-cap-before-land-push",
-      "cmd": "node --test scripts/lib/land-preflight.test.mjs",
+      "id": "BRO-8183",
+      "name": "Missing show: A Knight's Tale — The Musical",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8183/missing-show-a-knights-tale-the-musical",
+      "cmd": "node --test tests/unit/knights-tale-search.test.mjs",
       "missingPaths": [
-        "scripts/lib/land-preflight.test.mjs"
+        "tests/unit/knights-tale-search.test.mjs"
       ]
     },
     {
-      "id": "BRO-8177",
-      "name": "Visual gate: logic-only .tsx changes still ask the owner for visual approval",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8177/visual-gate-logic-only-tsx-changes-still-ask-the-owner-for-visual",
-      "cmd": "node --test scripts/visual-design-diff.test.mjs",
+      "id": "BRO-8182",
+      "name": "Missing show: Betty Boop — The Musical (tour)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8182/missing-show-betty-boop-the-musical-tour",
+      "cmd": "node --test tests/unit/betty-boop-search.test.mjs",
       "missingPaths": [
-        "scripts/visual-design-diff.test.mjs"
+        "tests/unit/betty-boop-search.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-8181",
+      "name": "Rage clicks on Downstate show page button",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8181/rage-clicks-on-downstate-show-page-button",
+      "cmd": "node --test tests/unit/downstate-button-rage-clicks.test.mjs",
+      "missingPaths": [
+        "tests/unit/downstate-button-rage-clicks.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-8180",
+      "name": "Rage clicks on 'NEWEST ↑' sort button on homepage",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8180/rage-clicks-on-newest-sort-button-on-homepage",
+      "cmd": "node --test tests/unit/newest-sort-button.test.mjs",
+      "missingPaths": [
+        "tests/unit/newest-sort-button.test.mjs"
       ]
     },
     {
@@ -430,15 +424,6 @@
       "cmd": "node --test scripts/check-posthog-geoip.test.mjs",
       "missingPaths": [
         "scripts/check-posthog-geoip.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-8115",
-      "name": "Maestro tabs on the Mac: onboarding helper stuck on quiz step 1 (city, no Skip), all 5 tabs flows fail (run 45113209220)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8115/maestro-tabs-on-the-mac-onboarding-helper-stuck-on-quiz-step-1-city-no",
-      "cmd": "node --test scripts/e2e-gate.test.mjs",
-      "missingPaths": [
-        "scripts/e2e-gate.test.mjs"
       ]
     },
     {
