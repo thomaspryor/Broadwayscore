@@ -1,19 +1,48 @@
 {
-  "updatedAt": "2026-11-26T23:41:46.362Z",
-  "processed": 37,
-  "failed": 5,
-  "successRate": "88.1%",
+  "updatedAt": "2026-11-27T00:25:49.300Z",
+  "processed": 74,
+  "failed": 55,
+  "successRate": "57.4%",
   "tierBreakdown": {
-    "playwright": 24,
+    "playwright": 46,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 8,
+    "scrapingdog": 18,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archiveToday": 1,
-    "archive": 3
+    "brightdata": 3,
+    "archiveToday": 6,
+    "archive": 14
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-27T00:12:05.875Z",
+      "event": "bb-session",
+      "session": "f53df7f8",
+      "url": "https://concerts.consequence.net/events/getaway-driver-at-central-square-theater"
+    },
+    {
+      "t": "2026-11-27T00:13:02.330Z",
+      "event": "bb-session",
+      "session": "47ae2ab8",
+      "url": "https://www.usatoday.com/2026/11/23/ann-wilson-cancer-heart-documentary"
+    },
+    {
+      "t": "2026-11-27T00:13:02.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-11-27T00:13:21.174Z",
+      "event": "bb-session",
+      "session": "0447d785",
+      "url": "https://www.usatoday.com/2026/11/23/ann-wilson-cancer-heart-documentary"
+    },
+    {
+      "t": "2026-11-27T00:13:21.876Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    }
+  ]
 }
