@@ -96,6 +96,7 @@ const { classifyRange, resolveUrgency, revealCategoriesFromEnv } = require('./de
 const SITE_DATA_FILES = [
   'data/actor-images.json',
   'data/analysis/gd-vs-broadwayscore.json',
+  'data/au-regional-venues.json',
   'data/audience.json',
   'data/awards.json',
   'data/blog-reviews-for-scoring.json',
