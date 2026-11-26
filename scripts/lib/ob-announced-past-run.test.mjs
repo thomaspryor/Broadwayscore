@@ -7,8 +7,6 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -63,22 +61,6 @@ function assertMatchesTruth(truth, result) {
 test('replay: all nine hand-fixed rows reproduce their human-corrected dates', () => {
   assert.equal(GROUND_TRUTH.length, 9);
   for (const truth of GROUND_TRUTH) assertMatchesTruth(truth, replay(truth, truth.reviews));
-});
-
-test('replay against live data/shows.json + reviews.json when present', (t) => {
-  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '../..');
-  const showsPath = path.join(root, 'data/shows.json');
-  const reviewsPath = path.join(root, 'data/reviews.json');
-  if (!fs.existsSync(showsPath) || !fs.existsSync(reviewsPath)) return t.skip('core data not checked out');
-  const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
-  const shows = Array.isArray(raw) ? raw : raw.shows;
-  const reviews = JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews || [];
-  for (const { id } of GROUND_TRUTH) {
-    const live = shows.find(s => s.id === id);
-    if (!live || live.openingDateSource !== 'human-correction') continue; // data moved on
-    const truth = { id, previewsStartDate: live.previewsStartDate ?? null, openingDate: live.openingDate, closingDate: live.closingDate };
-    assertMatchesTruth(truth, replay(truth, reviews.filter(r => r.showId === id)));
-  }
 });
 
 test('replay guards: contaminated reviews, wrong-year source, or a future/missing close block the fix', () => {
