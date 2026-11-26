@@ -6,6 +6,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { rejectedYetVerified } = require('./coverage-holes.js');
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([]));
 const { approvedFixBinding } = require('./approved-fix-flag.js');
 
 const show = { id: 'example-show-2026', title: 'Example Show', category: 'broadway' };
