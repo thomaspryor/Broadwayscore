@@ -323,7 +323,9 @@ function queueRescoreForClearedRating(data, why) {
   // An anchored read (llmScore.band) counts even after an extractor relabelled scoreSource
   // (rebuild-helpers getBestScore reads those too).
   const anchored = !!(data.llmScore && data.llmScore.band);
-  if (!anchored && (!data.scoreSource || !isLlmScoreSource(data.scoreSource))) return false;
+  // BRO-8350: a score the fallback scorers took straight from the stored rating ('extracted-grade') IS that rating.
+  const ratingDerived = data.scoreSource === 'extracted-grade';
+  if (!anchored && !ratingDerived && (!data.scoreSource || !isLlmScoreSource(data.scoreSource))) return false;
   // A provisional human score is still replaced by the LLM read (rebuild-helpers P0), so it does not block.
   if (data.humanReviewScore != null && data.humanReviewScoreProvisional !== true) return false;
   if (data.needsRescore === true) return false;
