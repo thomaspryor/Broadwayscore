@@ -21,6 +21,6 @@ if (require.main === module) {
   const { execFileSync } = require('child_process');
   const file = process.argv[2];
   let committed = '';
-  try { committed = execFileSync('git', ['show', `HEAD:${file}`], { encoding: 'utf8' }); } catch { /* untracked: due */ }
+  try { committed = execFileSync('git', ['show', `HEAD:${file}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }); } catch { /* untracked: due */ }
   process.exit(heartbeatDue(committed, fs.readFileSync(file, 'utf8')) ? 0 : 1);
 }
