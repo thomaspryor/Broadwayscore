@@ -205,3 +205,16 @@ test('Broadway reader never publishes unsourced legacy accessibility as verified
     if (tips?.seating?.accessibility) assert.ok(resolved?.sourceUrl, `${name}: unsourced access survived in seating tips`);
   }
 });
+
+test('BRO-8342: every override names a real house and a https page, and published broadway access carries a quote and source', () => {
+  const meta = theaterMeta;
+  const { venues: ov } = require('../../data/venue-website-overrides.json');
+  for (const [name, url] of Object.entries(ov)) { assert.ok(meta[name], `${name} not in theater-metadata`); assert.match(url, /^https:\/\//); }
+  const pub = require('../../data/venue-access.json').venues;
+  const withAccess = Object.entries(pub).filter(([k, v]) => k.startsWith('broadway/') && v.access);
+  assert.ok(withAccess.length > 19, `only ${withAccess.length} broadway houses publish access`);
+  for (const [k, v] of withAccess) {
+    assert.ok(v.access.sourceUrl, `${k} no sourceUrl`);
+    assert.ok(Object.values(v.access.evidence || {}).some(e => e.quote), `${k} no quote`);
+  }
+});
