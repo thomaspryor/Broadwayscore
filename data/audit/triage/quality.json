@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-25T11:27:23.910Z",
+  "lastChecked": "2026-11-26T11:05:42.926Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,22 +14,22 @@
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "warn",
-      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: the-little-foxes-off-west-end-2024 The Reviews Hub A→90 vs LLM 59, gap 31)"
+      "message": "5 NEW review(s) whose explicit rating contradicts the score (worst: when-we-have-sufficiently-tortured-each-other-west-end-2019 The Sunday Times 4/5 stars→80 vs LLM 18, gap 62)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.4% scored (53121/53994)"
+      "message": "98.9% scored (53552/54129)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "32 audit(s) drifting, each reported on its own card or the digest FYI line (4h ago)"
+      "message": "33 audit(s) drifting, each reported on its own card or the digest FYI line (7h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "28082 messages, 3 auth failures (p=reject)"
+      "message": "28780 messages, 4 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -38,8 +38,8 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "warn",
-      "message": "1 unregistered host(s) name-match a registered outlet (e.g. danceinforma.co.uk → dance-informa-usa) — probable domain move dropping reviews via domain-mismatch"
+      "status": "pass",
+      "message": "No probable domain moves in 427 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1907 outlet(s), 84679 review(s)"
+      "message": "No broken-extractor signature in 1909 outlet(s), 84885 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1907 outlet(s), 84679 review(s)"
+      "message": "No broken-extractor signature in 1909 outlet(s), 84885 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -63,8 +63,8 @@
     },
     {
       "name": "Quality: expected critics missing",
-      "status": "warn",
-      "message": "7 usual-critic review(s) the automatic search could not settle (21 more still being searched for automatically): London Theatre on Harry Potter and the Cursed Child: no review on the site, and the automatic searches could not settle it. The Stage on Harry Potter and the Cursed Child: no review on the site, and we have a copy on file, but it never made it onto the site. WhatsOnStage on Harry Potter and the Cursed Child: no review on the site, and the automatic searches could not settle it. Theatrely on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. TheWrap on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Time Out New York on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running. Variety on Blue Man Group “A New Holiday Surprise”: no review on the site, and the automatic search has stopped running."
+      "status": "pass",
+      "message": "Every usual critic has reviewed (or is acked) for openings 4-42 days old (24 more still being searched for automatically)"
     },
     {
       "name": "Quality: coverageExpectation drift",
@@ -74,7 +74,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "152 outlet×market rows checked, none NEW silent 2+ consecutive weeks (15 known/baselined, 33 dormant 1y+, 2d ago)"
+      "message": "152 outlet×market rows checked, none NEW silent 2+ consecutive weeks (15 known/baselined, 33 dormant 1y+, 3d ago)"
     },
     {
       "name": "Quality: outlet feed staleness",

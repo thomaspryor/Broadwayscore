@@ -1,15 +1,15 @@
 {
   "system": "commercial model",
-  "status": "warn",
-  "lastChecked": "2026-11-25T11:27:23.911Z",
+  "status": "pass",
+  "lastChecked": "2026-11-26T11:05:42.928Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Commercial model: stored vs fresh run",
-      "status": "warn",
-      "message": "2 of 483 records differ from a fresh run (0 same-day, 0 drift, 2 method): paranormal-activity [method] stored ai-estimated, a run now uses weekly-model; galileo [method] stored ai-estimated, a run now uses weekly-model"
+      "status": "pass",
+      "message": "483 records match a fresh run"
     },
     {
       "name": "Commercial model: Boring Waltz fit",
