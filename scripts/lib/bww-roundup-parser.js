@@ -410,7 +410,8 @@ const ROUNDUP_LABEL_OVERRIDES = [
     ownHosts: ['newyorktheatrereview.blogspot.com'],
     targetOutletId: 'nysr',
     targetHosts: ['nystagereview.com', 'newyorkstagereview.com'],
-    targetCritics: ['Steven Suskin', 'Elysa Gardner', 'Jesse Oxfeld', 'Frank Scheck', 'David Finkle', 'Michael Sommers', 'Roma Torre'],
+    // Only critics seen under this label in the archived roundups (verified 2026-11); matched on the full name, never initial+surname.
+    targetCritics: ['Steven Suskin', 'Elysa Gardner', 'Jesse Oxfeld'],
   },
 ];
 
@@ -436,7 +437,7 @@ function roundupLabelOverride({ outletId, url = null, criticName = null } = {}) 
     if (hostMatches(host, rule.targetHosts)) return rule.targetOutletId;
     return null; // own host or any other host: the label stands
   }
-  if (criticName && rule.targetCritics.some((n) => criticNamesMatch(n, criticName))) return rule.targetOutletId;
+  if (criticName && rule.targetCritics.some((n) => nameTokens(n).join(' ') === nameTokens(criticName).join(' '))) return rule.targetOutletId;
   return null;
 }
 

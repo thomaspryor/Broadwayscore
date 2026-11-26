@@ -56,3 +56,9 @@ test('extractBWWRoundupReviews files the mislabelled entry under nysr, no duplic
   assert.equal(reviews.filter((r) => r.outletId === L).length, 0);
   assert.equal(reviews.filter((r) => r.outletId === 'nysr').length, 1, 'no Unknown domain-supplement duplicate');
 });
+
+test('no URL: only the full verified staff name moves a label, a lookalike initial does not', () => {
+  assert.equal(roundupLabelOverride({ outletId: 'newyorktheatrereview', criticName: 'Elysa Gardner' }), 'nysr');
+  assert.equal(roundupLabelOverride({ outletId: 'newyorktheatrereview', criticName: 'E. Gardner' }), null);
+  assert.equal(roundupLabelOverride({ outletId: 'newyorktheatrereview', criticName: 'Frank Scheck' }), null);
+});
