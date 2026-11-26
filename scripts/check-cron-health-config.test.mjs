@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const yml = fs.readFileSync(path.join(root, '.github/workflows/check-cron-health.yml'), 'utf8');
-const { parseExemptList } = createRequire(import.meta.url)('./lib/cron-coverage.js');
+const { parseExemptList, findJobLevelKillSwitches } = createRequire(import.meta.url)('./lib/cron-coverage.js');
 const exempt = fs.readFileSync(path.join(root, '.cron-health-exempt.txt'), 'utf8');
 
 const block = yml.slice(yml.indexOf('CRITICAL_CRONS=('));
@@ -44,4 +44,28 @@ test('no CRITICAL_CRONS entry is also in .cron-health-exempt.txt', () => {
   const ex = parseExemptList(exempt);
   const both = rows.map(([wf]) => wf).filter((wf) => ex.has(wf));
   assert.deepEqual(both, [], `remove from .cron-health-exempt.txt: ${both.join(', ')}`);
+});
+
+// BRO-8235: a job-level `if: vars.X_DISABLED != 'true'` makes a disabled run conclude 'skipped',
+// and check-cron-health keys staleness on the last SUCCESS, so flipping the kill switch pages
+// as stale and cron-redispatch re-dispatches. Gate the steps instead (publish-show-refresh.yml,
+// BRO-8233) so a disabled run stays green. Allowlist: { 'file.yml': 'reason' }.
+const JOB_LEVEL_KILL_SWITCH_ALLOW = {};
+test('no CRITICAL_CRONS workflow gates a whole job on a vars.*_DISABLED kill switch', () => {
+  const bad = [];
+  for (const [wf] of rows) {
+    if (JOB_LEVEL_KILL_SWITCH_ALLOW[wf]) continue;
+    const file = path.join(root, '.github/workflows', wf);
+    if (!fs.existsSync(file)) continue; // a missing file is another test's concern
+    for (const hit of findJobLevelKillSwitches(fs.readFileSync(file, 'utf8'))) {
+      bad.push(`${wf} job "${hit.job}": if: ${hit.if}`);
+    }
+  }
+  assert.deepEqual(bad, [], `move the kill switch onto each step (see publish-show-refresh.yml):\n${bad.join('\n')}`);
+});
+test('the job-level kill-switch allowlist has reasons and only lists CRITICAL_CRONS entries', () => {
+  for (const [wf, why] of Object.entries(JOB_LEVEL_KILL_SWITCH_ALLOW)) {
+    assert.ok(entries.has(wf), `${wf} is allowlisted but not in CRITICAL_CRONS`);
+    assert.ok(typeof why === 'string' && why.trim().length >= 10, `${wf} needs a reason`);
+  }
 });

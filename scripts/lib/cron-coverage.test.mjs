@@ -208,3 +208,14 @@ test('consecutiveFailureVerdict: 3 finished scheduled failures in a row is dead 
   assert.equal(consecutiveFailureVerdict([r('failure', '11'), r('failure', '18')]).failing, false);
   assert.equal(consecutiveFailureVerdict([]).failing, false);
 });
+
+test('findJobLevelKillSwitches flags a job-level vars.*_DISABLED gate, not step-level ones (BRO-8235)', () => {
+  const { findJobLevelKillSwitches } = require('./cron-coverage.js');
+  const jobLevel = "jobs:\n  a:\n    if: ${{ vars.FOO_DISABLED != 'true' }}\n    runs-on: x\n    steps:\n      - run: echo\n";
+  assert.deepEqual(findJobLevelKillSwitches(jobLevel), [{ job: 'a', if: "${{ vars.FOO_DISABLED != 'true' }}", vars: ['FOO_DISABLED'] }]);
+  const stepLevel = "jobs:\n  a:\n    runs-on: x\n    steps:\n      - run: echo\n        if: vars.FOO_DISABLED != 'true'\n";
+  assert.deepEqual(findJobLevelKillSwitches(stepLevel), []);
+  const otherIf = "jobs:\n  a:\n    if: github.event_name == 'schedule'\n    runs-on: x\n    steps: []\n";
+  assert.deepEqual(findJobLevelKillSwitches(otherIf), []);
+  assert.deepEqual(findJobLevelKillSwitches(''), []);
+});

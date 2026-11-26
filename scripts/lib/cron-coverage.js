@@ -303,7 +303,25 @@ function consecutiveFailureVerdict(runs, n = 3) {
   return { failing: streak >= n, streak, lastFailureAt: streak ? (done[0].created_at || done[0].createdAt || null) : null };
 }
 
+// BRO-8235: jobs whose `if:` reads a vars.*_DISABLED kill switch. A job skipped by its own
+// `if` concludes 'skipped', not 'success', and check-cron-health keys staleness on the last
+// SUCCESS, so flipping such a switch on a CRITICAL_CRONS workflow pages as stale and
+// cron-redispatch re-dispatches it. Gate the steps instead (publish-show-refresh.yml, BRO-8233).
+// Returns [{ job, if, vars: [names] }] for every offending job; parses the real YAML.
+function findJobLevelKillSwitches(yamlText) {
+  const doc = require('js-yaml').load(yamlText) || {};
+  const out = [];
+  for (const [job, def] of Object.entries(doc.jobs || {})) {
+    if (!def || def.if === undefined || def.if === null) continue;
+    const cond = String(def.if);
+    const names = [...cond.matchAll(/\bvars\.([A-Za-z0-9_]*_DISABLED)\b/g)].map((m) => m[1]);
+    if (names.length) out.push({ job, if: cond, vars: names });
+  }
+  return out;
+}
+
 module.exports = {
+  findJobLevelKillSwitches,
   consecutiveFailureVerdict,
   isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt,
   parseExemptEntries, findUnjustifiedExempt, findFalseDigestClaims, findDigestDrift,
