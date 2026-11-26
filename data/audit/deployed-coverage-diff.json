@@ -1,13 +1,70 @@
 {
-  "generatedAt": "2026-11-26T01:15:06.581Z",
+  "generatedAt": "2026-11-26T01:45:45.198Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 370,
-  "clean": 370,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 367,
+  "defective": 3,
+  "byType": {
+    "missing-from-prod": 3
+  },
+  "shows": [
+    {
+      "showId": "attention-off-west-end-2026",
+      "title": "Attention",
+      "openingDate": "2026-11-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: londonpubtheatres"
+        }
+      ],
+      "missingFromProd": [
+        "londonpubtheatres"
+      ],
+      "localCount": 13,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-11-26T01:45:39.028Z"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: josh-at-the-movies"
+        }
+      ],
+      "missingFromProd": [
+        "josh-at-the-movies"
+      ],
+      "localCount": 24,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-26T01:45:39.028Z"
+    },
+    {
+      "showId": "its-a-wonderful-life-a-live-radio-play-regional-2025",
+      "title": "It's a Wonderful Life - A Live Radio Play",
+      "openingDate": "2025-11-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: talkinbroadway"
+        }
+      ],
+      "missingFromProd": [
+        "talkinbroadway"
+      ],
+      "localCount": 4,
+      "deployedCount": 3,
+      "firstDefectAt": "2026-11-26T01:45:39.028Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
