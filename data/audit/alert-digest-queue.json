@@ -1028,20 +1028,6 @@
     "queuedAt": "2026-11-25T23:35:08.048Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:blue-man-group-a-new-holiday-surprise-2026",
-    "title": "Review gap — \"Blue Man Group “A New Holiday Surprise”\" missing 1 cited review(s)",
-    "description": "Blue Man Group “A New Holiday Surprise” (blue-man-group-a-new-holiday-surprise-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=blue-man-group-a-new-holiday-surprise-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-26T01:14:23.039Z"
-  },
-  {
     "conditionKey": "feedback-outcomes:2026-11-26T02:23:15.047524+00:00",
     "title": "Feedback: 1 submission(s), all handled automatically",
     "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nA message with no show named — Not a problem report — a thank-you went back to the person who sent it.\n  They wrote: \"Hello,\r\n\r\nHope you're well.\r\n\r\nCongratulations on your site.\r\n\r\nI was wondering if you could feature First Night Magazine on Tier 3 rather than Tier 4, as it's a professional publication and highly active all across the London scene (all the shows featured are PR invites and the outlet has been recognised by The Critics' Circle).\r\n\r\nIt'd be much appreciated.\r\n\r\nMany thanks.\r\nX\r\n\r\n\"",
@@ -1491,20 +1477,6 @@
     "queuedAt": "2026-11-26T19:42:05.420Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-26.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-26T20:21:10.651Z"
-  },
-  {
     "conditionKey": "cron-health-failed:Enrich Off-Broadway Dates",
     "title": "Cron's latest run failed (not yet stale): Enrich Off-Broadway Dates",
     "description": "Enrich Off-Broadway Dates: Latest run failed (last success 73h ago). Not stale yet; fix it before it is.",
@@ -1522,5 +1494,33 @@
       }
     ],
     "queuedAt": "2026-11-26T20:48:14.324Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:blue-man-group-a-new-holiday-surprise-2026",
+    "title": "Review gap — \"Blue Man Group “A New Holiday Surprise”\" missing 1 cited review(s)",
+    "description": "Blue Man Group “A New Holiday Surprise” (blue-man-group-a-new-holiday-surprise-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=blue-man-group-a-new-holiday-surprise-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-26T21:21:40.676Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-26.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-26T21:22:11.782Z"
   }
 ]

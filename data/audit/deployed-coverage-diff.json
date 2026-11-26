@@ -1,71 +1,30 @@
 {
-  "generatedAt": "2026-11-26T20:21:30.626Z",
+  "generatedAt": "2026-11-26T21:22:35.324Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 372,
-  "clean": 369,
-  "defective": 3,
+  "checked": 373,
+  "clean": 372,
+  "defective": 1,
   "byType": {
-    "score-drift": 3,
-    "missing-from-prod": 1
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "a-christmas-carol-regional-2025",
-      "title": "A Christmas Carol",
-      "openingDate": "2025-11-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "3 scored outlet(s) absent from the deployed payload: culturesauce, nysr, one-minute-critic"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.09 vs local 81.42 (Δ3.67)"
-        }
-      ],
-      "missingFromProd": [
-        "culturesauce",
-        "nysr",
-        "one-minute-critic"
-      ],
-      "localCount": 14,
-      "deployedCount": 11,
-      "firstDefectAt": "2026-11-26T20:21:24.717Z"
-    },
-    {
-      "showId": "the-getaway-driver-central-regional-2026",
-      "title": "The Getaway Driver",
-      "openingDate": "2026-10-29",
+      "showId": "relative-motion-off-west-end-2026",
+      "title": "Relative Motion",
+      "openingDate": "2026-11-11",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 79.1 vs local 79.23 (Δ0.13)"
+          "detail": "deployed cs 75.09 vs local 75.32 (Δ0.23)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-26T20:21:24.717Z"
-    },
-    {
-      "showId": "oh-mary-tour-2026",
-      "title": "Oh, Mary!",
-      "openingDate": "2026-09-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.3 vs local 85.02 (Δ0.28)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-11-26T20:21:24.717Z"
+      "localCount": 28,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-11-26T21:22:29.876Z"
     }
   ],
   "persistentDefective": 0,
