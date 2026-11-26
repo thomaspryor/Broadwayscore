@@ -806,7 +806,7 @@ async function fetchViaListingConfigWithSerp(outletId, sc, domain, cutoff, opts,
 // findMatchingShows matches on (the ft.com/content/<uuid> slug has nothing to match).
 async function fetchViaSerpPerShow(outletId, domain, cutoff, opts, shows, serp = serpQuery, now = Date.now()) {
   const seen = new Map();
-  for (const show of perShowSerpTargets(shows, undefined, now)) {
+  for (const show of perShowSerpTargets(shows, undefined, now, outletId)) {
     const query = buildPerShowSerpQuery(domain, show);
     if (!query) continue;
     console.log(`  [serp-per-show] Query: ${query}`);

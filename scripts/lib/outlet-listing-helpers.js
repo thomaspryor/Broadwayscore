@@ -932,6 +932,7 @@ const PER_SHOW_SERP_OUTLETS = new Set(['financialtimes']);
 const PER_SHOW_SERP_MAX = (() => { const n = parseInt(process.env.PER_SHOW_SERP_MAX || '30', 10); return Number.isFinite(n) && n >= 0 ? n : 30; })();
 
 const PER_SHOW_PRIORITY_CATEGORIES = new Set(['west-end', 'off-west-end', 'broadway']);
+const NY_SUN_PRIORITY_CATEGORIES = new Set(['broadway', 'off-broadway']);
 
 /** `site:ft.com "Eurotrash" review`: the show title in quotes carries the identity the opaque URL lacks. */
 function buildPerShowSerpQuery(domain, show) {
@@ -941,17 +942,20 @@ function buildPerShowSerpQuery(domain, show) {
 
 /**
  * The shows to query for a per-show outlet: already opened (a review cannot exist before
- * the opening), opened within 14 days, west-end/off-west-end/broadway before every other category (FT is a London outlet that also reviews Broadway; 81 shows opened in a recent 14-day window, 30 of them regional), newest opening first, capped. The daily cron is
+ * the opening), opened within 14 days, with the outlet's main markets first,
+ * newest opening first, capped. FT prioritizes London and Broadway; NY Sun
+ * prioritizes Broadway and Off-Broadway. The daily cron is
  * ~24h apart so the 24h SERP cache rarely hits: the cap is the cost control.
  */
-function perShowSerpTargets(shows, max = PER_SHOW_SERP_MAX, now = Date.now()) {
+function perShowSerpTargets(shows, max = PER_SHOW_SERP_MAX, now = Date.now(), outletId = '') {
   // Reviews land within days of the opening; the 4 FT misses were found 1-7 days late.
   const floor = new Date(now - 14 * 864e5).toISOString().slice(0, 10);
   const today = new Date(now + 864e5).toISOString().slice(0, 10); // +1d: UK press nights run ahead of UTC
+  const priority = outletId === 'new-york-sun' ? NY_SUN_PRIORITY_CATEGORIES : PER_SHOW_PRIORITY_CATEGORIES;
   return (shows || [])
     .filter(s => s && s.title && s.id && s.openingDate && String(s.openingDate) >= floor && String(s.openingDate) <= today)
     .slice()
-    .sort((a, b) => (PER_SHOW_PRIORITY_CATEGORIES.has(a.category) ? 0 : 1) - (PER_SHOW_PRIORITY_CATEGORIES.has(b.category) ? 0 : 1)
+    .sort((a, b) => (priority.has(a.category) ? 0 : 1) - (priority.has(b.category) ? 0 : 1)
       || String(b.openingDate || '').localeCompare(String(a.openingDate || '')))
     .slice(0, max);
 }
