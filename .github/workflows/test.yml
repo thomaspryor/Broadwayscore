@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'scripts/github-actions-audit.mjs' # BRO-8287: scripts/github-actions-audit.test.mjs covers it
       - 'scripts/check-prod-deploy.js'
       - 'scripts/check-deploy-frequency.js'
       - 'scripts/generate-theater-tips.js'
