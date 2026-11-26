@@ -1528,7 +1528,7 @@
   },
   {
     "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-26.",
+    "title": "Data-quality monitors drifting from baseline: 24 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +18 more). Checked 2026-11-26.",
     "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
     "severity": "info",
     "url": null,
@@ -1538,6 +1538,6 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-26T19:02:40.670Z"
+    "queuedAt": "2026-11-26T19:38:23.999Z"
   }
 ]
