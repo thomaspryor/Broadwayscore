@@ -27,14 +27,24 @@ test('feedAppliesToMarket still restricts market-pinned feeds', () => {
 });
 
 // Window rule only (it ignores market); the market fix itself is guarded by the first test.
-test('Lives of Others: NYT headline and slug (no review word) is accepted inside the review-free window', () => {
+test('Lives of Others: NYT headline and slug (no review word) is accepted four days after opening', () => {
   names.setPressNameShows([]);
   const item = {
     title: 'Keira Knightley Shines in ‘The Lives of Others’',
     link: 'https://www.nytimes.com/2026/11/02/theater/lives-of-others-kiera-knightley-robert-icke.html',
-    pubDate: new Date('2026-10-30T12:00:00Z'),
+    pubDate: new Date('2026-11-02T12:00:00Z'),
   };
-  assert.equal(rss.openingWindowFeedAccepts(item, 'The Lives of Others', '2026-10-29'), true);
+  assert.equal(rss.openingWindowFeedAccepts(item, 'The Lives of Others', '2026-10-29', 'nytimes'), true);
+});
+
+test('late NYT feed rejects show news and requires headline identity', () => {
+  const base = { link: 'https://example.com/article', pubDate: new Date('2026-11-02T12:00:00Z') };
+  for (const title of ['The Lives of Others Extends Its Run', 'The Lives of Others Is Closing', 'The Lives of Others Will Transfer']) {
+    assert.equal(rss.openingWindowFeedAccepts({ ...base, title }, 'The Lives of Others', '2026-10-29', 'nytimes'), false, title);
+    assert.equal(rss.openingWindowFeedAccepts({ ...base, title, link: 'https://example.com/review' }, 'The Lives of Others', '2026-10-29', 'nytimes'), false, title);
+  }
+  assert.equal(rss.openingWindowFeedAccepts({ ...base, title: 'A Theater Feature', link: 'https://example.com/lives-of-others' }, 'The Lives of Others', '2026-10-29', 'nytimes'), false);
+  assert.equal(rss.openingWindowFeedAccepts({ ...base, title: 'Keira Knightley Shines in ‘The Lives of Others’' }, 'The Lives of Others', '2026-10-29', 'variety'), false);
 });
 
 test('Waiting for Lefty: author-possessive billing matches the title NYT prints', () => {

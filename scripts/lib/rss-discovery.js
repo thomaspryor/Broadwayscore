@@ -518,8 +518,8 @@ function isWithinOpeningWindow(pubDate, openingDate, windowDays = 2, postWindowD
 // Days before/after opening an openingWindow-feed item may be published.
 // Post-opening is wider because the NYT often posts Off-Broadway reviews 2-3
 // days after opening (Degenerates, BRO-4435). Beyond REVIEW_FREE_POST_DAYS the
-// item must also look like a review, so same-show news (extensions, closings,
-// transfers) published later in the week stays out.
+// item must also look like a review, with a headline-based NYT exception that
+// screens out common news headlines.
 const OPENING_WINDOW_PRE_DAYS = 2;
 const OPENING_WINDOW_POST_DAYS = 7;
 const REVIEW_FREE_POST_DAYS = 2;
@@ -541,11 +541,15 @@ function pollerMatchOpts() {
   return { mainTitle: true, allShowTitles: require('./show-names').registryShowTitles() };
 }
 
-function openingWindowFeedAccepts(item, showTitle, openingDate) {
+function openingWindowFeedAccepts(item, showTitle, openingDate, outletId = null) {
   if (!isWithinOpeningWindow(item.pubDate, openingDate, OPENING_WINDOW_PRE_DAYS, OPENING_WINDOW_POST_DAYS)) return false;
   const mo = pollerMatchOpts();
   if (!itemNamesShow(item.title, item.link, showTitle, mo)) return false;
   if (!isWithinOpeningWindow(item.pubDate, openingDate, OPENING_WINDOW_PRE_DAYS, REVIEW_FREE_POST_DAYS)) {
+    if (outletId === 'nytimes' && require('./outlet-listing-helpers').headlineLooksLikeNews(item.title)) return false;
+    // The NYT Theater feed also publishes reviews without a review label. Limit
+    // this fallback to a headline naming the show, and screen out news.
+    if (outletId === 'nytimes' && titleMatchesShow(item.title, showTitle, mo)) return true;
     return /review/i.test(`${item.title || ''} ${item.link || ''}`);
   }
   return true;
@@ -611,7 +615,7 @@ async function checkRSSFeeds(showTitle, options = {}) {
         } else if (feed.openingWindow && openingDate) {
           // Narrow Broadway-specific feeds (NYT Theater, Variety Legit): date window AND
           // identity match (task #1073), see openingWindowFeedAccepts.
-          if (!openingWindowFeedAccepts(item, showTitle, openingDate)) continue;
+          if (!openingWindowFeedAccepts(item, showTitle, openingDate, feed.outletId)) continue;
         } else {
           // All other feeds (WE feeds, Broadway feeds without openingDate): title-match
           if (!titleMatchesShow(item.title, showTitle, pollerMatchOpts())) continue;
