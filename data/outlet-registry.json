@@ -4077,7 +4077,7 @@
     },
     "australian": {
       "displayName": "The Australian",
-      "tier": 3,
+      "tier": 2,
       "aliases": [
         "australian",
         "the-australian",
@@ -4110,7 +4110,7 @@
     },
     "smh": {
       "displayName": "Sydney Morning Herald",
-      "tier": 3,
+      "tier": 2,
       "aliases": [
         "smh",
         "the-sydney-morning-herald",
@@ -15935,6 +15935,93 @@
         "the-odyssey"
       ],
       "domain": "odysseymagazine.net"
+    },
+    "rolling-stone-au": {
+      "displayName": "Rolling Stone Australia",
+      "tier": 3,
+      "aliases": [
+        "rolling-stone-au",
+        "rolling stone australia",
+        "rolling stone au",
+        "rollingstone-au"
+      ],
+      "domain": "au.rollingstone.com",
+      "accessModel": "metered"
+    },
+    "daily-telegraph-au": {
+      "displayName": "The Daily Telegraph (Sydney)",
+      "tier": 3,
+      "aliases": [
+        "daily-telegraph-au",
+        "daily telegraph sydney",
+        "the daily telegraph australia"
+      ],
+      "domain": "dailytelegraph.com.au",
+      "accessModel": "paywalled"
+    },
+    "artshub-au": {
+      "displayName": "ArtsHub Australia",
+      "tier": 3,
+      "aliases": [
+        "artshub-au",
+        "artshub australia",
+        "artshub au"
+      ],
+      "domain": "artshub.com.au",
+      "accessModel": "free"
+    },
+    "suzy-goes-see": {
+      "displayName": "Suzy Goes See",
+      "tier": 4,
+      "aliases": [
+        "suzy-goes-see",
+        "suzy goes see",
+        "suzygoessee"
+      ],
+      "domain": "suzygoessee.com",
+      "accessModel": "free"
+    },
+    "theatre-thoughts": {
+      "displayName": "Theatre Thoughts",
+      "tier": 4,
+      "aliases": [
+        "theatre-thoughts",
+        "theatre thoughts"
+      ],
+      "domain": "theatrethoughts.com",
+      "accessModel": "free"
+    },
+    "musical-theatre-australia": {
+      "displayName": "Musical Theatre Australia",
+      "tier": 4,
+      "aliases": [
+        "musical-theatre-australia",
+        "musical theatre australia",
+        "musical theatre au",
+        "mtau"
+      ],
+      "domain": "musicaltheatreaustralia.com",
+      "accessModel": "free"
+    },
+    "stage-whispers": {
+      "displayName": "Stage Whispers",
+      "tier": 4,
+      "aliases": [
+        "stage-whispers",
+        "stage whispers"
+      ],
+      "domain": "stagewhispers.com.au",
+      "accessModel": "free"
+    },
+    "audrey-journal": {
+      "displayName": "Audrey Journal",
+      "tier": 4,
+      "aliases": [
+        "audrey-journal",
+        "audrey journal"
+      ],
+      "domain": "audreyjournal.com.au",
+      "accessModel": "free"
     }
   },
   "_aliasIndex": {
@@ -16697,8 +16784,38 @@
     "vanguard culture": "vanguard-culture",
     "vanguardculture": "vanguard-culture",
     "newyorktheatrereview": "newyorktheatrereview",
-    "new-york-theatre-review-blogspot": "newyorktheatrereview"
+    "new-york-theatre-review-blogspot": "newyorktheatrereview",
+    "limelight-magazine-au": "limelight-magazine-au",
+    "limelight magazine": "limelight-magazine-au",
+    "limelight": "limelight-magazine-au",
+    "australian": "australian",
+    "smh": "smh",
+    "australian-stage": "australian-stage",
+    "aussie-theatre": "aussie-theatre",
+    "rolling-stone-au": "rolling-stone-au",
+    "rolling stone australia": "rolling-stone-au",
+    "rolling stone au": "rolling-stone-au",
+    "rollingstone-au": "rolling-stone-au",
+    "daily-telegraph-au": "daily-telegraph-au",
+    "daily telegraph sydney": "daily-telegraph-au",
+    "the daily telegraph australia": "daily-telegraph-au",
+    "artshub-au": "artshub-au",
+    "artshub australia": "artshub-au",
+    "artshub au": "artshub-au",
+    "suzy-goes-see": "suzy-goes-see",
+    "suzy goes see": "suzy-goes-see",
+    "suzygoessee": "suzy-goes-see",
+    "theatre-thoughts": "theatre-thoughts",
+    "theatre thoughts": "theatre-thoughts",
+    "musical-theatre-australia": "musical-theatre-australia",
+    "musical theatre australia": "musical-theatre-australia",
+    "musical theatre au": "musical-theatre-australia",
+    "mtau": "musical-theatre-australia",
+    "stage-whispers": "stage-whispers",
+    "stage whispers": "stage-whispers",
+    "audrey-journal": "audrey-journal",
+    "audrey journal": "audrey-journal"
   },
-  "lastUpdated": "2026-11-23T23:33:06.193Z",
-  "lastChange": "BRO-8210: register New York Theatre Review (newyorktheatrereview.blogspot.com)"
+  "lastUpdated": "2026-11-26T23:19:03.960Z",
+  "lastChange": "BRO-8389: Australian pilot outlets (SMH, The Australian T2; Limelight, ArtsHub AU, Daily Telegraph AU, Rolling Stone AU T3; AU blogs T4)"
 }
