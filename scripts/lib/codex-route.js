@@ -55,6 +55,9 @@ function cardRouteReason(issue, { nowMs = Date.now() } = {}) {
 function ghaLaneVerdict(health) {
   if (!health || !health.now) return { ok: false, reason: 'Codex lane health unknown (codex-runner.yml runs unreadable)' };
   if (!(health.now.facts && health.now.facts.ghaRuns > 0)) return { ok: false, reason: 'Codex lane health unknown (no codex-runner.yml run found)' };
+  // An unreadable Codex login is unknown, not healthy: a lost login stops the runner before it claims.
+  const loginUnknown = (health.now.unknown || []).filter((u) => /login/i.test(u));
+  if (loginUnknown.length) return { ok: false, reason: `Codex lane health unknown (${loginUnknown.join(', ')} unreadable)` };
   const bad = health.now.breaches.filter((b) => b.lane === 'gha' || b.cls === 'login-not-saved');
   if (bad.length) return { ok: false, reason: `Codex lane unhealthy: ${bad.map((b) => `${b.lane}:${b.cls} ${b.why}`).join('; ').slice(0, 300)}` };
   return { ok: true, reason: 'Codex GHA lane healthy' };

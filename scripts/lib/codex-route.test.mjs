@@ -78,6 +78,9 @@ test('ghaLaneVerdict counts gha breaches and a lost login, not the cloud lane', 
   assert.equal(ghaLaneVerdict(h([{ lane: 'codex', cls: 'login-not-saved', why: 'x' }])).ok, false);
   assert.equal(ghaLaneVerdict(h([], 0)).ok, false);
   assert.equal(ghaLaneVerdict(null).ok, false);
+  const lost = ghaLaneVerdict({ now: { breaches: [], unknown: ['BRO-4799 login stamps'], facts: { ghaRuns: 5 } } });
+  assert.equal(lost.ok, false);
+  assert.match(lost.reason, /login stamps/);
 });
 
 test('ghaLaneVerdict on real codexLaneHealth output: two failed runs breach, recent green work passes', () => {
