@@ -61,7 +61,9 @@ test('release frees the probe slot without adding a success', () => {
 // Drives the real fetchJsSearchHtml through each failure branch with a stubbed transport.
 import { EventEmitter } from 'node:events';
 function stub(kind) {
-  return (_u, cb) => {
+  // https.get(url, cb) and https.get(url, opts, cb) are both used by the scraper transports.
+  return (_u, a, b) => {
+    const cb = typeof a === 'function' ? a : b;
     const req = new EventEmitter();
     let t = null;
     req.setTimeout = (_ms, fn) => { t = fn; };
