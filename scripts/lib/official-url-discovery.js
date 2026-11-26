@@ -215,11 +215,30 @@ function scoreCandidate(url, serpTitle, showTitle, category) {
  * Discover a show's official website via SERP. Returns the URL string, or
  * null when no high-confidence, reachable candidate was found.
  */
-async function discoverOfficialUrl(show) {
+// BRO-8343: off-Broadway / off-West-End SERP hits must prove on the page itself that they are
+// this production (page names the title AND the venue). Domain-only matching stored a school band
+// handbook, a columnist's photo archive and a town calendar as officialUrl on five announced shows.
+const PAGE_CONFIRMED_CATEGORIES = new Set(['off-broadway', 'off-west-end']);
+
+async function defaultFetchHtml(url) {
+  const { fetchPage } = require('./scraper');
+  const r = await fetchPage(url, {});
+  return r && r.content ? r.content : null;
+}
+
+async function pageConfirmsProduction(show, url, fetchHtml) {
+  if (!PAGE_CONFIRMED_CATEGORIES.has(show.category || 'broadway')) return true;
+  const { pageNamesShow } = require('./production-page-text');
+  let html = null;
+  try { html = await fetchHtml(url); } catch { html = null; }
+  return pageNamesShow(html, show, url);
+}
+
+async function discoverOfficialUrl(show, { fetchHtml = defaultFetchHtml, serp = serpQuery, head = httpHead } = {}) {
   const query = buildSearchQuery(show);
 
   try {
-    const results = await serpQuery(query);
+    const results = await serp(query);
     if (!results) return null;
 
     // Score and filter candidates
@@ -251,13 +270,16 @@ async function discoverOfficialUrl(show) {
     const best = candidates[0];
 
     // HEAD verify the URL is reachable
-    const status = await httpHead(best.url);
-    if (status >= 200 && status < 400) {
-      return best.url;
+    const status = await head(best.url);
+    if (!(status >= 200 && status < 400)) {
+      console.log(`  ⚠ Best candidate for "${show.id || show.title}" returned HTTP ${status}: ${best.url}`);
+      return null;
     }
-
-    console.log(`  ⚠ Best candidate for "${show.id || show.title}" returned HTTP ${status}: ${best.url}`);
-    return null;
+    if (!(await pageConfirmsProduction(show, best.url, fetchHtml))) {
+      console.log(`  ⚠ Best candidate for "${show.id || show.title}" does not name the show and venue: ${best.url}`);
+      return null;
+    }
+    return best.url;
   } catch (e) {
     // Surface real provider/network failures — distinct from the routine
     // "SERP returned nothing high-confidence" case above, which is silent by
@@ -280,5 +302,6 @@ module.exports = {
   buildSearchQuery,
   scoreCandidate,
   domainMatchesTitle,
+  pageConfirmsProduction,
   discoverOfficialUrl,
 };
