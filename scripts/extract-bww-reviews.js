@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { isPublishedTooEarly } = require('./lib/review-date-checks');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, normalizePublishDate } = require('./lib/review-normalization');
-const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { parseArticleBodyReviews, roundupLabelOverride } = require('./lib/bww-roundup-parser');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
@@ -53,8 +53,10 @@ try {
  * Returns { name, outletId } structure expected by this script.
  * Note: Tier info is no longer returned; use scoring config for tier lookups.
  */
-function normalizeOutlet(outlet) {
-  const outletId = canonicalNormalizeOutlet(outlet);
+function normalizeOutlet(outlet, criticName = null, url = null) {
+  const labelOutletId = canonicalNormalizeOutlet(outlet);
+  // BRO-8224: "New York Theatre Review" over an NYSR critic or URL is NYSR.
+  const outletId = roundupLabelOverride({ outletId: labelOutletId, criticName, url }) || labelOutletId;
   const name = getOutletDisplayName(outletId);
   return { name, outletId };
 }
@@ -82,7 +84,7 @@ function extractFromArticleBody(articleBody, showId, publishDate) {
       quote += '...';
     }
 
-    const outlet = normalizeOutlet(outletRaw);
+    const outlet = normalizeOutlet(outletRaw, criticName);
 
     reviews.push({
       showId,
@@ -132,7 +134,7 @@ function extractFromBlogPostings(content, showId) {
           criticName = parts[1]?.trim() || null;
         }
 
-        const outletInfo = normalizeOutlet(outlet);
+        const outletInfo = normalizeOutlet(outlet, criticName, json.url || null);
         const quote = json.articleBody || json.description || '';
 
         reviews.push({

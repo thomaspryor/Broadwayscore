@@ -90,7 +90,7 @@ const { recordMarketMisroute: _recordMarketMisroute } = require('./lib/market-mi
 const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, matchBWWRoundupUrlToShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { pageTitleTypoMatch } = require('./lib/fuzzy-title-token');
-const { parseArticleBodyReviews, scanRoundupOutletAnchors, orderAnchorCandidates, buildOutletRoster, shouldDeferRoundupUrl } = require('./lib/bww-roundup-parser');
+const { parseArticleBodyReviews, scanRoundupOutletAnchors, orderAnchorCandidates, buildOutletRoster, shouldDeferRoundupUrl, roundupLabelOverride } = require('./lib/bww-roundup-parser');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 const { parseBwwPostingAuthor, isMultiPersonOutlet, isMentionedPersonOutlet } = require('./lib/bww-jsonld-author');
 // 1 Minute Critic direct-discovery. Mirrors opening-night-poller.js Layer 2b:
@@ -2850,6 +2850,18 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup`);
   } else if (html && html.length > 5000) {
     console.log(`    ⚠️  BWW roundup page loaded but 0 reviews extracted from both JSON-LD and articleBody`);
+  }
+
+  // BRO-8224: a roundup label that names another outlet ("New York Theatre
+  // Review" over a nystagereview.com link) moves to the outlet the URL or
+  // critic belongs to. Runs before Method 3 so the domain supplement sees the
+  // URL as covered and does not add a duplicate Unknown stub for it.
+  for (const r of reviews) {
+    const target = roundupLabelOverride({ outletId: r.outletId, url: r.url, criticName: r.criticName });
+    if (!target) continue;
+    console.log(`    [BWW RR] label "${r.outlet || r.outletId}" for ${r.criticName || 'Unknown'} is ${target} (BRO-8224)`);
+    r.outletId = target;
+    r.outlet = getOutletDisplayName(target) || target;
   }
 
   // Method 3: outlet-by-domain supplement (Balusters postmortem CLASS 2, 2026-04-21).

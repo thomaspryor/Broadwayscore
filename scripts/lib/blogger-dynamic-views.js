@@ -107,4 +107,20 @@ async function expandBloggerDynamicViews(html, pageUrl, fetchFn) {
   }
 }
 
-module.exports = { bloggerDynamicViewsPostId, bloggerFeedUrl, bloggerFeedToHtml, expandBloggerDynamicViews };
+/**
+ * Collector form (BRO-8224): `result` is a fetched article
+ * { html, text, method }. When its HTML is a Dynamic Views shell, return the
+ * same shape with the feed-rebuilt html and the text re-extracted from it by
+ * the caller's own `extractText(html)`; otherwise return `result` unchanged.
+ * `method` is kept so the caller's source-method mapping still applies.
+ */
+async function expandFetchedArticle(result, pageUrl, fetchFn, extractText) {
+  if (!result || typeof result.html !== 'string') return result;
+  const bdv = await expandBloggerDynamicViews(result.html, pageUrl, fetchFn);
+  if (!bdv.expanded) {
+    return bdv.feedUrl ? { ...result, bloggerFeedUrl: bdv.feedUrl, bloggerFeedError: bdv.error || 'unknown' } : result;
+  }
+  return { ...result, html: bdv.html, text: extractText(bdv.html), bloggerFeedUrl: bdv.feedUrl };
+}
+
+module.exports = { bloggerDynamicViewsPostId, bloggerFeedUrl, bloggerFeedToHtml, expandBloggerDynamicViews, expandFetchedArticle };

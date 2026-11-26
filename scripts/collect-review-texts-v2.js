@@ -21,6 +21,7 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const { expandFetchedArticle } = require('./lib/blogger-dynamic-views');
 
 // Configuration
 const CONFIG = {
@@ -227,7 +228,7 @@ async function fetchWithPlaywright(browser, url, review) {
 
     await context.close();
 
-    return { html, text, method: 'playwright' };
+    return expandBloggerShell({ html, text, method: 'playwright' }, url);
   } catch (e) {
     await context.close();
     throw e;
@@ -239,11 +240,23 @@ async function fetchWithPlaywright(browser, url, review) {
 // premium tier and Bright Data's $1.50/1k before ever reaching ScrapingBee —
 // a direct SB premium_proxy=true call costs $2.48/1k, more than Bright Data
 // (task #5).
-async function fetchWithScrapingBee(url) {
-  const result = await fetchPage(url, { renderJs: true, premium: true });
+async function fetchWithScrapingBee(url, fetchFn = fetchPage) {
+  const result = await fetchFn(url, { renderJs: true, premium: true });
   const html = result.content;
   const text = extractTextFromHtml(html);
-  return { html, text, method: result.source };
+  return expandBloggerShell({ html, text, method: result.source }, url, fetchFn);
+}
+
+// BRO-8224 (pattern from BRO-8210 in ingest-review-from-url.js): a Blogger
+// "Dynamic Views" page has no post body in its HTML, so text extraction gets
+// only the 150-char description. Read the same post from Blogger's feed API
+// and re-extract. Not for Archive.org: its URL is not the blog's host.
+async function expandBloggerShell(result, url, fetchFn = fetchPage) {
+  const out = await expandFetchedArticle(result, url,
+    (u) => fetchFn(u, { source: 'collect-review-texts-v2' }), extractTextFromHtml);
+  if (out.bloggerFeedUrl && !out.bloggerFeedError) console.log(`  → Blogger Dynamic Views page; read the post from ${out.bloggerFeedUrl}`);
+  else if (out.bloggerFeedUrl) console.log(`  ⚠️  Blogger Dynamic Views page; feed read failed (${out.bloggerFeedError}): ${out.bloggerFeedUrl}`);
+  return out;
 }
 
 // Method 3: Archive.org fallback
@@ -710,7 +723,7 @@ async function main() {
 // a passing CI step into a SIGTERM (exit 143) ~15 minutes after the work was
 // done. This script runs in process-review-submission.yml, so the same hang
 // would burn that workflow's budget.
-main()
+if (require.main === module) main()
   .catch((e) => {
     console.error('Fatal error:', e);
     process.exitCode = 1;
@@ -719,3 +732,5 @@ main()
     try { await cleanup(); } catch (_) { /* best-effort */ }
     process.exit(process.exitCode || 0);
   });
+
+module.exports = { fetchWithScrapingBee, expandBloggerShell, extractTextFromHtml };

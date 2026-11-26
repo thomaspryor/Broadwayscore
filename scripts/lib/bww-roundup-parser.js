@@ -397,6 +397,49 @@ function orderAnchorCandidates(entries, consumed, criticName, rosterNames = []) 
   return unnamed.concat(strangers);
 }
 
+// BRO-8224: BWW roundups label some outlets with ANOTHER outlet's name. The
+// 2018 roundups (my-fair-lady, saint-joan, summer) print New York Stage Review
+// critics (Steven Suskin, Elysa Gardner, Jesse Oxfeld) as "New York Theatre
+// Review", a label that resolves to the blog newyorktheatrereview (registered
+// in BRO-8210), so a re-parse filed NYSR reviews under the blog. The linked
+// URL decides: a review whose URL is on the other outlet's own domain belongs
+// to that outlet. Without a URL, a critic on that outlet's staff decides.
+const ROUNDUP_LABEL_OVERRIDES = [
+  {
+    labelOutletId: 'newyorktheatrereview',
+    ownHosts: ['newyorktheatrereview.blogspot.com'],
+    targetOutletId: 'nysr',
+    targetHosts: ['nystagereview.com', 'newyorkstagereview.com'],
+    targetCritics: ['Steven Suskin', 'Elysa Gardner', 'Jesse Oxfeld', 'Frank Scheck', 'David Finkle', 'Michael Sommers', 'Roma Torre'],
+  },
+];
+
+function hostOf(url) {
+  try { return new URL(url).hostname.toLowerCase().replace(/^www\./, ''); } catch { return null; }
+}
+
+function hostMatches(host, hosts) {
+  return !!host && hosts.some((h) => host === h || host.endsWith(`.${h}`));
+}
+
+/**
+ * Outlet id a roundup entry really belongs to when its label names a
+ * different outlet, or null to keep the label's outlet.
+ * @param {{outletId: string|null, url?: string|null, criticName?: string|null}} entry
+ * @returns {string|null}
+ */
+function roundupLabelOverride({ outletId, url = null, criticName = null } = {}) {
+  const rule = ROUNDUP_LABEL_OVERRIDES.find((r) => r.labelOutletId === outletId);
+  if (!rule) return null;
+  const host = url ? hostOf(url) : null;
+  if (host) {
+    if (hostMatches(host, rule.targetHosts)) return rule.targetOutletId;
+    return null; // own host or any other host: the label stands
+  }
+  if (criticName && rule.targetCritics.some((n) => criticNamesMatch(n, criticName))) return rule.targetOutletId;
+  return null;
+}
+
 module.exports = {
   parseArticleBodyReviews,
   criticNameBeforeAnchor,
@@ -406,4 +449,6 @@ module.exports = {
   buildOutletRoster,
   shouldDeferRoundupUrl,
   CRITIC_OUTLET_PATTERN,
+  roundupLabelOverride,
+  ROUNDUP_LABEL_OVERRIDES,
 };

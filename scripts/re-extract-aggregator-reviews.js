@@ -23,7 +23,7 @@ const {
 } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { bucketWriteResult } = require('./lib/ingest-rejection-cache');
-const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { parseArticleBodyReviews, roundupLabelOverride } = require('./lib/bww-roundup-parser');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 const { parseBwwPostingAuthor, isMultiPersonOutlet } = require('./lib/bww-jsonld-author');
 const { foreignTitleEntriesFromHtml, isForeignTitleReview } = require('./lib/bww-foreign-title');
@@ -267,7 +267,9 @@ function reExtractBWW() {
                 quote += '...';
               }
 
-              const outletId = normalizeOutlet(outletRaw);
+              // BRO-8224: "New York Theatre Review" over an NYSR critic is NYSR.
+              const labelOutletId = normalizeOutlet(outletRaw);
+              const outletId = roundupLabelOverride({ outletId: labelOutletId, criticName }) || labelOutletId;
               if (!isValidOutlet(outletId, outletRaw)) continue;
               const outletName = getOutletDisplayName(outletId);
 

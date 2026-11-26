@@ -15,7 +15,7 @@ const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
 const { loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, areCriticsSimilar } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { parseArticleBodyReviews, roundupLabelOverride } = require('./lib/bww-roundup-parser');
 const { isFlaggedForRoundupMerge } = require('./lib/review-file-match');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -83,7 +83,9 @@ function extractBWWReviews(html, showId) {
           // Lowered minimum to 20 chars — some valid excerpts are short when critics from same outlet appear consecutively
           if (excerpt.length < 20) continue;
 
-          const outletId = normalizeOutlet(outletRaw);
+          // BRO-8224: "New York Theatre Review" over an NYSR critic is NYSR.
+          const labelOutletId = normalizeOutlet(outletRaw);
+          const outletId = roundupLabelOverride({ outletId: labelOutletId, criticName }) || labelOutletId;
 
           reviews.push({
             outletId,

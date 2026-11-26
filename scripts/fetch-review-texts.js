@@ -13,6 +13,7 @@ const path = require('path');
 const https = require('https');
 const http = require('http');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { expandBloggerDynamicViews } = require('./lib/blogger-dynamic-views');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
@@ -215,7 +216,11 @@ async function main() {
     process.stdout.write(`[${fetched + 1}/${Math.min(stubs.length, limit)}] ${shortPath}: `);
 
     try {
-      const html = await fetchPage(stub.url);
+      let html = await fetchPage(stub.url);
+      // BRO-8224: a Blogger "Dynamic Views" page has no post body in its HTML;
+      // read the same post from Blogger's feed API (BRO-8210 pattern).
+      const bdv = await expandBloggerDynamicViews(html, stub.url, fetchPage);
+      if (bdv.expanded) html = bdv.html;
       const text = extractArticleText(html, stub.url);
 
       if (text.length < 100) {
