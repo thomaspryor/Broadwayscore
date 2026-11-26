@@ -267828,5 +267828,51 @@
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-25T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-26T04:19:27.208Z",
+    "completedAt": "2026-11-26T04:23:41.990Z",
+    "totalReviews": 85294,
+    "processed": 12,
+    "skipped": 85270,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 148894,
+      "output": 5439,
+      "cacheRead": 76140,
+      "cacheWrite": 11329,
+      "total": 360594
+    },
+    "costUsd": 0.146437575,
+    "runId": "45754031917",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "yellow-face-2024",
+        "outletId": "aaartsalliance",
+        "error": "Review text too short or missing"
+      }
+    ],
+    "logKeepsSince": "2026-11-25T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-26T04:24:02.153Z",
+    "completedAt": "2026-11-26T04:27:32.559Z",
+    "totalReviews": 46,
+    "processed": 46,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 127605,
+      "output": 11192,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 138797
+    },
+    "costUsd": 0.11872035,
+    "runId": "45754031917",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-25T00:00:00.000Z"
   }
 ]
