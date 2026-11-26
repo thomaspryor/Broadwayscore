@@ -124,7 +124,8 @@ function extractProductionPageText(html, maxChars = 2500) {
   return out;
 }
 
-const alnum = (x) => String(x || '').toLowerCase().replace(/&amp;/g, 'and').replace(/[^a-z0-9]+/g, '');
+const { foldDiacritics } = require('./title-match');
+const alnum = (x) => foldDiacritics(String(x || '')).toLowerCase().replace(/&amp;/g, 'and').replace(/[^a-z0-9]+/g, '');
 
 /** True when the page's visible text or title names the show (title of 4+ letters/digits). */
 function pageNamesShow(html, show) {
