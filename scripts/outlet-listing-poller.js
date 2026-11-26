@@ -1246,12 +1246,15 @@ async function main() {
       }
       // pageConfirmAll outlets: feed matches go through the page check too.
       // Census items are matched on a slug or headline only, so every one is page-confirmed.
-      const matchedShows = (outletCfg.pageConfirmAll || viaCensus) ? [] : feedMatched;
+      // BRO-7402: so is a title match on a closed show. A title alone filed other productions to closed shows
+      // (a Dublin "Good Girls" onto Girls, a Bay Street To Kill a Mockingbird onto the Boston run).
+      const confirmAll = outletCfg.pageConfirmAll || viaCensus;
+      const matchedShows = confirmAll ? [] : feedMatched.filter(show => show.status !== 'closed');
 
       // BRO-6921: subtitled or short titles the headline alone cannot prove.
       const reviewOnlyFeed = fromFeed && !viaCensus && !!outletCfg.reviewsOnly;
       const candidates = [
-        ...((outletCfg.pageConfirmAll || viaCensus) ? feedMatched.map(show => ({ show, form: 'feed-match' })) : []),
+        ...feedMatched.filter(show => confirmAll || show.status === 'closed').map(show => ({ show, form: 'feed-match' })),
         ...findPageConfirmCandidates({ url, headline, publishDate, description }, showPool, { alreadyMatched: feedMatched, reviewOnlyFeed, titleLedReviews: fromFeed && !!outletCfg.titleLedReviews }),
       ].filter(c => censusOk(c.show))
         .filter(c => !(fromFeed && outletCfg.laneRules) || laneFeedAccepts(outletCfg, outletId, { url, headline, description }, c.show))

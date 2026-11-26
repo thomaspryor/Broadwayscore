@@ -72,4 +72,8 @@ test('outlet-listing-poller wires the daily feed pool and the closed-show check'
   assert.match(src, /const censusOk = \(show\) => closedOk\(show\) &&/);
   assert.match(src, /const closedOk = \(show\) => ow\.closedShowMatchOk\(/, 'guard applies in window mode too');
   assert.match(src, /rivalShows: rivalPool,/);
+  // A title match on a closed show is page-confirmed, never filed on the title alone (3 of 4 such matches on
+  // 2026-11-26's feeds were other productions: Dublin "Good Girls" -> Girls, Bay Street To Kill a Mockingbird).
+  assert.match(src, /const matchedShows = confirmAll \? \[\] : feedMatched\.filter\(show => show\.status !== 'closed'\);/);
+  assert.match(src, /\.\.\.feedMatched\.filter\(show => confirmAll \|\| show\.status === 'closed'\)\.map\(show => \(\{ show, form: 'feed-match' \}\)\)/);
 });
