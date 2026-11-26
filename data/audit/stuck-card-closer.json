@@ -1,26 +1,20 @@
 {
-  "generatedAt": "2026-11-26T12:03:05.243Z",
+  "generatedAt": "2026-11-26T18:38:30.239Z",
   "apply": true,
-  "auditGeneratedAt": "2026-11-26T11:52:30.355Z",
+  "auditGeneratedAt": "2026-11-26T18:28:18.187Z",
   "counts": {
     "bounce:recheck-after-pending": 1,
-    "bounced": 2,
     "bounce:recent-activity": 1,
-    "bounce:no-auto-worker": 3,
-    "no-commit-naming-card-touched-test": 2,
-    "recent-activity": 3,
-    "closed": 4,
+    "bounce:no-auto-worker": 4,
+    "recent-activity": 2,
+    "closed": 1,
     "gate-refused": 3,
+    "no-commit-naming-card-touched-test": 1,
     "refusal-breaker": 1,
-    "sweep:eligible": 9,
+    "sweep:eligible": 6,
+    "sweep:closed": 1,
     "sweep:no-evidence": 2,
-    "sweep:recheck-after-pending": 3,
-    "sweep:bounced": 2,
-    "sweep:closed": 2,
-    "backlog:skip:not-a-single-test-file": 5,
-    "backlog:skip:test-shared-with-another-card": 2,
-    "backlog:state-Paused": 1,
-    "backlog:recheck-stamped": 1
+    "sweep:recheck-after-pending": 3
   },
   "rows": [
     {
@@ -30,20 +24,10 @@
       "reason": "recheck-after-pending"
     },
     {
-      "id": "BRO-8240",
-      "state": "In Review",
-      "action": "bounced"
-    },
-    {
       "id": "BRO-8160",
       "state": "In Review",
       "action": "leave",
       "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-8133",
-      "state": "In Review",
-      "action": "bounced"
     },
     {
       "id": "BRO-7959",
@@ -64,10 +48,10 @@
       "reason": "no-auto-worker"
     },
     {
-      "id": "BRO-6625",
+      "id": "BRO-7929",
       "state": "In Review",
       "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
+      "reason": "no-auto-worker"
     },
     {
       "id": "BRO-8343",
@@ -78,20 +62,8 @@
     {
       "id": "BRO-8310",
       "state": "In Review",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-8300",
-      "state": "In Review",
       "action": "closed",
-      "sha": "4b1a0d26baacc1b663f674d8f130dc0cb4c4dc1e"
-    },
-    {
-      "id": "BRO-8282",
-      "state": "In Review",
-      "action": "closed",
-      "sha": "3c5f9e6aa3d7e526a5c0795f6dbfc15d7f727e11"
+      "sha": "2333959e25e9270ba492fe38005453a68bb732e8"
     },
     {
       "id": "BRO-8277",
@@ -106,12 +78,6 @@
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-8193",
-      "state": "In Review",
-      "action": "closed",
-      "sha": "16b8488f88e4cdae011e1c76cd3ec3d739130db0"
-    },
-    {
       "id": "BRO-8100",
       "state": "In Review",
       "action": "gate-refused",
@@ -124,16 +90,15 @@
       "reason": "no-commit-naming-card-touched-test"
     },
     {
-      "id": "BRO-8091",
-      "state": "In Review",
-      "action": "closed",
-      "sha": "26c40a7b5ede4250a6ff6ee5f2ee8f0261cbb984"
-    },
-    {
       "id": "BRO-8089",
       "state": "In Review",
       "action": "gate-refused",
       "reason": " To move it anyway, pass --force \"<reason ≥10 chars>\", or set LINEAR_DONE_GATE_DISABLED=1 for automation that must not block."
+    },
+    {
+      "id": "BRO-6625",
+      "state": "In Review",
+      "action": "sweep-closed"
     },
     {
       "id": "BRO-6452",
@@ -148,16 +113,6 @@
       "reason": "recheck-after-pending"
     },
     {
-      "id": "BRO-7328",
-      "state": "In Review",
-      "action": "sweep-bounced"
-    },
-    {
-      "id": "BRO-7807",
-      "state": "In Review",
-      "action": "sweep-closed"
-    },
-    {
       "id": "BRO-7102",
       "state": "In Review",
       "action": "sweep-leave",
@@ -170,33 +125,11 @@
       "reason": "recheck-after-pending"
     },
     {
-      "id": "BRO-7568",
-      "state": "In Review",
-      "action": "sweep-closed"
-    },
-    {
-      "id": "BRO-7922",
-      "state": "In Review",
-      "action": "sweep-bounced"
-    },
-    {
       "id": "BRO-8117",
       "state": "In Review",
       "action": "sweep-leave",
       "reason": "no-evidence"
-    },
-    {
-      "id": "BRO-8323",
-      "state": "Paused",
-      "action": "backlog-leave",
-      "reason": "state-Paused"
-    },
-    {
-      "id": "BRO-8276",
-      "state": "Todo",
-      "action": "backlog-leave",
-      "reason": "recheck-stamped"
     }
   ],
-  "backlogSweepGeneratedAt": "2026-11-26T11:52:17.592Z"
+  "backlogSweepGeneratedAt": "2026-11-26T18:28:11.190Z"
 }
