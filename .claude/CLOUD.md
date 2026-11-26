@@ -142,7 +142,7 @@ Do what you can from cloud first. Work a Mac session can do alone: `--dispatch -
 
 "Queued for the worker" is never a finish line (owner, 2026-10-11). Anything important (P0/P1, owner bugs, fixes you found) gets its own session now:
 
-**Before calling `create_session`, read `docs/cloud-worker-session-runbook.md` and follow its steps:** the Codex route (`session-model.js` `route: codex` means dispatch `codex-runner.yml` instead), card first (filed `--child`), model from `node scripts/session-model.js`, the exact `source_url` and the lines the prompt must carry (`BUDGET:`, `REPORT-BACK:`), one line to the owner, the `child-idle-watch.js` watch when you need its result, and when SAFE TO ARCHIVE is fine.
+**Before calling `create_session`, read `docs/cloud-worker-session-runbook.md` and follow its six steps:** card first (filed `--child`), model from `node scripts/session-model.js`, the exact `source_url` and the lines the prompt must carry (`BUDGET:`, `REPORT-BACK:`), one line to the owner, the `child-idle-watch.js` watch when you need its result, and when SAFE TO ARCHIVE is fine.
 
 **Owner questions (BRO-5385, BRO-6539):** before asking, run `node scripts/lib/owner-decision-recall.js "<topic>"` (it stands) and `decision-restate.js BRO-N` (answered: act, never restate). A recommended option with a safe default and no money, irreversible step, outbound email or public claim is decided and recorded (`docs/owner-escalation.md`). A child session sends owner questions to its parent (`send_message` `@parent`), never ends with a question list. Work needing a new session: a child asks its parent to start it, or files a START-NOW card (below).
 
