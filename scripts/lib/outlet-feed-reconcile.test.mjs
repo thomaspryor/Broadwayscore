@@ -13,6 +13,9 @@ const fish = {
 };
 const old = { id: 'old-show', title: 'Old Show', status: 'open', openingDate: '2026-08-01' };
 const soon = { id: 'soon-off-broadway-2026', title: 'Soon', venue: "St. Luke's Theatre", status: 'open', openingDate: '2026-10-05', cast: [], creativeTeam: [] };
+// Fixture registry, not live data/shows.json (the matcher's rival-title index reads every show title).
+process.on('exit', require('./shows-json-fixture.js').useShowsFixture([fish, old, soon]));
+require('./show-names').setPressNameShows([fish, old, soon]);
 const active = [fish, old, soon];
 const items = [
   { outletId: 'theater-pizzazz', url: 'https://theaterpizzazz.com/fish-review/?utm=x', headline: 'Review: Fish', publishDate: '2026-10-12', description: 'Melis Aker’s new play at WP Theater.' },
