@@ -26,28 +26,7 @@ const MIXED = ['uneven', 'mixed', 'inconsistent', 'flawed but', 'despite', 'howe
 const NEGATIVE = ['disappointing', 'tedious', 'dull', 'boring', 'lackluster', 'forgettable', 'mediocre', 'weak', 'fails', 'misses'];
 const NEGATIVE_STRONG = ['awful', 'terrible', 'disaster', 'waste', 'avoid', 'painful', 'unbearable', 'worst'];
 
-function extractLetterGrade(text) {
-  if (!text) return null;
-
-  // Check last 10 characters for letter grade
-  const ending = text.trim().slice(-10);
-
-  // Match patterns like "B", "B+", "A-", etc. at end
-  const gradeMatch = ending.match(/\s([A-D][+-]?|F)\s*$/i);
-  if (gradeMatch) {
-    const grade = gradeMatch[1].toUpperCase();
-    return { grade, score: LETTER_TO_SCORE[grade] };
-  }
-
-  // Also check for "Grade: B" or "Rating: B+" patterns
-  const explicitMatch = text.match(/(?:grade|rating|score)[:\s]+([A-D][+-]?|F)\b/i);
-  if (explicitMatch) {
-    const grade = explicitMatch[1].toUpperCase();
-    return { grade, score: LETTER_TO_SCORE[grade] };
-  }
-
-  return null;
-}
+const { extractEmbeddedLetterGrade: extractLetterGrade } = require('./lib/embedded-letter-grade');
 
 function scoreBySentiment(text) {
   if (!text || text.length < 50) return null;
