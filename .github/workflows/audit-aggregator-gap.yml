@@ -86,29 +86,33 @@ jobs:
     # (OVERDUE held at 3.5-8% of last-year shows at ~22 shows/run). Observed max
     # job 57 min at 18, so ~63 at 24 plus the same 7-min cushion.
     timeout-minutes: 70
-    if: ${{ vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        if: vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true'
         with:
           # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
           # of main for this 70-min job's final ledger commit; depth-1 aborted when churn outran it.
           fetch-depth: 300
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        if: vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true'
         with:
           node-version: '22'
           cache: 'npm'
 
       - run: npm ci
+        if: vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true'
 
       # The audit's scraper fallback chain (Bright Data → ScrapingBee →
       # Playwright) reaches Playwright for complex sites (e.g. BroadwayWorld).
       # Without browsers installed, Playwright throws "Executable doesn't exist"
       # and the article fetch fails. Shared cached action per .github/workflows/CLAUDE.md.
       - name: Setup Playwright
+        if: vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true'
         uses: ./.github/actions/setup-playwright
 
       - name: Checkout core data
+        if: vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true'
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -121,6 +125,7 @@ jobs:
       # workspace — wiping .github/actions/ and failing every post-step
       # (the recurring "Post Setup Playwright: Can't find action.yml", 2026-06-20).
       - name: Checkout review-texts (private repo)
+        if: vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true'
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -130,6 +135,7 @@ jobs:
       # written by gather-reviews/opening-night-poller. Without this checkout the
       # source is silently absent (passive — audit still runs, just without TS).
       - name: Checkout aggregator archive (private repo)
+        if: vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true'
         uses: ./.github/actions/checkout-aggregator-archive
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -137,10 +143,12 @@ jobs:
       # Record the review-texts HEAD before the audit ingests anything, so the
       # rebuild trigger below fires only when --ingest-missing actually added files.
       - name: Record review-texts SHA (pre-ingest)
+        if: vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true'
         id: rt_before
         run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Run gap audit
+        if: vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true'
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
@@ -290,7 +298,7 @@ jobs:
       - name: Push ingested review-texts now (fast path)
         id: fast_push
         # Kill switch: repo variable GAP_FAST_PUBLISH_DISABLED=true
-        if: ${{ !cancelled() && vars.GAP_FAST_PUBLISH_DISABLED != 'true' }}
+        if: ${{ !cancelled() && vars.GAP_FAST_PUBLISH_DISABLED != 'true' && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         # lint-allow-swallow: speed-up only; the end-of-job push + rebuild trigger still publish everything
         continue-on-error: true
         uses: ./.github/actions/push-review-texts
@@ -300,7 +308,7 @@ jobs:
 
       - name: Fast-publish ingested reviews
         id: fast_publish
-        if: ${{ !cancelled() && steps.fast_push.outputs.pushed == 'true' }}
+        if: ${{ !cancelled() && steps.fast_push.outputs.pushed == 'true' && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         # lint-allow-swallow: speed-up only; the end-of-job rebuild trigger still publishes everything
         continue-on-error: true
         env:
@@ -310,7 +318,7 @@ jobs:
         run: node scripts/lib/gap-ingest-fast-path.js
 
       - name: Stateless coverage-candidate report (warn-only)
-        if: success() || failure()
+        if: ${{ (success() || failure()) && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         continue-on-error: true
         run: node scripts/report-stateless-candidates.js
 
@@ -326,7 +334,7 @@ jobs:
       # Kill switch: set repo variable T1_SILENT_GAP_DISABLED=true to stop the
       # sweep (spam / credit burn / bad writes) without shipping a commit.
       - name: T1/T2 silent-gap sweep
-        if: ${{ always() && vars.T1_SILENT_GAP_DISABLED != 'true' }}
+        if: ${{ always() && vars.T1_SILENT_GAP_DISABLED != 'true' && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
@@ -353,7 +361,7 @@ jobs:
       # is committed below so the throttle survives across runs.
       # Kill switch: repo variable OUTLET_GROUND_TRUTH_DISABLED=true.
       - name: Outlet ground-truth audit
-        if: ${{ always() && vars.OUTLET_GROUND_TRUTH_DISABLED != 'true' }}
+        if: ${{ always() && vars.OUTLET_GROUND_TRUTH_DISABLED != 'true' && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         # lint-allow-swallow: an outlet API outage must not fail the hourly gap job before its audit/review-texts commits; the report's `missing`/`sources.errors` and the digest alerts carry the signal
         continue-on-error: true
         env:
@@ -387,7 +395,7 @@ jobs:
       # this step's own data/audit/uncollected-live-reviews.json.
       # Kill switch: repo variable UNCOLLECTED_STRAND_AUDIT_DISABLED=true.
       - name: Uncollected-review strand guard
-        if: ${{ always() && vars.UNCOLLECTED_STRAND_AUDIT_DISABLED != 'true' }}
+        if: ${{ always() && vars.UNCOLLECTED_STRAND_AUDIT_DISABLED != 'true' && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         continue-on-error: true
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -401,7 +409,7 @@ jobs:
       # commit-on-change guard below mean an unchanged corpus produces no commit.
       # Runs after --recover so newly-ingested reviews are reflected in this tick.
       - name: Rebuild T1 coverage ledger
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         # BRO-3717: same script/binary as the --scoreboard/--digest steps below,
         # which need LINEAR_API_KEY for their routeAlert() digest->auto escalation
         # path (see that comment on the "Run gap audit" step's env: block above).
@@ -418,7 +426,7 @@ jobs:
       # old 't1-coverage:scoreboard' ledger condition, persisted by the alert-ledger
       # commit step below.
       - name: T1 coverage scoreboard
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         # The script's routeAlert import still needs the key (alert-ledger-commit-check).
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
@@ -433,7 +441,7 @@ jobs:
       # up as a visible gap instead of a false green. Advisory: no --fail-on-defect
       # here, because normal deploy lag (5-10 min) would flap the job red.
       - name: Deployed coverage diff (prod JSON)
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -452,7 +460,7 @@ jobs:
       # does NOT inherit — this step needs its own RESEND_API_KEY/OWNER_EMAIL or
       # sendAlert silently resolves undelivered.
       - name: T1 coverage digest (ACTION alerts)
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -466,7 +474,7 @@ jobs:
       # shadow log the sweep just appended to. Auto-clear stays OFF until this
       # verdict is 'clean' (≥3 live candidates over ≥48h, 0 human disagreements).
       - name: Refresh auto-clear shadow report
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         run: node scripts/shadow-autoclear-report.js
 
       # Coverage Verdict digest line (S3, task #905): reads the censusVerdict
@@ -482,17 +490,17 @@ jobs:
       # digest producer below reads its JSON. Capped so a hung feed cannot eat the
       # commit/push headroom; new gates land advisory first (CLAUDE.md §19).
       - name: Outlet feed vs corpus reconcile (advisory)
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         continue-on-error: true  # lint-allow-swallow: advisory per CLAUDE.md §19; the script exits 0 unless --strict and a missing report just omits the digest rows
         timeout-minutes: 5
         run: node scripts/outlet-feed-reconcile.js
 
       - name: Coverage digest snapshot
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         run: node scripts/produce-coverage-digest-snapshot.js
 
       - name: Commit audit JSON (public repo)
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # PUSH_DEADLINE_SEC override (task #1791, same class as update-show-status.yml's
@@ -592,14 +600,14 @@ jobs:
       # guard, protected-field restore). Replaces the old hand-rolled push block
       # that corrupted the workspace when data/review-texts wasn't a real checkout.
       - name: Push ingested review-texts
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "ingest: audit-aggregator-gap auto-ingested review-texts"
 
       - name: Trigger rebuild if review-texts changed
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -612,7 +620,7 @@ jobs:
           fi
 
       - name: Notify on failure
-        if: failure()
+        if: ${{ failure() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         uses: ./.github/actions/notify-failure
         with:
           title: 'Aggregator Review Gap Audit Failed'
@@ -620,7 +628,7 @@ jobs:
 
       # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
       - name: Commit LLM usage ledger
-        if: always()
+        if: ${{ always() && vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
         continue-on-error: true
         uses: ./.github/actions/commit-scraper-spend-ledger
         with:

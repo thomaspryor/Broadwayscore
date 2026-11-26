@@ -35,10 +35,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     # Kill switch: repo variable PUSH_RESCUE_REPLAY_DISABLED=true (branches are kept, nothing is deleted).
-    if: vars.PUSH_RESCUE_REPLAY_DISABLED != 'true'
 
     steps:
       - name: Any rescue branches?
+        if: vars.PUSH_RESCUE_REPLAY_DISABLED != 'true'
         id: probe
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -51,23 +51,23 @@ jobs:
           echo "count=$N" >> "$GITHUB_OUTPUT"
 
       - name: Checkout repository
-        if: steps.probe.outputs.count != '0'
+        if: ${{ steps.probe.outputs.count != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
 
       - name: Checkout review-texts
-        if: steps.probe.outputs.count != '0'
+        if: ${{ steps.probe.outputs.count != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - uses: ./.github/actions/setup-node
-        if: steps.probe.outputs.count != '0'
+        if: ${{ steps.probe.outputs.count != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
 
       - name: Restore rescued review files
         id: replay
-        if: steps.probe.outputs.count != '0'
+        if: ${{ steps.probe.outputs.count != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
         working-directory: data/review-texts
         env:
           PUSH_RESCUE_MAIN_WINS: ${{ inputs.main_wins }}
@@ -77,7 +77,7 @@ jobs:
 
       - name: Push to private repo
         id: push
-        if: steps.probe.outputs.count != '0' && steps.replay.outputs.restored != '0'
+        if: ${{ steps.probe.outputs.count != '0' && steps.replay.outputs.restored != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
         uses: ./.github/actions/push-review-texts
         env:
           # A failed replay push keeps the existing branches; never mint a new one per run.
@@ -88,7 +88,7 @@ jobs:
 
       - name: Delete replayed rescue branches
         id: prune
-        if: steps.probe.outputs.count != '0' && steps.replay.outcome == 'success' && steps.push.outcome != 'failure'
+        if: ${{ steps.probe.outputs.count != '0' && steps.replay.outcome == 'success' && steps.push.outcome != 'failure' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
         working-directory: data/review-texts
         run: node ../../scripts/lib/push-rescue.js prune --manifest="$RUNNER_TEMP/push-rescue-manifest.json"
 
@@ -98,7 +98,7 @@ jobs:
       # is not used: it only delivers for severity=critical on page-worthy workflows.
       - name: Report branches waiting for a person
         # lint-allow-swallow: advisory owner card; the replay result itself is checked by the prune and 'Fail if a rescue branch could not be replayed' steps
-        if: steps.prune.outputs.waiting != '' && steps.prune.outputs.waiting != '0'
+        if: ${{ steps.prune.outputs.waiting != '' && steps.prune.outputs.waiting != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
         continue-on-error: true
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
@@ -120,13 +120,13 @@ jobs:
             || echo "::warning::could not file the waiting-branches card (see the error above)"
 
       - name: Fail if a rescue branch could not be replayed
-        if: steps.probe.outputs.count != '0' && steps.replay.outputs.failed != '' && steps.replay.outputs.failed != '0'
+        if: ${{ steps.probe.outputs.count != '0' && steps.replay.outputs.failed != '' && steps.replay.outputs.failed != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
         run: |
           echo "::error::${{ steps.replay.outputs.failed }} rescue branch(es) could not be replayed (see the replay step); they are kept for the next run."
           exit 1
 
       - name: Notify on failure
-        if: failure()
+        if: ${{ failure() && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
         uses: ./.github/actions/notify-failure
         with:
           title: 'Replay Push Rescue Failed'

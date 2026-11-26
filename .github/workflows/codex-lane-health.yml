@@ -41,7 +41,6 @@ concurrency:
 jobs:
   health:
     name: Codex lane health (outside signals)
-    if: ${{ vars.CODEX_LANE_ALARM_DISABLED != 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -49,6 +48,7 @@ jobs:
       # fetch-depth: 0 (this repo's data/ history is huge). The alarm only
       # reads commit metadata (git log) and runs scripts/, so skip blobs.
       - name: Checkout (full commit history, no blobs)
+        if: vars.CODEX_LANE_ALARM_DISABLED != 'true'
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
@@ -60,11 +60,13 @@ jobs:
             data/audit
 
       - name: Setup Node.js
+        if: vars.CODEX_LANE_ALARM_DISABLED != 'true'
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: '22'
 
       - name: Evaluate lane health
+        if: vars.CODEX_LANE_ALARM_DISABLED != 'true'
         id: health
         env:
           GH_TOKEN: ${{ github.token }}
@@ -89,7 +91,7 @@ jobs:
           esac
 
       - name: Upload shadow record
-        if: always()
+        if: ${{ always() && vars.CODEX_LANE_ALARM_DISABLED != 'true' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: codex-lane-health
@@ -103,7 +105,7 @@ jobs:
 
       # Alert-router state only moves in alert mode; the cooldown ledger must survive across runs.
       - name: Persist alert-router state
-        if: always() && (vars.CODEX_LANE_ALARM_LIVE == 'true' || github.event.inputs.alert == 'true')
+        if: ${{ (always() && (vars.CODEX_LANE_ALARM_LIVE == 'true' || github.event.inputs.alert == 'true')) && vars.CODEX_LANE_ALARM_DISABLED != 'true' }}
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
@@ -124,7 +126,7 @@ jobs:
       # promote disabled (state file decides); relocks and alerts only fire in live mode.
       # Kill switch: repo variable CODEX_LADDER_DISABLED=true (or killSwitch in the owner file).
       - name: Evaluate Codex trust ladder
-        if: always() && vars.CODEX_LADDER_DISABLED != 'true'
+        if: ${{ always() && vars.CODEX_LADDER_DISABLED != 'true' && vars.CODEX_LANE_ALARM_DISABLED != 'true' }}
         env:
           GH_TOKEN: ${{ github.token }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
@@ -144,7 +146,7 @@ jobs:
           esac
 
       - name: Persist trust ladder state
-        if: always() && vars.CODEX_LADDER_DISABLED != 'true'
+        if: ${{ always() && vars.CODEX_LADDER_DISABLED != 'true' && vars.CODEX_LANE_ALARM_DISABLED != 'true' }}
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
@@ -162,7 +164,7 @@ jobs:
           fi
 
       - name: Notify on failure
-        if: failure()
+        if: ${{ failure() && vars.CODEX_LANE_ALARM_DISABLED != 'true' }}
         uses: ./.github/actions/notify-failure
         with:
           title: 'Codex Lane Health could not read its sources or file a card'

@@ -24,8 +24,8 @@ name: Audit Dependencies
 # 2 and 3 fail the job; notify-failure with severity 'warning' is a no-op by
 # design, so the job's own health is watched by check-cron-health.yml's
 # CRITICAL_CRONS entry (36h band, keyed on the last SUCCESSFUL run): a daily
-# red run, a disabled workflow (`vars.DEPENDENCY_AUDIT_DISABLED=true` → green
-# "skipped"), or a dead cron all trip staleness → digest row.
+# red run, a disabled workflow (`vars.DEPENDENCY_AUDIT_DISABLED=true` skips every step, BRO-8235, so the run stays green and the audit no longer counts as stale on purpose;
+# a daily red run or a dead cron still trips staleness → digest row.
 #
 # routeAlert()'s cooldown ledger (data/audit/alert-ledger.json) and attempt
 # log are written to the runner's checkout; "Persist alert-router state"
@@ -73,7 +73,6 @@ concurrency:
 jobs:
   audit:
     name: npm audit (critical only, expiring allowlist) → cards
-    if: ${{ vars.DEPENDENCY_AUDIT_DISABLED != 'true' }}
     runs-on: ubuntu-latest
     # The audit itself is ~45s (npm audit against the registry); checkout
     # variance on this runner pool has hit 5 min (lint-workflows precedent),
@@ -83,16 +82,19 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout
+        if: vars.DEPENDENCY_AUDIT_DISABLED != 'true'
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
 
       - name: Setup Node.js
+        if: vars.DEPENDENCY_AUDIT_DISABLED != 'true'
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: '22'
 
       - name: Run dependency audit
+        if: vars.DEPENDENCY_AUDIT_DISABLED != 'true'
         id: audit
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
@@ -151,7 +153,7 @@ jobs:
       # + continue-on-error: a failed persist degrades to the router's
       # Linear-search dedupe for one day; it must never fail the audit itself.
       - name: Persist alert-router state
-        if: always()
+        if: ${{ always() && vars.DEPENDENCY_AUDIT_DISABLED != 'true' }}
         continue-on-error: true
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
@@ -169,7 +171,7 @@ jobs:
           fi
 
       - name: Notify on failure
-        if: failure()
+        if: ${{ failure() && vars.DEPENDENCY_AUDIT_DISABLED != 'true' }}
         uses: ./.github/actions/notify-failure
         with:
           title: 'Dependency Audit could not run or could not file its cards'
