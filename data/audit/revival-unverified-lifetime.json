@@ -1,26 +1,21 @@
 {
-  "updatedAt": "2026-11-26T12:10:10.910Z",
-  "scanned": 4975,
-  "showsWithViolations": 5,
-  "totalViolations": 5,
+  "updatedAt": "2026-11-26T18:43:51.182Z",
+  "scanned": 4976,
+  "showsWithViolations": 4,
+  "totalViolations": 4,
   "newSinceLastRun": 0,
   "newViolationKeys": [],
-  "actionableViolations": 1,
+  "actionableViolations": 0,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
-  "openActionableCount": 1,
-  "actionableOpen": {
-    "the-truth-a-comedy-by-florian-zeller-west-end-2027": "2026-11-23T11:55:08.314Z"
-  },
-  "actionableKeys": [
-    "the-truth-a-comedy-by-florian-zeller-west-end-2027"
-  ],
+  "openActionableCount": 0,
+  "actionableOpen": {},
+  "actionableKeys": [],
   "violationKeys": [
     "cloud-9-west-end-2026",
     "nine-night-off-west-end-2026",
     "downstate-2026",
-    "the-ugly-one-off-west-end-2026",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2027"
+    "the-ugly-one-off-west-end-2026"
   ],
   "hits": [
     {
@@ -68,18 +63,6 @@
         {
           "titleMatch": false,
           "mentionCount": 3
-        }
-      ]
-    },
-    {
-      "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2027",
-      "title": "The Truth",
-      "openingDate": null,
-      "message": "the-truth-a-comedy-by-florian-zeller-west-end-2027 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {
-          "titleMatch": true,
-          "mentionCount": 0
         }
       ]
     }
