@@ -1437,8 +1437,8 @@
   },
   {
     "conditionKey": "land:land/job/linear-BRO-7402-mwxg0uxh",
-    "title": "Landing blocked: toplevel-regression red on land/job/linear-BRO-7402-mwxg0uxh",
-    "description": "land.yml did not land land/job/linear-BRO-7402-mwxg0uxh: the toplevel-regression gate went red at 31ce9cb12f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45811224084",
+    "title": "Landing blocked: lint-workflows red on land/job/linear-BRO-7402-mwxg0uxh",
+    "description": "land.yml did not land land/job/linear-BRO-7402-mwxg0uxh: the lint-workflows gate went red at ebd1f09eb2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45818662427",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -1453,17 +1453,17 @@
       },
       {
         "name": "gate",
-        "value": "toplevel-regression"
+        "value": "lint-workflows"
       },
       {
         "name": "tip",
-        "value": "31ce9cb12f5a14d2ea31ec64d67202b1d7a61b66"
+        "value": "ebd1f09eb26dc26f9dff11db2ade9defb4263be5"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45811224084"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45818662427"
       }
     ],
-    "queuedAt": "2026-11-26T11:50:41.982Z"
+    "queuedAt": "2026-11-26T12:39:12.952Z"
   }
 ]
