@@ -1,19 +1,127 @@
 {
-  "updatedAt": "2026-11-26T13:47:32.998Z",
-  "processed": 3,
-  "failed": 2,
-  "successRate": "60.0%",
+  "updatedAt": "2026-11-26T13:55:12.316Z",
+  "processed": 324,
+  "failed": 167,
+  "successRate": "66.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 204,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 32,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 0
+    "brightdata": 17,
+    "archiveToday": 0,
+    "archive": 82
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 12,
+  "recentActivity": [
+    {
+      "t": "2026-11-26T11:11:38.248Z",
+      "event": "bb-session",
+      "session": "5e65be05",
+      "url": "http://www.nytimes.com/2014/04/04/theater/raisin-in-the-sun-brings-denzel-washin"
+    },
+    {
+      "t": "2026-11-26T11:11:38.749Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-26T11:18:51.805Z",
+      "event": "bb-session",
+      "session": "030d6b10",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656222"
+    },
+    {
+      "t": "2026-11-26T11:18:52.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-26T12:21:30.936Z",
+      "event": "bb-session",
+      "session": "7b727b43",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-26T12:21:31.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-26T12:22:25.984Z",
+      "event": "bb-session",
+      "session": "3ed4111a",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-26T12:22:47.156Z",
+      "event": "bb-session",
+      "session": "c85c6c65",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-26T12:23:30.819Z",
+      "event": "bb-session",
+      "session": "1672b414",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-26T12:28:55.334Z",
+      "event": "bb-session",
+      "session": "af8fe6d3",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-26T12:28:55.814Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-26T12:42:26.720Z",
+      "event": "bb-session",
+      "session": "724f992a",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-26T12:42:27.210Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-26T12:42:43.745Z",
+      "event": "bb-session",
+      "session": "d3c4bc3c",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-26T12:42:44.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-26T13:31:24.629Z",
+      "event": "bb-session",
+      "session": "64d2536c",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-11-26T13:44:53.213Z",
+      "event": "bb-session",
+      "session": "16d630d6",
+      "url": "https://deadline.com/2026/02/the-only-living-pickpocket-in-new-york-sony-picture"
+    },
+    {
+      "t": "2026-11-26T13:51:40.100Z",
+      "event": "bb-session",
+      "session": "c76dd8fb",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-26T13:51:40.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
