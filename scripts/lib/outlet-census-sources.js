@@ -220,7 +220,8 @@ const LONDON_SOURCES = {
     ] },
   // Time Out keeps a page per production under /london/theatre/; reviews carry "-review" only
   // from about 2016, so every page is listed and the slug title decides the match.
-  'timeout-london': { kind: 'sitemap', tier: 1, url: 'https://www.timeout.com/london/sitemap.xml.gz', urlFilter: /timeout\.com\/london\/theatre\/[^/]+$/, headlineFromSlug: true },
+  // Some press-night reviews are filed as news (BRO-8348: the-lives-of-others, /london/news/...-review-...-110326).
+  'timeout-london': { kind: 'sitemap', tier: 1, url: 'https://www.timeout.com/london/sitemap.xml.gz', urlFilter: /timeout\.com\/london\/(?:theatre\/[^/]+|news\/[^/]*-review-[^/]+)$/, headlineFromSlug: true },
   artsdesk: { kind: 'sitemap', tier: 2, url: 'https://theartsdesk.com/sitemap.xml', urlFilter: /theartsdesk\.com\/theatre\/[^/]+$/, headlineFromSlug: true },
   'london-theatre': { kind: 'sitemap', tier: 2, url: 'https://www.londontheatre.co.uk/www.londontheatre.co.uk-sitemap.xml', urlFilter: /londontheatre\.co\.uk\/reviews\/[^/]+$/, headlineFromSlug: true, sourceSaysReview: true },
   'london-box-office': { kind: 'sitemap', tier: 2, url: 'https://www.londonboxoffice.co.uk/news-sitemap.xml', urlFilter: /londonboxoffice\.co\.uk\/news\/post\/[^/]*review[^/]*$/, headlineFromSlug: true, sourceSaysReview: true },
