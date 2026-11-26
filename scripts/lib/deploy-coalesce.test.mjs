@@ -139,3 +139,10 @@ test('BRO-8236: the gate script decides before cancelling, and a stopping run ca
   assert.match(g.slice(verdictAt, cancelAt), /if \(verdict\.stop\) return;/);
   assert.match(g, /redundant=\$\{verdict\.stop && !dryRun\}/, 'dry run never stops a run');
 });
+
+test('BRO-8236: baseline url compares by host, so a https:// or trailing-slash baseline is still excluded', () => {
+  const deployments = [dep(BASE, T0 + 1000)];
+  for (const baselineUrl of [`https://${BASE}`, `${BASE}/`, BASE.toUpperCase()]) {
+    assert.equal(redundantRoutineDeploy(routine({ baselineUrl, deployments })).stop, false, baselineUrl);
+  }
+});

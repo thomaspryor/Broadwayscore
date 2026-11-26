@@ -674,7 +674,7 @@ jobs:
             exit 0
           fi
           echo "::notice::[redundant] another deploy overtook this routine run; follow-up dispatched, cancelling (no deploy from this run)"
-          gh run cancel "$GITHUB_RUN_ID" || { echo "::warning::[redundant] self-cancel failed, deploying"; exit 0; }
+          gh run cancel "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY" || { echo "::warning::[redundant] self-cancel failed, deploying"; exit 0; }
           # The cancel lands within seconds; block so Deploy to Production never starts.
           sleep 600
           exit 1

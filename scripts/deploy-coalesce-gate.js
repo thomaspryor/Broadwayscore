@@ -45,7 +45,8 @@ async function main() {
       runs.push(...api(`repos/${repo}/actions/workflows/vercel-deploy.yml/runs?status=${status}&per_page=50`).workflow_runs);
     }
     // Pre-warm runs are never cancelled (decide() skips them) but can be uploading, so their jobs are read too.
-    const older = runs.filter((r) => r.id < selfRunId).slice(0, MAX_JOB_LOOKUPS);
+    // in_progress first: the uploading check needs those even when a burst queues 40+ runs.
+    const older = runs.filter((r) => r.id < selfRunId).sort((a, b) => (a.status === 'in_progress' ? 0 : 1) - (b.status === 'in_progress' ? 0 : 1)).slice(0, MAX_JOB_LOOKUPS);
     for (const r of older) jobsByRun[r.id] = api(`repos/${repo}/actions/runs/${r.id}/jobs?per_page=30`).jobs;
     coalesce = decide({ selfRunId, selfBranch: process.env.GITHUB_REF_NAME, runs, jobsByRun });
     console.log(`[coalesce] self=${selfRunId} cancel=[${coalesce.cancel}] kept=${JSON.stringify(coalesce.kept)}`);

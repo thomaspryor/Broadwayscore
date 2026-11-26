@@ -76,6 +76,9 @@ const IN_FLIGHT_MAX_AGE_MS = 20 * 60 * 1000;
 // baseline created time is rebuilt from a whole-second ageSec; the baseline itself is excluded by url.
 const CREATED_SLACK_MS = 5000;
 
+/** Pure: bare lower-case host of a deployment url ('https://x.vercel.app/' -> 'x.vercel.app'). */
+const hostOf = (u) => String(u || '').trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+
 /** Pure: id of an older main run whose "Deploy to Production" step is running, else null. */
 function olderRunUploading({ selfRunId, runs, jobsByRun }) {
   for (const r of runs || []) {
@@ -98,9 +101,10 @@ function redundantRoutineDeploy({ urgent, reason, codeChanged, selfRunId, runs, 
   if (!ROUTINE_REDUNDANT_REASONS.includes(reason)) return { stop: false, why: `reason=${reason || 'unknown'}` };
   if (String(codeChanged) !== 'false') return { stop: false, why: `code-changed=${codeChanged === undefined || codeChanged === '' ? 'unknown' : codeChanged}` };
   const since = Number(baselineCreatedMs);
-  if (Array.isArray(deployments) && baselineUrl && Number.isFinite(since) && since > 0) {
+  const base = hostOf(baselineUrl);
+  if (Array.isArray(deployments) && base && Number.isFinite(since) && since > 0) {
     const newer = deployments.find((d) => {
-      if (!d || !d.url || d.url === baselineUrl || !(Number(d.created) > since - CREATED_SLACK_MS)) return false;
+      if (!d || !hostOf(d.url) || hostOf(d.url) === base || !(Number(d.created) > since - CREATED_SLACK_MS)) return false;
       const state = String(d.state || d.readyState || '');
       if (state === 'READY') return true;
       return IN_FLIGHT_STATES.has(state) && nowMs - Number(d.created) <= IN_FLIGHT_MAX_AGE_MS;
