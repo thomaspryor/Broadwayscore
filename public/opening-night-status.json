@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T15:19:02.978Z",
+  "generatedAt": "2026-11-26T16:44:15.194Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -425,17 +425,17 @@
       "status": "open",
       "slug": "a-christmas-carol-west-end",
       "thumbnail": "/images/shows/a-christmas-carol-west-end-2026/thumbnail.webp",
-      "siteScore": 78.12,
+      "siteScore": 78.02,
       "liveScore": 78,
-      "scoreDrift": -0.12000000000000455,
+      "scoreDrift": -0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
+      "total": 16,
       "t1": 0,
       "t2": 7,
-      "t3": 10,
-      "positive": 15,
+      "t3": 9,
+      "positive": 14,
       "mixed": 2,
       "negative": 0,
       "readiness": {
@@ -851,6 +851,18 @@
           "m": 2,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-26T16:44:15.194Z",
+          "rc": 16,
+          "s": 78.02,
+          "t1": 0,
+          "t2": 7,
+          "t3": 9,
+          "p": 14,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1042,23 +1054,23 @@
       "status": "open",
       "slug": "attention-off-west-end",
       "thumbnail": "/images/shows/attention-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 66.64,
-      "liveScore": 67,
-      "scoreDrift": 0.35999999999999943,
+      "siteScore": 65.74,
+      "liveScore": 66,
+      "scoreDrift": 0.2600000000000051,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 15,
-      "t1": 0,
+      "total": 16,
+      "t1": 1,
       "t2": 4,
       "t3": 11,
       "positive": 11,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:0/3"
+          "T1:1/3"
         ],
         "highConfidence": 14,
         "thresholds": {
@@ -1119,10 +1131,6 @@
         },
         {
           "name": "The Mail on Sunday",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -1354,6 +1362,18 @@
           "t3": 11,
           "p": 11,
           "m": 2,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-26T16:44:15.194Z",
+          "rc": 16,
+          "s": 65.74,
+          "t1": 1,
+          "t2": 4,
+          "t3": 11,
+          "p": 11,
+          "m": 3,
           "n": 2,
           "bc": "waiting"
         }
@@ -2899,19 +2919,19 @@
       "status": "open",
       "slug": "the-afronauts-west-end",
       "thumbnail": "/images/shows/the-afronauts-west-end-2026/thumbnail.webp",
-      "siteScore": 63.65,
-      "liveScore": 64,
-      "scoreDrift": 0.3500000000000014,
+      "siteScore": 63.36,
+      "liveScore": 63,
+      "scoreDrift": -0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 22,
+      "total": 23,
       "t1": 7,
       "t2": 7,
-      "t3": 8,
+      "t3": 9,
       "positive": 18,
       "mixed": 2,
-      "negative": 2,
+      "negative": 3,
       "readiness": {
         "ready": true,
         "reasons": [],
@@ -2930,10 +2950,6 @@
       "missingT1": [
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Sunday Times",
           "isDualMarket": true
         },
         {
@@ -3314,6 +3330,18 @@
           "p": 18,
           "m": 2,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-26T16:44:15.194Z",
+          "rc": 23,
+          "s": 63.36,
+          "t1": 7,
+          "t2": 7,
+          "t3": 9,
+          "p": 18,
+          "m": 2,
+          "n": 3,
           "bc": "waiting"
         }
       ]
