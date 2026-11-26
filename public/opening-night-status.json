@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T11:18:31.083Z",
+  "generatedAt": "2026-11-26T12:13:20.558Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1018,9 +1018,9 @@
       "status": "open",
       "slug": "attention-off-west-end",
       "thumbnail": "/images/shows/attention-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 66.52,
+      "siteScore": 66.64,
       "liveScore": 67,
-      "scoreDrift": 0.480000000000004,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1028,15 +1028,15 @@
       "t1": 0,
       "t2": 4,
       "t3": 11,
-      "positive": 10,
-      "mixed": 3,
+      "positive": 11,
+      "mixed": 2,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 13,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1318,6 +1318,18 @@
           "t3": 11,
           "p": 10,
           "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-26T12:13:20.558Z",
+          "rc": 15,
+          "s": 66.64,
+          "t1": 0,
+          "t2": 4,
+          "t3": 11,
+          "p": 11,
+          "m": 2,
           "n": 2,
           "bc": "waiting"
         }
