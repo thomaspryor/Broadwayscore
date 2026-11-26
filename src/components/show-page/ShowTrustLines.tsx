@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { getShowById, getTourStops } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-core';
 import { featureFlags } from '@/config/feature-flags';
-import { hasReachedStage, isLondonMarket, isUkRegionalShow } from '@/lib/market-utils';
+import { hasReachedStage, isAuRegionalShow, isLondonMarket, isUkRegionalShow, isUsRegionalShow } from '@/lib/market-utils';
 import { getTourParentLabel } from '@/lib/tour-display';
 
 /**
@@ -79,7 +79,14 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
         );
       })()}
 
-      {isRegional && !isUkRegionalShow(show) && (() => {
+      {isRegional && isAuRegionalShow(show) && (
+        <p className="text-xs sm:text-sm mb-1 leading-relaxed text-emerald-300/90" data-testid="regional-trust-line">
+          <span className="font-semibold">Australian production</span>
+          <span className="text-gray-400">: scored from Australian and international critic reviews, the same way we score Broadway and West End shows.</span>
+        </p>
+      )}
+
+      {isRegional && isUsRegionalShow(show) && (() => {
         // A leg of a multi-venue tour doesn't carry transferredTo itself
         // (only the aggregate does) — fall back to the parent's link so
         // this line stays accurate instead of reading as untransferred.

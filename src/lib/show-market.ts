@@ -10,7 +10,7 @@
  * To extend to non-Met opera (NYCO, ENO, Glimmerglass etc.): widen `isOperaShow` to
  * also check venue, and the `OPERA_DURATION_SUFFIX` constant becomes per-venue.
  */
-import { isUkRegionalShow } from '@/lib/market-utils';
+import { isUkRegionalShow, getRegionalLabel } from '@/lib/market-utils';
 
 export type EffectiveMarket =
   | 'broadway'
@@ -106,7 +106,7 @@ export function getEffectiveMarketLabel(show: ShowLike | null | undefined): stri
     case 'off-broadway':
       return 'Off-Broadway';
     case 'regional':
-      return 'Regional';
+      return getRegionalLabel(show ?? {});
     case 'uk-regional':
       return 'UK Regional';
     case 'tour':

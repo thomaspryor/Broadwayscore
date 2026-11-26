@@ -23,6 +23,9 @@ import {
 // A plain JSON import is safe in a client bundle: venue-classification.ts's
 // isOffWestEndVenue() already does exactly this with west-end-venues.json.
 import ukRegionalVenues from '../../data/uk-regional-venues.json';
+// Australian regional houses (BRO-8389 pilot). Same shape as the UK table; the AU seam is
+// getRegionalCountry() below, so a future full Australia market only adds a category row.
+import auRegionalVenues from '../../data/au-regional-venues.json';
 
 export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end' | 'regional' | 'tour';
 
@@ -102,6 +105,36 @@ function isUkRegionalVenue(category?: string, venue?: string): boolean {
   return findUkRegionalVenue(category, venue) !== undefined;
 }
 
+/** Country a `regional` show belongs to. US is the default (Broadway feeders). */
+export type RegionalCountry = 'US' | 'UK' | 'AU';
+
+type AuRegionalVenueEntry = { match: string; city: string; aliases?: string[] };
+
+// A venue string that ends in an Australian state/territory or "Australia" is AU even if the
+// house is not in the table. WA, SA and NT are left out on purpose: "Seattle, WA" and
+// "Nashville, SA"-style US strings must never match.
+const AU_VENUE_SUFFIX = /,\s*(?:NSW|VIC|QLD|TAS|ACT|Australia)\s*$/i;
+
+function findAuRegionalVenue(category?: string, venue?: string): AuRegionalVenueEntry | undefined {
+  if (category !== 'regional' || !venue) return undefined;
+  const v = venue.toLowerCase();
+  return (auRegionalVenues as AuRegionalVenueEntry[]).find(
+    (entry) => v.includes(entry.match) || (entry.aliases ?? []).some((alias) => v.includes(alias)),
+  );
+}
+
+/**
+ * The ONE country seam for a `regional` show (BRO-8389). Everything that used to ask
+ * "UK or else US" asks this instead, so Australia (pilot) and any later market are a
+ * new branch here, not a new set of parallel predicates.
+ */
+export function getRegionalCountry(show: { category?: string; venue?: string }): RegionalCountry {
+  if (show.category !== 'regional') return 'US';
+  if (isUkRegionalVenue(show.category, show.venue)) return 'UK';
+  if (findAuRegionalVenue(show.category, show.venue) || AU_VENUE_SUFFIX.test(show.venue || '')) return 'AU';
+  return 'US';
+}
+
 /**
  * A `regional` show at a UK flagship house (RSC, Chichester, ...). These are not
  * Broadway-bound tryouts, so they stay off the Pre-Broadway shelf and page and
@@ -111,9 +144,26 @@ export function isUkRegionalShow(show: { category?: string; venue?: string }): b
   return isUkRegionalVenue(show.category, show.venue);
 }
 
+/** A `regional` show at an Australian house (Sydney/Melbourne/Brisbane...). Not a Broadway tryout (BRO-8389). */
+export function isAuRegionalShow(show: { category?: string; venue?: string }): boolean {
+  return getRegionalCountry(show) === 'AU';
+}
+
+/** A `regional` show that is a US tryout/feeder: neither UK nor AU. */
+export function isUsRegionalShow(show: { category?: string; venue?: string }): boolean {
+  return show.category === 'regional' && getRegionalCountry(show) === 'US';
+}
+
 /** Badge/alt-text wording for a regional show: UK flagship houses read "UK Regional", US tryouts "Regional" (BRO-5269). */
 export function getRegionalLabel(show: { category?: string; venue?: string }): string {
-  return isUkRegionalShow(show) ? 'UK Regional' : 'Regional';
+  const c = getRegionalCountry(show);
+  return c === 'UK' ? 'UK Regional' : c === 'AU' ? 'Australia' : 'Regional';
+}
+
+/** City for an Australian regional venue (e.g. 'Sydney'). Undefined otherwise. */
+export function getAuRegionalVenueCity(category?: string, venue?: string): string | undefined {
+  return findAuRegionalVenue(category, venue)?.city
+    ?? (AU_VENUE_SUFFIX.test(venue || '') ? /,\s*([^,]+?),\s*[A-Za-z]+\s*$/.exec(venue || '')?.[1]?.trim() : undefined);
 }
 
 /** City for a UK-regional venue (e.g. 'Stratford-upon-Avon' for RSC), from data/uk-regional-venues.json. Undefined for non-UK-regional venues. */
@@ -131,21 +181,22 @@ export function getUsVenueCity(venue?: string): string | undefined {
 }
 
 /** Country code for a market category. `venue` disambiguates UK-regional shows. */
-export function getMarketCountry(category?: string, venue?: string): 'US' | 'GB' {
-  if (isLondonMarket(category) || isUkRegionalVenue(category, venue)) return 'GB';
-  return 'US';
+export function getMarketCountry(category?: string, venue?: string): 'US' | 'GB' | 'AU' {
+  if (isLondonMarket(category)) return 'GB';
+  const c = getRegionalCountry({ category, venue });
+  return c === 'UK' ? 'GB' : c;
 }
 
 /** Currency for a market category. `venue` disambiguates UK-regional shows. */
-export function getMarketCurrency(category?: string, venue?: string): 'USD' | 'GBP' {
-  if (isLondonMarket(category) || isUkRegionalVenue(category, venue)) return 'GBP';
-  return 'USD';
+export function getMarketCurrency(category?: string, venue?: string): 'USD' | 'GBP' | 'AUD' {
+  const country = getMarketCountry(category, venue);
+  return country === 'GB' ? 'GBP' : country === 'AU' ? 'AUD' : 'USD';
 }
 
 /** Currency symbol for a market category. `venue` disambiguates UK-regional shows. */
 export function getCurrencySymbol(category?: string, venue?: string): string {
-  if (isLondonMarket(category) || isUkRegionalVenue(category, venue)) return '£';
-  return '$';
+  const country = getMarketCountry(category, venue);
+  return country === 'GB' ? '£' : country === 'AU' ? 'A$' : '$';
 }
 
 /** Human-readable market label for a category. */

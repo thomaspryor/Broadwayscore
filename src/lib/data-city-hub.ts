@@ -3,7 +3,7 @@
 // stops come from data-tour-cities. Flag-gated like the regional category.
 
 import { getAllShows } from './data-core';
-import { isUkRegionalShow } from './market-utils';
+import { isUkRegionalShow, isAuRegionalShow } from './market-utils';
 import { isCategoryEnabled } from './markets';
 import { hubCandidates, sectionHubShows, type HubSections } from './city-hub';
 import type { ComputedShow } from './engine';
@@ -12,6 +12,6 @@ export type CityHubShow = ComputedShow;
 
 /** Regional productions in a metro, sectioned as of `today`. */
 export function getCityHubShows(metro: string, today: string): HubSections<CityHubShow> {
-  const shows = isCategoryEnabled('regional') ? hubCandidates(getAllShows() as CityHubShow[], isUkRegionalShow) : [];
+  const shows = isCategoryEnabled('regional') ? hubCandidates(getAllShows() as CityHubShow[], (s) => isUkRegionalShow(s) || isAuRegionalShow(s)) : [];
   return sectionHubShows(shows, metro, today);
 }

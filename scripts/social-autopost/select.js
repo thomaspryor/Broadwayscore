@@ -14,7 +14,7 @@ const { scoreGateArg } = require('../lib/should-hide-reviews');
 const { priorRunClassifier } = require('../lib/prior-run-sibling');
 const { findLondonRun } = require('../lib/transfer-detection');
 const C = require('./config');
-const { isUkRegionalVenue } = require('../lib/market-label');
+const { getRegionalCountry } = require('../lib/market-label');
 const { isLocalOnlyShow } = require('../lib/local-market');
 const { titleKey } = require('./routing');
 const { homeSet, targetSets, operaConfigured, postsToOwnSet } = require('./routing');
@@ -57,7 +57,7 @@ const TOURING_CATEGORIES = new Set(['regional', 'tour']);
  */
 function touringEligible(show, shows) {
   if (show.tourParent) return false;
-  if (show.category === 'regional') return !isUkRegionalVenue(show.venue) && !isLocalOnlyShow(show);
+  if (show.category === 'regional') return getRegionalCountry(show.venue) === 'US' && !isLocalOnlyShow(show);
   if (show.category !== 'tour' || !show.tourLaunchEvidence) return false;
   if (!Array.isArray(shows)) return false; // cannot prove it is the first launch
   const at = Date.parse(show.openingDate), key = titleKey(show.title);

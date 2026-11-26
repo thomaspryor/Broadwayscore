@@ -55,7 +55,7 @@ export interface BrowsePageConfig {
   howItWorks?: string;
   source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end' | 'regional' | 'tour'; // Data source (default: broadway)
   /** Regional source defaults to US tryouts; UK houses share the regional feature flag. */
-  regionalScope?: 'uk';
+  regionalScope?: 'uk' | 'au';
   /** Offer a UK city-hub filter (BRO-6516). */
   cityFilter?: boolean;
   /** Feature flag the page's data belongs to. While that flag is off the page
@@ -63,7 +63,7 @@ export interface BrowsePageConfig {
    *  returns undefined, so static params, sitemap, RSS, related links and
    *  guides all drop it. Required on any page that reads ctx.getShowCommercial
    *  (tests/unit/commercial-unreleased.test.mjs enforces it). */
-  requiresFeature?: 'commercial';
+  requiresFeature?: 'commercial' | 'regional';
   /** Optional function to group shows into sections with H2 headings.
    *  Returns a label for each show — shows with the same label are grouped together.
    *  Headings render only while each label is one contiguous run in the order on
@@ -311,6 +311,27 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       : show.openingDate ? `Opened ${show.openingDate.slice(0, 4)}` : 'Earlier productions'),
     howItWorks: 'CriticScore combines reviews from local and national UK critics, with major publications carrying more weight. Shows appear once they have enough reviews to display a score. Running productions appear first, followed by the most recently opened productions.',
     relatedPages: ['best-west-end-musicals', 'best-west-end-plays', 'best-off-west-end-shows'],
+  },
+
+  // BRO-8389 pilot: Australian productions tracked as category 'regional'. Gated on the regional
+  // flag so it is out of static params and the sitemap whenever the flag is off.
+  'australian-theatre': {
+    slug: 'australian-theatre',
+    title: 'Australian Theatre',
+    h1: 'Australian Theatre: Critic Scores',
+    metaTitle: 'Australian Theatre Reviews: Critic Scores for Sydney and Melbourne Shows',
+    metaDescription: 'Critic scores for productions at major Australian theatres, from Sydney Theatre Company to the big Melbourne houses. See how each show reviewed, with major publications weighted most.',
+    intro: 'A pilot shelf for Australian productions in Sydney, Melbourne and Brisbane. Each show is scored from its critic reviews the same way we score Broadway and the West End. Shows on stage come first, then recent productions, and closed productions stay listed so you can read their reviews.',
+    source: 'regional',
+    regionalScope: 'au',
+    requiresFeature: 'regional',
+    customSort: shows => pickRegionalShelf(shows, { limit: Infinity, requireEnoughReviews: true }),
+    hideRanks: true,
+    sectionGroup: (show) => (show.status === 'open' || show.status === 'previews'
+      ? 'On Stage Now'
+      : show.openingDate ? `Opened ${show.openingDate.slice(0, 4)}` : 'Earlier productions'),
+    howItWorks: 'CriticScore combines reviews from Australian critics, with major publications carrying more weight. Shows appear once they have enough reviews to display a score. Running productions appear first, followed by the most recently opened productions.',
+    relatedPages: ['best-broadway-show-right-now', 'best-west-end-musicals', 'beyond-london'],
   },
 
   'pre-broadway-out-of-town-shows': {

@@ -46,7 +46,8 @@ test('the shelf pick never gets a local show when fed getRegionalShows()-style i
 
 test('every cross-market enumerator applies the local-only rule', () => {
   const dc = read('src/lib/data-core.ts');
-  assert.match(dc, /category === 'regional' && !isUkRegionalShow\(show\) && !isLocalOnlyShow\(show\)/, 'getRegionalShows');
+  assert.match(dc, /category === 'regional' && isUsRegionalShow\(show\) && !isLocalOnlyShow\(show\)/, 'getRegionalShows');
+  assert.match(dc, /category === 'regional' && isAuRegionalShow\(show\) && !isLocalOnlyShow\(show\)/, 'getAuRegionalShows');
   assert.match(dc, /category === 'regional' && isUkRegionalShow\(show\) && !isLocalOnlyShow\(show\)/, 'getUkRegionalShows');
   assert.match(dc, /if \(isLocalOnlyShow\(show\)\) return 'local'/, 'related-shows bucket');
   // BRO-6760: the iOS feed now carries local shows for the app's Chicago market. Its

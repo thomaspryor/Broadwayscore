@@ -60,6 +60,53 @@ const MARKET_LABELS = {
  */
 const MARKET_LABEL_REGIONAL_UK = 'Regional (UK, outside London)';
 
+/** Label for a regional production at an Australian house (BRO-8389 pilot). */
+const MARKET_LABEL_REGIONAL_AU = 'Regional (Australia, outside Broadway and the West End)';
+
+// Same suffix rule as src/lib/market-utils.ts (AU_VENUE_SUFFIX): WA/SA/NT are excluded so
+// "Seattle, WA" can never read as Australian.
+const AU_VENUE_SUFFIX = /,\s*(?:NSW|VIC|QLD|TAS|ACT|Australia)\s*$/i;
+
+/**
+ * True when a venue string names an Australian house: a row of data/au-regional-venues.json
+ * (the table src/lib/market-utils.ts reads) or an AU state/country suffix. Strings only.
+ *
+ * @param {string|null|undefined} venue
+ * @returns {boolean}
+ */
+function isAuRegionalVenue(venue) {
+  if (typeof venue !== 'string') return false;
+  const v = venue.trim().toLowerCase();
+  if (!v) return false;
+  if (AU_VENUE_SUFFIX.test(v)) return true;
+  let rows;
+  try {
+    // eslint-disable-next-line global-require
+    rows = require('../../data/au-regional-venues.json');
+  } catch (_err) {
+    return false;
+  }
+  if (!Array.isArray(rows)) return false;
+  return rows.some((r) => [r && r.match, ...((r && Array.isArray(r.aliases)) ? r.aliases : [])]
+    .map((m) => String(m || '').trim().toLowerCase())
+    .filter(Boolean)
+    .some((m) => v.includes(m)));
+}
+
+/**
+ * Country of a `regional` venue: 'UK', 'AU' or 'US' (the default). The JS twin of
+ * getRegionalCountry in src/lib/market-utils.ts: callers that mean "US tryout" test
+ * === 'US' instead of !isUkRegionalVenue, so AU can never leak into US surfaces.
+ *
+ * @param {string|null|undefined} venue
+ * @returns {'US'|'UK'|'AU'}
+ */
+function getRegionalCountry(venue) {
+  if (isUkRegionalVenue(venue)) return 'UK';
+  if (isAuRegionalVenue(venue)) return 'AU';
+  return 'US';
+}
+
 /**
  * Venue substrings that make a `regional` show a UK production. Same table
  * scripts/lib/aggregator-candidate-extract.js and src/lib/market-utils.ts read,
@@ -147,6 +194,7 @@ function getMarketLabel(market, venue) {
   if (market === null || market === undefined || market === '') return MARKET_LABELS.broadway;
   const key = String(market).trim().toLowerCase();
   if (key === 'regional' && isUkRegionalVenue(venue)) return MARKET_LABEL_REGIONAL_UK;
+  if (key === 'regional' && isAuRegionalVenue(venue)) return MARKET_LABEL_REGIONAL_AU;
   if (Object.prototype.hasOwnProperty.call(MARKET_LABELS, key)) return MARKET_LABELS[key];
   // Unknown slug: echo it instead of lying. A model told "(dublin-fringe)" may
   // be mildly confused; a model told "(Broadway)" confidently rejects the review.
@@ -180,7 +228,18 @@ function getRegionalPromptContext(venue) {
   // claim the review body contradicts in its first paragraph, which is a
   // wrong_production rejection waiting to happen — the same shape as the bare
   // ': Broadway' fallback this file replaced. Card #1405.
-  const isUk = isUkRegionalVenue(venue);
+  const country = getRegionalCountry(venue);
+  if (country === 'AU') {
+    return [
+      `NOTE: This is an AUSTRALIAN production${where}, a theatre in Australia,`,
+      'often a world premiere or home-grown musical. It is NOT a Broadway or West End',
+      'production and is not supposed to be one. A review that describes this Australian',
+      'theatre, its season, Australian cast or local references IS valid for this show,',
+      'so do NOT flag it wrong_show or wrong_production merely because the production',
+      'is not on Broadway or in the West End.',
+    ].join(' ');
+  }
+  const isUk = country === 'UK';
   const place = isUk ? 'a UK theatre outside London' : 'a US theater outside New York';
   const metro = isUk ? 'a West End production' : 'a Broadway production';
   return [
@@ -243,6 +302,9 @@ module.exports = {
   getTourPromptContext,
   MARKET_LABELS,
   MARKET_LABEL_REGIONAL_UK,
+  MARKET_LABEL_REGIONAL_AU,
+  isAuRegionalVenue,
+  getRegionalCountry,
   MARKET_SEARCH_KEYWORDS,
   NON_METRO_MARKETS,
   isUkRegionalVenue,

@@ -36,7 +36,7 @@ import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { featureFlags } from '@/config/feature-flags';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/venue-classification';
-import { getCurrencySymbol, isUkRegionalShow, londonTitleNeedsSuffix } from '@/lib/market-utils';
+import { getCurrencySymbol, isAuRegionalShow, isUkRegionalShow, londonTitleNeedsSuffix } from '@/lib/market-utils';
 import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
 import { liveInHdLine, liveInHdDescription } from '@/lib/met-live-in-hd';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -142,6 +142,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const isRegionalMeta = show.category === 'regional';
   // UK flagship houses (RSC, Chichester, ...) are filed under Beyond London, not Broadway tryouts (BRO-5103).
   const isUkRegionalMeta = isRegionalMeta && isUkRegionalShow(show);
+  // Australian productions (BRO-8389 pilot) are regional but not Broadway tryouts.
+  const isAuRegionalMeta = isRegionalMeta && isAuRegionalShow(show);
   const isTourMeta = show.category === 'tour';
   const isOperaMeta = isOperaShow(show);
   // A tour shares its Broadway parent's title; the <title>/OG name must tell them apart.
@@ -158,7 +160,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // Regional shows roll up under the Broadway Scorecard brand (site name), but must NOT be
   // labelled "on Broadway" — use a neutral, honest market label in titles/meta.
   const siteName = isOperaMeta ? 'Opera Scorecard' : isOffWestEndMeta ? 'Off-West End Scorecard' : isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
-  const marketLabel = isOperaMeta ? getOperaHouseSuffix(show) : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : isUkRegionalMeta ? 'in the UK' : isRegionalMeta ? 'in a regional production' : isTourMeta ? 'on its national tour' : 'on Broadway';
+  const marketLabel = isOperaMeta ? getOperaHouseSuffix(show) : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : isUkRegionalMeta ? 'in the UK' : isAuRegionalMeta ? 'in Australia' : isRegionalMeta ? 'in a regional production' : isTourMeta ? 'on its national tour' : 'on Broadway';
   const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
 
   // Sentiment label maps tier → SEO-friendly phrase used in title + description.
@@ -333,7 +335,10 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const isUkRegional = isUkRegionalShow(show);
   // /west-end 404s when the westEnd flag is off; fall back to home there.
   const homeHref = isWestEnd || (isUkRegional && featureFlags.westEnd) ? '/west-end' : isOffBroadway ? '/off-broadway' : '/';
-  const browseSlug = isUkRegional ? null : getBrowseSlug(show.category, show.type);
+  // An AU show crumbs to its own shelf (only while the regional flag keeps that page alive).
+  const browseSlug = isUkRegional ? null
+    : isAuRegionalShow(show) ? (featureFlags.regional ? 'australian-theatre' : null)
+    : getBrowseSlug(show.category, show.type);
   const breadcrumbHome = { name: 'Home', url: `${BASE_URL}${homeHref === '/' ? '' : homeHref}` };
   const breadcrumbSchema = isOpera
     ? generateBreadcrumbSchema([
@@ -343,7 +348,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
       ])
     : generateBreadcrumbSchema(browseSlug ? [
         breadcrumbHome,
-        { name: isTour ? 'Tours' : showFormatPlural(show.type), url: `${BASE_URL}/browse/${browseSlug}` },
+        { name: isTour ? 'Tours' : isAuRegionalShow(show) ? 'Australian Theatre' : showFormatPlural(show.type), url: `${BASE_URL}/browse/${browseSlug}` },
         { name: isTour ? `${show.title} (Tour)` : show.title, url: `${BASE_URL}/show/${show.slug}` },
       ] : [
         breadcrumbHome,
@@ -586,7 +591,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           { label: show.title },
         ] : browseSlug ? [
           { label: 'Home', href: homeHref },
-          { label: isTour ? 'Tours' : showFormatPlural(show.type), href: `/browse/${browseSlug}` },
+          { label: isTour ? 'Tours' : isAuRegionalShow(show) ? 'Australian Theatre' : showFormatPlural(show.type), href: `/browse/${browseSlug}` },
           { label: isTour ? `${show.title} (Tour)` : show.title },
         ] : [
           { label: 'Home', href: homeHref },
