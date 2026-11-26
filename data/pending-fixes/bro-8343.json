@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8343",
   "planId": "01a96e5b-a494-4cf0-a3e8-96b74776608d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-26T03:09:42.064Z",
   "submitter": {
     "name": null,
@@ -64,5 +64,34 @@
         "description": "shows.json: janet-street-porter-off-west-end-2026.officialUrl"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-26T03:40:55.518Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for brink-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for michael-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for the-odyssey-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for babylon-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: officialUrl updated for janet-street-porter-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
