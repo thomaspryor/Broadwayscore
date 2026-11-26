@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-25T12:04:31.470Z",
+  "generatedAt": "2026-11-26T12:10:23.437Z",
   "staleDaysThreshold": 30,
   "reviewTextsAvailable": true,
-  "flaggedCount": 2,
+  "flaggedCount": 5,
   "flagged": [
     {
       "id": "a-christmas-carol-off-broadway-2026",
@@ -19,6 +19,34 @@
       "firstFlaggedAt": "2026-11-25T12:04:31.470Z"
     },
     {
+      "id": "jumpers-off-west-end-2026",
+      "title": "Jumpers",
+      "venue": "Hampstead Theatre",
+      "category": "off-west-end",
+      "status": "previews",
+      "previewsStartDate": "2026-11-25",
+      "openingDate": null,
+      "todaytixId": 47723,
+      "reasons": [
+        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
+      ],
+      "firstFlaggedAt": "2026-11-26T12:10:23.437Z"
+    },
+    {
+      "id": "jack-and-the-beanstalk-off-west-end-2026",
+      "title": "Jack and The Beanstalk",
+      "venue": "Hackney Empire",
+      "category": "off-west-end",
+      "status": "previews",
+      "previewsStartDate": "2026-11-21",
+      "openingDate": null,
+      "todaytixId": 47299,
+      "reasons": [
+        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
+      ],
+      "firstFlaggedAt": "2026-11-26T12:10:23.437Z"
+    },
+    {
       "id": "dick-whittington-and-his-cat-off-west-end-2026",
       "title": "Dick Whittington And His Cat",
       "venue": "King's Head Theatre",
@@ -31,17 +59,23 @@
         "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
       ],
       "firstFlaggedAt": "2026-11-23T21:33:40.179Z"
+    },
+    {
+      "id": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
+      "title": "The Curious Incident of the Dog in the Night-Time",
+      "venue": "A.R.T./New York Theatres",
+      "category": "off-broadway",
+      "status": "previews",
+      "previewsStartDate": "2026-11-20",
+      "openingDate": null,
+      "todaytixId": null,
+      "reasons": [
+        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
+      ],
+      "firstFlaggedAt": "2026-11-26T12:10:23.437Z"
     }
   ],
   "firstFlaggedHistory": {
-    "eurotrash-off-west-end-2026": {
-      "firstFlaggedAt": "2026-11-19T11:29:45.898Z",
-      "lastSeenAt": "2026-11-19T11:29:45.898Z"
-    },
-    "florence-off-west-end-2026": {
-      "firstFlaggedAt": "2026-11-19T11:29:45.898Z",
-      "lastSeenAt": "2026-11-19T11:29:45.898Z"
-    },
     "goblin-off-west-end-2026": {
       "firstFlaggedAt": "2026-11-20T10:28:57.817Z",
       "lastSeenAt": "2026-11-20T10:28:57.817Z"
