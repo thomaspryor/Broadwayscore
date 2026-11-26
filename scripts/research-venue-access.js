@@ -224,7 +224,8 @@ async function main() {
   }
 
   const published = readJson(OUT_PATH, { venues: {} }).venues;
-  const sites = broadwayWebsites(readJson(META_PATH, {}), raw.broadway, published);
+  const overrides = readJson(path.join(ROOT, 'data/venue-website-overrides.json'), { venues: {} }).venues;
+  const sites = broadwayWebsites(readJson(META_PATH, {}), raw.broadway, published, overrides);
   const info = readJson(INFO_PATH, { venues: {} }).venues;
   const venues = venueList(info, sites, args);
 

@@ -15419,69 +15419,159 @@
   },
   "broadway/circle-in-the-square-theatre": {
    "pages": [
-    "https://circleinthesquare.com/"
-   ],
-   "none": "no access wording on the official pages",
-   "at": "2026-11-25T22:13:33.498Z"
-  },
-  "broadway/lena-horne-theatre": {
-   "pages": [
-    "https://nederlander.com/"
+    "https://circleinthesquare.com/visit/"
    ],
    "gemini": {
     "wheelchair": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "There are 4 wheelchair locations: J141, J142, K101, K102."
     },
     "stepFree": {
-     "value": null,
-     "quote": null
+     "value": false,
+     "quote": "The Orchestra is down 1 flight of stairs."
     },
     "elevator": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "The Orchestra is accessible via an escalator or elevator."
     },
     "hearingLoop": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Assisted listening devices and neck induction loop systems (requires t-coil) are available to borrow at the Audience Services kiosk."
     },
     "assistiveListening": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Assisted listening devices and neck induction loop systems (requires t-coil) are available to borrow at the Audience Services kiosk."
     },
-    "note": null
+    "note": "Assisted listening devices and neck induction loop systems (requires t-coil) are available to borrow at the Audience Services kiosk."
    },
    "openai": {
     "wheelchair": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "There are 4 wheelchair locations: J141, J142, K101, K102."
     },
     "stepFree": {
      "value": null,
      "quote": null
     },
     "elevator": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "The Orchestra is accessible via an escalator or elevator."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "Assisted listening devices and neck induction loop systems (requires t-coil) are available to borrow at the Audience Services kiosk."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Assisted listening devices and neck induction loop systems (requires t-coil) are available to borrow at the Audience Services kiosk."
+    },
+    "note": "The Orchestra is accessible via an escalator or elevator."
+   },
+   "at": "2026-11-26T01:05:46.954Z"
+  },
+  "broadway/lena-horne-theatre": {
+   "pages": [
+    "https://broadwaydirect.com/theatre/lena-horne-theatre/"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra section of the theatre (pending availability)."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "All seats in the orchestra section are accessible without using any stairs."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "the mezzanine requires stairs, as this theatre does not have an elevator or an escalator."
     },
     "hearingLoop": {
      "value": null,
      "quote": null
     },
     "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge and subject to availability."
+    },
+    "note": "Accessible seating is available for this performance as indicated on the seating map .."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra section of the theatre (pending availability)."
+    },
+    "stepFree": {
      "value": null,
      "quote": null
     },
-    "note": null
+    "elevator": {
+     "value": false,
+     "quote": "The mezzanine requires stairs, as this theatre does not have an elevator or an escalator."
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge and subject to availability."
+    },
+    "note": "Accessible seating is available for this performance as indicated on the seating map."
    },
-   "at": "2026-11-25T22:13:33.828Z"
+   "at": "2026-11-26T01:06:13.236Z"
   },
   "broadway/gerald-schoenfeld-theatre": {
    "pages": [
-    "https://shubert.nyc/"
+    "https://shubert.nyc/theatres/gerald-schoenfeld"
    ],
-   "none": "no access wording on the official pages",
-   "at": "2026-11-25T22:13:34.315Z"
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "There are no steps to the designated wheelchair seating location."
+    },
+    "stepFree": {
+     "value": false,
+     "quote": "Theatre is not completely wheelchair accessible."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "Elevators/Escalator . None Available"
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+    },
+    "note": "The Gerald Schoenfeld Theatre provides accommodations for patrons who are blind, deaf, partially sighted, and/or have hearing loss."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair | Companion Seat Locations:"
+    },
+    "stepFree": {
+     "value": false,
+     "quote": "Theatre is not completely wheelchair accessible."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "Elevators/Escalator . None Available"
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+    },
+    "note": "The Gerald Schoenfeld Theatre provides accommodations for patrons who are blind, deaf, partially sighted, and/or have hearing loss."
+   },
+   "at": "2026-11-26T01:05:46.674Z"
   },
   "broadway/broadway-theatre": {
    "pages": [
@@ -15537,62 +15627,107 @@
   },
   "broadway/gershwin-theatre": {
    "pages": [
-    "https://nederlander.com/"
+    "https://broadwaydirect.com/theatre/gershwin-theatre/"
    ],
    "gemini": {
     "wheelchair": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Wheelchair locations are available in the Orchestra and Mezzanine of the theatre (pending availability)."
     },
     "stepFree": {
-     "value": null,
-     "quote": null
+     "value": false,
+     "quote": "All other seating locations require the use of stairs."
     },
     "elevator": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "These floors can be accessed via a main lobby elevator that is strictly designated for guests with disabilities."
     },
     "hearingLoop": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
     },
     "assistiveListening": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge."
     },
-    "note": null
+    "note": "The Gershwin Theatre is committed to the needs of patrons with disabilities."
    },
    "openai": {
     "wheelchair": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Wheelchair locations are available in the Orchestra and Mezzanine of the theatre (pending availability)."
     },
     "stepFree": {
      "value": null,
      "quote": null
     },
     "elevator": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "The Orchestra level is accessible via the main lobby elevator that is designated for guests with disabilities."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge."
+    },
+    "note": "The Gershwin Theatre is committed to the needs of patrons with disabilities."
+   },
+   "at": "2026-11-26T01:06:12.941Z"
+  },
+  "broadway/imperial-theatre": {
+   "pages": [
+    "https://shubert.nyc/theatres/imperial"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "There are no steps to the designated wheelchair seating location."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "Seating is accessible to all parts of the Orchestra without steps."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "Elevators/Escalator \nNone Available"
     },
     "hearingLoop": {
      "value": null,
      "quote": null
     },
     "assistiveListening": {
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+    },
+    "note": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "There are no steps to the designated wheelchair seating location."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "There are no steps into theatre from the sidewalk."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "Elevators/Escalator . None Available"
+    },
+    "hearingLoop": {
      "value": null,
      "quote": null
     },
-    "note": null
+    "assistiveListening": {
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+    },
+    "note": "Theatre is not completely wheelchair accessible."
    },
-   "at": "2026-11-25T22:13:35.759Z"
-  },
-  "broadway/imperial-theatre": {
-   "pages": [
-    "https://shubert.nyc/"
-   ],
-   "none": "no access wording on the official pages",
-   "at": "2026-11-25T22:13:35.759Z"
+   "at": "2026-11-26T01:05:52.115Z"
   },
   "broadway/ethel-barrymore-theatre": {
    "pages": [
@@ -15648,10 +15783,55 @@
   },
   "broadway/john-golden-theatre": {
    "pages": [
-    "https://shubert.nyc/"
+    "https://shubert.nyc/theatres/golden"
    ],
-   "none": "no access wording on the official pages",
-   "at": "2026-11-25T22:13:36.963Z"
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair seating is in the orchestra only."
+    },
+    "stepFree": {
+     "value": false,
+     "quote": "Theatre is not completely wheelchair accessible."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "Elevators/Escalator . None Available"
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+    },
+    "note": "Theatre is not completely wheelchair accessible."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair seating is in the orchestra only."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "There are no steps into the theatre (where there are steps we are unable to provide assistance)."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "None Available"
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+    },
+    "note": "Theatre is not completely wheelchair accessible."
+   },
+   "at": "2026-11-26T01:05:53.366Z"
   },
   "broadway/james-earl-jones-theatre": {
    "pages": [
@@ -15759,42 +15939,87 @@
   },
   "broadway/majestic-theatre": {
    "pages": [
-    "https://shubert.nyc/"
-   ],
-   "none": "no access wording on the official pages",
-   "at": "2026-11-25T22:13:39.522Z"
-  },
-  "broadway/marquis-theatre": {
-   "pages": [
-    "https://nederlander.com/"
+    "https://shubert.nyc/theatres/majestic"
    ],
    "gemini": {
     "wheelchair": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "There are no steps to the designated wheelchair seating location."
     },
     "stepFree": {
-     "value": null,
-     "quote": null
+     "value": false,
+     "quote": "Theatre is not completely wheelchair accessible."
     },
     "elevator": {
-     "value": null,
-     "quote": null
+     "value": false,
+     "quote": "None available."
     },
     "hearingLoop": {
      "value": null,
      "quote": null
     },
     "assistiveListening": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
     },
-    "note": null
+    "note": "Theatre is not completely wheelchair accessible."
    },
    "openai": {
     "wheelchair": {
+     "value": true,
+     "quote": "There are no steps to the designated wheelchair seating location."
+    },
+    "stepFree": {
      "value": null,
      "quote": null
+    },
+    "elevator": {
+     "value": false,
+     "quote": "None available."
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+    },
+    "note": "The Majestic Theatre provides accommodations for patrons who are blind, deaf, partially sighted, and/or have hearing loss."
+   },
+   "at": "2026-11-26T01:05:53.911Z"
+  },
+  "broadway/marquis-theatre": {
+   "pages": [
+    "https://broadwaydirect.com/theatre/marquis-theatre/"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra section of the theatre (pending availability)."
+    },
+    "stepFree": {
+     "value": false,
+     "quote": "The theatre aisles on the orchestra level are stepped instead of ramped."
+    },
+    "elevator": {
+     "value": null,
+     "quote": null
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge."
+    },
+    "note": "The Marquis Theatre is committed to the needs of our patrons with disabilities."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "There are designated wheelchair and companion seats in the rear of the Orchestra."
     },
     "stepFree": {
      "value": null,
@@ -15809,12 +16034,12 @@
      "quote": null
     },
     "assistiveListening": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge."
     },
-    "note": null
+    "note": "The Marquis Theatre is committed to the needs of our patrons with disabilities."
    },
-   "at": "2026-11-25T22:13:40.973Z"
+   "at": "2026-11-26T01:06:13.600Z"
   },
   "broadway/helen-hayes-theater": {
    "pages": [
@@ -15925,55 +16150,55 @@
   },
   "broadway/nederlander-theatre": {
    "pages": [
-    "https://nederlander.com/"
+    "https://broadwaydirect.com/theatre/nederlander-theatre/"
    ],
    "gemini": {
     "wheelchair": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Accessible seating is available for this performance as indicated on the seating map .."
     },
     "stepFree": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "The only seats that do not require steps are in the Orchestra."
     },
     "elevator": {
-     "value": null,
-     "quote": null
+     "value": false,
+     "quote": "This theatre is not equipped with an elevator."
     },
     "hearingLoop": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
     },
     "assistiveListening": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge and subject to availability."
     },
-    "note": null
+    "note": "The Nederlander Theatre is committed to the needs of patrons with disabilities."
    },
    "openai": {
     "wheelchair": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra section of the theatre (pending availability)."
     },
     "stepFree": {
      "value": null,
      "quote": null
     },
     "elevator": {
-     "value": null,
-     "quote": null
+     "value": false,
+     "quote": "This theatre is not equipped with an elevator."
     },
     "hearingLoop": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
     },
     "assistiveListening": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge and subject to availability."
     },
-    "note": null
+    "note": "The Nederlander Theatre is committed to the needs of patrons with disabilities."
    },
-   "at": "2026-11-25T22:13:43.379Z"
+   "at": "2026-11-26T01:06:13.084Z"
   },
   "broadway/music-box-theatre": {
    "pages": [
@@ -16081,42 +16306,87 @@
   },
   "broadway/shubert-theatre": {
    "pages": [
-    "https://shubert.nyc/"
-   ],
-   "none": "no access wording on the official pages",
-   "at": "2026-11-25T22:13:43.936Z"
-  },
-  "broadway/richard-rodgers-theatre": {
-   "pages": [
-    "https://nederlander.com/"
+    "https://shubert.nyc/theatres/shubert"
    ],
    "gemini": {
     "wheelchair": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "There are no steps to the designated wheelchair seating location."
     },
     "stepFree": {
-     "value": null,
-     "quote": null
+     "value": false,
+     "quote": "Theatre is not completely wheelchair accessible."
     },
     "elevator": {
-     "value": null,
-     "quote": null
+     "value": false,
+     "quote": "None available"
     },
     "hearingLoop": {
      "value": null,
      "quote": null
     },
     "assistiveListening": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
     },
-    "note": null
+    "note": "The theatre provides infrared assistive listening devices for every performance at the theatre."
    },
    "openai": {
     "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair | Companion Seat Locations:"
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "There are no steps into the theatre from the sidewalk."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "None available"
+    },
+    "hearingLoop": {
      "value": null,
      "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+    },
+    "note": "Theatre is not completely wheelchair accessible."
+   },
+   "at": "2026-11-26T01:05:56.535Z"
+  },
+  "broadway/richard-rodgers-theatre": {
+   "pages": [
+    "https://broadwaydirect.com/theatre/richard-rodgers-theatre/"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Accessible seating is available for this performance as indicated on the seating map ."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "The only seats accessible without steps are in Orchestra rows A-K."
+    },
+    "elevator": {
+     "value": null,
+     "quote": null
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge."
+    },
+    "note": "The Richard Rodgers Theatre is committed to the needs of patrons with disabilities."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra section of the theatre (pending availability)."
     },
     "stepFree": {
      "value": null,
@@ -16127,16 +16397,16 @@
      "quote": null
     },
     "hearingLoop": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
     },
     "assistiveListening": {
-     "value": null,
-     "quote": null
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge."
     },
-    "note": null
+    "note": "The Richard Rodgers Theatre is committed to the needs of patrons with disabilities."
    },
-   "at": "2026-11-25T22:13:44.583Z"
+   "at": "2026-11-26T01:06:14.942Z"
   },
   "broadway/stephen-sondheim-theatre": {
    "pages": [
@@ -16366,10 +16636,55 @@
   },
   "broadway/winter-garden-theatre": {
    "pages": [
-    "https://shubert.nyc/"
+    "https://shubert.nyc/theatres/winter-garden"
    ],
-   "none": "no access wording on the official pages",
-   "at": "2026-11-25T22:14:30.135Z"
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "There is a wheelchair accessible restroom."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "Seating is accessible to all parts of the Orchestra without steps."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "None available"
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+    },
+    "note": "Theatre is not completely wheelchair accessible."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair | Companion Seat Locations:"
+    },
+    "stepFree": {
+     "value": null,
+     "quote": null
+    },
+    "elevator": {
+     "value": false,
+     "quote": "None available"
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The theatre provides infrared assistive listening devices for every performance at the theatre."
+    },
+    "note": "Theatre is not completely wheelchair accessible."
+   },
+   "at": "2026-11-26T01:05:57.967Z"
   },
   "broadway/walter-kerr-theatre": {
    "pages": [
@@ -16482,6 +16797,491 @@
     "note": "MTC’s venues are accessible to people with disabilities."
    },
    "at": "2026-11-25T22:15:06.685Z"
+  },
+  "broadway/lunt-fontanne-theatre": {
+   "pages": [
+    "https://broadwaydirect.com/theatre/lunt-fontanne-theatre/"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra section of the theatre (pending availability)."
+    },
+    "stepFree": {
+     "value": null,
+     "quote": null
+    },
+    "elevator": {
+     "value": false,
+     "quote": "There are no elevators or escalators at the Lunt-Fontanne."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge and subject to availability."
+    },
+    "note": "The Lunt-Fontanne Theatre is committed to the needs of patrons with disabilities."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra section of the theatre (pending availability)."
+    },
+    "stepFree": {
+     "value": null,
+     "quote": null
+    },
+    "elevator": {
+     "value": false,
+     "quote": "There are no elevators or escalators at the Lunt-Fontanne."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge and subject to availability."
+    },
+    "note": "The Lunt-Fontanne Theatre is committed to the needs of patrons with disabilities."
+   },
+   "at": "2026-11-26T01:05:51.051Z"
+  },
+  "broadway/eugene-o-neill-theatre": {
+   "pages": [
+    "https://us.atgtickets.com/venues/eugene-oneill-theatre/venue-info/",
+    "https://us.atgtickets.com/venues/eugene-oneill-theatre/access",
+    "https://us.atgtickets.com/accessibility",
+    "https://us.atgtickets.com/accessibility"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "The Eugene O’Neill Theatre offers Wheelchair Accessible seating, Aisle Transfer seating, Companion seating, and Vision/Hearing Accessible seating."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "There are no steps from the sidewalk to the Orchestra level."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "There are no elevators or escalators at the Eugene O’Neill Theatre."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "The Eugene O’Neill Theatre offers D-Scriptive devices, I-Caption devices, infrared headsets, audio induction neck loops, and Showtrans devices in Japanese, Portuguese, and Spanish."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The Eugene O’Neill Theatre offers D-Scriptive devices, I-Caption devices, infrared headsets, audio induction neck loops, and Showtrans devices in Japanese, Portuguese, and Spanish."
+    },
+    "note": "The Eugene O’Neill Theatre offers Wheelchair Accessible seating, Aisle Transfer seating, Companion seating, and Vision/Hearing Accessible seating."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "The Eugene O’Neill Theatre offers Wheelchair Accessible seating, Aisle Transfer seating, Companion seating, and Vision/Hearing Accessible seating."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "There are no steps from the sidewalk to the Orchestra level."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "There are no elevators or escalators at the Eugene O’Neill Theatre."
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The Eugene O’Neill Theatre offers D-Scriptive devices, I-Caption devices, infrared headsets, audio induction neck loops, and Showtrans devices in Japanese, Portuguese, and Spanish."
+    },
+    "note": "The Eugene O’Neill Theatre offers Wheelchair Accessible seating, Aisle Transfer seating, Companion seating, and Vision/Hearing Accessible seating."
+   },
+   "at": "2026-11-26T01:05:48.823Z"
+  },
+  "broadway/august-wilson-theatre": {
+   "pages": [
+    "https://us.atgtickets.com/venues/august-wilson-theatre/venue-info/",
+    "https://us.atgtickets.com/venues/august-wilson-theatre/access",
+    "https://us.atgtickets.com/accessibility",
+    "https://us.atgtickets.com/accessibility"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "The August Wilson Theatre offers Wheelchair Accessible seating, Aisle Transfer seating, Companion seating, and Vision/Hearing Accessible seating."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "Orchestra seating is located 6 steps up from our accessible entrance or with no stairs via our chair lift."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "There is no elevator access to the Mezzanine Level, or our VIP Ambassador lounge."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "Infrared Neck Induction Loop (t-coil enabled device required)."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The August Wilson Theatre offers D-Scriptive devices, I-Caption devices, Auracast™ Broadcast Audio, and an infrared assistive listening system"
+    },
+    "note": "The August Wilson Theatre offers Wheelchair Accessible seating, Aisle Transfer seating, Companion seating, and Vision/Hearing Accessible seating."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "The August Wilson Theatre offers Wheelchair Accessible seating, Aisle Transfer seating, Companion seating, and Vision/Hearing Accessible seating."
+    },
+    "stepFree": {
+     "value": null,
+     "quote": null
+    },
+    "elevator": {
+     "value": true,
+     "quote": "There is a Stair Lift that provides direct access from the front of the theatre to the Orchestra level."
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The August Wilson Theatre offers D-Scriptive devices, I-Caption devices, Auracast™ Broadcast Audio, and an infrared assistive listening system, including:"
+    },
+    "note": "The August Wilson Theatre offers Wheelchair Accessible seating, Aisle Transfer seating, Companion seating, and Vision/Hearing Accessible seating."
+   },
+   "at": "2026-11-26T01:05:49.486Z"
+  },
+  "broadway/hudson-theatre": {
+   "pages": [
+    "https://us.atgtickets.com/venues/hudson-theatre-broadway/venue-info/",
+    "https://us.atgtickets.com/venues/hudson-theatre-broadway/access",
+    "https://us.atgtickets.com/accessibility",
+    "https://us.atgtickets.com/accessibility"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "We offer a range of wheelchair accessible seats which can be purchased online or in person at our box office."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "Step free access and wheelchairs."
+    },
+    "elevator": {
+     "value": true,
+     "quote": "Elevator access is available to the Dress Circle level, though please note, there are some steps to the Dress Circle bar and seating area."
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "During your visit to Hudson Theatre, Assisted Listening Devices may be picked up at Coat Check in Hudson’s box office lobby."
+    },
+    "note": "Here at Hudson Theatre, we want to make everyone’s theatre experience as comfortable and enjoyable as possible, which is why we ensure our venue and shows are accessible to all."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "We offer a range of wheelchair accessible seats which can be purchased online or in person at our box office."
+    },
+    "stepFree": {
+     "value": null,
+     "quote": null
+    },
+    "elevator": {
+     "value": true,
+     "quote": "Elevator access is available to the Dress Circle level, though please note, there are some steps to the Dress Circle bar and seating area."
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "During your visit to Hudson Theatre, Assisted Listening Devices may be picked up at Coat Check in Hudson’s box office lobby."
+    },
+    "note": "Here at Hudson Theatre, we want to make everyone’s theatre experience as comfortable and enjoyable as possible, which is why we ensure our venue and shows are accessible to all."
+   },
+   "at": "2026-11-26T01:05:48.874Z"
+  },
+  "broadway/minskoff-theatre": {
+   "pages": [
+    "https://broadwaydirect.com/theatre/minskoff-theatre/"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Accessible seating is available for this performance as indicated on the seating map ."
+    },
+    "stepFree": {
+     "value": false,
+     "quote": "The main lobby level of the theatre is not accessible by elevators."
+    },
+    "elevator": {
+     "value": true,
+     "quote": "All levels are accessible via the main lobby elevator that is designated for guests with disabilities."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge and subject to availability."
+    },
+    "note": "The Minskoff Theatre is committed to the needs of patrons with disabilities."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra section of the theatre (pending availability)."
+    },
+    "stepFree": {
+     "value": null,
+     "quote": null
+    },
+    "elevator": {
+     "value": true,
+     "quote": "All levels are accessible via the main lobby elevator that is designated for guests with disabilities."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge and subject to availability."
+    },
+    "note": "The Minskoff Theatre is committed to the needs of patrons with disabilities."
+   },
+   "at": "2026-11-26T01:05:54.254Z"
+  },
+  "broadway/lyric-theatre": {
+   "pages": [
+    "https://us.atgtickets.com/venues/lyric-broadway/venue-info/",
+    "https://us.atgtickets.com/venues/lyric-broadway/access",
+    "https://us.atgtickets.com/accessibility",
+    "https://us.atgtickets.com/accessibility"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "We have designated ADA locations in both the Orchestra and Dress Circle levels, with elevator access available to both."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "The 42nd Street entrance is at street level with access to an elevator to the Orchestra and Dress Circle levels."
+    },
+    "elevator": {
+     "value": true,
+     "quote": "The 42nd Street entrance is at street level with access to an elevator to the Orchestra and Dress Circle levels."
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "In addition to GalaPro, assistive listening devices are available for hearing-impaired guests."
+    },
+    "note": "Step free access and wheelchairs: The entrances to the Lyric Theatre are on 42nd and 43rd Street, with an accessible entrance on 42nd Street."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "We have designated ADA locations in both the Orchestra and Dress Circle levels, with elevator access available to both."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "The 42nd Street entrance is at street level with access to an elevator to the Orchestra and Dress Circle levels."
+    },
+    "elevator": {
+     "value": true,
+     "quote": "The 42nd Street entrance is at street level with access to an elevator to the Orchestra and Dress Circle levels."
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "In addition to GalaPro, assistive listening devices are available for hearing-impaired guests."
+    },
+    "note": "The 42nd Street entrance is at street level with access to an elevator to the Orchestra and Dress Circle levels."
+   },
+   "at": "2026-11-26T01:05:53.165Z"
+  },
+  "broadway/vivian-beaumont-theater": {
+   "pages": [
+    "https://www.lct.org/visit/",
+    "https://www.lct.org/visit/accessibility",
+    "https://www.lct.org/visit/accessibility/vivian-beaumont-theater",
+    "https://www.lct.org/visit/accessibility/mitzi-newhouse-theater",
+    "https://www.lct.org/visit/accessibility/vivian-beaumont-theater",
+    "https://www.lct.org/visit/accessibility/mitzi-newhouse-theater"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "The Beaumont is equipped with wheelchair seating, stair-free seating, transfer-arm seating, companion seating, and low-vision seating."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "The Beaumont is equipped with wheelchair seating, stair-free seating, transfer-arm seating, companion seating, and low-vision seating."
+    },
+    "elevator": {
+     "value": true,
+     "quote": "Elevator access is available just inside the street-level entrance on 65th street via a staffed elevator, located to the right of the large mural."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "The Beaumont is equipped with Induction Hearing Loops ."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The Beaumont is equipped with Induction Hearing Loops ."
+    },
+    "note": "The Beaumont is equipped with wheelchair seating, stair-free seating, transfer-arm seating, companion seating, and low-vision seating."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "The Beaumont is equipped with wheelchair seating, stair-free seating, transfer-arm seating, companion seating, and low-vision seating."
+    },
+    "stepFree": {
+     "value": true,
+     "quote": "The Beaumont is equipped with wheelchair seating, stair-free seating, transfer-arm seating, companion seating, and low-vision seating."
+    },
+    "elevator": {
+     "value": true,
+     "quote": "Vivian Beaumont & Mitzi E. Newhouse Theaters : Elevator access is available just inside the street-level entrance on 65th street via a staffed elevator, located to the right of the large mural."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "The Beaumont is equipped with Induction Hearing Loops"
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "The Beaumont is equipped with Induction Hearing Loops"
+    },
+    "note": "The Beaumont is equipped with wheelchair seating, stair-free seating, transfer-arm seating, companion seating, and low-vision seating."
+   },
+   "at": "2026-11-26T01:06:02.212Z"
+  },
+  "broadway/palace-theatre": {
+   "pages": [
+    "https://broadwaydirect.com/theatre/palace-theatre/"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra, rear mezzanine, and balcony (pending availability)."
+    },
+    "stepFree": {
+     "value": null,
+     "quote": null
+    },
+    "elevator": {
+     "value": true,
+     "quote": "A passenger elevator connects all levels of the Palace Theatre."
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge."
+    },
+    "note": "The Palace Theatre is committed to the needs of patrons with disabilities."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra, rear mezzanine, and balcony (pending availability)."
+    },
+    "stepFree": {
+     "value": null,
+     "quote": null
+    },
+    "elevator": {
+     "value": true,
+     "quote": "A passenger elevator connects all levels of the Palace Theatre."
+    },
+    "hearingLoop": {
+     "value": null,
+     "quote": null
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Headsets for sound augmentation are available at the theatre, free of charge."
+    },
+    "note": "The Palace Theatre is committed to the needs of patrons with disabilities."
+   },
+   "at": "2026-11-26T01:05:54.940Z"
+  },
+  "broadway/neil-simon-theatre": {
+   "pages": [
+    "https://broadwaydirect.com/theatre/neil-simon-theatre/"
+   ],
+   "gemini": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Accessible seating is available for this performance as indicated on the seating map ."
+    },
+    "stepFree": {
+     "value": false,
+     "quote": "The only seats that do not require steps are in the Orchestra."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "There is no elevator or escalator to the mezzanine."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Infrared headsets for sound augmentation are available at the theatre, free of charge and subject to availability."
+    },
+    "note": "The Neil Simon Theatre is committed to the needs of patrons with disabilities."
+   },
+   "openai": {
+    "wheelchair": {
+     "value": true,
+     "quote": "Wheelchair locations are available in the orchestra section of the theatre (pending availability)."
+    },
+    "stepFree": {
+     "value": false,
+     "quote": "The only seats that do not require steps are in the Orchestra."
+    },
+    "elevator": {
+     "value": false,
+     "quote": "There is no elevator or escalator to the mezzanine."
+    },
+    "hearingLoop": {
+     "value": true,
+     "quote": "For patrons with a tele coil, this theatre is equipped with an induction loop."
+    },
+    "assistiveListening": {
+     "value": true,
+     "quote": "Infrared headsets for sound augmentation are available at the theatre, free of charge and subject to availability."
+    },
+    "note": "The Neil Simon Theatre is committed to the needs of patrons with disabilities."
+   },
+   "at": "2026-11-26T01:05:55.088Z"
   }
  },
  "seats": {

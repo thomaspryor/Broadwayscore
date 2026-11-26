@@ -1895,6 +1895,26 @@
    "reason": "quote not found in the official page text"
   }
  ],
+ "broadway/august-wilson-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "models disagree",
+   "gemini": false,
+   "openai": true
+  },
+  {
+   "field": "hearingLoop",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
+  }
+ ],
  "broadway/bernard-b-jacobs-theatre": [
   {
    "field": "stepFree",
@@ -1935,6 +1955,18 @@
    "openai": null
   }
  ],
+ "broadway/circle-in-the-square-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": false,
+   "openai": null
+  },
+  {
+   "field": "hearingLoop",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
  "broadway/ethel-barrymore-theatre": [
   {
    "field": "stepFree",
@@ -1943,12 +1975,50 @@
    "openai": null
   }
  ],
+ "broadway/eugene-o-neill-theatre": [
+  {
+   "field": "hearingLoop",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
+  }
+ ],
+ "broadway/gerald-schoenfeld-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "quote is off topic"
+  }
+ ],
  "broadway/helen-hayes-theater": [
   {
    "field": "stepFree",
    "reason": "models disagree",
    "gemini": false,
    "openai": null
+  }
+ ],
+ "broadway/hudson-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote is about part of the venue, not the whole building"
+  }
+ ],
+ "broadway/john-golden-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": false,
+   "openai": true
+  },
+  {
+   "field": "elevator",
+   "reason": "quote not found in the official page text"
   }
  ],
  "broadway/longacre-theatre": [
@@ -1965,6 +2035,32 @@
    "reason": "quote not found in the official page text"
   }
  ],
+ "broadway/lyric-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "quote is off topic"
+  }
+ ],
+ "broadway/majestic-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": false,
+   "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote not found in the official page text"
+  }
+ ],
+ "broadway/minskoff-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": false,
+   "openai": null
+  }
+ ],
  "broadway/music-box-theatre": [
   {
    "field": "stepFree",
@@ -1975,12 +2071,30 @@
    "reason": "quote not found in the official page text"
   }
  ],
+ "broadway/neil-simon-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "quote is off topic"
+  }
+ ],
  "broadway/samuel-j-friedman-theatre": [
   {
    "field": "stepFree",
    "reason": "models disagree",
    "gemini": true,
    "openai": null
+  }
+ ],
+ "broadway/shubert-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": false,
+   "openai": true
+  },
+  {
+   "field": "elevator",
+   "reason": "quote not found in the official page text"
   }
  ],
  "broadway/st-james-theatre": [
@@ -2014,6 +2128,58 @@
  "broadway/walter-kerr-theatre": [
   {
    "field": "hearingLoop",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
+  }
+ ],
+ "broadway/winter-garden-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
+  },
+  {
+   "field": "elevator",
+   "reason": "quote not found in the official page text"
+  }
+ ],
+ "broadway/lena-horne-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
+  }
+ ],
+ "broadway/gershwin-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": false,
+   "openai": null
+  }
+ ],
+ "broadway/marquis-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": false,
+   "openai": null
+  }
+ ],
+ "broadway/nederlander-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
+  }
+ ],
+ "broadway/richard-rodgers-theatre": [
+  {
+   "field": "stepFree",
    "reason": "models disagree",
    "gemini": true,
    "openai": null

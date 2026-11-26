@@ -137,6 +137,8 @@ test('seat-view links are venue pages on the two sites, never search or index pa
   assert.ok(n >= 5, `only ${n} venues have seat links`);
 });
 
+const websiteOverrides = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/venue-website-overrides.json'), 'utf8'));
+
 test('Broadway houses carry an agreed official website; every key is a real Broadway house', () => {
   const houses = new Set(Object.keys(theaterMeta).filter((k) => k !== '_meta').map(slugifyName));
   const sites = Object.entries(access.venues).filter(([k]) => k.startsWith('broadway/'));
@@ -144,7 +146,8 @@ test('Broadway houses carry an agreed official website; every key is a real Broa
   for (const [key, v] of sites) {
     assert.ok(houses.has(key.slice('broadway/'.length)), `${key} is not a Broadway house in theater-metadata.json`);
     assert.match(v.website, /^https:\/\/[^/\s]+\.[a-z]{2,}(\/[^\s]*)?$/i, `${key}: bad website ${v.website}`);
-    assert.equal(v.how?.website, 'gemini+openai', `${key}: website has no two-model record`);
+    const overridden = Object.values(websiteOverrides.venues).includes(v.website); // BRO-8342: hand-picked, fetched page
+    assert.equal(v.how?.website, overridden ? 'override' : 'gemini+openai', `${key}: website has no two-model record`);
     assert.ok(v.sources?.length > 0, `${key}: no sources`);
   }
 });

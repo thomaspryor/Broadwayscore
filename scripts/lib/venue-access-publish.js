@@ -4,10 +4,15 @@ const { websitesAgree, pickWebsite, pickWithFolded } = require('./venue-info-agr
 const { agreeAccess } = require('./venue-access-agree');
 
 // Only current houses with an agreed official website can enter Broadway research.
-function broadwayWebsites(metadata, raw = {}, published = {}) {
+function broadwayWebsites(metadata, raw = {}, published = {}, overrides = {}) {
   const out = {};
   for (const name of Object.keys(metadata).filter(n => n !== '_meta')) {
     const key = `broadway/${slugify(name)}`;
+    // BRO-8342: a hand-picked, fetched official page beats a missing or homepage-only model vote.
+    if (overrides[name]) {
+      out[key] = { name, website: overrides[name], how: { website: 'override' }, sources: [overrides[name]], researchedAt: raw[name]?.at };
+      continue;
+    }
     const b = raw[name];
     if (!b) {
       const old = published[key];
