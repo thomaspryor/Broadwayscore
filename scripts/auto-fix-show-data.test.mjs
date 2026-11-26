@@ -533,7 +533,7 @@ test('generateSynopsisWithLLM writes from the production page text and grounds a
       evidenceUrls: ['https://www.theatreinchicago.com/all-the-world/13594/'],
     };
     const out = await generateSynopsisWithLLM(show, {
-      fetchHtml: async (u) => { fetched.push(u); return '<meta name="description" content="Two actors find themselves in an ever-shifting relationship during the most emotionally charged time of the year: the holidays.">'; },
+      fetchHtml: async (u) => { fetched.push(u); return '<title>All the World | Northlight</title><meta name="description" content="Two actors find themselves in an ever-shifting relationship during the most emotionally charged time of the year: the holidays.">'; },
     });
     assert.equal(out, plot);
   } finally {

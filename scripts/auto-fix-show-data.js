@@ -360,7 +360,8 @@ async function generateSynopsisWithLLM(show, { fetchHtml = fetchHtmlForSynopsis 
   const grounded = async (text, model) => {
     const g = await groundSynopsis(show, text, {
       search: async q => {
-        const serp = await serpQuery(q, { nbResults: 8 }).catch(() => null);
+        // No page: behave exactly as before (a SERP error propagates). With a page, the page is still evidence.
+        const serp = page ? await serpQuery(q, { nbResults: 8 }).catch(() => null) : await serpQuery(q, { nbResults: 8 });
         const own = page ? [{ title: `${show.title}: this production's own listing page`, snippet: page.text.slice(0, 1500) }] : [];
         return own.concat(serp || []);
       },

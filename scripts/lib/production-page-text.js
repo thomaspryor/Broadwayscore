@@ -124,6 +124,16 @@ function extractProductionPageText(html, maxChars = 2500) {
   return out;
 }
 
+const alnum = (x) => String(x || '').toLowerCase().replace(/&amp;/g, 'and').replace(/[^a-z0-9]+/g, '');
+
+/** True when the page's visible text or title names the show (title of 4+ letters/digits). */
+function pageNamesShow(html, show) {
+  const t = alnum(show && show.title);
+  if (t.length < 4 || typeof html !== 'string') return false;
+  const visible = html.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ');
+  return alnum(visible).includes(t);
+}
+
 /**
  * First candidate page that yields description text, as { url, text }, or
  * null. `fetchHtml(url)` resolves to the page HTML (fetchPage in production);
@@ -133,10 +143,13 @@ async function fetchProductionPageText(show, fetchHtml, { maxUrls = 2 } = {}) {
   for (const url of productionPageUrls(show, maxUrls)) {
     let html;
     try { html = await fetchHtml(url); } catch { html = null; }
+    // Identity: a season index or another show's page can sit in evidenceUrls. Only a page that
+    // names this show may be used (and the text is told to the model as "this production's page").
+    if (!pageNamesShow(html, show)) continue;
     const text = extractProductionPageText(html);
-    if (text) return { url, text };
+    if (text) return { url, text: text.replace(/"{3,}/g, "'") };
   }
   return null;
 }
 
-module.exports = { productionPageUrls, extractProductionPageText, fetchProductionPageText, isReviewUrl };
+module.exports = { pageNamesShow, productionPageUrls, extractProductionPageText, fetchProductionPageText, isReviewUrl };
