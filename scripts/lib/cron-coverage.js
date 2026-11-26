@@ -293,14 +293,31 @@ function livenessVerdict({ crons, runs, now = Date.now(), createdAt }) {
  * @param {number} [n]
  * @returns {{failing:boolean, streak:number, lastFailureAt:string|null}}
  */
-function consecutiveFailureVerdict(runs, n = 3) {
+function consecutiveFailureVerdict(runs, n = 3, minSpanHours = 0) {
   const at = r => Date.parse(r.created_at || r.createdAt);
   const done = (runs || [])
     .filter(r => r && r.conclusion && !['cancelled', 'skipped', 'startup_failure'].includes(r.conclusion))
     .sort((a, b) => (at(b) || 0) - (at(a) || 0));
   let streak = 0;
   while (streak < done.length && ['failure', 'timed_out'].includes(done[streak].conclusion)) streak++;
-  return { failing: streak >= n, streak, lastFailureAt: streak ? (done[0].created_at || done[0].createdAt || null) : null };
+  // BRO-8269: a weekly cron with a next-day retry fails twice in a row inside one week;
+  // require the red runs to span minSpanHours so one bad week is not two strikes.
+  const spanOk = streak < 2 || (at(done[0]) - at(done[streak - 1])) / 3600000 >= minSpanHours;
+  return { failing: streak >= n && spanOk, streak, lastFailureAt: streak ? (done[0].created_at || done[0].createdAt || null) : null };
+}
+
+/**
+ * BRO-8269: how many red scheduled runs in a row make a workflow "dead". Three is
+ * right for a daily job (3 days), but a weekly job needs 3 weeks to reach it: the
+ * Broadway Journal sweep failed 2026-11-09/16/23 and stayed quiet for the full
+ * three weeks. A cron whose worst gap is 5 days or more crosses at 2 runs.
+ * Seasonal crons (no computable cadence) keep the default of 3.
+ */
+const WEEKLY_GAP_HOURS = 120;
+const WEEKLY_MIN_SPAN_HOURS = 96;
+function failureStreakThreshold(cronExprs) {
+  const gap = cronExprs && cronExprs.length ? worstGapHours(cronExprs) : null;
+  return gap !== null && gap >= WEEKLY_GAP_HOURS ? 2 : 3;
 }
 
 // BRO-8235: jobs whose `if:` reads a vars.*_DISABLED kill switch. A job skipped by its own
@@ -322,7 +339,7 @@ function findJobLevelKillSwitches(yamlText) {
 
 module.exports = {
   findJobLevelKillSwitches,
-  consecutiveFailureVerdict,
+  consecutiveFailureVerdict, failureStreakThreshold, WEEKLY_MIN_SPAN_HOURS,
   isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt,
   parseExemptEntries, findUnjustifiedExempt, findFalseDigestClaims, findDigestDrift,
   parseField, worstGapHours, extractCrons, classifyAlertPaths, livenessVerdict,

@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt,
   parseExemptEntries, findUnjustifiedExempt, findFalseDigestClaims, findDigestDrift,
-  worstGapHours, extractCrons, classifyAlertPaths, livenessVerdict, consecutiveFailureVerdict,
+  worstGapHours, extractCrons, classifyAlertPaths, livenessVerdict, consecutiveFailureVerdict, failureStreakThreshold, WEEKLY_MIN_SPAN_HOURS,
 } = require('./cron-coverage.js');
 const { DIGEST_CRONS, DIGEST_ONLY } = require('./health-digest-crons.js');
 const fs = require('node:fs');
@@ -207,6 +207,30 @@ test('consecutiveFailureVerdict: 3 finished scheduled failures in a row is dead 
   // Too little history is not a streak.
   assert.equal(consecutiveFailureVerdict([r('failure', '11'), r('failure', '18')]).failing, false);
   assert.equal(consecutiveFailureVerdict([]).failing, false);
+});
+
+test('failureStreakThreshold: weekly crons go dead after 2 red runs, daily after 3 (BRO-8269)', () => {
+  assert.equal(failureStreakThreshold(['7 14 * * 1']), 2); // Broadway Journal sweep, Mondays
+  assert.equal(failureStreakThreshold(['0 12 1 * *']), 2); // monthly
+  assert.equal(failureStreakThreshold(['0 6 * * *']), 3);
+  assert.equal(failureStreakThreshold(['0 6 * * 1', '0 6 * * 4']), 3); // twice a week: gap under 5 days
+  assert.equal(failureStreakThreshold([]), 3);
+  assert.equal(failureStreakThreshold(['0 9 * 4-6 *']), 3); // seasonal: no computable cadence
+  // Replay of 2026-11-09/16 sweep failures: the weekly threshold flags it a week sooner.
+  const r = d => ({ conclusion: 'failure', created_at: `2026-11-${d}T14:07:00Z` });
+  assert.equal(consecutiveFailureVerdict([r('09'), r('16')], failureStreakThreshold(['7 14 * * 1'])).failing, true);
+  assert.equal(consecutiveFailureVerdict([r('09'), r('16')]).failing, false);
+});
+
+test('weekly threshold needs the red runs to span days: a same-week retry is one strike (BRO-8269)', () => {
+  const r = (d, h = '14') => ({ conclusion: 'failure', created_at: `2026-11-${d}T${h}:07:00Z` });
+  const crons = ['7 14 * * 1,2']; // Monday run + Tuesday retry: worst gap 6 days
+  assert.equal(failureStreakThreshold(crons), 2);
+  assert.equal(consecutiveFailureVerdict([r('02'), r('03')], 2, WEEKLY_MIN_SPAN_HOURS).failing, false);
+  assert.equal(consecutiveFailureVerdict([r('02'), r('09')], 2, WEEKLY_MIN_SPAN_HOURS).failing, true);
+  // Boundary: exactly 5 days between fires crosses the weekly gap, 4 days does not.
+  assert.equal(failureStreakThreshold(['0 6 * * 1,6']), 2); // Mon+Sat: worst gap exactly 120h
+  assert.equal(failureStreakThreshold(['0 6 * * 1,5']), 3); // Mon+Fri: worst gap 96h
 });
 
 test('findJobLevelKillSwitches flags a job-level vars.*_DISABLED gate, not step-level ones (BRO-8235)', () => {

@@ -458,8 +458,9 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Show status updates may be stalled.' },
   { match: /^Cron: Collect Review Texts$/, urgency: 'low', workflow: 'collect-review-texts.yml',
     humanFallback: 'Review text collection may be stalled.' },
-  { match: /^Cron: failing every scheduled run$/, urgency: 'low',
-    humanAction: 'A scheduled job has failed its last 3 runs in a row and nobody is being paged about it. The row names the workflows; a fix session picks it up from the board.' },
+  // BRO-8269: was 'low', which isActionableResult treats as never-card: six dead crons sat red with no card.
+  { match: /^Cron: failing every scheduled run$/, urgency: 'this-week',
+    humanAction: 'A scheduled job has failed its last runs in a row (3 for a daily job, 2 for a weekly one) and nobody is being paged about it. The row names the workflows; a fix session picks it up from the board.' },
   { match: /^Cron:/, urgency: 'low',
     ownerText: "A scheduled job has not run recently. It will likely run on its next schedule. Nothing is needed from you.",
     workerInstruction: "If the cron row persists, find why the scheduled jobs are not running and fix it." },
@@ -2740,7 +2741,7 @@ function checkScheduledFailureStreak() {
     return [{ name: NAME, status: 'warn', message: 'Skipped: GitHub API headroom low' }];
   }
   return [runCheck(NAME, () => {
-    const { isScheduledWorkflow, parseExemptEntries, classifyAlertPaths, consecutiveFailureVerdict } = require('./lib/cron-coverage');
+    const { isScheduledWorkflow, parseExemptEntries, classifyAlertPaths, consecutiveFailureVerdict, failureStreakThreshold, WEEKLY_MIN_SPAN_HOURS, extractCrons } = require('./lib/cron-coverage');
     const wfDir = path.join(__dirname, '..', '.github', 'workflows');
     const exemptFile = path.join(__dirname, '..', '.cron-health-exempt.txt');
     const paging = new Set([...fs.readFileSync(path.join(wfDir, 'check-cron-health.yml'), 'utf8')
@@ -2758,7 +2759,9 @@ function checkScheduledFailureStreak() {
       if (p === 'paged' || p === 'digest') continue;
       try {
         const raw = cachedShell(runCacheKey(`liveness:${wf}`), ghRunsQuery(wf, { limit: 5, event: 'schedule' }));
-        const v = consecutiveFailureVerdict(raw ? JSON.parse(raw) : []);
+        // BRO-8269: weekly crons go dead after 2 red runs, not 3 weeks of them.
+        const n = failureStreakThreshold(extractCrons(fs.readFileSync(path.join(wfDir, wf), 'utf8')));
+        const v = consecutiveFailureVerdict(raw ? JSON.parse(raw) : [], n, n === 2 ? WEEKLY_MIN_SPAN_HOURS : 0);
         checked++;
         if (v.failing) failing.push(`${wf} (${v.streak}+ in a row, last ${v.lastFailureAt ? v.lastFailureAt.slice(0, 10) : '?'})`);
       } catch (err) {
@@ -2767,7 +2770,7 @@ function checkScheduledFailureStreak() {
     }
     const lookups = errors.length ? ` ${errors.length} lookup(s) failed: ${errors.slice(0, 3).join('; ')}.` : '';
     if (failing.length) {
-      return { name: NAME, status: 'warn', message: `${failing.length} of ${checked} scheduled workflow(s) failed their last 3 scheduled runs: ${failing.slice(0, 10).join('; ')}${failing.length > 10 ? `; +${failing.length - 10} more` : ''}.${lookups}`,
+      return { name: NAME, status: 'warn', message: `${failing.length} of ${checked} scheduled workflow(s) failed their last scheduled runs (3 in a row, 2 for weekly crons): ${failing.slice(0, 10).join('; ')}${failing.length > 10 ? `; +${failing.length - 10} more` : ''}.${lookups}`,
         hint: 'Fix the root cause, or remove its schedule and say why in the workflow header. A job that is red on every run is dead, not flaky.' };
     }
     if (errors.length > 5) return { name: NAME, status: 'warn', message: `${errors.length} lookups failed: ${errors.slice(0, 3).join('; ')}` };
