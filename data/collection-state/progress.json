@@ -390,7 +390,10 @@
     "mexodus-off-broadway-2026/dailybeast--tim-teeman.json",
     "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
     "broken-glass-off-west-end-2026/theatre-weekly--unknown.json",
-    "night-side-songs-off-broadway-2026/timeout--tim-teeman.json"
+    "night-side-songs-off-broadway-2026/timeout--tim-teeman.json",
+    "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+    "much-ado-about-nothing-2026/npr--unknown.json",
+    "now-you-see-me-live-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "_superseded-misattributed/coal-country-off-broadway-2022--theatermania--hayley-levitt--1793811776967.json",
@@ -612,7 +615,9 @@
     "youre-a-good-man-charlie-brown-off-broadway-2026/theater-pizzazz--sandi-durell.json",
     "every-brilliant-thing-2026/thestage--dave-fargnoli.json",
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
-    "spread-off-broadway-2026/whatsonstage--michael-coveney.json"
+    "spread-off-broadway-2026/whatsonstage--michael-coveney.json",
+    "other-bodies-off-broadway-2026/talkinbroadway--unknown.json",
+    "seven-guitars-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -847,7 +852,9 @@
       "dog-day-afternoon-2026/people--dave-quinn.json",
       "public-charge-off-broadway-2026/timeout--unknown.json",
       "every-brilliant-thing-2026/tennessean--anthony-thompson.json",
-      "night-side-songs-off-broadway-2026/timeout--tim-teeman.json"
+      "night-side-songs-off-broadway-2026/timeout--tim-teeman.json",
+      "its-a-wonderful-life-a-live-radio-play-2026/theater-pizzazz--unknown.json",
+      "now-you-see-me-live-2026/culturesauce--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1042,11 +1049,12 @@
       "children-of-the-night-off-west-end-2026/londonpubtheatres--chris-lilly.json",
       "mexodus-off-broadway-2026/dailybeast--tim-teeman.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
-      "broken-glass-off-west-end-2026/theatre-weekly--unknown.json"
+      "broken-glass-off-west-end-2026/theatre-weekly--unknown.json",
+      "much-ado-about-nothing-2026/npr--unknown.json"
     ]
   },
   "startTime": "2026-11-26T11:02:00.253Z",
-  "lastProcessed": "spread-off-broadway-2026/whatsonstage--michael-coveney.json",
+  "lastProcessed": "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
   "log": [
     {
       "t": "2026-11-26T11:11:38.248Z",
@@ -1172,6 +1180,28 @@
       "event": "bb-session",
       "session": "0e63bfcc",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
+    },
+    {
+      "t": "2026-11-26T14:37:20.605Z",
+      "event": "bb-session",
+      "session": "4bcc1b84",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656173"
+    },
+    {
+      "t": "2026-11-26T14:37:21.069Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-26T14:37:49.367Z",
+      "event": "bb-session",
+      "session": "e79696cd",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656176"
+    },
+    {
+      "t": "2026-11-26T14:37:49.824Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
