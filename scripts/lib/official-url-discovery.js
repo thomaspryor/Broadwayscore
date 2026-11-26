@@ -222,7 +222,7 @@ const PAGE_CONFIRMED_CATEGORIES = new Set(['off-broadway', 'off-west-end']);
 
 async function defaultFetchHtml(url) {
   const { fetchPage } = require('./scraper');
-  const r = await fetchPage(url, {});
+  const r = await fetchPage(url, { directOnly: true }); // free HTTP only; a blocked page fails closed
   return r && r.content ? r.content : null;
 }
 
@@ -230,7 +230,7 @@ async function pageConfirmsProduction(show, url, fetchHtml) {
   if (!PAGE_CONFIRMED_CATEGORIES.has(show.category || 'broadway')) return true;
   const { pageNamesShow } = require('./production-page-text');
   let html = null;
-  try { html = await fetchHtml(url); } catch { html = null; }
+  try { html = await fetchHtml(url); } catch (e) { console.log(`  ⚠ could not fetch ${url} to confirm it (${e.message}); not stored`); }
   return pageNamesShow(html, show, url);
 }
 
