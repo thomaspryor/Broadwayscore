@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8385",
   "planId": "fa2777c3-3031-4007-b3ed-02aad54fb63f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-26T19:27:57.135Z",
   "submitter": {
     "name": null,
@@ -26,5 +26,14 @@
         "description": "shows.json: dick-whittington-adults-only-off-west-end-2026.akaTitles"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-26T19:40:38.887Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: akaTitles updated for dick-whittington-adults-only-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
