@@ -193,6 +193,15 @@ describe('ownContentFlagExclusion (BRO-8346)', () => {
     const d = basePayload({ wrongProduction: true, duplicateOf: 'twin.json' });
     assert.strictEqual(ownContentFlagExclusion(d, {}, path.join(tmpDir, 'a.json')), 'wrongProduction');
   });
+  test('self-flagged wrongShow and nonReview copies are reported too', () => {
+    const f = path.join(tmpDir, 'a.json');
+    assert.strictEqual(ownContentFlagExclusion(basePayload({ wrongShow: true, duplicateOf: 't.json' }), {}, f), 'wrongShow');
+    assert.strictEqual(ownContentFlagExclusion(basePayload({ isNonReview: true, duplicateOf: 't.json' }), {}, f), 'nonReview');
+  });
+  test('a manually cleared wrongProduction flag is not reported', () => {
+    const d = basePayload({ wrongProduction: true, wrongProductionManualClear: true, duplicateOf: 't.json' });
+    assert.strictEqual(ownContentFlagExclusion(d, {}, path.join(tmpDir, 'a.json')), null);
+  });
   test('an unflagged duplicateOf copy is still a candidate (null)', () => {
     const d = basePayload({ duplicateOf: 'twin.json' });
     assert.strictEqual(ownContentFlagExclusion(d, {}, path.join(tmpDir, 'a.json')), null);
