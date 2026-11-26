@@ -555,4 +555,82 @@ test('BRO-8276: reconcile reads a recovered key that was renamed afterwards from
   // Removed with no stamped successor: still reopened (unreadable).
   fs.unlinkSync(path.join(dir, 'show', 'x--named.json'));
   assert.equal(L2.reconcileRecovered([rec], (k) => L2.readReviewFollowingRename(dir, k)).length, 1);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('BRO-8276: reconcile follows unstamped outlet moves using the recovered article and named critic', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rt-outlet-move-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(dir, 'show'));
+  const key = 'show/old-outlet--named-critic.json';
+  const text = 'Recovered review text. '.repeat(200);
+  const url = 'https://www.example.com/review/';
+  const rec = L.makeRow({ reviewKey: key, strategy: 'ARCHIVE', outcome: 'recovered', url, bytesAfter: text.length });
+  const successor = { outletId: 'new-outlet', criticName: 'Named Critic', url: 'http://example.com/review?utm_source=newsletter', fullText: text, contentTier: 'invalid', wrongProduction: true };
+  const file = path.join(dir, 'show/new-outlet--named-critic.json');
+  fs.writeFileSync(file, JSON.stringify(successor));
+  // A shorter unknown-byline copy of the same article cannot shadow the named successor.
+  fs.writeFileSync(path.join(dir, 'show/new-outlet--unknown.json'), JSON.stringify({ ...successor, criticName: 'Unknown', fullText: 'teaser' }));
+  const read = (k, row) => L.readReviewFollowingRename(dir, k, row);
+  assert.deepEqual(L.reconcileRecovered([rec], read), [], 'the recovered text survives the outlet move');
+  assert.deepEqual(read(key, rec), successor, 'resolution preserves the stored eligibility flags');
+  assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), successor, 'read-only');
+  fs.writeFileSync(file, JSON.stringify({ ...successor, fullText: 'teaser' }));
+  assert.equal(L.reconcileRecovered([rec], read)[0].reason, 'recovered_text_lost', 'a real loss on the successor still reopens');
+});
+
+test('BRO-8276: unstamped unknown-byline moves require the same outlet and a unique article', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rt-unknown-move-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(dir, 'show'));
+  const key = 'show/outlet--unknown.json';
+  const rec = { url: 'https://example.com/review' };
+  const successor = { outletId: 'outlet', criticName: 'Named Critic', url: rec.url, fullText: 'recovered' };
+  const file = path.join(dir, 'show/outlet--named-critic.json');
+  fs.writeFileSync(path.join(dir, 'show/other--other-critic.json'), JSON.stringify({ ...successor, outletId: 'other', criticName: 'Other Critic' }));
+  assert.equal(L.readReviewFollowingRename(dir, key, rec), null, 'unknown cannot cross outlets');
+  fs.writeFileSync(file, JSON.stringify(successor));
+  assert.deepEqual(L.readReviewFollowingRename(dir, key, rec), successor);
+  fs.writeFileSync(path.join(dir, 'show/outlet--other-critic.json'), JSON.stringify({ ...successor, criticName: 'Other Critic' }));
+  assert.equal(L.readReviewFollowingRename(dir, key, rec), null, 'two possible critics are ambiguous');
+});
+
+test('BRO-8276: unstamped successor lookup refuses unrelated or ambiguous records', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rt-move-refusal-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(dir, 'show'));
+  fs.mkdirSync(path.join(dir, 'other-show'));
+  const key = 'show/old-outlet--named-critic.json';
+  const rec = { url: 'https://example.com/review' };
+  const successor = { outletId: 'new-outlet', criticName: 'Named Critic', url: rec.url, fullText: 'recovered' };
+  const file = path.join(dir, 'show/new-outlet--named-critic.json');
+  const read = (row = rec) => L.readReviewFollowingRename(dir, key, row);
+  fs.writeFileSync(path.join(dir, 'other-show/new-outlet--named-critic.json'), JSON.stringify(successor));
+  assert.equal(read(), null, 'never cross shows');
+  fs.writeFileSync(file, JSON.stringify({ ...successor, criticName: 'Other Critic' }));
+  assert.equal(read(), null, 'stored byline conflicts with matching filename');
+  for (const field of ['criticName', 'outletId']) {
+    fs.writeFileSync(file, JSON.stringify({ ...successor, [field]: 42 }));
+    assert.equal(read(), null, `malformed ${field} cannot abort reconciliation`);
+  }
+  fs.writeFileSync(file, JSON.stringify(successor));
+  assert.equal(read(null), null, 'missing recovered row cannot establish identity');
+  for (const url of [undefined, '', 'undefined', 'https://', 'not-a-url', 'https://example.com/re view', 42, 'https://example.com/other']) {
+    assert.equal(read({ url }), null, `unusable or different recovered URL: ${url}`);
+    fs.writeFileSync(file, JSON.stringify({ ...successor, url }));
+    assert.equal(read(), null, `unusable or different successor URL: ${url}`);
+    fs.writeFileSync(file, JSON.stringify(successor));
+  }
+  const second = path.join(dir, 'show/another-outlet--named-critic.json');
+  fs.writeFileSync(second, JSON.stringify({ ...successor, outletId: 'another-outlet' }));
+  assert.equal(read(), null, 'two unstamped matches are ambiguous');
+  fs.writeFileSync(file, JSON.stringify({ ...successor, _renamedFrom: { file: key } }));
+  fs.writeFileSync(second, JSON.stringify({ ...successor, url: 'https://example.com/other', _renamedFrom: { file: key } }));
+  assert.equal(read(), null, 'ambiguous stamps cannot fall through to URL matching');
+  fs.unlinkSync(second);
+  assert.equal(read({}).fullText, successor.fullText, 'a unique stamp still works without a recovered URL');
+  fs.writeFileSync(path.join(dir, key), JSON.stringify({ fullText: 'direct' }));
+  assert.equal(read().fullText, 'direct', 'the existing path wins');
+  fs.writeFileSync(path.join(dir, key), '{broken');
+  assert.equal(read(), null, 'a corrupt existing file still reopens');
 });

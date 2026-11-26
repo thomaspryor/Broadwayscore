@@ -497,18 +497,47 @@ function supersededByLaterFetch(review, recoveredRow) {
  * BRO-8276: read a review by its ledger key, following a rename. A key whose
  * file was renamed after its text landed (byline resolved: --unknown ->
  * --<critic>) is read from the file stamped `_renamedFrom.file === key` in
- * the same show dir, so reconcile does not call a moved text lost.
+ * the same show dir. Duplicate deletion and outlet corrections may leave no
+ * stamp: use the recovered article plus a known critic to find its surviving
+ * copy. An unknown critic may only match within the same outlet. Ambiguous
+ * matches stay unreadable; this never changes the successor's flags or text.
  * @returns {object|null}
  */
-function readReviewFollowingRename(dir, key) {
+function readReviewFollowingRename(dir, key, recoveredRow = {}) {
   const read = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } };
   const direct = path.join(dir, key);
   if (fs.existsSync(direct)) return read(direct);
   const showDir = path.join(dir, path.dirname(key));
   let names = [];
   try { names = fs.readdirSync(showDir).filter((n) => n.endsWith('.json')); } catch { return null; }
-  const hits = names.map((n) => read(path.join(showDir, n))).filter((r) => r && r._renamedFrom && r._renamedFrom.file === key);
-  return hits.length === 1 ? hits[0] : null;
+  const records = names.map((name) => ({ name, review: read(path.join(showDir, name)) })).filter((r) => r.review);
+  const stamped = records.filter(({ review }) => review._renamedFrom && review._renamedFrom.file === key);
+  if (stamped.length) return stamped.length === 1 ? stamped[0].review : null;
+
+  const { normalizeUrl, normalizeCritic, normalizeOutlet } = require('./review-normalization');
+  // urlCanonicallyChanged treats malformed URLs as unchanged, so it cannot
+  // establish article identity here. Validate before comparing canonical URLs.
+  const articleKey = (url) => {
+    if (typeof url !== 'string' || !/^https?:\/\//i.test(url) || /\s/.test(url) || url.includes('undefined')) return null;
+    try { new URL(url); return normalizeUrl(url); } catch { return null; }
+  };
+  const url = articleKey(recoveredRow && recoveredRow.url);
+  if (!url) return null;
+  const [outlet, critic] = path.basename(key, '.json').split('--');
+  if (!outlet || !critic) return null;
+  const criticId = normalizeCritic(critic);
+  const outletId = normalizeOutlet(outlet);
+  const hits = records.filter(({ name, review }) => {
+    if (articleKey(review.url) !== url) return false;
+    if (review.criticName != null && typeof review.criticName !== 'string') return false;
+    if (review.outletId != null && typeof review.outletId !== 'string') return false;
+    const [fileOutlet, fileCritic] = path.basename(name, '.json').split('--');
+    // Stored bylines take precedence over stale filenames after corrections.
+    const candidateCritic = normalizeCritic(review.criticName || fileCritic);
+    if (criticId !== 'unknown') return candidateCritic === criticId;
+    return normalizeOutlet(review.outletId || fileOutlet) === outletId;
+  });
+  return hits.length === 1 ? hits[0].review : null;
 }
 
 /**
@@ -517,7 +546,7 @@ function readReviewFollowingRename(dir, key) {
  * bytesAfter; tier !== complete for rows without bytesAfter) gets a 'reopened'
  * row (which also resets its strategy counts). A file that cannot be read reopens too.
  * @param {Array} rows all ledger rows
- * @param {(reviewKey:string) => object|null} readReview
+ * @param {(reviewKey:string, recoveredRow:object) => object|null} readReview
  * @returns {Array} reopen rows to append
  */
 function reconcileRecovered(rows, readReview, nowIso = new Date().toISOString()) {
@@ -525,7 +554,7 @@ function reconcileRecovered(rows, readReview, nowIso = new Date().toISOString())
   for (const [key, list] of indexRows(rows)) {
     const last = list[list.length - 1];
     if (!last || last.outcome !== 'recovered') continue;
-    const review = readReview(key);
+    const review = readReview(key, last);
     const tier = review ? review.contentTier || null : null;
     // The recovery is intact while the text it wrote is still on disk. A recovered
     // text may honestly be "truncated" (a paywalled outlet's partial body), so the
