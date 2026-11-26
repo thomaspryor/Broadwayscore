@@ -12331,7 +12331,7 @@
       "resolveReason": "absent"
     },
     "star-band:regressions": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Star-band detector: 1 review(s) flagged for anchored re-score",
       "firstSeen": "2026-10-06T14:36:11.815Z",
@@ -12342,7 +12342,9 @@
       "notifyCount": 39,
       "cardId": null,
       "linearIdentifier": "BRO-8298",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-26T08:59:57.170Z",
+      "resolveReason": "detector clean over the whole corpus (BRO-7512)"
     },
     "land:land/job/linear-BRO-4786-muwt2lon": {
       "status": "resolved",
