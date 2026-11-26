@@ -1955,6 +1955,14 @@
    "openai": null
   }
  ],
+ "broadway/lena-horne-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
+  }
+ ],
  "broadway/circle-in-the-square-theatre": [
   {
    "field": "stepFree",
@@ -1987,6 +1995,14 @@
   {
    "field": "stepFree",
    "reason": "quote is off topic"
+  }
+ ],
+ "broadway/gershwin-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": false,
+   "openai": null
   }
  ],
  "broadway/helen-hayes-theater": [
@@ -2053,6 +2069,14 @@
    "reason": "quote not found in the official page text"
   }
  ],
+ "broadway/marquis-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": false,
+   "openai": null
+  }
+ ],
  "broadway/minskoff-theatre": [
   {
    "field": "stepFree",
@@ -2071,10 +2095,26 @@
    "reason": "quote not found in the official page text"
   }
  ],
+ "broadway/nederlander-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
+  }
+ ],
  "broadway/neil-simon-theatre": [
   {
    "field": "stepFree",
    "reason": "quote is off topic"
+  }
+ ],
+ "broadway/richard-rodgers-theatre": [
+  {
+   "field": "stepFree",
+   "reason": "models disagree",
+   "gemini": true,
+   "openai": null
   }
  ],
  "broadway/samuel-j-friedman-theatre": [
@@ -2143,46 +2183,6 @@
   {
    "field": "elevator",
    "reason": "quote not found in the official page text"
-  }
- ],
- "broadway/lena-horne-theatre": [
-  {
-   "field": "stepFree",
-   "reason": "models disagree",
-   "gemini": true,
-   "openai": null
-  }
- ],
- "broadway/gershwin-theatre": [
-  {
-   "field": "stepFree",
-   "reason": "models disagree",
-   "gemini": false,
-   "openai": null
-  }
- ],
- "broadway/marquis-theatre": [
-  {
-   "field": "stepFree",
-   "reason": "models disagree",
-   "gemini": false,
-   "openai": null
-  }
- ],
- "broadway/nederlander-theatre": [
-  {
-   "field": "stepFree",
-   "reason": "models disagree",
-   "gemini": true,
-   "openai": null
-  }
- ],
- "broadway/richard-rodgers-theatre": [
-  {
-   "field": "stepFree",
-   "reason": "models disagree",
-   "gemini": true,
-   "openai": null
   }
  ]
 }

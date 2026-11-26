@@ -231,7 +231,7 @@ async function main() {
 
   if (phases.has('access')) {
     const withSite = venues.filter((v) => v.website);
-    const todo = withSite.filter((v) => args.refresh || !raw.access[v.key] || !raw.access[v.key].gemini || !raw.access[v.key].openai || raw.access[v.key].gemini.error || raw.access[v.key].openai.error);
+    const todo = withSite.filter((v) => args.refresh || !raw.access[v.key] || (raw.access[v.key].pages?.[0] && raw.access[v.key].pages[0] !== v.website && /^broadway\//.test(v.key)) || !raw.access[v.key].gemini || !raw.access[v.key].openai || raw.access[v.key].gemini.error || raw.access[v.key].openai.error);
     console.log(`access: ${withSite.length} venues with a website, to research: ${todo.length}, cap $${ask.spend.maxUsd}`);
     let done = 0;
     await ask.pool(todo, workers, async (v) => {
