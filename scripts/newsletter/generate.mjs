@@ -50,7 +50,7 @@ const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoup
 const { recoupClockStart, isConvertedToCommercial } = cjsRequire(path.join(repo, 'scripts/lib/commercial-conversion'));
 const { newsletterWeeksToRecoup } = cjsRequire(path.join(repo, 'scripts/lib/recoup-reported-after-closing'));
 const { isEstimatedCapitalization, isMaximumCapitalization } = cjsRequire(path.join(repo, 'scripts/lib/public-source-text'));
-const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
+const { isUkRegionalVenue, getRegionalCountry } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
 const { getSeasonForDate, getSeasonDates, isEligibleForSeasonStanding } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
 // NEWSLETTER_TEST_REVIEWS_PATH / NEWSLETTER_TEST_SHOWS_PATH /
 // NEWSLETTER_TEST_COMPOSITES_DIR: TEST-ONLY overrides
@@ -890,7 +890,7 @@ function offBroadwayOpenings() {
 function outOfTownOpenings() {
   if (IS_WE) return { html: null, list: [] };
   const withScore = shows
-    .filter(s => s.category === 'regional' && !isOperaShow(s) && !isUkRegionalVenue(s.venue)
+    .filter(s => s.category === 'regional' && !isOperaShow(s) && getRegionalCountry(s.venue) === 'US'
       && notFeatured(s.id) && !excludedShowIds.has(s.id))
     .map(s => {
       const scored = reviews.filter(r => r.showId === s.id && r.assignedScore != null && r.publishDate);

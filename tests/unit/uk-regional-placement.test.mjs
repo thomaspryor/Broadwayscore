@@ -7,7 +7,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { isUkRegionalShow } from '../../src/lib/market-utils';
+import { isUkRegionalShow, isUsRegionalShow } from '../../src/lib/market-utils';
 import { isLocalOnlyShow } from '../../src/lib/local-market';
 import { getRegionalShows, getUkRegionalShows, getAllShows } from '../../src/lib/data-core';
 import { BROWSE_PAGES } from '../../src/config/browse-pages';
@@ -108,7 +108,7 @@ test('FAQ copy: a UK flagship show is "in the UK", a US tryout stays "in a regio
 });
 
 test('related shows never mix UK flagship shows with US tryouts', () => {
-  const isUs = (s) => s.category === 'regional' && !isUkRegionalShow(s);
+  const isUs = (s) => isUsRegionalShow(s);
   for (const s of getUkRegionalShows()) {
     for (const r of [...getRelatedShowsOpen(s), ...getRelatedShowsClosed(s)]) {
       assert.equal(isUs(r), false, `${s.id} (UK) recommends US tryout ${r.id}`);
@@ -136,7 +136,7 @@ test('second stages of listed UK houses count as UK, and the scoring prompt agre
 test('show page <title> labels a UK house "in the UK", not as a regional (US) production', async () => {
   const { readFileSync } = await import('node:fs');
   const src = readFileSync('src/app/show/[slug]/page.tsx', 'utf8');
-  assert.match(src, /isUkRegionalMeta \? 'in the UK' : isRegionalMeta \? 'in a regional production'/);
+  assert.match(src, /isUkRegionalMeta \? 'in the UK' : isAuRegionalMeta \? 'in Australia' : isRegionalMeta \? 'in a regional production'/);
 });
 
 test('UK flagship shows read "UK Regional" in search/alt text; the US shelf applies the review floor (BRO-5269)', async () => {

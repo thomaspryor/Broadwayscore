@@ -21,7 +21,7 @@ import type { Director, Theater, TheaterStructuredTips, TheaterVenueScores, Thea
 import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
-import { isUkRegionalShow } from './market-utils';
+import { isUkRegionalShow, isAuRegionalShow, isUsRegionalShow } from './market-utils';
 import { categoryToCityBucket } from './city-bucket';
 import { belongsOnWestEndListing, belongsOnOffWestEndHub } from './genre';
 import { isCategoryEnabled } from './markets';
@@ -256,7 +256,12 @@ export function getOffBroadwayShows(): ComputedShow[] {
  * 2026-10-13).
  */
 export function getRegionalShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category === 'regional' && !isUkRegionalShow(show) && !isLocalOnlyShow(show));
+  return getAllShows().filter(show => show.category === 'regional' && isUsRegionalShow(show) && !isLocalOnlyShow(show));
+}
+
+/** Regional productions at Australian houses (BRO-8389 pilot). Kept off the Pre-Broadway shelf/page. */
+export function getAuRegionalShows(): ComputedShow[] {
+  return getAllShows().filter(show => show.category === 'regional' && isAuRegionalShow(show) && !isLocalOnlyShow(show));
 }
 
 /** Regional productions at flagship UK houses outside London (RSC, Chichester, Royal Exchange, ...). */
@@ -1420,7 +1425,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
   const allShows = config.source === 'west-end' ? getWestEndShows()
     : config.source === 'off-broadway' ? getOffBroadwayShows()
     : config.source === 'off-west-end' ? getOffWestEndShows()
-    : config.source === 'regional' ? (config.regionalScope === 'uk' ? getUkRegionalShows() : getRegionalShows())
+    : config.source === 'regional' ? (config.regionalScope === 'uk' ? getUkRegionalShows() : config.regionalScope === 'au' ? getAuRegionalShows() : getRegionalShows())
     : config.source === 'tour' ? getTourBrowseShows()
     : getBroadwayShows();
 
@@ -1557,6 +1562,8 @@ function getCity(show: { category?: string; venue?: string; localOnly?: boolean;
   // of the site (Beyond London shelf, BRO-5103), so they relate to London shows
   // and never to US tryouts.
   if (isUkRegionalShow(show)) return 'london';
+  // Australian productions relate only to each other (BRO-8389), never to US tryouts.
+  if (isAuRegionalShow(show)) return 'au';
   // 'regional' (non-NYC US tryouts) intentionally returns its own bucket ('regional'),
   // so related-shows only pull other regional shows — never NYC/London productions.
   // Unrecognized categories fold into 'nyc' (BRO-2485) rather than a dead-end own bucket.

@@ -1,7 +1,7 @@
 // SEO Utilities - Structured Data Schemas for Rich Search Results
 
 import { ComputedShow } from './engine';
-import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReviews, getMarketLabel, getUkRegionalVenueCity } from './venue-classification';
+import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReviews, getMarketLabel, getUkRegionalVenueCity, getAuRegionalVenueCity } from './venue-classification';
 import { isOperaShow, getOperaHouseSuffix } from './show-market';
 import { getGoldThreshold } from '@/config/score-buckets';
 import { getVisibleTicketLinks } from './ticket-utils';
@@ -13,7 +13,7 @@ import { shortCity, stopPlace, stopKey, type TourNowNext, type TourStop } from '
 import { isTourScored, isTourScoreHidden } from './tour-listing';
 import { displaysCriticScore } from './critic-score-display';
 import { getAudienceGrade, getTotalAudienceReviews, FULL_CONFIDENCE_AUDIENCE_REVIEWS } from './audience-grade-utils';
-import { getCurrencySymbol } from './market-utils';
+import { getCurrencySymbol, isAuRegionalShow } from './market-utils';
 import type { AudienceBuzzData, ShowLotteryRush } from './data-types';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
@@ -488,7 +488,7 @@ export function generateItemListSchema(items: {
 
       // Location (required for TheaterEvent per Google structured data)
       const itemCountry = getMarketCountry(item.category, item.venue);
-      const ukRegionalCity = getUkRegionalVenueCity(item.category, item.venue);
+      const regionalCity = getUkRegionalVenueCity(item.category, item.venue) ?? getAuRegionalVenueCity(item.category, item.venue);
       event.location = item.venue ? {
         '@type': 'PerformingArtsTheater',
         name: item.venue,
@@ -497,7 +497,7 @@ export function generateItemListSchema(items: {
           // No theaterAddress: a bare venue name isn't a claim about country, but a UK
           // regional venue (RSC, Chichester) needs its city/country made explicit —
           // otherwise it falls through to the New York/US default below (#1437).
-          : ukRegionalCity ? { '@type': 'PostalAddress', addressLocality: ukRegionalCity, addressCountry: itemCountry } : item.venue,
+          : regionalCity ? { '@type': 'PostalAddress', addressLocality: regionalCity, addressCountry: itemCountry } : item.venue,
       } : unannouncedTheater(item.category, itemCountry);
 
       // Dates
@@ -638,7 +638,7 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
   const isTour = show.category === 'tour';
   const isOpera = isOperaShow(show);
   // A UK flagship show (RSC, Chichester, ...) is not a Broadway tryout (BRO-5103).
-  const regionalLabel = getUkRegionalVenueCity(show.category, show.venue) ? 'in the UK' : 'in a regional production';
+  const regionalLabel = getUkRegionalVenueCity(show.category, show.venue) ? 'in the UK' : isAuRegionalShow(show) ? 'in Australia' : 'in a regional production';
   const marketLabel = isOpera ? getOperaHouseSuffix(show) : isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? regionalLabel : isTour ? 'on tour' : 'on Broadway';
 
   const faqs: { question: string; answer: string }[] = [];
@@ -829,7 +829,7 @@ export function generateBrowseFAQSchema(
   const isOffBroadway = shows.length > 0 && shows[0].category === 'off-broadway';
   const isRegional = shows.length > 0 && shows[0].category === 'regional';
   const isTour = shows.length > 0 && shows[0].category === 'tour';
-  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in a regional production' : isTour ? 'on tour' : 'on Broadway';
+  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? (isAuRegionalShow(shows[0]) ? 'in Australia' : 'in a regional production') : isTour ? 'on tour' : 'on Broadway';
   const outletNames = isLondon
     ? 'The Guardian, Telegraph, Time Out, and WhatsOnStage'
     : isTour

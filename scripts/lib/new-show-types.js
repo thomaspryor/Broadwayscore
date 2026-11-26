@@ -27,7 +27,7 @@
  * the real functions.
  */
 
-const { isUkRegionalVenue } = require('./market-label');
+const { isUkRegionalVenue, isAuRegionalVenue } = require('./market-label');
 const { isLocalOnlyShow } = require('./local-market');
 const { submitUrl, showUrl, stripDashes } = require('./reddit-opening-post');
 
@@ -56,6 +56,8 @@ function kindOf(show) {
   if (show.category === 'tour') return 'tour';
   if (show.category !== 'regional') return null;
   if (isLocalOnlyShow(show)) return null;
+  // Australian pilot shows (BRO-8389) are neither West End regional nor Broadway tryouts: not postable.
+  if (isAuRegionalVenue(show.venue)) return null;
   return isUkRegionalVenue(show.venue) ? 'regional' : 'pre-broadway';
 }
 

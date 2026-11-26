@@ -50,7 +50,7 @@ const { scoreGateArg } = require('./lib/should-hide-reviews');
 const { computeCriticScore: canonicalComputeCriticScore } = require('./lib/compute-critic-score');
 const { rowConfidence } = require('./lib/score-confidence-gate'); // BRO-6623: raw lane rows keep confidence in llmScore
 const { isLocalOnlyShow } = require('./lib/local-market');
-const { isUkRegionalVenue } = require('./lib/market-label');
+const { isUkRegionalVenue, isAuRegionalVenue } = require('./lib/market-label');
 const {
   TOKENS,
   esc,
@@ -181,6 +181,7 @@ function rowMarketLabel(show, market) {
   if (show.transferredTo || show.tourParent) kind = 'Pre-Broadway tryout';
   else if (isLocalOnlyShow(show)) kind = 'Local';
   else if (isUkRegionalVenue(show.venue)) kind = 'UK regional';
+  else if (isAuRegionalVenue(show.venue)) kind = 'Australian';
   return show.venue ? `${kind} · ${show.venue}` : kind;
 }
 
