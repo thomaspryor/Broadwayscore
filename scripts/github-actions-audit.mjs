@@ -20,6 +20,7 @@
  * Exits 0; prints a table (or JSON). Read-only: GETs only via `gh api`.
  */
 import { execFileSync } from 'node:child_process';
+import { isMainModule } from './lib/is-main-module.mjs';
 
 // USD per billable minute (GitHub-hosted standard runners, private repos).
 // Rates per GitHub's Jan-2026 price list; RATE_OVERRIDES env can replace them
@@ -187,6 +188,6 @@ async function main() {
   console.log('  By day:', Object.entries(byDay).map(([d, v]) => `${d.slice(8)}:$${v.toFixed(2)}`).join(' '));
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMainModule(import.meta.url)) {
   main().catch((e) => { console.error(e.message); process.exit(1); });
 }
