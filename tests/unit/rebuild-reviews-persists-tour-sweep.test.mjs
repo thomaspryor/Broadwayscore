@@ -12,7 +12,7 @@ test('health-check still reads tour-sweep.json as the tour mover heartbeat', () 
 });
 
 test('rebuild-reviews commits tour-sweep.json even when reviews did not change', () => {
-  const block = yml.match(/git status --porcelain data\/audit\/tour-sweep\.json[^\n]*\)" \]; then\n\s+EXCLUSION_STATE_CHANGED=true/);
+  const block = yml.match(/git status --porcelain data\/audit\/tour-sweep\.json[^\n]*audit-heartbeat-due\.js data\/audit\/tour-sweep\.json; then\n\s+EXCLUSION_STATE_CHANGED=true/);
   assert.ok(block, 'tour-sweep.json must set EXCLUSION_STATE_CHANGED (the no-diff commit trigger)');
 });
 
