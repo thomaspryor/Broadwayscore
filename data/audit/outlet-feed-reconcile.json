@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T08:55:09.212Z",
+  "generatedAt": "2026-11-26T10:31:52.491Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -175,12 +175,25 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 911,
-  "matchedGaps": 2,
+  "itemsScanned": 906,
+  "matchedGaps": 3,
   "possibleGaps": 4,
   "gaps": [
+    {
+      "showId": "attention-off-west-end-2026",
+      "title": "Attention",
+      "level": "matched",
+      "outletId": "harry-theatre-life",
+      "url": "https://www.harrytheatrelife.co.uk/post/review-attention-bush-theatre-london",
+      "headline": "REVIEW | Attention, Bush Theatre - London",
+      "publishDate": "2026-11-26"
+    },
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
       "title": "Cinderella",
