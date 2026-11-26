@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-26T11:52:30.355Z",
-  "bannerText": "136/186 Done(14d) verified on main · 3 FAILED · 0 vacuous · 13 stuck-but-done · 5 mis-armed, needs re-arming (BRO-8155, BRO-8152, BRO-8115, +2 more) — PARTIAL RUN: 51 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-26T18:28:18.187Z",
+  "bannerText": "116/169 Done(14d) verified on main · 4 FAILED · 0 vacuous · 8 stuck-but-done · 6 mis-armed, needs re-arming (BRO-8155, BRO-8152, BRO-8115, +3 more) — PARTIAL RUN: 47 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
       "title": "FAILED BRO-8299 — Correct stale open/previews statuses on off-Broadway and London shows",
@@ -14,13 +14,13 @@
     },
     {
       "title": "FAILED BRO-8148 — P1: Opening night miss: Fantasma (2026-11-22)",
-      "detail": "gap audit generated 2026-11-26T10:27:57.190Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
+      "detail": "gap audit generated 2026-11-26T17:54:49.955Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8148/p1-opening-night-miss-fantasma-2026-11-22"
     },
     {
-      "title": "STUCK BRO-6625 — Main test.yml Data Validation red on Oct 30: girls-off-west-end-2026 the-recs auto-clear violation and Little Shop Guardian class-A cross-market leak",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6625/main-testyml-data-validation-red-on-oct-30-girls-off-west-end-2026-the"
+      "title": "FAILED BRO-7917 — Fill missing runtimes on live off-Broadway shows (39 of 176 open/previews have none; drives reminder timing and Stats)",
+      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7917/fill-missing-runtimes-on-live-off-broadway-shows-39-of-176"
     },
     {
       "title": "STUCK BRO-8343 — Off-West-End discovery stored junk officialUrl on 5 announced shows",
@@ -33,15 +33,15 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8310/bsc-daily-quality-outlet-domain-moves"
     },
     {
-      "title": "STUCK BRO-8300 — Auto-fix: Opening Night Orchestrator Failed",
+      "title": "STUCK BRO-8277 — One-off large text-recovery batch: honest tried-counts, then work the whole backlog in checkpointed rounds",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8300/auto-fix-opening-night-orchestrator-failed"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8277/one-off-large-text-recovery-batch-honest-tried-counts-then-work-the"
     },
     {
-      "title": "STUCK BRO-8282 — Decision emails: add a 'Talk to the session that asked' link",
+      "title": "STUCK BRO-8237 — Land push with [skip ci] in the commit message never starts land.yml; wait-for-land waits silently",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8282/decision-emails-add-a-talk-to-the-session-that-asked-link"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8237/land-push-with-skip-ci-in-the-commit-message-never-starts-landyml-wait"
     }
   ],
-  "moreCount": 8
+  "moreCount": 4
 }
