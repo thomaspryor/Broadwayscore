@@ -6,6 +6,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { rejectedYetVerified } = require('./coverage-holes.js');
+const { approvedFixBinding } = require('./approved-fix-flag.js');
 
 const show = { id: 'example-show-2026', title: 'Example Show', category: 'broadway' };
 const cv = { articleType: 'review', articleTypeConfidence: 'high', isValid: true, wrongArticle: false };
@@ -17,16 +18,29 @@ test('a plain CV-promoted rejection against a review verdict is still a B row', 
   assert.ok(r && r.how === 'isNonReview');
 });
 
-test('a recorded manual verdict is a decision, not a B row', () => {
-  assert.equal(rejectedYetVerified({ ...base, isNonReviewReason: 'manual (not a review): forum thread post' }, show, f), null);
+const stamp = (d) => ({ ...d, approvedFixes: [{ fixId: 'f1', field: 'isNonReview', at: '2026-11-16T00:00:00Z', newValue: true, boundTo: approvedFixBinding(d) }] });
+
+test('a manual verdict is only trusted when an approved plan stamped it (reason string alone stays B)', () => {
+  const manual = { ...base, isNonReviewReason: 'manual (not a review): forum thread post' };
+  assert.ok(rejectedYetVerified(manual, show, f));
 });
 
-test('wrongProduction (flag or CV) is a URL problem, not a B row', () => {
-  assert.equal(rejectedYetVerified({ ...base, wrongProduction: true }, show, f), null);
-  assert.equal(rejectedYetVerified({ ...base, contentVerification: { ...cv, wrongProduction: true } }, show, f), null);
+test('a stamped manual verdict is a decision, not a B row', () => {
+  const stamped = stamp({ ...base, isNonReviewReason: 'manual (not a review): forum thread post' });
+  assert.equal(rejectedYetVerified(stamped, show, f), null);
 });
 
-test('a manual verdict the owner cleared is judged normally again', () => {
-  const r = rejectedYetVerified({ ...base, isNonReviewReason: 'manual (not a review): x', nonReviewManualClear: true }, show, f);
-  assert.equal(r, null); // cleared: not rejected any more
+test('wrongProduction is skipped only when the verification also reports it', () => {
+  assert.equal(rejectedYetVerified({ ...base, wrongProduction: true, contentVerification: { ...cv, wrongProduction: true } }, show, f), null);
+  assert.ok(rejectedYetVerified({ ...base, wrongProduction: true }, show, f)); // unbacked flag: a person looks
+  assert.ok(rejectedYetVerified({ ...base, contentVerification: { ...cv, wrongProduction: true } }, show, f));
+});
+
+test('a stamp stops binding once the body changes (a refetched real review surfaces again)', () => {
+  const stamped = stamp({ ...base, isNonReviewReason: 'manual (not a review): forum thread post' });
+  assert.ok(rejectedYetVerified({ ...stamped, fullText: 'a different, refetched body' }, show, f));
+});
+
+test('a cleared rejection is not a B row', () => {
+  assert.equal(rejectedYetVerified({ ...base, nonReviewManualClear: true }, show, f), null);
 });
