@@ -127,12 +127,24 @@ function extractProductionPageText(html, maxChars = 2500) {
 const { foldDiacritics } = require('./title-match');
 const alnum = (x) => foldDiacritics(String(x || '')).toLowerCase().replace(/&amp;/g, 'and').replace(/[^a-z0-9]+/g, '');
 
-/** True when the page's visible text or title names the show (title of 4+ letters/digits). */
-function pageNamesShow(html, show) {
+// Theatre-listing sites whose show pages may omit the venue name; any other host must name the venue.
+const LISTING_HOSTS = ['theatreinchicago.com', 'theatreinla.com', 'theatreindc.com', 'theatermania.com',
+  'playbill.com', 'theatricalia.com', 'theaterscene.net', 'theaterlife.com'];
+
+/**
+ * True when the page names the show (title of 4+ letters/digits) AND is plausibly a theatre page:
+ * a known listing host, or the page also names the venue. Real data 2026-11-26: stray evidence
+ * URLs (a blog post, a school handbook) contain a one-word title like "Michael" or "Brink".
+ */
+function pageNamesShow(html, show, url) {
   const t = alnum(show && show.title);
   if (t.length < 4 || typeof html !== 'string') return false;
-  const visible = html.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ');
-  return alnum(visible).includes(t);
+  const visible = alnum(html.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' '));
+  if (!visible.includes(t)) return false;
+  const host = hostOf(url || '');
+  if (host && LISTING_HOSTS.some(h => host === h || host.endsWith(`.${h}`))) return true;
+  const v = alnum(show && show.venue).replace(/^the/, '');
+  return v.length >= 4 && visible.includes(v);
 }
 
 /**
@@ -146,7 +158,7 @@ async function fetchProductionPageText(show, fetchHtml, { maxUrls = 2 } = {}) {
     try { html = await fetchHtml(url); } catch { html = null; }
     // Identity: a season index or another show's page can sit in evidenceUrls. Only a page that
     // names this show may be used (and the text is told to the model as "this production's page").
-    if (!pageNamesShow(html, show)) continue;
+    if (!pageNamesShow(html, show, url)) continue;
     const text = extractProductionPageText(html);
     if (text) return { url, text: text.replace(/"{3,}/g, "'") };
   }
