@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-7669",
+  "planId": "a4519277-78f5-4c05-bebe-554e772f1312",
+  "status": "pending",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Resolve two unverified revival flags (Downstate not a revival; The Ugly One is a revival)",
+    "steps": [
+      "downstate-2026.revivalVerifiedNot",
+      "the-ugly-one-off-west-end-2026.isRevival"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "downstate-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Downstate at the Booth is its first Broadway run (earlier runs were Chicago, London, off-Broadway); reviewers say revival loosely. Verified not a revival."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ugly-one-off-west-end-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Broken Nose Theatre production at the Arcola; reviews call it a revival of an earlier staged play."
+      }
+    ]
+  }
+}
