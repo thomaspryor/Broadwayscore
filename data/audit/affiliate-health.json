@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-11-23",
+  "asOf": "2026-11-24",
   "shadow": false,
   "checks": [
     {
@@ -42,39 +42,39 @@
       "key": "affiliate:zero-conversions",
       "label": "7-day zero-conversion ceiling",
       "verdict": "pass",
-      "reason": "28 conversions in trailing 7d"
+      "reason": "29 conversions in trailing 7d"
     },
     {
       "key": "affiliate:click-flow-collapse",
       "label": "Site ticket-click flow",
       "verdict": "pass",
-      "reason": "919/921 = 100% of peak, above the 20% floor"
+      "reason": "910/921 = 99% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:impact-click-collapse",
       "label": "Impact click ingestion",
       "verdict": "pass",
-      "reason": "1740/3326 = 52% of peak, above the 20% floor"
+      "reason": "1809/3326 = 54% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:handoff-break",
       "label": "Click → Impact handoff",
       "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 311% over 3d"
+      "reason": "Impact/PostHog click ratio 240% over 3d"
     },
     {
       "key": "affiliate:bot-divergence",
       "label": "Bot click divergence",
       "verdict": "pass",
-      "reason": "Earlier burst over: Impact 682 vs PostHog 219 over 3d (3.1x), but 2026-11-23 is back to 170 vs 89 (within 2.5x)"
+      "reason": "Impact/PostHog click ratio 2.4x over 3d"
     },
     {
       "key": "affiliate:payout-anomaly",
       "label": "Payout economics",
       "verdict": "pass",
-      "reason": "take-rate 2.43%, 0 zero-payout"
+      "reason": "take-rate 2.16%, 0 zero-payout"
     }
   ],
   "failingCount": 0,
-  "updatedAt": "2026-11-25T11:16:16.642Z"
+  "updatedAt": "2026-11-26T10:52:43.354Z"
 }

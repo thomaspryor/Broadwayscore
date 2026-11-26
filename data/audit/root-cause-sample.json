@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-20T10:01:13.278Z",
+  "generatedAt": "2026-11-26T10:52:57.878Z",
   "grader": "gpt-5.4-mini (diff only, majority of 3)",
-  "poolSize": 134,
-  "noDiff": 1,
-  "landingsWithoutId": 115,
+  "poolSize": 137,
+  "noDiff": 3,
+  "landingsWithoutId": 130,
   "graded": 8,
   "rootCause": 8,
   "spot": 0,
@@ -24,185 +24,193 @@
   ],
   "items": [
     {
-      "card": "BRO-7722",
-      "grade": "root-cause",
-      "confidence": 0.95,
-      "reason": "The change adds a regression-detection path plus tests that cover closed-card refile behavior and the worker-safe VERIFY/CREATES contract, making the defect class caught rather than patching one instance.",
-      "guardFile": "scripts/tests/triage-sentry-linear.test.mjs",
-      "votes": [
-        "root-cause",
-        "root-cause",
-        "root-cause"
-      ],
-      "diffHash": "19e9c2394b6a",
-      "truncated": false,
-      "files": [
-        "data/audit/session-retro.jsonl",
-        "scripts/lib/sentry-linear-filing.js",
-        "scripts/tests/triage-sentry-linear.test.mjs"
-      ]
-    },
-    {
-      "card": "BRO-7739",
+      "card": "BRO-8081",
       "grade": "root-cause",
       "confidence": 0.94,
-      "reason": "The fix adds a generalized main-title matching path with uniqueness gating, shared across all relevant discovery call sites, plus regression tests that would fail for the whole quoted-subtitle class if reverted.",
-      "guardFile": "scripts/test-subtitle-main-title-match.js",
+      "reason": "The fix adds a reusable WSJ-tail stripper wired into the outlet trailer stripping path and covers it with tests, so any matching WSJ toolbar-chrome tail at the end of text is removed rather than just this one instance.",
+      "guardFile": "scripts/lib/trailer-signatures.js",
       "votes": [
         "root-cause",
         "root-cause",
         "root-cause"
       ],
-      "diffHash": "8d2efb921696",
+      "diffHash": "8ca39d4bb22d",
       "truncated": false,
       "files": [
-        "data/audit/claude-session-cost.jsonl",
-        "data/audit/session-retro.jsonl",
-        "scripts/lib/opening-night-lane/discovery.js",
-        "scripts/lib/rss-discovery.js",
-        "scripts/test-subtitle-main-title-match.js"
+        "scripts/lib/trailer-signatures.js",
+        "tests/unit/content-quality-wsj-capsule-review.test.mjs"
       ]
     },
     {
-      "card": "BRO-6762",
-      "grade": "root-cause",
-      "confidence": 0.86,
-      "reason": "The patch adds shared fallback-date provenance handling and excludes those dates from plausibility/contradiction logic, which prevents the whole class of borrowed-date misclassification rather than fixing one review.",
-      "guardFile": "scripts/lib/fallback-date-source.js",
-      "votes": [
-        "root-cause",
-        "root-cause",
-        "root-cause"
-      ],
-      "diffHash": "635a0eae4d87",
-      "truncated": true,
-      "files": [
-        "data/audit/claude-session-cost.jsonl",
-        "scripts/audit-show-review-gap.js",
-        "scripts/gather-reviews.js",
-        "scripts/ingest-review-from-url.js",
-        "scripts/lib/contradicted-flag-basis.js",
-        "scripts/lib/date-plausibility.js",
-        "scripts/lib/fallback-date-source.js",
-        "scripts/lib/fallback-publish-date.js",
-        "scripts/lib/fetch-archive-fallback.js",
-        "scripts/lib/outlet-coverage-claim.js",
-        "scripts/lib/outlet-registry-proposals.js",
-        "scripts/lib/press-window-serp.js",
-        "scripts/lib/publish-date-provenance.js",
-        "scripts/lib/reroute-stamp-policy.js",
-        "scripts/opening-night-poller.js",
-        "tests/unit/fallback-publish-date.test.mjs",
-        "tests/unit/fetch-archive-fallback.test.mjs",
-        "tests/unit/outlet-coverage-claim.test.mjs",
-        "tests/unit/outlet-registry-proposals.test.mjs",
-        "tests/unit/press-window-serp.test.mjs"
-      ]
-    },
-    {
-      "card": "BRO-7604",
-      "grade": "root-cause",
-      "confidence": 0.96,
-      "reason": "The fix adds a centralized validator tombstone keyed by show and normalized URL plus tests that prove the wrong-production URL is rejected across variants and discovery cannot reattach it, making this class of resurrection impossible for the known case.",
-      "guardFile": "scripts/lib/serp-candidate-validator.js",
-      "votes": [
-        "root-cause",
-        "root-cause",
-        "root-cause"
-      ],
-      "diffHash": "ebed9658daca",
-      "truncated": false,
-      "files": [
-        "scripts/lib/serp-candidate-validator.js",
-        "tests/unit/serp-known-wrong-production.test.mjs"
-      ]
-    },
-    {
-      "card": "BRO-7605",
-      "grade": "root-cause",
-      "confidence": 0.94,
-      "reason": "The fix adds a guarded exception in both the field editor and write guard plus a regression test, making the locked-record non-review exclusion path the only allowed locked mutation rather than patching a single call site.",
-      "guardFile": "scripts/lib/review-field-edit.test.mjs",
-      "votes": [
-        "root-cause",
-        "root-cause",
-        "root-cause"
-      ],
-      "diffHash": "2b78154abf95",
-      "truncated": false,
-      "files": [
-        ".gitignore",
-        "data/pending-fixes/bro-7605.json",
-        "scripts/lib/review-field-edit.js",
-        "scripts/lib/review-field-edit.test.mjs",
-        "scripts/lib/review-write-guard.js"
-      ]
-    },
-    {
-      "card": "BRO-7607",
-      "grade": "root-cause",
-      "confidence": 0.92,
-      "reason": "The change moves blocked/refresh_blocked writes into a shared scope helper and adds tests asserting all gate paths fail closed on scope crashes and preserve overridden before alert exit, which addresses the whole class rather than one instance.",
-      "guardFile": "tests/unit/opening-night-broadcast-gates.test.mjs",
-      "votes": [
-        "root-cause",
-        "root-cause",
-        "root-cause"
-      ],
-      "diffHash": "c2684bbdb103",
-      "truncated": true,
-      "files": [
-        ".github/workflows/opening-night-broadcast.yml",
-        "scripts/lib/broadcast-gate-alert.js",
-        "scripts/lib/broadcast-gate-scope.js",
-        "scripts/lib/broadcast-gate-scope.test.mjs",
-        "tests/unit/opening-night-broadcast-gates.test.mjs"
-      ]
-    },
-    {
-      "card": "BRO-7600",
-      "grade": "root-cause",
-      "confidence": 0.94,
-      "reason": "The change moves card filing out of the planner into a dedicated workflow step, adds help/flush guards for the new script, and adds a test covering the real JSON parsing failure mode, making the class of missed/incorrect dispatch-card filing much harder to recur.",
-      "guardFile": "scripts/lib/plan-refusal-escalation.test.mjs",
-      "votes": [
-        "root-cause",
-        "root-cause",
-        "root-cause"
-      ],
-      "diffHash": "2d0cd6048782",
-      "truncated": true,
-      "files": [
-        ".github/workflows/DEPENDENCIES.md",
-        ".github/workflows/auto-fix-feedback-bug.yml",
-        "data/pending-fixes/bro-7600-awake.json",
-        "scripts/file-feedback-card.js",
-        "scripts/generate-remediation-plan.js",
-        "scripts/lib/plan-refusal-escalation.js",
-        "scripts/lib/plan-refusal-escalation.test.mjs"
-      ]
-    },
-    {
-      "card": "BRO-7603",
+      "card": "BRO-8321",
       "grade": "root-cause",
       "confidence": 0.93,
-      "reason": "The change adds reusable ingest/census predicates and tests that broadly classify dated prior-production URLs and news patterns as non-missing reviews, preventing the defect class rather than patching one URL.",
-      "guardFile": "scripts/lib/gap-ingest-policy.js",
+      "reason": "The change replaces Node's module loader with explicit fs+JSON parsing for shows.json, which removes the dependency scanner failure mode for all such loads rather than patching one call site.",
+      "guardFile": "scripts/lib/rival-title.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "spot-fix"
+      ],
+      "diffHash": "370d5a2c7c3e",
+      "truncated": true,
+      "files": [
+        "data/audit/claude-session-cost.jsonl",
+        "data/audit/session-retro.jsonl",
+        "data/pending-fixes/bro-8321.json",
+        "scripts/lib/article-extractor-artsdesk-date.test.mjs",
+        "scripts/lib/article-extractor.js",
+        "scripts/lib/content-quality-strip-memo.test.mjs",
+        "scripts/lib/content-quality.js",
+        "scripts/lib/no-readfile-resolve-in-lib.test.mjs",
+        "scripts/lib/other-production-signal.js",
+        "scripts/lib/outlet-listing-helpers.js",
+        "scripts/lib/rival-title.js",
+        "scripts/lib/rival-title.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-8084",
+      "grade": "root-cause",
+      "confidence": 0.88,
+      "reason": "The change adds a reusable truncation classifier and safe-body extraction, plus tests that lock the trailer-only truncation behavior and paywall-prompt exclusion, making the defect class harder to reintroduce rather than patching one review.",
+      "guardFile": "scripts/lib/trailer-signatures.test.mjs",
       "votes": [
         "root-cause",
         "root-cause",
         "root-cause"
       ],
-      "diffHash": "8246e933ef03",
-      "truncated": false,
+      "diffHash": "bfc1499ea211",
+      "truncated": true,
       "files": [
         "data/audit/claude-session-cost.jsonl",
-        "scripts/audit-show-review-gap.js",
-        "scripts/lib/gap-audit-merge.js",
-        "scripts/lib/gap-census-noise.js",
-        "scripts/lib/gap-census-noise.test.mjs",
-        "scripts/lib/gap-ingest-policy.js",
-        "scripts/lib/non-review-url-patterns.js"
+        "data/audit/llm-session-usage.jsonl",
+        "data/audit/session-retro.jsonl",
+        "scripts/lib/content-tier-reason-sync.js",
+        "scripts/lib/pull-quote-guards.js",
+        "scripts/lib/text-gap-classify.js",
+        "scripts/lib/trailer-signatures.js",
+        "scripts/lib/trailer-signatures.test.mjs",
+        "scripts/rebuild-all-reviews.js",
+        "tests/unit/pull-quote-guards.test.mjs",
+        "tests/unit/review-pullquotes.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-8331",
+      "grade": "root-cause",
+      "confidence": 0.86,
+      "reason": "This adds a dedicated unit test that exercises the live-data-lane preflight behavior and asserts the hook wiring, so the whole class of regressions in that check would be caught rather than patching a single case.",
+      "guardFile": "tests/unit/live-data-lane-preflight.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "b142f675e85d",
+      "truncated": false,
+      "files": [
+        "tests/unit/live-data-lane-preflight.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7945",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change replaces a hardcoded category check with the shared isBroadwayCategory predicate, making the preview-skip logic follow the same classification rule everywhere instead of fixing only one category value.",
+      "guardFile": "scripts/lib/scored-absent.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "ed49c0270dc5",
+      "truncated": true,
+      "files": [
+        "scripts/audit-scored-absent.js",
+        "scripts/lib/multi-show-review-fanout-joint.test.mjs",
+        "scripts/lib/multi-show-review-fanout.js",
+        "scripts/lib/pending-drain-bro-7930.test.mjs",
+        "scripts/lib/pending-review-health.js",
+        "scripts/lib/pending-sibling-productions.js",
+        "scripts/lib/recovery-exclusions.js",
+        "scripts/lib/scored-absent.js",
+        "scripts/rebuild-all-reviews.js",
+        "scripts/replay-pending-bylines.js"
+      ]
+    },
+    {
+      "card": "BRO-8078",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change adds a dedicated gap ledger plus a pure gap-finding function with tests, and wires the audit/workflow to record and stage missing retro/cost rows for all qualifying sessions, not just one case.",
+      "guardFile": "scripts/lib/retro-coverage-stop.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "e77132f7b225",
+      "truncated": false,
+      "files": [
+        ".gitattributes",
+        ".github/workflows/landed-change-proof.yml",
+        "scripts/landed-change-proof-audit.js",
+        "scripts/lib/retro-coverage-stop.mjs",
+        "scripts/lib/retro-coverage-stop.test.mjs",
+        "scripts/lib/session-retro.js"
+      ]
+    },
+    {
+      "card": "BRO-7996",
+      "grade": "root-cause",
+      "confidence": 0.95,
+      "reason": "The change adds a reusable folder-vs-showId mismatch detector, wires validation to warn on any live mismatch, and updates the recovery/gap code to consistently trust the folder, making this class of bug caught or avoided broadly rather than patching one instance.",
+      "guardFile": "scripts/lib/review-showid-folder.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "49de788b77ad",
+      "truncated": false,
+      "files": [
+        "scripts/gap-url-find.js",
+        "scripts/lib/browser-recovery-helpers.js",
+        "scripts/lib/browser-recovery-helpers.test.mjs",
+        "scripts/lib/gap-acceptance.js",
+        "scripts/lib/gap-acceptance.test.mjs",
+        "scripts/lib/review-showid-folder.js",
+        "scripts/lib/review-showid-folder.test.mjs",
+        "scripts/recover-wsj-browser.js",
+        "scripts/validate-data.js"
+      ]
+    },
+    {
+      "card": "BRO-8079",
+      "grade": "root-cause",
+      "confidence": 0.86,
+      "reason": "The diff adds reusable guards and stricter classifiers in shared validation code and dispatcher wake logic, so the broader defect classes (misclassified live-data tests, weak/strong count phrasing, sample-audit completeness, duplicate wake delivery, and bad-event handling) are prevented or caught ra",
+      "guardFile": "scripts/lib/data-effect-close.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "8817a5b2ff0c",
+      "truncated": true,
+      "files": [
+        "scripts/bsc-next.js",
+        "scripts/dispatch-watchdog.js",
+        "scripts/lib/data-effect-close.js",
+        "scripts/lib/dispatcher-wake.js",
+        "scripts/lib/dispatcher-wake.test.mjs",
+        "scripts/lib/linear-done-gate.js",
+        "scripts/lib/linear-done-gate.test.mjs",
+        "scripts/lib/root-cause-close.js",
+        "scripts/lib/root-cause-close.test.mjs",
+        "scripts/linear-next.js",
+        "scripts/tests/headless-dispatch-telemetry.test.mjs"
       ]
     }
   ]
