@@ -1,19 +1,42 @@
 {
-  "updatedAt": "2026-11-26T11:04:06.446Z",
-  "processed": 1,
-  "failed": 2,
-  "successRate": "33.3%",
+  "updatedAt": "2026-11-26T11:41:19.694Z",
+  "processed": 55,
+  "failed": 46,
+  "successRate": "54.5%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 34,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 12,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 9
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-11-26T11:11:38.248Z",
+      "event": "bb-session",
+      "session": "5e65be05",
+      "url": "http://www.nytimes.com/2014/04/04/theater/raisin-in-the-sun-brings-denzel-washin"
+    },
+    {
+      "t": "2026-11-26T11:11:38.749Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-26T11:18:51.805Z",
+      "event": "bb-session",
+      "session": "030d6b10",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2656222"
+    },
+    {
+      "t": "2026-11-26T11:18:52.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
