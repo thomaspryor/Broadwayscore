@@ -1,19 +1,54 @@
 {
-  "updatedAt": "2026-11-26T00:55:44.733Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-26T01:05:53.369Z",
+  "processed": 133,
+  "failed": 71,
+  "successRate": "65.2%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 81,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 19,
+    "scrapingbee": 10,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 26
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-11-26T00:07:58.226Z",
+      "event": "bb-session",
+      "session": "08e81407",
+      "url": "https://www.nytimes.com/alfred-hitchcocks-the-39-steps-theater-review"
+    },
+    {
+      "t": "2026-11-26T00:07:58.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-26T00:09:52.504Z",
+      "event": "bb-session",
+      "session": "7502e0a1",
+      "url": "https://www.nytimes.com/2026/10/22/movies/possible-love-review-the-lives-of-othe"
+    },
+    {
+      "t": "2026-11-26T00:09:53.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-26T00:23:03.609Z",
+      "event": "bb-session",
+      "session": "adceb501",
+      "url": "https://deadline.com/2026/11/daredevil-charlie-cox-audition-james-bond-robert-pa"
+    },
+    {
+      "t": "2026-11-26T00:41:17.249Z",
+      "event": "bb-session",
+      "session": "c92d4e20",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    }
+  ]
 }
