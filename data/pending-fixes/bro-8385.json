@@ -1,0 +1,30 @@
+{
+  "issueNumber": "bro-8385",
+  "planId": "fa2777c3-3031-4007-b3ed-02aad54fb63f",
+  "status": "pending",
+  "createdAt": "2026-11-26T19:27:57.135Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add Dick Whittington short title to akaTitles so short-titled reviews are admitted",
+    "steps": [
+      "shows.json: dick-whittington-adults-only-off-west-end-2026.akaTitles"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dick-whittington-adults-only-off-west-end-2026",
+        "field": "akaTitles",
+        "oldValue": null,
+        "newValue": [
+          "Dick Whittington"
+        ],
+        "description": "shows.json: dick-whittington-adults-only-off-west-end-2026.akaTitles"
+      }
+    ]
+  }
+}
