@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7683-d261126-r18",
   "planId": "b42fd18a-b4a0-4fc9-a387-54d4ff64044e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-26T20:00:09.023Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-26T20:04:17.274Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cult-of-love-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
