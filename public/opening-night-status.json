@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T20:42:09.444Z",
+  "generatedAt": "2026-11-26T21:09:22.747Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1197,17 +1197,17 @@
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
-      "t1": 1,
+      "total": 18,
+      "t1": 2,
       "t2": 7,
       "t3": 9,
-      "positive": 15,
+      "positive": 16,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3"
+          "T1:2/3"
         ],
         "highConfidence": 16,
         "thresholds": {
@@ -1638,6 +1638,18 @@
           "t2": 7,
           "t3": 9,
           "p": 15,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-26T21:09:22.747Z",
+          "rc": 18,
+          "s": 78.24,
+          "t1": 2,
+          "t2": 7,
+          "t3": 9,
+          "p": 16,
           "m": 2,
           "n": 0,
           "bc": "waiting"
