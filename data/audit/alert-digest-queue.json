@@ -1516,9 +1516,9 @@
     "queuedAt": "2026-11-26T21:48:02.466Z"
   },
   {
-    "conditionKey": "land-preexisting:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers #759a229310",
-    "title": "Test red on main: real data loads and gives the expected answers for the four JS outlets [testCodeFailure]",
-    "description": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/codex-bro-8125. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45899478974",
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 4 review(s) flagged for anchored re-score",
+    "description": "{\"unanchored\":4} across the whole corpus, by market {\"broadway\":177,\"west-end\":336,\"regional\":44,\"tour\":8}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] the-thanksgiving-play-2023/nyt-theater--jonathan-mandell.json A band 89-94\n- [unanchored] pride-bridge-theatre-off-west-end-2026/thereviewshub--unknown.json 100% band 95-100\n- [unanchored] pride-bridge-theatre-off-west-end-2026/theatre-weekly--unknown.json 5/5 stars band 91-100\n- [unanchored] waiting-for-godot-west-end-2024/the-jewish-chronicle--john-nathan.json 4/5 stars band 71-90",
     "severity": "warning",
     "url": null,
     "decision": false,
@@ -1526,20 +1526,7 @@
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "test",
-        "value": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets [testCodeFailure]"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45899478974"
-      }
-    ],
-    "queuedAt": "2026-11-26T22:01:12.214Z"
+    "fields": [],
+    "queuedAt": "2026-11-26T22:01:34.700Z"
   }
 ]
