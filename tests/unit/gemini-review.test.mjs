@@ -525,3 +525,8 @@ test('live: one bundled request catches a planted inverted condition with a call
   assert.match(r.stdout, /limits\.js:3/);
   assert.match(r.stdout, /invert|revers|opposite|backwards|<|less than/i);
 });
+
+test('BRO-8160 acceptance: the default bundle budget keeps one review request under 200K input tokens', () => {
+  // ~4 chars/token; leaves 80K tokens of headroom for the caller's prompt and diff.
+  assert.ok(bundleLib.DEFAULT_BUDGET_CHARS / 4 <= 120_000, `budget ${bundleLib.DEFAULT_BUDGET_CHARS} chars exceeds 120K tokens`);
+});
