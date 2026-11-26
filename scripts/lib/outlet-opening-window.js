@@ -11,6 +11,7 @@
  */
 
 const { hasExcerpt } = require('./excerpt-fields');
+const { toDateMs } = require('./date-utils');
 
 const WINDOW_DAYS_PAST = 3;
 // BRO-7401: Off-West End reviews come later than a press-night lane. Over 1,975 Off-West End reviews
@@ -120,7 +121,7 @@ const marketOf = (s) => (s && (s.market || s.category)) || '';
  */
 function closedShowMatchOk(show, { liveShows = [], publishDate = null } = {}) {
   if (!show || show.status !== 'closed') return true;
-  const pub = Date.parse(publishDate || '');
+  const pub = toDateMs(publishDate);
   if (!Number.isFinite(pub)) return false;
   const start = Date.parse(show.previewsStartDate || show.openingDate || '');
   if (Number.isFinite(start) && pub < start - 7 * DAY_MS) return false;
