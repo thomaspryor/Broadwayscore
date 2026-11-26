@@ -1,13 +1,74 @@
 {
-  "generatedAt": "2026-11-26T13:11:44.275Z",
+  "generatedAt": "2026-11-26T15:03:12.453Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 370,
-  "clean": 370,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 367,
+  "defective": 3,
+  "byType": {
+    "missing-from-prod": 3
+  },
+  "shows": [
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "title": "Dirty Dancing",
+      "openingDate": "2026-08-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: boston-globe"
+        }
+      ],
+      "missingFromProd": [
+        "boston-globe"
+      ],
+      "localCount": 16,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-11-26T15:03:08.863Z"
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "title": "The Lion King",
+      "openingDate": "2021-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "3 scored outlet(s) absent from the deployed payload: berkshire-on-stage, buffalorising, calgary-herald"
+        }
+      ],
+      "missingFromProd": [
+        "berkshire-on-stage",
+        "buffalorising",
+        "calgary-herald"
+      ],
+      "localCount": 65,
+      "deployedCount": 62,
+      "firstDefectAt": "2026-11-26T15:03:08.863Z"
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "title": "Wicked",
+      "openingDate": "2021-08-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "3 scored outlet(s) absent from the deployed payload: buffalorising, the-times-of-israel, this-is-cny"
+        }
+      ],
+      "missingFromProd": [
+        "buffalorising",
+        "the-times-of-israel",
+        "this-is-cny"
+      ],
+      "localCount": 57,
+      "deployedCount": 54,
+      "firstDefectAt": "2026-11-26T15:03:08.863Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

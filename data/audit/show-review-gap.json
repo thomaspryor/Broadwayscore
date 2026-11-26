@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-26T13:11:08.849Z",
+  "generatedAt": "2026-11-26T15:02:32.278Z",
   "windowDays": 1095,
-  "targets": 254,
-  "auditedThisRun": 13,
-  "carriedForward": 2839,
+  "targets": 276,
+  "auditedThisRun": 24,
+  "carriedForward": 2828,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 686,
-    "missingCurrentRun": 1582,
+    "missingCurrentRun": 1587,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 870,
+    "totalFlaggedMisses": 869,
     "totalRecoverable": 48,
     "totalRecovered": 105,
     "humanExcluded": 43,
-    "automatedExcluded": 954,
-    "automatedExcludedListed": 697,
-    "priorProductionCitations": 9210
+    "automatedExcluded": 955,
+    "automatedExcludedListed": 696,
+    "priorProductionCitations": 9248
   },
   "results": [
     {
@@ -36662,9 +36662,9 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.chicagotribune.com/2026/11/24/review-all-world-northlight-theatre/",
+        "https://aroundthetownchicago.com/theatre-reviews/all-the-world",
         "https://thirdcoastreview.com/2026/11/22/review-northlight-theatre-all-the-world",
         "https://chicagoreader.com/theater-review/all-the-world-northlight-theatre",
-        "https://aroundthetownchicago.com/theatre-reviews/all-the-world",
         "https://chicagoreader.com/performing-arts/theater/theater-review/all-the-world-northlight-theatre/",
         "https://evanstonroundtable.com/2026/11/24/offstage-chemistry-steals-the-show-in-northlights-world-premiere-of-all-the-world/",
         "https://thirdcoastreview.com/stages/2026/11/22/review-northlight-theatre-all-the-world",
@@ -36689,12 +36689,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"All the World\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"All the World\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"All the World\" review northlight",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "All the World Northlight Theatre, Evanston, IL review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "All the World Northlight Theatre, Evanston, IL review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "All the World Northlight Theatre, Evanston, IL review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 9,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 4,
+          "tag-index-page": 1,
+          "census-junk-host": 2,
+          "no-review-evidence": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -36711,6 +36774,12 @@
             "firstSeenAt": "2026-11-24T19:24:35.799Z"
           },
           {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/all-the-world",
+            "outletId": "aroundthetownchicago.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-24T03:07:43.280Z"
+          },
+          {
             "url": "https://thirdcoastreview.com/2026/11/22/review-northlight-theatre-all-the-world",
             "outletId": "thirdcoastreview.com",
             "state": "live",
@@ -36721,12 +36790,6 @@
             "outletId": "chicagoreader.com",
             "state": "live",
             "firstSeenAt": "2026-11-26T05:44:58.674Z"
-          },
-          {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/all-the-world",
-            "outletId": "aroundthetownchicago.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-24T03:07:43.280Z"
           },
           {
             "url": "https://chicagoreader.com/performing-arts/theater/theater-review/all-the-world-northlight-theatre/",
@@ -36788,7 +36851,7 @@
         "liveCount": 9,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "all-the-worlds-a-stage-off-broadway-2025",
@@ -59815,7 +59878,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-14T16:58:19.618Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "ava-the-secret-conversations-off-broadway-2025",
@@ -110712,10 +110775,10 @@
         "http://manhattan.ny1.com/content/lifestyles/theater_reviews/221857/theater-review---constellations-/",
         "http://www.vulture.com/2015/01/theater-review-constellations.html",
         "http://www.northjersey.com/arts-and-entertainment/theater/theater-review-jake-gyllenhaal-and-ruth-wilson-star-in-constellations-1.1192244",
+        "https://www.stage-buzz-brisbane.blog/post/review-constellations-allentertainment",
         "https://chicagoreader.com/performing-arts/theater/theater-review/constellations-pridearts/",
         "https://www.broadwayworld.com/chicago/article/Review-PrideArtss-CONSTELLATIONS-at-Hoover-Leppen-Theatre-20261120",
         "https://entertainingchicago.com/pridearts-constellations-is-a-thought-provoking-exploration-of-love-and-possibility/",
-        "https://www.stage-buzz-brisbane.blog/post/review-constellations-allentertainment",
         "https://www.theguardian.com/may/constellations-review-gate-dublin-nick-payne"
       ],
       "dirFiles": 4,
@@ -110952,18 +111015,87 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Constellations\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Constellations\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Constellations\" review halsted",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Constellations\" Payne review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Constellations Center on Halsted - Hoover-Leppen Theatre, Chicago, IL review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Constellations Center on Halsted - Hoover-Leppen Theatre, Chicago, IL review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Constellations Center on Halsted - Hoover-Leppen Theatre, Chicago, IL review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 283,
+        "count": 295,
         "byReason": {
-          "not-http-url": 54,
-          "non-review-host": 28,
           "aggregator-internal-nav": 194,
+          "not-http-url": 54,
           "aggregator-section-root": 4,
+          "non-review-host": 37,
           "roundup-page": 2,
-          "podcast-episode": 1
+          "podcast-episode": 1,
+          "census-junk-host": 2,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -111165,7 +111297,7 @@
         "liveCount": 3,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-26T10:27:57.190Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "consumed-off-west-end-2026",
@@ -116481,12 +116613,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Cygnet's A Magical Holiday\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Cygnet's A Magical Holiday\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Cygnet's A Magical Holiday\" review cygnet",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Cygnet's A Magical Holiday Cygnet Theatre, San Diego, CA review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Cygnet's A Magical Holiday Cygnet Theatre, San Diego, CA review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Cygnet's A Magical Holiday Cygnet Theatre, San Diego, CA review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 18,
+        "byReason": {
+          "aggregator-internal-nav": 6,
+          "non-review-host": 8,
+          "no-review-evidence": 3,
+          "non-review-path": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -116517,7 +116711,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-26T10:27:57.190Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "cygnus-regional-2025",
@@ -138620,7 +138814,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "dick-whittington-and-his-cat-off-west-end-2026",
@@ -171523,6 +171717,7 @@
         "https://www.timeout.com/london/theatre/fly-you-fools",
         "https://fringereview.co.uk/review/edinburgh-fringe/fly-you-fools-2",
         "https://www.mixuptheatre.com/post/fringe-review-fly-you-fools",
+        "https://stagebuddy.com/theater/theater-review/review-fly-fools",
         "https://broadwaybaby.com/shows/fly-you-fools/826409"
       ],
       "dirFiles": 1,
@@ -171545,6 +171740,18 @@
           "url": "https://fringereview.co.uk/review/edinburgh-fringe/fly-you-fools-2",
           "host": "fringereview.co.uk",
           "knownOutletId": "fringereview",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/review-fly-fools",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
           "serpCensus": true,
           "sources": [
             {
@@ -171602,7 +171809,8 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 0,
+            "skipped": true
           },
           "lbo-roundup": {
             "found": false,
@@ -171642,7 +171850,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -171662,8 +171870,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 5,
-            "accepted": 4,
+            "results": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -171673,7 +171881,7 @@
             "geo": "gb",
             "ok": true,
             "results": 5,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -171683,24 +171891,25 @@
             "geo": "gb",
             "ok": true,
             "results": 3,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 14,
+        "count": 10,
         "byReason": {
-          "non-review-host": 9,
+          "non-review-host": 3,
+          "ticketing-listing": 1,
           "census-junk-host": 1,
           "no-review-evidence": 1,
-          "show-hub": 1,
-          "ticketing-listing": 1,
-          "non-review-path": 1
+          "bare-host": 1,
+          "non-review-path": 2,
+          "show-hub": 1
         }
       },
       "dedupedVariants": [],
@@ -171725,6 +171934,21 @@
       "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://stagebuddy.com/theater/theater-review/review-fly-fools",
+          "host": "stagebuddy.com",
+          "outletId": "stagebuddy",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://stagebuddy.com/theater/theater-review/review-fly-fools\", waiting until \"domcontentloaded\"\n\n⚠️  Scrapingdog failed (dynamic=false, domain=stagebuddy.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com."
+        },
         {
           "url": "https://www.timeout.com/london/theatre/fly-you-fools",
           "host": "timeout.com",
@@ -171753,7 +171977,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fringereview.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+          "reason": "Fetch failed: live page is the site's not-found template; no archive.org capture"
         }
       ],
       "ingestSkippedByCap": [],
@@ -171773,6 +171997,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://fringereview.co.uk/review/edinburgh-fringe/fly-you-fools-2"
+          },
+          {
+            "outletId": "stagebuddy",
+            "outlet": "stagebuddy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stagebuddy.com/theater/theater-review/review-fly-fools"
           },
           {
             "outletId": "broadway-baby",
@@ -171799,6 +172030,13 @@
             "firstSeenAt": "2026-11-26T01:45:05.050Z"
           },
           {
+            "url": "https://stagebuddy.com/theater/theater-review/review-fly-fools",
+            "outletId": "stagebuddy",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
+          },
+          {
             "url": "https://broadwaybaby.com/shows/fly-you-fools/826409",
             "outletId": "broadway-baby",
             "state": "IN_FLIGHT",
@@ -171820,9 +172058,9 @@
           }
         ],
         "liveCount": 0,
-        "candidateCount": 3
+        "candidateCount": 4
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "flyby-off-west-end-2026",
@@ -175954,11 +176192,74 @@
       "status": "upcoming",
       "category": "regional",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-FROZEN-National-Tour-Returns-to-the-Stage-What-Are-The-Critics-Saying-20211013",
-        "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-National-Tour-of-FROZEN-What-Did-the-Critics-Think-20191118"
+        "https://playbill.com/article/read-the-reviews-for-broadways-frozen",
+        "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon",
+        "https://playbill.com/article/read-the-reviews-for-frozen-2",
+        "https://www.broadwayworld.com/article/Review-Roundup-FROZEN-National-Tour-Returns-to-the-Stage-What-Are-The-Critics-Saying-20211013"
       ],
       "aggregatorListedUrls": [
+        "https://www.amny.com/entertainment/frozen-review-broadway-1.17614511",
+        "https://broadway.news/2018/03/22/review-frozen-freezes-stage/",
+        "http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-frozen-broadway-review-0322-story.html",
+        "https://www.thedailybeast.com/review-frozen-on-broadway-needs-to-let-it-go",
+        "http://deadline.com/2018/03/frozen-broadway-review-disney-let-it-go-michael-grandage-1202350575/",
+        "http://ew.com/theater/2018/03/22/disney-frozen-broadway-review/",
+        "https://www.theguardian.com/stage/2018/mar/22/frozen-review-disney-hit-arrives-on-broadway-with-mixed-results",
+        "https://www.hollywoodreporter.com/review/frozen-broadway-theater-review-1096441",
+        "http://www.latimes.com/entertainment/arts/la-et-cm-frozen-broadway-review-20180322-story.html",
+        "http://www.nj.com/entertainment/index.ssf/2018/03/frozen_broadway_musical_review_elsa_anna_olaf.html",
+        "http://www.nydailynews.com/entertainment/theater-arts/frozen-review-songs-stars-shine-disney-show-lacks-magic-article-1.3889847",
+        "https://nypost.com/2018/03/22/broadway-has-robbed-frozen-of-its-heart-and-fun/",
+        "https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html",
+        "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/03/23/theater-review---frozen-",
+        "https://www.telegraph.co.uk/theatre/what-to-see/frozen-reviewst-james-theatre-broadway-hard-hear-elsa-applause/",
+        "https://www.timeout.com/newyork/theater/frozen",
+        "http://www.towleroad.com/2018/03/frozen-broadway/",
+        "http://variety.com/2018/legit/reviews/frozen-review-broadway-disney-1202733007/",
+        "http://www.vulture.com/2018/03/theater-review-frozen-is-in-place-on-broadway-to-stay.html",
+        "https://www.wsj.com/articles/frozen-the-broadway-musical-review-do-you-want-to-build-a-franchise-1521765000",
+        "https://www.washingtonpost.com/entertainment/theater_dance/my-daughter-enjoyed-broadways-frozen-what-more-do-you-need-to-know/2018/03/22/40aa9cea-2d17-11e8-911f-ca7f68bff0fc_story.html",
+        "https://www.thewrap.com/frozen-broadway-review-disneys-animated-hit-becomes-major-snow-job/",
+        "https://www.dailymail.co.uk/tvshowbiz/article-9971525/PATRICK-MARMION-magical-film-stage-version-Frozen-one-hot-hit.html",
+        "https://www.standard.co.uk/culture/theatre/frozen-the-musical-review-london-royal-drury-lane-b954309.html",
+        "https://www.theguardian.com/stage/2021/sep/08/frozen-review-musical-theatre-royal-drury-lane-london",
+        "https://inews.co.uk/culture/frozen-theatre-royal-drury-lane-london-review-stephanie-mckeon-1188331",
+        "https://www.londontheatre.co.uk/reviews/review-frozen-west-end-theatre-royal-drury-lane",
+        "https://www.londontheatre1.com/reviews/frozen-at-theatre-royal-drury-lane-review/",
+        "https://www.thestage.co.uk/long-reviews/frozen-theatre-royal-drury-lane-london-samantha-barks-stephanie-mckeon-michael-grandage",
+        "https://www.telegraph.co.uk/theatre/what-to-see/frozen-musical-review-venue-puts-show-shade/",
+        "https://www.timeout.com/london/theatre/frozen-review-1",
+        "https://www.thetimes.co.uk/article/frozen-review-theatre-royal-drury-lane-visual-feast-2dlcwsgdf",
+        "https://www.theatlantic.com/entertainment/archive/2019/11/frozen-ii-review/601906/",
+        "https://film.avclub.com/frozen-ii-echoes-without-amplifying-the-magic-of-the-re-1839863966",
+        "https://www.bostonglobe.com/2019/11/18/arts/icy-magic-doesnt-crack-disneys-frozen-ii/",
+        "https://www.businessinsider.com/frozen-2-review-worthy-sequel-great-animation-songs-2019-11",
+        "https://www.digitalspy.com/movies/a29786453/frozen-2-review-disney-release-date/",
+        "https://www.empireonline.com/movies/reviews/frozen-ii/",
+        "https://ew.com/movie-reviews/2019/11/14/frozen-2-review/",
+        "https://www.standard.co.uk/go/london/film/frozen-2-review-disney-sequel-a4287556.html",
+        "https://www.forbes.com/sites/markhughes/2019/11/21/review-frozen-2-proves-even-so-so-disney-movies-look-and-feel-great/",
+        "https://www.theglobeandmail.com/arts/film/reviews/article-disneys-prosaic-and-freezer-burnt-frozen-2-is-a-cold-hard-cash-grab/",
+        "https://www.theguardian.com/film/2019/nov/14/frozen-2-review-sequel-jennifer-lee-chris-buck-idina-menzel-kristen-bell",
+        "https://www.hollywoodreporter.com/review/frozen-2-review-1254398",
+        "https://www.indiewire.com/2019/11/frozen-2-review-sequel-disney-1202189123/",
+        "https://www.latimes.com/entertainment-arts/movies/story/2019-11-14/frozen-2-review-disney-elsa-anna-olaf",
+        "https://www.vulture.com/2019/11/movie-review-frozen-ii-the-sequel-to-disneys-hit-frozen.html",
+        "https://nypost.com/2019/11/14/frozen-ii-review-disney-sequel-is-better-than-the-first-one/",
+        "https://www.nytimes.com/2019/11/21/movies/frozen-2-review.html",
+        "https://www.npr.org/2019/11/20/779284364/frozen-ii-lets-it-go-darker",
+        "https://observer.com/2019/11/frozen-2-review-kristen-bell-idina-menzel-get-lost-in-complicated-plot/",
+        "https://screencrush.com/frozen-2-review/",
+        "https://slate.com/culture/2019/11/frozen-2-review-disney-sequel.html",
+        "https://www.rollingstone.com/movies/movie-reviews/frozen-2-movie-review-disney-914913/",
+        "https://www.telegraph.co.uk/films/0/frozen-2-review-elsa-anna-tackle-colonialism-disneys-resonant/",
+        "https://www.timeout.com/us/film/frozen-ii",
+        "https://www.thestar.com/entertainment/movies/review/2019/11/21/frozen-2-is-awesome-to-look-at-despite-reheated-story.html",
+        "https://www.usatoday.com/story/entertainment/movies/2019/11/14/frozen-2-review-bigger-isnt-better-disney-musical-sequel/4181867002/",
+        "https://www.vanityfair.com/hollywood/2019/11/frozen-2-disney-review",
+        "https://variety.com/2019/film/reviews/frozen-2-review-frozen-ii-1203404683/",
+        "https://www.washingtonpost.com/goingoutguide/movies/neither-hot-nor-cool-frozen-ii-serves-up-lukewarm-leftovers-from-the-2013-hit/2019/11/20/b1e483a0-0572-11ea-ac12-3325d49eacaa_story.html",
+        "https://www.thewrap.com/frozen-ii-film-review-2019-kristen-bell-elsa-anna-disney/",
         "https://buffalonews.com/entertainment/arts-and-theatre/theatrical-winter-thaws-at-sheas-reopening-with-a-magical-disney-s-frozen/article_1a2ef312-1626-11ec-b0d2-77920e0c792d.html",
         "https://www.twincities.com/2021/10/03/theater-review-touring-frozen-production-makes-a-bright-return-to-the-twin-cities/",
         "https://www.startribune.com/eagan-native-caroline-innerbichler-is-magical-in-frozen/600103845/",
@@ -175991,35 +176292,818 @@
         "https://patch.com/connecticut/hartford/theater-review-disneys-frozen-tour-bushnell",
         "https://ottawacitizen.com/entertainment/local-arts/musical-review-disneys-frozen-dazzles-with-fantastic-stagecraft-eye-popping-effects-and-a-valuable-lesson",
         "https://www.denverpost.com/2024/06/20/theater-review-broadway-frozen-musical-buell-denver/",
-        "https://www.straight.com/arts/broadway-across-canadas-frozen-thaws-iciest-of-hearts",
-        "https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html",
-        "https://www.amny.com/entertainment/frozen-review-broadway-1.17614511",
-        "http://www.nj.com/entertainment/index.ssf/2018/03/frozen_broadway_musical_review_elsa_anna_olaf.html",
-        "http://www.latimes.com/entertainment/arts/la-et-cm-frozen-broadway-review-20180322-story.html",
-        "http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-frozen-broadway-review-0322-story.html",
-        "https://www.theguardian.com/stage/2018/mar/22/frozen-review-disney-hit-arrives-on-broadway-with-mixed-results",
-        "https://www.telegraph.co.uk/theatre/what-to-see/frozen-reviewst-james-theatre-broadway-hard-hear-elsa-applause/",
-        "https://www.hollywoodreporter.com/review/frozen-broadway-theater-review-1096441",
-        "http://ew.com/theater/2018/03/22/disney-frozen-broadway-review/",
-        "http://www.nydailynews.com/entertainment/theater-arts/frozen-review-songs-stars-shine-disney-show-lacks-magic-article-1.3889847",
-        "https://www.thewrap.com/frozen-broadway-review-disneys-animated-hit-becomes-major-snow-job/",
-        "http://deadline.com/2018/03/frozen-broadway-review-disney-let-it-go-michael-grandage-1202350575/",
-        "https://www.washingtonpost.com/entertainment/theater_dance/my-daughter-enjoyed-broadways-frozen-what-more-do-you-need-to-know/2018/03/22/40aa9cea-2d17-11e8-911f-ca7f68bff0fc_story.html",
-        "http://variety.com/2018/legit/reviews/frozen-review-broadway-disney-1202733007/",
-        "https://www.timeout.com/newyork/theater/frozen",
-        "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/03/23/theater-review---frozen-",
-        "https://www.thedailybeast.com/review-frozen-on-broadway-needs-to-let-it-go",
-        "https://www.thestage.co.uk/reviews/2018/disneys-frozen-review-at-st-james-theatre-new-york/",
-        "https://www.timesunion.com/entertainment/article/Review-Frozen-Proctors-11-15-19-14840158.php",
-        "https://www.spotlightnews.com/news/2019/11/17/review-frozen-musical-dazzles-audiences-at-proctors/",
-        "https://www.hollywoodreporter.com/review/frozen-theater-1260584",
-        "https://www.onstageblog.com/reviews/2019/12/8/frozen-at-the-hollywood-pantages-melts-hearts",
-        "https://onstageandscreen.com/2019/12/08/theater-review-frozen-at-the-hollywood-pantages-theatre/"
+        "https://www.straight.com/arts/broadway-across-canadas-frozen-thaws-iciest-of-hearts"
       ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.amny.com/entertainment/frozen-review-broadway-1.17614511",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://broadway.news/2018/03/22/review-frozen-freezes-stage/",
+          "host": "broadway.news",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-frozen-broadway-review-0322-story.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-frozen-on-broadway-needs-to-let-it-go",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "http://deadline.com/2018/03/frozen-broadway-review-disney-let-it-go-michael-grandage-1202350575/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "http://ew.com/theater/2018/03/22/disney-frozen-broadway-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2018/mar/22/frozen-review-disney-hit-arrives-on-broadway-with-mixed-results",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/frozen-broadway-theater-review-1096441",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "http://www.latimes.com/entertainment/arts/la-et-cm-frozen-broadway-review-20180322-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2018/03/frozen_broadway_musical_review_elsa_anna_olaf.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/frozen-review-songs-stars-shine-disney-show-lacks-magic-article-1.3889847",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://nypost.com/2018/03/22/broadway-has-robbed-frozen-of-its-heart-and-fun/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/03/23/theater-review---frozen-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/frozen-reviewst-james-theatre-broadway-hard-hear-elsa-applause/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/frozen",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "http://www.towleroad.com/2018/03/frozen-broadway/",
+          "host": "towleroad.com",
+          "knownOutletId": "towleroad",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "http://variety.com/2018/legit/reviews/frozen-review-broadway-disney-1202733007/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "http://www.vulture.com/2018/03/theater-review-frozen-is-in-place-on-broadway-to-stay.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/frozen-the-broadway-musical-review-do-you-want-to-build-a-franchise-1521765000",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/my-daughter-enjoyed-broadways-frozen-what-more-do-you-need-to-know/2018/03/22/40aa9cea-2d17-11e8-911f-ca7f68bff0fc_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thewrap.com/frozen-broadway-review-disneys-animated-hit-becomes-major-snow-job/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
+            }
+          ]
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-9971525/PATRICK-MARMION-magical-film-stage-version-Frozen-one-hot-hit.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "mail-on-sunday",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/frozen-the-musical-review-london-royal-drury-lane-b954309.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2021/sep/08/frozen-review-musical-theatre-royal-drury-lane-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://inews.co.uk/culture/frozen-theatre-royal-drury-lane-london-review-stephanie-mckeon-1188331",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-frozen-west-end-theatre-royal-drury-lane",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/frozen-at-theatre-royal-drury-lane-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/frozen-theatre-royal-drury-lane-london-samantha-barks-stephanie-mckeon-michael-grandage",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/frozen-musical-review-venue-puts-show-shade/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/frozen-review-1",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/frozen-review-theatre-royal-drury-lane-visual-feast-2dlcwsgdf",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatlantic.com/entertainment/archive/2019/11/frozen-ii-review/601906/",
+          "host": "theatlantic.com",
+          "knownOutletId": "theatlantic",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://film.avclub.com/frozen-ii-echoes-without-amplifying-the-magic-of-the-re-1839863966",
+          "host": "avclub.com",
+          "knownOutletId": "av-club",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.bostonglobe.com/2019/11/18/arts/icy-magic-doesnt-crack-disneys-frozen-ii/",
+          "host": "bostonglobe.com",
+          "knownOutletId": "boston-globe",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.businessinsider.com/frozen-2-review-worthy-sequel-great-animation-songs-2019-11",
+          "host": "businessinsider.com",
+          "knownOutletId": "business-insider",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.digitalspy.com/movies/a29786453/frozen-2-review-disney-release-date/",
+          "host": "digitalspy.com",
+          "knownOutletId": "digital-spy",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.empireonline.com/movies/reviews/frozen-ii/",
+          "host": "empireonline.com",
+          "knownOutletId": "empire",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/movie-reviews/2019/11/14/frozen-2-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/film/frozen-2-review-disney-sequel-a4287556.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.forbes.com/sites/markhughes/2019/11/21/review-frozen-2-proves-even-so-so-disney-movies-look-and-feel-great/",
+          "host": "forbes.com",
+          "knownOutletId": "forbes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theglobeandmail.com/arts/film/reviews/article-disneys-prosaic-and-freezer-burnt-frozen-2-is-a-cold-hard-cash-grab/",
+          "host": "theglobeandmail.com",
+          "knownOutletId": "the-globe-and-mail",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/film/2019/nov/14/frozen-2-review-sequel-jennifer-lee-chris-buck-idina-menzel-kristen-bell",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/frozen-2-review-1254398",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.indiewire.com/2019/11/frozen-2-review-sequel-disney-1202189123/",
+          "host": "indiewire.com",
+          "knownOutletId": "indiewire",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2019-11-14/frozen-2-review-disney-elsa-anna-olaf",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2019/11/movie-review-frozen-ii-the-sequel-to-disneys-hit-frozen.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2019/11/14/frozen-ii-review-disney-sequel-is-better-than-the-first-one/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/11/21/movies/frozen-2-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.npr.org/2019/11/20/779284364/frozen-ii-lets-it-go-darker",
+          "host": "npr.org",
+          "knownOutletId": "npr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2019/11/frozen-2-review-kristen-bell-idina-menzel-get-lost-in-complicated-plot/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://screencrush.com/frozen-2-review/",
+          "host": "screencrush.com",
+          "knownOutletId": null,
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://slate.com/culture/2019/11/frozen-2-review-disney-sequel.html",
+          "host": "slate.com",
+          "knownOutletId": "slate",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.rollingstone.com/movies/movie-reviews/frozen-2-movie-review-disney-914913/",
+          "host": "rollingstone.com",
+          "knownOutletId": "rollingstone",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/films/0/frozen-2-review-elsa-anna-tackle-colonialism-disneys-resonant/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/us/film/frozen-ii",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestar.com/entertainment/movies/review/2019/11/21/frozen-2-is-awesome-to-look-at-despite-reheated-story.html",
+          "host": "thestar.com",
+          "knownOutletId": "toronto-star",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/movies/2019/11/14/frozen-2-review-bigger-isnt-better-disney-musical-sequel/4181867002/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2019/11/frozen-2-disney-review",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2019/film/reviews/frozen-2-review-frozen-ii-1203404683/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/goingoutguide/movies/neither-hot-nor-cool-frozen-ii-serves-up-lukewarm-leftovers-from-the-2013-hit/2019/11/20/b1e483a0-0572-11ea-ac12-3325d49eacaa_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/frozen-ii-film-review-2019-kristen-bell-elsa-anna-disney/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-frozen-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://buffalonews.com/entertainment/arts-and-theatre/theatrical-winter-thaws-at-sheas-reopening-with-a-magical-disney-s-frozen/article_1a2ef312-1626-11ec-b0d2-77920e0c792d.html",
           "host": "buffalonews.com",
@@ -176448,305 +177532,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "https://www.amny.com/entertainment/frozen-review-broadway-1.17614511",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2018/03/frozen_broadway_musical_review_elsa_anna_olaf.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "http://www.latimes.com/entertainment/arts/la-et-cm-frozen-broadway-review-20180322-story.html",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-frozen-broadway-review-0322-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2018/mar/22/frozen-review-disney-hit-arrives-on-broadway-with-mixed-results",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/frozen-reviewst-james-theatre-broadway-hard-hear-elsa-applause/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/frozen-broadway-theater-review-1096441",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "http://ew.com/theater/2018/03/22/disney-frozen-broadway-review/",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/frozen-review-songs-stars-shine-disney-show-lacks-magic-article-1.3889847",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thewrap.com/frozen-broadway-review-disneys-animated-hit-becomes-major-snow-job/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "http://deadline.com/2018/03/frozen-broadway-review-disney-let-it-go-michael-grandage-1202350575/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/my-daughter-enjoyed-broadways-frozen-what-more-do-you-need-to-know/2018/03/22/40aa9cea-2d17-11e8-911f-ca7f68bff0fc_story.html",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "http://variety.com/2018/legit/reviews/frozen-review-broadway-disney-1202733007/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/frozen",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/03/23/theater-review---frozen-",
-          "host": "ny1.com",
-          "knownOutletId": "ny1",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thedailybeast.com/review-frozen-on-broadway-needs-to-let-it-go",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2018/disneys-frozen-review-at-st-james-theatre-new-york/",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
-          "url": "https://www.timesunion.com/entertainment/article/Review-Frozen-Proctors-11-15-19-14840158.php",
-          "host": "timesunion.com",
-          "knownOutletId": "albany-times-union",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-National-Tour-of-FROZEN-What-Did-the-Critics-Think-20191118"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.spotlightnews.com/news/2019/11/17/review-frozen-musical-dazzles-audiences-at-proctors/",
-          "host": "spotlightnews.com",
-          "knownOutletId": null,
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-National-Tour-of-FROZEN-What-Did-the-Critics-Think-20191118"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/frozen-theater-1260584",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-National-Tour-of-FROZEN-What-Did-the-Critics-Think-20191118"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.onstageblog.com/reviews/2019/12/8/frozen-at-the-hollywood-pantages-melts-hearts",
-          "host": "onstageblog.com",
-          "knownOutletId": "onstage-blog",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-National-Tour-of-FROZEN-What-Did-the-Critics-Think-20191118"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://onstageandscreen.com/2019/12/08/theater-review-frozen-at-the-hollywood-pantages-theatre/",
-          "host": "onstageandscreen.com",
-          "knownOutletId": "on-stage-and-screen",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-The-National-Tour-of-FROZEN-What-Did-the-Critics-Think-20191118"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [],
@@ -176758,35 +177543,475 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1044,
+        "count": 769,
         "byReason": {
-          "aggregator-internal-nav": 605,
-          "not-http-url": 309,
-          "aggregator-section-root": 12,
-          "non-review-host": 85,
-          "roundup-page": 7,
-          "tag-index-page": 2,
-          "podcast-episode": 24
+          "aggregator-internal-nav": 392,
+          "not-http-url": 165,
+          "production-database-listing": 41,
+          "aggregator-section-root": 16,
+          "non-review-host": 89,
+          "non-stage-review": 4,
+          "roundup-page": 49,
+          "podcast-episode": 12,
+          "tag-index-page": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-FROZEN-National-Tour-Returns-to-the-Stage-What-Are-The-Critics-Saying-20211013",
-          "publishDate": "2021-10-13"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322",
+          "url": "https://playbill.com/article/read-the-reviews-for-broadways-frozen",
           "publishDate": "2018-03-22"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-National-Tour-of-FROZEN-What-Did-the-Critics-Think-20191118",
-          "publishDate": "2019-11-18"
+          "url": "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon",
+          "publishDate": "2021-09-09"
+        },
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-frozen-2",
+          "publishDate": "2019-11-21"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-FROZEN-National-Tour-Returns-to-the-Stage-What-Are-The-Critics-Saying-20211013",
+          "publishDate": "2021-10-13"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.amny.com/entertainment/frozen-review-broadway-1.17614511",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://broadway.news/2018/03/22/review-frozen-freezes-stage/",
+          "host": "broadway.news",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-frozen-broadway-review-0322-story.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-frozen-on-broadway-needs-to-let-it-go",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://deadline.com/2018/03/frozen-broadway-review-disney-let-it-go-michael-grandage-1202350575/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://ew.com/theater/2018/03/22/disney-frozen-broadway-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2018/mar/22/frozen-review-disney-hit-arrives-on-broadway-with-mixed-results",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/frozen-broadway-theater-review-1096441",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.latimes.com/entertainment/arts/la-et-cm-frozen-broadway-review-20180322-story.html",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2018/03/frozen_broadway_musical_review_elsa_anna_olaf.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/frozen-review-songs-stars-shine-disney-show-lacks-magic-article-1.3889847",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2018/03/22/broadway-has-robbed-frozen-of-its-heart-and-fun/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/03/23/theater-review---frozen-",
+          "host": "ny1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/frozen-reviewst-james-theatre-broadway-hard-hear-elsa-applause/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/frozen",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.towleroad.com/2018/03/frozen-broadway/",
+          "host": "towleroad.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2018/legit/reviews/frozen-review-broadway-disney-1202733007/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2018/03/theater-review-frozen-is-in-place-on-broadway-to-stay.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/frozen-the-broadway-musical-review-do-you-want-to-build-a-franchise-1521765000",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/my-daughter-enjoyed-broadways-frozen-what-more-do-you-need-to-know/2018/03/22/40aa9cea-2d17-11e8-911f-ca7f68bff0fc_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/frozen-broadway-review-disneys-animated-hit-becomes-major-snow-job/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-9971525/PATRICK-MARMION-magical-film-stage-version-Frozen-one-hot-hit.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/frozen-the-musical-review-london-royal-drury-lane-b954309.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2021/sep/08/frozen-review-musical-theatre-royal-drury-lane-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://inews.co.uk/culture/frozen-theatre-royal-drury-lane-london-review-stephanie-mckeon-1188331",
+          "host": "inews.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-frozen-west-end-theatre-royal-drury-lane",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/frozen-at-theatre-royal-drury-lane-review/",
+          "host": "londontheatre1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/frozen-theatre-royal-drury-lane-london-samantha-barks-stephanie-mckeon-michael-grandage",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/frozen-musical-review-venue-puts-show-shade/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/frozen-review-1",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/frozen-review-theatre-royal-drury-lane-visual-feast-2dlcwsgdf",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatlantic.com/entertainment/archive/2019/11/frozen-ii-review/601906/",
+          "host": "theatlantic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://film.avclub.com/frozen-ii-echoes-without-amplifying-the-magic-of-the-re-1839863966",
+          "host": "avclub.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.bostonglobe.com/2019/11/18/arts/icy-magic-doesnt-crack-disneys-frozen-ii/",
+          "host": "bostonglobe.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.businessinsider.com/frozen-2-review-worthy-sequel-great-animation-songs-2019-11",
+          "host": "businessinsider.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.digitalspy.com/movies/a29786453/frozen-2-review-disney-release-date/",
+          "host": "digitalspy.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.empireonline.com/movies/reviews/frozen-ii/",
+          "host": "empireonline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/movie-reviews/2019/11/14/frozen-2-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/film/frozen-2-review-disney-sequel-a4287556.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.forbes.com/sites/markhughes/2019/11/21/review-frozen-2-proves-even-so-so-disney-movies-look-and-feel-great/",
+          "host": "forbes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theglobeandmail.com/arts/film/reviews/article-disneys-prosaic-and-freezer-burnt-frozen-2-is-a-cold-hard-cash-grab/",
+          "host": "theglobeandmail.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/film/2019/nov/14/frozen-2-review-sequel-jennifer-lee-chris-buck-idina-menzel-kristen-bell",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/frozen-2-review-1254398",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.indiewire.com/2019/11/frozen-2-review-sequel-disney-1202189123/",
+          "host": "indiewire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2019-11-14/frozen-2-review-disney-elsa-anna-olaf",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2019/11/movie-review-frozen-ii-the-sequel-to-disneys-hit-frozen.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2019/11/14/frozen-ii-review-disney-sequel-is-better-than-the-first-one/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2019/11/21/movies/frozen-2-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.npr.org/2019/11/20/779284364/frozen-ii-lets-it-go-darker",
+          "host": "npr.org",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2019/11/frozen-2-review-kristen-bell-idina-menzel-get-lost-in-complicated-plot/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://screencrush.com/frozen-2-review/",
+          "host": "screencrush.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://slate.com/culture/2019/11/frozen-2-review-disney-sequel.html",
+          "host": "slate.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.rollingstone.com/movies/movie-reviews/frozen-2-movie-review-disney-914913/",
+          "host": "rollingstone.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/films/0/frozen-2-review-elsa-anna-tackle-colonialism-disneys-resonant/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/us/film/frozen-ii",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestar.com/entertainment/movies/review/2019/11/21/frozen-2-is-awesome-to-look-at-despite-reheated-story.html",
+          "host": "thestar.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/movies/2019/11/14/frozen-2-review-bigger-isnt-better-disney-musical-sequel/4181867002/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2019/11/frozen-2-disney-review",
+          "host": "vanityfair.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2019/film/reviews/frozen-2-review-frozen-ii-1203404683/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/goingoutguide/movies/neither-hot-nor-cool-frozen-ii-serves-up-lukewarm-leftovers-from-the-2013-hit/2019/11/20/b1e483a0-0572-11ea-ac12-3325d49eacaa_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/frozen-ii-film-review-2019-kristen-bell-elsa-anna-disney/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://buffalonews.com/entertainment/arts-and-theatre/theatrical-winter-thaws-at-sheas-reopening-with-a-magical-disney-s-frozen/article_1a2ef312-1626-11ec-b0d2-77920e0c792d.html",
           "host": "buffalonews.com",
@@ -177017,167 +178242,6 @@
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
-        },
-        {
-          "url": "https://www.nytimes.com/2018/03/22/theater/frozen-review-disney-broadway.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.amny.com/entertainment/frozen-review-broadway-1.17614511",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2018/03/frozen_broadway_musical_review_elsa_anna_olaf.html",
-          "host": "nj.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.latimes.com/entertainment/arts/la-et-cm-frozen-broadway-review-20180322-story.html",
-          "host": "latimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-frozen-broadway-review-0322-story.html",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2018/mar/22/frozen-review-disney-hit-arrives-on-broadway-with-mixed-results",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/frozen-reviewst-james-theatre-broadway-hard-hear-elsa-applause/",
-          "host": "telegraph.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/frozen-broadway-theater-review-1096441",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://ew.com/theater/2018/03/22/disney-frozen-broadway-review/",
-          "host": "ew.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/frozen-review-songs-stars-shine-disney-show-lacks-magic-article-1.3889847",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thewrap.com/frozen-broadway-review-disneys-animated-hit-becomes-major-snow-job/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://deadline.com/2018/03/frozen-broadway-review-disney-let-it-go-michael-grandage-1202350575/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/my-daughter-enjoyed-broadways-frozen-what-more-do-you-need-to-know/2018/03/22/40aa9cea-2d17-11e8-911f-ca7f68bff0fc_story.html",
-          "host": "washingtonpost.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://variety.com/2018/legit/reviews/frozen-review-broadway-disney-1202733007/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/frozen",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/03/23/theater-review---frozen-",
-          "host": "ny1.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thedailybeast.com/review-frozen-on-broadway-needs-to-let-it-go",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2018/disneys-frozen-review-at-st-james-theatre-new-york/",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timesunion.com/entertainment/article/Review-Frozen-Proctors-11-15-19-14840158.php",
-          "host": "timesunion.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.spotlightnews.com/news/2019/11/17/review-frozen-musical-dazzles-audiences-at-proctors/",
-          "host": "spotlightnews.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/frozen-theater-1260584",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.onstageblog.com/reviews/2019/12/8/frozen-at-the-hollywood-pantages-melts-hearts",
-          "host": "onstageblog.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://onstageandscreen.com/2019/12/08/theater-review-frozen-at-the-hollywood-pantages-theatre/",
-          "host": "onstageandscreen.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
         }
       ],
       "ingestResults": [],
@@ -177192,7 +178256,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "fulfillment-center-off-broadway-2017",
@@ -188080,7 +189144,8 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 0,
+            "skipped": true
           },
           "lbo-roundup": {
             "found": false,
@@ -188120,7 +189185,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 4,
+            "results": 5,
             "accepted": 2,
             "error": null
           },
@@ -188131,7 +189196,7 @@
             "geo": "gb",
             "ok": true,
             "results": 4,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -188140,7 +189205,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -188160,14 +189225,14 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 7,
+            "results": 2,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
@@ -188175,10 +189240,10 @@
         "byReason": {
           "aggregator-internal-nav": 1,
           "non-review-host": 5,
-          "non-stage-review": 1,
           "ticketing-reseller": 1,
+          "tag-index-page": 1,
           "census-junk-host": 1,
-          "tag-index-page": 2,
+          "no-review-evidence": 2,
           "event-listing": 2,
           "write-path-blocked": 1
         }
@@ -188259,7 +189324,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "glorious-hope-mill-regional-2025",
@@ -203804,15 +204869,15 @@
         "https://musicaltheatrereview.com/hamlet-hail-to-the-thief-barbican-theatre/",
         "https://www.britishtheatreguide.info/hamlet-hail-to-barbican-theatr-26211",
         "https://theatreandtonic.co.uk/blog/hamlet-hail-to-the-thief-at-barbican-review",
+        "https://playsinternational.org.uk/hamlet-hail-to-the-thief-barbican-theatre",
+        "https://rolandcat.substack.com/review-hamlet-hail-to-the-thief-barbican",
+        "https://stagedtheatre.co.uk/blogs/hamlet-hail-to-the-thief-barbican-theatre",
         "https://musicaltheatrereview.com/hamlet-hail-to-the-thief-barbican-theatre",
         "https://www.timeout.com/london/theatre/hamlet-hail-to-the-thief",
         "https://www.allthatdazzles.co.uk/post/review-hamlet-hail-to-the-thief-barbican-theatre",
         "https://liamodell.com/2026/11/15/hamlet-hail-to-the-thief-review-barbican-theatre-london-cast-samuel-blenkin-claudia-harrison-paul-hilton-radiohead-thom-yorke/",
         "https://playsinternational.org.uk/hamlet-hail-to-the-thief-barbican-theatre/",
-        "https://stagedtheatre.co.uk/blogs/hamlet-hail-to-the-thief-barbican-theatre",
         "https://www.thestage.co.uk/reviews/hamlet-hail-to-the-thief-review-barbican-theatre-london-radiohead",
-        "https://playsinternational.org.uk/hamlet-hail-to-the-thief-barbican-theatre",
-        "https://rolandcat.substack.com/review-hamlet-hail-to-the-thief-barbican",
         "https://rolandcat.substack.com/p/review-hamlet-hail-to-the-thief-barbican",
         "https://southlondon.co.uk/lifestyle/review-hamlet-hail-to-the-thief-barbican/",
         "https://theatreweekly.com/review-hamlet-hail-to-the-thief-at-barbican-theatre",
@@ -204132,7 +205197,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 2,
             "error": null
           },
@@ -204142,8 +205207,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
-            "accepted": 2,
+            "results": 4,
+            "accepted": 0,
             "error": null
           },
           {
@@ -204153,7 +205218,7 @@
             "geo": "gb",
             "ok": true,
             "results": 4,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -204162,28 +205227,28 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 4,
-            "accepted": 0,
+            "results": 6,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 302,
+        "count": 301,
         "byReason": {
-          "non-review-host": 31,
-          "no-review-evidence": 3,
-          "not-http-url": 49,
           "aggregator-internal-nav": 208,
+          "not-http-url": 49,
           "aggregator-section-root": 4,
+          "non-review-host": 30,
+          "ticketing-listing": 1,
           "podcast-episode": 1,
+          "no-review-evidence": 3,
           "write-path-blocked": 4,
-          "stored-date-before-production": 1,
-          "ticketing-listing": 1
+          "stored-date-before-production": 1
         }
       },
       "dedupedVariants": [],
@@ -204378,6 +205443,24 @@
             "firstSeenAt": "2026-11-15T01:32:46.154Z"
           },
           {
+            "url": "https://playsinternational.org.uk/hamlet-hail-to-the-thief-barbican-theatre",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T09:10:59.401Z"
+          },
+          {
+            "url": "https://rolandcat.substack.com/review-hamlet-hail-to-the-thief-barbican",
+            "outletId": "rolandcat.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-16T00:04:10.595Z"
+          },
+          {
+            "url": "https://stagedtheatre.co.uk/blogs/hamlet-hail-to-the-thief-barbican-theatre",
+            "outletId": "stagedtheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-14T16:58:19.618Z"
+          },
+          {
             "url": "https://musicaltheatrereview.com/hamlet-hail-to-the-thief-barbican-theatre",
             "outletId": "musicaltheatrereview.com",
             "state": "live",
@@ -204408,28 +205491,10 @@
             "firstSeenAt": "2026-11-16T12:26:10.838Z"
           },
           {
-            "url": "https://stagedtheatre.co.uk/blogs/hamlet-hail-to-the-thief-barbican-theatre",
-            "outletId": "stagedtheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-14T16:58:19.618Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/hamlet-hail-to-the-thief-review-barbican-theatre-london-radiohead",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-14T08:40:45.642Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/hamlet-hail-to-the-thief-barbican-theatre",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-16T09:10:59.401Z"
-          },
-          {
-            "url": "https://rolandcat.substack.com/review-hamlet-hail-to-the-thief-barbican",
-            "outletId": "rolandcat.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-16T00:04:10.595Z"
           },
           {
             "url": "https://rolandcat.substack.com/p/review-hamlet-hail-to-the-thief-barbican",
@@ -204602,7 +205667,7 @@
         "liveCount": 31,
         "candidateCount": 34
       },
-      "computedAt": "2026-11-25T22:15:56.668Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "hamlet-off-broadway-2024",
@@ -245955,16 +247020,16 @@
         "https://www.timeout.com/newyork/news/broadway-review-its-a-wonderful-lifea-live-radio-play-112326",
         "https://www.thewrap.com/creative-content/theater/its-a-wonderful-life-broadway-review-andrew-rannells-lisa-rinna/",
         "https://www.nytimes.com/2026/11/23/theater/its-a-wonderful-life-blue-man-group-now-you-see-me-review.html",
+        "https://www.theatermania.com/news/review-its-a-wonderful-life-a-live-radio-play-on-broadway_1860171/",
         "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
         "https://pagesonstages.com/2026/11/18/its-a-wonderful-life-bway/",
         "https://1minutecritic.com/its-a-wonderful-life-radio-play-broadway-review",
         "https://thefrontrowcenter.com/2026/11/its-a-wonderful-life-a-radio-play",
-        "https://theaterscene.com/reviews/its-a-wonderful-life-a-live-radio-play",
-        "https://exeuntnyc.com/reviews/review-its-a-wonderful-life-a-live-radio-play-at-the-broadhurst-theatre/",
         "https://stagebuddy.com/theater/theater-review/wonderful-life-live-radio-play",
+        "https://exeuntnyc.com/reviews/review-its-a-wonderful-life-a-live-radio-play-at-the-broadhurst-theatre/",
         "https://thefrontrowcenter.com/2026/11/its-a-wonderful-life-a-radio-play/",
+        "https://theaterscene.com/reviews/its-a-wonderful-life-a-live-radio-play",
         "https://theaterpizzazz.com/its-a-wonderful-life-a-live-radio-play",
-        "https://www.theatermania.com/news/review-its-a-wonderful-life-a-live-radio-play-on-broadway_1860171/",
         "https://stagebuddy.com/theater/theater-review/review-wonderful-life-live-radio-play",
         "https://stagebuddy.com/theater/review-wonderful-life-live-radio-play",
         "https://stagezine.com/its-a-wonderful-life-one-of-seasons-best/amp/",
@@ -245974,7 +247039,7 @@
         "https://stagezine.com/events/its-a-wonderful-life-a-live-broadway-radio-play-broadhurst/",
         "https://curtain-up.com/review/review-its-a-wonderful-life-a-live-radio-play/"
       ],
-      "dirFiles": 43,
+      "dirFiles": 44,
       "dirClean": 25,
       "inReviewsJson": 25,
       "missing": [
@@ -246106,19 +247171,89 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"It’s A Wonderful Life: A Live Radio Play\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"It’s A Wonderful Life: A Live Radio Play\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"It’s A Wonderful Life: A Live Radio Play\" review broadhurst",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"It’s A Wonderful Life: A Live Radio Play\" Landry review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "It’s A Wonderful Life: A Live Radio Play Broadhurst Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "It’s A Wonderful Life: A Live Radio Play Broadhurst Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "It’s A Wonderful Life: A Live Radio Play Broadhurst Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 8,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 388,
+        "count": 402,
         "byReason": {
-          "aggregator-internal-nav": 233,
-          "not-http-url": 83,
+          "aggregator-internal-nav": 237,
+          "not-http-url": 87,
           "production-database-listing": 9,
           "aggregator-section-root": 9,
-          "non-review-host": 48,
+          "non-review-host": 51,
           "non-stage-review": 1,
           "roundup-page": 4,
+          "show-listing-page": 1,
+          "podcast-episode": 1,
+          "census-junk-host": 1,
           "bare-host": 1
         }
       },
@@ -246337,6 +247472,12 @@
             "firstSeenAt": "2026-11-23T19:41:30.797Z"
           },
           {
+            "url": "https://www.theatermania.com/news/review-its-a-wonderful-life-a-live-radio-play-on-broadway_1860171/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-23T21:54:20.059Z"
+          },
+          {
             "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
             "outletId": "theaterscene.net",
             "state": "live",
@@ -246355,10 +247496,10 @@
             "firstSeenAt": "2026-11-24T21:51:27.339Z"
           },
           {
-            "url": "https://theaterscene.com/reviews/its-a-wonderful-life-a-live-radio-play",
-            "outletId": "theaterscene.com",
+            "url": "https://stagebuddy.com/theater/theater-review/wonderful-life-live-radio-play",
+            "outletId": "stagebuddy.com",
             "state": "live",
-            "firstSeenAt": "2026-11-26T05:44:58.674Z"
+            "firstSeenAt": "2026-11-25T04:28:38.089Z"
           },
           {
             "url": "https://exeuntnyc.com/reviews/review-its-a-wonderful-life-a-live-radio-play-at-the-broadhurst-theatre/",
@@ -246367,14 +247508,14 @@
             "firstSeenAt": "2026-11-24T21:51:27.339Z"
           },
           {
-            "url": "https://stagebuddy.com/theater/theater-review/wonderful-life-live-radio-play",
-            "outletId": "stagebuddy.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-25T04:28:38.089Z"
-          },
-          {
             "url": "https://thefrontrowcenter.com/2026/11/its-a-wonderful-life-a-radio-play/",
             "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-26T05:44:58.674Z"
+          },
+          {
+            "url": "https://theaterscene.com/reviews/its-a-wonderful-life-a-live-radio-play",
+            "outletId": "theaterscene.com",
             "state": "live",
             "firstSeenAt": "2026-11-26T05:44:58.674Z"
           },
@@ -246383,12 +247524,6 @@
             "outletId": "theaterpizzazz.com",
             "state": "live",
             "firstSeenAt": "2026-11-24T13:27:11.233Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-its-a-wonderful-life-a-live-radio-play-on-broadway_1860171/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-23T21:54:20.059Z"
           },
           {
             "url": "https://stagebuddy.com/theater/theater-review/review-wonderful-life-live-radio-play",
@@ -246456,7 +247591,7 @@
         "liveCount": 20,
         "candidateCount": 24
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "its-a-wonderful-life-a-live-radio-play-regional-2025",
@@ -246748,10 +247883,12 @@
       "previewsStartDate": "2026-11-21",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.thetimes.com/culture/theatre-dance/article/jack-and-the-beanstalk-review-clive-rowe-keeps-his-crown-as-king-of-panto-n3qtqxhmz",
+        "https://loureviews.blog/2026/11/18/yshee-black-on-the-all-drag-panto-jack-and-the-beanstalk-at-emerald-theatre/",
+        "https://susanelkin.co.uk/articles/jack-beanstalk-susan-elkin-reviews-2",
+        "https://www.ayoungertheatre.com/review-jack-and-the-beanstalk-hackney-empire",
+        "https://www.londontheatre1.com/reviews/jack-and-the-beanstalk-at-hackney-empire-review/",
         "https://www.northeastfamilyfun.co.uk/2026/11/jack-and-beanstalk-panto-review",
         "https://www.northeastfamilyfun.co.uk/2026/11/jack-and-beanstalk-panto-review.html",
-        "https://loureviews.blog/2026/11/18/yshee-black-on-the-all-drag-panto-jack-and-the-beanstalk-at-emerald-theatre/",
         "https://theatreweekly.com/interview-kate-butch-on-jack-and-the-beanstalk-at-emerald-theatre/",
         "https://www.standard.co.uk/culture/theatre/jack-and-the-beanstalk-at-the-palladium-review-dawn-french-julian-clary-b1047362.html",
         "https://www.thestage.co.uk/reviews/jack-and-the-beanstalk-review-at-the-london-palladium-from-michael-harrison-starring-dawn-french-and-gary-wilmot",
@@ -247028,22 +248165,102 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Jack and The Beanstalk\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Jack and The Beanstalk\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Jack and The Beanstalk\" review hackney",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Jack and The Beanstalk Hackney Empire review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 6,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Jack and The Beanstalk Hackney Empire review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Jack and The Beanstalk Hackney Empire review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 7,
+        "byReason": {
+          "non-review-host": 2,
+          "show-listing-page": 1,
+          "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "bare-host": 1,
+          "show-hub": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
         {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/jack-and-the-beanstalk-review-clive-rowe-keeps-his-crown-as-king-of-panto-n3qtqxhmz",
-          "host": "thetimes.com",
-          "knownOutletId": "sunday-times",
+          "url": "https://susanelkin.co.uk/articles/jack-beanstalk-susan-elkin-reviews-2",
+          "host": "susanelkin.co.uk",
+          "knownOutletId": "susanelkin",
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
           "nonReviewDetail": "2021-12-06"
+        },
+        {
+          "url": "https://www.ayoungertheatre.com/review-jack-and-the-beanstalk-hackney-empire",
+          "host": "ayoungertheatre.com",
+          "knownOutletId": "a-younger-theatre",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2015-11-27"
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/jack-and-the-beanstalk-at-hackney-empire-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2021-12-03"
         }
       ],
       "automatedExcludedListed": 2,
@@ -247181,15 +248398,25 @@
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/jack-and-the-beanstalk-review-clive-rowe-keeps-his-crown-as-king-of-panto-n3qtqxhmz",
-            "host": "thetimes.com",
+            "url": "https://susanelkin.co.uk/articles/jack-beanstalk-susan-elkin-reviews-2",
+            "host": "susanelkin.co.uk",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://www.ayoungertheatre.com/review-jack-and-the-beanstalk-hackney-empire",
+            "host": "ayoungertheatre.com",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/jack-and-the-beanstalk-at-hackney-empire-review/",
+            "host": "londontheatre1.com",
             "reason": "page-date-before-run"
           }
         ],
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-26T10:27:57.190Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
@@ -259197,6 +260424,7 @@
       "previewsStartDate": "2026-11-25",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://princetoninfo.com/artsandentertainment/broadway-review-jumpers",
         "https://www.britishtheatreguide.info/reviews/jumpers-rev",
         "https://www.reviewsgate.co.uk/reviews-archive-part-2/jumpers-to-4-october",
         "https://www.complete-review.com/reviews/stoppt/jumpers.htm"
@@ -259236,7 +260464,8 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 0,
+            "skipped": true
           },
           "lbo-roundup": {
             "found": false,
@@ -259276,7 +260505,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 1,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -259286,7 +260515,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -259296,8 +260525,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 4,
-            "accepted": 0,
+            "results": 5,
+            "accepted": 1,
             "error": null
           },
           {
@@ -259306,7 +260535,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 5,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -259323,21 +260552,29 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
         "count": 10,
         "byReason": {
-          "non-review-host": 6,
-          "no-review-evidence": 1,
-          "venue-production-page": 1,
-          "guide-article": 1,
-          "show-listing-page": 1
+          "aggregator-internal-nav": 1,
+          "production-database-listing": 1,
+          "non-review-host": 5,
+          "show-listing-page": 1,
+          "no-review-evidence": 2
         }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
+        {
+          "url": "https://princetoninfo.com/artsandentertainment/broadway-review-jumpers",
+          "host": "princetoninfo.com",
+          "knownOutletId": "princetoninfo",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2004-05-12"
+        },
         {
           "url": "https://www.britishtheatreguide.info/reviews/jumpers-rev",
           "host": "britishtheatreguide.info",
@@ -259392,6 +260629,11 @@
         "censusSchema": 4,
         "excluded": [
           {
+            "url": "https://princetoninfo.com/artsandentertainment/broadway-review-jumpers",
+            "host": "princetoninfo.com",
+            "reason": "page-date-before-run"
+          },
+          {
             "url": "https://www.britishtheatreguide.info/reviews/jumpers-rev",
             "host": "britishtheatreguide.info",
             "reason": "page-date-before-run"
@@ -259405,7 +260647,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "jungle-book-aviva-studios-regional-2024",
@@ -272152,7 +273394,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-14T16:58:19.618Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "la-distance-bam-off-broadway-2026",
@@ -326055,10 +327297,8 @@
         "https://www.theatrely.com/post/pink-is-the-word-much-ado-about-nothing-on-broadway-review",
         "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-tom-hiddleston-much-ado-about-nothing-1236747050/",
         "https://www.vogue.com/article/much-ado-about-nothing-broadway-revival",
-        "https://www.vulture.com/article/much-ado-about-nothing-broadway-review",
         "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
-        "https://thefourthwalsh.com/2025/11/review-much-ado-about-nothing-chicago-shakespeare-theater-is-something-to-see/",
-        "https://www.chicagotribune.com/2026/11/19",
+        "https://www.vulture.com/article/much-ado-about-nothing-broadway-review",
         "https://peterviney.com/2026/07/09/much-ado-about-nothing-globe-2026-review/",
         "https://www.broadwayblack.com/productions/much-ado-about-nothing/",
         "https://criticscircleblog.wordpress.com/2025/06/24/review-dia-hakim-on-much-ado-about-nothing-by-william-shakespeare-the-winter-players/",
@@ -326156,18 +327396,6 @@
           "url": "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
           "host": "theguardian.com",
           "knownOutletId": "guardian",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.chicagotribune.com/2026/11/19",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
           "serpCensus": true,
           "sources": [
             {
@@ -326476,37 +327704,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://thefourthwalsh.com/2025/11/review-much-ado-about-nothing-chicago-shakespeare-theater-is-something-to-see/",
-          "host": "thefourthwalsh.com",
-          "knownOutletId": "thefourthwalsh",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thefourthwalsh--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://thefourthwalsh.com/2025/11/review-much-ado-about-nothing-chicago-shakespeare-theater-is-something-to-see/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2025-11-24",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -326522,8 +327719,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
-            "accepted": 3,
+            "results": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -326542,8 +327739,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 2,
+            "results": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -326552,8 +327749,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
-            "accepted": 1,
+            "results": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -326562,7 +327759,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -326572,33 +327769,30 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 8,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 543,
+        "count": 522,
         "byReason": {
-          "non-review-host": 77,
           "aggregator-internal-nav": 305,
-          "roundup-page": 6,
-          "non-stage-review": 2,
-          "no-review-evidence": 1,
-          "not-http-url": 96,
+          "not-http-url": 90,
           "production-database-listing": 24,
           "aggregator-section-root": 13,
-          "bare-host": 2,
-          "podcast-episode": 12,
-          "show-listing-page": 1,
-          "show-hub": 1,
-          "ticketing-reseller": 2,
-          "news-roundup-site": 1
+          "non-review-host": 79,
+          "non-stage-review": 2,
+          "roundup-page": 5,
+          "ticketing-reseller": 1,
+          "write-path-blocked": 1,
+          "bare-host": 1,
+          "news-article": 1
         }
       },
       "dedupedVariants": [],
@@ -326684,9 +327878,24 @@
       ],
       "ingestResults": [
         {
-          "url": "http://partially-obstructed-view.blogspot.com/2026/07/theatre-review-much-ado-about-nothing.html",
-          "host": "partially-obstructed-view.blogspot.com",
-          "outletId": "partially-obstructed-view",
+          "url": "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Refusing to ingest — collision with guardian--arifa-akbar.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://www.theguardian.com/stage/2025/feb/19/much-ado-about-nothing-review-theatre-royal-tom-hiddleston-hayley-atwell\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": null,\n  \"incomingUrl\": \"https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london\",\n  \"incomingPublishDate\": \"2026-06-21\"\n}\n\nManual remediation required: ren"
+        },
+        {
+          "url": "https://ayoungishperspective.co.uk/2026/06/20/review-much-ado-about-nothing-6/",
+          "host": "ayoungishperspective.co.uk",
+          "outletId": "a-youngish-perspective",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -326699,9 +327908,9 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         },
         {
-          "url": "https://airmail.news/arts-intel/events/much-ado-about-nothing-copy",
-          "host": "airmail.news",
-          "outletId": "airmail",
+          "url": "https://stagezine.com/events/much-ado-about-nothing-winter-garden/",
+          "host": "stagezine.com",
+          "outletId": "stagezine",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -326711,12 +327920,12 @@
           "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "much-ado-about-nothing-2026: https://airmail.news/arts-intel/events/much-ado-about-nothing-copy has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "much-ado-about-nothing-2026: https://stagezine.com/events/much-ado-about-nothing-winter-garden/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
-          "url": "https://thespyinthestalls.com/2025/04/much-ado-about-nothing-9",
-          "host": "thespyinthestalls.com",
-          "outletId": "the-spy-in-the-stalls",
+          "url": "https://everything-theatre.co.uk/2026/06/review-much-ado-about-nothing-shakespeares-globe/",
+          "host": "everything-theatre.co.uk",
+          "outletId": "everything-theatre",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -326726,22 +327935,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Cross-market reroute: much-ado-about-nothing-2026 → much-ado-about-nothing-royal-shakespeare-regional-2025 (sibling opening 0d from publishDate vs current 575d)\n\n❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/much-ado-about-nothing-royal-shakespeare-regional-2025/the-spy-in-the-stalls--sarah-milton.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
-        },
-        {
-          "url": "https://www.chicagotribune.com/2026/11/19",
-          "host": "chicagotribune.com",
-          "outletId": "chicagotribune",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+          "reason": "⚠️  Cross-market reroute: much-ado-about-nothing-2026 → much-ado-about-nothing-globe-off-west-end-2026 (sibling opening 2d from publishDate vs current 150d)\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/much-ado-about-nothing-globe-off-west-end-2026/everything-theatre--simon-finn.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
         },
         {
           "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-tom-hiddleston-much-ado-about-nothing-1236747050/",
@@ -326761,24 +327955,19 @@
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
-          "host": "theguardian.com",
-          "outletId": "guardian"
+          "url": "http://partially-obstructed-view.blogspot.com/2026/07/theatre-review-much-ado-about-nothing.html",
+          "host": "partially-obstructed-view.blogspot.com",
+          "outletId": "partially-obstructed-view"
         },
         {
-          "url": "https://ayoungishperspective.co.uk/2026/06/20/review-much-ado-about-nothing-6/",
-          "host": "ayoungishperspective.co.uk",
-          "outletId": "a-youngish-perspective"
+          "url": "https://airmail.news/arts-intel/events/much-ado-about-nothing-copy",
+          "host": "airmail.news",
+          "outletId": "airmail"
         },
         {
-          "url": "https://stagezine.com/events/much-ado-about-nothing-winter-garden/",
-          "host": "stagezine.com",
-          "outletId": "stagezine"
-        },
-        {
-          "url": "https://everything-theatre.co.uk/2026/06/review-much-ado-about-nothing-shakespeares-globe/",
-          "host": "everything-theatre.co.uk",
-          "outletId": "everything-theatre"
+          "url": "https://thespyinthestalls.com/2025/04/much-ado-about-nothing-9",
+          "host": "thespyinthestalls.com",
+          "outletId": "the-spy-in-the-stalls"
         }
       ],
       "censusVerdict": {
@@ -326797,13 +327986,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london"
-          },
-          {
-            "outletId": "chicagotribune",
-            "outlet": "chicagotribune",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.chicagotribune.com/2026/11/19"
           },
           {
             "outletId": "peterviney.com",
@@ -327033,13 +328215,6 @@
             "firstSeenAt": "2026-11-19T15:32:34.066Z"
           },
           {
-            "url": "https://www.chicagotribune.com/2026/11/19",
-            "outletId": "chicagotribune",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-25T23:22:42.082Z"
-          },
-          {
             "url": "https://peterviney.com/2026/07/09/much-ado-about-nothing-globe-2026-review/",
             "outletId": "peterviney.com",
             "state": "GAP",
@@ -327127,9 +328302,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 19,
-        "candidateCount": 33
+        "candidateCount": 32
       },
-      "computedAt": "2026-11-25T23:22:42.082Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -394519,12 +395694,76 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Robin Hood and the Merry Mandem\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Robin Hood and the Merry Mandem\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Robin Hood and the Merry Mandem\" review stratford",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Robin Hood and the Merry Mandem Theatre Royal Stratford East review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Robin Hood and the Merry Mandem Theatre Royal Stratford East review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Robin Hood and the Merry Mandem Theatre Royal Stratford East review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 10,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 4,
+          "tag-index-page": 2,
+          "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "venue-production-page": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -394573,7 +395812,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-26T10:27:57.190Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "robin-hood-west-end-2024",
@@ -400698,7 +401937,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "sandra-off-broadway-2022",
@@ -400967,8 +402206,9 @@
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.primarytimes.co.uk/south_london/news/2026/11/santa-39-s-first-christmas-unicorn-theatre-london-",
+        "https://thespyinthestalls.com/2026/11/santas-first-christmas",
         "https://www.timeout.com/london/theatre/santas-first-christmas",
+        "https://www.primarytimes.co.uk/south_london/news/2026/11/santa-39-s-first-christmas-unicorn-theatre-london-",
         "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-613142",
         "https://www.primarytimes.co.uk/se_london/competitions/2026/11/613892-win-a-family-ticket-to-santa-s-first-christmas-at-the-unicorn-theatre",
         "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613142",
@@ -400980,6 +402220,18 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://thespyinthestalls.com/2026/11/santas-first-christmas",
+          "host": "thespyinthestalls.com",
+          "knownOutletId": "the-spy-in-the-stalls",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.primarytimes.co.uk/south_london/news/2026/11/santa-39-s-first-christmas-unicorn-theatre-london-",
           "host": "primarytimes.co.uk",
@@ -401134,7 +402386,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 1,
             "error": null
           },
@@ -401154,7 +402406,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -401175,13 +402427,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 11,
+        "count": 7,
         "byReason": {
-          "non-review-host": 1,
-          "no-review-evidence": 4,
-          "census-junk-host": 3,
-          "non-review-path": 2,
-          "forum-thread": 1
+          "show-listing-page": 1,
+          "census-junk-host": 2,
+          "no-review-evidence": 3,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
@@ -401198,7 +402449,7 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613142",
+          "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-605048",
           "host": "primarytimes.co.uk",
           "outletId": "primarytimes",
           "provisional": false,
@@ -401210,10 +402461,10 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=primarytimes.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n  ⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
         },
         {
-          "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613208",
+          "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-613208",
           "host": "primarytimes.co.uk",
           "outletId": "primarytimes",
           "provisional": false,
@@ -401225,7 +402476,22 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=primarytimes.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n  ⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+        },
+        {
+          "url": "https://thespyinthestalls.com/2026/11/santas-first-christmas",
+          "host": "thespyinthestalls.com",
+          "outletId": "the-spy-in-the-stalls",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
           "url": "https://www.primarytimes.co.uk/south_london/news/2026/11/santa-39-s-first-christmas-unicorn-theatre-london-",
@@ -401256,31 +402522,21 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=primarytimes.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n  ⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
-        },
-        {
-          "url": "https://www.primarytimes.co.uk/se_london/competitions/2026/11/613892-win-a-family-ticket-to-santa-s-first-christmas-at-the-unicorn-theatre",
-          "host": "primarytimes.co.uk",
-          "outletId": "primarytimes",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⛔ Refusing write: primarytimes--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-605048",
+          "url": "https://www.primarytimes.co.uk/se_london/competitions/2026/11/613892-win-a-family-ticket-to-santa-s-first-christmas-at-the-unicorn-theatre",
           "host": "primarytimes.co.uk",
           "outletId": "primarytimes"
         },
         {
-          "url": "https://www.primarytimes.co.uk/listings/santa-s-first-christmas-613208",
+          "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613142",
+          "host": "primarytimes.co.uk",
+          "outletId": "primarytimes"
+        },
+        {
+          "url": "https://www.primarytimes.co.uk/sw_london/listings/santa-s-first-christmas-613208",
           "host": "primarytimes.co.uk",
           "outletId": "primarytimes"
         }
@@ -401288,6 +402544,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "the-spy-in-the-stalls",
+            "outlet": "the-spy-in-the-stalls",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thespyinthestalls.com/2026/11/santas-first-christmas"
+          },
           {
             "outletId": "primarytimes",
             "outlet": "primarytimes",
@@ -401340,6 +402603,13 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://thespyinthestalls.com/2026/11/santas-first-christmas",
+            "outletId": "the-spy-in-the-stalls",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
+          },
           {
             "url": "https://www.primarytimes.co.uk/south_london/news/2026/11/santa-39-s-first-christmas-unicorn-theatre-london-",
             "outletId": "primarytimes",
@@ -401399,9 +402669,9 @@
           }
         ],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-25T23:22:42.082Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "saturday-church-off-broadway-2025",
@@ -405530,13 +406800,13 @@
         "https://theaterpizzazz.com/seven-guitars-sings-a-brilliant-blues/",
         "https://www.talkinbroadway.com/page/ob/11_23_26b.html",
         "https://pagesonstages.com/2026/11/23/seven-guitars/",
-        "https://pagesonstages.com/2026/11/23/seven-guitars",
         "https://newyorktheater.me/2026/11/23/seven-guitars-review",
         "https://1minutecritic.com/august-wilson-seven-guitars-lincoln-center-review",
+        "https://alanpaul.substack.com/why-august-wilsons-seven-guitars",
+        "https://pagesonstages.com/2026/11/23/seven-guitars",
         "https://www.nytimes.com/theater/seven-guitars-review-hornsby-santiago-hudson",
         "https://www.nysun.com/article/seven-guitars-resounds-with-poetry-and-pain",
         "https://culturesauce.com/seven-guitars-august-wilson-off-broadway-review",
-        "https://alanpaul.substack.com/why-august-wilsons-seven-guitars",
         "https://www.ticketclub.com/august-wilsons-seven-guitars-2026-11-10-8206251",
         "https://www.broadwayblack.com/productions/seven-guitars/",
         "https://variety.com/legit/reviews/seven-guitars-4-1200513958"
@@ -405626,8 +406896,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
-            "accepted": 0,
+            "results": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -405636,8 +406906,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
-            "accepted": 0,
+            "results": 5,
+            "accepted": 1,
             "error": null
           },
           {
@@ -405646,8 +406916,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 1,
+            "results": 4,
+            "accepted": 2,
             "error": null
           },
           {
@@ -405656,7 +406926,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -405667,7 +406937,7 @@
             "geo": "us",
             "ok": true,
             "results": 1,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -405677,28 +406947,28 @@
             "geo": "us",
             "ok": true,
             "results": 4,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 2,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 377,
+        "count": 378,
         "byReason": {
           "aggregator-internal-nav": 237,
           "not-http-url": 60,
           "production-database-listing": 9,
           "aggregator-section-root": 9,
-          "non-review-host": 51,
+          "non-review-host": 53,
           "non-stage-review": 1,
           "roundup-page": 5,
+          "ticketing-listing": 1,
           "ticketing-reseller": 2,
-          "census-junk-host": 2,
-          "tag-index-page": 1
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
@@ -405858,12 +407128,6 @@
             "firstSeenAt": "2026-11-24T18:15:09.569Z"
           },
           {
-            "url": "https://pagesonstages.com/2026/11/23/seven-guitars",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-25T05:31:52.097Z"
-          },
-          {
             "url": "https://newyorktheater.me/2026/11/23/seven-guitars-review",
             "outletId": "newyorktheater.me",
             "state": "live",
@@ -405874,6 +407138,12 @@
             "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-11-24T14:46:15.879Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2026/11/23/seven-guitars",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-25T05:31:52.097Z"
           },
           {
             "url": "https://www.nytimes.com/theater/seven-guitars-review-hornsby-santiago-hudson",
@@ -405927,7 +407197,7 @@
         "liveCount": 13,
         "candidateCount": 17
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "seven-guitars-regional-2024",
@@ -446784,14 +448054,17 @@
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.britishtheatreguide.info/the-afronauts-royal-court-26238",
         "https://www.theguardian.com/stage/2026/nov/24/the-afronauts-royal-court-theatre-london-ryan-calais-cameron-",
-        "https://www.londontheatre.co.uk/reviews/the-afronauts-review-ryan-calais-cameron-lucian-msamati",
         "https://www.thetimes.com/culture/theatre-dance/article/afronauts-review-zambian-space-njtldhxts",
         "https://www.allthatdazzles.co.uk/post/review-the-afronauts-royal-court",
         "https://rolandcat.substack.com/review-the-afronauts-the-royal-court",
+        "https://www.britishtheatreguide.info/reviews/the-afronauts-royal-court-26238",
+        "https://www.theatremonkey.com/show/the-afronauts",
+        "https://monstagigz.com/2026/11/15/comment-page-1",
+        "https://www.londontheatre.co.uk/reviews/the-afronauts-review-ryan-calais-cameron-lucian-msamati",
         "https://www.whatsonstage.com/news/the-afronauts-at-the-royal-court-review_1738037/",
         "https://www.theupcoming.co.uk/2026/11/25/the-afronauts-at-the-royal-court-theatre-theatre-review/",
-        "https://www.britishtheatreguide.info/reviews/the-afronauts-royal-court-26238",
         "https://www.timeout.com/london/news/review-the-afronauts-at-the-royal-court-theatre-112426",
         "https://www.telegraph.co.uk/what-to-see/the-afronauts-royal-court-review",
         "https://www.timeout.com/london/theatre/the-afronauts",
@@ -446801,31 +448074,36 @@
         "https://monstagigz.com/2026/11/15/theatre-review-the-afronauts-starring-lucian-msamati-ivanno-jeremiah-and-pamela-nomvete-by-ryan-calais-cameron-at-the-royal-court/",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-afronauts-royal-court-review/",
         "https://rolandcat.substack.com/p/review-the-afronauts-the-royal-court",
+        "https://www.thereviewshub.com/the-afronauts-royal-court-london/",
+        "https://www.afridiziak.com/reviews/the-afronauts/",
+        "https://www.standard.co.uk/culture/theatre/the-afronauts-at-royal-court-review-b1306387.html",
+        "https://theartsdesk.com/theatre/afronauts-royal-court-review-final-frontier-remains-elusive",
         "https://www.ft.com/content/6c21514c-35c3-4a47-bbd0-acd6d94d2f90"
       ],
       "dirFiles": 32,
       "dirClean": 22,
       "inReviewsJson": 22,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://monstagigz.com/2026/11/15/comment-page-1",
+          "host": "monstagigz.com",
+          "knownOutletId": "monstagigz",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        }
+      ],
       "dirOnly": [
         {
           "host": "ayoungishperspective.co.uk",
           "count": 1
         },
         {
-          "host": "afridiziak.com",
-          "count": 1
-        },
-        {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
-        {
           "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "standard.co.uk",
           "count": 1
         },
         {
@@ -446835,16 +448113,46 @@
         {
           "host": "theatreandtonic.co.uk",
           "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
-          "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatremonkey.com/show/the-afronauts",
+          "host": "theatremonkey.com",
+          "knownOutletId": "theatremonkey",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatremonkey--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theatremonkey.com/show/the-afronauts/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 14,
+        "rowCount": 21,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -446858,8 +448166,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0,
-            "skipped": true
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -446870,7 +448177,7 @@
           },
           "bestoftheatre": {
             "found": true,
-            "rows": 7,
+            "rows": 14,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -446884,16 +448191,16 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 14,
-        "corroborated": 8,
+        "currentRunRows": 21,
+        "corroborated": 15,
         "perSource": {
           "westendtheatre": {
             "cited": 6,
             "corroborated": 6
           },
           "bestoftheatre": {
-            "cited": 7,
-            "corroborated": 7
+            "cited": 14,
+            "corroborated": 14
           },
           "lbo-roundup": {
             "cited": 1,
@@ -446902,32 +448209,119 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Afronauts\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Afronauts\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Afronauts\" review court",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Afronauts Royal Court review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Afronauts Royal Court review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Afronauts Royal Court review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 8,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 4,
+        "byReason": {
+          "non-review-host": 2,
+          "write-path-blocked": 1,
+          "stored-date-before-production": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://monstagigz.com/2026/11/15/comment-page-1",
+          "host": "monstagigz.com",
+          "outletId": "monstagigz",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=monstagigz.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "monstagigz",
+            "outlet": "monstagigz",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://monstagigz.com/2026/11/15/comment-page-1"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.britishtheatreguide.info/the-afronauts-royal-court-26238",
+            "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
+          },
           {
             "url": "https://www.theguardian.com/stage/2026/nov/24/the-afronauts-royal-court-theatre-london-ryan-calais-cameron-",
             "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-11-25T02:26:45.843Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/the-afronauts-review-ryan-calais-cameron-lucian-msamati",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-25T20:52:54.376Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/afronauts-review-zambian-space-njtldhxts",
@@ -446948,6 +448342,18 @@
             "firstSeenAt": "2026-11-23T00:39:43.029Z"
           },
           {
+            "url": "https://www.britishtheatreguide.info/reviews/the-afronauts-royal-court-26238",
+            "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-11-25T20:52:54.376Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/the-afronauts-review-ryan-calais-cameron-lucian-msamati",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-25T20:52:54.376Z"
+          },
+          {
             "url": "https://www.whatsonstage.com/news/the-afronauts-at-the-royal-court-review_1738037/",
             "outletId": "whatsonstage.com",
             "state": "live",
@@ -446958,12 +448364,6 @@
             "outletId": "theupcoming.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-26T05:44:58.674Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/the-afronauts-royal-court-26238",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-11-25T20:52:54.376Z"
           },
           {
             "url": "https://www.timeout.com/london/news/review-the-afronauts-at-the-royal-court-theatre-112426",
@@ -447020,18 +448420,55 @@
             "firstSeenAt": "2026-11-23T20:38:54.108Z"
           },
           {
+            "url": "https://www.thereviewshub.com/the-afronauts-royal-court-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
+          },
+          {
+            "url": "https://www.afridiziak.com/reviews/the-afronauts/",
+            "outletId": "afridiziak.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/the-afronauts-at-royal-court-review-b1306387.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/afronauts-royal-court-review-final-frontier-remains-elusive",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
+          },
+          {
             "url": "https://www.ft.com/content/6c21514c-35c3-4a47-bbd0-acd6d94d2f90",
             "outletId": "ft.com",
             "state": "live",
             "firstSeenAt": "2026-11-25T02:26:45.843Z"
+          },
+          {
+            "url": "https://monstagigz.com/2026/11/15/comment-page-1",
+            "outletId": "monstagigz",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 14,
-        "candidateCount": 14
+        "excluded": [
+          {
+            "url": "https://www.theatremonkey.com/show/the-afronauts",
+            "host": "theatremonkey.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
+        "liveCount": 18,
+        "candidateCount": 19
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "the-ally-regional-2026",
@@ -490657,7 +492094,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 4,
             "accepted": 0,
             "error": null
           }
@@ -490668,18 +492105,18 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 322,
+        "count": 320,
         "byReason": {
-          "non-review-host": 34,
-          "not-http-url": 73,
           "aggregator-internal-nav": 198,
+          "not-http-url": 73,
           "aggregator-section-root": 4,
-          "roundup-page": 5,
+          "non-review-host": 33,
+          "roundup-page": 4,
+          "ticketing-reseller": 2,
           "podcast-episode": 1,
-          "ticketing-reseller": 1,
-          "bare-host": 1,
-          "tag-index-page": 3,
-          "news-roundup-site": 1,
+          "tag-index-page": 2,
+          "census-junk-host": 1,
+          "review-hub-page": 1,
           "merch-store": 1
         }
       },
@@ -490765,7 +492202,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-25T22:15:56.668Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "the-knight-of-the-burning-pestle-off-broadway-2023",
@@ -493543,6 +494980,10 @@
           "basis": [
             "nonReview"
           ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
           "sources": [
             {
               "source": "serp-census",
@@ -493550,49 +494991,103 @@
             }
           ],
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Last Victorian\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Last Victorian\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Last Victorian\" review undercroft",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Last Victorian Undercroft Theatre, Washington, DC review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Last Victorian Undercroft Theatre, Washington, DC review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Last Victorian Undercroft Theatre, Washington, DC review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 17,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 7,
+          "tag-index-page": 1,
+          "census-junk-host": 2,
+          "no-review-evidence": 2,
+          "show-hub": 4
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/washington-dc/article/Review-THE-LAST-VICTORIAN-at-Washington-Stage-Guild-20261124"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [
           {
             "url": "https://www.broadwayworld.com/washington-dc/article/Review-THE-LAST-VICTORIAN-at-Washington-Stage-Guild-20261124",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-25T22:15:56.668Z"
+            "host": "broadwayworld.com",
+            "reason": "confirmed-non-review"
           }
         ],
-        "censusSchema": 4,
-        "excluded": [],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-11-26T10:27:57.190Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "the-laugh-track-regional-2026",
@@ -529857,14 +531352,51 @@
       "previewsStartDate": "2026-11-25",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londontheatre1.com/reviews/the-silence-the-noise-by-tom-powell",
-        "https://www.stagesideuk.co.uk/the-silence-the-noise-review",
+        "https://theatresoutheast.com/the-silence-and-the-noise-minerva-theatre-chichester-review/",
+        "https://theatreweekly.com/interview-tom-powell-on-the-silence-and-the-noise-at-park-theatre/",
+        "https://ayoungishperspective.co.uk/2026/11/11/review-the-silence-and-the-noise-2/",
         "https://www.timeout.com/london/theatre/the-silence-and-the-noise"
       ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://theatresoutheast.com/the-silence-and-the-noise-minerva-theatre-chichester-review/",
+          "host": "theatresoutheast.com",
+          "knownOutletId": "theatre-south-east",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://theatreweekly.com/interview-tom-powell-on-the-silence-and-the-noise-at-park-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://ayoungishperspective.co.uk/2026/11/11/review-the-silence-and-the-noise-2/",
+          "host": "ayoungishperspective.co.uk",
+          "knownOutletId": "a-youngish-perspective",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.timeout.com/london/theatre/the-silence-and-the-noise",
           "host": "timeout.com",
@@ -529896,7 +531428,8 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 0,
+            "skipped": true
           },
           "lbo-roundup": {
             "found": false,
@@ -529936,8 +531469,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 2,
-            "accepted": 0,
+            "results": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -529946,7 +531479,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 1,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -529956,8 +531489,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 6,
-            "accepted": 2,
+            "results": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -529973,42 +531506,67 @@
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 2,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 9,
+        "count": 7,
         "byReason": {
           "non-review-host": 3,
-          "non-stage-review": 1,
           "ticketing-reseller": 1,
-          "census-junk-host": 1,
-          "write-path-blocked": 2,
-          "show-hub": 1
+          "tag-index-page": 1,
+          "write-path-blocked": 2
         }
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
-        {
-          "url": "https://www.londontheatre1.com/reviews/the-silence-the-noise-by-tom-powell",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2023-04-19"
-        },
-        {
-          "url": "https://www.stagesideuk.co.uk/the-silence-the-noise-review",
-          "host": "stagesideuk.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2023-11-22"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://theatresoutheast.com/the-silence-and-the-noise-minerva-theatre-chichester-review/",
+          "host": "theatresoutheast.com",
+          "outletId": "theatre-south-east",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://theatreweekly.com/interview-tom-powell-on-the-silence-and-the-noise-at-park-theatre/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://ayoungishperspective.co.uk/2026/11/11/review-the-silence-and-the-noise-2/",
+          "host": "ayoungishperspective.co.uk",
+          "outletId": "a-youngish-perspective",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
         {
           "url": "https://www.timeout.com/london/theatre/the-silence-and-the-noise",
           "host": "timeout.com",
@@ -530030,6 +531588,27 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "theatre-south-east",
+            "outlet": "theatre-south-east",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatresoutheast.com/the-silence-and-the-noise-minerva-theatre-chichester-review/"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/interview-tom-powell-on-the-silence-and-the-noise-at-park-theatre/"
+          },
+          {
+            "outletId": "a-youngish-perspective",
+            "outlet": "a-youngish-perspective",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ayoungishperspective.co.uk/2026/11/11/review-the-silence-and-the-noise-2/"
+          },
+          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
@@ -530040,6 +531619,27 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://theatresoutheast.com/the-silence-and-the-noise-minerva-theatre-chichester-review/",
+            "outletId": "theatre-south-east",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
+          },
+          {
+            "url": "https://theatreweekly.com/interview-tom-powell-on-the-silence-and-the-noise-at-park-theatre/",
+            "outletId": "theatre-weekly",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/11/11/review-the-silence-and-the-noise-2/",
+            "outletId": "a-youngish-perspective",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-26T15:02:32.278Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/the-silence-and-the-noise",
             "outletId": "timeout-london",
             "state": "IN_FLIGHT",
@@ -530048,22 +531648,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.londontheatre1.com/reviews/the-silence-the-noise-by-tom-powell",
-            "host": "londontheatre1.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://www.stagesideuk.co.uk/the-silence-the-noise-review",
-            "host": "stagesideuk.co.uk",
-            "reason": "page-date-before-run"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 4
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "the-singularity-play-regional-2024",
@@ -539059,12 +540648,73 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Unauthorized Hallmark(ish) Parody Musical\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Unauthorized Hallmark(ish) Parody Musical\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Unauthorized Hallmark(ish) Parody Musical\" review american",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Unauthorized Hallmark(ish) Parody Musical North American Tour review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Unauthorized Hallmark(ish) Parody Musical North American Tour review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Unauthorized Hallmark(ish) Parody Musical North American Tour review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 8,
+        "byReason": {
+          "non-review-host": 6,
+          "census-junk-host": 1,
+          "review-hub-page": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -539078,7 +540728,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-26T10:27:57.190Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "the-unbelievers-off-broadway-2026",
@@ -559336,7 +560986,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-26T08:54:20.844Z"
+      "computedAt": "2026-11-26T15:02:32.278Z"
     },
     {
       "showId": "tristan-and-yseult-off-broadway-2026",
@@ -594692,26 +596342,29 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-26T13:11:08.849Z",
+    "at": "2026-11-26T15:02:32.277Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "peter-pan-goes-wrong-regional-2026",
-      "cloud-9-west-end-2026"
+      "the-kings-critique-off-broadway-2026",
+      "hamlet-hail-to-the-thief-off-west-end-2026",
+      "santas-first-christmas-off-west-end-2026",
+      "much-ado-about-nothing-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "wicked-tour-2021"
+      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
+      "austentatious-an-improvised-jane-austen-novel-west-end-2025"
     ],
     "neverAuditedDueAtStart": 45,
     "oldestDueRowAtStart": {
       "showId": "jane-eyre-off-west-end-2026",
       "computedAt": "2026-11-09T12:05:56.614Z",
-      "ageHours": 408.7
+      "ageHours": 410.5
     },
     "oldestDueRowAfterRun": {
       "showId": "jane-eyre-off-west-end-2026",
       "computedAt": "2026-11-09T12:05:56.614Z",
-      "ageHours": 409.1
+      "ageHours": 410.9
     }
   }
 }

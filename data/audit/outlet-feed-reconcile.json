@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T13:11:44.615Z",
+  "generatedAt": "2026-11-26T15:03:12.762Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -148,50 +148,43 @@
     {
       "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
       "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "joris-lacoste-nexus-de-ladoration-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 87,
   "feedsFailed": [
     {
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "musical-theatre-review",
-      "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
+    },
+    {
+      "outletId": "exeunt-magazine",
+      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
+    },
+    {
+      "outletId": "fringereview",
+      "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 932,
-  "matchedGaps": 4,
-  "possibleGaps": 4,
+  "itemsScanned": 823,
+  "matchedGaps": 1,
+  "possibleGaps": 3,
   "gaps": [
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/11/26/review-of-a-christmas-carol-old-vic-2026-giles-tereras-humbug-performance-is-haunted-by-the-ghosts-of-christmas-past/",
-      "headline": "Review of &#8216;A Christmas Carol&#8217; (Old Vic, 2026): &#8220;Giles Terera&#8217;s humbug performance is haunted by the ghosts of Christmas past&#8221;",
-      "publishDate": "2026-11-26"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "matched",
-      "outletId": "south-london",
-      "url": "https://southlondon.co.uk/area/southwark/review-a-christmas-carol-at-the-old-vic/",
-      "headline": "Review: A Christmas Carol at the Old Vic",
-      "publishDate": "2026-11-26"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-a-christmas-carol-reading-rep-2026",
-      "headline": "Review: A CHRISTMAS CAROL, Reading Rep",
-      "publishDate": "2026-11-26"
-    },
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
       "title": "Cinderella",
@@ -214,28 +207,19 @@
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
       "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/christmas-carol-shakespeare-north-playhouse-prescot/",
-      "headline": "Christmas Carol &#8211; Shakespeare North Playhouse, Prescot",
-      "publishDate": "2026-11-25"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "possible",
       "outletId": "west-end-best-friend",
       "url": "https://www.westendbestfriend.co.uk/news/review-its-a-wonderful-life-jermyn-street-theatre",
       "headline": "Review: IT’S A WONDERFUL LIFE, Jermyn Street Theatre",
       "publishDate": "2026-11-25"
     },
     {
-      "showId": "purpose-geffen-regional-2026",
-      "title": "Purpose",
+      "showId": "attention-off-west-end-2026",
+      "title": "Attention",
       "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/alicias-amazing-adventure-to-find-the-first-black-britons-the-grove-hall-south-kirkby/",
-      "headline": "Alicia’s Amazing Adventure to Find the First Black Britons &#8211; The Grove Hall, South Kirkby",
-      "publishDate": "2026-11-22"
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-pink-rabbit-soho-theatre",
+      "headline": "Review: Pink Rabbit (Soho Theatre)",
+      "publishDate": "2026-11-26"
     }
   ]
 }
