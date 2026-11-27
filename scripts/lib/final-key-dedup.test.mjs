@@ -121,3 +121,25 @@ test('BRO-8228: rebuild runs the same-URL pass AFTER the manual-entry merge, and
   const vd = fs.readFileSync(path.join(import.meta.dirname, '..', 'validate-data.js'), 'utf8');
   assert.match(vd, /urlDupeBaseline = loadSameUrlBaseline\(\)/);
 });
+
+test('BRO-8228 review: rebuilt human-review rows (scoreSource only) beat a richer automated twin', () => {
+  const auto = { showId: 's', outletId: 'o', criticName: 'A', url: 'https://x.test/a', contentTier: 'complete', scoreSource: 'llm-ensemble' };
+  const human = { ...auto, criticName: 'H', contentTier: 'excerpt', scoreSource: 'human-review' };
+  assert.equal(dedupeBySameUrl([auto, human]).reviews[0].criticName, 'H');
+});
+
+test('BRO-8228 review: path-case-only URL differences are not deleted (left for the gate)', () => {
+  const a = { showId: 's', outletId: 'o', criticName: 'A', url: 'https://x.test/Review-A' };
+  const b = { ...a, criticName: 'B', url: 'https://x.test/review-a' };
+  assert.equal(dedupeBySameUrl([a, b]).dropped.length, 0);
+  // Host case, fragment and trailing slash still collapse.
+  const c = { ...a, criticName: 'C', url: 'https://X.TEST/Review-A/#top' };
+  assert.equal(dedupeBySameUrl([a, c]).dropped.length, 1);
+});
+
+test('BRO-8228 review: the rebuild requires the baseline file to exist before deleting', () => {
+  assert.throws(() => loadSameUrlBaseline('/nonexistent/bro-8228.json', { mustExist: true }), /missing/);
+  const src = fs.readFileSync(path.join(import.meta.dirname, '..', 'rebuild-all-reviews.js'), 'utf8');
+  assert.match(src, /loadSameUrlBaseline\(undefined, \{ mustExist: true \}\)/);
+  assert.match(src, /if \(d\.dropped\.manualEntry === true\) heldManualEntries\.push\(d\.dropped\)/);
+});

@@ -5749,6 +5749,7 @@ const REBUILD_ONLY_PASS_REASONS = new Set([
   'skippedCrossOutletFingerprintDedup',
   'skippedMultiCriticOutletDedup',
   'skippedOutletNameDedup',
+  'skippedFinalSameUrlDedup',
   'priorRunSuperseded',
   'skippedNoScore',
 ]);

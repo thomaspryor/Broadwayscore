@@ -42,9 +42,30 @@ function dedupeByReviewKey(reviews) {
  * the gate and the producer agree on which pairs are tolerated.
  * Missing file => empty set. Unreadable file => throws (caller decides).
  */
-function loadSameUrlBaseline(p = SAME_URL_BASELINE_PATH) {
-  if (!fs.existsSync(p)) return new Set();
+function loadSameUrlBaseline(p = SAME_URL_BASELINE_PATH, { mustExist = false } = {}) {
+  if (!fs.existsSync(p)) {
+    // The rebuild deletes rows on this set's say-so: a missing file must not
+    // widen that to every pair the baseline normally exempts.
+    if (mustExist) throw new Error(`same-URL baseline missing: ${p}`);
+    return new Set();
+  }
   return new Set(JSON.parse(fs.readFileSync(p, 'utf8')).pairs || []);
+}
+
+/** A human-scored or hand-entered row. Rebuilt rows carry scoreSource, not humanReviewScore. */
+function humanRank(r) {
+  return preferenceRank(r) + (r.scoreSource === 'human-review' && r.humanReviewScore == null ? 1 : 0);
+}
+
+/**
+ * Case-preserving identity: host lowercased, fragment and trailing slash cut,
+ * path and query exactly as written. sameUrlDuplicateKey lowercases the whole
+ * URL, which is fine for flagging but not for deleting: /Review-A and /review-a
+ * can be two articles. Rows that differ only in path case are left for the gate.
+ */
+function exactUrlSig(url) {
+  const s = String(url).trim().replace(/#.*$/, '').replace(/\/$/, '');
+  return s.replace(/^([a-z][a-z0-9+.-]*:\/\/[^/?#]+)/i, (m) => m.toLowerCase());
 }
 
 const TIER_RANK = { complete: 4, truncated: 3, excerpt: 2, stub: 1, invalid: 0 };
@@ -55,7 +76,7 @@ function hasNamedCritic(r) {
 /** Higher sorts first; ties keep input order (the rebuild's own priority sort). */
 function sameUrlRank(r) {
   return [
-    preferenceRank(r),
+    humanRank(r),
     TIER_RANK[r.contentTier] != null ? TIER_RANK[r.contentTier] : -1,
     hasNamedCritic(r) ? 1 : 0,
   ];
@@ -79,7 +100,7 @@ function rankGreater(a, b) {
  *
  * This collapses every non-baselined same-URL group to one row, using the
  * gate's own key and baseline, so the rebuild can never emit what the gate
- * rejects. Keep order: manual/human row, then richer contentTier, then a
+ * rejects (path-case-only differences excepted, see exactUrlSig). Keep order: manual/human row, then richer contentTier, then a
  * named critic, then the first in input order.
  *
  * Mutates nothing: returns { reviews, dropped: [{ dropped, kept, key }] }.
@@ -89,20 +110,21 @@ function dedupeBySameUrl(reviews, baseline = new Set()) {
   const dropped = [];
   const order = [];
   for (const r of reviews) {
-    const key = r && sameUrlDuplicateKey(r.showId, r.url);
-    if (key === null || key === undefined || baseline.has(key)) {
+    const gateKey = r && sameUrlDuplicateKey(r.showId, r.url);
+    if (gateKey === null || gateKey === undefined || baseline.has(gateKey)) {
       order.push({ row: r });
       continue;
     }
+    const key = `${gateKey}\u0000${exactUrlSig(r.url)}`;
     const prev = kept.get(key);
     if (!prev) {
       kept.set(key, r);
       order.push({ key });
     } else if (rankGreater(sameUrlRank(r), sameUrlRank(prev))) {
       kept.set(key, r);
-      dropped.push({ dropped: prev, kept: r, key });
+      dropped.push({ dropped: prev, kept: r, key: gateKey });
     } else {
-      dropped.push({ dropped: r, kept: prev, key });
+      dropped.push({ dropped: r, kept: prev, key: gateKey });
     }
   }
   const out = order.map((o) => (o.key ? kept.get(o.key) : o.row));

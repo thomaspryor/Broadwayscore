@@ -6805,10 +6805,10 @@ let heldManualEntries = [];
 {
   let baseline;
   try {
-    baseline = loadSameUrlBaseline();
+    baseline = loadSameUrlBaseline(undefined, { mustExist: true });
   } catch (e) {
-    // Unreadable baseline: collapse nothing rather than delete baselined pairs blind.
-    console.warn(`⚠️  Final same-URL dedup skipped: same-url-duplicate-baseline.json unreadable (${e.message})`);
+    // Missing or unreadable baseline: collapse nothing rather than delete baselined pairs blind.
+    console.warn(`⚠️  Final same-URL dedup skipped: same-url-duplicate-baseline.json missing or unreadable (${e.message})`);
   }
   if (baseline) {
     const { reviews: urlUnique, dropped } = dedupeBySameUrl(allReviews, baseline);
@@ -6817,6 +6817,10 @@ let heldManualEntries = [];
       for (const d of dropped) {
         console.log(`  ${d.dropped.showId}: dropped ${d.dropped.outletId}/${d.dropped.criticName || 'unknown'}, kept ${d.kept.outletId}/${d.kept.criticName || 'unknown'} | ${d.dropped.url}`);
         logPostDedupExclusion('skippedFinalSameUrlDedup', d.dropped, d.kept, d.key);
+        // A hand row comes only from the previous reviews.json, so dropping it
+        // here would lose it for good: keep the full row in _meta.heldManualEntries
+        // (the BRO-7319 recovery list) like the manual-entry merge does.
+        if (d.dropped.manualEntry === true) heldManualEntries.push(d.dropped);
       }
       allReviews.length = 0;
       allReviews.push(...urlUnique);
