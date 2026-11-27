@@ -15,9 +15,10 @@ test('baselined ids are tolerated, new ones are flagged', () => {
   assert.deepEqual(r.newOffenders.map((s) => s.id), ['b']);
   assert.deepEqual(r.baselined.map((s) => s.id), ['a']);
 });
-test('real corpus: no offender outside the frozen baseline', () => {
-  const shows = createRequire(import.meta.url)('../../data/shows.json').shows;
-  assert.deepEqual(findMissingOpeningDates(shows).newOffenders.map((s) => s.id), []);
+test('frozen baseline file is well-formed (live corpus is checked by validate-data, not here: bot data commits must not redden this test)', () => {
+  const ids = createRequire(import.meta.url)('../../data/audit/missing-opening-date-baseline.json').ids;
+  assert.ok(Array.isArray(ids) && ids.length > 0 && ids.every((i) => typeof i === 'string'));
+  assert.equal(new Set(ids).size, ids.length);
 });
 test('stale baseline ids: backfilled/removed/now-upcoming ids are reported, live offenders are not', () => {
   const shows = [{ id: 'a', status: 'closed' }, { id: 'b', status: 'closed', openingDate: '2025-01-01' }, { id: 'c', status: 'upcoming' }];
