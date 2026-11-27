@@ -173,6 +173,21 @@ function mergeSeason(lists) {
   return [...byKey.values()].sort((a, b) => a.start.localeCompare(b.start) || a.title.localeCompare(b.title));
 }
 
+/** ISO date moved by whole years (Feb 29 -> Mar 1 in a non-leap year is fine: it only feeds a gap check). */
+const shiftYears = (iso, n) => `${Number(iso.slice(0, 4)) + n}${iso.slice(4)}`;
+/**
+ * The page's run is the row's run with a different year: same first/opening and closing day-of-year
+ * (within DATE_CONFLICT_DAYS) once moved into the row's closing year, and the years really differ.
+ */
+function sameRunOtherYear(row, range) {
+  if (!isIso(row.start) || !isIso(row.end) || !isIso(range.first) || !isIso(range.end)) return false;
+  const n = Number(row.end.slice(0, 4)) - Number(range.end.slice(0, 4));
+  if (!n) return false;
+  const end = shiftYears(range.end, n);
+  const starts = [range.first, range.opening].filter(isIso).map((d) => shiftYears(d, n));
+  return gapDays(end, row.end) <= DATE_CONFLICT_DAYS && starts.some((d) => gapDays(d, row.start) <= DATE_CONFLICT_DAYS);
+}
+
 /**
  * Settle a merged season row's dates against its production page (BRO-7291 class 6). `range` is
  * runRangeFromShowPage's result for row.pageUrl (null when there is no production page or it printed no run).
@@ -180,6 +195,12 @@ function mergeSeason(lists) {
  * @returns {{ row: object, held: string|null }}
  */
 function settleRunDates(row, range, pageUrl) {
+  // BRO-8259: the page prints THIS run in another year (ArtsEmerson's "Past Event Jan 31—Feb 09, 2025" for
+  // Life & Times of Michael K; the season-page LLM gave it 2027). The row's year is a guess, the page's is not:
+  // hold it rather than drop the range as a sidebar and publish a past production as upcoming.
+  if (range && sameRunOtherYear(row, range)) {
+    return { row, held: `production page prints this run in ${range.end.slice(0, 4)} ("${range.snippet}"), not ${row.end.slice(0, 4)}: a past (or future) season, not this one` };
+  }
   // A range that does not even overlap what the sources said is another production's (a sidebar, "also playing").
   if (range && !(range.first <= row.end && range.end >= row.start)) range = null;
   if (range) {
