@@ -92,3 +92,12 @@ test('a reordered merge cannot put the claim back over its settlement', () => {
   const done = { ...claim, status: 'graded', spendUsd: { total: 8 } };
   assert.equal(ledgerReading([done, claim], at('2026-11-30T23:30:00Z')).spentUsd, 8);
 });
+
+test('an open claim refuses the next run and nextEligible does not wait it out', () => {
+  const claim = { id: 'x@1', show: 'x', startedAt: '2026-11-30T23:00:00Z', status: 'started', spendUsd: { total: 5 } };
+  const c = paceCheck({ rows: [claim], atMs: at('2026-12-01T03:00:00Z') });
+  assert.equal(c.ok, false);
+  assert.match(c.reasons.join(' '), /still open/);
+  assert.equal(nextEligible({ rows: [claim], fromMs: at('2026-12-01T03:00:00Z') }), null);
+  assert.equal(paceCheck({ rows: [claim, { ...claim, status: 'failed' }], atMs: at('2026-12-01T03:00:00Z') }).ok, true);
+});
