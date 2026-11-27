@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "showId": "dick-whittington-adults-only-off-west-end-2026",
+  "night": "2026-11-27",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-27T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-27T20:30:03.971Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-27T22:55:08.965Z",
+    "lastOkSampleAt": "2026-11-27T22:55:08.965Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-27T22:00:07.046Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-27T23:00:28.585Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-27T23:00:28.644Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-27T23:00:29.215Z",
+    "files": [
+      {
+        "file": "bestoftheatre--ella-dunmore.json",
+        "outletId": "bestoftheatre",
+        "outlet": "Best Of Theatre",
+        "critic": "Ella Dunmore",
+        "firstSeenAt": "2026-11-27T16:41:40.888Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-26",
+        "url": "bestoftheatre.co.uk/blog/post/kings-head-dick-whittington-adults-only-final-guest-stars",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null,
+        "rejectionKind": "not_a_review"
+      },
+      {
+        "file": "london-box-office--nastazja-domaradzka.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Nastazja Domaradzka",
+        "firstSeenAt": "2026-09-29T19:50:56.397Z",
+        "scoredAt": null,
+        "publishDate": "2019-12-06",
+        "url": "londonboxoffice.co.uk/news/post/review-dick-whittington-stratford-east",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
