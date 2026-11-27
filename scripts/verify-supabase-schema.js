@@ -29,6 +29,7 @@ const {
   findUnexpectedPolicies,
   findUndeletedUserTables,
   missingRequiredCascades,
+  REQUIRED_CASCADES,
   liveSiblings,
   LIVE_CATALOG_QUERY,
 } = require('./lib/supabase-schema-expectations');
@@ -164,10 +165,12 @@ async function main() {
   for (const c of cascadesMissing) {
     console.error(`::error::required ON DELETE CASCADE missing in prod: ${c.name} (${c.why})`);
   }
-  if (cascadesMissing.length) process.exit(1);
-  console.log('✓ required cascades present: profiles -> auth.users');
+  if (cascadesMissing.length === 0) {
+    console.log(`✓ required cascades present: ${Object.keys(REQUIRED_CASCADES).join(', ')}`);
+  }
 
   if (missing.length === 0 && drifted.length === 0) {
+    if (cascadesMissing.length) process.exit(1);
     console.log(`✓ all ${expected.size} expected objects exist in prod (${bodiesChecked} function bodies match)`);
     return;
   }

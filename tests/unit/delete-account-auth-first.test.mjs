@@ -21,10 +21,12 @@ function jsonRes(body, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 }
 
-/** authDelete: 'ok' | 'fail500' | 'throw' | 'gone404' */
-function supabase(authDelete) {
+/** authDelete: 'ok' | 'fail500' | 'throw' | 'gone404'. gone404 leaves a
+ *  profile the cascade missed, so the safety-net delete is exercised.
+ *  profileDelete: 'ok' | 'fail500' */
+function supabase(authDelete, profileDelete = 'ok') {
   const calls = [];
-  const state = { authUser: authDelete !== 'gone404', profile: authDelete !== 'gone404' };
+  const state = { authUser: authDelete !== 'gone404', profile: true };
   const fn = async (url, init = {}) => {
     const u = new URL(url);
     const method = init.method || 'GET';
@@ -38,6 +40,7 @@ function supabase(authDelete) {
       return new Response(null, { status: 200 });
     }
     if (u.pathname === '/rest/v1/profiles' && method === 'DELETE') {
+      if (profileDelete === 'fail500') return jsonRes({}, 500);
       state.profile = false;
       return new Response(null, { status: 204 });
     }
@@ -51,8 +54,8 @@ const request = () => new Request('https://proj.supabase.co/functions/v1/delete-
   method: 'POST', headers: { authorization: `Bearer ${JWT}` },
 });
 
-async function run(mode) {
-  const sb = supabase(mode);
+async function run(mode, profileDelete) {
+  const sb = supabase(mode, profileDelete);
   const orig = console.error; console.error = () => {};
   try {
     const res = await handleDeleteAccount(request(), { env: (k) => ENV[k], fetch: sb.fn });
@@ -79,10 +82,15 @@ test('the auth user is deleted before the profile row', async () => {
   assert.deepEqual(sb.state, { authUser: false, profile: false });
 });
 
-test('a retry after a lost response (auth user already gone, 404) still succeeds', async () => {
+test('a retry after a lost response (auth user already gone, 404) succeeds and removes a leftover profile', async () => {
   const { sb, body } = await run('gone404');
   assert.deepEqual(body, { ok: true });
-  assert.equal(sb.state.profile, false);
+  assert.equal(sb.state.profile, false, 'safety-net delete removed the profile the cascade missed');
+});
+
+test('a failed leftover-profile delete after the account is gone still reports success', async () => {
+  const { body } = await run('gone404', 'fail500');
+  assert.deepEqual(body, { ok: true });
 });
 
 test('schema check: missing profiles -> auth.users cascade is reported', () => {

@@ -241,8 +241,14 @@ export async function handleDeleteAccount(req, { env, fetch = globalThis.fetch, 
       throw new Error(`delete auth user failed: ${deleteUserRes.status}`);
     }
     // Normally a no-op (the cascade already removed it). Kept so a profile
-    // the cascade missed never outlives its account.
-    await deleteRows(fetch, base, auth, 'profiles', 'id', userId);
+    // the cascade missed never outlives its account. Best effort: the account
+    // is already gone, so a failure here must not turn into {ok:false} (the
+    // client would keep the signed-in state) or skip the Apple revoke.
+    try {
+      await deleteRows(fetch, base, auth, 'profiles', 'id', userId);
+    } catch (e) {
+      console.error('[delete-account] leftover profile delete failed:', e instanceof Error ? e.message : e);
+    }
 
     // Only after the account is gone, so a failed deletion never leaves a
     // live account with its Apple grant revoked.
