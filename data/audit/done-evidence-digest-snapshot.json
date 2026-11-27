@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-11-26T18:28:18.187Z",
-  "bannerText": "116/169 Done(14d) verified on main · 4 FAILED · 0 vacuous · 8 stuck-but-done · 6 mis-armed, needs re-arming (BRO-8155, BRO-8152, BRO-8115, +3 more) — PARTIAL RUN: 47 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-27T11:48:31.659Z",
+  "bannerText": "174/199 Done(14d) verified on main · 7 FAILED · 0 vacuous · 18 stuck-but-done · 5 mis-armed, needs re-arming (BRO-8014, BRO-8155, BRO-8152, +2 more) — PARTIAL RUN: 3 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-8299 — Correct stale open/previews statuses on off-Broadway and London shows",
-      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8299/correct-stale-openpreviews-statuses-on-off-broadway-and-london-shows"
+      "title": "FAILED BRO-7531 — Scraping cost savings: audit vendor spend, re-order fetch chain, evaluate new vendors",
+      "detail": "not ok: BRO-7531: ScrapingBee daily credits fell to a median of 10,…; BRO-7531: Scrapingdog stayed inside its plan (median day 10… | first failure: ScrapingBee median day is 10341…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7531/scraping-cost-savings-audit-vendor-spend-re-order-fetch-chain-evaluate"
     },
     {
-      "title": "FAILED BRO-8150 — P0: prod deploys failing since ~06:00Z 2026-11-23 NOW_SANDBOX_WORKER_MAX_UNCOMPRESSED_FUNCTION_SIZE (prod 8h stale)",
-      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8150/p0-prod-deploys-failing-since-0600z-2026-11-23-now-sandbox-worker-max"
+      "title": "FAILED BRO-7315 — Guardrail slim-down: cut hooks, rules and CI gates, prove the survivors with tests",
+      "detail": "TAP version 13 # Subtest: every top-level repo hook is wired in .claude/settings.json ok 1 - every top-level repo hook is wired in .claude/settings.json --- duration_ms: 1.792912 …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7315/guardrail-slim-down-cut-hooks-rules-and-ci-gates-prove-the-survivors"
+    },
+    {
+      "title": "FAILED BRO-8308 — P1: Opening night miss: The Dead, 1904 (2026-11-24)",
+      "detail": "gap audit generated 2026-11-27T11:33:25.074Z PASS the-dead-1904-off-broadway-2026: 5 live, 0 cited not live; info: 7 census candidate(s), 0 exclusion(s) confirmed correct; audited…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8308/p1-opening-night-miss-the-dead-1904-2026-11-24"
+    },
+    {
+      "title": "FAILED BRO-8301 — Auto-fix: Opening Night Orchestrator Failed",
+      "detail": "gh not authenticated and public API fallback failed: GET https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/opening-night-orchestrator.yml/runs?per_page=12&s…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8301/auto-fix-opening-night-orchestrator-failed"
+    },
+    {
+      "title": "FAILED BRO-8300 — Auto-fix: Opening Night Orchestrator Failed",
+      "detail": "gh not authenticated and public API fallback failed: GET https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/opening-night-orchestrator.yml/runs?per_page=12&s…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8300/auto-fix-opening-night-orchestrator-failed"
+    },
+    {
+      "title": "FAILED BRO-8253 — BSC Daily: Quality: standingCoverage drift",
+      "detail": "[check-health-row-absent] FAIL: \"Quality: standingCoverage drift\" still listed in the 2026-11-27T11:09:12.720Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8253/bsc-daily-quality-standingcoverage-drift"
     },
     {
       "title": "FAILED BRO-8148 — P1: Opening night miss: Fantasma (2026-11-22)",
-      "detail": "gap audit generated 2026-11-26T17:54:49.955Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
+      "detail": "gap audit generated 2026-11-27T11:33:25.074Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8148/p1-opening-night-miss-fantasma-2026-11-22"
     },
     {
-      "title": "FAILED BRO-7917 — Fill missing runtimes on live off-Broadway shows (39 of 176 open/previews have none; drives reminder timing and Stats)",
-      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7917/fill-missing-runtimes-on-live-off-broadway-shows-39-of-176"
-    },
-    {
-      "title": "STUCK BRO-8343 — Off-West-End discovery stored junk officialUrl on 5 announced shows",
+      "title": "STUCK BRO-8025 — Recurrence detector: repeat outlets spread across markets never reach a class (guardian 10 shows, whatsonstage 8, thestage 8, timeout-london 8 in 2 months)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8343/off-west-end-discovery-stored-junk-officialurl-on-5-announced-shows"
-    },
-    {
-      "title": "STUCK BRO-8310 — BSC Daily: Quality: outlet domain moves",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8310/bsc-daily-quality-outlet-domain-moves"
-    },
-    {
-      "title": "STUCK BRO-8277 — One-off large text-recovery batch: honest tried-counts, then work the whole backlog in checkpointed rounds",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8277/one-off-large-text-recovery-batch-honest-tried-counts-then-work-the"
-    },
-    {
-      "title": "STUCK BRO-8237 — Land push with [skip ci] in the commit message never starts land.yml; wait-for-land waits silently",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8237/land-push-with-skip-ci-in-the-commit-message-never-starts-landyml-wait"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8025/recurrence-detector-repeat-outlets-spread-across-markets-never-reach-a"
     }
   ],
-  "moreCount": 4
+  "moreCount": 17
 }
