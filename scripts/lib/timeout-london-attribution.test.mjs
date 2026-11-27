@@ -135,7 +135,7 @@ test('BRO-4153: telegraph/express Sunday-paper collisions are declared edition p
   const declared = EDITION_PAIRS.map((pair) => [...pair].sort());
   assert.deepEqual(declared.find((p) => p.includes('telegraph')), ['sunday-telegraph', 'telegraph'].sort());
   assert.deepEqual(declared.find((p) => p.includes('express-uk')), ['express-uk', 'sunday-express'].sort());
-  assert.deepEqual(declared.find((p) => p.includes('timeout')), ['timeout', 'timeout-london'].sort());
+  assert.deepEqual(declared.find((p) => p.includes('timeout')), ['timeout', 'timeout-london', 'timeout-sydney'].sort()); // BRO-8393
 
   // Operator input is trusted as-is for these (URL truly cannot disambiguate),
   // unlike timeout.com above.

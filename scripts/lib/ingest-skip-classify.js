@@ -77,6 +77,10 @@ const CONFLICT_REASONS = [
   // registry entry missing a domain the outlet actually publishes on — e.g. an
   // outlet that moved to Substack. Drops a real review on the floor.
   'domain-mismatch',
+  // BRO-8393: a Time Out city edition with no registered outlet
+  // (timeout.com/chicago) under a Time Out New York/London id. Real review,
+  // unusable attribution — needs a registry outlet for that city.
+  'timeout-edition-mismatch',
   // No outlet could be resolved at all — the review is discarded. With
   // ingest-review-from-url.js's provisional fallback this should be rare, and
   // when it happens it means a URL we cannot attribute.
@@ -348,6 +352,10 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'no-outlet' || reason === 'suspicious-outlet-id') {
     return `${showId}: ${url} could not be attributed to a usable outlet (${reason}) — add a registry entry for its host.`;
+  }
+  if (reason === 'timeout-edition-mismatch') {
+    return `${showId}: ${url} is a Time Out city edition with no registered outlet, so it was not filed as Time Out New York/London `
+      + `— register that city's outlet in data/outlet-registry.json and TIMEOUT_CITY_OUTLETS (scripts/lib/review-normalization.js).`;
   }
   if (reason === 'unknown-show-id') {
     return `${showId}: ${url} was refused because ${showId} is not a shows.json id, so the review would sit in a folder the site never reads. Add the show row (scripts/validate-show-venue.js first) or write it under the right existing id.`;
