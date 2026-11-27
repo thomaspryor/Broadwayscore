@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+require('./lib/refuse-under-bare-node-test.js'); // BRO-7984: exits 0 if the node --test runner picked this file up
 /**
  * BRO-8087 (test bench step 4): the owner's pacing rule for paid sandboxed lane redos, read from the redo spend ledger
  * before every run. Owner Decision 1 on BRO-7167 (2026-11-08): at most 3 redos a day, never within 24 h of an opening,
