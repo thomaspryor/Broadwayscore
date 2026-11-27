@@ -1177,7 +1177,7 @@ export function nodeModulesCheck({ root, files = null, env = process.env, seams 
     }
     if (!missing.length) return { status: 'clean' };
     const text = `land preflight: ${missing.join(', ')} cannot be resolved from ${root}. The guard tests would fail with MODULE_NOT_FOUND here and the real refusal would only show in land.yml 10-25 minutes later. ` +
-      'Fix: npm ci (in a worktree under the main checkout it resolves the parent's node_modules; elsewhere link it: ln -sfn <main checkout>/node_modules node_modules), then push again. ' +
+      'Fix: npm ci (in a worktree under the main checkout it resolves the parent checkout node_modules; elsewhere link it: ln -sfn <main checkout>/node_modules node_modules), then push again. ' +
       'If this is deliberate, bypass this push with `# NO-LAND-PREFLIGHT: <reason of 15+ characters>`.';
     if (env.LAND_NODE_MODULES_ADVISORY === '1') return { status: 'clean', warning: `(advisory) ${text}` };
     return { status: 'fail', message: text, missing };

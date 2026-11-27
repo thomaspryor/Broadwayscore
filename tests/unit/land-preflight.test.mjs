@@ -1121,5 +1121,5 @@ test('nodeModulesCheck (BRO-7788): refuses unresolvable next/cheerio; fails open
     fs.writeFileSync(path.join(dir, 'package.json'), '{not json');
     assert.equal(nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: notFound } }).status, 'skip', 'malformed package.json fails open');
     assert.equal(nodeModulesCheck({ root: dir, files: [], env: {}, seams: { resolve: notFound } }).status, 'skip', 'empty diff');
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
