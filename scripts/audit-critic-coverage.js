@@ -159,9 +159,13 @@ async function processCritic(c) {
   const override = authorOverrides[c.slug] || {};
 
   // Build the list of source calls for this critic
-  const sourceCalls = [
-    { source: 'muckrack', promise: muckrack.fetch(c.slug) },
-  ];
+  // BRO-6956: Muck Rack's slug defaults to ours, which lands on a namesake for
+  // common names (muckrack.com/chris-jones is a BBC sports writer). Override
+  // with `muckrack: "<slug>"`, or `muckrack: false` to skip Muck Rack.
+  const sourceCalls = [];
+  if (override.muckrack !== false) {
+    sourceCalls.push({ source: 'muckrack', promise: muckrack.fetch(override.muckrack || c.slug) });
+  }
   if (override.bww)       sourceCalls.push({ source: 'bww',       promise: bww.fetch(override.bww) });
   if (override.nysun)     sourceCalls.push({ source: 'nysun',     promise: nysun.fetch(override.nysun) });
   if (override.nysr)      sourceCalls.push({ source: 'nysr',      promise: nysr.fetch(override.nysr) });
@@ -293,7 +297,9 @@ async function runOutletHeartbeat() {
     if (results.some(r => r.status === 'skipped')) process.exitCode = 1;
     return;
   }
-  await runBatch();
+  // BRO-6956: muckrack holds one shared Browserbase session; close it so the
+  // CDP socket neither bills idle minutes nor keeps the process alive.
+  await runBatch().finally(() => muckrack.close());
   REPORT.sort((a,b) => (b.missingCount||0) - (a.missingCount||0));
   const auditDir = path.join(REPO_ROOT, 'data/audit');
   if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });

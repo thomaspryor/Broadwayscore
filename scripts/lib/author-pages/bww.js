@@ -59,8 +59,11 @@ function parseReviews(html) {
   chunks.shift(); // discard everything before the first one-feed
 
   for (const chunk of chunks) {
-    // Extract title — inside <p style="font-weight:bold...">...</p>
-    const titleMatch = chunk.match(/<p\s+style="font-weight:bold[^"]*"[^>]*>([^<]{3,300})<\/p>/);
+    // Extract title — <h3 class="review-headline"> since ~2026-11 (BRO-6956: the
+    // old <p style="font-weight:bold"> form stopped matching and every critic
+    // page parsed to 0), older pages <p style="font-weight:bold...">.
+    const titleMatch = chunk.match(/<h\d[^>]*class="review-headline"[^>]*>([^<]{3,300})<\/h\d>/)
+      || chunk.match(/<p\s+style="font-weight:bold[^"]*"[^>]*>([^<]{3,300})<\/p>/);
     if (!titleMatch) continue;
     const title = titleMatch[1].replace(/\s+/g, ' ').trim();
 
@@ -109,7 +112,8 @@ function isSoft404(html) {
  * @param {string} bwwSlug  e.g. 'Elysa-Gardner'
  * @returns {Promise<Array<{url:string, title:string, date:string|null, outlet:string, source:'bww'}>>}
  */
-async function fetch(bwwSlug) {
+async function fetch(bwwSlug, opts = {}) {
+  const get = opts.fetchPage || fetchPage;
   const all = [];
   let lastFirstUrl = null;
 
@@ -117,22 +121,34 @@ async function fetch(bwwSlug) {
     const pageUrl = `https://www.broadwayworld.com/reviews-critics/${bwwSlug}?page=${page}`;
     let html;
     try {
-      const r = await fetchPage(pageUrl, { timeout: 30000 });
+      const r = await get(pageUrl, { timeout: 30000 });
       html = r && r.content;
-    } catch {
-      break; // network error — return what we have
+    } catch (e) {
+      // Page 1 failing means we learned nothing: throw so the audit records a
+      // failed source, not "0 missing" (BRO-6927 class, BRO-6956). Later pages
+      // keep what we have.
+      if (page === 1) throw new Error(`bww ${pageUrl}: ${e.message}`);
+      break;
     }
 
     // Empty-page early stop (mirrors Muckrack pattern)
-    if (!html || html.length < 5000) break;
+    if (!html || html.length < 5000) {
+      if (page === 1) throw new Error(`bww ${pageUrl}: got ${html ? html.length : 0} bytes`);
+      break;
+    }
 
     // Soft-404 early stop
     if (isSoft404(html)) {
+      if (page === 1) throw new Error(`bww ${pageUrl}: soft-404 (title is not a critic page), check the bww slug override`);
       console.warn(`  [bww] WARN: ${pageUrl} returned ${html.length} bytes but 0 articles parsed - possible soft-404 or critic page title changed`);
       break;
     }
 
     const items = parseReviews(html);
+    // Review blocks present but none parsed = markup drift, not an empty critic.
+    if (items.length === 0 && page === 1 && html.includes('<div class="one-feed">')) {
+      throw new Error(`bww ${pageUrl}: ${html.split('<div class="one-feed">').length - 1} review blocks but 0 parsed (structural drift)`);
+    }
     if (items.length === 0) {
       console.warn(`  [bww] WARN: ${pageUrl} returned ${html.length} bytes but 0 articles parsed - possible structural drift or no recent bylines`);
       break;
@@ -149,4 +165,4 @@ async function fetch(bwwSlug) {
   return all;
 }
 
-module.exports = { fetch };
+module.exports = { fetch, parseReviews, isSoft404 };

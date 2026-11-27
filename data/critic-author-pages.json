@@ -1,13 +1,14 @@
 {
   "_schema": {
-    "format": "object map: criticSlug -> { bww?, nysun?, nysr?, nyt?, newyorker?, vulture? } (all optional strings)",
+    "format": "object map: criticSlug -> { muckrack?, bww?, nysun?, nysr?, nyt?, newyorker?, vulture? } (strings; muckrack may also be false)",
     "purpose": "Override author-page slugs for sources where the registry slug doesn't match the source's URL. Loaded by audit-critic-coverage.js (S1-T7, BRO-52).",
     "case-sensitive": "BWW slugs MUST preserve case (e.g. Elysa-Gardner) — lowercase 404s",
     "nyt": "nytimes.com/by/{slug} — single page only, no query-param pagination",
     "newyorker": "newyorker.com/contributors/{slug} — single page only, no query-param pagination",
     "vulture": "vulture.com/author/{slug} — single page only, no query-param pagination",
     "see-also": "Sprint S1-T2 in sprint-plan-critic-coverage.md; BRO-52 added nyt/newyorker/vulture",
-    "_comment": "Keys starting with _ are ignored when iterating critic entries"
+    "_comment": "Keys starting with _ are ignored when iterating critic entries",
+    "muckrack": "muckrack.com/{slug}/articles — defaults to the critic slug; set a string when Muck Rack uses another slug, false when the default slug is a namesake and the right profile is unknown (BRO-6956: muckrack.com/chris-jones is a BBC sports writer)"
   },
   "elysa-gardner": {
     "bww": "Elysa-Gardner",
@@ -26,7 +27,8 @@
     "vulture": "helen-shaw"
   },
   "chris-jones": {
-    "bww": "Chris-Jones"
+    "bww": "Chris-Jones",
+    "muckrack": false
   },
   "naveen-kumar": {
     "bww": "Naveen-Kumar"
