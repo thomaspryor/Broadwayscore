@@ -37,6 +37,8 @@ export function getMarketFromPath(pathname: string, showMarkets: ShowMarketOverr
 
   // Pre-Broadway browse hub — the market dropdown's regional destination
   if (pathname.startsWith('/browse/pre-broadway-out-of-town-shows')) return 'regional';
+  // Australian pilot hub (BRO-8389): AU productions are regional shows, so the pill reads Regional like their show pages.
+  if (pathname.startsWith('/browse/australian-theatre')) return 'regional';
   if (pathname === '/browse/beyond-london' || pathname === '/browse/beyond-london/') return 'uk-regional';
   // National tours hub (BRO-4211)
   if (pathname.startsWith('/browse/broadway-national-tours')) return 'tour';

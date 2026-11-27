@@ -101,3 +101,10 @@ test('BRO-6796: a city hub own production says its town, a tryout still says try
   assert.equal(getDurationSuffix('regional', 'Studio Theatre, Washington, D.C.', true), 'in Washington');
   assert.equal(getDurationSuffix('regional', 'Goodman Theatre, Chicago, IL 60601', true), 'in Chicago');
 });
+
+// BRO-8389: the Australian pilot hub must read Regional in the header pill, like its show pages.
+test('Australian Theatre browse page maps to the regional market', () => {
+  assert.equal(getMarketFromPath('/browse/australian-theatre'), 'regional');
+  assert.equal(getMarketFromPath('/browse/australian-theatre/'), 'regional');
+  assert.equal(getMarketFromPath('/show/whispering-jack-regional-2026'), 'regional');
+});
