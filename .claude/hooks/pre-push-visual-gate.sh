@@ -206,6 +206,34 @@ if [ -n "$_NV_MATCH" ]; then
   exit 0
 fi
 
+# >>> BRO-7298 small-fix lane (owner decision 2026-11-10, option A; the replay test strips this block to prove the red case)
+# A small UI fix the OWNER asked for in this chat ships without the pre-push yes when the push command ends with
+#   # SMALL-FIX: page=<https://broadwayscorecard.com/...> owner="<the owner's words, copied exactly>"
+# scripts/lib/visual-small-fix.mjs (CANONICAL ROOT copy only, so a branch cannot loosen it) checks the quote against the
+# owner's last messages, refuses headless/job sessions, binary files and diffs over its size limits, and records a
+# screenshot debt the Stop check (visual-small-fix-stop.sh / verify-edits.sh) enforces before the session closes.
+# Sized on UI_FILES_ALL (before the copy/render exemptions) so nothing is undercounted. Never records a ledger approval
+# or mints a durable one. Fail closed: any error or timeout falls through to the normal gate. Kill VISUAL_SMALL_FIX_DISABLED=1.
+_SMALL="$CANONICAL_ROOT/scripts/lib/visual-small-fix.mjs"
+_SMALL_REFUSED=""
+_SMALL_FILES=$(printf '%s' "$UI_FILES_ALL" | paste -sd, -)
+if [ "${VISUAL_SMALL_FIX_DISABLED:-0}" != "1" ] && [ -f "$_SMALL" ] && command -v timeout >/dev/null 2>&1 \
+   && printf '%s' "$command" | grep -qE '(^|[[:space:]])#[[:space:]]*SMALL-FIX:'; then
+  _SMALL_OUT=$(cd "$SESSION_ROOT" && timeout 20 node "$_SMALL" check --command="$command" --transcript="$transcript" \
+    --repo="$SESSION_ROOT" --range="origin/main...$DIFF_REF" --files="$_SMALL_FILES" --session="$session_id" --ref="$DIFF_REF" 2>/dev/null)
+  if [ "$(printf '%s' "$_SMALL_OUT" | jq -r '.allowed // false' 2>/dev/null)" = "true" ]; then
+    echo "[visual-gate] small-fix lane: pushing without the pre-push yes. You now owe the owner a screenshot of $(printf '%s' "$_SMALL_OUT" | jq -r '.page' 2>/dev/null) once it is live (SendUserFile), before you close." >&2
+    exit 0
+  fi
+  _SMALL_REFUSED="Small-fix lane refused: $(printf '%s' "$_SMALL_OUT" | jq -r '.reason // "the check failed"' 2>/dev/null || echo 'the check failed')."
+fi
+_SMALL_LINE() {
+  if [ -n "$_SMALL_REFUSED" ]; then echo "$_SMALL_REFUSED"; return 0; fi
+  [ "${VISUAL_SMALL_FIX_DISABLED:-0}" != "1" ] && [ -f "$_SMALL" ] && command -v timeout >/dev/null 2>&1 || return 0
+  (cd "$SESSION_ROOT" && timeout 15 node "$_SMALL" explain --repo="$SESSION_ROOT" --range="origin/main...$DIFF_REF" --files="$_SMALL_FILES" 2>/dev/null) || true
+}
+# <<< BRO-7298 small-fix lane
+
 # NO-VERIFY override — scans the in-flight turn containing the gated tool_use.
 # Uses CANONICAL SCAN so worktree-specific script variants don't shadow detection.
 SCAN_ARGS=(--query=visual-claim-language --transcript="$transcript")
@@ -275,6 +303,7 @@ if [ ! -f "$VERDICT_PATH" ]; then
     echo "UI files: $(echo "$UI_FILES_CHANGED" | tr '\n' ' ')"
     [ -n "$_RIL_DETECTOR_LINE" ] && echo "$_RIL_DETECTOR_LINE"
     _FIX_LINE
+    _SMALL_LINE
     echo "Run /visual-qa (screenshots at 390 and 1440). Do NOT ask the owner until every item below is done; then send ONE message with the screenshots. Any clear yes after that message clears the gate."
     _LAND_SUMMARY
   } >&2
@@ -361,6 +390,7 @@ if [ "$APPROVED" != "true" ]; then
     [ -n "${_SCOPE:-}" ] && echo "Earlier owner yes on this branch: $(printf '%s' "$_SCOPE" | jq -r '.reason // empty' 2>/dev/null)"  # BRO-8156
     [ -n "$_RIL_DETECTOR_LINE" ] && echo "$_RIL_DETECTOR_LINE"
     _FIX_LINE "$VERDICT_PATH"
+    _SMALL_LINE
     echo "Do NOT ask the owner until every item below is done; then send ONE message with the screenshots. Any clear yes after that message clears the gate (\"ship it\", \"looks good\", \"yes\", \"go\", ...): the reader (transcript-scan.mjs, BRO-7848) accepts all of them. NEVER ask the owner to type, copy or paste a hash/token/APPROVED: string. Other bypasses (you, not the owner): \"ship immediately for: <reason>\" | NO-VERIFY: <reason>."
     _LAND_SUMMARY
   } >&2
