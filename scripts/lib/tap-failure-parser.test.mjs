@@ -160,6 +160,6 @@ test('BRO-7150: a tree reached through a symlink (macOS /tmp -> /private/tmp) st
     assert.equal(relativeToTree(link, '/elsewhere/b.js'), path.relative(link, '/elsewhere/b.js'), 'outside the tree: unchanged');
   } finally {
     fs.rmSync(link, { force: true });
-    fs.rmSync(real, { recursive: true, force: true });
+    fs.rmSync(real, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
