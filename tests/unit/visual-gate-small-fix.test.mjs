@@ -10,8 +10,8 @@ import { tmpdir, homedir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  parseMarker, pageProblem, headlessProblem, ownerQuoteProblem, diffSize, decide, claimsClosing,
-  screenshotSentSince, stopDecision, MAX_LINES, STOP_BLOCK_BUDGET,
+  parseMarker, pushSource, pageProblem, headlessProblem, ownerQuoteProblem, diffSize, decide, claimsClosing,
+  screenshotSentSince, stopDecision, enforcementProblem, reuseProblem, MAX_LINES, STOP_BLOCK_BUDGET,
 } from '../../scripts/lib/visual-small-fix.mjs';
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -27,6 +27,17 @@ test('parseMarker reads the shell comment only', () => {
   assert.deepEqual(parseMarker(`git push origin HEAD:refs/heads/land/x  # SMALL-FIX: page=${PAGE} owner="${QUOTE}"`), { page: PAGE, quote: QUOTE });
   assert.equal(parseMarker('git push origin main'), null);
   assert.equal(parseMarker('git push origin main #SMALL-FIX page=x'), null);
+  assert.equal(parseMarker(`cat <<EOF\n# SMALL-FIX: page=${PAGE} owner="${QUOTE}"\nEOF\ngit push origin main`), null, 'one line only');
+});
+
+test('pushSource: one plain push, source side of a refspec, nothing chained', () => {
+  const m = `  # SMALL-FIX: page=${PAGE} owner="${QUOTE}"`;
+  assert.equal(pushSource(`git push origin feat-ui${m}`), 'feat-ui');
+  assert.equal(pushSource(`git push -u origin big:refs/heads/land/x${m}`), 'big', 'sizes what is pushed, not HEAD');
+  assert.equal(pushSource(`git push origin small && git push origin big${m}`), null);
+  assert.equal(pushSource(`git push origin a; git push origin b${m}`), null);
+  assert.equal(pushSource(`git push origin $(git branch --show-current)${m}`), null);
+  assert.equal(pushSource(`git push --force origin a${m}`), null);
 });
 
 test('pageProblem: exact broadwayscorecard.com host over https', () => {
@@ -50,9 +61,9 @@ test('ownerQuoteProblem: only the owner\'s own recent words count', () => {
   assert.match(ownerQuoteProblem([owner(OWNER)], 'bigger'), /too short/);
   // Synthetic records (hook feedback, notifications, compaction) and tool output never count.
   assert.match(ownerQuoteProblem([owner(OWNER, { synthetic: true })], QUOTE), /no message from the owner/);
-  assert.match(ownerQuoteProblem([owner('hi'), { kind: 'tool_result', content: OWNER }, { kind: 'assistant_text', text: OWNER }], QUOTE), /not in the owner's last/);
-  // Only the last 3 owner messages: an old request cannot be reused for a later push.
-  assert.match(ownerQuoteProblem([owner(OWNER), owner('ok'), owner('next thing'), owner('and another')], QUOTE), /not in the owner's last 3/);
+  assert.match(ownerQuoteProblem([owner('hi'), { kind: 'tool_result', content: OWNER }, { kind: 'assistant_text', text: OWNER }], QUOTE), /not in the owner's latest message/);
+  // Only the owner's latest message: an old request (or one they took back) cannot be reused.
+  assert.match(ownerQuoteProblem([owner(OWNER), owner('wait, do not change that')], QUOTE), /latest message/);
 });
 
 test('diffSize: files, lines, binary, limits', () => {
@@ -67,10 +78,27 @@ test('decide: kill switch and every condition', () => {
   const marker = { page: PAGE, quote: QUOTE };
   const size = { files: 1, lines: 4, problem: null };
   const env = { CLAUDE_CODE_ENTRYPOINT: 'cli' };
-  assert.equal(decide({ marker, events: [owner(OWNER)], size, env, cwd: '/r' }).allowed, true);
-  assert.equal(decide({ marker, events: [owner(OWNER)], size, env: { ...env, VISUAL_SMALL_FIX_DISABLED: '1' }, cwd: '/r' }).allowed, false);
-  assert.equal(decide({ marker: null, events: [owner(OWNER)], size, env, cwd: '/r' }).allowed, false);
-  assert.equal(decide({ marker, events: [owner(OWNER)], size: { files: 2, lines: 90, problem: 'big' }, env, cwd: '/r' }).allowed, false);
+  const ok = { marker, source: 'feat', events: [owner(OWNER)], size, env, cwd: '/r', patchId: 'p1' };
+  assert.equal(decide(ok).allowed, true);
+  assert.equal(decide({ ...ok, env: { ...env, VISUAL_SMALL_FIX_DISABLED: '1' } }).allowed, false);
+  assert.equal(decide({ ...ok, marker: null }).allowed, false);
+  assert.equal(decide({ ...ok, source: null }).allowed, false);
+  assert.equal(decide({ ...ok, enforcement: 'no stop check' }).allowed, false);
+  assert.equal(decide({ ...ok, size: { files: 2, lines: 90, problem: 'big' } }).allowed, false);
+  // One request, one change: a retry of the same patch passes, a different patch does not.
+  const key = decide(ok).ownerKey;
+  assert.equal(decide({ ...ok, obligation: { pushes: [{ ownerKey: key, patchId: 'p1' }] } }).allowed, true);
+  assert.match(decide({ ...ok, obligation: { pushes: [{ ownerKey: key, patchId: 'p0' }] } }).reason, /already shipped a different change/);
+  assert.equal(reuseProblem(null, key, 'p1'), null);
+});
+
+test('enforcementProblem: the session must run the Stop check', () => {
+  const files = (map) => (f) => { for (const [k, v] of Object.entries(map)) if (f.endsWith(k)) return v; throw new Error('ENOENT'); };
+  const good = { 'settings.json': '"visual-small-fix-stop.sh"', 'visual-small-fix-stop.sh': 'node visual-small-fix.mjs' };
+  assert.equal(enforcementProblem({ projectDir: '/p', env: {}, read: files(good) }), null);
+  assert.match(enforcementProblem({ projectDir: '/p', env: {}, read: files({ 'settings.json': '{}' }) }), /does not run the screenshot Stop check/);
+  assert.equal(enforcementProblem({ projectDir: '/p', env: { CLAUDE_CODE_REMOTE: 'true' }, read: files({ 'verify-edits.sh': 'visual-small-fix.mjs' }) }), null);
+  assert.match(enforcementProblem({ projectDir: '/p', env: { CLAUDE_CODE_REMOTE: 'true' }, read: files({ 'verify-edits.sh': 'old' }) }), /Stop check/);
 });
 
 test('claimsClosing: cloud, Mac and machine verdicts; not a mid-session update', () => {
@@ -84,17 +112,29 @@ test('claimsClosing: cloud, Mac and machine verdicts; not a mid-session update',
 
 test('screenshotSentSince / stopDecision', () => {
   const ob = { pushes: [{ page: PAGE, pushedAt: '2026-11-27T10:00:00Z' }], blocks: 0 };
-  const shot = (ts, files = ['/Users/x/Documents/claude-outputs/badge-390.png']) => ({ kind: 'assistant_tool_use', name: 'SendUserFile', input: { files }, ts });
+  const after = Date.parse('2026-11-27T10:04:00Z');
+  const mtime = (f) => (f.includes('old') ? Date.parse('2026-11-01T00:00:00Z') : f.includes('missing') ? null : after);
+  let n = 0;
+  const shot = (ts, files = ['/Users/x/Documents/claude-outputs/badge-390.png'], { isError = false, result = true } = {}) => {
+    const id = `t${++n}`;
+    return [{ kind: 'assistant_tool_use', name: 'SendUserFile', input: { files }, ts, id }, ...(result ? [{ kind: 'tool_result', tool_use_id: id, isError, content: 'sent' }] : [])];
+  };
   const closing = 'Bigger badge is live.\nYou can close this tab.';
-  assert.equal(stopDecision({ events: [], lastMessage: closing, obligation: ob, env: {} }).block, true);
-  assert.equal(stopDecision({ events: [shot('2026-11-27T10:05:00Z')], lastMessage: closing, obligation: ob, env: {} }).block, false);
-  assert.equal(stopDecision({ events: [shot('2026-11-27T09:59:00Z')], lastMessage: closing, obligation: ob, env: {} }).block, true, 'a shot from before the push is not of the fix');
-  assert.equal(stopDecision({ events: [shot('2026-11-27T10:05:00Z', ['/x/report.md'])], lastMessage: closing, obligation: ob, env: {} }).block, true, 'must be an image');
-  assert.equal(stopDecision({ events: [], lastMessage: 'Deploying now.\nKeep this tab open.', obligation: ob, env: {} }).block, false);
-  assert.equal(stopDecision({ events: [], lastMessage: closing, obligation: { ...ob, waived: { reason: 'r' } }, env: {} }).block, false);
-  assert.equal(stopDecision({ events: [], lastMessage: closing, obligation: { ...ob, blocks: STOP_BLOCK_BUDGET }, env: {} }).block, false, 'budget caps the loop');
-  assert.equal(stopDecision({ events: [], lastMessage: closing, obligation: ob, env: { VISUAL_SMALL_FIX_DISABLED: '1' } }).block, false);
-  assert.equal(screenshotSentSince([shot('2026-11-27T10:05:00Z')], '2026-11-27T10:00:00Z'), '/Users/x/Documents/claude-outputs/badge-390.png');
+  const sd = (events, o = {}) => stopDecision({ events, lastMessage: closing, obligation: ob, env: {}, mtime, ...o }).block;
+  assert.equal(sd([]), true);
+  assert.equal(sd(shot('2026-11-27T10:05:00Z')), false);
+  assert.equal(sd(shot('2026-11-27T09:59:00Z')), true, 'a send from before the push is not of the fix');
+  assert.equal(sd(shot('2026-11-27T10:05:00Z', ['/x/report.md'])), true, 'must be an image');
+  assert.equal(sd(shot('2026-11-27T10:05:00Z', undefined, { isError: true })), true, 'a failed send does not count');
+  assert.equal(sd(shot('2026-11-27T10:05:00Z', undefined, { result: false })), true, 'a send with no result does not count');
+  assert.equal(sd(shot('2026-11-27T10:05:00Z', ['/x/old-shot.png'])), true, 'an image written before the push does not count');
+  assert.equal(sd(shot('2026-11-27T10:05:00Z', ['/x/missing.png'])), true, 'a file that does not exist does not count');
+  assert.equal(sd([], { lastMessage: 'Deploying now.\nKeep this tab open.' }), false);
+  assert.equal(sd([], { obligation: { ...ob, waived: { reason: 'r' } } }), false);
+  assert.equal(sd([], { obligation: { ...ob, blocks: STOP_BLOCK_BUDGET } }), false, 'budget caps the loop');
+  assert.equal(sd([], { env: { VISUAL_SMALL_FIX_STOP_DISABLED: '1' } }), false);
+  assert.equal(sd([], { env: { VISUAL_SMALL_FIX_DISABLED: '1' } }), true, 'closing the lane does not forgive a debt already owed');
+  assert.equal(screenshotSentSince(shot('2026-11-27T10:05:00Z'), '2026-11-27T10:00:00Z', { mtime }), '/Users/x/Documents/claude-outputs/badge-390.png');
 });
 
 // ── the real hook ──────────────────────────────────────────────────────────────
@@ -104,7 +144,7 @@ function git(cwd, ...args) {
 function cleanEnv(extra = {}) {
   const env = {};
   for (const [k, v] of Object.entries(process.env)) {
-    if (k.startsWith('GIT_') || k.startsWith('VISUAL_') || k === 'CLAUDE_CODE_REMOTE') continue;
+    if (k.startsWith('GIT_') || k.startsWith('VISUAL_') || k === 'CLAUDE_CODE_REMOTE' || k === 'CLAUDE_PROJECT_DIR') continue;
     env[k] = v;
   }
   return { ...env, ...extra };
@@ -116,7 +156,7 @@ function commitFile(repo, rel, body, msg) {
   git(repo, 'commit', '-q', '-m', msg);
 }
 
-function fixture(t, { uiLines = 3 } = {}) {
+function fixture(t, { uiLines = 3, stopWired = true } = {}) {
   const root = realpathSync(mkdtempSync(join(tmpdir(), 'visual-small-fix-')));
   t.after(() => { try { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); } catch { /* best effort */ } });
   const repo = join(root, 'repo'); const origin = join(root, 'origin.git');
@@ -135,6 +175,11 @@ function fixture(t, { uiLines = 3 } = {}) {
   git(repo, 'checkout', '-q', '-b', 'feat-ui');
   const body = Array.from({ length: uiLines }, (_, i) => `export const Badge${i} = () => <span className="text-lg">{${i}}</span>;`).join('\n');
   commitFile(repo, 'src/components/Badge.tsx', `${body}\n`, 'ui: bigger badge');
+  if (stopWired) { // this session's checkout runs the Stop check (enforcementProblem reads these)
+    mkdirSync(join(repo, '.claude', 'hooks'), { recursive: true });
+    writeFileSync(join(repo, '.claude', 'settings.json'), readFileSync(join(REPO_ROOT, '.claude', 'settings.json')));
+    writeFileSync(join(repo, '.claude', 'hooks', 'visual-small-fix-stop.sh'), readFileSync(STOP_HOOK));
+  }
   return fx;
 }
 
@@ -181,7 +226,7 @@ test('hook: words the owner never wrote do not open the lane', (t) => {
   const fx = fixture(t);
   const r = push(fx, transcript(fx, 'what is the weather', `Sure, ${QUOTE}.`));
   assert.equal(r.status, 2);
-  assert.match(r.stderr, /Small-fix lane refused: owner="\.\.\." is not in the owner's last/);
+  assert.match(r.stderr, /Small-fix lane refused: owner="\.\.\." is not in the owner's latest message/);
   assert.equal(existsSync(join(fx.state, 'sess-small-fix.json')), false);
 });
 
@@ -204,6 +249,41 @@ test('hook: an unmarked small push is blocked and told about the lane', (t) => {
   const r = push(fx, transcript(fx, OWNER), { command: 'git push origin feat-ui' });
   assert.equal(r.status, 2);
   assert.match(r.stderr, /Small-fix lane \(BRO-7298\): this diff is small \(1 file\(s\), 3 line\(s\)\)/);
+});
+
+test('hook: a refspec push is sized on its source, not HEAD (big branch, small HEAD)', (t) => {
+  const fx = fixture(t);
+  git(fx.repo, 'checkout', '-q', '-b', 'big');
+  commitFile(fx.repo, 'src/components/Big.tsx', `${Array.from({ length: MAX_LINES + 5 }, (_, i) => `export const B${i} = 1;`).join('\n')}\n`, 'ui: big');
+  git(fx.repo, 'checkout', '-q', 'feat-ui');
+  const r = push(fx, transcript(fx, OWNER), { command: `git push origin big:refs/heads/land/x  # SMALL-FIX: page=${PAGE} owner="${QUOTE}"` });
+  assert.equal(r.status, 2);
+  assert.match(r.stderr, /Small-fix lane refused: \d+ UI lines changed/);
+});
+
+test('hook: a chained second push is refused', (t) => {
+  const fx = fixture(t);
+  const r = push(fx, transcript(fx, OWNER), { command: `git push origin feat-ui && git push origin main  # SMALL-FIX: page=${PAGE} owner="${QUOTE}"` });
+  assert.equal(r.status, 2);
+  assert.match(r.stderr, /Small-fix lane refused: the push command must be ONE plain/);
+});
+
+test('hook: a checkout whose settings do not run the Stop check is refused', (t) => {
+  const fx = fixture(t, { stopWired: false });
+  const r = push(fx, transcript(fx, OWNER));
+  assert.equal(r.status, 2);
+  assert.match(r.stderr, /does not run the screenshot Stop check/);
+});
+
+test('hook: one owner request ships one change (a retry passes, a new change does not)', (t) => {
+  const fx = fixture(t);
+  const tp = transcript(fx, OWNER);
+  assert.equal(push(fx, tp).status, 0);
+  assert.equal(push(fx, tp).status, 0, 'retrying the same change is fine');
+  commitFile(fx.repo, 'src/components/Other.tsx', 'export const O = 1;\n', 'ui: another change');
+  const r = push(fx, tp);
+  assert.equal(r.status, 2);
+  assert.match(r.stderr, /already shipped a different change/);
 });
 
 test('hook: kill switch closes the lane', (t) => {
@@ -235,10 +315,15 @@ test('Stop hook: refuses the closing until a screenshot was sent, then passes; b
   assert.equal(r1.status, 2, r1.stderr);
   assert.match(r1.stderr, /owe them a screenshot of the live page/);
   assert.equal(stop('Waiting for the deploy.\nKeep this tab open.').status, 0, 'a mid-session message is not refused');
-  const sent = { type: 'assistant', timestamp: new Date(Date.now() + 1000).toISOString(), message: { id: 'm9', role: 'assistant', content: [{ type: 'tool_use', id: 'tu9', name: 'SendUserFile', input: { files: [join(fx.root, 'badge-390.png')], display: 'render' } }] } };
-  assert.equal(stop(closing, [sent]).status, 0);
-  // Budget: after STOP_BLOCK_BUDGET refusals it lets the session go (never an endless loop).
-  assert.equal(stop(closing).status, 2);
+  const png = join(fx.root, 'badge-390.png');
+  writeFileSync(png, 'not really a png');
+  const sentAt = new Date(Date.now() + 1000).toISOString();
+  const sent = { type: 'assistant', timestamp: sentAt, message: { id: 'm9', role: 'assistant', content: [{ type: 'tool_use', id: 'tu9', name: 'SendUserFile', input: { files: [png], display: 'render' } }] } };
+  const ok = { type: 'user', timestamp: sentAt, message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: 'tu9', content: 'File sent' }] } };
+  assert.equal(stop(closing, [sent]).status, 2, 'a send with no successful result does not pay the debt');
+  assert.equal(stop(closing, [sent, ok]).status, 0);
+  // Budget: after STOP_BLOCK_BUDGET refusals (two so far) it lets the session go (never an endless loop).
+  assert.equal(STOP_BLOCK_BUDGET, 2);
   assert.equal(stop(closing).status, 0);
   // Cloud skips this file (verify-edits.sh runs the same check there).
   const cloud = spawnSync('bash', [STOP_HOOK], { encoding: 'utf8', env: env(fx, { CLAUDE_CODE_REMOTE: 'true' }), input: '{}' });

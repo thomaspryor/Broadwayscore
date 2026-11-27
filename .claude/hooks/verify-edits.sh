@@ -138,9 +138,9 @@ if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "$
   _scs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/stranded-child-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:STRANDEDKID]\n' "$_scs_err" >&2; exit 2; fi; _ve_pre_died stranded-child-stop.mjs $_ve_s
 fi
 # BRO-7298: a small UI fix pushed through the visual gate's small-fix lane (no pre-push yes) owes the owner a screenshot of the
-# live page before closing (visual-small-fix.mjs --stop-hook: silent unless the lane was used, own budget, kill VISUAL_SMALL_FIX_DISABLED=1).
+# live page before closing (visual-small-fix.mjs --stop-hook: silent unless the lane was used, own budget, kill VISUAL_SMALL_FIX_STOP_DISABLED=1).
 # Cloud copy; on the Mac .claude/hooks/visual-small-fix-stop.sh runs it.
-if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${VISUAL_SMALL_FIX_DISABLED:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/visual-small-fix.mjs" ] && command -v node >/dev/null 2>&1; then
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${VISUAL_SMALL_FIX_STOP_DISABLED:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/visual-small-fix.mjs" ] && command -v node >/dev/null 2>&1; then
   _vsf_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/visual-small-fix.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:SMALLFIXSHOT]\n' "$_vsf_err" >&2; exit 2; fi; _ve_pre_died visual-small-fix.mjs $_ve_s
 fi
 # BRO-7839: an independent reviewer asks the owner's "is this fully tested?" at SAFE TO ARCHIVE after code edits and the session must

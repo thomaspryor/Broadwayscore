@@ -11,16 +11,22 @@
 // reason as the hook's `# NO-VERIFY:`):
 //   git push origin HEAD:refs/heads/land/x  # SMALL-FIX: page=https://broadwayscorecard.com/shows/foo owner="<owner words>"
 // The lane opens only when ALL hold:
-//   - owner="..." quotes (verbatim, case and whitespace aside, >= MIN_QUOTE chars) one of the owner's last
-//     RECENT_OWNER_MSGS messages in THIS transcript (non-synthetic user text, walkTranscript from transcript-scan.mjs:
-//     tool output, hook feedback, notifications and peer messages never count);
+//   - owner="..." quotes (verbatim, case and whitespace aside, >= MIN_QUOTE chars) the owner's LAST message in THIS
+//     transcript (non-synthetic user text, walkTranscript from transcript-scan.mjs: tool output, hook feedback,
+//     notifications and peer messages never count; an owner message sent mid-turn does count, so "wait, stop" wins);
+//   - one owner request opens the lane for ONE change: a later push citing the same request must carry the same UI
+//     patch (a retry or rebase), so a big change cannot be sliced into small pushes;
+//   - the command is ONE plain `git push [flags] origin <src>[:<dst>]` on one line (no chaining, no substitution):
+//     <src> is resolved and sized from the command itself;
+//   - this session's own settings run the screenshot Stop check (an older worktree whose settings lack it is refused);
 //   - the session is interactive: not `claude -p` / SDK (CLAUDE_CODE_ENTRYPOINT=sdk-*) and not a dispatched job
 //     worktree (.claude/worktrees/job-*): a dispatch prompt is a user record, but nobody is there to see the shot;
 //   - the UI diff is small: <= MAX_FILES UI files and <= MAX_LINES added+deleted lines (git --numstat --no-renames;
 //     a binary UI file refuses);
 //   - page= is an https URL on broadwayscorecard.com (exact host), the page the owner will be shown.
 // It never records a ledger approval and never mints a durable approval (those stay owner-yes only).
-// Kill switch VISUAL_SMALL_FIX_DISABLED=1 (lane closed, Stop check silent). Every lane use is logged.
+// Kill switches: VISUAL_SMALL_FIX_DISABLED=1 closes the lane (debts already owed are still enforced);
+// VISUAL_SMALL_FIX_STOP_DISABLED=1 silences the Stop check. Every lane use, block and waiver is logged.
 //
 // Wired in .claude/hooks/pre-push-visual-gate.sh (lane), .claude/hooks/visual-small-fix-stop.sh (Mac Stop) and
 // .claude/hooks/verify-edits.sh (cloud Stop). Pinned by tests/unit/visual-gate-small-fix.test.mjs.
@@ -34,18 +40,33 @@ import { isMainModule } from './is-main-module.mjs';
 export const MAX_FILES = 3;
 export const MAX_LINES = 40;
 export const MIN_QUOTE = 12;
-export const RECENT_OWNER_MSGS = 3;
+export const RECENT_OWNER_MSGS = 1;
 export const STOP_BLOCK_BUDGET = 2;
 const MIN_WAIVE_REASON = 15;
 const IMAGE_RE = /\.(png|jpe?g|webp|gif)$/i;
 const ALLOWED_HOSTS = new Set(['broadwayscorecard.com', 'www.broadwayscorecard.com']);
 
 const disabled = (env = process.env) => String(env.VISUAL_SMALL_FIX_DISABLED || '') === '1';
+const stopDisabled = (env = process.env) => String(env.VISUAL_SMALL_FIX_STOP_DISABLED || '') === '1';
 
 /** PURE. The `# SMALL-FIX: page=<url> owner="<words>"` shell comment, or null. Anchored like the hook's NO-VERIFY. */
+const MARKER_RE = /(?:^|\s)#[ \t]*SMALL-FIX:[ \t]*page=(\S+)[ \t]+owner="(.*)"[ \t]*$/;
 export function parseMarker(command) {
-  const m = /(?:^|\s)#[ \t]*SMALL-FIX:[ \t]*page=(\S+)[ \t]+owner="(.*)"[ \t]*$/m.exec(String(command || ''));
+  const c = String(command || '');
+  if (/[\r\n]/.test(c.trim())) return null; // one line only: a marker in a heredoc or commit body never counts
+  const m = MARKER_RE.exec(c);
   return m ? { page: m[1], quote: m[2] } : null;
+}
+
+const REF_TOKEN = '[A-Za-z0-9._/-]+';
+const PUSH_RE = new RegExp(`^\\s*git push(?:\\s+(?:-u|--set-upstream|--force-with-lease|--no-verify|-q|--quiet))*\\s+origin\\s+(${REF_TOKEN})(?::(?:refs/heads/)?${REF_TOKEN})?\\s*$`);
+/** PURE. The pushed source ref of a single plain `git push ... origin <src>[:<dst>]  # SMALL-FIX: ...`, or null. */
+export function pushSource(command) {
+  const c = String(command || '');
+  if (/[\r\n]/.test(c.trim())) return null;
+  const head = c.replace(MARKER_RE, '');
+  const m = PUSH_RE.exec(head);
+  return m ? m[1] : null;
 }
 
 /** PURE. Why this page cannot be the one the owner is shown, or null. */
@@ -68,18 +89,42 @@ export function headlessProblem({ env = process.env, cwd = process.cwd() } = {})
 
 const norm = (s) => String(s || '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/\s+/g, ' ').trim().toLowerCase();
 
-/** PURE. The owner's last `n` real messages (newest last). */
-export function recentOwnerTexts(events, n = RECENT_OWNER_MSGS) {
-  return events.filter((e) => e.kind === 'user_text' && !e.synthetic && String(e.text || '').trim()).slice(-n).map((e) => e.text);
+/** PURE. The owner's last `n` real messages (newest last), as events. */
+export function recentOwnerMessages(events, n = RECENT_OWNER_MSGS) {
+  return events.filter((e) => e.kind === 'user_text' && !e.synthetic && String(e.text || '').trim()).slice(-n);
+}
+/** PURE. A stable key for one owner message (its time plus its text), so one request opens the lane once. */
+export const ownerMessageKey = (e) => `${e.ts || ''}|${norm(e.text).slice(0, 120)}`;
+
+/** PURE. -> { problem: string|null, key: string|null } : is owner="..." the owner's own latest words? */
+export function ownerQuote(events, quote) {
+  const q = norm(quote);
+  if (q.length < MIN_QUOTE) return { problem: `owner="..." is too short (${q.length} chars, need ${MIN_QUOTE}+): quote the owner's own request`, key: null };
+  const recent = recentOwnerMessages(events);
+  if (!recent.length) return { problem: 'no message from the owner in this chat', key: null };
+  const hit = recent.find((e) => norm(e.text).includes(q));
+  if (!hit) return { problem: `owner="..." is not in the owner's latest message in this chat (quote their words exactly; if they wrote since, their newest message decides)`, key: null };
+  return { problem: null, key: ownerMessageKey(hit) };
+}
+export const ownerQuoteProblem = (events, quote) => ownerQuote(events, quote).problem;
+
+/** PURE. Why this session would not enforce the screenshot debt (its settings lack the Stop check), or null. */
+export function enforcementProblem({ projectDir, env = process.env, read = (f) => fs.readFileSync(f, 'utf8') }) {
+  try {
+    if (String(env.CLAUDE_CODE_REMOTE || '') === 'true') {
+      if (read(path.join(projectDir, '.claude', 'hooks', 'verify-edits.sh')).includes('visual-small-fix.mjs')) return null;
+    } else if (read(path.join(projectDir, '.claude', 'settings.json')).includes('visual-small-fix-stop.sh')
+      && read(path.join(projectDir, '.claude', 'hooks', 'visual-small-fix-stop.sh')).includes('visual-small-fix.mjs')) {
+      return null;
+    }
+  } catch { /* unreadable: refuse below */ }
+  return "this session's checkout does not run the screenshot Stop check yet (merge main into it first)";
 }
 
-/** PURE. Why owner="..." is not the owner's own recent words, or null. */
-export function ownerQuoteProblem(events, quote) {
-  const q = norm(quote);
-  if (q.length < MIN_QUOTE) return `owner="..." is too short (${q.length} chars, need ${MIN_QUOTE}+): quote the owner's own request`;
-  const recent = recentOwnerTexts(events);
-  if (!recent.length) return 'no message from the owner in this chat';
-  if (!recent.some((t) => norm(t).includes(q))) return `owner="..." is not in the owner's last ${RECENT_OWNER_MSGS} messages in this chat (quote their words exactly)`;
+/** PURE. Has this owner request already shipped a DIFFERENT change? (retries and rebases keep the same patch id) */
+export function reuseProblem(obligation, key, patchId) {
+  const prior = ((obligation && obligation.pushes) || []).filter((p) => p.ownerKey && p.ownerKey === key);
+  if (prior.some((p) => p.patchId !== patchId)) return 'this owner request already shipped a different change through the lane; a further change needs their yes or a new request';
   return null;
 }
 
@@ -99,19 +144,37 @@ export function diffSize(numstat) {
   return { files, lines, problem: null };
 }
 
-function numstat(repo, range, files) {
-  if (!files.length) return '';
-  return execFileSync('git', ['diff', '--numstat', '--no-renames', range, '--', ...files], { cwd: repo, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024 });
+const gitOut = (repo, args, input) => execFileSync('git', args, { cwd: repo, encoding: 'utf8', input, stdio: [input == null ? 'ignore' : 'pipe', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024 });
+/**
+ * Size and patch id of every UI file (`pattern`) in `range`. Plain `git diff` of the range, not the push gate's
+ * own-merge-scoped list: on a shared local main that can only over-count (never under-count), which closes the lane.
+ */
+function uiSize(repo, range, pattern) {
+  const rows = gitOut(repo, ['diff', '--numstat', '--no-renames', range]).split('\n').filter((l) => l.trim() && pattern.test(l.split('\t').slice(2).join('\t')));
+  const size = diffSize(rows.join('\n'));
+  let patchId = null;
+  if (rows.length && !size.problem) {
+    const files = rows.map((l) => l.split('\t').slice(2).join('\t'));
+    const diff = gitOut(repo, ['diff', '--no-renames', range, '--', ...files]);
+    patchId = (gitOut(repo, ['patch-id', '--stable'], diff).trim().split(/\s+/)[0]) || null;
+  }
+  return { size, patchId };
 }
 
-/** PURE apart from its inputs. The lane decision. -> { allowed, reason, files, lines, page, quote } */
-export function decide({ marker, events, size, env = process.env, cwd = process.cwd() }) {
-  const base = { allowed: false, files: size?.files ?? null, lines: size?.lines ?? null, page: marker?.page || null, quote: marker?.quote || null };
+/**
+ * PURE apart from its inputs. The lane decision. -> { allowed, reason, files, lines, page, quote, ownerKey }
+ * `source` is the pushed ref (pushSource), `size` its UI diff (diffSize), `enforcement` enforcementProblem's answer,
+ * `obligation` this session's state (reuseProblem), `patchId` the UI diff's patch id.
+ */
+export function decide({ marker, source, events, size, enforcement = null, obligation = null, patchId = null, env = process.env, cwd = process.cwd() }) {
+  const base = { allowed: false, files: size?.files ?? null, lines: size?.lines ?? null, page: marker?.page || null, quote: marker?.quote || null, ownerKey: null };
   if (disabled(env)) return { ...base, reason: 'small-fix lane disabled (VISUAL_SMALL_FIX_DISABLED=1)' };
-  if (!marker) return { ...base, reason: 'no # SMALL-FIX: marker on the push command' };
-  const why = headlessProblem({ env, cwd }) || pageProblem(marker.page) || size?.problem || ownerQuoteProblem(events, marker.quote);
+  if (!marker) return { ...base, reason: 'no # SMALL-FIX: marker on the push command (one line, at its end)' };
+  if (!source) return { ...base, reason: 'the push command must be ONE plain `git push [flags] origin <branch>[:<dst>]` followed by the marker (no &&, ;, pipes or substitution)' };
+  const q = ownerQuote(events, marker.quote);
+  const why = headlessProblem({ env, cwd }) || enforcement || pageProblem(marker.page) || size?.problem || q.problem || reuseProblem(obligation, q.key, patchId);
   if (why) return { ...base, reason: why };
-  return { ...base, allowed: true, reason: `small owner-requested fix (${size.files} file(s), ${size.lines} line(s))` };
+  return { ...base, allowed: true, ownerKey: q.key, reason: `small owner-requested fix (${size.files} file(s), ${size.lines} line(s))` };
 }
 
 // ── obligation state ───────────────────────────────────────────────────────────
@@ -126,13 +189,14 @@ export function readObligation(session, env = process.env) {
 function writeObligation(session, ob, env = process.env) {
   fs.mkdirSync(stateDir(env), { recursive: true });
   const f = stateFile(session, env);
-  fs.writeFileSync(`${f}.tmp`, JSON.stringify(ob, null, 2));
-  fs.renameSync(`${f}.tmp`, f);
+  const tmp = `${f}.${process.pid}.${Date.now()}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(ob, null, 2));
+  fs.renameSync(tmp, f);
 }
 /** Record that this session pushed a small fix and owes a screenshot of `page`. A new push resets the debt. */
-export function recordPush(session, { page, quote, ref, files, lines }, { env = process.env, now = new Date() } = {}) {
+export function recordPush(session, { page, quote, ref, sha, patchId, ownerKey, files, lines }, { env = process.env, now = new Date() } = {}) {
   const prev = readObligation(session, env) || { pushes: [] };
-  const pushes = [...(prev.pushes || []), { page, quote: String(quote).slice(0, 200), ref, files, lines, pushedAt: now.toISOString() }];
+  const pushes = [...(prev.pushes || []), { page, quote: String(quote).slice(0, 200), ref, sha, patchId, ownerKey, files, lines, pushedAt: now.toISOString() }];
   const ob = { session, pushes, blocks: 0, waived: null };
   writeObligation(session, ob, env);
   return ob;
@@ -148,14 +212,22 @@ export function claimsClosing(message) {
   return /^(?:SAFE TO (?:ARCHIVE|EXIT)\b|You can close this tab\b|Nothing is running here\b)/i.test(last);
 }
 
-/** PURE. An image sent to the owner with SendUserFile at or after `sinceIso`, or null. */
-export function screenshotSentSince(events, sinceIso) {
+const defaultMtime = (f) => { try { return fs.statSync(f).mtimeMs; } catch { return null; } };
+/**
+ * An image the owner was actually sent after `sinceIso`, or null: a SendUserFile call made after the push whose
+ * result came back without an error, naming an image file that exists and was written after the push (so an old
+ * screenshot cannot pay the debt). `mtime(file)` is injectable for tests.
+ */
+export function screenshotSentSince(events, sinceIso, { cwd = process.cwd(), mtime = defaultMtime } = {}) {
   const since = Date.parse(sinceIso || '');
+  const results = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
   for (const e of events) {
     if (e.kind !== 'assistant_tool_use' || e.name !== 'SendUserFile') continue;
     if (!(Date.parse(e.ts || '') >= since)) continue;
+    const r = results.get(e.id);
+    if (!r || r.isError) continue;
     const files = Array.isArray(e.input?.files) ? e.input.files : [];
-    const img = files.find((f) => IMAGE_RE.test(String(f)));
+    const img = files.find((f) => IMAGE_RE.test(String(f)) && mtime(path.resolve(cwd, String(f))) >= since);
     if (img) return img;
   }
   return null;
@@ -166,18 +238,19 @@ export function screenshotHint(page) {
 }
 
 /** PURE. -> { block: boolean, message?: string } */
-export function stopDecision({ events, lastMessage, obligation, stopHookActive = false, env = process.env }) {
-  if (disabled(env) || !obligation || obligation.waived) return { block: false };
+export function stopDecision({ events, lastMessage, obligation, stopHookActive = false, env = process.env, cwd = process.cwd(), mtime = defaultMtime }) {
+  if (stopDisabled(env) || !obligation || obligation.waived) return { block: false };
   const pushes = obligation.pushes || [];
   const last = pushes[pushes.length - 1];
   if (!last) return { block: false };
   if (!claimsClosing(lastMessage)) return { block: false };
-  if (screenshotSentSince(events, last.pushedAt)) return { block: false };
+  if (screenshotSentSince(events, last.pushedAt, { cwd, mtime })) return { block: false };
   if ((obligation.blocks || 0) >= STOP_BLOCK_BUDGET) return { block: false, exhausted: true };
   if (stopHookActive && (obligation.blocks || 0) > 0 && obligation.lastBlockedMsg === norm(lastMessage).slice(0, 300)) return { block: false, exhausted: true };
+  const pages = [...new Set(pushes.map((p) => p.page).filter(Boolean))].join(' , ');
   return {
     block: true,
-    message: `[visual-small-fix] You pushed a small UI fix without the owner's pre-push yes (BRO-7298 lane), so you owe them a screenshot of the live page before you close: ${last.page}\n${screenshotHint(last.page)}`,
+    message: `[visual-small-fix] You pushed a small UI fix without the owner's pre-push yes (BRO-7298 lane), so you owe them a screenshot of the live page before you close: ${pages}\n${screenshotHint(last.page)}`,
   };
 }
 
@@ -198,29 +271,41 @@ function arg(argv, name) {
 async function main(argv) {
   const cmd = argv[0];
   if (cmd === 'check' || cmd === 'explain') {
-    // check:   --command --transcript --repo --range --files=a,b [--session --ref]   (records + logs when allowed)
-    // explain: --repo --range --files                                                  (one line for block messages)
+    // check:   --command --transcript --repo --pattern --session --project-dir   (records + logs when allowed)
+    // explain: --repo --range --pattern                                          (one line for block messages)
     const repo = arg(argv, 'repo') || process.cwd();
-    const range = arg(argv, 'range') || 'origin/main...HEAD';
-    const files = String(arg(argv, 'files') || '').split(',').map((s) => s.trim()).filter(Boolean);
-    let size;
-    try { size = diffSize(numstat(repo, range, files)); } catch (e) { size = { files: null, lines: null, problem: `could not size the diff (${String(e.message).split('\n')[0].slice(0, 80)})` }; }
+    let pattern;
+    try { pattern = new RegExp(arg(argv, 'pattern') || '^src/.*\\.(tsx|jsx|css|scss)$'); } catch { pattern = /^src\//; }
     if (cmd === 'explain') {
       if (disabled() || headlessProblem()) return 0;
+      let size;
+      try { size = uiSize(repo, arg(argv, 'range') || 'origin/main...HEAD', pattern).size; } catch { return 0; }
       if (size.problem) { process.stdout.write(`Small-fix lane (BRO-7298): not available, ${size.problem}.\n`); return 0; }
-      process.stdout.write(`Small-fix lane (BRO-7298): this diff is small (${size.files} file(s), ${size.lines} line(s)). If the OWNER asked for this exact fix in this chat, push without their yes by ending the push command with  # SMALL-FIX: page=<https://broadwayscorecard.com/... page that shows it> owner="<their words, copied exactly>"  then send them a screenshot of that live page before you close.\n`);
+      process.stdout.write(`Small-fix lane (BRO-7298): this diff is small (${size.files} file(s), ${size.lines} line(s)). If the OWNER asked for this exact fix in their latest message, push without their yes as ONE plain command:  git push origin <branch>[:refs/heads/land/<name>]  # SMALL-FIX: page=<https://broadwayscorecard.com/... page that shows it> owner="<their words, copied exactly>"  then send them a screenshot of that live page before you close.\n`);
       return 0;
     }
-    const marker = parseMarker(arg(argv, 'command'));
+    const command = arg(argv, 'command');
+    const marker = parseMarker(command);
+    const source = pushSource(command);
     const tp = arg(argv, 'transcript');
     const events = tp ? walkTranscript(tp) : [];
-    const d = decide({ marker, events, size });
+    const session = arg(argv, 'session');
+    let size = { files: null, lines: null, problem: 'nothing to size' };
+    let sha = null; let pid = null;
+    if (marker && source) {
+      try {
+        sha = execFileSync('git', ['rev-parse', '--verify', `${source}^{commit}`], { cwd: repo, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+        ({ size, patchId: pid } = uiSize(repo, `origin/main...${sha}`, pattern));
+      } catch (e) { size = { files: null, lines: null, problem: `could not size ${source} (${String(e.message).split('\n')[0].slice(0, 80)})` }; }
+    }
+    const obligation = readObligation(session);
+    const enforcement = enforcementProblem({ projectDir: arg(argv, 'project-dir') || repo });
+    const d = decide({ marker, source, events, size, enforcement, obligation, patchId: pid });
     if (d.allowed) {
-      const session = arg(argv, 'session');
       if (!session) { d.allowed = false; d.reason = 'no session id: the screenshot debt could not be recorded'; }
       else {
-        recordPush(session, { page: d.page, quote: d.quote, ref: arg(argv, 'ref') || 'HEAD', files: d.files, lines: d.lines });
-        appendLog(`small-fix-lane\t${arg(argv, 'ref') || 'HEAD'} ${files.join(' ')} page=${d.page}`);
+        recordPush(session, { page: d.page, quote: d.quote, ref: source, sha, patchId: pid, ownerKey: d.ownerKey, files: d.files, lines: d.lines });
+        appendLog(`small-fix-lane\t${source}@${String(sha).slice(0, 12)} files=${d.files} lines=${d.lines} page=${d.page}`);
       }
     }
     process.stdout.write(`${JSON.stringify(d)}\n`);
@@ -245,7 +330,7 @@ async function main(argv) {
     if (!obligation) return 0;
     const events = input.transcript_path && fs.existsSync(input.transcript_path) ? walkTranscript(input.transcript_path) : [];
     const lastMessage = input.last_assistant_message || '';
-    const d = stopDecision({ events, lastMessage, obligation, stopHookActive: input.stop_hook_active === true });
+    const d = stopDecision({ events, lastMessage, obligation, stopHookActive: input.stop_hook_active === true, cwd: input.cwd || process.cwd() });
     if (!d.block) return 0;
     writeObligation(session, { ...obligation, blocks: (obligation.blocks || 0) + 1, lastBlockedMsg: norm(lastMessage).slice(0, 300) });
     appendLog(`small-fix-stop-block\t${session}`);
