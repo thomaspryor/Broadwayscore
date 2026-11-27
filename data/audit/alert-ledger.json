@@ -38086,12 +38086,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-26T04:15:04.277Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T14:27:19.135Z",
+      "lastSeen": "2026-11-27T16:45:19.421Z",
       "lastNotifiedAt": "2026-11-27T14:27:19.135Z",
       "lastSurfacedAt": "2026-11-27T14:27:19.135Z",
       "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": "BRO-7855"
+      "linearIdentifier": "BRO-7855",
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -40453,12 +40454,13 @@
       "firstSeen": "2026-11-09T13:43:08.396Z",
       "incidentOpenedAt": "2026-11-27T14:27:19.775Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T14:27:19.775Z",
+      "lastSeen": "2026-11-27T16:45:19.436Z",
       "lastNotifiedAt": "2026-11-27T14:27:19.775Z",
       "lastSurfacedAt": "2026-11-27T14:27:19.775Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:msblackforpresident-off-broadway-2026": {
       "status": "resolved",
@@ -45751,21 +45753,18 @@
       "resolveReason": "finding cleared"
     },
     "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
       "firstSeen": "2026-11-18T13:11:44.559Z",
-      "incidentOpenedAt": "2026-11-18T13:11:44.559Z",
+      "incidentOpenedAt": "2026-11-27T16:45:18.814Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-24T03:14:13.572Z",
-      "lastNotifiedAt": "2026-11-23T14:53:30.763Z",
-      "lastSurfacedAt": "2026-11-21T02:59:59.567Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-11-27T16:45:18.814Z",
+      "lastNotifiedAt": "2026-11-27T16:45:18.814Z",
+      "lastSurfacedAt": "2026-11-27T16:45:18.814Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-7916",
-      "silentRefires": 5,
-      "resolvedAt": "2026-11-24T07:48:46.191Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "opening-night-remediation-exhausted-t1-missing:the-good-thief-off-broadway-2026": {
       "status": "resolved",
@@ -49341,12 +49340,13 @@
       "firstSeen": "2026-11-23T14:53:31.566Z",
       "incidentOpenedAt": "2026-11-23T14:53:31.566Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T14:27:19.939Z",
+      "lastSeen": "2026-11-27T16:45:19.465Z",
       "lastNotifiedAt": "2026-11-27T14:27:19.939Z",
       "lastSurfacedAt": "2026-11-27T14:27:19.939Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-8344"
+      "linearIdentifier": "BRO-8344",
+      "silentRefires": 1
     },
     "land:land/bro-8150-fn-size-guard": {
       "status": "resolved",
@@ -49689,12 +49689,13 @@
       "firstSeen": "2026-11-23T18:37:33.367Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.367Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T14:26:18.369Z",
+      "lastSeen": "2026-11-27T16:45:19.125Z",
       "lastNotifiedAt": "2026-11-27T14:26:18.369Z",
       "lastSurfacedAt": "2026-11-26T14:22:56.858Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-8379"
+      "linearIdentifier": "BRO-8379",
+      "silentRefires": 1
     },
     "live-data-test:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd": {
       "status": "open",
@@ -49703,12 +49704,13 @@
       "firstSeen": "2026-11-23T18:37:33.463Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.463Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T14:27:18.997Z",
+      "lastSeen": "2026-11-27T16:45:19.280Z",
       "lastNotifiedAt": "2026-11-27T14:27:18.997Z",
       "lastSurfacedAt": "2026-11-26T14:23:04.118Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-8380"
+      "linearIdentifier": "BRO-8380",
+      "silentRefires": 1
     },
     "land:land/bro-8163-score-gate": {
       "status": "open",
@@ -50201,13 +50203,13 @@
       "firstSeen": "2026-11-24T07:48:45.483Z",
       "incidentOpenedAt": "2026-11-24T07:48:45.483Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T14:26:18.102Z",
+      "lastSeen": "2026-11-27T16:45:18.834Z",
       "lastNotifiedAt": "2026-11-26T19:58:26.683Z",
       "lastSurfacedAt": "2026-11-26T19:58:26.683Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-8386",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-remediation-exhausted-t1-missing:the-afronauts-west-end-2026": {
       "status": "open",
@@ -51167,13 +51169,13 @@
       "firstSeen": "2026-11-25T22:02:00.291Z",
       "incidentOpenedAt": "2026-11-25T22:02:00.291Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T14:27:19.914Z",
+      "lastSeen": "2026-11-27T16:45:19.450Z",
       "lastNotifiedAt": "2026-11-27T04:11:30.700Z",
       "lastSurfacedAt": "2026-11-27T04:11:30.700Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-8116-session-spend": {
       "status": "resolved",
@@ -51652,12 +51654,13 @@
       "firstSeen": "2026-11-27T14:27:20.068Z",
       "incidentOpenedAt": "2026-11-27T14:27:20.068Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T14:27:20.068Z",
+      "lastSeen": "2026-11-27T16:45:19.621Z",
       "lastNotifiedAt": "2026-11-27T14:27:20.068Z",
       "lastSurfacedAt": "2026-11-27T14:27:20.068Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-8408-fragment-cousins": {
       "status": "resolved",

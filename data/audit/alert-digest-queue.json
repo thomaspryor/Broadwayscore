@@ -1953,5 +1953,20 @@
       }
     ],
     "queuedAt": "2026-11-27T16:25:51.145Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
+    "title": "Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed T1/T2 fullText-present cross-outlet suspects remain (first 5): [\n{\n\"file\": \"the-phantom-of-the-opera-west-end-1986/thestage--aleks-sierz.json\",\n\"criticName\": \"Aleks Sierz\",\n\"defaultCriticOf\": [\n\"sierz-co-uk\"\n],\n\"source\": \"show-score\",\n\"url\": \"https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/\",\n\"mode\": \"fulltext\"\n}\n]\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
+    "fields": [],
+    "queuedAt": "2026-11-27T16:45:18.815Z"
   }
 ]
