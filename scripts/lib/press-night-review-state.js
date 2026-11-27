@@ -42,6 +42,7 @@ function publishDay(raw) {
   const s = String(raw || '').trim();
   const iso = /^(\d{4}-\d{2}-\d{2})/.exec(s);
   if (iso) return iso[1];
+  if (/^\d{4}[-/.]\d{1,2}$/.test(s) || /^\d{1,2}[-/.]\d{4}$/.test(s)) return null; // "2024-12", "12/2024": month only
   if (!/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(s.replace(/\b\d{4}\b/g, ''))) return null;
   const d = require('./date-utils').normalizeDate(s);
   return d && /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : null;
@@ -170,7 +171,9 @@ function censusExclusions(census, files, opts = {}) {
       out.push({ outletId: e.outletId, reason: `listing is another production's review (${wl.reason})`, ...(wl.reason === 'wrongProduction' ? { priorRunCandidate: true } : {}) });
       continue;
     }
-    if (urls.length && priorRunUrls.size && urls.every((u) => priorRunUrls.has(urlKey(u)))) {
+    // An outlet that also has tonight's own includable file stays owed (the aggregator may not have swapped its link yet).
+    const hasNightFile = (byOutlet.get(e.outletId) || []).some((f) => f.includable && !isPriorRunFile(f, night, priorRuns));
+    if (urls.length && priorRunUrls.size && urls.every((u) => priorRunUrls.has(urlKey(u))) && !hasNightFile) {
       out.push({ outletId: e.outletId, reason: 'listing is a review from a declared earlier run (priorRuns), not owed tonight' });
       continue;
     }

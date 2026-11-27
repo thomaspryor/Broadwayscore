@@ -889,8 +889,9 @@ function gradeNight(rec, g) {
     // BRO-8308: a census snapshot kept from the night ('2h-live') can list only outlets a later rebuild excluded
     // (Specimen's encore: four reviews of its declared May run). Nothing covered and every listed outlet since
     // excluded is no proof that anyone published a review of this night.
-    const laterExcluded = new Set(refs.flatMap((r) => (r && Array.isArray(r.excluded) ? r.excluded.map((e) => e.outletId) : [])));
-    const allSinceExcluded = (r) => !r.covered && Array.isArray(r.missing) && r.missing.length === r.count && r.missing.every((o) => laterExcluded.has(o));
+    // Only a rebuilt reference (method 'timeline', judged on today's files) can overrule a snapshot kept from the night.
+    const laterExcluded = new Set(refs.flatMap((r) => (r && r.method === 'timeline' && Array.isArray(r.excluded) ? r.excluded.map((e) => e.outletId) : [])));
+    const allSinceExcluded = (r) => r.method !== 'timeline' && !r.covered && Array.isArray(r.missing) && r.missing.length === r.count && r.missing.every((o) => laterExcluded.has(o));
     const published = refs.some((r) => r && r.count > 0 && !allSinceExcluded(r)) || !!(rec.laneShadow && rec.laneShadow.firstDiscoveredAt);
     if (waited != null && waited > g.firstLiveWithinMin && !published) {
       gates.push(gate('first-live', 'unknown', `no review of the night live ${waited} min after the embargo, and no census or lane discovery shows any outlet published`));

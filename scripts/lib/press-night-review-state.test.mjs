@@ -74,6 +74,9 @@ test('BRO-8308: a census listing of a declared prior run\'s live review is not o
   assert.deepEqual(state.censusExclusions(census, files, { ...opts, priorRuns: null }), []);
   // a run marked inheritReviews:false is another production and excuses nothing
   assert.deepEqual(state.censusExclusions(census, files, { ...opts, priorRuns: [{ ...runs[0], inheritReviews: false }] }), []);
+  // the outlet also has tonight's own includable file: the stale listing does not excuse it
+  const withNight = [...files, { outletId: 'front-row-center', includable: true, publishDate: night, firstSeenAt: '2026-10-31T03:10:00Z', url: 'frontrowcenter.com/2026/10/30/specimen-encore' }];
+  assert.deepEqual(state.censusExclusions(census, withNight, opts), []);
   // strict window: a review 3 days after the prior run closed is the remount's own, still owed
   const lag = [{ ...files[0], publishDate: '2026-06-09' }];
   assert.deepEqual(state.censusExclusions(census, lag, opts), []);
@@ -87,6 +90,8 @@ test('BRO-8308: isPriorRunFile is strict, day-precise only and never excuses a f
   assert.equal(state.isPriorRunFile({ publishDate: 'December 3rd, 2024' }, '2026-11-24', runs), true);
   assert.equal(state.isPriorRunFile({ publishDate: 'Dec 2024' }, '2026-11-24', runs), false); // month-only: not day-precise
   assert.equal(state.isPriorRunFile({ publishDate: 'garbage' }, '2026-11-24', runs), false);
+  assert.equal(state.isPriorRunFile({ publishDate: '2024-12' }, '2026-11-24', runs), false); // ISO month only
+  assert.equal(state.isPriorRunFile({ publishDate: '12/2024' }, '2026-11-24', runs), false);
   assert.equal(state.isPriorRunFile({ publishDate: '2024-12-03' }, '2026-11-24', []), false);
   assert.equal(state.isPriorRunFile({ publishDate: '2025-01-08' }, '2026-11-24', runs), false);
 });

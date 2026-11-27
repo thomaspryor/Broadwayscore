@@ -178,6 +178,7 @@ function stampFileState(rec, show, census) {
   if (read.available) rec.fileState = { capturedAt: new Date().toISOString(), files: read.files };
   // BRO-8308: same-night-completeness must not owe a review dated inside a declared earlier run.
   if (show && Array.isArray(show.priorRuns) && show.priorRuns.length) rec.priorRuns = show.priorRuns;
+  else if (show) delete rec.priorRuns; // a priorRuns declaration since removed must not keep excusing files
   const files = rec.fileState && rec.fileState.files;
   if (!files) console.log('[press-night] review-texts not available: census exclusions and same-night-completeness stay unknown');
   const g = lib.DEFAULT_GATES;
