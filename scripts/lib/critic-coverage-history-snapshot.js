@@ -70,6 +70,24 @@ function buildGapsByBucket(buckets) {
  *
  * Returns the absolute path of the file written.
  */
+/**
+ * Aggregate one audit run. A critic whose sources failed has an unknown gap
+ * count, not zero: it is counted in blindCritics so a blind week can never pass
+ * for improved coverage (BRO-6956: every Muck Rack fetch failed for weeks and
+ * totalGaps read as a drop).
+ */
+function summarizeAudit(audit) {
+  const totalCritics = audit.length;
+  const totalGaps = audit.reduce((sum, c) => sum + (c.missingCount || 0), 0);
+  // perCritic: display name → missingCount (omit entries with 0 gaps).
+  const perCritic = {};
+  for (const c of audit) {
+    if (c.name && (c.missingCount || 0) > 0) perCritic[c.name] = c.missingCount;
+  }
+  const blind = audit.filter((c) => c.error === 'fetch-failed' || c.error === 'all-sources-failed');
+  return { totalCritics, totalGaps, perCritic, blindCritics: blind.length, blindCriticNames: blind.map((c) => c.name).slice(0, 30) };
+}
+
 function writeWeeklySnapshot() {
   // Load source data.
   if (!fs.existsSync(AUDIT_FILE)) {
@@ -86,17 +104,7 @@ function writeWeeklySnapshot() {
     throw new Error(`Expected critic-coverage-audit.json to be an array; got ${typeof audit}`);
   }
 
-  // Compute aggregate metrics.
-  const totalCritics = audit.length;
-  const totalGaps = audit.reduce((sum, c) => sum + (c.missingCount || 0), 0);
-
-  // perCritic: display name → missingCount (omit entries with 0 gaps).
-  const perCritic = {};
-  for (const c of audit) {
-    if (c.name && (c.missingCount || 0) > 0) {
-      perCritic[c.name] = c.missingCount;
-    }
-  }
+  const { totalCritics, totalGaps, perCritic, blindCritics, blindCriticNames } = summarizeAudit(audit);
 
   // gapsByBucket derived from the pre-classified buckets file.
   const gapsByBucket = buildGapsByBucket(buckets);
@@ -121,6 +129,8 @@ function writeWeeklySnapshot() {
     timestamp,
     totalCritics,
     totalGaps,
+    blindCritics,
+    blindCriticNames,
     gapsByBucket,
     gapsBySource,
     perCritic,
@@ -132,7 +142,7 @@ function writeWeeklySnapshot() {
   return outPath;
 }
 
-module.exports = { writeWeeklySnapshot };
+module.exports = { writeWeeklySnapshot, summarizeAudit };
 
 // Allow direct invocation: node scripts/lib/critic-coverage-history-snapshot.js
 if (require.main === module) {

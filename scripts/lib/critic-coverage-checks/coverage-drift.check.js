@@ -94,6 +94,12 @@ function writeCooldown() {
   console.log(`[drift-check] Cooldown updated: ${state.lastFiredAt}`);
 }
 
+const BLIND_SHARE = 0.2;
+/** True when more than BLIND_SHARE of the critics had failed sources (field absent in pre-BRO-6956 snapshots = not known blind). */
+function isBlind(snapshot) {
+  return !!snapshot && snapshot.totalCritics > 0 && (snapshot.blindCritics || 0) / snapshot.totalCritics > BLIND_SHARE;
+}
+
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
 
@@ -111,7 +117,17 @@ async function main() {
 
   // 2. Split: current = snapshots[0], prior 4 = snapshots[1..4]
   const current = snapshots[0];
-  const prior4 = snapshots.slice(1, 5);
+  // BRO-6956: a week where many critics' sources failed has unknown gaps, not
+  // fewer; comparing it (or averaging it in) would read blindness as a trend.
+  if (isBlind(current)) {
+    console.log(`::warning::[drift-check] ${current.blindCritics}/${current.totalCritics} critics had failed sources in ${current.file}; coverage unknown, drift not computed`);
+    process.exit(0);
+  }
+  const prior4 = snapshots.slice(1).filter((s) => !isBlind(s)).slice(0, 4);
+  if (prior4.length < MIN_SNAPSHOTS - 1) {
+    console.log(`[drift-check] Only ${prior4.length} usable prior snapshots (blind weeks excluded), skipping`);
+    process.exit(0);
+  }
 
   const currentGaps = current.totalGaps;
   const avgPrior4 = prior4.reduce((sum, s) => sum + s.totalGaps, 0) / prior4.length;
@@ -200,4 +216,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { loadSnapshots, readCooldown, isCooldownActive, writeCooldown };
+module.exports = { loadSnapshots, readCooldown, isCooldownActive, writeCooldown, isBlind };
