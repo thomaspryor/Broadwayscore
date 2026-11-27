@@ -1,0 +1,167 @@
+{
+  "issueNumber": "bro-8393",
+  "planId": "b34f3f4d-f726-4123-b317-7785c901b0ca",
+  "status": "pending",
+  "createdAt": "2026-11-27T13:01:28.771Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8393: re-credit 13 reviews whose byline was stamped from gather-reviews' legacy one-critic list (Whispering Jack Guardian is Steve Dow), delete two phantom Sasanow copies of Jade Kops' BWW reviews. Time Out Sydney repoints are done by the rebuild's URL-edition heal.",
+    "steps": [
+      "Guardian page JSON-LD author and profile link: Steve Dow (theguardian.com/profile/steve-dow); also the AOL syndicated copy. Alexis Soloski was stamped by gather-reviews' legacy one-critic list (BRO-8393)",
+      "Guardian page JSON-LD author: Catherine Love; Soloski came from the legacy one-critic list (BRO-8393)",
+      "Guardian page JSON-LD author and profile link: Mark Fisher; Soloski came from the legacy one-critic list (BRO-8393)",
+      "observer.co.uk page JSON-LD and meta author: Clare Brennan; David Cote (NY Observer) came from the legacy one-critic list (BRO-8393)",
+      "Time Out Sydney page JSON-LD and meta author: Ben Neutze; Feldman came from the legacy one-critic list (BRO-8393)",
+      "Time Out Chicago page JSON-LD and meta author: Lauren Brocato; Feldman came from the legacy one-critic list (BRO-8393)",
+      "BroadwayWorld page JSON-LD and meta author: Roger Catlin; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)",
+      "BroadwayWorld page JSON-LD and meta author: Michael Rabice; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)",
+      "BroadwayWorld page JSON-LD and meta author: Andrew Child; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)",
+      "BroadwayWorld page JSON-LD and meta author: R. Scott Reedy; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)",
+      "BroadwayWorld page JSON-LD and meta author: Mariah Olesen; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)",
+      "BroadwayWorld page JSON-LD and meta author: Aidan O'Connor; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)",
+      "BroadwayWorld page JSON-LD and meta author: Marc Savitt; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)",
+      "BroadwayWorld page JSON-LD and meta author: Emily Werner; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)",
+      "BroadwayWorld page JSON-LD and meta author: Zac Thriffiley; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)",
+      "Phantom copy of broadwayworld--jade-kops.json (same URL; page author Jade Kops). Sasanow was stamped by the legacy one-critic list (BRO-8393)",
+      "Phantom copy of broadwayworld--jade-kops.json (same URL; page author Jade Kops). Sasanow was stamped by the legacy one-critic list (BRO-8393)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "whispering-jack-regional-2026/guardian--alexis-soloski.json",
+        "field": "criticName",
+        "oldValue": "Alexis Soloski",
+        "newValue": "Steve Dow",
+        "description": "Guardian page JSON-LD author and profile link: Steve Dow (theguardian.com/profile/steve-dow); also the AOL syndicated copy. Alexis Soloski was stamped by gather-reviews' legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "13-going-on-30-manchester-regional-2025/guardian--alexis-soloski.json",
+        "field": "criticName",
+        "oldValue": "Alexis Soloski",
+        "newValue": "Catherine Love",
+        "description": "Guardian page JSON-LD author: Catherine Love; Soloski came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026/guardian--alexis-soloski.json",
+        "field": "criticName",
+        "oldValue": "Alexis Soloski",
+        "newValue": "Mark Fisher",
+        "description": "Guardian page JSON-LD author and profile link: Mark Fisher; Soloski came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "even-these-things-royal-exchange-regional-2026/observer--david-cote.json",
+        "field": "criticName",
+        "oldValue": "David Cote",
+        "newValue": "Clare Brennan",
+        "description": "observer.co.uk page JSON-LD and meta author: Clare Brennan; David Cote (NY Observer) came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "torch-song-2018/timeout--adam-feldman.json",
+        "field": "criticName",
+        "oldValue": "Adam Feldman",
+        "newValue": "Ben Neutze",
+        "description": "Time Out Sydney page JSON-LD and meta author: Ben Neutze; Feldman came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "vape-the-grease-parody-regional-2026/timeout--adam-feldman.json",
+        "field": "criticName",
+        "oldValue": "Adam Feldman",
+        "newValue": "Lauren Brocato",
+        "description": "Time Out Chicago page JSON-LD and meta author: Lauren Brocato; Feldman came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-beautiful-blue-morning-sky-regional-2026/broadwayworld--richard-sasanow.json",
+        "field": "criticName",
+        "oldValue": "Richard Sasanow",
+        "newValue": "Roger Catlin",
+        "description": "BroadwayWorld page JSON-LD and meta author: Roger Catlin; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bat-boy-the-musical-regional-2026/broadwayworld--richard-sasanow.json",
+        "field": "criticName",
+        "oldValue": "Richard Sasanow",
+        "newValue": "Michael Rabice",
+        "description": "BroadwayWorld page JSON-LD and meta author: Michael Rabice; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "carmen-regional-2026/broadwayworld--richard-sasanow.json",
+        "field": "criticName",
+        "oldValue": "Richard Sasanow",
+        "newValue": "Andrew Child",
+        "description": "BroadwayWorld page JSON-LD and meta author: Andrew Child; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-jekyll-and-mr-hyde-regional-2026/broadwayworld--richard-sasanow.json",
+        "field": "criticName",
+        "oldValue": "Richard Sasanow",
+        "newValue": "R. Scott Reedy",
+        "description": "BroadwayWorld page JSON-LD and meta author: R. Scott Reedy; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mean-girls-regional-2026/broadwayworld--richard-sasanow.json",
+        "field": "criticName",
+        "oldValue": "Richard Sasanow",
+        "newValue": "Mariah Olesen",
+        "description": "BroadwayWorld page JSON-LD and meta author: Mariah Olesen; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sparked-the-vanishing-at-buzzard-point-regional-2026/broadwayworld--richard-sasanow.json",
+        "field": "criticName",
+        "oldValue": "Richard Sasanow",
+        "newValue": "Aidan O'Connor",
+        "description": "BroadwayWorld page JSON-LD and meta author: Aidan O'Connor; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-urmetazoan-regional-2026/broadwayworld--richard-sasanow.json",
+        "field": "criticName",
+        "oldValue": "Richard Sasanow",
+        "newValue": "Marc Savitt",
+        "description": "BroadwayWorld page JSON-LD and meta author: Marc Savitt; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-winters-tale-mrs-regional-2026/broadwayworld--richard-sasanow.json",
+        "field": "criticName",
+        "oldValue": "Richard Sasanow",
+        "newValue": "Emily Werner",
+        "description": "BroadwayWorld page JSON-LD and meta author: Emily Werner; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-winters-tale-regional-2026/broadwayworld--richard-sasanow.json",
+        "field": "criticName",
+        "oldValue": "Richard Sasanow",
+        "newValue": "Zac Thriffiley",
+        "description": "BroadwayWorld page JSON-LD and meta author: Zac Thriffiley; Richard Sasanow (BWW New York) came from the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "whispering-jack-regional-2026/broadwayworld--richard-sasanow.json",
+        "description": "Phantom copy of broadwayworld--jade-kops.json (same URL; page author Jade Kops). Sasanow was stamped by the legacy one-critic list (BRO-8393)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-beautiful-noise-regional-2026/broadwayworld--richard-sasanow.json",
+        "description": "Phantom copy of broadwayworld--jade-kops.json (same URL; page author Jade Kops). Sasanow was stamped by the legacy one-critic list (BRO-8393)"
+      }
+    ]
+  }
+}

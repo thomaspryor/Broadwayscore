@@ -266,20 +266,14 @@ function classifyOutletHostMismatch({ outletId, url } = {}, registry) {
   out.outletId = canonicalId;
   out.outletTier = outlet.tier || 3;
   if (WIRE_SERVICE_OUTLETS.has(canonicalId)) return { ...out, reason: 'wire-service' };
-  // BRO-8393: owning timeout.com does not make every city edition yours —
-  // Time Out New York on timeout.com/sydney or /chicago is a misattribution.
+  // BRO-8393: owning timeout.com does not make every city edition yours. A
+  // REGISTERED edition (timeout.com/sydney under "timeout") stays quiet here:
+  // the rebuild's URL-edition heal rewrites it. A city with NO outlet
+  // (timeout.com/chicago under Time Out New York) has no heal target and was
+  // invisible to every check, so it is the one case flagged.
   const editionMismatch = timeoutEditionMismatch(canonicalId, url);
-  if (editionMismatch) {
-    const expectedTier = editionMismatch.expected && registry.outlets[editionMismatch.expected]
-      ? (registry.outlets[editionMismatch.expected].tier || 3) : null;
-    return {
-      ...out,
-      mismatch: true,
-      hostOutletId: editionMismatch.expected,
-      hostOutletTier: expectedTier,
-      tiersDiffer: expectedTier == null || expectedTier !== out.outletTier,
-      reason: editionMismatch.reason,
-    };
+  if (editionMismatch && !editionMismatch.expected) {
+    return { ...out, mismatch: true, tiersDiffer: true, reason: editionMismatch.reason };
   }
   if (hostMatchesOutletDomain(url, canonicalId, registry) === true) return { ...out, reason: 'outlet-owns-host' };
   const resolved = resolveOutletFromUrl(url);

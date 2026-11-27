@@ -122,8 +122,11 @@ test('Time Out editions: /newyork (and non-city paths) -> timeout; /london, /uk,
   assert.equal(id('https://www.timeout.com/london/theatre/x'), 'timeout-london');
   assert.equal(id('https://www.timeout.com/uk/theatre/x'), 'timeout-london');
   assert.equal(id('https://www.timeout.co.uk/anything'), 'timeout-london');
-  // Neither registered outlet: never T1 Time Out New York.
-  for (const city of ['chicago', 'sydney', 'melbourne', 'edinburgh', 'australia', 'los-angeles']) {
+  // BRO-8393: Sydney has its own registered edition.
+  assert.equal(id('https://www.timeout.com/sydney/theatre/x'), 'timeout-sydney');
+  assert.equal(resolveOutletFromUrlIfPathInformed('https://www.timeout.com/sydney/theatre/x')?.outletId, 'timeout-sydney');
+  // No registered outlet: never T1 Time Out New York.
+  for (const city of ['chicago', 'melbourne', 'edinburgh', 'australia', 'los-angeles', 'brisbane']) {
     assert.equal(id(`https://www.timeout.com/${city}/theater/x`), null, city);
     assert.equal(resolveOutletFromUrlIfPathInformed(`https://www.timeout.com/${city}/theater/x`), null, city);
   }

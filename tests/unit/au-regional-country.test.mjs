@@ -139,10 +139,13 @@ test('class guard: a Time Out NY (or London) id on another city edition is refus
   assert.equal(validateUrlDomain('https://www.timeout.com/chicago/theater/x', 'timeout').valid, false);
   assert.equal(validateUrlDomain(WJ_TIMEOUT, 'timeout-sydney').valid, true);
   assert.equal(validateUrlDomain('https://www.timeout.com/newyork/theater/x', 'timeout').valid, true);
-  const audit = classifyOutletHostMismatch({ outletId: 'timeout', url: WJ_TIMEOUT }, registry);
+  // The rebuild heals a registered edition from the URL; an unregistered city has no heal target,
+  // so the rebuild's host-mismatch audit flags it.
+  assert.deepEqual(norm.resolveOutletFromUrlIfPathInformed(WJ_TIMEOUT), { outletId: 'timeout-sydney', displayName: 'Time Out Sydney' });
+  const audit = classifyOutletHostMismatch({ outletId: 'timeout', url: 'https://www.timeout.com/chicago/theater/x' }, registry);
   assert.equal(audit.mismatch, true);
-  assert.equal(audit.hostOutletId, 'timeout-sydney');
   assert.equal(classifyOutletHostMismatch({ outletId: 'timeout-sydney', url: WJ_TIMEOUT }, registry).mismatch, false);
+  assert.equal(classifyOutletHostMismatch({ outletId: 'timeout', url: 'https://www.timeout.com/newyork/theater/x' }, registry).mismatch, false);
 });
 
 test('gather default critic: a legacy NYC critic list never names a byline', () => {
