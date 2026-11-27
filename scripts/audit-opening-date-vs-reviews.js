@@ -76,7 +76,7 @@ function main() {
     const show = shows.find((s) => s.id === ackId);
     const finding = show && findOpeningDateContradiction(show, readShowReviewFiles(REVIEW_TEXTS, show.id));
     if (!finding) {
-      console.error(`[audit-opening-date-vs-reviews] ${ackId} is not flagged; nothing to ack`);
+      console.error(`[audit-opening-date-vs-reviews] ${ackId} is not flagged; nothing to ack (openings under 7 days old are not scanned yet, BRO-7895)`);
       process.exit(2);
     }
     const next = addAck(acks, finding, arg('ack-note') || '', new Date().toISOString());

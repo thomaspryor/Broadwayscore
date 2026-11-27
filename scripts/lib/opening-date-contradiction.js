@@ -107,8 +107,8 @@ function findOpeningDateContradiction(show, reviewFiles, opts = {}) {
   const open = normalizeDate(show.openingDate);
   if (!open) return null;
   const openMs = Date.parse(open);
-  const nowMs = opts.now === undefined ? Date.now() : opts.now;
-  if (nowMs - openMs < RECENT_OPENING_GRACE_DAYS * DAY_MS) return null;
+  const nowMs = opts.now == null ? Date.now() : +new Date(opts.now);
+  if (!(nowMs - openMs >= RECENT_OPENING_GRACE_DAYS * DAY_MS)) return null;
 
   // previewsStartDate fences off an earlier production's reviews, but not when
   // it is collapsed onto the stored opening: then it is the same wrong date
