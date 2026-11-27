@@ -216,3 +216,18 @@ test('BRO-8116: foldSessionRows twice adds no duplicates', (t) => {
   assert.equal(foldSessionRows({ from, to }), 0);
   assert.equal(fs.readFileSync(to, 'utf8').split('\n').filter(Boolean).length, 1);
 });
+
+// BRO-8356: Mac reviewer rows reach main only via push-session-llm-usage.sh; a window with
+// none is missing evidence, and must not clear an open over-budget alert as "$0".
+test('sessionAlertClears: no session rows in the window never clears; priced rows under the line do', () => {
+  const { sessionAlertClears } = require('./lib/provider-spend-core.js');
+  const empty = llmSessionBreach([], '2026-11-23', 25);
+  assert.equal(empty.seen, 0);
+  assert.equal(sessionAlertClears(empty), false);
+  const ok = llmSessionBreach([{ ts: '2026-11-23T01:00:00Z', kind: 'session', costUsd: 1 }], '2026-11-23', 25);
+  assert.equal(ok.seen, 1);
+  assert.equal(sessionAlertClears(ok), true);
+  assert.equal(sessionAlertClears(llmSessionBreach([{ ts: '2026-11-23T01:00:00Z', kind: 'session', costUsd: null }], '2026-11-23', 25)), false);
+  assert.equal(sessionAlertClears(llmSessionBreach([{ ts: '2026-11-23T01:00:00Z', kind: 'session', costUsd: 99 }], '2026-11-23', 25)), false);
+  assert.equal(sessionAlertClears(null), false);
+});

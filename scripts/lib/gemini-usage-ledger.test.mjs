@@ -287,7 +287,7 @@ test('the Gemini CLI helper model is priced', () => {
 // BRO-8356: pre-a6d3bb4 reviewer rows were written as kind 'api' to the home file, so the
 // fold dropped them and main had no reviewer spend for 2026-11-24..26.
 test('foldSessionRows folds legacy reviewer api rows as session rows, once; summary counts them once', () => {
-  const { mergeRowSets } = require('./llm-usage-summary.js');
+  const { mergeLedgerRows } = require('./llm-usage-summary.js');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8356-legacy-'));
   const from = path.join(dir, 'home.jsonl');
   const to = path.join(dir, 'tracked.jsonl');
@@ -302,7 +302,8 @@ test('foldSessionRows folds legacy reviewer api rows as session rows, once; summ
     assert.deepEqual(tracked.map((r) => r.kind), ['session', 'session']);
     assert.equal(tracked[1].caller, 'scripts/lib/skeptic-review-stop.mjs');
     const home = fs.readFileSync(from, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
-    const merged = mergeRowSets([tracked, home]);
+    const merged = mergeLedgerRows({ tracked, home });
+    assert.equal(mergeLedgerRows({ base: [legacy], tracked }).length, 3, 'a reviewer api row in the CI ledger is not reclassified or deduped');
     const usd = merged.reduce((s, r) => s + r.costUsd, 0);
     assert.equal(Math.round(usd * 100) / 100, 9.21, 'the folded copy and its home original count once');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }

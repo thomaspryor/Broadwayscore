@@ -26,8 +26,18 @@ function readRows(p) {
   const base = process.env.GEMINI_USAGE_LEDGER_PATH || LEDGER_PATH;
   // Committed session rows (BRO-8108) plus this machine's own, each file once. A row folded
   // into the tracked file at wrap-up stays in the Mac's home file too: count it once.
-  const files = [...new Set([base, TRACKED_SESSION_LEDGER_PATH, sessionLedgerPath()])];
-  return mergeRowSets(files.map(readFile));
+  const home = sessionLedgerPath();
+  const isHome = home !== base && home !== TRACKED_SESSION_LEDGER_PATH;
+  return mergeLedgerRows({ base: readFile(base), tracked: base === TRACKED_SESSION_LEDGER_PATH ? [] : readFile(TRACKED_SESSION_LEDGER_PATH), home: isHome ? readFile(home) : [] });
+}
+
+/**
+ * BRO-8356: the tracked session ledger can hold a folded session copy of a legacy reviewer
+ * 'api' row the Mac home file still has. Normalize ONLY the home rows (never the CI ledger),
+ * then dedupe, so the pair counts once. Pure.
+ */
+function mergeLedgerRows({ base = [], tracked = [], home = [] }) {
+  return mergeRowSets([base, tracked, home.map(normalizeLegacySessionRow)]);
 }
 
 /**
@@ -38,9 +48,7 @@ function readRows(p) {
 function mergeRowSets(lists) {
   const seen = new Set();
   const out = [];
-  for (const rows of lists) for (const raw of rows) {
-    // BRO-8356: a legacy reviewer api row left in the home file equals its folded session copy.
-    const r = normalizeLegacySessionRow(raw);
+  for (const rows of lists) for (const r of rows) {
     if (r && r.kind === 'session') {
       const k = JSON.stringify(r);
       if (seen.has(k)) continue;
@@ -98,4 +106,5 @@ function digestTitle(rows, day, { top = 3 } = {}) {
   return `${day} · LLM APIs (metered estimate, not the full bill): ${parts.join(' · ')}${topText ? ` · top: ${topText}` : ''}`;
 }
 
-module.exports = { readRows, mergeRowSets, summarize, digestTitle };
+module.exports = {
+  mergeLedgerRows, readRows, mergeRowSets, summarize, digestTitle };

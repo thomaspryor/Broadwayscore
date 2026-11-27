@@ -259,19 +259,30 @@ function llmSessionBreach(rows, day, thresholdUsd, { days = 2 } = {}) {
   for (let i = 0; i < days; i++) wanted.push(new Date(base - i * DAY_MS).toISOString().slice(0, 10));
   const perDay = Object.fromEntries(wanted.map((d) => [d, 0]));
   let unpriced = 0;
+  let seen = 0; // BRO-8356: session rows in the window at all; 0 = no evidence (Mac rows not pushed yet)
   for (const r of rows || []) {
     if (!r || r.kind !== 'session') continue;
     const t = Date.parse(r.ts);
     if (!Number.isFinite(t)) continue;
     const d = new Date(t).toISOString().slice(0, 10);
     if (!(d in perDay)) continue;
+    seen += 1;
     if (r.auth === 'oauth') continue; // subscription login, not billed per call
     if (typeof r.costUsd !== 'number') { unpriced += 1; continue; }
     perDay[d] += r.costUsd;
   }
   for (const d of wanted) perDay[d] = +perDay[d].toFixed(2);
   const worstDay = wanted.reduce((a, d) => (perDay[d] > perDay[a] ? d : a), wanted[0]);
-  return { perDay, worstDay, worstUsd: perDay[worstDay], threshold: thresholdUsd, breached: perDay[worstDay] > thresholdUsd, unpriced };
+  return { perDay, worstDay, worstUsd: perDay[worstDay], threshold: thresholdUsd, breached: perDay[worstDay] > thresholdUsd, unpriced, seen };
+}
+
+/**
+ * May a llmSessionBreach verdict clear an open reviewer-spend alert? Only on complete
+ * evidence: no unpriced rows (they hide spend) and at least one session row in the window
+ * (none = the Mac pusher has not run, not "spend was $0"; BRO-8356). Pure.
+ */
+function sessionAlertClears(v) {
+  return !!v && !v.breached && !v.unpriced && v.seen > 0;
 }
 
 // A renewal further out than this is not a monthly cycle (e.g. an expiry date
@@ -673,6 +684,7 @@ function attributionWindowVerdict(series, provider, { min = 0.8, days = 2 } = {}
 }
 
 module.exports = {
+  sessionAlertClears,
   attributionGaps,
   attributionWindowVerdict,
   computeDayRecord, budgetBreaches, llmScoringBreach, llmSessionBreach, computeStreak, renderSnapshot,

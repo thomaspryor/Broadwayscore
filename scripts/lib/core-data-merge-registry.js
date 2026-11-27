@@ -2139,6 +2139,10 @@ const CORE_DATA_MERGE_REGISTRY = [
   // fallback. Rows are whole-record unique (ts + runId + script + model), so
   // the scraper ledger's full-record union merge fits as-is.
   { file: 'audit/gemini-usage-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
+  // BRO-8356: session reviewer rows (folded from Mac/cloud home files). Same whole-record
+  // unique rows, so the same union merge; lets push-session-llm-usage.sh's push-with-retry
+  // use the Git Data API fallback under contention.
+  { file: 'audit/llm-session-usage.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
   // BRO-4521: apiFallbackMerge so data-health-check.yml's intermediate
   // commit steps can stage it (per-entry union merge, same as the ledgers
   // around it).

@@ -385,15 +385,15 @@ async function main() {
         conditionKey: key,
         title,
         description: `${title}: $${sessionVerdict.worstUsd} on ${sessionVerdict.worstDay}, above the $${sessionVerdict.threshold} llmSessionDailyUsd line.`,
-        hint: 'Rows: the committed session-usage ledger under data/audit (kind=session). They reach CI only after a wrap-up folds and commits them (node scripts/record-claude-session-cost.js --fold-only on a Mac), so this can lag a day. Per-caller detail: node scripts/gemini-usage-summary.js.',
+        hint: 'Rows: the committed session-usage ledger under data/audit (kind=session). Mac rows reach CI via scripts/push-session-llm-usage.sh (launchd, every 6h; BRO-8356), cloud rows at wrap-up, so this can lag. Per-caller detail: node scripts/gemini-usage-summary.js.',
         severity: 'warning',
         disposition: 'digest',
         cooldownHours: 20,
         decision: true,
         decisionPrompt: `${title}: an estimated $${sessionVerdict.worstUsd} (list prices, not the invoice) on ${sessionVerdict.worstDay} against a $${sessionVerdict.threshold}/day line. Raise the line, or switch the reviewers to a cheaper model?`,
       });
-    } else if (sessionVerdict && !sessionVerdict.unpriced) {
-      // Unpriced rows hide spend: incomplete evidence never clears an open alert.
+    } else if (require('./lib/provider-spend-core').sessionAlertClears(sessionVerdict)) {
+      // Incomplete evidence (unpriced rows, or no rows at all: BRO-8356) never clears an open alert.
       router.resolveCondition(key, { reason: `Reviewer spend $${sessionVerdict.worstUsd} (worst of the last ${Object.keys(sessionVerdict.perDay).length} days to ${DAY}), at or below the $${sessionVerdict.threshold} line.` });
     }
   } catch (err) {

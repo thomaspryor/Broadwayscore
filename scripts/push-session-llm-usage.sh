@@ -11,7 +11,7 @@
 # (scripts/launchd/com.broadwayscore.session-llm-usage-push.plist).
 #
 # How: a throwaway detached worktree at origin/main, fold the home file into ITS tracked
-# ledger (--to, with this checkout's fold code), commit that one file, push with
+# ledger (--to, with that worktree's own fold code), commit that one file, push with
 # scripts/lib/push-with-retry.sh (bot caller; a data-only push to main). The fold
 # dedupes against main's copy, so re-running is a no-op. Never touches the shared
 # checkout's working tree. Exit 0 = pushed or nothing to push, 1 = push failed.
@@ -32,10 +32,12 @@ trap cleanup EXIT
 git -C "$REPO" fetch -q origin main
 git -C "$REPO" worktree add -q --detach "$WT" origin/main
 cd "$WT"
-out="$(LLM_SESSION_LEDGER_PATH="$HOME_LEDGER" node "$REPO/scripts/record-claude-session-cost.js" --fold-only --to="$WT/$REL")"
+# The fold runs from the pinned origin/main tree, never the shared checkout (may be stale).
+out="$(LLM_SESSION_LEDGER_PATH="$HOME_LEDGER" node "$WT/scripts/record-claude-session-cost.js" --fold-only --to="$WT/$REL")"
 echo "push-session-llm-usage: $out"
-if git diff --quiet -- "$REL"; then exit 0; fi
+# Stage first: a ledger the fold had to create is untracked, which `git diff` would not see.
 git add -- "$REL"
+if git diff --cached --quiet -- "$REL"; then exit 0; fi
 git commit -q --no-verify -m "audit: Mac session LLM usage rows (BRO-8356) [skip ci]" -- "$REL"
 bash "$WT/scripts/lib/push-with-retry.sh" 7 main
 echo "push-session-llm-usage: pushed $(git rev-parse --short HEAD)"
