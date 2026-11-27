@@ -1,0 +1,302 @@
+{
+  "issueNumber": "bro-8389",
+  "planId": "1d3711ec-5851-4a52-9ac4-846a9e184f32",
+  "status": "pending",
+  "createdAt": "2026-11-26T23:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the first Australian regional shows (Whispering Jack, A Beautiful Noise, My Fair Lady) for the Australia pilot, BRO-8389.",
+    "steps": [
+      "Append whispering-jack-regional-2026, a-beautiful-noise-regional-2026, my-fair-lady-regional-2026 to shows.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "whispering-jack-regional-2026",
+          "title": "Whispering Jack: The John Farnham Musical",
+          "slug": "whispering-jack-regional-2026",
+          "venue": "Roslyn Packer Theatre, Sydney, NSW",
+          "openingDate": "2026-11-25",
+          "previewsStartDate": "2026-11-15",
+          "closingDate": "2027-01-03",
+          "status": "open",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "images": {
+            "poster": "/images/shows/whispering-jack-regional-2026/poster.jpg",
+            "thumbnail": "/images/shows/whispering-jack-regional-2026/thumbnail.jpg",
+            "hero": "/images/shows/whispering-jack-regional-2026/hero.jpg"
+          },
+          "synopsis": "A new Australian musical built around the five years that remade John Farnham's career, from the long slog after his pop-star start to the 1986 album Whispering Jack. Michael Paynter plays Farnham in Sydney Theatre Company's world premiere, with Farnham's hits driving a story of comeback, family and the manager who bet on him.",
+          "openingDateSource": "first-review-date",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": "Pier 4/5, 15 Hickson Road, Walsh Bay, Sydney NSW 2000",
+          "officialUrl": "https://www.sydneytheatre.com.au/whats-on/2026/productions/whispering-jack",
+          "ticketLinks": [
+            {
+              "platform": "Sydney Theatre Company",
+              "url": "https://www.sydneytheatre.com.au/whats-on/2026/productions/whispering-jack"
+            }
+          ],
+          "evidenceUrls": [
+            "https://www.timeout.com/sydney/theatre/whispering-jack-the-john-farnham-musical",
+            "https://au.rollingstone.com/music/music-live-reviews/whispering-jack-review-michael-paynter-john-farnham-103726/",
+            "https://suzygoessee.com/2026/11/25/review-whispering-jack-sydney-theatre-company/"
+          ],
+          "cast": [
+            {
+              "name": "Michael Paynter",
+              "role": "John Farnham"
+            },
+            {
+              "name": "Laura Murphy",
+              "role": "Jill Farnham"
+            },
+            {
+              "name": "Ben Hall",
+              "role": "Glenn Wheatley"
+            },
+            {
+              "name": "Bonnie Anderson",
+              "role": "Gaynor Wheatley"
+            },
+            {
+              "name": "Tom Sharah",
+              "role": "Darryl"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Jack Yabsley",
+              "role": "Book"
+            },
+            {
+              "name": "Mitchell Butel",
+              "role": "Director"
+            },
+            {
+              "name": "Zara Stanton",
+              "role": "Music Director"
+            },
+            {
+              "name": "Carmel Dean",
+              "role": "Arrangements"
+            },
+            {
+              "name": "Kris Kukul",
+              "role": "Orchestrations"
+            },
+            {
+              "name": "Fabian Aloise",
+              "role": "Choreographer"
+            },
+            {
+              "name": "Jeremy Allen",
+              "role": "Set Designer"
+            },
+            {
+              "name": "Renee Mulder",
+              "role": "Costume Designer"
+            },
+            {
+              "name": "Matt Scott",
+              "role": "Sound Designer"
+            },
+            {
+              "name": "David Bergman",
+              "role": "Video Designer"
+            }
+          ]
+        },
+        "description": "Add the Sydney Theatre Company world premiere of Whispering Jack as category regional (Australia pilot, BRO-8389)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-beautiful-noise-regional-2026",
+          "title": "A Beautiful Noise: The Neil Diamond Musical",
+          "slug": "a-beautiful-noise-regional-2026",
+          "venue": "Sydney Lyric Theatre, Sydney, NSW",
+          "openingDate": "2026-11-19",
+          "previewsStartDate": "2026-11-14",
+          "closingDate": "2027-02-14",
+          "status": "open",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "images": {
+            "poster": "/images/shows/a-beautiful-noise-regional-2026/poster.jpg",
+            "thumbnail": "/images/shows/a-beautiful-noise-regional-2026/thumbnail.jpg",
+            "hero": "/images/shows/a-beautiful-noise-regional-2026/hero.jpg"
+          },
+          "synopsis": "A jukebox musical in which an older Neil Diamond looks back on his life and career in sessions with his therapist, while a younger version of him plays out the rise from Brooklyn kid to rock star, told through his songs. This is the Australian production at the Sydney Lyric.",
+          "openingDateSource": "inferred-from-reviews",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": "55 Pirrama Road, Pyrmont, Sydney NSW 2009",
+          "officialUrl": "https://www.sydneylyric.com.au/a-beautiful-noise-the-neil-diamond-musical",
+          "ticketLinks": [
+            {
+              "platform": "Sydney Lyric",
+              "url": "https://www.sydneylyric.com.au/a-beautiful-noise-the-neil-diamond-musical"
+            }
+          ],
+          "evidenceUrls": [
+            "https://thescoop.au/review-a-beautiful-noise-the-neil-diamond-musical-sydney/",
+            "https://suzygoessee.com/2026/11/19/review-a-beautiful-noise-sydney-lyric-theatre/",
+            "https://www.theatretravels.org/post/review-a-beautiful-noise-at-sydney-lyric-theatre"
+          ],
+          "cast": [
+            {
+              "name": "Will Swenson",
+              "role": "Neil Diamond (Then)"
+            },
+            {
+              "name": "Terence Crawford",
+              "role": "Neil Diamond (Now)"
+            },
+            {
+              "name": "Hannah Frederickson",
+              "role": "Ellie Greenwich"
+            },
+            {
+              "name": "Ashleigh Rubenach",
+              "role": "Marcia Murphey"
+            },
+            {
+              "name": "Alana Tranter",
+              "role": "Jaye Posner"
+            },
+            {
+              "name": "Monica Sayers",
+              "role": "The Doctor"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Steven Hoggett",
+              "role": "Choreographer"
+            },
+            {
+              "name": "Nigel Ubrihien",
+              "role": "Music Director"
+            },
+            {
+              "name": "David Rockwell",
+              "role": "Set Designer"
+            },
+            {
+              "name": "Emilio Sosa",
+              "role": "Costume Designer"
+            }
+          ]
+        },
+        "description": "Add the Sydney Lyric production of A Beautiful Noise as category regional (Australia pilot, BRO-8389)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "my-fair-lady-regional-2026",
+          "title": "My Fair Lady",
+          "slug": "my-fair-lady-regional-2026",
+          "venue": "Arts Centre Melbourne, Melbourne, VIC",
+          "openingDate": "2026-11-20",
+          "previewsStartDate": "2026-11-14",
+          "closingDate": "2027-01-17",
+          "status": "open",
+          "type": "musical",
+          "isRevival": true,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional",
+            "revival"
+          ],
+          "images": {
+            "poster": "/images/shows/my-fair-lady-regional-2026/poster.jpg",
+            "thumbnail": "/images/shows/my-fair-lady-regional-2026/thumbnail.jpg",
+            "hero": "/images/shows/my-fair-lady-regional-2026/hero.jpg"
+          },
+          "synopsis": "Cockney flower seller Eliza Doolittle takes elocution lessons from the arrogant phonetics professor Henry Higgins, who bets he can pass her off as a lady in high society. Their bargain changes them both. This is John Frost and Opera Australia's 70th anniversary Australian production at the Ian Potter State Theatre.",
+          "openingDateSource": "first-review-date",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": "Ian Potter State Theatre, 100 St Kilda Road, Melbourne VIC 3004",
+          "officialUrl": "https://opera.org.au/productions/my-fair-lady-melbourne",
+          "ticketLinks": [
+            {
+              "platform": "Opera Australia",
+              "url": "https://opera.org.au/productions/my-fair-lady-melbourne"
+            }
+          ],
+          "evidenceUrls": [
+            "https://thescoop.au/review-my-fair-lady-is-musical-theatre-at-its-most-magnificent/",
+            "https://www.theaureview.com/arts/my-fair-lady-review-melbourne-ian-potter-state-theatre-2026/",
+            "https://simonparrismaninchair.com/2026/11/20/opera-australia-my-fair-lady-review-melbourne-2026/"
+          ],
+          "cast": [
+            {
+              "name": "Claire Lyon",
+              "role": "Eliza Doolittle"
+            },
+            {
+              "name": "Nathaniel Parker",
+              "role": "Henry Higgins"
+            },
+            {
+              "name": "Reg Livermore",
+              "role": "Alfred P. Doolittle"
+            },
+            {
+              "name": "Robyn Nevin",
+              "role": "Mrs Higgins"
+            },
+            {
+              "name": "Tony Llewellyn-Jones",
+              "role": "Colonel Pickering"
+            },
+            {
+              "name": "Anne Wood",
+              "role": "Mrs Pearce"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Alan Jay Lerner",
+              "role": "Book and Lyrics"
+            },
+            {
+              "name": "Frederick Loewe",
+              "role": "Music"
+            },
+            {
+              "name": "Karen Johnson Mortimer",
+              "role": "Director"
+            },
+            {
+              "name": "Christopher Gattelli",
+              "role": "Choreographer"
+            },
+            {
+              "name": "David Young",
+              "role": "Music Director"
+            }
+          ]
+        },
+        "description": "Add the Opera Australia / John Frost Melbourne production of My Fair Lady as category regional (Australia pilot, BRO-8389)"
+      }
+    ]
+  }
+}
