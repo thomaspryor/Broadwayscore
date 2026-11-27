@@ -664,6 +664,8 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     url: '', // no existing URL
   };
 
+  const _show = _showsById().get(showId);
+  const _emptyAuthoritative = emptySerpAuthoritativeForGather({ openingNight, show: _show });
   const result = await discoverCorrectUrl(reviewObj, scrapingBeeKey, {
     brightDataKey,
     log: (msg) => process.stdout.write(msg.replace(/^\s+/, '  ') + '\n'),
@@ -677,13 +679,13 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     // BRO-5914: on press night an empty Scrapingdog SERP means "not indexed
     // yet", not "no reviews" — keep falling through to SB/BD (under the
     // per-show-night cap) and never cache the empty answer.
-    emptyAuthoritative: emptySerpAuthoritativeForGather({ openingNight, show: _showsById().get(showId) }),
+    emptyAuthoritative: _emptyAuthoritative,
     // BRO-7531: OB / off-West-End press nights keep "never cache an empty" but
     // skip the ScrapingBee/Bright Data re-ask after a clean Scrapingdog empty.
-    secondOpinion: serpSecondOpinionForShow(_showsById().get(showId)),
+    secondOpinion: serpSecondOpinionForShow(_show),
     // BRO-8323: a non-Broadway press-night empty is parked 2.5h, so back-to-back
     // re-gathers stop re-paying it (owner: other markets may take 6-8h).
-    ...gatherNegativeCacheOpts({ show: _showsById().get(showId), emptyAuthoritative: emptySerpAuthoritativeForGather({ openingNight, show: _showsById().get(showId) }) }),
+    ...gatherNegativeCacheOpts({ show: _show, emptyAuthoritative: _emptyAuthoritative }),
   });
 
   if (result === '__SERP_UNAVAILABLE__') {

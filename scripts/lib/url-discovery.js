@@ -984,7 +984,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // cached 24h). Only meaningful with emptyAuthoritative:false. See
   // serp-second-opinion-policy.js.
   const secondOpinion = !(chainOpts && chainOpts.secondOpinion === false);
-  // BRO-8323: gather-reviews' non-Broadway press-night passes use the 4h store; everything else the 45-min one.
+  // BRO-8323: gather-reviews' non-Broadway press-night passes use the 2.5h gather store; everything else the poller's 45-min one.
   const _negStore = chainOpts && chainOpts.negativeCacheStore === 'gather' ? _serpGatherNegativeCache : _serpNegativeCache;
   // BRO-7531: on emptyAuthoritative:false flows a `site:` answer with zero
   // on-domain results is Google's "no exact match" filler, i.e. an empty in
@@ -1266,7 +1266,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   ) {
     // T11: the 24h cache above intentionally skipped this write (empty +
     // emptyAuthoritative:false), but the caller opted into a short negative
-    // cache for this market — stash it there instead, on its own 45-min TTL.
+    // cache for this market — stash it there instead, on that store's own short TTL (45 min poller, 2.5h gather).
     _negStore.set(query, cacheOpts, { results, provider });
   }
   return { results, provider };

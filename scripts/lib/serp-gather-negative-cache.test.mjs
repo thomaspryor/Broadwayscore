@@ -133,7 +133,9 @@ test('key fields stay in step with serp-cache (plus the namespace tag only)', ()
 test('wiring: gather-reviews passes the policy options into every outlet SERP call', () => {
   const src = fs.readFileSync(new URL('../gather-reviews.js', import.meta.url), 'utf8');
   const fn = src.slice(src.indexOf('async function searchForReviewViaSERP'), src.indexOf('\n}\n', src.indexOf('async function searchForReviewViaSERP')));
-  assert.match(fn, /\.\.\.gatherNegativeCacheOpts\(\{[^}]*emptyAuthoritative: emptySerpAuthoritativeForGather\(/);
+  assert.match(fn, /const _emptyAuthoritative = emptySerpAuthoritativeForGather\(/);
+  assert.match(fn, /emptyAuthoritative: _emptyAuthoritative,/);
+  assert.match(fn, /\.\.\.gatherNegativeCacheOpts\(\{ show: _show, emptyAuthoritative: _emptyAuthoritative \}\)/);
   const ud = fs.readFileSync(new URL('./url-discovery.js', import.meta.url), 'utf8');
   assert.match(ud, /negativeCacheStore: options\.negativeCacheStore/);
   assert.match(ud, /chainOpts\.negativeCacheStore === 'gather' \? _serpGatherNegativeCache/);
