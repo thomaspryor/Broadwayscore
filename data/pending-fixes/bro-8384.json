@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8384",
   "planId": "52ea448d-5aaf-4a50-95fc-cb4a1f371ee4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-27T03:08:52.277Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "death-of-a-salesman-2022/vulture--rob-weinert-kendt.json: duplicateOf"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-27T04:27:57.716Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2022/vulture--rob-weinert-kendt.json duplicateClearReason: null -> \"Vulture page credits Rob Weinert-Kendt; Jonathan Mandell is not its author\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2022/vulture--rob-weinert-kendt.json duplicateOf: \"vulture--jonathan-mandell.json\" -> null"
+    }
+  ],
+  "executedIn": "ci"
 }
