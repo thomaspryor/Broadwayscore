@@ -92,7 +92,8 @@ const { validateUrlDomain } = require('../../scripts/lib/url-discovery.js');
 const { classifyOutletHostMismatch } = require('../../scripts/lib/outlet-domain-validation.js');
 const { EDITION_PAIRS } = require('../../scripts/lib/outlet-registry-domain-collisions.js');
 const { defaultCriticForOutlet } = require('../../scripts/lib/gather-default-critic.js');
-const registry = JSON.parse(fs.readFileSync(new URL('../../data/outlet-registry.json', import.meta.url), 'utf8'));
+// Loaded through the library (a tracked config table, not live data: BRO-7101 rule).
+const registry = norm.loadOutletRegistry();
 const outletTiers = JSON.parse(fs.readFileSync(new URL('../../src/config/outlet-tiers.json', import.meta.url), 'utf8'));
 const WJ_TIMEOUT = 'https://www.timeout.com/sydney/theatre/whispering-jack-the-john-farnham-musical';
 
