@@ -48,7 +48,7 @@ const LEDGER = process.env.TEST_BENCH_REDO_LEDGER || path.join(__dirname, '..', 
 
 function readJsonl(file) {
   if (!fs.existsSync(file)) return [];
-  return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+  return fs.readFileSync(file, 'utf8').split('\n').filter((l) => l.trim()).map((l) => { try { return JSON.parse(l); } catch { return { unreadable: true, line: l.slice(0, 80) }; } });
 }
 
 /** New York calendar date of a time, the day the 3-a-day cap counts in. */
@@ -67,6 +67,7 @@ function openingInstants(shows, { markets = DEFAULTS.markets, embargoAt = null }
     let at = null;
     try { at = Date.parse(emb(s)); } catch { at = null; }
     if (!Number.isFinite(at)) at = Date.parse(`${String(s.openingDate).slice(0, 10)}T02:00:00Z`) + 24 * H; // unknown: NY default, next-day 02:00Z
+    if (!Number.isFinite(at)) continue; // a malformed date cannot be placed; validate-data.js owns that error
     out.push({ id: s.id, category: s.category, at });
   }
   return out.sort((a, b) => a.at - b.at);
@@ -89,10 +90,12 @@ function latestRows(rows) {
 /** Ledger totals: spent (USD, every run; a claimed run counts at its estimate) and runs started on the New York day of `atMs`. */
 function ledgerReading(allRows, atMs) {
   const rows = latestRows(allRows);
-  const spentUsd = Math.round(rows.reduce((n, r) => n + (Number(r && r.spendUsd && r.spendUsd.total) || 0), 0) * 100) / 100;
+  // A row whose total is missing, negative or not a number counts at the per-run estimate, never as free.
+  const cost = (r) => { const v = Number(r && r.spendUsd && r.spendUsd.total); return Number.isFinite(v) && v >= 0 ? v : DEFAULTS.estRunUsd; };
+  const spentUsd = Math.round(rows.filter((r) => !r.unreadable).reduce((n, r) => n + cost(r), 0) * 100) / 100;
   const day = nyDay(atMs);
   const today = rows.filter((r) => r && r.startedAt && nyDay(Date.parse(r.startedAt)) === day);
-  return { runs: rows.length, spentUsd, today: today.length, day };
+  return { runs: rows.filter((r) => !r.unreadable).length, spentUsd, today: today.length, day, unreadable: rows.filter((r) => r.unreadable).length };
 }
 
 /**
@@ -104,6 +107,7 @@ function paceCheck({ rows = [], openings = [], atMs, windowMin = DEFAULTS.window
   const reading = ledgerReading(rows, atMs);
   const reasons = [];
   let overBudget = false;
+  if (reading.unreadable) reasons.push(`${reading.unreadable} unreadable ledger line(s): fix the ledger first (a lost line under-counts spend and runs)`);
   if (reading.today >= o.dailyMax) reasons.push(`${reading.today} redo(s) already started on ${reading.day} (max ${o.dailyMax} a day)`);
   if (reading.spentUsd + o.estRunUsd > o.capUsd) overBudget = true;
   if (overBudget) reasons.push(`ledger total $${reading.spentUsd.toFixed(2)} + this run's estimate $${o.estRunUsd} would pass the $${o.capUsd} stop`);
@@ -126,7 +130,7 @@ function nextEligible({ rows = [], openings = [], fromMs, windowMin = DEFAULTS.w
     const c = paceCheck({ rows, openings, atMs: t, windowMin, opts });
     if (c.ok) return { at: new Date(t).toISOString(), check: c };
     // Out of budget, or an open claim, never clears by waiting.
-    if (c.overBudget || c.openClaim) return null;
+    if (c.overBudget || c.openClaim || c.reading.unreadable) return null;
   }
   return null;
 }
@@ -195,6 +199,7 @@ function main(argv) {
     const need = ['id', 'show', 'night', 'run-id', 'started', 'ended', 'scored'];
     const miss = need.filter((k) => arg(k) == null);
     if (miss.length) { console.error(`record needs --${miss.join(', --')}`); return 2; }
+    if (!/^\d+$/.test(arg('scored'))) { console.error('record: --scored must be a whole number'); return 2; }
     const startMs = Date.parse(arg('started')); const endMs = Date.parse(arg('ended'));
     if (!Number.isFinite(startMs) || !Number.isFinite(endMs)) { console.error('bad --started/--ended'); return 2; }
     const spendRows = readJsonl(arg('spend-ledger') || path.join(repoDir, 'data', 'audit', 'scraper-spend-ledger.jsonl'));
@@ -208,7 +213,8 @@ function main(argv) {
     // count the run twice.
     const prior = latestRows(rows).find((r) => r.id === arg('id'));
     if (!prior) { console.error(`record: no claim with id ${arg('id')} in the ledger (claim prints it)`); return 2; }
-    const row = { id: arg('id'), show: arg('show'), night: arg('night'), runId: arg('run-id'), startedAt: new Date(startMs).toISOString(), endedAt: new Date(endMs).toISOString(), status: arg('status') || 'graded', scored: Number(arg('scored')) || 0, grade: arg('grade') || null, spendUsd, recordedAt: new Date().toISOString() };
+    if (prior.status !== 'started') { console.error(`record: ${arg('id')} is already settled (${prior.status}); a settled run is never rewritten`); return 2; }
+    const row = { id: arg('id'), show: arg('show'), night: arg('night'), runId: arg('run-id'), startedAt: prior.startedAt, runStartedAt: new Date(startMs).toISOString(), endedAt: new Date(endMs).toISOString(), status: arg('status') || 'graded', scored: Number(arg('scored')) || 0, grade: arg('grade') || null, spendUsd, recordedAt: new Date().toISOString() };
     fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
     fs.appendFileSync(LEDGER, `${JSON.stringify(row)}\n`);
     printReading(ledgerReading([...rows, row], Date.now()));

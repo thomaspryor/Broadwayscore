@@ -101,3 +101,16 @@ test('an open claim refuses the next run and nextEligible does not wait it out',
   assert.equal(nextEligible({ rows: [claim], fromMs: at('2026-12-01T03:00:00Z') }), null);
   assert.equal(paceCheck({ rows: [claim, { ...claim, status: 'failed' }], atMs: at('2026-12-01T03:00:00Z') }).ok, true);
 });
+
+test('unreadable ledger lines refuse; bad totals count at the estimate, never free', () => {
+  const c = paceCheck({ rows: [{ unreadable: true, line: '<<<<<<< HEAD' }], atMs: at('2026-12-01T03:00:00Z') });
+  assert.equal(c.ok, false);
+  assert.match(c.reasons[0], /unreadable/);
+  const r = ledgerReading([{ id: 'a', startedAt: '2026-11-01T15:00:00Z', status: 'graded', spendUsd: { total: -3 } }, { id: 'b', startedAt: '2026-11-01T16:00:00Z', status: 'graded' }], at('2026-12-01T03:00:00Z'));
+  assert.equal(r.spentUsd, 10);
+});
+
+test('openingInstants drops a date it cannot place instead of keeping NaN', () => {
+  const got = openingInstants([{ id: 'bad', category: 'broadway', openingDate: 'TBA' }], { embargoAt: () => 'not a date' });
+  assert.deepEqual(got, []);
+});
