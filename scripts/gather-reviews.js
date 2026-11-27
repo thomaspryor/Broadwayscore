@@ -53,6 +53,7 @@ const {
   findExistingReviewFile,
   generateReviewKey,
   getOutletDisplayName,
+  timeoutEditionMismatch,
   mergeReviews,
   validateCriticOutlet,
   resolveOutletFromUrl,
@@ -561,8 +562,10 @@ function loadOutlets(opts = {}) {
           name: info.displayName || id,
           domain: info.domain || null,
           critics: info.defaultCritics || (info.defaultCritic ? [info.defaultCritic] : []),
-          // Registry defaults are vetted bylines (see lib/gather-default-critic.js).
-          criticsAreDefaults: true,
+          // Registry defaults are vetted bylines (see lib/gather-default-critic.js),
+          // except at a multiAuthor outlet, whose default is never stamped blind
+          // (same rule as saveReview's shouldFillDefaultCritic promotion).
+          criticsAreDefaults: info.multiAuthor !== true,
           tier,
           region: info.region || null,
           isDualMarket: isDual,
@@ -3239,8 +3242,23 @@ function createReviewFile(showId, reviewData, options = {}) {
       reviewData.outlet = urlOutlet.displayName || reviewData.outlet;
     }
   }
-  const outletForNormalization = reviewData.outletId || reviewData.outlet;
+  let outletForNormalization = reviewData.outletId || reviewData.outlet;
   reviewData.outletId = normalizeOutlet(outletForNormalization);
+  // BRO-8393: an aggregator/SERP label "Time Out" on another city's edition.
+  // A registered edition (timeout.com/sydney) is filed under it; a city with no
+  // outlet is refused rather than stored as T1 Time Out New York.
+  if (reviewData.url) {
+    const editionMismatch = timeoutEditionMismatch(reviewData.outletId, reviewData.url);
+    if (editionMismatch && editionMismatch.expected) {
+      console.log(`    → ${editionMismatch.reason}; filing under ${editionMismatch.expected}`);
+      reviewData.outletId = editionMismatch.expected;
+      reviewData.outlet = getOutletDisplayName(editionMismatch.expected) || reviewData.outlet;
+      outletForNormalization = editionMismatch.expected;
+    } else if (editionMismatch) {
+      console.log(`    ✗ Skipping: ${editionMismatch.reason}`);
+      return 'timeoutEditionMismatch';
+    }
+  }
   applyGuardianPublication(reviewData);
   const normalizedOutletId = reviewData.outletId;
 
