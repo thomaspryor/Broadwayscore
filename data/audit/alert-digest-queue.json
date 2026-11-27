@@ -2241,5 +2241,19 @@
     "tracked": "BRO-8414",
     "fields": [],
     "queuedAt": "2026-11-27T22:43:04.325Z"
+  },
+  {
+    "conditionKey": "job-memory-cap:linear:BRO-8416",
+    "title": "Killed runaway worker linear:BRO-8416 (memory cap)",
+    "description": "Watchdog killed the headless worker for linear:BRO-8416: memory-cap 8GB (tree memory 18.4GB over 2 consecutive passes). It is recorded as a failed job; re-dispatch once the cause is understood.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-27T23:16:59.911Z"
   }
 ]
