@@ -479,19 +479,19 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
   const [isExpanded, setIsExpanded] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>('score');
   const [loaded, setLoaded] = useState<{ key: string; rows: ReviewListItem[] } | null>(null);
-  const [mismatchKey, setMismatchKey] = useState<string | null>(null);
   const moreUrl = more?.url;
   const moreRev = more?.rev;
   const moreKey = moreUrl ? JSON.stringify([moreUrl, moreRev]) : null;
   const rest = loaded?.key === moreKey ? loaded.rows : null;
-  const mismatch = moreKey !== null && mismatchKey === moreKey;
+  // BRO-8176 (owner 2026-11-26, option B): a mismatch shows no note. The list
+  // keeps only the inline rows, and Show more retries the fetch on click.
   // Prefetch when the browser is idle so Show more and the sorts are instant;
   // an interaction before that fetches too.
   useEffect(() => {
     if (!moreUrl) return;
     let cancelled = false;
     const key = JSON.stringify([moreUrl, moreRev]);
-    const go = () => { loadMore(moreUrl, moreRev).then(d => { if (!cancelled) { if (d.state === 'ok') { setLoaded({ key, rows: d.rows }); setMismatchKey(null); } else if (d.state === 'mismatch') setMismatchKey(key); } }); };
+    const go = () => { loadMore(moreUrl, moreRev).then(d => { if (!cancelled && d.state === 'ok') setLoaded({ key, rows: d.rows }); }); };
     const hasIdle = 'requestIdleCallback' in window;
     const id = hasIdle ? window.requestIdleCallback(go) : window.setTimeout(go, 1500);
     return () => {
@@ -499,7 +499,7 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
       if (hasIdle) window.cancelIdleCallback(id); else window.clearTimeout(id);
     };
   }, [moreUrl, moreRev]);
-  const ensureMore = () => { if (moreUrl && moreKey && !rest) loadMore(moreUrl, moreRev).then(d => { if (d.state === 'ok') { setLoaded({ key: moreKey, rows: d.rows }); setMismatchKey(null); } else if (d.state === 'mismatch') setMismatchKey(moreKey); }); };
+  const ensureMore = () => { if (moreUrl && moreKey && !rest) loadMore(moreUrl, moreRev).then(d => { if (d.state === 'ok') setLoaded({ key: moreKey, rows: d.rows }); }); };
   const inlineKeys = useMemo(() => new Set(inlineReviews.map(getReviewKey)), [inlineReviews]);
   const reviews = useMemo(() => (rest ? [...inlineReviews, ...rest.filter(r => !inlineKeys.has(getReviewKey(r)))] : inlineReviews), [inlineReviews, inlineKeys, rest]);
   const totalCount = more ? Math.max(more.totalCount, reviews.length) : reviews.length;
@@ -597,7 +597,6 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
         </Fragment>
       ))}
 
-      {mismatch && <p className="text-sm text-fg-muted" role="status">Reviews are being updated. Please refresh the page in a moment.</p>}
       {shouldCollapse && (
         <button
           onClick={() => { ensureMore(); setIsExpanded(!isExpanded); }}

@@ -81,7 +81,9 @@ test('wiring: reviews.json carries the marker only while the flag is set', () =>
   assert.match(page, /showRefreshConfigured\(\) \? \{ other: \{ \[SHOW_REFRESH_REV_META\]/);
   assert.match(page, /rev: showRefreshConfigured\(\) \? render\.rev : undefined/);
   assert.match(list, /fetchMoreRows<ReviewListItem>\(url, rev\)/);
-  assert.match(list, /state === 'mismatch'/);
+  assert.match(list, /d\.state === 'ok'\) setLoaded/, 'only rows from the same revision are merged');
+  // Owner 2026-11-26 (BRO-8176 option B): no "being updated" note on a mismatch.
+  assert.doesNotMatch(list, /being updated/i, 'no mismatch note in ReviewsList');
 });
 
 test('class guard: reviews.json and the OG image key their markers on the flag as configured', () => {
