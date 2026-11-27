@@ -3819,7 +3819,12 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
   contentToWrite = require('./review-url-entity-decode').sanitizeReviewRecord(contentToWrite); // BRO-4403
   // BRO-5356: the push-time restores compare a file with its committed history
   // at the same path; this stamp tells them the history is the source path's.
-  contentToWrite = { ...contentToWrite, _renamedFrom: require('./rename-identity').renameStamp(path.basename(path.dirname(srcPath)), path.basename(srcPath)) };
+  contentToWrite = { ...contentToWrite, _renamedFrom: {
+    ...require('./rename-identity').renameStamp(path.basename(path.dirname(srcPath)), path.basename(srcPath)),
+    // BRO-8409: missing-path field edits may follow this rename only while
+    // the source article's URL is unchanged, including when newData is used.
+    url: typeof srcData.url === 'string' ? srcData.url : null,
+  } };
   fs.writeFileSync(dstPath, JSON.stringify(contentToWrite, null, 2) + '\n');
   fs.unlinkSync(srcPath);
 

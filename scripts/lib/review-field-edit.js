@@ -667,6 +667,39 @@ function resolveReviewPath(reviewTextsDir, rel) {
   return abs;
 }
 
+// BRO-8409: a heal can rename the file after a plan is authored. Follow only
+// an explicit rename of this path within the show, keeping the critic suffix
+// and article URL. A same-critic sibling alone is never identity evidence.
+function resolveRenamedReviewPath(reviewTextsDir, rel) {
+  const fs = require('fs');
+  const path = require('path');
+  const [folder, filename] = rel.split('/');
+  const source = /^([a-z0-9-]+)--(.+\.json)$/.exec(filename);
+  if (!source) return null;
+  const dir = path.join(reviewTextsDir, folder);
+  let entries;
+  try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return null; }
+  const matches = [];
+  for (const entry of entries) {
+    if (!entry.isFile() || !isReviewTextFile(entry.name)) continue;
+    const target = /^([a-z0-9-]+)--(.+\.json)$/.exec(entry.name);
+    if (!target || target[1] === source[1] || target[2] !== source[2]) continue;
+    let record;
+    try { record = JSON.parse(fs.readFileSync(path.join(dir, entry.name), 'utf8')); } catch { continue; }
+    if (record?._renamedFrom?.file !== rel || typeof record.url !== 'string' || !record.url) continue;
+    let sameUrl = record._renamedFrom.url === record.url;
+    // Older URL-edition/split heals already recorded the exact URL in their
+    // correction breadcrumb. Never infer an identity from a URL or byline.
+    if (!Object.hasOwn(record._renamedFrom, 'url')) {
+      sameUrl = record.outletIdCorrectedFrom === source[1] && record.outletId === target[1]
+        && ['url-edition', 'outlet-split', 'publisher-domain'].some((kind) =>
+          String(record.outletIdCorrectedReason || '').startsWith(`${kind}: ${record.url} resolves to ${record.outletId} (`));
+    }
+    if (sameUrl) matches.push(path.join(dir, entry.name));
+  }
+  return matches.length === 1 ? path.resolve(matches[0]) : null;
+}
+
 /**
  * Keys the write guard changed besides the edited field and the provenance
  * stamp. The guard may legitimately add side effects on a write (a date
@@ -832,9 +865,10 @@ function syndicationPrimacyFlipApplies(record, ctx, show) {
 function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const fs = require('fs');
   const path = require('path');
-  const abs = resolveReviewPath(reviewTextsDir, action.file);
-  if (!abs) return { ok: false, reason: `Bad review path: ${action.file}` };
-  if (!fs.existsSync(abs)) return { ok: false, reason: `Review file not found: ${action.file}` };
+  const requested = resolveReviewPath(reviewTextsDir, action.file);
+  if (!requested) return { ok: false, reason: `Bad review path: ${action.file}` };
+  const abs = fs.existsSync(requested) ? requested : resolveRenamedReviewPath(reviewTextsDir, action.file);
+  if (!abs) return { ok: false, reason: `Review file not found: ${action.file}` };
   const record = JSON.parse(fs.readFileSync(abs, 'utf8'));
   // url edits (BRO-4430) may repair a url that a sibling file holds for a
   // different named critic; that needs the show dir, so it is computed here.
@@ -918,7 +952,8 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
     return { ok: false, reason: `${action.file} ${action.field} applied, but the write guard also changed ${extra.join(', ')}; check the record before trusting it` };
   }
   const note = stripped.length ? ` (write guard stripped cloned ${stripped.join(', ')})` : '';
-  return { ok: true, msg: `${action.file} ${res.msg}${note}` };
+  const renamed = abs !== requested ? ` (resolved to ${path.relative(reviewTextsDir, abs)})` : '';
+  return { ok: true, msg: `${action.file}${renamed} ${res.msg}${note}` };
 }
 
 module.exports = {
