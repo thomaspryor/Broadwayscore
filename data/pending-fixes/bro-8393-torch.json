@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-8393-torch",
+  "planId": "d398b0bb-d490-4dfc-a882-2810b27c31b5",
+  "status": "pending",
+  "createdAt": "2026-11-27T17:24:13.155Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8393 follow-up: Torch Song (Sydney) Time Out byline to Ben Neutze; the first plan's edit missed because the rebuild renamed the file to timeout-sydney",
+    "steps": [
+      "torch-song-2018/timeout-sydney--adam-feldman.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "torch-song-2018/timeout-sydney--adam-feldman.json",
+        "field": "criticName",
+        "oldValue": "Adam Feldman",
+        "newValue": "Ben Neutze",
+        "description": "torch-song-2018/timeout-sydney--adam-feldman.json: criticName"
+      }
+    ]
+  }
+}
