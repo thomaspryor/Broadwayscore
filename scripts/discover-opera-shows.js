@@ -27,6 +27,7 @@ const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const roh = require('./lib/roh-opera-discovery');
+const { fragmentDuplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
@@ -341,6 +342,9 @@ async function main() {
         market: 'broadway',
       };
 
+      // BRO-8407: the save guard refuses a title fragment of a catalogued row at the same venue; skip it here so one candidate cannot abort the whole run.
+      const fragDup = fragmentDuplicateOfCandidate([...shows, ...toAdd.map(t => t.showEntry)], showEntry);
+      if (fragDup) { console.log(`  skip ${id}: exists as ${fragDup.existing.id} (${fragDup.reason})`); continue; }
       toAdd.push({ showEntry, idPrefix, seasonSlug });
       existingIds.add(id); // prevent duplicates across seasons (e.g. La Bohème in both)
     }
@@ -365,6 +369,9 @@ async function main() {
         if (!prod.isOpera || !prod.isNewProduction || !prod.openingDate) continue;
         const { id, idPrefix, entry } = roh.buildRohShowEntry(prod);
         if (existingIds.has(id)) { console.log(`  already in DB: ${id}`); continue; }
+        // BRO-8407: same guard-parity check as the Met path above.
+        const fragDup = fragmentDuplicateOfCandidate([...shows, ...toAdd.map(t => t.showEntry)], entry);
+        if (fragDup) { console.log(`  skip ${id}: exists as ${fragDup.existing.id} (${fragDup.reason})`); continue; }
         toAdd.push({ showEntry: entry, idPrefix, seasonSlug: 'roh' });
         existingIds.add(id);
       }
