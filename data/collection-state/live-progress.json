@@ -1,44 +1,21 @@
 {
-  "updatedAt": "2026-11-27T02:46:25.492Z",
-  "processed": 266,
-  "failed": 3,
-  "successRate": "98.9%",
+  "updatedAt": "2026-11-27T02:57:54.442Z",
+  "processed": 334,
+  "failed": 215,
+  "successRate": "60.8%",
   "tierBreakdown": {
-    "playwright": 175,
+    "playwright": 206,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 29,
+    "scrapingdog": 34,
     "scrapingbee": 0,
-    "brightdata": 13,
-    "archiveToday": 25,
-    "archive": 64
+    "brightdata": 16,
+    "archiveToday": 30,
+    "archive": 89
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-11-27T00:12:05.875Z",
-      "event": "bb-session",
-      "session": "f53df7f8",
-      "url": "https://concerts.consequence.net/events/getaway-driver-at-central-square-theater"
-    },
-    {
-      "t": "2026-11-27T00:13:02.330Z",
-      "event": "bb-session",
-      "session": "47ae2ab8",
-      "url": "https://www.usatoday.com/2026/11/23/ann-wilson-cancer-heart-documentary"
-    },
-    {
-      "t": "2026-11-27T00:13:02.977Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-11-27T00:13:21.174Z",
-      "event": "bb-session",
-      "session": "0447d785",
-      "url": "https://www.usatoday.com/2026/11/23/ann-wilson-cancer-heart-documentary"
-    },
     {
       "t": "2026-11-27T00:13:21.876Z",
       "event": "bb-cookie-inject",
@@ -123,6 +100,35 @@
       "event": "bb-session",
       "session": "af9b3a22",
       "url": "https://matineemouse.substack.com/p/jane-krakowski-oh-mary-announcement"
+    },
+    {
+      "t": "2026-11-27T02:27:53.866Z",
+      "event": "bb-session",
+      "session": "0d588358",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-11-27T02:39:22.358Z",
+      "event": "bb-session",
+      "session": "fd672c80",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-11-27T02:43:18.096Z",
+      "event": "bb-session",
+      "session": "97f77d7b",
+      "url": "https://deadline.com/2026/02/the-only-living-pickpocket-in-new-york-sony-picture"
+    },
+    {
+      "t": "2026-11-27T02:47:46.137Z",
+      "event": "bb-session",
+      "session": "1fe86e09",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-27T02:47:46.961Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
