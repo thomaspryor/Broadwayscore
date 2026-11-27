@@ -1735,5 +1735,36 @@
       }
     ],
     "queuedAt": "2026-11-27T10:32:40.551Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8087-redo-pace",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8087-redo-pace",
+    "description": "land.yml did not land land/bro-8087-redo-pace: the scripts-lib-tests gate went red at 0fa94501ba. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45984902049",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8087-redo-pace"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "0fa94501bae798d8a17c8a9a7e8fd2476431d39d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45984902049"
+      }
+    ],
+    "queuedAt": "2026-11-27T10:52:37.502Z"
   }
 ]
