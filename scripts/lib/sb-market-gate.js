@@ -173,6 +173,7 @@ function _setShowsPathForTests(p) {
 
 module.exports = {
   DEFAULT_RENDER_GAP_HOURS,
+  GATED_CATEGORIES,
   categoryForShowId,
   skipSbSerpForCategory,
   sbSerpMarketSkips,

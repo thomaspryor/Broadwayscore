@@ -647,6 +647,8 @@ function getDomainMarketMap() {
  * discoverCorrectUrl will append the name as an unquoted boost term so the SERP
  * returns that critic's review URL rather than only the highest-ranked one.
  */
+const { gatherNegativeCacheOpts } = require('./lib/serp-negative-cache-policy');
+
 async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical = false, criticName = 'Unknown', openingNight = false } = {}) {
   if (!scrapingBeeKey && !brightDataKey) {
     return { unavailable: true };
@@ -679,6 +681,9 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     // BRO-7531: OB / off-West-End press nights keep "never cache an empty" but
     // skip the ScrapingBee/Bright Data re-ask after a clean Scrapingdog empty.
     secondOpinion: serpSecondOpinionForShow(_showsById().get(showId)),
+    // BRO-8323: a non-Broadway press-night empty is parked 4h, so the 3h re-gathers
+    // re-ask each outlet about every 6h (owner: other markets may take 6-8h).
+    ...gatherNegativeCacheOpts({ show: _showsById().get(showId), emptyAuthoritative: emptySerpAuthoritativeForGather({ openingNight, show: _showsById().get(showId) }) }),
   });
 
   if (result === '__SERP_UNAVAILABLE__') {

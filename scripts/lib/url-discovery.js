@@ -922,6 +922,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
  */
 const _serpCache = require('./serp-cache');
 const _serpNegativeCache = require('./serp-negative-cache');
+const _serpGatherNegativeCache = require('./serp-gather-negative-cache'); // BRO-8323
 const { isOffDomainOnlyAnswer, shouldReaskIgnoredSiteFilter, preferReaskAnswer } = require('./serp-site-filter');
 const { shouldSkipSecondOpinion, shouldReaskEmptyWithoutSecondOpinion, shouldEscalateOffDomainAnswer, shouldAskOtherSecondOpinion, shouldAuditThirdOpinion, isParsedSerpAnswer, effectivePreferSpeed } = require('./serp-second-opinion-policy');
 
@@ -983,6 +984,8 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // cached 24h). Only meaningful with emptyAuthoritative:false. See
   // serp-second-opinion-policy.js.
   const secondOpinion = !(chainOpts && chainOpts.secondOpinion === false);
+  // BRO-8323: gather-reviews' non-Broadway press-night passes use the 4h store; everything else the 45-min one.
+  const _negStore = chainOpts && chainOpts.negativeCacheStore === 'gather' ? _serpGatherNegativeCache : _serpNegativeCache;
   // BRO-7531: on emptyAuthoritative:false flows a `site:` answer with zero
   // on-domain results is Google's "no exact match" filler, i.e. an empty in
   // disguise. Never serve it from, or write it to, the 24h cache there.
@@ -1037,9 +1040,9 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // tolerate a 45-min window of that risk to cut repeat BD/SB spend across
   // consecutive poll ticks; Broadway never sets this (see policy file).
   if (negativeCacheTtlMs) {
-    const negCached = _serpNegativeCache.get(query, cacheOpts);
+    const negCached = _negStore.get(query, cacheOpts);
     if (negCached) {
-      log(`    📦 SERP negative-cache hit (45min): "${query.slice(0, 60)}..."`);
+      log(`    📦 SERP negative-cache hit (${Math.round(negativeCacheTtlMs / 60000)}min): "${query.slice(0, 60)}..."`);
       return { results: negCached.results, provider: `${negCached.provider}-negcached` };
     }
   }
@@ -1114,7 +1117,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
       }
       if (!shouldEscalateOffDomainAnswer(true, emptyAuthoritative, secondOpinion)) {
         log('    ↺ Scrapingdog SERP: no on-domain results for the site: query — not cached 24h (press-night flow)');
-        if (negativeCacheTtlMs && !_chainTruncated) _serpNegativeCache.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
+        if (negativeCacheTtlMs && !_chainTruncated) _negStore.set(query, cacheOpts, { results: sdResults, provider: 'scrapingdog' });
         return { results: sdResults, provider: 'scrapingdog' };
       }
       // Press night with a second opinion: off-domain filler is an empty in
@@ -1142,7 +1145,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     // 24h cache, so the next tick asks Scrapingdog again.
     if (shouldSkipSecondOpinion(sdResults, emptyAuthoritative, secondOpinion, sdAttempt.opaque)) {
       log('    ✓ Scrapingdog SERP: 0 organic results — final for this tick (no second opinion for this market), not cached');
-      if (negativeCacheTtlMs && !_chainTruncated) _serpNegativeCache.set(query, cacheOpts, { results: [], provider: 'scrapingdog-empty-uncached' });
+      if (negativeCacheTtlMs && !_chainTruncated) _negStore.set(query, cacheOpts, { results: [], provider: 'scrapingdog-empty-uncached' });
       return { results: [], provider: 'scrapingdog-empty-uncached' };
     }
     // Reaching BD/SB after an SD request really went out: tag their ledger
@@ -1264,7 +1267,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     // T11: the 24h cache above intentionally skipped this write (empty +
     // emptyAuthoritative:false), but the caller opted into a short negative
     // cache for this market — stash it there instead, on its own 45-min TTL.
-    _serpNegativeCache.set(query, cacheOpts, { results, provider });
+    _negStore.set(query, cacheOpts, { results, provider });
   }
   return { results, provider };
 }
@@ -1289,6 +1292,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
  * @param {boolean} [options.forceHistorical] - If true, skip date filter entirely from the first query (best for pre-2005 shows where Google date metadata is unreliable).
  * @param {boolean} [options.emptyAuthoritative] - Default true. If false, a Scrapingdog SERP success with 0 results does NOT short-circuit the BD/SB fallback and is never cached — use for flows where "no results yet" may mean "not published yet" (e.g. opening-night-poller.js).
  * @param {number|null} [options.negativeCacheTtlMs] - Opt-in short negative-result cache for emptyAuthoritative:false callers (T11 — see scripts/lib/serp-negative-cache-policy.js). Default null (no negative caching, existing behavior).
+ * @param {'gather'|null} [options.negativeCacheStore] - Which negative cache: 'gather' = 4h store kept in the 24h cache dir (gather-reviews non-Broadway press night, BRO-8323); default the poller's 45-min store.
  * @param {boolean} [options.secondOpinion] - Default true. Set false (with emptyAuthoritative:false) to accept a clean Scrapingdog empty for this call without re-asking ScrapingBee/Bright Data; the empty is still never written to the 24h cache. Policy: scripts/lib/serp-second-opinion-policy.js (BRO-7531).
  * @returns {string|null|'__SERP_UNAVAILABLE__'|{url: string, serpTitle: string}} - Discovered URL (or object if returnMetadata)
  */
@@ -1324,7 +1328,7 @@ async function _discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const emptyAuthoritative = options.emptyAuthoritative !== false;
   const negativeCacheTtlMs = options.negativeCacheTtlMs || null;
   // BRO-7531: see serp-second-opinion-policy.js. Default keeps the second opinion.
-  const chainOpts = { secondOpinion: options.secondOpinion !== false };
+  const chainOpts = { secondOpinion: options.secondOpinion !== false, negativeCacheStore: options.negativeCacheStore || null };
 
   if (!scrapingBeeKey && !brightDataKey) return '__SERP_UNAVAILABLE__';
 
