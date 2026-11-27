@@ -73,6 +73,7 @@ const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // that normalizes differently from the writer cannot catch the writer's dupes.
 const { criticKey } = require('./lib/manual-entry-merge');
 const { sameUrlDuplicateKey } = require('./lib/review-url-collision');
+const { loadSameUrlBaseline } = require('./lib/final-key-dedup');
 const { hasRealImage, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { findImagePointerProblems, imagePointerSeverity } = require('./lib/image-pointers');
 const { buildOutletMaps } = require('./lib/outlet-region-map');
@@ -2711,12 +2712,11 @@ function validateReviewsJson() {
   // typos, scraper junk, misattribution) are awaiting cleanup in tasks #241/#137,
   // and failing on those would just park main red. NEW pairs fail immediately, so
   // the class cannot grow while the backlog drains.
+  // Same loader the rebuild's final same-URL pass uses (BRO-8228), so the
+  // producer and this gate tolerate exactly the same pairs.
   let urlDupeBaseline = new Set();
-  const urlDupeBaselinePath = path.join(__dirname, '..', 'data', 'audit', 'same-url-duplicate-baseline.json');
   try {
-    if (fs.existsSync(urlDupeBaselinePath)) {
-      urlDupeBaseline = new Set(JSON.parse(fs.readFileSync(urlDupeBaselinePath, 'utf8')).pairs || []);
-    }
+    urlDupeBaseline = loadSameUrlBaseline();
   } catch (e) {
     warn(`Could not read same-URL duplicate baseline: ${e.message}`);
   }

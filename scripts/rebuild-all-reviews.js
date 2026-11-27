@@ -101,7 +101,7 @@ const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewRecord } = require('./lib/domain-filters');
 const { explainOutletDomainMismatch, classifyOutletHostMismatch } = require('./lib/outlet-domain-validation');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
-const { dedupeByReviewKey } = require('./lib/final-key-dedup');
+const { dedupeByReviewKey, dedupeBySameUrl, loadSameUrlBaseline } = require('./lib/final-key-dedup');
 const { parseDate, maxPlausibleYear } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
@@ -6668,7 +6668,8 @@ function logPostDedupExclusion(statKey, dropped, kept, dedupKey) {
   if (file !== '-') postDedupTouchedShows.add(dropped.showId);
 }
 
-// Same-URL duplicates were already caught by seenUrlsByOutlet earlier in the pipeline.
+// Same-URL duplicates are mostly caught by seenUrlsByOutlet earlier in the pipeline;
+// the FINAL same-URL guard below (BRO-8228) catches what that lets through.
 {
   const beforeCount = allReviews.length;
   const byShowOutlet = new Map();
@@ -6797,6 +6798,39 @@ let heldManualEntries = [];
   }
 }
 
+// FINAL same-URL guard (BRO-8228): one URL in one show is one review. The
+// in-loop URL dedup lets different-named critics through and the manual-entry
+// merge appends after it, so collapse every same-URL group validate-data.js
+// would fail on, with the gate's own key and baseline (lib/final-key-dedup.js).
+{
+  let baseline;
+  try {
+    baseline = loadSameUrlBaseline();
+  } catch (e) {
+    // Unreadable baseline: collapse nothing rather than delete baselined pairs blind.
+    console.warn(`⚠️  Final same-URL dedup skipped: same-url-duplicate-baseline.json unreadable (${e.message})`);
+  }
+  if (baseline) {
+    const { reviews: urlUnique, dropped } = dedupeBySameUrl(allReviews, baseline);
+    if (dropped.length > 0) {
+      console.log(`\nFinal same-URL dedup: removed ${dropped.length} row(s) sharing a URL with a kept row of the same show (validate-data invariant):`);
+      for (const d of dropped) {
+        console.log(`  ${d.dropped.showId}: dropped ${d.dropped.outletId}/${d.dropped.criticName || 'unknown'}, kept ${d.kept.outletId}/${d.kept.criticName || 'unknown'} | ${d.dropped.url}`);
+        logPostDedupExclusion('skippedFinalSameUrlDedup', d.dropped, d.kept, d.key);
+      }
+      allReviews.length = 0;
+      allReviews.push(...urlUnique);
+      stats.skippedFinalSameUrlDedup = dropped.length;
+      for (const sid of postDedupTouchedShows) {
+        const showStats = stats.byShow[sid];
+        if (showStats && showStats.exclusions && showStats.exclusions.length > 0) {
+          writeShowExclusionsFile(sid, showStats.exclusions);
+        }
+      }
+    }
+  }
+}
+
 const output = {
   _meta: {
     description: "Critic reviews - raw input data",
@@ -6832,6 +6866,7 @@ const output = {
       skippedCrossShowUrl: stats.skippedCrossShowUrl || 0,
       skippedCrossMarket: stats.skippedCrossMarket || 0,
       skippedMultiCriticOutletDedup: stats.skippedMultiCriticOutletDedup || 0,
+      skippedFinalSameUrlDedup: stats.skippedFinalSameUrlDedup || 0,
       skippedUrlYearStandalone: stats.skippedUrlYearStandalone || 0,
       showScoreDowngradedFallback: stats.showScoreDowngradedFallback || 0,
       recoveredFromGarbage: stats.recoveredFromGarbage || 0,
