@@ -57,8 +57,24 @@ test('dropdown count equals the page count', () => {
 });
 
 // BRO-8411: the Australia menu row shows the same count the Australian Theatre page lists.
-test('Australia dropdown count equals the page count', () => {
-  const list = getBrowseList('australian-theatre');
-  assert.ok(list, 'australian-theatre list missing (regional flag off?)');
-  assert.equal(getMarketStats().auRegional.shows, list.shows.length);
+// The page is behind the `regional` flag, which this process may not have, so the real
+// data-core runs in a tsx child with the flag on (flags are read at module load).
+test('Australia dropdown count equals the page count', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const coreUrl = new URL('../../src/lib/data-core.ts', import.meta.url).href;
+  const child = `const m = await import(${JSON.stringify(coreUrl)});
+const list = m.getBrowseList('australian-theatre');
+console.log('RESULT:' + JSON.stringify({ page: list ? list.shows.length : null, menu: m.getMarketStats().auRegional.shows }));`;
+  const run = spawnSync(process.execPath, ['--import', 'tsx', '--input-type=module', '-e', child], {
+    cwd: new URL('../..', import.meta.url).pathname,
+    encoding: 'utf8',
+    timeout: 120000,
+    env: { ...process.env, NEXT_PUBLIC_FEATURES: 'regional', NODE_TEST_CONTEXT: undefined },
+  });
+  const line = (run.stdout || '').split('\n').find((l) => l.startsWith('RESULT:'));
+  assert.ok(line, `child failed: ${(run.stderr || '').slice(-800)}`);
+  const { page, menu } = JSON.parse(line.slice(7));
+  assert.ok(page !== null, 'australian-theatre list missing with regional flag on');
+  assert.ok(page > 0, 'expected at least one listed Australian show');
+  assert.equal(menu, page);
 });
