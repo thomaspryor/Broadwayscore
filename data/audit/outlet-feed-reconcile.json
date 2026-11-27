@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T19:58:03.791Z",
+  "generatedAt": "2026-11-27T21:29:01.116Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -172,7 +172,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "theater-pizzazz",
@@ -187,16 +187,12 @@
       "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     },
     {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 777,
-  "matchedGaps": 4,
+  "itemsScanned": 828,
+  "matchedGaps": 2,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -216,24 +212,6 @@
       "url": "https://www.britishtheatreguide.info/reviews/matthew-bourne-the-lowry-salf-26239",
       "headline": "Matthew Bourne's Cinderella!",
       "publishDate": "2026-11-25"
-    },
-    {
-      "showId": "the-afronauts-west-end-2026",
-      "title": "The Afronauts",
-      "level": "matched",
-      "outletId": "viewfromthegods",
-      "url": "https://viewfromthegods.co.uk/2026/11/27/the-afronauts-royal-court-upstairs/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-afronauts-royal-court-upstairs",
-      "headline": "&#8220;The Afronauts&#8221; Royal Court Downstairs",
-      "publishDate": "2026-11-27"
-    },
-    {
-      "showId": "the-afronauts-west-end-2026",
-      "title": "The Afronauts",
-      "level": "matched",
-      "outletId": "theartsdispatch",
-      "url": "https://www.theartsdispatch.com/p/the-afronauts-review-royal-court",
-      "headline": "The Afronauts review - Royal Court Theatre, London ★★★☆☆",
-      "publishDate": "2026-11-27"
     },
     {
       "showId": "a-christmas-carol-west-end-2026",

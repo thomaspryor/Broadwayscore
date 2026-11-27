@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-27T19:57:21.986Z",
+  "generatedAt": "2026-11-27T21:28:22.905Z",
   "windowDays": 1095,
-  "targets": 202,
-  "auditedThisRun": 36,
-  "carriedForward": 2823,
+  "targets": 191,
+  "auditedThisRun": 33,
+  "carriedForward": 2827,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 688,
+    "withGap": 687,
     "missingCurrentRun": 1590,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 867,
+    "totalFlaggedMisses": 866,
     "totalRecoverable": 46,
     "totalRecovered": 104,
-    "humanExcluded": 45,
-    "automatedExcluded": 951,
+    "humanExcluded": 44,
+    "automatedExcluded": 950,
     "automatedExcludedListed": 694,
-    "priorProductionCitations": 9722
+    "priorProductionCitations": 9729
   },
   "results": [
     {
@@ -3744,10 +3744,10 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.broadwayworld.com/san-diego/article/Review-9-CIRCLES-at-OnWord-Theatre-20261108",
         "https://www.sandiegouniontribune.com/2026/11/17",
-        "https://www.sandiegouniontribune.com/2026/11/17/review-onwords-9-circles-a-gripping-journey-of-the-soul/",
         "https://www.theguardian.com/stage/jul/9-circles-review-park-theatre-london",
+        "https://www.broadwayworld.com/san-diego/article/Review-9-CIRCLES-at-OnWord-Theatre-20261108",
+        "https://www.sandiegouniontribune.com/2026/11/17/review-onwords-9-circles-a-gripping-journey-of-the-soul/",
         "https://www.voicemag.uk/review/9-circles"
       ],
       "dirFiles": 4,
@@ -3829,8 +3829,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 2,
+            "results": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -3839,8 +3839,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
-            "accepted": 1,
+            "results": 4,
+            "accepted": 0,
             "error": null
           },
           {
@@ -3850,7 +3850,7 @@
             "geo": "us",
             "ok": true,
             "results": 6,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -3876,17 +3876,17 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 11,
+        "count": 12,
         "byReason": {
-          "non-review-host": 7,
+          "non-review-host": 8,
+          "census-junk-host": 1,
           "aggregator-internal-nav": 1,
-          "no-review-evidence": 1,
-          "bare-host": 1,
-          "review-hub-page": 1
+          "roundup-page": 1,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -3991,7 +3991,7 @@
         "liveCount": 2,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-26T22:42:24.541Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "a-beautiful-noise-regional-2026",
@@ -6339,26 +6339,36 @@
       "venue": "North American Tour",
       "market": "tour",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+        "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
       ],
       "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/review-neil-diamond-a-beautiful-noise/",
-        "https://cititour.com/NYC_Broadway/A-Beautiful-Noise-The-Neil-Diamond-Musical/1114",
-        "https://www.thedailybeast.com/a-beautiful-noise-the-neil-diamond-musical-is-a-broadway-concert-for-the-truly-devoted",
-        "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-1235188689/",
-        "https://nystagereview.com/2022/12/04/a-beautiful-noise-reaching-out-touching-neil-diamond-touching-you/",
-        "https://nystagereview.com/2022/12/04/a-beautiful-noise-neil-diamond-on-the-couch/",
-        "https://newyorktheater.me/2022/12/04/a-beautiful-noise-the-neil-diamond-musical-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/a-beautiful-noise-broadway-review-neil-diamond",
-        "https://www.nydailynews.com/entertainment/broadway/ny-beautiful-noise-review-broadway-neil-diamond-20221205-fwrth5cfbrdu3a3eslcaqwl7hi-story.html",
-        "https://www.theatermania.com/broadway/reviews/review-neil-diamond-musical-a-beautiful-noise_94623.html",
-        "https://www.theaterpizzazz.com/a-beautiful-noise-the-neil-diamond-musical/",
-        "https://www.timeout.com/newyork/theater/a-beautiful-noise-neil-diamond-musical-broadway-review-will-swensen",
-        "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-musical-broadway-1235449537/",
-        "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-broadway-neil-diamond-musical.html",
-        "https://www.wsj.com/articles/a-beautiful-noise-the-neil-diamond-musical-review-broadway-jukebox-will-swenson-11670022072",
-        "https://www.washingtonpost.com/theater-dance/2022/12/04/neil-diamond-musical-beautiful-noise-kpop-musical-review/",
-        "https://www.thewrap.com/beautiful-noise-neil-diamond-musical-review/",
+        "https://whatsupnewp.com/2024/09/theater-review-a-beautiful-noise-indeed-neil-diamond-musical-is-a-hit-a-ppac/",
+        "https://www.courant.com/2024/10/02/theater-review-a-beautiful-noise-mixes-a-dour-neil-diamond-with-lively-versions-of-his-pop-hits/",
+        "https://www.newcitystage.com/2024/11/18/diamond-in-the-rough-a-review-of-a-beautiful-noise-at-broadway-in-chicago/",
+        "https://chicago.suntimes.com/theater/2024/11/14/a-beautiful-noise-neil-diamond-musical-review-chicago-theater-great-music-mundane-script",
+        "https://www.daytonlocal.com/news/entertainment/review-a-beautiful-noise-the-neil-diamond-musical/",
+        "https://www.inquirer.com/arts/theater/neil-diamond-beautiful-noise-musical-review-philadelphia-20241213.html",
+        "https://www.theoaklandpress.com/2024/12/27/a-beautiful-noise-makes-good-times-seem-so-good-for-neil-diamond-fans/",
+        "https://www.sun-sentinel.com/2025/01/23/review-a-beautiful-noise-the-neil-diamond-musical-mixes-razzle-dazzle-with-quiet-moments-but-does-it-work/",
+        "https://www.orlandoweekly.com/arts/broadway-in-orlando-review-a-beautiful-noise-the-neil-diamond-musical-38796010",
+        "https://charlotteledger.substack.com/p/a-beautiful-noise-a-diamond-not-much",
+        "https://www.jsonline.com/story/entertainment/arts/2025/03/26/beautiful-noise-neil-diamond-marcus-center/82651341007/",
+        "https://revuewm.com/arts/review-neil-diamonds-music-dazzles-in-a-beautiful-noise",
+        "https://www.buffalorising.com/2025/04/a-beautiful-noise-at-sheas-strikes-gold-with-longtime-fans-of-neil-diamonds-iconic-songbook/",
+        "https://columbusunderground.com/theater-review-broadway-in-columbus-presents-neil-young-biographical-jukebox-musical-a-beautiful-noise-rs1/",
+        "https://www.sfchronicle.com/entertainment/article/beautiful-noise-neil-diamond-broadwaysf-20359914.php",
+        "https://www.houstonchronicle.com/entertainment/theater/article/neil-diamond-musical-review-a-beautiful-noise-hou-21142192.php",
+        "https://gephardtdaily.com/local/review-the-neil-diamond-musical-a-beautiful-noise-delivers-hit-songs-saga-of-troubled-troubadour/",
+        "https://www.tulsapeople.com/about-town/review-a-beautiful-noise-the-neil-diamond-musical-at-the-tulsa-pac-through-feb-22/article_5aca618d-db5d-4660-a616-ffc4d144eb10.html",
+        "https://journalrecord.com/2026/03/05/neil-diamond-beautiful-noise-okc/",
+        "https://www.sarasotamagazine.com/arts-and-entertainment/2026/04/review-a-beautiful-noise-the-neil-diamond-musical-van-wezel",
+        "https://www.palmbeachdailynews.com/story/entertainment/theater/2026/04/09/a-beautiful-noise-at-the-kravis-center-in-west-palm-beach-is-a-celebration-of-neil-diamond/89537691007/",
+        "https://www.theglobeandmail.com/culture/stage/article-neil-diamond-musical-beautiful-noise-review/",
+        "https://www.thesuburban.com/fyi/a-beautiful-noise-the-neil-diamond-musical-is-moving-and-joyful/article_506f9b80-7010-4056-8061-de772a5362ba.html",
+        "https://www.thestar.com/entertainment/stage/neil-diamond-a-beautiful-noise-mirvish-review/article_cf7d99c7-37db-4d03-938f-1838db2a583c.html",
+        "https://www.ludwig-van.com/toronto/2026/05/01/scrutiny-neil-diamond-musical-beautiful-noise-will-appeal-fans-revealing-artist-underneath-hits/",
+        "https://www.syracuse.com/entertainment/2026/06/landmark-theatres-a-beautiful-noise-is-a-tuneful-diamond-in-the-rough-review.html",
+        "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
         "https://www.broadwayworld.com/austin/article/Review-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-Bass-Concert-Hall-20261106",
         "https://www.reviewstl.com/theater-review-a-beautiful-noise-the-neil-diamond-musical-at-the-fabulous-fox/",
         "https://www.australianstage.com.au/home/whats-on/eventdetail/495129/178/a-beautiful-noise-the-neil-diamond-musical",
@@ -6370,210 +6380,197 @@
       "inReviewsJson": 2,
       "missing": [
         {
-          "url": "https://www.amny.com/entertainment/review-neil-diamond-a-beautiful-noise/",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
+          "url": "https://whatsupnewp.com/2024/09/theater-review-a-beautiful-noise-indeed-neil-diamond-musical-is-a-hit-a-ppac/",
+          "host": "whatsupnewp.com",
+          "knownOutletId": "whats-up-newp",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
-            }
-          ]
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/A-Beautiful-Noise-The-Neil-Diamond-Musical/1114",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thedailybeast.com/a-beautiful-noise-the-neil-diamond-musical-is-a-broadway-concert-for-the-truly-devoted",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
+          "url": "https://www.courant.com/2024/10/02/theater-review-a-beautiful-noise-mixes-a-dour-neil-diamond-with-lively-versions-of-his-pop-hits/",
+          "host": "courant.com",
+          "knownOutletId": "hartford-courant",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://nystagereview.com/2022/12/04/a-beautiful-noise-reaching-out-touching-neil-diamond-touching-you/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
+          "url": "https://www.newcitystage.com/2024/11/18/diamond-in-the-rough-a-review-of-a-beautiful-noise-at-broadway-in-chicago/",
+          "host": "newcitystage.com",
+          "knownOutletId": "new-city-stage",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://nystagereview.com/2022/12/04/a-beautiful-noise-neil-diamond-on-the-couch/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
+          "url": "https://www.inquirer.com/arts/theater/neil-diamond-beautiful-noise-musical-review-philadelphia-20241213.html",
+          "host": "inquirer.com",
+          "knownOutletId": "philadelphia-inquirer",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theoaklandpress.com/2024/12/27/a-beautiful-noise-makes-good-times-seem-so-good-for-neil-diamond-fans/",
+          "host": "theoaklandpress.com",
+          "knownOutletId": "the-oakland-press",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://newyorktheater.me/2022/12/04/a-beautiful-noise-the-neil-diamond-musical-broadway-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
+          "url": "https://www.orlandoweekly.com/arts/broadway-in-orlando-review-a-beautiful-noise-the-neil-diamond-musical-38796010",
+          "host": "orlandoweekly.com",
+          "knownOutletId": "orlando-weekly",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/a-beautiful-noise-broadway-review-neil-diamond",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
+          "url": "https://charlotteledger.substack.com/p/a-beautiful-noise-a-diamond-not-much",
+          "host": "charlotteledger.substack.com",
+          "knownOutletId": "the-charlotte-ledger",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-beautiful-noise-review-broadway-neil-diamond-20221205-fwrth5cfbrdu3a3eslcaqwl7hi-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
+          "url": "https://www.jsonline.com/story/entertainment/arts/2025/03/26/beautiful-noise-neil-diamond-marcus-center/82651341007/",
+          "host": "jsonline.com",
+          "knownOutletId": "milwaukee-journal-sentinel",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://www.theatermania.com/broadway/reviews/review-neil-diamond-musical-a-beautiful-noise_94623.html",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
+          "url": "https://revuewm.com/arts/review-neil-diamonds-music-dazzles-in-a-beautiful-noise",
+          "host": "revuewm.com",
+          "knownOutletId": "revue",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://www.theaterpizzazz.com/a-beautiful-noise-the-neil-diamond-musical/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
+          "url": "https://columbusunderground.com/theater-review-broadway-in-columbus-presents-neil-young-biographical-jukebox-musical-a-beautiful-noise-rs1/",
+          "host": "columbusunderground.com",
+          "knownOutletId": "columbus-underground",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.sfchronicle.com/entertainment/article/beautiful-noise-neil-diamond-broadwaysf-20359914.php",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/a-beautiful-noise-neil-diamond-musical-broadway-review-will-swensen",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
+          "url": "https://www.houstonchronicle.com/entertainment/theater/article/neil-diamond-musical-review-a-beautiful-noise-hou-21142192.php",
+          "host": "houstonchronicle.com",
+          "knownOutletId": "houston-chronicle",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-musical-broadway-1235449537/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
+          "url": "https://www.theglobeandmail.com/culture/stage/article-neil-diamond-musical-beautiful-noise-review/",
+          "host": "theglobeandmail.com",
+          "knownOutletId": "the-globe-and-mail",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-broadway-neil-diamond-musical.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
+          "url": "https://www.syracuse.com/entertainment/2026/06/landmark-theatres-a-beautiful-noise-is-a-tuneful-diamond-in-the-rough-review.html",
+          "host": "syracuse.com",
+          "knownOutletId": "syracuse-herald-journal",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
         {
-          "url": "https://www.wsj.com/articles/a-beautiful-noise-the-neil-diamond-musical-review-broadway-jukebox-will-swenson-11670022072",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
+          "url": "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
-            }
-          ]
-        },
-        {
-          "url": "https://www.washingtonpost.com/theater-dance/2022/12/04/neil-diamond-musical-beautiful-noise-kpop-musical-review/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thewrap.com/beautiful-noise-neil-diamond-musical-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ]
         },
@@ -6617,9 +6614,9 @@
       "dirOnly": [],
       "flaggedMisses": [
         {
-          "url": "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-1235188689/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
+          "url": "https://chicago.suntimes.com/theater/2024/11/14/a-beautiful-noise-neil-diamond-musical-review-chicago-theater-great-music-mundane-script",
+          "host": "suntimes.com",
+          "knownOutletId": "chicago-sun-times",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -6627,9 +6624,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "deadline--greg-evans.json",
+              "file": "chicago-sun-times--catey-sullivan.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-1235188689/"
+              "urlInDir": "https://chicago.suntimes.com/theater/2024/11/14/a-beautiful-noise-neil-diamond-musical-review-chicago-theater-great-music-mundane-script"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -6641,208 +6638,469 @@
           "sources": [
             {
               "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway"
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
             }
           ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.daytonlocal.com/news/entertainment/review-a-beautiful-noise-the-neil-diamond-musical/",
+          "host": "daytonlocal.com",
+          "knownOutletId": "dayton-local",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dayton-local--michael-woody.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.daytonlocal.com/news/entertainment/review-a-beautiful-noise-the-neil-diamond-musical/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.sun-sentinel.com/2025/01/23/review-a-beautiful-noise-the-neil-diamond-musical-mixes-razzle-dazzle-with-quiet-moments-but-does-it-work/",
+          "host": "sun-sentinel.com",
+          "knownOutletId": "south-florida-sun-sentinel",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "south-florida-sun-sentinel--stafford-hagwood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.sun-sentinel.com/2025/01/23/review-a-beautiful-noise-the-neil-diamond-musical-mixes-razzle-dazzle-with-quiet-moments-but-does-it-work/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.buffalorising.com/2025/04/a-beautiful-noise-at-sheas-strikes-gold-with-longtime-fans-of-neil-diamonds-iconic-songbook/",
+          "host": "buffalorising.com",
+          "knownOutletId": "buffalorising",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "buffalorising--anthony-higgins.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.buffalorising.com/2025/04/a-beautiful-noise-at-sheas-strikes-gold-with-longtime-fans-of-neil-diamonds-iconic-songbook/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://gephardtdaily.com/local/review-the-neil-diamond-musical-a-beautiful-noise-delivers-hit-songs-saga-of-troubled-troubadour/",
+          "host": "gephardtdaily.com",
+          "knownOutletId": "gephardt-daily",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "gephardt-daily--nancy-van-valkenburg.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://gephardtdaily.com/local/review-the-neil-diamond-musical-a-beautiful-noise-delivers-hit-songs-saga-of-troubled-troubadour/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.tulsapeople.com/about-town/review-a-beautiful-noise-the-neil-diamond-musical-at-the-tulsa-pac-through-feb-22/article_5aca618d-db5d-4660-a616-ffc4d144eb10.html",
+          "host": "tulsapeople.com",
+          "knownOutletId": "tulsa-people",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "tulsa-people--allyssa-reeder.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.tulsapeople.com/about-town/review-a-beautiful-noise-the-neil-diamond-musical-at-the-tulsa-pac-through-feb-22/article_5aca618d-db5d-4660-a616-ffc4d144eb10.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://journalrecord.com/2026/03/05/neil-diamond-beautiful-noise-okc/",
+          "host": "journalrecord.com",
+          "knownOutletId": "the-journal-record",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-journal-record--beth-brinkman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://journalrecord.com/2026/03/05/neil-diamond-beautiful-noise-okc/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.sarasotamagazine.com/arts-and-entertainment/2026/04/review-a-beautiful-noise-the-neil-diamond-musical-van-wezel",
+          "host": "sarasotamagazine.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "sarasota-magazine--kay-kipling.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.sarasotamagazine.com/arts-and-entertainment/2026/04/review-a-beautiful-noise-the-neil-diamond-musical-van-wezel"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.palmbeachdailynews.com/story/entertainment/theater/2026/04/09/a-beautiful-noise-at-the-kravis-center-in-west-palm-beach-is-a-celebration-of-neil-diamond/89537691007/",
+          "host": "palmbeachdailynews.com",
+          "knownOutletId": "palm-beach-daily-news",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "palm-beach-daily-news--mary-damiano.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.palmbeachdailynews.com/story/entertainment/theater/2026/04/09/a-beautiful-noise-at-the-kravis-center-in-west-palm-beach-is-a-celebration-of-neil-diamond/89537691007/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.thesuburban.com/fyi/a-beautiful-noise-the-neil-diamond-musical-is-moving-and-joyful/article_506f9b80-7010-4056-8061-de772a5362ba.html",
+          "host": "thesuburban.com",
+          "knownOutletId": "thesuburban",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thesuburban--alexandra-cohen.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thesuburban.com/fyi/a-beautiful-noise-the-neil-diamond-musical-is-moving-and-joyful/article_506f9b80-7010-4056-8061-de772a5362ba.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.thestar.com/entertainment/stage/neil-diamond-a-beautiful-noise-mirvish-review/article_cf7d99c7-37db-4d03-938f-1838db2a583c.html",
+          "host": "thestar.com",
+          "knownOutletId": "toronto-star",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "toronto-star--jeremy-daniel.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestar.com/entertainment/stage/neil-diamond-a-beautiful-noise-mirvish-review/article_cf7d99c7-37db-4d03-938f-1838db2a583c.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "https://www.ludwig-van.com/toronto/2026/05/01/scrutiny-neil-diamond-musical-beautiful-noise-will-appeal-fans-revealing-artist-underneath-hits/",
+          "host": "ludwig-van.com",
+          "knownOutletId": "ludwig-van-toronto",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ludwig-van-toronto--paula-citron.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.ludwig-van.com/toronto/2026/05/01/scrutiny-neil-diamond-musical-beautiful-noise-will-appeal-fans-revealing-artist-underneath-hits/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
           "reverify": false
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"A Beautiful Noise, The Neil Diamond Musical\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"A Beautiful Noise, The Neil Diamond Musical\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"A Beautiful Noise, The Neil Diamond Musical\" review american",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 117,
+        "count": 316,
         "byReason": {
-          "non-review-host": 29,
-          "no-review-evidence": 1,
-          "aggregator-internal-nav": 62,
-          "ticketing-reseller": 1,
-          "write-path-blocked": 1,
-          "not-http-url": 6,
+          "non-review-host": 33,
+          "aggregator-internal-nav": 197,
+          "not-http-url": 70,
           "aggregator-section-root": 4,
-          "production-database-listing": 10,
-          "non-stage-review": 1,
-          "roundup-page": 2
+          "podcast-episode": 12
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-a-beautiful-noise-the-neil-diamond-musical-on-broadway",
-          "publishDate": "2022-12-04"
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-20240926",
+          "publishDate": "2024-09-26"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.amny.com/entertainment/review-neil-diamond-a-beautiful-noise/",
-          "host": "amny.com",
+          "url": "https://whatsupnewp.com/2024/09/theater-review-a-beautiful-noise-indeed-neil-diamond-musical-is-a-hit-a-ppac/",
+          "host": "whatsupnewp.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://cititour.com/NYC_Broadway/A-Beautiful-Noise-The-Neil-Diamond-Musical/1114",
-          "host": "cititour.com",
+          "url": "https://www.courant.com/2024/10/02/theater-review-a-beautiful-noise-mixes-a-dour-neil-diamond-with-lively-versions-of-his-pop-hits/",
+          "host": "courant.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.thedailybeast.com/a-beautiful-noise-the-neil-diamond-musical-is-a-broadway-concert-for-the-truly-devoted",
-          "host": "thedailybeast.com",
+          "url": "https://www.newcitystage.com/2024/11/18/diamond-in-the-rough-a-review-of-a-beautiful-noise-at-broadway-in-chicago/",
+          "host": "newcitystage.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://nystagereview.com/2022/12/04/a-beautiful-noise-reaching-out-touching-neil-diamond-touching-you/",
-          "host": "nystagereview.com",
+          "url": "https://www.inquirer.com/arts/theater/neil-diamond-beautiful-noise-musical-review-philadelphia-20241213.html",
+          "host": "inquirer.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://nystagereview.com/2022/12/04/a-beautiful-noise-neil-diamond-on-the-couch/",
-          "host": "nystagereview.com",
+          "url": "https://www.theoaklandpress.com/2024/12/27/a-beautiful-noise-makes-good-times-seem-so-good-for-neil-diamond-fans/",
+          "host": "theoaklandpress.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://newyorktheater.me/2022/12/04/a-beautiful-noise-the-neil-diamond-musical-broadway-review/",
-          "host": "newyorktheater.me",
+          "url": "https://www.orlandoweekly.com/arts/broadway-in-orlando-review-a-beautiful-noise-the-neil-diamond-musical-38796010",
+          "host": "orlandoweekly.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/a-beautiful-noise-broadway-review-neil-diamond",
-          "host": "newyorktheatreguide.com",
+          "url": "https://charlotteledger.substack.com/p/a-beautiful-noise-a-diamond-not-much",
+          "host": "charlotteledger.substack.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-beautiful-noise-review-broadway-neil-diamond-20221205-fwrth5cfbrdu3a3eslcaqwl7hi-story.html",
-          "host": "nydailynews.com",
+          "url": "https://www.jsonline.com/story/entertainment/arts/2025/03/26/beautiful-noise-neil-diamond-marcus-center/82651341007/",
+          "host": "jsonline.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.theatermania.com/broadway/reviews/review-neil-diamond-musical-a-beautiful-noise_94623.html",
-          "host": "theatermania.com",
+          "url": "https://revuewm.com/arts/review-neil-diamonds-music-dazzles-in-a-beautiful-noise",
+          "host": "revuewm.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.theaterpizzazz.com/a-beautiful-noise-the-neil-diamond-musical/",
-          "host": "theaterpizzazz.com",
+          "url": "https://columbusunderground.com/theater-review-broadway-in-columbus-presents-neil-young-biographical-jukebox-musical-a-beautiful-noise-rs1/",
+          "host": "columbusunderground.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/a-beautiful-noise-neil-diamond-musical-broadway-review-will-swensen",
-          "host": "timeout.com",
+          "url": "https://www.sfchronicle.com/entertainment/article/beautiful-noise-neil-diamond-broadwaysf-20359914.php",
+          "host": "sfchronicle.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-musical-broadway-1235449537/",
-          "host": "variety.com",
+          "url": "https://www.houstonchronicle.com/entertainment/theater/article/neil-diamond-musical-review-a-beautiful-noise-hou-21142192.php",
+          "host": "houstonchronicle.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-broadway-neil-diamond-musical.html",
-          "host": "vulture.com",
+          "url": "https://www.theglobeandmail.com/culture/stage/article-neil-diamond-musical-beautiful-noise-review/",
+          "host": "theglobeandmail.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.wsj.com/articles/a-beautiful-noise-the-neil-diamond-musical-review-broadway-jukebox-will-swenson-11670022072",
-          "host": "wsj.com",
+          "url": "https://www.syracuse.com/entertainment/2026/06/landmark-theatres-a-beautiful-noise-is-a-tuneful-diamond-in-the-rough-review.html",
+          "host": "syracuse.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.washingtonpost.com/theater-dance/2022/12/04/neil-diamond-musical-beautiful-noise-kpop-musical-review/",
-          "host": "washingtonpost.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thewrap.com/beautiful-noise-neil-diamond-musical-review/",
-          "host": "thewrap.com",
+          "url": "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -6946,7 +7204,7 @@
         "liveCount": 2,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-18T14:59:57.026Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "a-black-billed-cuckoo-regional-2026",
@@ -31525,7 +31783,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-27T16:52:15.945Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "adrift-a-medieval-wayward-folly-regional-2026",
@@ -79718,7 +79976,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-27T19:57:21.986Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "big-feelings-off-broadway-2026",
@@ -109440,22 +109698,25 @@
       "previewsStartDate": "2026-11-14",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://theatreandtonic.co.uk/blog/club-nvrlnd-the-vaults-london-review",
+        "https://theatreweekly.com/review-club-nvrlnd-at-the-vaults",
+        "https://www.londontheatrereviews.co.uk/post.cfm?p=29763",
         "https://www.thevaults.london/club-nvrlnd",
         "https://www.timeout.com/london/theatre/club-nvrlnd-review",
+        "https://www.londontheatre1.com/reviews/club-nvrlnd-assembly-checkpoint-review/",
         "https://www.immersiverumours.com/post/interview-steven-kunis-on-club-nvrlnd-at-the-vaults",
+        "https://www.voicemag.uk/review/club-nvrlnd-review",
         "https://www.theatrebookings.com/musical/club-nvrlnd",
-        "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
-        "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe/",
-        "https://www.voicemag.uk/review/club-nvrlnd-review"
+        "https://www.londonboxoffice.co.uk/news/post/club-nvrlnd-the-vaults-review"
       ],
-      "dirFiles": 8,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 14,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [
         {
-          "url": "https://www.thevaults.london/club-nvrlnd",
-          "host": "thevaults.london",
-          "knownOutletId": null,
+          "url": "https://theatreweekly.com/review-club-nvrlnd-at-the-vaults",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
           "serpCensus": true,
           "sources": [
             {
@@ -109465,9 +109726,21 @@
           ]
         },
         {
-          "url": "https://www.immersiverumours.com/post/interview-steven-kunis-on-club-nvrlnd-at-the-vaults",
-          "host": "immersiverumours.com",
-          "knownOutletId": "immersiverumours",
+          "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29763",
+          "host": "londontheatrereviews.co.uk",
+          "knownOutletId": "london-theatre-reviews",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.thevaults.london/club-nvrlnd",
+          "host": "thevaults.london",
+          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -109489,7 +109762,20 @@
           ]
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "firstnightmagazine.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
           "url": "https://www.timeout.com/london/theatre/club-nvrlnd-review",
@@ -109521,6 +109807,39 @@
           "reverify": true
         },
         {
+          "url": "https://www.immersiverumours.com/post/interview-steven-kunis-on-club-nvrlnd-at-the-vaults",
+          "host": "immersiverumours.com",
+          "knownOutletId": "immersiverumours",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "immersiverumours--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.immersiverumours.com/post/interview-steven-kunis-on-club-nvrlnd-at-the-vaults"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
           "url": "https://www.theatrebookings.com/musical/club-nvrlnd",
           "host": "theatrebookings.com",
           "knownOutletId": "theatrebookings",
@@ -109548,44 +109867,11 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "musical-theatre-review--molly-glenn.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "ensemble-3-agree"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
         }
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 0,
+        "rowCount": 1,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -109603,8 +109889,8 @@
             "skipped": true
           },
           "lbo-roundup": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 1,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -109625,9 +109911,14 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "currentRunRows": 1,
+        "corroborated": 1,
+        "perSource": {
+          "lbo-roundup": {
+            "cited": 1,
+            "corroborated": 1
+          }
+        }
       },
       "serpCensus": {
         "ran": true,
@@ -109641,7 +109932,7 @@
             "geo": "gb",
             "ok": true,
             "results": 2,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -109650,8 +109941,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 1,
-            "accepted": 0,
+            "results": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -109670,8 +109961,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 6,
-            "accepted": 3,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -109681,7 +109972,7 @@
             "geo": "gb",
             "ok": true,
             "results": 3,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -109691,25 +109982,22 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 9,
+        "count": 4,
         "byReason": {
-          "non-review-host": 3,
+          "non-review-host": 2,
           "aggregator-internal-nav": 1,
-          "ticketing-reseller": 2,
-          "no-review-evidence": 1,
-          "event-listing": 1,
-          "guide-article": 1
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
         {
-          "url": "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
+          "url": "https://www.londontheatre1.com/reviews/club-nvrlnd-assembly-checkpoint-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2025-08-20"
+          "nonReviewDetail": "2025-08-07"
         }
       ],
       "automatedExcludedListed": 2,
@@ -109725,9 +110013,24 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.immersiverumours.com/post/interview-steven-kunis-on-club-nvrlnd-at-the-vaults",
-          "host": "immersiverumours.com",
-          "outletId": "immersiverumours",
+          "url": "https://theatreweekly.com/review-club-nvrlnd-at-the-vaults",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29763",
+          "host": "londontheatrereviews.co.uk",
+          "outletId": "london-theatre-reviews",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -109760,18 +110063,25 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/review-club-nvrlnd-at-the-vaults"
+          },
+          {
+            "outletId": "london-theatre-reviews",
+            "outlet": "london-theatre-reviews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29763"
+          },
+          {
             "outletId": "thevaults.london",
             "outlet": "thevaults.london",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thevaults.london/club-nvrlnd"
-          },
-          {
-            "outletId": "immersiverumours",
-            "outlet": "immersiverumours",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.immersiverumours.com/post/interview-steven-kunis-on-club-nvrlnd-at-the-vaults"
           },
           {
             "outletId": "voice-magazine",
@@ -109798,18 +110108,37 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://theatreandtonic.co.uk/blog/club-nvrlnd-the-vaults-london-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-27T21:28:22.905Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/club-nvrlnd-the-vaults-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-27T21:28:22.905Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-club-nvrlnd-at-the-vaults",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-27T21:28:22.905Z"
+          },
+          {
+            "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29763",
+            "outletId": "london-theatre-reviews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-27T21:28:22.905Z"
+          },
+          {
             "url": "https://www.thevaults.london/club-nvrlnd",
             "outletId": "thevaults.london",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-14T17:21:53.242Z"
-          },
-          {
-            "url": "https://www.immersiverumours.com/post/interview-steven-kunis-on-club-nvrlnd-at-the-vaults",
-            "outletId": "immersiverumours",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-27T09:10:55.510Z"
           },
           {
             "url": "https://www.voicemag.uk/review/club-nvrlnd-review",
@@ -109836,20 +110165,20 @@
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/club-nvrlnd-ed-fringe-review",
-            "host": "theatreandtonic.co.uk",
+            "url": "https://www.londontheatre1.com/reviews/club-nvrlnd-assembly-checkpoint-review/",
+            "host": "londontheatre1.com",
             "reason": "page-date-before-run"
           },
           {
-            "url": "https://musicaltheatrereview.com/club-nvrlnd-edinburgh-festival-fringe/",
-            "host": "musicaltheatrereview.com",
+            "url": "https://www.immersiverumours.com/post/interview-steven-kunis-on-club-nvrlnd-at-the-vaults",
+            "host": "immersiverumours.com",
             "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 0,
-        "candidateCount": 5
+        "liveCount": 2,
+        "candidateCount": 8
       },
-      "computedAt": "2026-11-27T09:10:55.510Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "clue-tour-2025",
@@ -114705,13 +115034,14 @@
         "http://manhattan.ny1.com/content/lifestyles/theater_reviews/221857/theater-review---constellations-/",
         "http://www.vulture.com/2015/01/theater-review-constellations.html",
         "http://www.northjersey.com/arts-and-entertainment/theater/theater-review-jake-gyllenhaal-and-ruth-wilson-star-in-constellations-1.1192244",
-        "https://chicagoreader.com/performing-arts/theater/theater-review/constellations-pridearts/",
         "https://www.broadwayworld.com/chicago/article/Review-PrideArtss-CONSTELLATIONS-at-Hoover-Leppen-Theatre-20261120",
+        "https://www.theguardian.com/may/constellations-review-gate-dublin-nick-payne",
+        "https://www.latimes.com/arts/la-et-cm-constellations-review-20170615-story",
+        "https://chicagoreader.com/performing-arts/theater/theater-review/constellations-pridearts/",
         "https://entertainingchicago.com/pridearts-constellations-is-a-thought-provoking-exploration-of-love-and-possibility/",
-        "https://www.stage-buzz-brisbane.blog/post/review-constellations-allentertainment",
-        "https://www.theguardian.com/may/constellations-review-gate-dublin-nick-payne"
+        "https://www.stage-buzz-brisbane.blog/post/review-constellations-allentertainment"
       ],
-      "dirFiles": 4,
+      "dirFiles": 5,
       "dirClean": 4,
       "inReviewsJson": 4,
       "missing": [
@@ -114911,9 +115241,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.stage-buzz-brisbane.blog/post/review-constellations-allentertainment",
-          "host": "stage-buzz-brisbane.blog",
-          "knownOutletId": null,
+          "url": "https://www.theguardian.com/may/constellations-review-gate-dublin-nick-payne",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
           "serpCensus": true,
           "sources": [
             {
@@ -114923,9 +115253,21 @@
           ]
         },
         {
-          "url": "https://www.theguardian.com/may/constellations-review-gate-dublin-nick-payne",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "url": "https://www.latimes.com/arts/la-et-cm-constellations-review-20170615-story",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://www.stage-buzz-brisbane.blog/post/review-constellations-allentertainment",
+          "host": "stage-buzz-brisbane.blog",
+          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -114955,8 +115297,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
-            "accepted": 0,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -114975,7 +115317,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -114986,7 +115328,7 @@
             "geo": "us",
             "ok": true,
             "results": 4,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -114995,7 +115337,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -115005,29 +115347,26 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 2,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 0,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 296,
+        "count": 293,
         "byReason": {
-          "not-http-url": 52,
           "non-review-host": 36,
-          "aggregator-internal-nav": 197,
+          "aggregator-internal-nav": 195,
+          "not-http-url": 54,
           "aggregator-section-root": 4,
+          "roundup-page": 2,
           "podcast-episode": 1,
-          "census-junk-host": 1,
-          "bare-host": 1,
-          "no-review-evidence": 2,
-          "review-index-page": 1,
-          "write-path-blocked": 1
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -115155,6 +115494,21 @@
       ],
       "ingestResults": [
         {
+          "url": "https://www.latimes.com/arts/la-et-cm-constellations-review-20170615-story",
+          "host": "latimes.com",
+          "outletId": "latimes",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=latimes.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: no usable HTML (187 chars); no archive.org capture"
+        },
+        {
           "url": "https://www.theguardian.com/may/constellations-review-gate-dublin-nick-payne",
           "host": "theguardian.com",
           "outletId": "guardian",
@@ -115167,7 +115521,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theguardian.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theguardian.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; archive_auth_required (archive.org CDX blocked for this host, capture unknown)"
         }
       ],
       "ingestSkippedByCap": [],
@@ -115175,33 +115529,40 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "stage-buzz-brisbane.blog",
-            "outlet": "stage-buzz-brisbane.blog",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.stage-buzz-brisbane.blog/post/review-constellations-allentertainment"
-          },
-          {
             "outletId": "guardian",
             "outlet": "guardian",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theguardian.com/may/constellations-review-gate-dublin-nick-payne"
+          },
+          {
+            "outletId": "latimes",
+            "outlet": "latimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.latimes.com/arts/la-et-cm-constellations-review-20170615-story"
+          },
+          {
+            "outletId": "stage-buzz-brisbane.blog",
+            "outlet": "stage-buzz-brisbane.blog",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.stage-buzz-brisbane.blog/post/review-constellations-allentertainment"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://chicagoreader.com/performing-arts/theater/theater-review/constellations-pridearts/",
-            "outletId": "chicagoreader.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-25T20:52:54.376Z"
-          },
-          {
             "url": "https://www.broadwayworld.com/chicago/article/Review-PrideArtss-CONSTELLATIONS-at-Hoover-Leppen-Theatre-20261120",
             "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-11-24T03:07:43.280Z"
+          },
+          {
+            "url": "https://chicagoreader.com/performing-arts/theater/theater-review/constellations-pridearts/",
+            "outletId": "chicagoreader.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-25T20:52:54.376Z"
           },
           {
             "url": "https://entertainingchicago.com/pridearts-constellations-is-a-thought-provoking-exploration-of-love-and-possibility/",
@@ -115210,26 +115571,33 @@
             "firstSeenAt": "2026-11-24T03:07:43.280Z"
           },
           {
-            "url": "https://www.stage-buzz-brisbane.blog/post/review-constellations-allentertainment",
-            "outletId": "stage-buzz-brisbane.blog",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-25T02:26:45.843Z"
-          },
-          {
             "url": "https://www.theguardian.com/may/constellations-review-gate-dublin-nick-payne",
             "outletId": "guardian",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-24T03:07:43.280Z"
+          },
+          {
+            "url": "https://www.latimes.com/arts/la-et-cm-constellations-review-20170615-story",
+            "outletId": "latimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-27T21:28:22.905Z"
+          },
+          {
+            "url": "https://www.stage-buzz-brisbane.blog/post/review-constellations-allentertainment",
+            "outletId": "stage-buzz-brisbane.blog",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-25T02:26:45.843Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 3,
-        "candidateCount": 5
+        "candidateCount": 6
       },
-      "computedAt": "2026-11-27T09:10:55.510Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "consumed-off-west-end-2026",
@@ -132903,28 +133271,28 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://laexcites.com/2026/11/25/death-and-the-maiden-city-garage-theatre-santa-monica/",
+        "https://rv-times.com/2026/10/21/theater-review-rtcs-death-and-the-maiden-is-a-powerful-unsettling-play/",
         "https://stageraw.com/stage-raw-review-death-and-the-maiden",
         "https://stagescenela.com/2026/11/death-and-the-maiden",
         "https://stageraw.com/stage-raw-review-death-and-the-maiden/",
         "https://stagescenela.com/2026/11/death-and-the-maiden/",
         "https://variety.com/legit/reviews/death-and-the-maiden-1117946435",
-        "https://rv-times.com/2026/10/21/theater-review-rtcs-death-and-the-maiden-is-a-powerful-unsettling-play/",
         "https://fringereview.co.uk/review/brighton-year-round/death-and-the-maiden",
         "https://mountainx.com/arts/theater-review-death-and-the-maiden-at-hart/",
         "https://www.theguardian.com/stage/oct/death-and-the-maiden-review",
         "https://ashland.news/review-rogue-theaters-death-and-the-maiden-confronts-truth-justice-and-the-scars-of-totalitarianism/",
         "https://mountainx.com/arts/theater-review-death-and-the-maiden-at-hart",
-        "https://variety.com/legit/reviews/death-and-the-maiden-2-1200435973"
+        "https://variety.com/legit/reviews/death-and-the-maiden-2-1200435973",
+        "https://laexcites.com/2026/11/25/death-and-the-maiden-city-garage-theatre-santa-monica/"
       ],
       "dirFiles": 5,
       "dirClean": 2,
       "inReviewsJson": 2,
       "missing": [
         {
-          "url": "https://variety.com/legit/reviews/death-and-the-maiden-1117946435",
-          "host": "variety.com",
-          "knownOutletId": "variety",
+          "url": "https://rv-times.com/2026/10/21/theater-review-rtcs-death-and-the-maiden-is-a-powerful-unsettling-play/",
+          "host": "rv-times.com",
+          "knownOutletId": null,
           "serpCensus": true,
           "sources": [
             {
@@ -132934,9 +133302,9 @@
           ]
         },
         {
-          "url": "https://rv-times.com/2026/10/21/theater-review-rtcs-death-and-the-maiden-is-a-powerful-unsettling-play/",
-          "host": "rv-times.com",
-          "knownOutletId": null,
+          "url": "https://variety.com/legit/reviews/death-and-the-maiden-1117946435",
+          "host": "variety.com",
+          "knownOutletId": "variety",
           "serpCensus": true,
           "sources": [
             {
@@ -133063,7 +133431,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 5,
             "accepted": 3,
             "error": null
           },
@@ -133073,7 +133441,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -133083,7 +133451,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -133093,7 +133461,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -133103,7 +133471,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 3,
             "accepted": 0,
             "error": null
           }
@@ -133114,11 +133482,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 4,
+        "count": 8,
         "byReason": {
-          "non-review-host": 2,
-          "roundup-page": 1,
-          "bare-host": 1
+          "non-review-host": 7,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -133142,39 +133509,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://mountainx.com/arts/theater-review-death-and-the-maiden-at-hart/",
-          "host": "mountainx.com",
-          "outletId": "mountain-xpress",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "old-production-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "death-and-the-maiden-regional-2026: https://mountainx.com/arts/theater-review-death-and-the-maiden-at-hart/ dated 2015-02-20, over a year before this run; refused as the earlier production's review. Expected, no action needed."
-        },
-        {
-          "url": "https://mountainx.com/arts/theater-review-death-and-the-maiden-at-hart",
-          "host": "mountainx.com",
-          "outletId": "mountain-xpress",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "old-production-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "death-and-the-maiden-regional-2026: https://mountainx.com/arts/theater-review-death-and-the-maiden-at-hart dated 2015-02-20, over a year before this run; refused as the earlier production's review. Expected, no action needed."
-        },
-        {
-          "url": "https://variety.com/legit/reviews/death-and-the-maiden-2-1200435973",
-          "host": "variety.com",
-          "outletId": "variety",
+          "url": "https://www.theguardian.com/stage/oct/death-and-the-maiden-review",
+          "host": "theguardian.com",
+          "outletId": "guardian",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -133184,7 +133521,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=variety.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theguardian.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; archive_auth_required (archive.org CDX blocked for this host, capture unknown)"
         },
         {
           "url": "https://variety.com/legit/reviews/death-and-the-maiden-1117946435",
@@ -133214,32 +133551,62 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=fringereview.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+          "reason": "Fetch failed: live page is the site's not-found template; no archive.org capture"
+        },
+        {
+          "url": "https://mountainx.com/arts/theater-review-death-and-the-maiden-at-hart/",
+          "host": "mountainx.com",
+          "outletId": "mountain-xpress",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "old-production-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "death-and-the-maiden-regional-2026: https://mountainx.com/arts/theater-review-death-and-the-maiden-at-hart/ dated 2015-02-20, over a year before this run; refused as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://mountainx.com/arts/theater-review-death-and-the-maiden-at-hart",
+          "host": "mountainx.com",
+          "outletId": "mountain-xpress",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "old-production-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "death-and-the-maiden-regional-2026: https://mountainx.com/arts/theater-review-death-and-the-maiden-at-hart dated 2015-02-20, over a year before this run; refused as the earlier production's review. Expected, no action needed."
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.theguardian.com/stage/oct/death-and-the-maiden-review",
-          "host": "theguardian.com",
-          "outletId": "guardian"
+          "url": "https://variety.com/legit/reviews/death-and-the-maiden-2-1200435973",
+          "host": "variety.com",
+          "outletId": "variety"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "variety",
-            "outlet": "variety",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://variety.com/legit/reviews/death-and-the-maiden-1117946435"
-          },
-          {
             "outletId": "rv-times.com",
             "outlet": "rv-times.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://rv-times.com/2026/10/21/theater-review-rtcs-death-and-the-maiden-is-a-powerful-unsettling-play/"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/legit/reviews/death-and-the-maiden-1117946435"
           },
           {
             "outletId": "fringereview",
@@ -133318,15 +133685,15 @@
             "firstSeenAt": "2026-11-26T19:41:18.643Z"
           },
           {
-            "url": "https://variety.com/legit/reviews/death-and-the-maiden-1117946435",
-            "outletId": "variety",
+            "url": "https://rv-times.com/2026/10/21/theater-review-rtcs-death-and-the-maiden-is-a-powerful-unsettling-play/",
+            "outletId": "rv-times.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-24T05:16:14.882Z"
           },
           {
-            "url": "https://rv-times.com/2026/10/21/theater-review-rtcs-death-and-the-maiden-is-a-powerful-unsettling-play/",
-            "outletId": "rv-times.com",
+            "url": "https://variety.com/legit/reviews/death-and-the-maiden-1117946435",
+            "outletId": "variety",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-24T05:16:14.882Z"
@@ -133386,7 +133753,7 @@
         "liveCount": 2,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-27T09:10:55.510Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "death-becomes-her-2024",
@@ -141645,17 +142012,17 @@
         "https://www.latimes.com/entertainment-arts/story/2026-11-17/destiny-of-desire-review-karen-zacarias-mark-taper-forum",
         "https://stagescenela.com/2026/11/destiny-of-desire-2",
         "https://www.artsbeatla.com/2026/11/destiny-of-desire",
-        "https://www.latheatrix.com/post/review-destiny-of-desire-at-mark-taper-forum",
         "https://www.thedowneypatriot.com/articles/destiny-of-desire-is-a-riot-at-the-mark-taper-forum",
+        "https://ladramacriticscircle.com/destiny-of-desire-center-theatre-group/",
+        "https://laexcites.com/destiny-of-desire-mark-taper-forum-adrian-javier",
+        "https://www.latheatrix.com/post/review-destiny-of-desire-at-mark-taper-forum",
         "https://ladramacriticscircle.com/destiny-of-desire-center-theatre-group",
         "https://latheatrebites.com/destiny-of-desire-mark-taper-forum-review/",
         "https://www.theatermania.com/news/review-destiny-of-desire-is-a-gloriously-campy-telenovela-at-the-mark-taper-forum_1860442/",
-        "https://laexcites.com/destiny-of-desire-mark-taper-forum-adrian-javier",
         "https://stagescenela.com/2026/11/destiny-of-desire-2/",
         "https://larchmontbuzz.com/theater/embracing-the-drama-destiny-of-desire",
         "https://larchmontbuzz.com/theater/embracing-the-drama-destiny-of-desire/",
         "https://laexcites.com/2026/11/17/destiny-of-desire-mark-taper-forum-adrian-javier/",
-        "https://ladramacriticscircle.com/destiny-of-desire-center-theatre-group/",
         "https://soundcloud.com/latheatrebites/destiny-of-desire-mark-taper",
         "https://itsnotaboutme.tv/news/theatre-destiny-of-desire/",
         "https://www.los-angeles-theatre.com/reviews/destiny-of-desire",
@@ -141795,8 +142162,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
-            "accepted": 0,
+            "results": 3,
+            "accepted": 3,
             "error": null
           },
           {
@@ -141805,7 +142172,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -141815,7 +142182,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -141825,8 +142192,8 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 0,
+            "results": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -141835,20 +142202,20 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 2,
-            "accepted": 0,
+            "results": 4,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 12,
+        "count": 5,
         "byReason": {
-          "non-review-host": 12
+          "non-review-host": 5
         }
       },
       "dedupedVariants": [],
@@ -141999,16 +142366,28 @@
             "firstSeenAt": "2026-11-24T21:51:27.339Z"
           },
           {
-            "url": "https://www.latheatrix.com/post/review-destiny-of-desire-at-mark-taper-forum",
-            "outletId": "latheatrix.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-20T10:09:50.928Z"
-          },
-          {
             "url": "https://www.thedowneypatriot.com/articles/destiny-of-desire-is-a-riot-at-the-mark-taper-forum",
             "outletId": "thedowneypatriot.com",
             "state": "live",
             "firstSeenAt": "2026-11-26T01:14:22.312Z"
+          },
+          {
+            "url": "https://ladramacriticscircle.com/destiny-of-desire-center-theatre-group/",
+            "outletId": "ladramacriticscircle.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-19T00:00:18.412Z"
+          },
+          {
+            "url": "https://laexcites.com/destiny-of-desire-mark-taper-forum-adrian-javier",
+            "outletId": "laexcites.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-18T08:04:13.828Z"
+          },
+          {
+            "url": "https://www.latheatrix.com/post/review-destiny-of-desire-at-mark-taper-forum",
+            "outletId": "latheatrix.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-20T10:09:50.928Z"
           },
           {
             "url": "https://ladramacriticscircle.com/destiny-of-desire-center-theatre-group",
@@ -142027,12 +142406,6 @@
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-11-22T02:20:36.933Z"
-          },
-          {
-            "url": "https://laexcites.com/destiny-of-desire-mark-taper-forum-adrian-javier",
-            "outletId": "laexcites.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-18T08:04:13.828Z"
           },
           {
             "url": "https://stagescenela.com/2026/11/destiny-of-desire-2/",
@@ -142057,12 +142430,6 @@
             "outletId": "laexcites.com",
             "state": "live",
             "firstSeenAt": "2026-11-18T08:04:13.828Z"
-          },
-          {
-            "url": "https://ladramacriticscircle.com/destiny-of-desire-center-theatre-group/",
-            "outletId": "ladramacriticscircle.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-19T00:00:18.412Z"
           },
           {
             "url": "https://soundcloud.com/latheatrebites/destiny-of-desire-mark-taper",
@@ -142119,7 +142486,7 @@
         "liveCount": 10,
         "candidateCount": 16
       },
-      "computedAt": "2026-11-27T09:10:55.510Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "detroit-67-regional-2026",
@@ -142878,7 +143245,6 @@
       "previewsStartDate": "2026-11-26",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.bestoftheatre.co.uk/blog/post/kings-head-dick-whittington-adults-only-final-guest-stars",
         "https://johnhargreaves.com/index.php/theatre-reviews/dick-whittington"
       ],
       "dirFiles": 2,
@@ -142899,41 +143265,7 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/kings-head-dick-whittington-adults-only-final-guest-stars",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--ella-dunmore.json",
-              "flag": "clean",
-              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/kings-head-dick-whittington-adults-only-final-guest-stars"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -143023,17 +143355,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/kings-head-dick-whittington-adults-only-final-guest-stars",
-            "host": "bestoftheatre.co.uk",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-27T19:57:21.986Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "dick-whittington-and-his-cat-off-west-end-2026",
@@ -152088,7 +152414,6 @@
       "previewsStartDate": "2026-11-24",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.seeingdance.com/zoonation-ebony-scrooge-251204",
         "https://thespyinthestalls.com/2026/11/ebony-scrooge-2/",
         "https://theatrereviews.design/ebony-scrooge/",
         "https://theatrereviews.design/ebony-scrooge",
@@ -152098,20 +152423,6 @@
       "dirClean": 6,
       "inReviewsJson": 6,
       "missing": [
-        {
-          "url": "https://www.seeingdance.com/zoonation-ebony-scrooge-251204",
-          "host": "seeingdance.com",
-          "knownOutletId": "seeing-dance",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-12-04",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://danceinforma.co.uk/dance-events/ebony-scrooge-2/",
           "host": "danceinforma.co.uk",
@@ -152190,84 +152501,17 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Ebony Scrooge\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Ebony Scrooge\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Ebony Scrooge\" review sadler",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Ebony Scrooge Sadler's Wells East review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Ebony Scrooge Sadler's Wells East review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Ebony Scrooge Sadler's Wells East review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 8,
-        "byReason": {
-          "non-review-host": 4,
-          "no-review-evidence": 4
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://www.seeingdance.com/zoonation-ebony-scrooge-251204",
-          "host": "seeingdance.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
         {
           "url": "https://danceinforma.co.uk/dance-events/ebony-scrooge-2/",
           "host": "danceinforma.co.uk",
@@ -152322,7 +152566,7 @@
         "liveCount": 2,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-27T18:53:26.851Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "echo-and-narcissus-royal-bath-regional-2024",
@@ -169829,6 +170073,7 @@
         "https://www.mummyinthecity.com/raymond-briggs-father-christmas-lyric-review",
         "https://rocknrollerbaby.co.uk/father-christmas-at-the-lyric-hammersmith",
         "https://www.northernsoul.me.uk/father-christmas-sale-waterside-review",
+        "https://rocknrollerbaby.co.uk/father-christmas-at-the-lyric/",
         "https://theatreroyal.com/reviews/father-christmas/",
         "https://theatreroyal.com/reviews/father-christmas",
         "https://surrey.muddystilettos.co.uk/where-to-meet-santa-father-christmas-surrey"
@@ -169933,7 +170178,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -169973,23 +170218,22 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 4,
-            "accepted": 0,
+            "results": 1,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 7,
+        "count": 4,
         "byReason": {
-          "non-review-host": 3,
+          "non-review-host": 1,
           "census-junk-host": 2,
-          "non-review-path": 1,
-          "show-hub": 1
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -170024,6 +170268,14 @@
           "serpCensus": true,
           "nonReviewVerdict": "page-date-before-run",
           "nonReviewDetail": "2025-12-15"
+        },
+        {
+          "url": "https://rocknrollerbaby.co.uk/father-christmas-at-the-lyric/",
+          "host": "rocknrollerbaby.co.uk",
+          "knownOutletId": "rocknrollerbaby",
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2012-12-09"
         }
       ],
       "automatedExcludedListed": 0,
@@ -170132,12 +170384,17 @@
             "url": "https://www.northernsoul.me.uk/father-christmas-sale-waterside-review",
             "host": "northernsoul.me.uk",
             "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://rocknrollerbaby.co.uk/father-christmas-at-the-lyric/",
+            "host": "rocknrollerbaby.co.uk",
+            "reason": "page-date-before-run"
           }
         ],
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-27T09:10:55.510Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "father-time-off-broadway-2026",
@@ -175968,8 +176225,8 @@
         "https://loureviews.blog/2026/11/19/play-review-florence-at-park-theatre/",
         "https://www.westendbestfriend.co.uk/news/review-florence-park-theatre",
         "https://theatreweekly.com/review-florence-at-park-theatre",
-        "https://www.allthatdazzles.co.uk/post/review-florence-park-theatre",
         "https://ayoungishperspective.co.uk/2026/11/20/review-florence-2",
+        "https://www.allthatdazzles.co.uk/post/review-florence-park-theatre",
         "https://www.london-unattached.com/florence-play-honor-santa-barnes/",
         "https://ayoungishperspective.co.uk/2026/11/20/review-florence-2/",
         "https://www.londonboxoffice.co.uk/news/post/florence-park-theatre-review",
@@ -176004,7 +176261,8 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 0,
+            "skipped": true
           },
           "lbo-roundup": {
             "found": true,
@@ -176053,8 +176311,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 4,
-            "accepted": 3,
+            "results": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -176063,7 +176321,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 2,
+            "results": 3,
             "accepted": 1,
             "error": null
           },
@@ -176083,8 +176341,8 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 3,
-            "accepted": 1,
+            "results": 4,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -176094,10 +176352,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 3,
+        "count": 5,
         "byReason": {
-          "non-review-host": 2,
-          "write-path-blocked": 1
+          "non-review-host": 3,
+          "write-path-blocked": 1,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -176127,16 +176386,16 @@
             "firstSeenAt": "2026-11-19T22:57:56.426Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-florence-park-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-19T22:57:56.426Z"
-          },
-          {
             "url": "https://ayoungishperspective.co.uk/2026/11/20/review-florence-2",
             "outletId": "ayoungishperspective.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-22T12:00:13.032Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-florence-park-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-19T22:57:56.426Z"
           },
           {
             "url": "https://www.london-unattached.com/florence-play-honor-santa-barnes/",
@@ -176180,7 +176439,7 @@
         "liveCount": 9,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-26T22:42:24.541Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "floyd-collins-2025",
@@ -180982,8 +181241,7 @@
         "https://playbill.com/article/read-the-reviews-for-broadways-frozen",
         "https://playbill.com/article/read-reviews-for-londons-frozen-starring-samantha-barks-and-stephanie-mckeon",
         "https://playbill.com/article/read-the-reviews-for-frozen-2",
-        "https://www.broadwayworld.com/article/Review-Roundup-FROZEN-National-Tour-Returns-to-the-Stage-What-Are-The-Critics-Saying-20211013",
-        "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
+        "https://www.broadwayworld.com/article/Review-Roundup-FROZEN-National-Tour-Returns-to-the-Stage-What-Are-The-Critics-Saying-20211013"
       ],
       "aggregatorListedUrls": [
         "https://www.amny.com/entertainment/frozen-review-broadway-1.17614511",
@@ -181081,12 +181339,11 @@
         "https://ottawacitizen.com/entertainment/local-arts/musical-review-disneys-frozen-dazzles-with-fantastic-stagecraft-eye-popping-effects-and-a-valuable-lesson",
         "https://www.denverpost.com/2024/06/20/theater-review-broadway-frozen-musical-buell-denver/",
         "https://www.straight.com/arts/broadway-across-canadas-frozen-thaws-iciest-of-hearts",
-        "https://www.thestage.co.uk/reviews/2018/disneys-frozen-review-at-st-james-theatre-new-york/",
         "https://www.onstagentx.com/reviews/disneys-frozen-the-broadway-musical-casa-manana",
         "https://mdtheatreguide.com/2026/11/theatre-review-disneys-frozen-the-broadway-musical-at-the-childrens-theatre-of-annapolis/",
         "https://rachelsreviewstheatre.com/2026/11/18/centerpoint-continues-to-dazzle-with-frozen-review/"
       ],
-      "dirFiles": 6,
+      "dirFiles": 7,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -181100,10 +181357,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181130,10 +181383,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181147,10 +181396,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181164,10 +181409,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181181,10 +181422,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181198,10 +181435,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181215,10 +181448,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181232,10 +181461,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181249,10 +181474,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181266,10 +181487,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181296,10 +181513,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181313,10 +181526,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181330,10 +181539,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181347,10 +181552,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181377,10 +181578,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181420,10 +181617,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -181437,10 +181630,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-broadways-frozen"
-            },
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
             }
           ]
         },
@@ -182394,19 +182583,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/2018/disneys-frozen-review-at-st-james-theatre-new-york/",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322"
-            }
-          ]
-        },
-        {
           "url": "https://www.onstagentx.com/reviews/disneys-frozen-the-broadway-musical-casa-manana",
           "host": "onstagentx.com",
           "knownOutletId": null,
@@ -182487,17 +182663,17 @@
         "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 1105,
+        "count": 791,
         "byReason": {
-          "aggregator-internal-nav": 593,
-          "not-http-url": 240,
+          "non-review-host": 101,
+          "aggregator-internal-nav": 391,
+          "not-http-url": 175,
           "production-database-listing": 41,
-          "aggregator-section-root": 20,
-          "non-review-host": 129,
+          "aggregator-section-root": 16,
           "non-stage-review": 4,
-          "roundup-page": 52,
-          "podcast-episode": 24,
-          "tag-index-page": 2
+          "roundup-page": 50,
+          "tag-index-page": 1,
+          "podcast-episode": 12
         }
       },
       "dedupedVariants": [],
@@ -182517,10 +182693,6 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-FROZEN-National-Tour-Returns-to-the-Stage-What-Are-The-Critics-Saying-20211013",
           "publishDate": "2021-10-13"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Did-Critics-Find-A-Winter-Wonderland-at-FROZEN-on-Broadway-20180322",
-          "publishDate": "2018-03-22"
         }
       ],
       "automatedExcludedListed": 2,
@@ -183192,13 +183364,6 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/2018/disneys-frozen-review-at-st-james-theatre-new-york/",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
           "url": "https://www.onstagentx.com/reviews/disneys-frozen-the-broadway-musical-casa-manana",
           "host": "onstagentx.com",
           "priorRun": false,
@@ -183262,7 +183427,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-27T19:57:21.986Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "fulfillment-center-off-broadway-2017",
@@ -253272,90 +253437,20 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"It’s A Wonderful Life: A Live Radio Play\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"It’s A Wonderful Life: A Live Radio Play\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"It’s A Wonderful Life: A Live Radio Play\" review broadhurst",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"It’s A Wonderful Life: A Live Radio Play\" Landry review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "It’s A Wonderful Life: A Live Radio Play Broadhurst Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "It’s A Wonderful Life: A Live Radio Play Broadhurst Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "It’s A Wonderful Life: A Live Radio Play Broadhurst Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 411,
+        "count": 400,
         "byReason": {
-          "non-review-host": 55,
-          "not-http-url": 88,
+          "non-review-host": 51,
           "aggregator-internal-nav": 239,
+          "not-http-url": 88,
+          "production-database-listing": 9,
           "aggregator-section-root": 9,
-          "roundup-page": 2,
-          "non-review-path": 2,
-          "bare-host": 1,
-          "production-database-listing": 11,
           "non-stage-review": 1,
-          "no-review-evidence": 1,
-          "ticketing-reseller": 2
+          "roundup-page": 2,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [
@@ -253692,7 +253787,7 @@
         "liveCount": 20,
         "candidateCount": 24
       },
-      "computedAt": "2026-11-27T16:52:15.945Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "its-a-wonderful-life-a-live-radio-play-regional-2025",
@@ -254407,7 +254502,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-27T19:57:21.986Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
@@ -325369,7 +325464,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-27T19:57:21.986Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "miss-julie-regional-2026",
@@ -363901,72 +363996,24 @@
       "aggregatorListedUrls": [
         "https://www.londonpubtheatres.com/review-orlando-a-pornobiography-at-the-new-diorama-theatre-10-november-12-december-2026",
         "https://www.timeout.com/london/theatre/orlando-a-pornobiography-review",
-        "https://ayoungishperspective.co.uk/2026/11/20/review-orlando-a-pornobiography/",
-        "https://redbuslondinium.uk/2026/11/19/review-orlando-a-pornobiography-new-diorama-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
+        "https://loureviews.blog/2026/11/20/play-review-orlando-a-pornobiography-at-new-diorama-theatre/",
         "https://everything-theatre.co.uk/2026/11/review-orlando-a-pornobiography-new-diorama/",
-        "https://www.britishtheatreguide.info/listings/7922",
+        "https://ayoungishperspective.co.uk/2026/11/20/review-orlando-a-pornobiography/",
         "https://www.timeout.com/london/theatre/orlando-a-pornobiography",
         "https://www.thereviewshub.com/orlando-a-pornobiography-new-diorama-theatre-london/",
         "https://thelivereview.co.uk/orlando-a-pornobiography-review-new-diorama-theatre/",
         "https://www.thestage.co.uk/reviews/orlando-a-pornobiography-review-new-diorama-london",
         "https://www.flickermagazine.art/queer-events/orlando-a-pornobiography-new-diorama",
         "https://www.flickermagazine.art/post/orlando-a-pornobiography-new-diorama-theatre-review-b714d",
-        "https://loureviews.blog/2026/11/20/play-review-orlando-a-pornobiography-at-new-diorama-theatre/",
-        "https://therealchrisparkle.com/2026/11/19/review-orlando-a-pornobiography-new-diorama-theatre-london-18th-november-2026/"
+        "https://therealchrisparkle.com/2026/11/19/review-orlando-a-pornobiography-new-diorama-theatre-london-18th-november-2026/",
+        "https://redbuslondinium.uk/2026/11/19/review-orlando-a-pornobiography-new-diorama-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/"
       ],
-      "dirFiles": 24,
-      "dirClean": 10,
-      "inReviewsJson": 10,
-      "missing": [
-        {
-          "url": "https://redbuslondinium.uk/2026/11/19/review-orlando-a-pornobiography-new-diorama-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
-          "host": "redbuslondinium.uk",
-          "knownOutletId": "redbuslondinium",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "dirFiles": 25,
+      "dirClean": 11,
+      "inReviewsJson": 11,
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.britishtheatreguide.info/listings/7922",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "british-theatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.britishtheatreguide.info/listings/7922"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 10,
@@ -364029,8 +364076,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
-            "accepted": 3,
+            "results": 2,
+            "accepted": 2,
             "error": null
           },
           {
@@ -364039,7 +364086,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 2,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -364049,8 +364096,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 5,
-            "accepted": 0,
+            "results": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -364059,8 +364106,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 4,
-            "accepted": 2,
+            "results": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -364069,57 +364116,32 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 5,
-            "accepted": 1,
+            "results": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 10,
+        "count": 6,
         "byReason": {
-          "non-review-host": 2,
-          "tag-index-page": 3,
+          "non-review-host": 1,
+          "write-path-blocked": 1,
           "census-junk-host": 2,
-          "no-review-evidence": 3
+          "tag-index-page": 1,
+          "event-listing": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://redbuslondinium.uk/2026/11/19/review-orlando-a-pornobiography-new-diorama-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
-          "host": "redbuslondinium.uk",
-          "outletId": "redbuslondinium",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "redbuslondinium",
-            "outlet": "redbuslondinium",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://redbuslondinium.uk/2026/11/19/review-orlando-a-pornobiography-new-diorama-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -364135,14 +364157,20 @@
             "firstSeenAt": "2026-11-21T18:42:56.545Z"
           },
           {
-            "url": "https://ayoungishperspective.co.uk/2026/11/20/review-orlando-a-pornobiography/",
-            "outletId": "ayoungishperspective.co.uk",
+            "url": "https://loureviews.blog/2026/11/20/play-review-orlando-a-pornobiography-at-new-diorama-theatre/",
+            "outletId": "loureviews.blog",
             "state": "live",
             "firstSeenAt": "2026-11-23T01:03:24.910Z"
           },
           {
             "url": "https://everything-theatre.co.uk/2026/11/review-orlando-a-pornobiography-new-diorama/",
             "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-23T01:03:24.910Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/11/20/review-orlando-a-pornobiography/",
+            "outletId": "ayoungishperspective.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-23T01:03:24.910Z"
           },
@@ -364183,12 +364211,6 @@
             "firstSeenAt": "2026-11-23T01:03:24.910Z"
           },
           {
-            "url": "https://loureviews.blog/2026/11/20/play-review-orlando-a-pornobiography-at-new-diorama-theatre/",
-            "outletId": "loureviews.blog",
-            "state": "live",
-            "firstSeenAt": "2026-11-23T01:03:24.910Z"
-          },
-          {
             "url": "https://therealchrisparkle.com/2026/11/19/review-orlando-a-pornobiography-new-diorama-theatre-london-18th-november-2026/",
             "outletId": "therealchrisparkle.com",
             "state": "live",
@@ -364196,24 +364218,17 @@
           },
           {
             "url": "https://redbuslondinium.uk/2026/11/19/review-orlando-a-pornobiography-new-diorama-theatre-%E2%98%85%E2%98%85%E2%98%85%C2%BD/",
-            "outletId": "redbuslondinium",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "redbuslondinium.uk",
+            "state": "live",
             "firstSeenAt": "2026-11-26T22:42:24.541Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.britishtheatreguide.info/listings/7922",
-            "host": "britishtheatreguide.info",
-            "reason": "confirmed-non-review"
-          }
-        ],
-        "liveCount": 10,
+        "excluded": [],
+        "liveCount": 11,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-26T22:42:24.541Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "orphans-off-west-end-2026",
@@ -367281,8 +367296,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 1,
+            "results": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -367291,8 +367306,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 0,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -367311,24 +367326,22 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 5,
-            "accepted": 2,
+            "results": 3,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 5,
+        "count": 4,
         "byReason": {
-          "non-review-host": 1,
-          "production-database-listing": 1,
-          "no-review-evidence": 1,
-          "ticketing-reseller": 1,
-          "write-path-blocked": 1
+          "non-review-host": 2,
+          "write-path-blocked": 1,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -367403,7 +367416,7 @@
         "liveCount": 6,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-26T22:42:24.541Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "othello-off-broadway-2016",
@@ -410289,7 +410302,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-27T19:57:21.986Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "roost-oran-mor-regional-2024",
@@ -411464,7 +411477,6 @@
       "aggregatorListedUrls": [
         "https://frontmezzjunkies.com/2026/09/10/safe-house-turns-a-family-bunker-into-a-dangerous-shelter/",
         "https://t2conline.com/safe-house-when-protection-becomes-another-kind-of-prison/",
-        "https://www.theaterscene.net/musicals/offbway/safe-house/scotty-bennett/",
         "https://www.theaterscene.net/plays/offbway-plays/safe-house-2/victor-gluck/",
         "https://theaterpizzazz.com/safe-house-by-l-b-browne-upsetting-and-worthy/",
         "https://aislesay.com/safe-house/",
@@ -411517,15 +411529,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 296,
+        "count": 297,
         "byReason": {
-          "non-review-host": 16,
-          "aggregator-internal-nav": 210,
+          "non-review-host": 29,
+          "aggregator-internal-nav": 198,
           "not-http-url": 61,
-          "aggregator-section-root": 5,
+          "aggregator-section-root": 4,
           "roundup-page": 2,
           "podcast-episode": 1,
-          "feature-not-review": 1
+          "feature-not-review": 1,
+          "stored-date-before-production": 1
         }
       },
       "dedupedVariants": [],
@@ -411575,12 +411588,6 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           },
           {
-            "url": "https://www.theaterscene.net/musicals/offbway/safe-house/scotty-bennett/",
-            "outletId": "theaterscene.net",
-            "state": "live",
-            "firstSeenAt": "2026-09-14T19:55:29.406Z"
-          },
-          {
             "url": "https://www.theaterscene.net/plays/offbway-plays/safe-house-2/victor-gluck/",
             "outletId": "theaterscene.net",
             "state": "live",
@@ -411611,7 +411618,7 @@
         "liveCount": 5,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-10T04:23:20.364Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "safe-space-chichester-festival-regional-2025",
@@ -412078,7 +412085,6 @@
         "https://www.nytimes.com/2018/09/25/arts/music/review-met-opera-samson-dalila.html",
         "https://observer.com/2018/09/samson-et-dalila-review-met-orgy-still-boring/",
         "http://operawire.com/metropolitan-opera-2018-19-review-samson-et-dalila/",
-        "https://operawire.com/royal-opera-house-2026-review-samson-et-dalila/",
         "https://playstosee.com/reviews/opera-reviews/samson-et-dalila-2/"
       ],
       "dirFiles": 3,
@@ -412121,20 +412127,6 @@
             {
               "source": "aggregator-article",
               "sourceUrl": "https://playbill.com/article/read-the-reviews-for-the-metropolitan-operas-new-samson-et-dalila"
-            }
-          ]
-        },
-        {
-          "url": "https://operawire.com/royal-opera-house-2026-review-samson-et-dalila/",
-          "host": "operawire.com",
-          "knownOutletId": "operawire",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2026-05-27",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
             }
           ]
         }
@@ -412180,11 +412172,11 @@
       "candidatesRejected": {
         "count": 113,
         "byReason": {
+          "non-review-host": 24,
           "aggregator-internal-nav": 61,
           "not-http-url": 9,
           "production-database-listing": 12,
           "aggregator-section-root": 4,
-          "non-review-host": 24,
           "non-stage-review": 1,
           "roundup-page": 2
         }
@@ -412219,13 +412211,6 @@
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
-        },
-        {
-          "url": "https://operawire.com/royal-opera-house-2026-review-samson-et-dalila/",
-          "host": "operawire.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
         }
       ],
       "ingestResults": [],
@@ -412256,7 +412241,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-27T19:57:21.986Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "sandra-off-broadway-2022",
@@ -417143,7 +417128,6 @@
         "https://theaterpizzazz.com/seven-guitars-sings-a-brilliant-blues/",
         "https://www.talkinbroadway.com/page/ob/11_23_26b.html",
         "https://pagesonstages.com/2026/11/23/seven-guitars/",
-        "https://www.adriandimanlig.com/the-hangover-report-lincoln-center-theater-hits-the-bullseye-with-a-perfectly-modulated-revival-of-august-wilsons-seven-guitars/",
         "https://pagesonstages.com/2026/11/23/seven-guitars",
         "https://www.offoffonline.com/2026/11/21/august-wilsons-seven-guitars",
         "https://newyorktheater.me/2026/11/23/seven-guitars-review",
@@ -417154,27 +417138,16 @@
         "https://www.nysun.com/article/seven-guitars-resounds-with-poetry-and-pain",
         "https://culturesauce.com/seven-guitars-august-wilson-off-broadway-review",
         "https://amsterdamnews.com/news/2026/11/26/seven-guitars-is-stellar-at-lincoln-center/",
+        "https://www.adriandimanlig.com/the-hangover-report-lincoln-center-theater-hits-the-bullseye-with-a-perfectly-modulated-revival-of-august-wilsons-seven-guitars/",
         "https://alanpaul.substack.com/why-august-wilsons-seven-guitars",
         "https://www.ticketclub.com/august-wilsons-seven-guitars-2026-11-10-8206251",
         "https://www.broadwayblack.com/productions/seven-guitars/",
         "https://variety.com/legit/reviews/seven-guitars-4-1200513958"
       ],
-      "dirFiles": 21,
-      "dirClean": 19,
-      "inReviewsJson": 19,
+      "dirFiles": 22,
+      "dirClean": 20,
+      "inReviewsJson": 20,
       "missing": [
-        {
-          "url": "https://www.adriandimanlig.com/the-hangover-report-lincoln-center-theater-hits-the-bullseye-with-a-perfectly-modulated-revival-of-august-wilsons-seven-guitars/",
-          "host": "adriandimanlig.com",
-          "knownOutletId": "adriandimanlig",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://alanpaul.substack.com/why-august-wilsons-seven-guitars",
           "host": "alanpaul.substack.com",
@@ -417238,88 +417211,19 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Seven Guitars\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Seven Guitars\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Seven Guitars\" review lincoln",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Seven Guitars\" Wilson review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Seven Guitars Lincoln Center Theater/Mitzi E. Newhouse Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Seven Guitars Lincoln Center Theater/Mitzi E. Newhouse Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Seven Guitars Lincoln Center Theater/Mitzi E. Newhouse Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 7,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 384,
+        "count": 374,
         "byReason": {
-          "census-junk-host": 1,
-          "non-review-host": 56,
-          "not-http-url": 66,
-          "aggregator-internal-nav": 239,
-          "aggregator-section-root": 9,
-          "roundup-page": 2,
+          "non-review-host": 51,
+          "aggregator-internal-nav": 235,
+          "not-http-url": 67,
           "production-database-listing": 9,
+          "aggregator-section-root": 9,
           "non-stage-review": 1,
-          "show-listing-page": 1
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
@@ -417350,21 +417254,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.adriandimanlig.com/the-hangover-report-lincoln-center-theater-hits-the-bullseye-with-a-perfectly-modulated-revival-of-august-wilsons-seven-guitars/",
-          "host": "adriandimanlig.com",
-          "outletId": "adriandimanlig",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
           "url": "https://variety.com/legit/reviews/seven-guitars-4-1200513958",
           "host": "variety.com",
           "outletId": "variety",
@@ -417384,13 +417273,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "adriandimanlig",
-            "outlet": "adriandimanlig",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.adriandimanlig.com/the-hangover-report-lincoln-center-theater-hits-the-bullseye-with-a-perfectly-modulated-revival-of-august-wilsons-seven-guitars/"
-          },
           {
             "outletId": "alanpaul.substack.com",
             "outlet": "alanpaul.substack.com",
@@ -417562,9 +417444,8 @@
           },
           {
             "url": "https://www.adriandimanlig.com/the-hangover-report-lincoln-center-theater-hits-the-bullseye-with-a-perfectly-modulated-revival-of-august-wilsons-seven-guitars/",
-            "outletId": "adriandimanlig",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "adriandimanlig.com",
+            "state": "live",
             "firstSeenAt": "2026-11-27T16:52:15.945Z"
           },
           {
@@ -417598,10 +417479,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 16,
+        "liveCount": 17,
         "candidateCount": 21
       },
-      "computedAt": "2026-11-27T16:52:15.945Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "seven-guitars-regional-2024",
@@ -434406,6 +434287,45 @@
         "candidateCount": 1
       },
       "computedAt": "2026-10-31T17:58:22.702Z"
+    },
+    {
+      "showId": "spring-awakening-off-broadway-2026",
+      "title": "Spring Awakening",
+      "openingDate": "2026-12-17",
+      "status": "previews",
+      "category": "off-broadway",
+      "previewsStartDate": "2026-11-27",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "spring-dances-2026-off-broadway-2026",
@@ -458649,9 +458569,9 @@
         "https://uktheatrereviews.com/shows/the-afronauts/reviews/stage-dave-fargnoli/",
         "https://www.ft.com/content/6c21514c-35c3-4a47-bbd0-acd6d94d2f90"
       ],
-      "dirFiles": 34,
-      "dirClean": 23,
-      "inReviewsJson": 23,
+      "dirFiles": 38,
+      "dirClean": 27,
+      "inReviewsJson": 27,
       "missing": [
         {
           "url": "https://uktheatrereviews.com/shows/the-afronauts/reviews/stage-dave-fargnoli/",
@@ -458669,6 +458589,22 @@
       "dirOnly": [
         {
           "host": "playsinternational.org.uk",
+          "count": 1
+        },
+        {
+          "host": "sierz.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theartsdispatch.com",
+          "count": 1
+        },
+        {
+          "host": "theatre-news.com",
+          "count": 1
+        },
+        {
+          "host": "viewfromthegods.co.uk",
           "count": 1
         }
       ],
@@ -458733,74 +458669,12 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Afronauts\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Afronauts\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Afronauts\" review court",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Afronauts Royal Court review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 3,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Afronauts Royal Court review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Afronauts Royal Court review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 9,
-        "byReason": {
-          "non-review-host": 3,
-          "bare-host": 3,
-          "tag-index-page": 1,
-          "venue-production-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -459010,7 +458884,7 @@
         "liveCount": 22,
         "candidateCount": 23
       },
-      "computedAt": "2026-11-27T16:52:15.945Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "the-ally-regional-2026",
@@ -463249,9 +463123,7 @@
         "https://www.broadwayworld.com/rhode-island/article/Review-THE-BODYGUARD-at-Providence-Performing-Arts-Center-20261024",
         "https://www.blackgirlincle.com/2026/10/28/the-bodyguard-musical-tour-review/",
         "https://www.broadwayworld.com/cleveland/article/Review-THE-BODYGUARD-National-Tour-at-The-Stranahan-Theater-20261016",
-        "https://fairypoweredproductions.com/the-bodyguard-review-14/",
         "https://thatshelf.com/drawn-together-review-a-spanish-grittier-bodyguard-fails/",
-        "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
         "https://patch.com/connecticut/naugatuck/theater-review-bodyguard-musical-city-stage-company-nodx",
         "https://www.alledinburghtheatre.com/the-bodyguard-edinburgh-playhouse-uk-tour-2026-review/",
         "https://www.metrmag.com/featured-stories/metrmag-spotlight-on-jonathan-blansfield-of-the-bodyguard-musical-coming-to-the-hanover-theatre-worcester-ma",
@@ -463260,7 +463132,7 @@
       ],
       "dirFiles": 33,
       "dirClean": 7,
-      "inReviewsJson": 6,
+      "inReviewsJson": 7,
       "missing": [],
       "dirOnly": [
         {
@@ -463301,40 +463173,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
-          "host": "aroundthetownchicago.com",
-          "knownOutletId": "around-the-town-chicago",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "around-the-town-chicago--julia-w-rath.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/"
-            },
-            {
-              "file": "around-the-town-chicago--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/"
-            }
-          ],
-          "exclusion": "humanExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
         },
         {
           "url": "https://patch.com/connecticut/naugatuck/theater-review-bodyguard-musical-city-stage-company-nodx",
@@ -463489,27 +463327,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 303,
+        "count": 299,
         "byReason": {
-          "non-review-host": 15,
-          "aggregator-internal-nav": 208,
-          "not-http-url": 69,
-          "aggregator-section-root": 5,
-          "podcast-episode": 1,
-          "roundup-page": 5
+          "non-review-host": 26,
+          "aggregator-internal-nav": 199,
+          "not-http-url": 68,
+          "aggregator-section-root": 4,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
-      "nonReviewCandidates": [
-        {
-          "url": "https://fairypoweredproductions.com/the-bodyguard-review-14/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2026-05-13"
-        }
-      ],
       "automatedExcludedListed": 6,
       "unextractable": [],
       "censusVerdict": {
@@ -463628,22 +463455,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://fairypoweredproductions.com/the-bodyguard-review-14/",
-            "host": "fairypoweredproductions.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
-            "host": "aroundthetownchicago.com",
-            "reason": "collected-and-excluded"
-          }
-        ],
+        "excluded": [],
         "liveCount": 3,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-18T14:59:57.026Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "the-book-of-grace-regional-2025",
@@ -466335,10 +466151,10 @@
       "previewsStartDate": "2026-11-04",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.vulture.com/article/theater-review-the-charioteer-dan-giles",
         "https://www.vulture.com/article/theater-review-the-charioteer-dan-giles.html",
         "https://www.nytimes.com/2026/11/08/theater/the-charioteer-review",
         "https://www.nytimes.com/2026/11/08/theater/the-charioteer-review.html",
-        "https://www.vulture.com/article/theater-review-the-charioteer-dan-giles",
         "https://www.petersommer.com/blog/another-thing/motya-charioteer",
         "https://www.banderasnews.com/1008/entbk-charioteer.htm"
       ],
@@ -466391,7 +466207,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -466401,8 +466217,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
-            "accepted": 2,
+            "results": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -466411,8 +466227,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 0,
+            "results": 5,
+            "accepted": 1,
             "error": null
           },
           {
@@ -466421,7 +466237,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -466438,14 +466254,15 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 8,
+        "count": 11,
         "byReason": {
-          "non-review-host": 6,
-          "aggregator-internal-nav": 2
+          "non-review-host": 8,
+          "aggregator-internal-nav": 2,
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
@@ -466490,6 +466307,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.vulture.com/article/theater-review-the-charioteer-dan-giles",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-22T10:43:06.875Z"
+          },
+          {
             "url": "https://www.vulture.com/article/theater-review-the-charioteer-dan-giles.html",
             "outletId": "vulture.com",
             "state": "live",
@@ -466506,12 +466329,6 @@
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-11-09T12:05:56.614Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/theater-review-the-charioteer-dan-giles",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-22T10:43:06.875Z"
           },
           {
             "url": "https://www.petersommer.com/blog/another-thing/motya-charioteer",
@@ -466533,7 +466350,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-26T22:42:24.541Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -482150,9 +481967,9 @@
         "https://www.nytimes.com/theater/fantasticks-broadway-longest-running-musical",
         "https://www.nytimes.com/2026/11/16/theater/the-fantasticks-review-broadway"
       ],
-      "dirFiles": 45,
-      "dirClean": 34,
-      "inReviewsJson": 32,
+      "dirFiles": 46,
+      "dirClean": 35,
+      "inReviewsJson": 33,
       "missing": [
         {
           "url": "https://www.hastingstribune.com/ap/entertainment/review-with-simple-gender-switch-the-fantasticks-gets-a-new-life-on-broadway/article_942da163-0fbb-57f7-ba4f-db65c262bcc6.html",
@@ -482218,6 +482035,10 @@
         },
         {
           "host": "1minutecritic.substack.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
           "count": 1
         },
         {
@@ -482316,8 +482137,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
-            "accepted": 0,
+            "results": 6,
+            "accepted": 2,
             "error": null
           },
           {
@@ -482336,8 +482157,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
-            "accepted": 0,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -482346,7 +482167,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -482366,27 +482187,28 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 0,
+            "results": 6,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 0,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 403,
+        "count": 405,
         "byReason": {
-          "not-http-url": 90,
           "non-review-host": 59,
-          "aggregator-internal-nav": 235,
-          "aggregator-section-root": 9,
-          "roundup-page": 2,
-          "bare-host": 2,
+          "aggregator-internal-nav": 239,
+          "not-http-url": 88,
           "production-database-listing": 5,
-          "non-stage-review": 1
+          "aggregator-section-root": 9,
+          "non-stage-review": 1,
+          "roundup-page": 2,
+          "bare-host": 1,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
@@ -482422,7 +482244,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
         }
       ],
       "ingestSkippedByCap": [],
@@ -482668,7 +482490,7 @@
         "liveCount": 23,
         "candidateCount": 26
       },
-      "computedAt": "2026-11-27T09:10:55.510Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "the-farce-awakens-feydeau-x-2-regional-2026",
@@ -544106,10 +543928,10 @@
       "aggregatorListedUrls": [
         "https://www.talkinbroadway.com/page/ob/11_08_26.html",
         "https://www.theaterscene.net/plays/offbway-plays/the-steel-man/tony-marinelli/",
-        "https://www.becauseofbway.com/reviews/the-steel-man",
         "https://theaterlife.com/the-steel-man",
         "https://theaterlife.com/the-steel-man/",
         "https://t2conline.com/the-steel-man-when-the-sins-of-the-father-become-the-burden-of-the-son/",
+        "https://www.becauseofbway.com/reviews/the-steel-man",
         "https://gurmanagency.com/plays/news-cary-gitters-the-steel-man-heading-off-broadway/",
         "https://gurmanagency.com/news/news-reviews-the-steel-man-at-penguin-rep/"
       ],
@@ -544182,8 +544004,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 1,
+            "results": 5,
+            "accepted": 2,
             "error": null
           },
           {
@@ -544192,8 +544014,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
-            "accepted": 1,
+            "results": 3,
+            "accepted": 0,
             "error": null
           },
           {
@@ -544202,7 +544024,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -544212,8 +544034,8 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 3,
-            "accepted": 1,
+            "results": 6,
+            "accepted": 0,
             "error": null
           },
           {
@@ -544222,25 +544044,24 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 3,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 13,
+        "count": 11,
         "byReason": {
-          "non-review-host": 7,
-          "aggregator-internal-nav": 2,
-          "census-junk-host": 1,
-          "ticketing-listing": 1,
-          "show-listing-page": 1,
-          "merch-store": 1
+          "non-review-host": 4,
+          "write-path-blocked": 1,
+          "aggregator-internal-nav": 3,
+          "bare-host": 1,
+          "show-listing-page": 2
         }
       },
       "dedupedVariants": [],
@@ -544355,7 +544176,7 @@
         "liveCount": 4,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-27T09:10:55.510Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -549680,16 +549501,14 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://everything-theatre.co.uk/2026/11/review-the-ugly-one-arcola-theatre/",
+        "https://www.thestage.co.uk/reviews/the-ugly-one-review-arcola-theatre-london",
         "https://theatreandtonic.co.uk/blog/the-ugly-one-at-arcola-theatre-review",
         "https://thespyinthestalls.com/2026/11/the-ugly-one",
-        "https://www.thestage.co.uk/reviews/the-ugly-one-review-arcola-theatre-london",
         "https://playsinternational.org.uk/the-ugly-one-arcola-theatre",
-        "https://fairypoweredproductions.com/ugly-one-review/",
-        "https://www.ikonlondonmagazine.com/the-ugly-one-arcola-theatre-review",
-        "https://www.timeout.com/london/theatre/the-ugly-one-3",
-        "https://liamodell.com/the-ugly-one-review-hope-theatre-london-islington",
-        "https://playsinternational.org.uk/the-ugly-one-arcola-theatre/",
         "https://www.thereviewshub.com/the-ugly-one-arcola-theatre-london/",
+        "https://www.timeout.com/london/theatre/the-ugly-one-3",
+        "https://www.ikonlondonmagazine.com/the-ugly-one-arcola-theatre-review",
+        "https://playsinternational.org.uk/the-ugly-one-arcola-theatre/",
         "https://www.ikonlondonmagazine.com/the-ugly-one-arcola-theatre-review/",
         "https://thespyinthestalls.com/2026/11/the-ugly-one/",
         "https://ayoungishperspective.co.uk/2026/11/20/review-the-ugly-one",
@@ -549817,7 +549636,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 6,
+            "results": 5,
             "accepted": 5,
             "error": null
           },
@@ -549827,7 +549646,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 5,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -549837,7 +549656,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 2,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -549847,8 +549666,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 5,
-            "accepted": 0,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -549857,23 +549676,22 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 4,
+            "results": 4,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 10,
+        "count": 7,
         "byReason": {
-          "non-review-host": 4,
+          "non-review-host": 3,
           "ticketing-reseller": 1,
-          "no-review-evidence": 4,
-          "venue-production-page": 1
+          "no-review-evidence": 3
         }
       },
       "dedupedVariants": [],
@@ -549884,22 +549702,6 @@
           "knownOutletId": "timeout-london",
           "nonReviewVerdict": "timeout-listing-blurb",
           "nonReviewDetail": "unauthored-and-pre-opening"
-        },
-        {
-          "url": "https://fairypoweredproductions.com/ugly-one-review/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2017-06-11"
-        },
-        {
-          "url": "https://liamodell.com/the-ugly-one-review-hope-theatre-london-islington",
-          "host": "liamodell.com",
-          "knownOutletId": "liamodell",
-          "serpCensus": true,
-          "nonReviewVerdict": "page-date-before-run",
-          "nonReviewDetail": "2023-09-23"
         }
       ],
       "automatedExcludedListed": 0,
@@ -550008,6 +549810,12 @@
             "firstSeenAt": "2026-11-21T08:06:13.782Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/the-ugly-one-review-arcola-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-21T21:34:55.343Z"
+          },
+          {
             "url": "https://theatreandtonic.co.uk/blog/the-ugly-one-at-arcola-theatre-review",
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
@@ -550020,16 +549828,16 @@
             "firstSeenAt": "2026-11-21T12:21:28.060Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/the-ugly-one-review-arcola-theatre-london",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-21T21:34:55.343Z"
-          },
-          {
             "url": "https://playsinternational.org.uk/the-ugly-one-arcola-theatre",
             "outletId": "playsinternational.org.uk",
             "state": "live",
             "firstSeenAt": "2026-11-22T01:06:26.814Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/the-ugly-one-arcola-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-22T07:39:01.562Z"
           },
           {
             "url": "https://www.ikonlondonmagazine.com/the-ugly-one-arcola-theatre-review",
@@ -550042,12 +549850,6 @@
             "outletId": "playsinternational.org.uk",
             "state": "live",
             "firstSeenAt": "2026-11-22T12:00:13.032Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/the-ugly-one-arcola-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-22T07:39:01.562Z"
           },
           {
             "url": "https://www.ikonlondonmagazine.com/the-ugly-one-arcola-theatre-review/",
@@ -550114,22 +549916,12 @@
             "url": "https://www.timeout.com/london/theatre/the-ugly-one-3",
             "host": "timeout.com",
             "reason": "timeout-listing-blurb"
-          },
-          {
-            "url": "https://fairypoweredproductions.com/ugly-one-review/",
-            "host": "fairypoweredproductions.com",
-            "reason": "page-date-before-run"
-          },
-          {
-            "url": "https://liamodell.com/the-ugly-one-review-hope-theatre-london-islington",
-            "host": "liamodell.com",
-            "reason": "page-date-before-run"
           }
         ],
         "liveCount": 9,
         "candidateCount": 13
       },
-      "computedAt": "2026-11-27T09:10:55.510Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
@@ -565151,17 +564943,17 @@
       "previewsStartDate": "2026-11-16",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://southlondon.co.uk/lifestyle/review-top-gunchained-at-wiltons/",
         "https://everything-theatre.co.uk/2026/11/review-top-gunchained-wiltons-music-hall/",
+        "https://southlondon.co.uk/lifestyle/review-top-gunchained-at-wiltons/",
+        "https://thespyinthestalls.com/2026/11/top-gunchained",
         "https://www.broadwayworld.com/translate/ru/Review-TOP-GUNCHAINED-Wiltons-Music-Hall-20261118",
         "https://www.broadwayworld.com/translate/tr/Review-TOP-GUNCHAINED-Wiltons-Music-Hall-20261118",
-        "https://thespyinthestalls.com/2026/11/top-gunchained",
         "https://thespyinthestalls.com/2026/11/top-gunchained/",
-        "https://www.britishtheatreguide.info/top-gunchained-bristol-old-vic-26065",
         "https://www.broadwayworld.com/westend/article/Review-TOP-GUNCHAINED-Wiltons-Music-Hall-20261118",
         "https://www.thereviewshub.com/top-gunchained-wiltons-music-hall-london/",
         "https://southlondon.co.uk/lifestyle/top-gunchained/",
         "https://www.londonpubtheatres.com/top-gunchained-written-performed-by-richard-marsh-at-wilton-s-music-hall-16-21-november-2026",
+        "https://www.britishtheatreguide.info/top-gunchained-bristol-old-vic-26065",
         "https://www.britishtheatreguide.info/reviews/top-gunchained-bristol-old-vic-26065"
       ],
       "dirFiles": 10,
@@ -565229,7 +565021,8 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 0,
+            "skipped": true
           },
           "lbo-roundup": {
             "found": false,
@@ -565269,8 +565062,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
-            "accepted": 2,
+            "results": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -565279,7 +565072,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
+            "results": 2,
             "accepted": 2,
             "error": null
           },
@@ -565290,7 +565083,7 @@
             "geo": "gb",
             "ok": true,
             "results": 3,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -565299,8 +565092,8 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 5,
-            "accepted": 2,
+            "results": 3,
+            "accepted": 0,
             "error": null
           },
           {
@@ -565309,23 +565102,23 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 5,
+            "results": 6,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
         "count": 11,
         "byReason": {
-          "non-review-host": 3,
+          "non-review-host": 5,
+          "write-path-blocked": 1,
           "tag-index-page": 2,
-          "no-review-evidence": 3,
-          "write-path-blocked": 2,
+          "no-review-evidence": 2,
           "ticketing-listing": 1
         }
       },
@@ -565371,16 +565164,22 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://everything-theatre.co.uk/2026/11/review-top-gunchained-wiltons-music-hall/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-18T21:11:04.729Z"
+          },
+          {
             "url": "https://southlondon.co.uk/lifestyle/review-top-gunchained-at-wiltons/",
             "outletId": "southlondon.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-17T20:08:23.484Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/11/review-top-gunchained-wiltons-music-hall/",
-            "outletId": "everything-theatre.co.uk",
+            "url": "https://thespyinthestalls.com/2026/11/top-gunchained",
+            "outletId": "thespyinthestalls.com",
             "state": "live",
-            "firstSeenAt": "2026-11-18T21:11:04.729Z"
+            "firstSeenAt": "2026-11-19T06:40:01.807Z"
           },
           {
             "url": "https://www.broadwayworld.com/translate/ru/Review-TOP-GUNCHAINED-Wiltons-Music-Hall-20261118",
@@ -565393,12 +565192,6 @@
             "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-11-26T22:42:24.541Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/11/top-gunchained",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-19T06:40:01.807Z"
           },
           {
             "url": "https://thespyinthestalls.com/2026/11/top-gunchained/",
@@ -565450,7 +565243,7 @@
         "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-26T22:42:24.541Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "top-hat-chichester-festival-regional-2025",
@@ -569948,7 +569741,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -569958,7 +569751,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -569988,7 +569781,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 3,
             "accepted": 0,
             "error": null
           }
@@ -569999,10 +569792,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 11,
+        "count": 10,
         "byReason": {
-          "non-review-host": 8,
-          "aggregator-internal-nav": 2,
+          "non-review-host": 6,
+          "aggregator-internal-nav": 3,
           "ticketing-listing": 1
         }
       },
@@ -570026,7 +569819,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-26T22:42:24.541Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026",
@@ -570604,7 +570397,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-27T19:57:21.986Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "tristan-and-yseult-off-broadway-2026",
@@ -596240,12 +596033,14 @@
       "previewsStartDate": "2026-11-15",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://theatrethoughtsaus.online/whispering-jack-the-john-farnham-musical-review/",
+        "https://au.rollingstone.com/music/music-live-reviews/whispering-jack-review-michael-paynter-john-farnham-103726/",
         "https://www.theguardian.com/stage/2026/nov/26/michael-paynter-whispering-jack-the-john-farnham-musical-review",
-        "https://au.rollingstone.com/music/music-live-reviews/whispering-jack-review-michael-paynter-john-farnham-103726/"
+        "https://au.variety.com/2026/music/news/john-farnham-musical-whispering-jack-makes-its-world-premiere-in-sydney-42938/"
       ],
-      "dirFiles": 10,
-      "dirClean": 7,
-      "inReviewsJson": 7,
+      "dirFiles": 9,
+      "dirClean": 8,
+      "inReviewsJson": 8,
       "missing": [],
       "dirOnly": [
         {
@@ -596257,11 +596052,11 @@
           "count": 1
         },
         {
-          "host": "suzygoessee.com",
+          "host": "smh.com.au",
           "count": 1
         },
         {
-          "host": "theatrethoughtsaus.online",
+          "host": "suzygoessee.com",
           "count": 1
         },
         {
@@ -596269,16 +596064,121 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://au.variety.com/2026/music/news/john-farnham-musical-whispering-jack-makes-its-world-premiere-in-sydney-42938/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--lauren-mcnamara.json",
+              "flag": "clean",
+              "urlInDir": "https://au.variety.com/2026/music/news/john-farnham-musical-whispering-jack-makes-its-world-premiere-in-sydney-42938/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Whispering Jack: The John Farnham Musical\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Whispering Jack: The John Farnham Musical\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Whispering Jack: The John Farnham Musical\" review roslyn",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Whispering Jack: The John Farnham Musical\" Yabsley review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Whispering Jack: The John Farnham Musical Roslyn Packer Theatre, Sydney, NSW review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Whispering Jack: The John Farnham Musical Roslyn Packer Theatre, Sydney, NSW review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Whispering Jack: The John Farnham Musical Roslyn Packer Theatre, Sydney, NSW review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 12,
+        "byReason": {
+          "non-review-host": 9,
+          "write-path-blocked": 2,
+          "show-hub": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -596289,24 +596189,36 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theguardian.com/stage/2026/nov/26/michael-paynter-whispering-jack-the-john-farnham-musical-review",
-            "outletId": "theguardian.com",
+            "url": "https://theatrethoughtsaus.online/whispering-jack-the-john-farnham-musical-review/",
+            "outletId": "theatrethoughtsaus.online",
             "state": "live",
-            "firstSeenAt": "2026-11-27T13:41:45.861Z"
+            "firstSeenAt": "2026-11-27T21:28:22.905Z"
           },
           {
             "url": "https://au.rollingstone.com/music/music-live-reviews/whispering-jack-review-michael-paynter-john-farnham-103726/",
             "outletId": "au.rollingstone.com",
             "state": "live",
             "firstSeenAt": "2026-11-27T06:07:30.436Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/nov/26/michael-paynter-whispering-jack-the-john-farnham-musical-review",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-27T13:41:45.861Z"
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 2,
-        "candidateCount": 2
+        "excluded": [
+          {
+            "url": "https://au.variety.com/2026/music/news/john-farnham-musical-whispering-jack-makes-its-world-premiere-in-sydney-42938/",
+            "host": "variety.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
+        "liveCount": 3,
+        "candidateCount": 3
       },
-      "computedAt": "2026-11-27T16:52:15.945Z"
+      "computedAt": "2026-11-27T21:28:22.905Z"
     },
     {
       "showId": "white-christmas-regional-2025",
@@ -606828,32 +606740,31 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-27T19:57:21.986Z",
+    "at": "2026-11-27T21:28:22.904Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "one-day-the-musical-west-end-2026",
-      "blue-man-group-a-new-holiday-surprise-2026",
-      "schtick-a-pole-in-it-off-broadway-2026",
-      "the-real-ivanov-off-broadway-2026",
-      "holy-fool-off-west-end-2026",
-      "grease-the-immersive-movie-musical-off-west-end-2026"
+      "father-christmas-off-west-end-2026",
+      "the-ugly-one-off-west-end-2026",
+      "destiny-of-desire-regional-2026",
+      "the-fantasticks-2026",
+      "safe-house-off-broadway-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024",
-      "clifford-odets-waiting-for-lefty-off-broadway-2026"
+      "spring-awakening-off-broadway-2026",
+      "the-bodyguard-tour-2026",
+      "a-beautiful-noise-the-neil-diamond-musical-tour-2026"
     ],
-    "neverAuditedDueAtStart": 45,
+    "neverAuditedDueAtStart": 46,
     "oldestDueRowAtStart": {
-      "showId": "schtick-a-pole-in-it-off-broadway-2026",
-      "computedAt": "2026-11-10T04:23:20.364Z",
-      "ageHours": 423.1
-    },
-    "oldestDueRowAfterRun": {
       "showId": "safe-house-off-broadway-2026",
       "computedAt": "2026-11-10T04:23:20.364Z",
-      "ageHours": 423.6
+      "ageHours": 424.7
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "lean-to-off-broadway-2026",
+      "computedAt": "2026-11-10T04:23:20.364Z",
+      "ageHours": 425.1
     }
   }
 }

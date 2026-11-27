@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T19:58:03.474Z",
+  "generatedAt": "2026-11-27T21:29:00.793Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,26 +7,24 @@
   "clean": 379,
   "defective": 1,
   "byType": {
-    "missing-from-prod": 1
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "julius-caesar-globe-off-west-end-2026",
-      "title": "Julius Caesar",
-      "openingDate": "2026-11-06",
+      "showId": "club-nvrlnd-off-west-end-2026",
+      "title": "Club NVRLND",
+      "openingDate": "2026-11-14",
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: daily-mail"
+          "type": "score-drift",
+          "detail": "deployed cs 77.36 vs local 76.91 (Δ0.45)"
         }
       ],
-      "missingFromProd": [
-        "daily-mail"
-      ],
-      "localCount": 22,
-      "deployedCount": 21,
-      "firstDefectAt": "2026-11-27T19:57:53.572Z"
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-27T21:28:51.988Z"
     }
   ],
   "persistentDefective": 0,
