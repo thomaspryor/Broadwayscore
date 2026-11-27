@@ -107,3 +107,22 @@ test('the health row has its own this-week playbook route, ahead of the generic 
   assert.match(entry.ownerText, /opening date/);
   assert.match(entry.workerInstruction, /opening date/);
 });
+
+// BRO-7895 class guard: the scan must not fire before the press cluster lands.
+// Christmas Carol WE 2026 shape: scanned on press night with only pre-opening
+// noise from other productions of the same title in the corpus.
+test('BRO-7895: opening within the grace window is not scanned (press night, cluster not landed)', () => {
+  const show = { id: 'a-christmas-carol-west-end-2026', openingDate: '2026-11-24', previewsStartDate: '2026-10-20' };
+  const noise = OUTLETS.slice(0, 5).map((o, i) => review(o, `2026-11-${String(5 + i).padStart(2, '0')}`, { wrongProduction: true, wrongProductionReason: 'anticipatory_pre_opening_post' }));
+  const pressNight = Date.parse('2026-11-24T15:00:00Z');
+  assert.equal(findOpeningDateContradiction(show, noise, { now: pressNight }), null);
+  // Same corpus, a week after the opening: the contradiction is still reported (not hidden forever).
+  const later = Date.parse('2026-12-01T15:00:00Z');
+  assert.ok(findOpeningDateContradiction(show, noise, { now: later }));
+});
+
+test('BRO-7895: a still-future opening is not scanned', () => {
+  const show = { id: 'f', openingDate: '2026-12-20', previewsStartDate: '2026-11-20' };
+  const files = OUTLETS.slice(0, 5).map((o) => review(o, '2026-12-01'));
+  assert.equal(findOpeningDateContradiction(show, files, { now: Date.parse('2026-12-05T00:00:00Z') }), null);
+});

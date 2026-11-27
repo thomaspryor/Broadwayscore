@@ -55,6 +55,15 @@ const MIN_EARLY_SHARE = 0.6;
 // after press night are normal.
 const EARLY_DAYS = 2;
 
+// BRO-7895: a show whose stored opening is this recent (or still ahead) has not
+// had its press cluster land yet. The only dated files then are pre-opening
+// noise from other productions of the same title (A Christmas Carol West End
+// 2026: scanned on press night 11-24 it held 5 early outlets and 0 real
+// reviews, a false card; the real reviews arrived 11-25). Scanning waits until
+// the cluster has had time to arrive; a true contradiction is flagged a week
+// later instead of never.
+const RECENT_OPENING_GRACE_DAYS = 7;
+
 const ROOT = path.join(__dirname, '..', '..');
 const ACK_PATH = path.join(ROOT, 'data', 'audit', 'opening-date-contradiction-ack.json');
 
@@ -93,11 +102,13 @@ function outletKey(review) {
  * @param {object[]} reviewFiles parsed review-text JSON for that show
  * @returns {null|{id, openingDate, openingDateSource, pressNight, outlets, earlyOutlets}}
  */
-function findOpeningDateContradiction(show, reviewFiles) {
+function findOpeningDateContradiction(show, reviewFiles, opts = {}) {
   if (!show || !show.openingDate) return null;
   const open = normalizeDate(show.openingDate);
   if (!open) return null;
   const openMs = Date.parse(open);
+  const nowMs = opts.now === undefined ? Date.now() : opts.now;
+  if (nowMs - openMs < RECENT_OPENING_GRACE_DAYS * DAY_MS) return null;
 
   // previewsStartDate fences off an earlier production's reviews, but not when
   // it is collapsed onto the stored opening: then it is the same wrong date
@@ -178,12 +189,12 @@ function readShowReviewFiles(reviewTextsDir, showId) {
 /**
  * Scan every show. Returns { flagged, acked } (acked kept for visibility).
  */
-function scanOpeningDateContradictions(shows, reviewTextsDir, acks) {
+function scanOpeningDateContradictions(shows, reviewTextsDir, acks, opts = {}) {
   const flagged = [];
   const acked = [];
   for (const show of shows || []) {
     if (!show || !show.openingDate) continue;
-    const finding = findOpeningDateContradiction(show, readShowReviewFiles(reviewTextsDir, show.id));
+    const finding = findOpeningDateContradiction(show, readShowReviewFiles(reviewTextsDir, show.id), opts);
     if (!finding) continue;
     (isAcked(finding, acks) ? acked : flagged).push(finding);
   }
@@ -196,6 +207,7 @@ module.exports = {
   MIN_OUTLETS,
   MIN_EARLY_SHARE,
   EARLY_DAYS,
+  RECENT_OPENING_GRACE_DAYS,
   reviewDay,
   countsAsRunReview,
   findOpeningDateContradiction,
