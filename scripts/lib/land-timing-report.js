@@ -23,6 +23,7 @@
  *   (land-gauntlet/branch, land-gauntlet/base, land-fast/branch, ...), the median/min/max
  *   wall seconds and per-gate seconds over full (unscoped) runs. Gate seconds overlap
  *   (the background lane runs beside the main lane), so they are never summed.
+ * --check-invariants: exit 1 when a test file behind 3+ refusals is missing from land-fast-tests.js INVARIANT_TESTS.
  * --check-targets: exit 1 unless the trailing window meets TARGETS (the BRO-7150 acceptance check).
  * Needs GH_TOKEN or GITHUB_TOKEN (read-only API calls; about 1 + runs + failed runs).
  * Exit: 0 report printed (targets met with --check-targets) | 1 API failure or targets missed | 2 usage
@@ -265,13 +266,14 @@ function parseArgs(argv) {
     else if (a === '--json') o.json = true;
     else if (a === '--gates') o.gates = true;
     else if (a === '--check-targets') o.check = true;
+    else if (a === '--check-invariants') o.checkInvariants = true;
     else if ((m = a.match(/^--split=(.+)$/)) && Number.isFinite(Date.parse(m[1]))) o.split = m[1];
     else if ((m = a.match(/^--repo=([\w.-]+\/[\w.-]+)$/))) o.repo = m[1];
     else if (a === '-h' || a === '--help') o.help = true;
     else return { error: `unknown or malformed argument: ${a}` };
   }
   if (!(o.days > 0)) return { error: '--days must be positive' };
-  if (o.gates && (o.check || o.split)) return { error: '--gates reads the ledger only; it takes no --check-targets or --split' };
+  if (o.gates && (o.check || o.checkInvariants || o.split)) return { error: '--gates reads the ledger only; it takes no --check-targets or --split' };
   return o;
 }
 
@@ -317,9 +319,26 @@ function printText(rep, { days, split }) {
   for (const c of rep.all.causes.slice(0, 25)) console.log(`  ${String(c.refusals).padStart(3)}  ${c.cause}`);
 }
 
+/**
+ * BRO-7150: land-fast-tests.js INVARIANT_TESTS is hand-kept from this report's ranked causes, so it
+ * decays (12 test files behind 2+ refusals were missing by 2026-11-27). Per-file causes look like
+ * "<gate>: <test file>"; a file behind >= minRefusals refusals that is neither an invariant nor known
+ * slow belongs on the list. Pure: -> [{ file, gate, refusals }], most refusals first.
+ */
+function missingInvariants(causes, { invariants, slow = new Set(), minRefusals = 3 } = {}) {
+  const have = new Set(invariants || []);
+  const out = [];
+  for (const c of causes || []) {
+    const m = String(c.cause || '').match(/^([\w-]+): (\S+\.test\.m?[jt]sx?)$/);
+    if (!m || c.refusals < minRefusals || have.has(m[2]) || slow.has(m[2])) continue;
+    out.push({ file: m[2], gate: m[1], refusals: c.refusals });
+  }
+  return out.sort((a, b) => b.refusals - a.refusals || (a.file < b.file ? -1 : 1));
+}
+
 async function main(argv = process.argv.slice(2)) {
   const o = parseArgs(argv);
-  if (o.help) { console.log('usage: land-timing-report.js [--days=7] [--json] [--split=<ISO>] [--repo=owner/name] [--check-targets] | --gates [--days=7] [--json]'); return 0; }
+  if (o.help) { console.log('usage: land-timing-report.js [--days=7] [--json] [--split=<ISO>] [--repo=owner/name] [--check-targets] [--check-invariants] | --gates [--days=7] [--json]'); return 0; }
   if (o.error) { console.error(`land-timing-report: ${o.error}`); return 2; }
   if (o.gates) {
     const { readLandings } = require('./landings-ledger.js');
@@ -342,15 +361,25 @@ async function main(argv = process.argv.slice(2)) {
   const rep = report(records, { split: o.split });
   if (o.json) console.log(JSON.stringify({ days: o.days, split: o.split || 'fast-fail step', targets: TARGETS, ...rep, records }, null, 2));
   else printText(rep, o);
+  let code = 0;
+  if (o.checkInvariants) {
+    const F = require('./land-fast-tests.js');
+    const miss = missingInvariants(rep.all.causes, { invariants: F.INVARIANT_TESTS, slow: F.SLOW_TESTS });
+    if (miss.length) {
+      console.error(`INVARIANTS MISSING: ${miss.length} test file(s) refused 3+ lands but are not in INVARIANT_TESTS (scripts/lib/land-fast-tests.js); add the fast ones:`);
+      for (const m of miss) console.error(`  ${m.refusals}x ${m.gate}: ${m.file}`);
+      code = 1;
+    } else console.error('INVARIANTS COVERED: every test file behind 3+ refusals is in INVARIANT_TESTS or SLOW_TESTS');
+  }
   if (o.check) {
     // Judged on the whole trailing window: by the recheck date every run in it has the fast-fail step.
     const miss = checkTargets(rep.all);
     console.error(miss.length ? `TARGETS MISSED: ${miss.join('; ')}` : `TARGETS MET (${JSON.stringify(TARGETS)})`);
-    return miss.length ? 1 : 0;
+    if (miss.length) code = 1;
   }
-  return 0;
+  return code;
 }
 
-module.exports = { median, percentile, TARGETS, checkTargets, causeFromMessage, causesFromAnnotations, summarizeRun, aggregate, report, parseArgs, FAST_STEP_RE, gateReport, checksGoalRows, checksGoal, GOAL };
+module.exports = { missingInvariants, median, percentile, TARGETS, checkTargets, causeFromMessage, causesFromAnnotations, summarizeRun, aggregate, report, parseArgs, FAST_STEP_RE, gateReport, checksGoalRows, checksGoal, GOAL };
 
 if (require.main === module) main().then((code) => { process.exitCode = code; });

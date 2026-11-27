@@ -41,37 +41,50 @@ const { spawn, spawnSync } = require('child_process');
 const ROOT = path.resolve(__dirname, '..', '..');
 
 // Repo-wide invariant tests behind real land refusals. Keep sorted; the test checks each exists.
-// Refresh from the ranked causes in `node scripts/lib/land-timing-report.js --days=7 --json`
+// Refresh from the ranked causes: `node scripts/lib/land-timing-report.js --days=7 --check-invariants` lists the missing ones
 // (a test file that refused 2+ lands belongs here).
 const INVARIANT_TESTS = [
   'scripts/V1-V3-dispatch-status.test.mjs',
   'scripts/audit-broadway-category-predicate.test.mjs',
+  'scripts/audit-run-budget-slack.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'scripts/audit-test-yml-lib-deps.test.mjs',
   'scripts/audit-toplevel-script-test-yml-coverage.test.mjs',
   'scripts/audit-venue-write-guard.test.mjs',
   'scripts/lib/api-fallback-writer-drift.test.mjs',
+  'scripts/lib/bare-node-test-guard.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'scripts/lib/core-data-merge-registry.test.mjs',
   'scripts/lib/core-data-registry-coverage.test.mjs',
   'scripts/lib/exit-flushed.test.mjs', // scans all of scripts/, 0.3s; refused BRO-7351 31 min in (land run 42969447339)
   'scripts/lib/is-main-module.test.mjs', // scans all of scripts/; refused BRO-7351's second land (run 42974325499)
+  'scripts/lib/prod-held-flags-guard.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'scripts/lib/review-text-sidecars.test.mjs',
+  'scripts/lib/review-write-safety.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'scripts/lib/run-push-audits.test.mjs',
+  'scripts/lib/safe-form-allowlist.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'scripts/lib/test-yml-manifest-paths.test.mjs',
+  'scripts/lib/tmpdir-for-tests.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'scripts/lib/workflow-queue-cap-coverage.test.mjs', // scans all of scripts/ for capped dispatches; refused BRO-7741 (land run 44241355564)
   'scripts/tests/global-instructions.test.mjs',
   'scripts/tests/help-flag-safety-guard.test.mjs',
+  'scripts/tests/test-data-write-guard.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
+  'scripts/tests/usage-ledger-coverage.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'scripts/validate-workflow-dependencies.test.mjs',
+  'tests/unit/audit-delete-without-breadcrumb.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'tests/unit/audit-orphaned-audit-writes.test.mjs',
   'tests/unit/audit-push-retry-budgets-residual.test.mjs',
   'tests/unit/audit-script-wiring.test.mjs',
   'tests/unit/audit-writer.test.mjs',
+  'tests/unit/codex-parity.test.mjs', // 2s; refused 5 lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'tests/unit/count-plurals.test.mjs',
   'tests/unit/gemini-thinking-budget-guard.test.mjs',
   'tests/unit/morning-digest-quiet.test.mjs',
+  'tests/unit/opening-night-lane-flaggers.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'tests/unit/sanitize-venue-guard.test.mjs',
   'tests/unit/sibling-matchers-diacritics.test.mjs',
+  'tests/unit/spawn-stdin-file.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'tests/unit/timeout-audit.test.mjs',
   'tests/unit/tmp-git-repo-teardown-retries.test.mjs',
+  'tests/unit/workflow-rebuild-all-reviews-staleness-guard.test.mjs', // refused 2+ lands in the 7 days to 2026-11-27 (BRO-7150 refresh)
   'tests/unit/workflow-run-hint-inputs.test.mjs', // scans all of scripts/, 0.4s; refused BRO-7294 25 min in (land run 42833962510)
   'tests/unit/workflow-secret-gaps-budget.test.mjs',
 ];
