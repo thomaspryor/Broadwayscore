@@ -1,19 +1,37 @@
 {
-  "updatedAt": "2026-11-27T15:05:23.905Z",
-  "processed": 3,
-  "failed": 1,
-  "successRate": "75.0%",
+  "updatedAt": "2026-11-27T15:12:31.709Z",
+  "processed": 134,
+  "failed": 68,
+  "successRate": "66.3%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 89,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 18,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 1
+    "brightdata": 5,
+    "archiveToday": 8,
+    "archive": 27
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-11-27T14:40:09.887Z",
+      "event": "bb-session",
+      "session": "a51305ee",
+      "url": "https://concerts.consequence.net/events/getaway-driver-at-central-square-theater"
+    },
+    {
+      "t": "2026-11-27T15:11:31.874Z",
+      "event": "bb-session",
+      "session": "4e2246fb",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-27T15:11:32.818Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
