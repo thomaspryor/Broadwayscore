@@ -19,6 +19,10 @@
 import path from 'node:path';
 
 const HEAD_MOVING = new Set(['commit', 'merge', 'rebase', 'reset', 'checkout', 'switch', 'cherry-pick', 'am', 'pull', 'revert', 'stash']);
+// BRO-7150: the subset that writes a NEW commit the pushed ref will carry (the land preflight refuses
+// `git commit … && git push … land/x`, since it cannot judge a commit that does not exist yet).
+// checkout/switch/stash/pull/reset move HEAD to an existing commit and stay advisory there.
+const TIP_CREATING = new Set(['commit', 'merge', 'rebase', 'cherry-pick', 'am', 'revert']);
 
 // git push options that consume the following word as their value.
 const PUSH_OPTS_WITH_VALUE = new Set(['-o', '--push-option', '--repo', '--receive-pack', '--exec']);
@@ -336,12 +340,15 @@ export function parseRefspec(spec) {
  * headMovedBefore: a HEAD-moving git command (commit/merge/reset/…) runs
  * earlier in the same command string, so the repo state the push sees is not
  * the state a PreToolUse hook sees.
+ * tipMovedBefore: the narrower case where that earlier command creates a new
+ * commit (commit/merge/rebase/cherry-pick/am/revert), not only moves HEAD.
  */
 export function parsePushCommand(cmd) {
   const pushes = [];
   let cdDir = null;
   let dirUnknown = false;
   let headMoved = false;
+  let tipMoved = false;
   run(cmd, 0);
   return pushes;
 
@@ -437,6 +444,8 @@ export function parsePushCommand(cmd) {
     const sub = words[i];
     if (sub !== 'push') {
       if (HEAD_MOVING.has(sub)) headMoved = true;
+      // `git merge --abort`, `git rebase --abort|--quit` create nothing.
+      if (TIP_CREATING.has(sub) && !words.slice(i + 1).some((w) => w === '--abort' || w === '--quit')) tipMoved = true;
       return;
     }
     i++;
@@ -457,7 +466,7 @@ export function parsePushCommand(cmd) {
     }
     const [remote = null, ...specs] = positional;
     const refspecs = specs.map(parseRefspec).map((r) => (deleteFlag ? { ...r, isDelete: true } : r));
-    pushes.push({ gitC, cdDir, remote, refspecs, deleteFlag, headMovedBefore: headMoved, dirUnknown: dirUnknown || envRepo || repoOpt });
+    pushes.push({ gitC, cdDir, remote, refspecs, deleteFlag, headMovedBefore: headMoved, tipMovedBefore: tipMoved, dirUnknown: dirUnknown || envRepo || repoOpt });
   }
 }
 

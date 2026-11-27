@@ -106,6 +106,16 @@ test('parser: directory context, multiple refspecs and earlier HEAD moves', () =
   assert.equal(landPushTargets('git push origin HEAD:land/a main:land/b').length, 2);
   assert.equal(parsePushCommand('git add -A && git commit -qm x && git push origin HEAD:land/a')[0].headMovedBefore, true);
   assert.equal(parsePushCommand('git status && git push origin HEAD:land/a')[0].headMovedBefore, false);
+  // BRO-7150: tipMovedBefore = an earlier command creates the commit being pushed.
+  for (const c of ['git commit -qm x && git push origin HEAD:land/a', 'git merge --no-edit origin/main && git push origin HEAD:land/a',
+    'git -C wt cherry-pick abc; git push origin HEAD:land/a', 'git rebase origin/main && git push origin HEAD:land/a', 'git revert --no-edit abc && git push origin HEAD:land/a']) {
+    assert.equal(parsePushCommand(c)[0].tipMovedBefore, true, c);
+  }
+  for (const c of ['git stash list && git push origin HEAD:land/a', 'git checkout -- f.txt && git push origin HEAD:land/a', 'git pull && git push origin HEAD:land/a',
+    'git switch feat && git push origin HEAD:land/a', 'git reset --hard origin/x && git push origin HEAD:land/a', 'git merge --abort; git push origin HEAD:land/a',
+    'git push origin HEAD:land/a && git commit -qm x']) {
+    assert.equal(parsePushCommand(c)[0].tipMovedBefore, false, c);
+  }
 });
 
 // ── rebase preview, each verdict checked against the real land-rebase.sh ───
@@ -378,7 +388,8 @@ test('hook: blocks a conflicting land push from a worktree, allows others, honou
   assert.equal(blocked.status, 2, blocked.stderr);
   assert.match(blocked.stderr, /LAND PREFLIGHT[\s\S]*feat-edit[\s\S]*f\.txt/);
   assert.equal(hook('git push -u origin feat', wt).status, 0);
-  assert.equal(hook('git commit -m "x" && git push origin HEAD:land/feat', wt).status, 0, 'HEAD moves first: skip');
+  assert.equal(hook('git commit -m "x" && git push origin HEAD:land/feat', wt).status, 2, 'a commit first: refused before it runs (BRO-7150)');
+  assert.equal(hook('git pull && git push origin HEAD:land/feat', wt).status, 0, 'HEAD moves to an existing commit first: skip');
   assert.equal(hook('git push origin HEAD:land/feat  # NO-LAND-PREFLIGHT: verified by hand, rebase is fine', wt).status, 0);
   assert.equal(hook('git push origin HEAD:land/feat', wt, { LAND_PREFLIGHT_DISABLE: '1' }).status, 0);
   // cwd elsewhere, push dir via cd: still judged against the worktree
@@ -400,6 +411,8 @@ test('hook: a squashed branch passes; a non-repo cwd and garbage input fail open
   assert.equal(runHook({ command: 'git status', cwd: wt }).decision, 'skip');
 });
 
+// These assert the skip-ci parser alone, so the BRO-7150 commit-first refusal is switched off for them.
+const ADVISORY = { ...process.env, LAND_PREFLIGHT_HEAD_MOVED_ADVISORY: '1' };
 test('hook: a CI-skip-marked tip blocks (land.yml would never start); the CLI the Mac lander uses does not (BRO-7353)', () => {
   const { wt } = landFixture();
   sh(wt, 'git reset -q --soft origin/main && git commit -qm "data: cost row [skip ci]"');
@@ -421,13 +434,13 @@ test('hook: a CI-skip-marked tip blocks (land.yml would never start); the CLI th
   assert.doesNotMatch(same.message, /run the same push again/, 'same-command advice must not loop');
   assert.equal(runHook({ command: `git commit -qm "x [skip actions]" && git -C "${wt}" push origin HEAD:land/feat`, cwd: wt }).decision, 'block', 'git -C push');
   // Fails with a bare /git\s+push/ split: the -C push is not found, so the marker after it was read as the commit's.
-  assert.equal(runHook({ command: `git commit -qm "plain" && git -C "${wt}" push origin HEAD:land/feat && echo "[skip ci]"`, cwd: wt }).decision, 'skip', 'git -C push, marker after');
-  assert.equal(runHook({ command: `git commit -qm "plain" && git -C '${wt}' push origin HEAD:land/feat && echo "[skip ci]"`, cwd: wt }).decision, 'skip', 'quoted -C path');
-  assert.equal(runHook({ command: 'git commit -qm "plain" && git push origin HEAD:land/feat && echo "[skip ci]"', cwd: wt }).decision, 'skip', 'marker after the push is not the commit');
+  assert.equal(runHook({ command: `git commit -qm "plain" && git -C "${wt}" push origin HEAD:land/feat && echo "[skip ci]"`, cwd: wt, env: ADVISORY }).decision, 'skip', 'git -C push, marker after');
+  assert.equal(runHook({ command: `git commit -qm "plain" && git -C '${wt}' push origin HEAD:land/feat && echo "[skip ci]"`, cwd: wt, env: ADVISORY }).decision, 'skip', 'quoted -C path');
+  assert.equal(runHook({ command: 'git commit -qm "plain" && git push origin HEAD:land/feat && echo "[skip ci]"', cwd: wt, env: ADVISORY }).decision, 'skip', 'marker after the push is not the commit');
   // Non-HEAD source ref with a marked tip is judged on that ref.
   sh(wt, 'git branch -f marked HEAD && git checkout -q marked && git commit -q --allow-empty -m "y [no ci]" && git checkout -q feat');
   assert.equal(runHook({ command: 'git push origin marked:refs/heads/land/feat', cwd: wt }).decision, 'block');
-  assert.equal(runHook({ command: 'git commit -qm "plain" && git push origin HEAD:land/feat', cwd: wt }).decision, 'skip');
+  assert.equal(runHook({ command: 'git commit -qm "plain" && git push origin HEAD:land/feat', cwd: wt, env: ADVISORY }).decision, 'skip');
   assert.notEqual(runHook({ command: 'git commit -qm "x [skip ci]" && git push origin HEAD:land/feat  # NO-LAND-PREFLIGHT: verified marker is intended here', cwd: wt }).decision, 'block');
 });
 
@@ -467,12 +480,25 @@ test('hook: an unknown push dir or a non-origin remote is a skip, never judged a
   assert.equal(runHook({ command: 'git push origin HEAD:land/feat', cwd: wt }).decision, 'block', 'control');
 });
 
-test('hook: a commit and a land push in one command is a skip that says the push went unchecked (BRO-7349)', async () => {
-  const { HEAD_MOVED_WARNING } = await import('../../scripts/lib/land-preflight.mjs');
+test('hook: a commit and a land push in one command is refused before it runs (BRO-7150; was a BRO-7349 skip)', async () => {
+  const { HEAD_MOVED_WARNING, HEAD_MOVED_BLOCK_MESSAGE } = await import('../../scripts/lib/land-preflight.mjs');
   const { wt } = landFixture(); // wt conflicts with main, so judging it would block
   const v = runHook({ command: 'git commit -qm x && git push origin HEAD:land/feat', cwd: wt });
-  assert.equal(v.decision, 'skip');
-  assert.deepEqual(v.warnings, [HEAD_MOVED_WARNING]);
+  assert.equal(v.decision, 'block');
+  assert.equal(v.message, HEAD_MOVED_BLOCK_MESSAGE);
+  assert.match(HEAD_MOVED_BLOCK_MESSAGE, /own command[\s\S]*NO-LAND-PREFLIGHT/);
+  // kill switch restores the old warning-only skip
+  const adv = runHook({ command: 'git commit -qm x && git push origin HEAD:land/feat', cwd: wt, env: { ...process.env, LAND_PREFLIGHT_HEAD_MOVED_ADVISORY: '1' } });
+  assert.equal(adv.decision, 'skip');
+  assert.deepEqual(adv.warnings, [HEAD_MOVED_WARNING]);
+  // the bypass comment still works in the compound shape
+  assert.equal(runHook({ command: 'git commit -qm x && git push origin HEAD:land/feat  # NO-LAND-PREFLIGHT: rebase verified by hand just now', cwd: wt }).decision, 'allow');
+  // HEAD moves to an existing commit: still the advisory skip, never a block
+  for (const c of ['git stash list && git push origin HEAD:land/feat', 'git checkout -- f.txt && git push origin HEAD:land/feat', 'git pull && git push origin HEAD:land/feat']) {
+    const r = runHook({ command: c, cwd: wt });
+    assert.equal(r.decision, 'skip', c);
+    assert.deepEqual(r.warnings, [HEAD_MOVED_WARNING], c);
+  }
   assert.match(HEAD_MOVED_WARNING, /NOT checked/);
   assert.deepEqual(runHook({ command: 'git status && git push origin HEAD:land/feat', cwd: wt }).warnings.filter((w) => w === HEAD_MOVED_WARNING), [], 'control: no HEAD move, no such warning');
 });

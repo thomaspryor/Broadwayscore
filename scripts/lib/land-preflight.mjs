@@ -922,6 +922,9 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', warnings, detail };
 }
 
+export const HEAD_MOVED_BLOCK_MESSAGE = 'land preflight refused this push before it ran (nothing was committed or pushed): a commit is made earlier in the same command, so the preflight cannot check the commit being pushed, and land.yml would judge it 20-30 minutes later instead of in seconds (BRO-7150). ' +
+  'Run the commit as its own command, then push land/<name> in the next command. ' +
+  'If you must keep them together, add `# NO-LAND-PREFLIGHT: <reason, 15+ chars>` to the command (logged).';
 export const HEAD_MOVED_WARNING = 'this land push was NOT checked before it ran: a commit (or another HEAD move) runs earlier in the same command, so the preflight cannot see the commit being pushed, and the fast tests and rebase preview were skipped. land.yml still judges it, minutes later. Commit in one command and push land/<name> in the next, so the preflight checks it first.';
 
 /** Directory a land push runs in, from its `cd` / `git -C` prefixes. */
@@ -1181,7 +1184,18 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
       results.push({ decision: 'block', message: skipCiMessage({ target: t.dst, sameCommand: true }), warnings: [] });
       continue;
     }
-    if (p.headMovedBefore) {
+    // BRO-7150: the BRO-7349 warning below ran advisory for 2+ weeks and the shape kept coming
+    // (56 of 136 logged land pushes, 2026-10-04..11-26); 5 of the 10 such pushes since 11-20 were then
+    // refused 18-25 min into land.yml, e.g. BRO-7402 at lint-workflows::live-data-lane, which the
+    // checks below catch in seconds. So when the earlier command CREATES the commit being pushed,
+    // refuse before it runs (nothing has happened yet; splitting it costs one tool call).
+    // checkout/switch/stash/pull/reset stay advisory. Off: LAND_PREFLIGHT_HEAD_MOVED_ADVISORY=1.
+    if (p.tipMovedBefore && !bypass && env.LAND_PREFLIGHT_HEAD_MOVED_ADVISORY !== '1') {
+      logEvent(root, { event: 'block', target: t.dst, reason: 'head-moved' });
+      results.push({ decision: 'block', message: HEAD_MOVED_BLOCK_MESSAGE, warnings: [] });
+      continue;
+    }
+    if (p.headMovedBefore && !bypass) {
       // BRO-7349: 8 of 13 land pushes in one container skipped every check this way, and one went
       // to land.yml with a test this preflight would have caught. Say so (advisory, never blocks).
       const r = { decision: 'skip', reason: 'HEAD moves earlier in the same command; cannot judge the pushed commit', warnings: [HEAD_MOVED_WARNING] };
