@@ -1820,5 +1820,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-27T13:41:52.761Z"
+  },
+  {
+    "conditionKey": "welcome-email:rejected:d5a59ee5",
+    "title": "Welcome email rejected by Resend",
+    "description": "Resend refused the welcome email for user d5a59ee5; it will not be retried. HTTP 422: {\"message\":\"Invalid `to` field. The email address needs to follow the [email]` or `Name <[email]>` format.\",\"name\":\"validation_error\",\"statusCode\":422}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-27T13:46:57.712Z"
   }
 ]
