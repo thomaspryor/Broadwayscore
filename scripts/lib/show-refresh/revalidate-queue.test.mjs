@@ -123,3 +123,15 @@ test('parseQueue tolerates junk', () => {
   assert.deepEqual(q.parseQueue(null), q.emptyQueue());
   assert.deepEqual(q.parseQueue({ entries: { a: 5, b: { firstFailedAt: 'x' } } }), q.emptyQueue());
 });
+
+test('a slug queued by another run during our POST survives our save (no lost update)', async () => {
+  const st = fakeStorage();
+  await run({ storage: st, newSlugs: ['a'], fetchImpl: fetchOf(500) });
+  // Our run reads {a}, retries it successfully; meanwhile another run queues b.
+  const f = async () => {
+    st.objs.set(P, JSON.stringify({ schema: 1, entries: { ...stored(st), b: { firstFailedAt: NOW, attempts: 1, lastError: '' } } }));
+    return new Response('', { status: 200 });
+  };
+  await run({ storage: st, newSlugs: [], now: NOW + 1, fetchImpl: f });
+  assert.deepEqual(Object.keys(stored(st)), ['b']);
+});

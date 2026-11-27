@@ -110,6 +110,16 @@ async function revalidateWithQueue({ env, storage, newSlugs = [], now = Date.now
   let res = { ok: true, msg: 'nothing to send' };
   if (slugs.length) res = await postRevalidate(env, slugs, fetchImpl);
   out.message = out.retried.length ? `${res.msg} (${out.retried.length} retried from queue)` : res.msg;
+  // Re-read just before saving and settle against the FRESH queue: another publisher
+  // (rebuild-fast has its own concurrency group) may have queued slugs since our read,
+  // and replacing the object from a stale snapshot would erase them. Storage has no
+  // compare-and-swap, so this narrows the window to one read-back instead of a whole POST.
+  if (storage) {
+    const again = await store.readJsonObject(storage, store.PATHS.revalidatePending);
+    if (again.state === 'ok') { queue = parseQueue(again.value); queueReadable = true; }
+    else if (again.state === 'missing') { queue = emptyQueue(); queueReadable = true; }
+    else queueReadable = false;
+  }
   const settled = settle({ queue, attempted: slugs, ok: res.ok, error: res.msg, now });
   out.pending = settled.pending;
   out.abandoned = settled.abandoned;
