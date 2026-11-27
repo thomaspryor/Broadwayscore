@@ -36,8 +36,8 @@ test('at most 3 redos per New York day', () => {
 });
 
 test('$50 stop is never crossed: refuses when total + estimate would pass it', () => {
-  const rows = [row('2026-11-01T15:00:00Z', 44), row('2026-11-02T15:00:00Z', 3)];
-  assert.equal(ledgerReading(rows, at('2026-11-30T15:00:00Z')).spentUsd, 47);
+  const rows = [row('2026-11-01T15:00:00Z', 44), row('2026-11-02T15:00:00Z', 2)];
+  assert.equal(ledgerReading(rows, at('2026-11-30T15:00:00Z')).spentUsd, 46);
   const c = paceCheck({ rows, atMs: at('2026-11-30T15:00:00Z') });
   assert.equal(c.ok, false);
   assert.match(c.reasons.join(' '), /\$50 stop/);
@@ -85,4 +85,10 @@ test('a claimed run counts at its estimate until recorded; the record replaces i
   const r = ledgerReading([claim, done], at('2026-11-30T23:30:00Z'));
   assert.equal(r.spentUsd, 1.2);
   assert.equal(r.runs, 1);
+});
+
+test('a reordered merge cannot put the claim back over its settlement', () => {
+  const claim = { id: 'x@1', show: 'x', startedAt: '2026-11-30T23:00:00Z', status: 'started', spendUsd: { total: 5 } };
+  const done = { ...claim, status: 'graded', spendUsd: { total: 8 } };
+  assert.equal(ledgerReading([done, claim], at('2026-11-30T23:30:00Z')).spentUsd, 8);
 });
