@@ -17,6 +17,8 @@ interface MarketStats {
   offWestEnd?: { openShows: number };
   /** UK regional theatre (Beyond London). `shows` = scored productions listed on the page. */
   ukRegional?: { shows: number; openShows: number };
+  /** Australian productions (pilot, /browse/australian-theatre). `shows` = scored productions listed on the page. */
+  auRegional?: { shows: number; openShows: number };
   /** City hubs keyed by registry slug (data/city-hubs.json, BRO-6833): local productions in the metro. */
   hubs?: Record<string, { shows: number; openShows: number }>;
 }
@@ -36,6 +38,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isUkRegional = marketId === 'uk-regional';
+  const isAustralia = pathname === '/browse/australian-theatre';
   const activeHub = hubForPath(pathname);
   const isHubPath = (slug: string) => activeHub?.slug === slug;
   // Treat opera show pages as NOT off-broadway / West End / Off-West End for the
@@ -48,7 +51,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const isOffBroadway = marketId === 'off-broadway' && !isOperaShowPage;
   // Regional (non-NYC US) shows: distinct pill label; dropdown links to the
   // pre-Broadway browse page (no dedicated hub yet).
-  const isRegional = marketId === 'regional';
+  const isRegional = marketId === 'regional' && !isAustralia;
   // National tours (BRO-4211): own pill label; dropdown links to the tours browse page.
   // Flag-checked: with the flag off a /show/*-tour-YYYY URL is a 404 and must not read as "Tours".
   // Non-hub tour city pages (any other /tours/<city>) read as Tours too, not Broadway; hub pages name their city instead.
@@ -57,9 +60,9 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Don't apply opera domain branding when user has explicitly navigated to
   // another market (off-broadway, west-end, off-west-end, regional). The opera
   // domain flag only matters on opera-specific pages.
-  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway || isRegional || isTour || !!activeHub;
+  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway || isRegional || isAustralia || isTour || !!activeHub;
   const isOpera = (isOperaDomain || isOperaShowPage || isOperaPage) && !isExplicitNonOperaMarket;
-  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isRegional && !isTour && !isOpera && !activeHub;
+  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isRegional && !isAustralia && !isTour && !isOpera && !activeHub;
   const currentMarket = isWestEnd || isOffWestEnd ? 'west-end' : 'nyc';
 
   const closeDropdown = useCallback(() => setIsOpen(false), []);
@@ -105,7 +108,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300 hover:bg-purple-500/20'
                 : isOffWestEnd
                   ? 'bg-violet-500/[0.12] border-violet-500/25 text-violet-300 hover:bg-violet-500/20'
-                  : isUkRegional
+                  : isUkRegional || isAustralia
                     ? 'bg-teal-500/[0.12] border-teal-500/25 text-teal-300 hover:bg-teal-500/20'
                   : isRegional
                     ? 'bg-emerald-500/[0.12] border-emerald-500/25 text-emerald-300 hover:bg-emerald-500/20'
@@ -118,7 +121,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
         aria-haspopup="listbox"
         aria-label="Switch market"
       >
-        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isUkRegional ? 'UK Regional' : isRegional ? 'Regional' : isTour ? 'Tours' : activeHub ? activeHub.hub.cardLabel : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
+        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isUkRegional ? 'UK Regional' : isAustralia ? 'Australia' : isRegional ? 'Regional' : isTour ? 'Tours' : activeHub ? activeHub.hub.cardLabel : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
         {/* Always visible — below 400px this used to be `hidden`, so the pill
             read as a plain label with no dropdown cue on narrow phones (task
             #78: rage clicks on "Broadway" traced to missing affordance here).
@@ -312,6 +315,32 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 </svg>
               )}
             </Link>
+          )}
+          {featureFlags.regional && stats.auRegional && stats.auRegional.shows > 0 && (
+            <>
+            <div className="h-px bg-white/[0.06] mx-2 my-1" />
+            <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">Australia</div>
+            <Link
+              href="/browse/australian-theatre"
+              className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+                isAustralia ? 'bg-teal-500/[0.10]' : 'hover:bg-white/[0.04]'
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              <div className="flex items-center gap-2">
+                <span className={`w-1.5 h-1.5 rounded-full ${isAustralia ? 'bg-teal-400 shadow-[0_0_6px_rgba(45,212,191,0.5)]' : 'bg-teal-500/60'}`} />
+                <div>
+                  <div className={`text-sm font-semibold ${isAustralia ? 'text-teal-200' : 'text-white'}`}>Australian Theatre</div>
+                  <div className="text-[11px] text-fg-muted">Pilot · {stats.auRegional.shows} scored {stats.auRegional.shows === 1 ? 'show' : 'shows'}</div>
+                </div>
+              </div>
+              {isAustralia && (
+                <svg className="w-4 h-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </Link>
+            </>
           )}
           {featureFlags.regional && Object.entries(HUB_CITIES).map(([slug, hub]) => {
             const hubStats = stats.hubs?.[slug];
