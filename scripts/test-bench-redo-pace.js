@@ -107,11 +107,14 @@ function paceCheck({ rows = [], openings = [], atMs, windowMin = DEFAULTS.window
   if (reading.today >= o.dailyMax) reasons.push(`${reading.today} redo(s) already started on ${reading.day} (max ${o.dailyMax} a day)`);
   if (reading.spentUsd + o.estRunUsd > o.capUsd) overBudget = true;
   if (overBudget) reasons.push(`ledger total $${reading.spentUsd.toFixed(2)} + this run's estimate $${o.estRunUsd} would pass the $${o.capUsd} stop`);
+  // Serial only (plan Phase 2): an open claim means a run is in flight or was never recorded.
+  const openClaim = latestRows(rows).find((r) => r.status === 'started') || null;
+  if (openClaim) reasons.push(`claim ${openClaim.id} is still open: record it (or record it --status=failed) before starting another run`);
   const endMs = atMs + (windowMin + o.setupMin) * MIN;
   const gap = o.gapH * H;
   const blockingOpenings = openings.filter((x) => x.at + gap > atMs && x.at - gap < endMs);
   for (const b of blockingOpenings.slice(0, 5)) reasons.push(`${b.id} (${b.category}) embargo ${new Date(b.at).toISOString()} is within ${o.gapH} h of this run`);
-  return { ok: reasons.length === 0, reasons, overBudget, reading, blockingOpenings };
+  return { ok: reasons.length === 0, reasons, overBudget, openClaim, reading, blockingOpenings };
 }
 
 /** First start time from `fromMs` (rounded up to 30 min) the rule allows, or null within `days`. */
@@ -122,8 +125,8 @@ function nextEligible({ rows = [], openings = [], fromMs, windowMin = DEFAULTS.w
   for (; t <= stop; t += step) {
     const c = paceCheck({ rows, openings, atMs: t, windowMin, opts });
     if (c.ok) return { at: new Date(t).toISOString(), check: c };
-    // Out of budget never clears by waiting.
-    if (c.overBudget) return null;
+    // Out of budget, or an open claim, never clears by waiting.
+    if (c.overBudget || c.openClaim) return null;
   }
   return null;
 }
@@ -160,9 +163,6 @@ function main(argv) {
     const atMs = Date.now();
     const c = paceCheck({ rows, openings: openingInstants(loadShows(repoDir), { markets }), atMs, windowMin });
     printReading(c.reading);
-    // Serial only (plan Phase 2): an open claim means a run is in flight or was never recorded.
-    const open = latestRows(rows).filter((r) => r.status === 'started');
-    if (open.length) c.reasons.push(`claim ${open[0].id} is still open: record it (or record it --status=failed) before starting another run`);
     if (c.reasons.length) { console.log('REFUSED:'); for (const r of c.reasons) console.log(`  - ${r}`); return 3; }
     const id = `${arg('show')}@${new Date(atMs).toISOString()}`;
     const row = { id, show: arg('show'), night: arg('night'), startedAt: new Date(atMs).toISOString(), windowMin, status: 'started', spendUsd: { total: DEFAULTS.estRunUsd, basis: 'claim: per-run estimate until recorded' } };
@@ -183,7 +183,7 @@ function main(argv) {
       console.log(`REFUSED at ${new Date(atMs).toISOString()} (${windowMin}-min window):`);
       for (const r of c.reasons) console.log(`  - ${r}`);
       const n = nextEligible({ rows, openings, fromMs: atMs, windowMin });
-      console.log(n ? `next eligible start: ${n.at}` : 'no eligible start in the next 30 days (or the $50 stop is reached)');
+      console.log(n ? `next eligible start: ${n.at}` : 'no eligible start in the next 30 days (or the $50 stop is reached, or a claim is open)');
       return 3;
     }
     const n = nextEligible({ rows, openings, fromMs: atMs, windowMin });
@@ -192,7 +192,7 @@ function main(argv) {
     return n ? 0 : 3;
   }
   if (cmd === 'record') {
-    const need = ['show', 'night', 'run-id', 'started', 'ended', 'scored'];
+    const need = ['id', 'show', 'night', 'run-id', 'started', 'ended', 'scored'];
     const miss = need.filter((k) => arg(k) == null);
     if (miss.length) { console.error(`record needs --${miss.join(', --')}`); return 2; }
     const startMs = Date.parse(arg('started')); const endMs = Date.parse(arg('ended'));
@@ -204,16 +204,18 @@ function main(argv) {
       spendUsd.total = Math.max(spendUsd.total, DEFAULTS.estRunUsd);
       spendUsd.basis = `no scraper-spend rows for this run: kept at the $${DEFAULTS.estRunUsd} per-run estimate; ${spendUsd.basis}`;
     }
-    const prior = latestRows(rows).find((r) => r.id && r.id === arg('id'));
-    const row = { id: arg('id') || `${arg('show')}@${new Date(startMs).toISOString()}`, show: arg('show'), night: arg('night'), runId: arg('run-id'), startedAt: new Date(startMs).toISOString(), endedAt: new Date(endMs).toISOString(), status: arg('status') || 'graded', scored: Number(arg('scored')) || 0, grade: arg('grade') || null, spendUsd, recordedAt: new Date().toISOString() };
+    // Only a claimed run can be recorded: a minted id would leave the real claim open (blocking every later claim) and
+    // count the run twice.
+    const prior = latestRows(rows).find((r) => r.id === arg('id'));
+    if (!prior) { console.error(`record: no claim with id ${arg('id')} in the ledger (claim prints it)`); return 2; }
+    const row = { id: arg('id'), show: arg('show'), night: arg('night'), runId: arg('run-id'), startedAt: new Date(startMs).toISOString(), endedAt: new Date(endMs).toISOString(), status: arg('status') || 'graded', scored: Number(arg('scored')) || 0, grade: arg('grade') || null, spendUsd, recordedAt: new Date().toISOString() };
     fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
     fs.appendFileSync(LEDGER, `${JSON.stringify(row)}\n`);
-    if (arg('id') && !prior) console.error(`note: no claim row with id ${arg('id')}; recording as a new run`);
     printReading(ledgerReading([...rows, row], Date.now()));
     console.log(`recorded ${row.show} ${row.night}: $${spendUsd.total.toFixed(2)} (${JSON.stringify(spendUsd.calls)})`);
     return 0;
   }
-  console.error('usage: test-bench-redo-pace.js check|next|record (see --help)');
+  console.error('usage: test-bench-redo-pace.js check|claim|next|record (see --help)');
   return 2;
 }
 
