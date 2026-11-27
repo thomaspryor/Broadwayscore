@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8389",
   "planId": "1d3711ec-5851-4a52-9ac4-846a9e184f32",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-26T23:30:00.000Z",
   "submitter": {
     "name": null,
@@ -298,5 +298,24 @@
         "description": "Add the Opera Australia / John Frost Melbourne production of My Fair Lady as category regional (Australia pilot, BRO-8389)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-27T05:10:47.274Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added whispering-jack-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-beautiful-noise-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added my-fair-lady-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
