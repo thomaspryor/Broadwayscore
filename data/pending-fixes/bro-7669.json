@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7669",
   "planId": "a4519277-78f5-4c05-bebe-554e772f1312",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -33,5 +33,19 @@
         "description": "Broken Nose Theatre production at the Arcola; reviews call it a revival of an earlier staged play."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-27T00:28:05.041Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: revivalVerifiedNot updated for downstate-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-ugly-one-off-west-end-2026 (tags: [\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
 }
