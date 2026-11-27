@@ -1,54 +1,151 @@
 {
-  "generatedAt": "2026-11-26T18:28:11.190Z",
+  "generatedAt": "2026-11-27T11:48:12.698Z",
   "shadow": true,
-  "checkoutSha": "99f2105aae8204d06e145c2730e461e4b522ab29",
-  "totalCandidates": 516,
-  "eligibleCandidates": 180,
-  "checked": 10,
+  "checkoutSha": "33cbc7028564a6377e70c2550fc0abfdb348a3f2",
+  "totalCandidates": 498,
+  "eligibleCandidates": 190,
+  "checked": 29,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 0,
-    "fail": 10,
-    "unverifiable": 0
+    "pass": 19,
+    "fail": 6,
+    "unverifiable": 4
   },
-  "alreadyDone": [],
+  "alreadyDone": [
+    {
+      "id": "BRO-8402",
+      "name": "City season sync: presenter rows (ArtsEmerson) get the company name as venue, not the building",
+      "verifyCmd": "node --test scripts/lib/city-season.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8398",
+      "name": "Test bench step 4 (cont.): run the Balusters sandboxed lane redo in the 11-29 window (paced by test-bench-redo-pace.js)",
+      "verifyCmd": "node --test scripts/test-bench-redo-pace.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8397",
+      "name": "BRO-8056 pre-flip: deploy gate skips builds for store-covered data changes + prune unreferenced show-refresh slices",
+      "verifyCmd": "node --test scripts/lib/should-deploy-gate.test.mjs scripts/lib/show-refresh/publish-write.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8392",
+      "name": "Ship iOS app Australian-shows fix after Mac simulator run",
+      "verifyCmd": "node --test tests/unit/au-regional-country.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8337",
+      "name": "Guardrail slim-down stage 2: merge resize-show-images steps, cut hook-side redundant gates, with proof tests",
+      "verifyCmd": "node --test scripts/tests/verify-edits-cloud-session-gates.test.mjs scripts/tests/verify-edits-scoring-gate.test.mjs scripts/tests/cloud-settings-guards.test.mjs scripts/tests/global-instructions.test.mjs scripts/V1-V3-dispatch-status.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8335",
+      "name": "Stop gate VE:WAKELESS ignores background waits started in an earlier turn",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": null
+    },
+    {
+      "id": "BRO-8332",
+      "name": "BRO-8330 readout: 14-day ScrapingBee-off comparison and GO/NO-GO",
+      "verifyCmd": "node --test scripts/lib/sb-switch.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8330",
+      "name": "ScrapingBee off-switch trial: prove the site runs with SB fully off before the Dec 24 cancel",
+      "verifyCmd": "node --test scripts/lib/sb-switch.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8329",
+      "name": "P2: Opening night miss: A Christmas Carol (2026-11-24)",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": null
+    },
+    {
+      "id": "BRO-8328",
+      "name": "Recurring session friction: hook:git-check",
+      "verifyCmd": "node --test scripts/lib/session-retro.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8325",
+      "name": "SB gate cousins: unattributed SB rows (45% have no showId) and West End aggregator page fetches still use ScrapingBee",
+      "verifyCmd": "node scripts/lib/check-sb-credits.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-8307",
+      "name": "Press-night probe: treat remounts with only older-year aggregator reviews as not applicable, not FAIL",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": null
+    },
+    {
+      "id": "BRO-8297",
+      "name": "Sentry regression: UgcError: UGC functions mezzanine-search failed (500)",
+      "verifyCmd": "npx tsx --test tests/unit/sentry-7815060800.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8295",
+      "name": "Land preflight: run timeout-audit and audit-run-budget-slack locally before the land push",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": null
+    },
+    {
+      "id": "BRO-8294",
+      "name": "Cost follow-up: non-Broadway poller targeting + Bright Data theatre.reviews repeats",
+      "verifyCmd": "node scripts/lib/check-sb-credits.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-8276",
+      "name": "P1: nightly text recovery aborts the whole run when one file was renamed upstream (backlog stalled)",
+      "verifyCmd": "node --test scripts/lib/review-texts-checkpoint.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8274",
+      "name": "P2: Opening night miss: The Afronauts (2026-11-23)",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": null
+    },
+    {
+      "id": "BRO-8264",
+      "name": "Pages on Stages subscriber-only posts are scored as not_a_review instead of being marked paywalled",
+      "verifyCmd": "node --test tests/unit/paywall-detector.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8260",
+      "name": "Feedback proposals: already-fixed close can strand open; daily cap races; fallback closes closed-show matches",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": null
+    }
+  ],
   "failing": [
     {
-      "id": "BRO-8384",
-      "name": "Recheck 2026-11-26: 1 done claim no longer hold on main",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": "⚠️  WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours one of them\n⚠️  WARNING: 1 cast file(s) carry a different ibdbUrl than shows.json (backfill-cast.js will revert shows.json): three-days-of-rain-2026\n⚠️  WARNING: 5 new show(s) cannot be told apart from a same-title music"
+      "id": "BRO-8403",
+      "name": "Recheck 2026-11-27: 1 done claim no longer hold on main",
+      "verifyCmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YSBmcmVzaG5lc3M6IHNob3dzIG1pc3NpbmcgcG9zdGVyL3N5bm9wc2lzL3RpY2tldHM",
+      "detail": "[check-health-row-absent] FAIL: \"Data freshness: shows missing poster/synopsis/tickets\" still listed in the 2026-11-27T11:09:12.720Z health snapshot"
     },
     {
       "id": "BRO-8383",
       "name": "Root cause: \"Sentry regression: UgcError: UGC insert reviews failed\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class ugcerror-ugc-insert-reviews-failed --quiet",
-      "detail": "FAIL: last case 4d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-8382",
-      "name": "Root cause: \"Opening Night Orchestrator Failed\" keeps coming back (3 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class opening-night-orchestrator-failed --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 5d ago, needs 21\n"
     },
     {
       "id": "BRO-8381",
       "name": "Root cause: \"much-ado-about-nothing-: review need a decision\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class review-need-decision --quiet",
-      "detail": "FAIL: last case 0d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-8370",
-      "name": "Data Validation: 'Run data validation' fails on duplicate Vulture URL for death-of-a-salesman-2022",
-      "verifyCmd": "node scripts/validate-data.js",
-      "detail": "⚠️  WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours one of them\n⚠️  WARNING: 1 cast file(s) carry a different ibdbUrl than shows.json (backfill-cast.js will revert shows.json): three-days-of-rain-2026\n⚠️  WARNING: 5 new show(s) cannot be told apart from a same-title music"
-    },
-    {
-      "id": "BRO-8356",
-      "name": "Recheck 2026-11-26: 2 done claims no longer hold on main",
-      "verifyCmd": "node --test scripts/verify-bro-8160-recheck.test.mjs",
-      "detail": "not ok: Gemini spend stays under $25 on every full day since the BR… | first failure: no Gemini spend rows since 2026-11-24: no evidence either way (is the session le"
+      "detail": "FAIL: last case 1d ago, needs 21\n"
     },
     {
       "id": "BRO-8350",
@@ -60,21 +157,62 @@
       "id": "BRO-8349",
       "name": "Root cause: first pass keeps getting no full text from theatreandtonic (all markets, 3 shows in 60 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class text-missed-at-first-pass-theatreandtonic --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-8348",
       "name": "Root cause: first pass keeps missing timeout-london reviews (all markets, 3 shows in 60 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-timeout-london --quiet",
-      "detail": "FAIL: last case 4d ago, needs 21\n"
-    },
-    {
-      "id": "BRO-8337",
-      "name": "Guardrail slim-down stage 2: merge resize-show-images steps, cut hook-side redundant gates, with proof tests",
-      "verifyCmd": "node --test scripts/tests/verify-edits-cloud-session-gates.test.mjs scripts/tests/verify-edits-scoring-gate.test.mjs scripts/tests/cloud-settings-guards.test.mjs scripts/tests/global-instructions.test.mjs scripts/V1-V3-dispatch-status.test.mjs",
-      "detail": "TAP version 13\n# Subtest: every top-level repo hook is wired in .claude/settings.json\nok 1 - every top-level repo hook is wired in .claude/settings.json\n  ---\n  duration_ms: 1.928685\n  type: 'test'\n  ...\n# Subtest: retired hooks stay retired: not registered, not on disk, not in the home-installer list\nok 2 - retired hooks stay retired: not registered, not on disk, not in the home-installer list\n  "
+      "detail": "FAIL: last case 5d ago, needs 21\n"
     }
   ],
-  "unverifiable": [],
-  "landedButOpen": []
+  "unverifiable": [
+    {
+      "id": "BRO-8387",
+      "name": "UX audit: The mobile homepage filter controls are visibly cramped: “Broadway+,” “Bway only,” “Off-Bway,” status/sort lab",
+      "verifyCmd": "node scripts/lib/ux-walkthrough-resolution.js --key=7bff42da006b4c26d87204701c5b7fe3",
+      "detail": "could not run here (credential-withheld): FAIL UX resolution: LINEAR_API_KEY not set in .env or environment"
+    },
+    {
+      "id": "BRO-8293",
+      "name": "Land preflight should run live-data-lane --verify-changed before a land push",
+      "verifyCmd": "node --test scripts/lib/land-preflight-live-data-lane.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-preflight-live-data-lane.test.mjs"
+    },
+    {
+      "id": "BRO-8281",
+      "name": "Cost review: hosting and small tools (Vercel, Resend, Expo, others)",
+      "verifyCmd": "test -f scripts/hosting-cost-review.md",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/hosting-cost-review.md"
+    },
+    {
+      "id": "BRO-8280",
+      "name": "Cost review: scraping providers (ScrapingBee, Scrapingdog, Bright Data, Browserbase)",
+      "verifyCmd": "node --test scripts/verify-sb-pack-pace.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
+    }
+  ],
+  "landedButOpen": [
+    {
+      "id": "BRO-8330",
+      "name": "ScrapingBee off-switch trial: prove the site runs with SB fully off before the Dec 24 cancel",
+      "branch": "land/bro-8330-sweep-test",
+      "sha": "2d56c8d9130149fbd60f7dd06e28aab0e0db07e5",
+      "landedAt": "2026-11-25T23:45:27.269Z"
+    },
+    {
+      "id": "BRO-8294",
+      "name": "Cost follow-up: non-Broadway poller targeting + Bright Data theatre.reviews repeats",
+      "branch": "land/bro-8294-cost",
+      "sha": "5a1f441d03c78bd28306063e293a23aca14f593c",
+      "landedAt": "2026-11-25T06:12:54.931Z"
+    },
+    {
+      "id": "BRO-8276",
+      "name": "P1: nightly text recovery aborts the whole run when one file was renamed upstream (backlog stalled)",
+      "branch": "land/codex-bro-8276",
+      "sha": "fc5a3a6579bce5729119c6bae38ed586d4574c7f",
+      "landedAt": "2026-11-26T05:04:06.811Z"
+    }
+  ]
 }
