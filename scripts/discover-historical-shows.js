@@ -34,7 +34,7 @@ const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
 const { extractDatesFromIBDBPage } = require('./lib/ibdb-dates');
 const { fetchPage } = require('./lib/scraper');
 const { scrapeCurrentRuntimes, scrapeShowRuntime, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
-const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
+const { duplicateOfCandidate, fragmentDuplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { assignRevivalChain } = require('./lib/revival-chain');
@@ -677,6 +677,9 @@ async function discoverHistoricalShows() {
       };
       const duplicate = duplicateOfCandidate(data.shows, entry);
       if (duplicate) { console.log(`Skip ${entry.id}: exists as ${duplicate.existing.id}`); continue; }
+      // BRO-8407: the save guard also refuses a title fragment of a catalogued row at the same venue; ask it here so the run cannot abort at save.
+      const fragDup = fragmentDuplicateOfCandidate(data.shows, entry);
+      if (fragDup) { console.log(`Skip ${entry.id}: exists as ${fragDup.existing.id} (${fragDup.reason})`); continue; }
       // Only accepted rows may change the revival chain of existing shows.
       for (const { existing, originalProductionId, productionNumber } of revivalUpdates) {
         Object.assign(existing, { originalProductionId, productionNumber });

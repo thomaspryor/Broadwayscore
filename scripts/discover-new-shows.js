@@ -57,7 +57,7 @@ const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendatio
 const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonTheatreVenue, isLondonReceivingHouse, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
-const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
+const { duplicateOfCandidate, fragmentDuplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { fetchTmOffBroadway, parseTmOffBroadwayRow, findTmSameTitleShow, titleKeyLoose } = require('./lib/theatermania-ob');
 const { loadPendingAddShows } = require('./lib/pending-add-shows');
@@ -3489,6 +3489,9 @@ async function discoverShows() {
 
       const duplicate = duplicateOfCandidate(data.shows, showEntry);
       if (duplicate) { console.log(`Skip ${showEntry.id}: exists as ${duplicate.existing.id}`); continue; }
+      // BRO-8407: the save guard also refuses a title fragment of a catalogued row at the same venue; ask it here so the run cannot abort at save.
+      const fragDup = fragmentDuplicateOfCandidate(data.shows, showEntry);
+      if (fragDup) { console.log(`Skip ${showEntry.id}: exists as ${fragDup.existing.id} (${fragDup.reason})`); continue; }
       data.shows.push(showEntry);
       addedShows.push(show);
       addedDetections.push(detection);

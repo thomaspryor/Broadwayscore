@@ -34,7 +34,7 @@ const { normalizeTitle } = require('./lib/title-match');
 const { matchesRetired } = require('./lib/retired-show-ids');
 const fs = require('fs');
 const path = require('path');
-const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
+const { duplicateOfCandidate, fragmentDuplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
@@ -248,6 +248,9 @@ function selectPromotable(matches, shows, { onSkipInvalidVenue = () => {} } = {}
     if (!entry.openingDate && !entry.closingDate) { skipped.push({ entry, reason: 'no opening or closing date from Playbill' }); continue; }
     const duplicate = duplicateOfCandidate([...shows, ...toPromote], entry);
     if (duplicate) { skipped.push({ entry, reason: `exists as ${duplicate.existing.id}` }); continue; }
+    // BRO-8407: the save guard also refuses a title fragment of a catalogued row at the same venue; ask it here so the run cannot abort at save.
+    const fragDup = fragmentDuplicateOfCandidate([...shows, ...toPromote], entry);
+    if (fragDup) { skipped.push({ entry, reason: `exists as ${fragDup.existing.id} (${fragDup.reason})` }); continue; }
     toPromote.push(entry);
     if (inferObShowType({ ...r, title: entry.title }, musicalTitles).guessed) typeGuessed.push(entry.id);
     knownShows.push({ title: entry.title, venue: entry.venue });

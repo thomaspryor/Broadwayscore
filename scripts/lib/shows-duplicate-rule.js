@@ -184,4 +184,17 @@ function newRowFragmentFindings(before, after) {
   return out;
 }
 
-module.exports = { findDuplicateShows, newDuplicateFindings, newRowFragmentFindings, duplicateOfCandidate, formatFinding, isTestFixture, rowsSharingKey };
+/**
+ * BRO-8407: would the save guard refuse `show` as a title fragment of a catalogued row at the same
+ * venue with overlapping dates (the newRowFragmentFindings rule)? duplicateOfCandidate never sees that
+ * pair, so a script that mints rows and saves through shows-write-guard must ask this too, or one
+ * candidate aborts the whole run at save. A declared distinctFrom on either row still wins.
+ * @param {Object[]} rows - rows already catalogued (plus any minted earlier in this run).
+ * @param {Object} show - the candidate row.
+ * @returns {{show: Object, existing: Object, reason: string} | null}
+ */
+function fragmentDuplicateOfCandidate(rows, show) {
+  return newRowFragmentFindings(rows, [...rows, show])[0] || null;
+}
+
+module.exports = { findDuplicateShows, newDuplicateFindings, newRowFragmentFindings, fragmentDuplicateOfCandidate, duplicateOfCandidate, formatFinding, isTestFixture, rowsSharingKey };

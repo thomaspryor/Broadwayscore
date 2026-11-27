@@ -25,7 +25,7 @@ const EXEMPT = {
 // Reads each newRowDuplicate call as a whole (to the end of its statement), so a call
 // split across lines with ticketOnly on a later line is still seen as ticketOnly.
 const callText = (src, from) => { const end = src.indexOf(';', from); return src.slice(from, end < 0 ? from + 400 : end); };
-const runsFragmentCheck = (src) => /newRowFragmentFindings\s*\(/.test(src)
+const runsFragmentCheck = (src) => /(newRowFragmentFindings|fragmentDuplicateOfCandidate)\s*\(/.test(src)
   || [...src.matchAll(/newRowDuplicate\s*\(/g)].some((m) => !/ticketOnly/.test(callText(src, m.index)));
 
 test('guarded promoters that dedup with duplicateOfCandidate also run the fragment check (BRO-8407)', () => {
@@ -33,7 +33,9 @@ test('guarded promoters that dedup with duplicateOfCandidate also run the fragme
   const inspected = [];
   for (const f of fs.readdirSync(SCRIPTS).filter((n) => n.endsWith('.js'))) {
     const src = strip(fs.readFileSync(path.join(SCRIPTS, f), 'utf8'));
-    if (!/createShowsWriteGuard\s*\(/.test(src) || !/duplicateOfCandidate\s*\(/.test(src)) continue;
+    // Any route into the guarded save counts: createShowsWriteGuard(), or the loadShows/saveShows
+    // helpers (directly or through the guard module object).
+    if (!/createShowsWriteGuard\s*\(|shows-write-guard/.test(src) || !/duplicateOfCandidate\s*\(/.test(src)) continue;
     inspected.push(f);
     if (!EXEMPT[f] && !runsFragmentCheck(src)) offenders.push(f);
   }
@@ -48,4 +50,5 @@ test('the guard rejects a ticketOnly-only newRowDuplicate call (the hole the shi
   assert.equal(runsFragmentCheck("const d = newRowDuplicate(s, e, []);"), true);
   assert.equal(runsFragmentCheck("const d = newRowDuplicate(\n  s, e, [e.tourOf],\n  { ticketOnly: true },\n);"), false, 'a call split across lines');
   assert.equal(runsFragmentCheck("const f = newRowFragmentFindings(pool, [...pool, entry]);"), true);
+  assert.equal(runsFragmentCheck("const f = fragmentDuplicateOfCandidate(pool, entry);"), true);
 });

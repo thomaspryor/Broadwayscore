@@ -10,7 +10,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { newRowFragmentFindings } = require('./shows-duplicate-rule.js');
+const { newRowFragmentFindings, fragmentDuplicateOfCandidate } = require('./shows-duplicate-rule.js');
 const { createShowsWriteGuard } = require('./shows-write-guard.js');
 
 const jena = { id: 'jena-friedman-motherfucker-off-broadway-2026', slug: 'jena-friedman-motherfucker-off-broadway-2026', title: 'Jena Friedman: Motherfucker', venue: 'SoHo Playhouse', category: 'off-broadway', type: 'play', status: 'open', openingDate: '2026-10-01', closingDate: '2026-10-11' };
@@ -43,4 +43,17 @@ test('saveShows refuses the Motherfucker stub and writes nothing', () => {
     assert.throws(() => guard.saveShows(data), /refusing to write 1 new duplicate.*motherfucker-off-broadway-2026/s);
     assert.deepEqual(JSON.parse(fs.readFileSync(p, 'utf8')).shows.map(s => s.id), [jena.id]);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('fragmentDuplicateOfCandidate (BRO-8407) agrees with the save guard on the same pairs', () => {
+  assert.equal(fragmentDuplicateOfCandidate([jena], stub).existing.id, jena.id);
+  assert.equal(fragmentDuplicateOfCandidate([bourneLong], bourneStub).existing.id, bourneLong.id);
+  assert.equal(fragmentDuplicateOfCandidate([jena], { ...stub, distinctFrom: [jena.id] }), null, 'declared distinctFrom wins');
+  assert.equal(fragmentDuplicateOfCandidate([{ ...jena, distinctFrom: [stub.id] }], stub), null, 'distinctFrom on the catalogued row wins');
+  assert.equal(fragmentDuplicateOfCandidate([jena], other), null, 'unrelated title at the same venue');
+  assert.equal(fragmentDuplicateOfCandidate([], stub), null, 'empty catalogue');
+  // Whatever the helper passes, the guard must pass too: the two cannot disagree.
+  for (const [rows, cand] of [[[jena], stub], [[bourneLong], bourneStub], [[jena], other]]) {
+    assert.equal(Boolean(fragmentDuplicateOfCandidate(rows, cand)), newRowFragmentFindings(rows, [...rows, cand]).length > 0);
+  }
 });

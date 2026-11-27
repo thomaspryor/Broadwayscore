@@ -41,7 +41,7 @@ const path = require('path');
 const { titleSaysMusical } = require('./lib/title-says-musical');
 // A retired id must not be re-minted (BRO-5557).
 const { matchesRetired } = require('./lib/retired-show-ids');
-const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
+const { duplicateOfCandidate, fragmentDuplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
@@ -264,6 +264,9 @@ function planPromotions({ candidates, shows, approvals, only, today }) {
     if (existingIds.has(entry.id)) { skipped.push({ title: c.title, reason: `id ${entry.id} already exists` }); continue; }
     const duplicate = duplicateOfCandidate([...shows, ...toPromote], entry);
     if (duplicate) { skipped.push({ title: c.title, reason: `exists as ${duplicate.existing.id}` }); continue; }
+    // BRO-8407: the save guard also refuses a title fragment of a catalogued row at the same venue; ask it here so the run cannot abort at save.
+    const fragDup = fragmentDuplicateOfCandidate([...shows, ...toPromote], entry);
+    if (fragDup) { skipped.push({ title: c.title, reason: `exists as ${fragDup.existing.id} (${fragDup.reason})` }); continue; }
     toPromote.push(entry);
     if (inferShowType(cand, musicalTitles).guessed) typeGuessed.push(entry.id);
     pool.push({ title: entry.title, venue: entry.venue, startDate, id: entry.id });

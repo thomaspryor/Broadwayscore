@@ -6,7 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
+const { duplicateOfCandidate, fragmentDuplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { checkForDuplicate } = require('./lib/deduplication');
@@ -744,6 +744,9 @@ newShows.forEach(show => {
     }
     const duplicate = duplicateOfCandidate(data.shows, show);
     if (duplicate) { console.log(`SKIP: ${show.id}: exists as ${duplicate.existing.id}`); return; }
+    // BRO-8407: the save guard also refuses a title fragment of a catalogued row at the same venue; ask it here so the run cannot abort at save.
+    const fragDup = fragmentDuplicateOfCandidate(data.shows, show);
+    if (fragDup) { console.log(`SKIP: ${show.id}: exists as ${fragDup.existing.id} (${fragDup.reason})`); return; }
     data.shows.push(show);
     addedCount++;
     console.log(`ADDED: ${show.title} (${show.id})`);
