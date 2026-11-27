@@ -1754,20 +1754,6 @@
     "queuedAt": "2026-11-27T10:52:37.502Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-27.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-27T11:33:46.294Z"
-  },
-  {
     "conditionKey": "land-preexisting:tests/unit/id-year-drift.test.mjs::real shows.json: zero un-reviewed hits [testCodeFailure]",
     "title": "Test red on main: real shows.json: zero un-reviewed hits [testCodeFailure]",
     "description": "tests/unit/id-year-drift.test.mjs::real shows.json: zero un-reviewed hits [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/job/linear-BRO-8396-mwyvtt6z. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45993680628",
@@ -1820,5 +1806,19 @@
       }
     ],
     "queuedAt": "2026-11-27T12:14:42.934Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-27.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-27T13:10:51.314Z"
   }
 ]

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T11:34:02.895Z",
+  "generatedAt": "2026-11-27T13:11:16.632Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,20 +138,12 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
-      "outletId": "thereviewshub",
-      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
-    },
-    {
-      "outletId": "theatre-weekly",
-      "error": "HTTP 403 for https://theatreweekly.com/feed"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
-    },
-    {
-      "outletId": "theater-pizzazz",
-      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -168,19 +160,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "exeunt-magazine",
-      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
-    },
-    {
-      "outletId": "fringereview",
-      "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 797,
+  "itemsScanned": 912,
   "matchedGaps": 2,
-  "possibleGaps": 4,
+  "possibleGaps": 5,
   "gaps": [
     {
       "showId": "a-christmas-carol-west-end-2026",
@@ -208,6 +192,15 @@
       "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
       "headline": "It’s a Wonderful Life: A Live Radio Play",
       "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/christmas-carol-shakespeare-north-playhouse-prescot/",
+      "headline": "Christmas Carol &#8211; Shakespeare North Playhouse, Prescot",
+      "publishDate": "2026-11-25"
     },
     {
       "showId": "a-christmas-carol-west-end-2026",
