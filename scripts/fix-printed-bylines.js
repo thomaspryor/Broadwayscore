@@ -58,7 +58,7 @@ const PAGE_EXTRACTORS = {
   'artsdesk': extractArtsdeskPageByline,
 };
 const PAGE_ONLY_OUTLETS = new Set(['musical-theatre-review', 'the-spy-in-the-stalls']);
-const TEXT_OUTLETS = new Set(['stage-raw', 'the-show-report', 'south-london', 'theatreandtonic', 'all-that-dazzles-uk', 'talkinbroadway', 'nytg', 'timeout', 'timeout-london', 'artsdesk']);
+const TEXT_OUTLETS = new Set(['stage-raw', 'the-show-report', 'south-london', 'theatreandtonic', 'all-that-dazzles-uk', 'talkinbroadway', 'nytg', 'timeout', 'timeout-london', 'artsdesk', 'islingtontribune', 'sierz-co-uk']);
 
 function isUnnamed(name) {
   return !name || /^(unknown|unnamed)$/i.test(String(name).trim()) || isJunkCriticName(name);

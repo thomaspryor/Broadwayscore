@@ -1814,9 +1814,13 @@ function isOutletRegistryName(name) {
       const outlets = reg.outlets || reg;
       for (const e of Object.values(outlets)) {
         if (!e || typeof e !== 'object') continue;
+        // BRO-8212: a self-branded outlet (the critic's own site: Aleks Sierz, Carole Di Tosti) names a
+        // person; its defaultCritic is a real byline, so that name is not an outlet name (same rule as
+        // placeholder-byline.js).
+        const own = _compactName(e.defaultCritic);
         for (const a of [e.displayName, e.name, ...(e.aliases || [])]) {
           const c = _compactName(a);
-          if (c) _outletNameSet.add(c);
+          if (c && c !== own) _outletNameSet.add(c);
         }
       }
     } catch { /* no registry: fall back to the name checks alone */ }

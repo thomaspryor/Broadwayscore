@@ -210,6 +210,31 @@ function extractShowReportByline(text) {
   return name ? { name, known: true } : null;
 }
 
+// Islington Tribune (islingtontribune.co.uk, BRO-8212) prints "<date> — By Lucy Popescu <photo caption>"
+// under the headline and the scraper files every review as Unknown (81 files). The caption runs straight on
+// after the name, so a name is trusted only when it is a known Tribune critic; any other name is trusted
+// only when a line break ends it.
+const IT_KNOWN_CRITICS = [
+  "Lucy Popescu", "Howard Loxton", "Sipora Levy", "Catherine Usher", "Dan Carrier", "Clair Chapwell", "Julie Tomlin",
+];
+const IT_BY_RE = /\d{4}\s*[—–-]\s*By\s+(\p{Lu}[^\n]{0,60})|(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\s+\d{1,2}(?:st|nd|rd|th)?\s+\p{Lu}\p{Ll}+(?:\s+\d{4})?\s*[—–-]\s*By\s+(\p{Lu}[^\n]{0,60})/u;
+function extractIslingtonTribuneByline(text) {
+  if (!text) return null;
+  const head = String(text).slice(0, 700);
+  const m = IT_BY_RE.exec(head);
+  if (!m) return null;
+  const tail = srFold((m[1] || m[2]).replace(/\s+/g, " "));
+  const known = IT_KNOWN_CRITICS.find((n) => tail === srFold(n) || tail.startsWith(srFold(n) + " "));
+  return known ? { name: known, known: true } : null;
+}
+
+// Aleks Sierz's own site (sierz.co.uk, BRO-8212): every review there is his, reposted from The Arts Desk or
+// written for the site ("This review first appeared on The Arts Desk"), and the page prints no byline, so
+// the scraper filed 128 as Unknown. Sole-author rule: any non-empty text at this outlet is Aleks Sierz.
+function extractSierzByline(text) {
+  return text && String(text).trim().length > 200 ? { name: "Aleks Sierz", known: true } : null;
+}
+
 const BYLINE_EXTRACTORS = {
   "plays-international": extractPlaysInternationalByline,
   "theater-scene": extractTheaterSceneByline,
@@ -223,6 +248,8 @@ const BYLINE_EXTRACTORS = {
   "artsdesk": extractArtsdeskByline,
   "stage-raw": extractStageRawByline,
   "the-show-report": extractShowReportByline,
+  "islingtontribune": extractIslingtonTribuneByline,
+  "sierz-co-uk": extractSierzByline,
 };
 
 /**
@@ -349,5 +376,7 @@ module.exports = {
   extractTalkinBroadwayByline,
   extractNewYorkTheatreGuideByline,
   extractTimeOutByline,
+  extractIslingtonTribuneByline,
+  extractSierzByline,
   PI_KNOWN_CRITICS,
 };
