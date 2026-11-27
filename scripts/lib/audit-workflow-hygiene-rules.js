@@ -1530,9 +1530,10 @@ function findEolNodeVersions(raw) {
  * unpinned `npx supabase` installs whatever npm calls latest on every run:
  * supabase@3.4.0 started refusing hosted changes without --yes, and every
  * edge-function deploy failed (run 45961348571) with no code change here.
- * Catches `npx [-y|--yes] supabase`, `supabase@latest` and ranges.
+ * Catches `npx [-y|--yes] supabase` (and bunx / pnpm dlx / yarn dlx / npm exec),
+ * `supabase@latest` and ranges.
  */
-const NPX_SUPABASE_RE = /\bnpx\s+(?:(?:-y|--yes|-q|--quiet)\s+)*supabase(@\S*)?/;
+const NPX_SUPABASE_RE = /\b(?:npx|bunx|pnpm\s+dlx|yarn\s+dlx|npm\s+exec)\s+(?:(?:-y|--yes|-q|--quiet)\s+)*supabase(@\S*)?/;
 function findUnpinnedSupabaseCli(raw) {
   const hits = [];
   raw.split('\n').forEach((l, i) => {

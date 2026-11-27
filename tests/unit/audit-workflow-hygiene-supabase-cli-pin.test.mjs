@@ -24,8 +24,11 @@ describe('findUnpinnedSupabaseCli', () => {
       '          npx --yes supabase@latest db push',
       '          npx supabase@3 functions deploy f',
       '          npx supabase@^3.4.0 functions deploy f',
+      '          bunx supabase db push',
+      '          pnpm dlx supabase db push',
+      '          npm exec supabase -- db push',
     ].join('\n');
-    assert.deepEqual(findUnpinnedSupabaseCli(raw).map((h) => h.lineNum), [1, 2, 3, 4, 5]);
+    assert.deepEqual(findUnpinnedSupabaseCli(raw).map((h) => h.lineNum), [1, 2, 3, 4, 5, 6, 7, 8]);
   });
   test('accepts an exact version and ignores comments', () => {
     const raw = [
