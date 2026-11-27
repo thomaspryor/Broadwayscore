@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-8384",
+  "planId": "52ea448d-5aaf-4a50-95fc-cb4a1f371ee4",
+  "status": "pending",
+  "createdAt": "2026-11-27T03:08:52.277Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Restore the actual Vulture byline Rob Weinert-Kendt as canonical; the linked page credits him, not Jonathan Mandell. Rebuild derived reviews to remove the stale Greg Evans row.",
+    "steps": [
+      "death-of-a-salesman-2022/vulture--rob-weinert-kendt.json: duplicateClearReason",
+      "death-of-a-salesman-2022/vulture--rob-weinert-kendt.json: duplicateOf"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/vulture--rob-weinert-kendt.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "Vulture page credits Rob Weinert-Kendt; Jonathan Mandell is not its author",
+        "description": "death-of-a-salesman-2022/vulture--rob-weinert-kendt.json: duplicateClearReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/vulture--rob-weinert-kendt.json",
+        "field": "duplicateOf",
+        "oldValue": "vulture--jonathan-mandell.json",
+        "newValue": null,
+        "description": "death-of-a-salesman-2022/vulture--rob-weinert-kendt.json: duplicateOf"
+      }
+    ]
+  }
+}
