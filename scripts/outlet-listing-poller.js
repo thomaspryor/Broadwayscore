@@ -128,7 +128,7 @@ const SKIP_OUTLETS = new Set(['broadwayworld', 'london-box-office', 'loureviews'
 // Outlets not listed here fall back to SERP. All strategy fetches are wrapped in
 // try/catch — on exception the poller falls back to SERP automatically (S3-T1).
 //
-// strategy: 'rss'          — fetch an RSS/Atom feed, optional urlFilter + titleFilter
+// strategy: 'rss'          — fetch an RSS/Atom feed, optional urlFilter + titleOrUrlFilter (headline or slug)
 // strategy: 'sitemap'      — fetch an annual XML sitemap, filter by urlFilter + <lastmod>
 // strategy: 'listing-html' — fetch a known listing page via fetchPage() (BD→SB→Playwright)
 //

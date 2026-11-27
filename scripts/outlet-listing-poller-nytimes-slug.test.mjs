@@ -42,3 +42,10 @@ test('class guard: no rss outlet filters on the headline alone (slug-only review
     assert.ok(!(c && c.strategy === 'rss' && c.titleFilter), `${id}: use titleOrUrlFilter so a slug-only "review" is not dropped`);
   }
 });
+
+test("nytimes keeps a critic's-pick slug and drops the film/arts items in the live fixture", () => {
+  assert.deepEqual(keep([{ headline: 'A Gem', url: 'https://www.nytimes.com/2026/11/03/theater/x-critics-pick-play.html' }]).length, 1);
+  const xml = fs.readFileSync(new URL('./fixtures/nyt-theater-rss-2026-11-27.xml', import.meta.url), 'utf8');
+  const urls = keep(parseRssFeed(xml, new Date(0)));
+  assert.ok(!urls.some((u) => /\/(movies|arts)\//.test(u)), 'movies/arts items dropped');
+});
