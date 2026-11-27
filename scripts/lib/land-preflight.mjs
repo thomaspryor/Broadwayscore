@@ -1248,8 +1248,9 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     }
     // BRO-7788: unresolvable next/cheerio. After the bypass, before any judging.
     {
-      const nmFiles = out(git(root, ['diff', '--name-only', `${seams.base || 'origin/main'}...${t.src || 'HEAD'}`])).split('\n').filter(Boolean);
-      const nm = (seams.nodeModulesCheck || nodeModulesCheck)({ root, files: nmFiles.length ? nmFiles : null, env, seams: seams.nodeModules || {} });
+      const nmDiff = git(root, ['diff', '--name-only', `${seams.base || 'origin/main'}...${t.src || 'HEAD'}`]);
+      const nmFiles = ok(nmDiff) ? out(nmDiff).split('\n').filter(Boolean) : [];
+      const nm = (seams.nodeModulesCheck || nodeModulesCheck)({ root, files: nmFiles, env, seams: seams.nodeModules || {} });
       if (nm.status === 'fail') {
         logEvent(root, { event: 'block', target: t.dst, reason: 'node-modules-unresolvable', missing: nm.missing });
         results.push({ decision: 'block', message: nm.message, warnings: [] });

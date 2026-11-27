@@ -1113,8 +1113,9 @@ test('nodeModulesCheck (BRO-7788): refuses unresolvable next/cheerio; fails open
     assert.equal(nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: other } }).status, 'skip', 'non-MODULE_NOT_FOUND errors fail open');
     fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ dependencies: { left: '1' } }));
     assert.equal(nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: notFound } }).status, 'skip', 'probe packages undeclared');
-    // real resolver, dangling-free tmp root without node_modules: declared + unresolvable -> fail
-    fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ dependencies: { 'bro-7788-no-such-pkg': '1' } }));
-    assert.equal(nodeModulesCheck({ root: dir, files: code, env: {} }).status, 'skip');
+    // real resolver: next declared, no node_modules anywhere above the tmp root -> fail
+    fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ dependencies: { next: '1' } }));
+    assert.equal(nodeModulesCheck({ root: dir, files: code, env: {} }).status, 'fail');
+    assert.equal(nodeModulesCheck({ root: dir, files: [], env: {}, seams: { resolve: notFound } }).status, 'skip', 'empty diff');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
