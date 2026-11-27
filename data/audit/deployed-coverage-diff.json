@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-27T21:29:00.793Z",
+  "generatedAt": "2026-11-27T22:46:49.878Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 380,
-  "clean": 379,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "club-nvrlnd-off-west-end-2026",
-      "title": "Club NVRLND",
-      "openingDate": "2026-11-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.36 vs local 76.91 (Δ0.45)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-11-27T21:28:51.988Z"
-    }
-  ],
+  "clean": 380,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
