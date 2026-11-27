@@ -182,7 +182,10 @@
       "outletIds": [
         "thestage"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-11-27T23:01:52.226Z"
     },
     {
       "kind": "truncated-t1-refetch",
