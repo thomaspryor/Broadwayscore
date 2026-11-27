@@ -2061,5 +2061,59 @@
       }
     ],
     "queuedAt": "2026-11-27T20:03:31.528Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]",
+    "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
+    "description": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-7929-baseline-ratchet. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46060503853",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46060503853"
+      }
+    ],
+    "queuedAt": "2026-11-27T20:24:01.222Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c",
+    "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
+    "description": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-7929-baseline-ratchet. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46060503853",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46060503853"
+      }
+    ],
+    "queuedAt": "2026-11-27T20:24:01.251Z"
   }
 ]
