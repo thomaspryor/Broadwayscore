@@ -1087,6 +1087,8 @@ const LANE_SOURCE_SAMPLE_REVIEW = {
   showmosexualsguide: 'https://www.showmosexualsguide.com/p/other-desert-cities',
   columbiaspectator: 'https://www.columbiaspectator.com/arts-and-culture/2026/11/19/review-jamie-lloyds-much-ado-about-nothing-is-the-times-square-of-shakespeare/',
   theverdictnyc: 'https://theverdictnyc.wixsite.com/theverdict/post/review-much-ado-about-nothing',
+  // BRO-8396
+  stagebuddy: 'https://stagebuddy.com/theater/theater-review/wonderful-life-live-radio-play',
 };
 test('guard: every lane index and feed outlet has a real review URL the path gate admits as its adapter offers it', () => {
   const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
