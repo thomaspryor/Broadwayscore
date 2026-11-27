@@ -46,6 +46,16 @@ function gateDisabled(env = process.env) {
   return env.SB_MARKET_GATE_DISABLED === '1';
 }
 
+// These are London-specific aggregators, including their archive/API calls
+// that do not belong to a single show. The Stage also covers other markets.
+function skipSbAggregator(url, env = process.env) {
+  if (gateDisabled(env)) return false;
+  try {
+    const host = new URL(url).hostname.toLowerCase().replace(/^www\./, '');
+    return new Set(['theatre.reviews', 'westendtheatre.com', 'londonboxoffice.co.uk']).has(host);
+  } catch (_) { return false; }
+}
+
 function _loadCategories() {
   if (_categoryById) return _categoryById;
   const map = new Map();
@@ -172,6 +182,7 @@ function _setShowsPathForTests(p) {
 }
 
 module.exports = {
+  skipSbAggregator,
   DEFAULT_RENDER_GAP_HOURS,
   categoryForShowId,
   skipSbSerpForCategory,

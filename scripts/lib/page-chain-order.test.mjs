@@ -23,6 +23,11 @@ test('default flags: SD -> BD -> SB -> Playwright(last); no cookies, no playwrig
   assert.deepEqual(pageChainOrder(BASE), ['scrapingdog', 'brightdata', 'scrapingbee', 'playwright-last']);
 });
 
+test('London aggregator pages omit SB while Broadway pages retain it', () => {
+  assert.deepEqual(pageChainOrder({ ...BASE, url: 'https://theatre.reviews/test' }), ['scrapingdog', 'brightdata', 'playwright-last']);
+  assert.deepEqual(pageChainOrder({ ...BASE, url: 'https://broadwayworld.com/test' }), ['scrapingdog', 'brightdata', 'scrapingbee', 'playwright-last']);
+});
+
 test('cookies present and not preferPlaywright: cookies-plain leads (real gate: cookieDomain && !preferPlaywright)', () => {
   assert.deepEqual(
     pageChainOrder({ ...BASE, hasCookies: true }),

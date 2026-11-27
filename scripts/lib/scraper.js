@@ -51,6 +51,7 @@ const { creditsFor } = require('./provider-credits');
 const { usdFor } = require('./provider-pricing');
 const { fallbackFromLabel } = require('./fallback-attribution');
 const { createRunMemo } = require('./scraper-run-memo');
+const { skipSbAggregator } = require('./sb-market-gate');
 
 // BRO-4296: paid tiers that keep failing on a host in THIS process are skipped
 // for the rest of it (see scraper-run-memo.js for the counting rule).
@@ -1535,7 +1536,7 @@ function pageChainOrder(flags) {
   if (flags.hasBdToken && !skips.has('brightdata')) {
     order.push('brightdata');
   }
-  if (flags.sbAllowed && !skips.has('scrapingbee')) {
+  if (flags.sbAllowed && !skipSbAggregator(flags.url) && !skips.has('scrapingbee')) {
     order.push('scrapingbee');
   }
   if (!flags.preferPlaywright && !flags.isPublicSite && !flags.isBroadwayWorld && !skips.has('playwright')) {
@@ -1766,6 +1767,7 @@ async function fetchPage(url, options = {}) {
   // can never overspend — but re-evaluating live here (rather than trusting
   // the chain's snapshot) keeps the log lines and dispatch decision honest.
   const chain = pageChainOrder({
+    url,
     hasCookies: !!cookieDomain,
     preferPlaywright,
     isBroadwayWorld,
@@ -2152,7 +2154,7 @@ async function fetchJSON(url, options = {}) {
   }
 
   // Last resort: ScrapingBee (render_js=false = 1 credit)
-  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skips.has('scrapingbee') && sbHostCooldown.consult(url).allowed) {
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skipSbAggregator(url) && !skips.has('scrapingbee') && sbHostCooldown.consult(url).allowed) {
     try {
       const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
       const response = await new Promise((resolve, reject) => {
