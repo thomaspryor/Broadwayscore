@@ -1,0 +1,382 @@
+{
+  "schemaVersion": 1,
+  "showId": "jack-and-the-beanstalk-off-west-end-2026",
+  "night": "2026-11-27",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-27T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-27T20:30:04.148Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-27T22:55:10.148Z",
+    "lastOkSampleAt": "2026-11-27T22:55:10.148Z"
+  },
+  "firstLiveAt": "2026-11-27T20:30:04.148Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-27T22:05:08.104Z",
+  "liveCount": 2,
+  "liveCountAt": {
+    "1h": 1,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-27T22:00:07.871Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-27",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "the stage|tracey sinclair",
+      "outlet": "The Stage",
+      "critic": "Tracey Sinclair",
+      "tier": 1,
+      "publishAt": "2026-11-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-27T20:30:04.148Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "the stage|paul vale",
+      "outlet": "The Stage",
+      "critic": "Paul Vale",
+      "tier": 1,
+      "publishAt": "2026-11-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-27T22:05:08.104Z",
+      "prevOkSampleAt": "2026-11-27T22:00:07.871Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "incomplete",
+      "source": [
+        "westendtheatre"
+      ],
+      "count": 3,
+      "covered": 1,
+      "coverage": 0.333,
+      "missing": [
+        "telegraph",
+        "times-uk"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-27T23:00:30.693Z",
+      "censusNote": "archive only",
+      "excluded": [
+        {
+          "outletId": "guardian",
+          "reason": "listing is another production's review (wrongProduction)",
+          "priorRunCandidate": true
+        }
+      ]
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-27T23:00:30.773Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-27T23:00:31.413Z",
+    "files": [
+      {
+        "file": "british-theatre--anna-ambelez.json",
+        "outletId": "british-theatre",
+        "outlet": "British Theatre Guide",
+        "critic": "Anna Ambelez",
+        "firstSeenAt": "2026-11-27T17:16:55.543Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "britishtheatreguide.info/reviews/jack-and-the-be-theatre-royal-n-26236",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "british-theatre--unknown.json",
+        "outletId": "british-theatre",
+        "outlet": "British Theatre Guide",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-27T17:16:55.543Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "britishtheatreguide.info/reviews/jack-and-the-be-theatre-royal-n-26236",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "guardian--brian-logan.json",
+        "outletId": "guardian",
+        "outlet": "The Guardian",
+        "critic": "Brian Logan",
+        "firstSeenAt": null,
+        "scoredAt": "2026-07-12T18:29:18.874Z",
+        "publishDate": "2022-11-28",
+        "url": "theguardian.com/stage/2022/nov/28/jack-and-the-beanstalk-review-lyric-hammersmith",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "harry-theatre-life--harry-brogan.json",
+        "outletId": "harry-theatre-life",
+        "outlet": "Harry Theatre Life",
+        "critic": "Harry Brogan",
+        "firstSeenAt": "2026-11-25T18:09:05.672Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-25",
+        "url": "harrytheatrelife.co.uk/post/the-pantoland-diaries-an-interview-with-jack-and-the-beanstalk-star-marina-lawrence-mahrra-hackney",
+        "includable": false,
+        "reason": "wrongShow",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "harry-theatre-life--unknown.json",
+        "outletId": "harry-theatre-life",
+        "outlet": "Harry Theatre Life",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-25T18:09:05.672Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-25",
+        "url": "harrytheatrelife.co.uk/post/the-pantoland-diaries-an-interview-with-jack-and-the-beanstalk-star-marina-lawrence-mahrra-hackney",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null,
+        "rejectionKind": "not_a_review"
+      },
+      {
+        "file": "london-box-office--phil-willmott.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Phil Willmott",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "londonboxoffice.co.uk/news/post/jack-beanstalk-review",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-box-office--shehrazade-zafar-arif.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Shehrazade Zafar-Arif",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "londonboxoffice.co.uk/news/post/review-jack-and-the-beanstalk-kings-head-theatre",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "loureviews--louise-penn.json",
+        "outletId": "loureviews",
+        "outlet": "LouReviews",
+        "critic": "Louise Penn",
+        "firstSeenAt": "2026-11-25T12:14:42.844Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-18",
+        "url": "loureviews.blog/2026/11/18/yshee-black-on-the-all-drag-panto-jack-and-the-beanstalk-at-emerald-theatre",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "telegraph--claire-allfree.json",
+        "outletId": "telegraph",
+        "outlet": "The Telegraph",
+        "critic": "Claire Allfree",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": "2015-11-29",
+        "url": "telegraph.co.uk/theatre/what-to-see/jack-and-the-beanstalk-hackney-empire-review",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-spy-in-the-stalls--jonathan-evans.json",
+        "outletId": "the-spy-in-the-stalls",
+        "outlet": "The Spy in the Stalls",
+        "critic": "Jonathan Evans",
+        "firstSeenAt": "2026-11-27T11:10:14.860Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "thespyinthestalls.com/2026/11/jack-and-the-beanstalk-2",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-spy-in-the-stalls--unknown.json",
+        "outletId": "the-spy-in-the-stalls",
+        "outlet": "The Spy in the Stalls",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-27T21:58:58.062Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "thespyinthestalls.com/2026/11/jack-and-the-beanstalk-2",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatre-weekly--greg-stewart.json",
+        "outletId": "theatre-weekly",
+        "outlet": "Theatre Weekly",
+        "critic": "Greg Stewart",
+        "firstSeenAt": "2026-11-23T21:43:48.857Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-20",
+        "url": "theatreweekly.com/interview-kate-butch-on-jack-and-the-beanstalk-at-emerald-theatre",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thereviewshub--mark-clegg.json",
+        "outletId": "thereviewshub",
+        "outlet": "The Reviews Hub",
+        "critic": "Mark Clegg",
+        "firstSeenAt": "2026-11-27T19:30:33.113Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "thereviewshub.com/jack-and-the-beanstalk-newcastle-theatre-royal",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thereviewshub--unknown.json",
+        "outletId": "thereviewshub",
+        "outlet": "The Reviews Hub",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-27T19:30:33.113Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "thereviewshub.com/jack-and-the-beanstalk-newcastle-theatre-royal",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thestage--paul-vale.json",
+        "outletId": "thestage",
+        "outlet": "The Stage",
+        "critic": "Paul Vale",
+        "firstSeenAt": "2026-11-27T20:06:59.179Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "thestage.co.uk/reviews/jack-and-the-beanstalk-review-theatre-royal-windsor",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thestage--tracey-sinclair.json",
+        "outletId": "thestage",
+        "outlet": "The Stage",
+        "critic": "Tracey Sinclair",
+        "firstSeenAt": "2026-11-27T12:23:55.874Z",
+        "scoredAt": "2026-11-27T12:38:03.166Z",
+        "publishDate": "2026-11-27",
+        "url": "thestage.co.uk/reviews/jack-and-the-beanstalk-review-newcastle-theatre-royal-newcastle-upon-tyne",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thestage--unknown.json",
+        "outletId": "thestage",
+        "outlet": "The Stage",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-27T21:58:41.481Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "thestage.co.uk/reviews/jack-and-the-beanstalk-review-theatre-royal-windsor",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "times-uk--rachel-halliburton.json",
+        "outletId": "times-uk",
+        "outlet": "The Times (UK)",
+        "critic": "Rachel Halliburton",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": "2023-11-27",
+        "url": "thetimes.com/uk/article/jack-and-the-beanstalk-review-not-enough-sparkle-in-this-london-panto-ktqjmgzf0?eafs_enabled=false",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "west-end-best-friend--nick-wayne.json",
+        "outletId": "west-end-best-friend",
+        "outlet": "West End Best Friend",
+        "critic": "Nick Wayne",
+        "firstSeenAt": "2026-11-27T17:16:41.675Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "westendbestfriend.co.uk/news/review-jack-and-the-beanstalk-theatre-royal-windsor",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "west-end-best-friend--unknown.json",
+        "outletId": "west-end-best-friend",
+        "outlet": "West End Best Friend",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-27T17:16:41.675Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "westendbestfriend.co.uk/news/review-jack-and-the-beanstalk-theatre-royal-windsor",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "whatsonstage--alex-wood.json",
+        "outletId": "whatsonstage",
+        "outlet": "WhatsOnStage",
+        "critic": "Alex Wood",
+        "firstSeenAt": "2026-11-27T19:14:51.405Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "whatsonstage.com/news/hackney-empire-announces-special-guests-for-2026-pantomime_1737863",
+        "includable": false,
+        "reason": "noTextOrScoreSignal",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
