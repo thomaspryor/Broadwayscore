@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T15:05:17.552Z",
+  "generatedAt": "2026-11-27T16:55:52.483Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -160,11 +160,15 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 918,
-  "matchedGaps": 2,
-  "possibleGaps": 5,
+  "itemsScanned": 917,
+  "matchedGaps": 3,
+  "possibleGaps": 6,
   "gaps": [
     {
       "showId": "a-christmas-carol-west-end-2026",
@@ -185,6 +189,15 @@
       "publishDate": "2026-11-25"
     },
     {
+      "showId": "the-afronauts-west-end-2026",
+      "title": "The Afronauts",
+      "level": "matched",
+      "outletId": "viewfromthegods",
+      "url": "https://viewfromthegods.co.uk/2026/11/27/the-afronauts-royal-court-upstairs/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-afronauts-royal-court-upstairs",
+      "headline": "&#8220;The Afronauts&#8221; Royal Court Downstairs",
+      "publishDate": "2026-11-27"
+    },
+    {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
       "level": "possible",
@@ -201,6 +214,15 @@
       "url": "https://www.thereviewshub.com/christmas-carol-shakespeare-north-playhouse-prescot/",
       "headline": "Christmas Carol &#8211; Shakespeare North Playhouse, Prescot",
       "publishDate": "2026-11-25"
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/zoonation-ebony-scrooge-sadlers-wells-east-london/",
+      "headline": "ZooNation: Ebony Scrooge – Sadler’s Wells East, London.",
+      "publishDate": "2026-11-27"
     },
     {
       "showId": "a-christmas-carol-west-end-2026",
