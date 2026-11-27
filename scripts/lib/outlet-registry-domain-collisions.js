@@ -18,7 +18,7 @@ const EDITION_PAIRS = [
   ['express-uk', 'sunday-express'],    // express.co.uk
   ['times-uk', 'sunday-times'],        // thetimes.co.uk / thetimes.com (BRO-5137)
   ['daily-mail', 'mail-on-sunday'],    // dailymail.co.uk / dailymail.com / mailplus.co.uk (BRO-5373)
-  ['timeout', 'timeout-london'],       // timeout.com (path-split /london)
+  ['timeout', 'timeout-london', 'timeout-sydney'], // timeout.com (path-split /london, /sydney; BRO-8393)
 ];
 
 // Declared PRIMARY-domain vs. domainAliases overlaps (task #1270). The

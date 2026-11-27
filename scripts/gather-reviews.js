@@ -120,6 +120,7 @@ const { isRunningInCI } = require('./lib/regression-guard');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
 // (S2-T4) so this direct-write path and the shared writer behave identically.
 const { stampFirstSeen, emitReviewFirstSeen } = require('./lib/review-file-writer');
+const { defaultCriticForOutlet } = require('./lib/gather-default-critic');
 const { mergePendingRecord } = require('./lib/pending-review-health');
 const { namedNonReviewReason, wordpressAttachmentParentUrl } = require('./lib/non-review-url-patterns');
 const {
@@ -560,6 +561,8 @@ function loadOutlets(opts = {}) {
           name: info.displayName || id,
           domain: info.domain || null,
           critics: info.defaultCritics || (info.defaultCritic ? [info.defaultCritic] : []),
+          // Registry defaults are vetted bylines (see lib/gather-default-critic.js).
+          criticsAreDefaults: true,
           tier,
           region: info.region || null,
           isDualMarket: isDual,
@@ -5579,12 +5582,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           continue;
         }
         const outletMeta = outlets.find(o => o.id.toLowerCase() === (result.outletId || '').toLowerCase());
-        const isSingleCriticOutlet = outletMeta && Array.isArray(outletMeta.critics) && outletMeta.critics.length === 1;
         foundReviews.push({
           showId,
           outletId: result.outletId,
           outlet: result.outlet || (outletMeta && outletMeta.name) || result.outletId,
-          criticName: isSingleCriticOutlet ? outletMeta.critics[0] : 'Unknown',
+          criticName: defaultCriticForOutlet(outletMeta),
           url: result.url,
           publishDate: result.publishDate || null,
           dateSource: result.dateSource || null,
@@ -5890,9 +5892,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           // For single-critic outlets, default to that critic so saveReview doesn't route
           // to _pending (where reviews never get scored). For multi-critic outlets, leave
           // criticName as Unknown — collect will extract the real byline from the page.
-          const isSingleCriticOutlet = outlet.critics && outlet.critics.length === 1;
-          const defaultCritic = isSingleCriticOutlet ? outlet.critics[0] : 'Unknown';
-          console.log(isSingleCriticOutlet ? `✓ Found (default critic: ${defaultCritic})` : '✓ Found');
+          // BRO-8393: only a registry-vetted default names the byline here.
+          const defaultCritic = defaultCriticForOutlet(outlet);
+          console.log(defaultCritic !== 'Unknown' ? `✓ Found (default critic: ${defaultCritic})` : '✓ Found');
           foundReviews.push({
             showId,
             outletId: outlet.id,

@@ -1350,15 +1350,28 @@ function outletOwnsUrlDomainIgnoringPath(outletId, url) {
 // edition pair (see outlet-registry-domain-collisions.js's EDITION_PAIRS).
 const PATH_SPLIT_EDITION_HOSTS = new Set(['timeout.com', 'timeout.co.uk']);
 
-// Time Out city editions that are NEITHER registered outlet (2026-09-29
-// ship-check: /chicago, /sydney, … used to fall through to T1 "timeout").
+// Time Out city editions with their OWN registered outlet (BRO-8393: a
+// timeout.com/sydney review was filed as T1 Time Out New York). First path
+// segment (or city subdomain) → outletId. Every id here must be declared in
+// outlet-registry-domain-collisions.js's timeout EDITION_PAIRS group.
+const TIMEOUT_CITY_OUTLETS = Object.freeze({
+  london: 'timeout-london',
+  uk: 'timeout-london',
+  sydney: 'timeout-sydney',
+});
+// Outlet ids a timeout.com / timeout.co.uk URL can legitimately carry.
+const TIMEOUT_EDITION_OUTLET_IDS = new Set(['timeout', ...Object.values(TIMEOUT_CITY_OUTLETS)]);
+
+// Time Out city editions that are NO registered outlet (2026-09-29
+// ship-check: /chicago, /melbourne, … used to fall through to T1 "timeout").
 // First path segment, lowercased. /newyork and any non-city path (the
 // long-standing NY convention: /theater-reviews, /movies, bare origin) stay
 // "timeout"; /london and /uk, and every timeout.co.uk URL, are Time Out London.
 const TIMEOUT_OTHER_CITY_EDITIONS = new Set([
   'chicago', 'los-angeles', 'miami', 'boston', 'washington-dc', 'san-francisco',
   'las-vegas', 'austin', 'philadelphia', 'seattle', 'atlanta', 'new-orleans', 'nashville',
-  'sydney', 'melbourne', 'australia', 'edinburgh', 'manchester', 'birmingham', 'bristol',
+  'melbourne', 'australia', 'brisbane', 'perth', 'adelaide', 'auckland',
+  'edinburgh', 'manchester', 'birmingham', 'bristol',
   'dublin', 'paris', 'barcelona', 'madrid', 'lisbon', 'porto', 'berlin', 'rome', 'milan',
   'amsterdam', 'hong-kong', 'singapore', 'tokyo', 'dubai', 'mumbai', 'delhi',
   'mexico-city', 'buenos-aires', 'sao-paulo', 'rio-de-janeiro', 'montreal', 'toronto',
@@ -1373,9 +1386,55 @@ const TIMEOUT_OTHER_CITY_EDITIONS = new Set([
 function timeoutEditionForPath(hostname, urlPath) {
   const first = String(urlPath || '').toLowerCase().split('/').filter(Boolean)[0] || '';
   if (hostname === 'timeout.co.uk') return 'timeout-london';
-  if (first === 'london' || first.startsWith('london-') || first === 'uk') return 'timeout-london';
+  if (first.startsWith('london-')) return 'timeout-london';
+  if (Object.prototype.hasOwnProperty.call(TIMEOUT_CITY_OUTLETS, first)) return TIMEOUT_CITY_OUTLETS[first];
   if (TIMEOUT_OTHER_CITY_EDITIONS.has(first)) return null;
   return 'timeout';
+}
+
+/** Time Out edition for a city subdomain (sydney.timeout.com), null for any other city. */
+function timeoutEditionForSubdomain(city) {
+  if (city === 'newyork' || city === 'new-york' || city === 'ny') return 'timeout';
+  return Object.prototype.hasOwnProperty.call(TIMEOUT_CITY_OUTLETS, city) ? TIMEOUT_CITY_OUTLETS[city] : null;
+}
+
+function isTimeoutHost(hostname) {
+  return hostname === 'timeout.com' || hostname === 'timeout.co.uk' || hostname.endsWith('.timeout.com');
+}
+
+/**
+ * BRO-8393 class guard: is this review filed under the WRONG Time Out edition?
+ * The path-split checks callers used (`pathResolved && pathResolved.outletId
+ * !== outletId`) were vacuous for a city edition with no registered outlet,
+ * because resolveOutletFromUrl returns null there, so a name-derived
+ * "timeout" (Time Out New York, T1) on timeout.com/sydney or /chicago passed
+ * every gate. Returns null when the pair is consistent (or the URL is not a
+ * Time Out URL, or outletId is not a Time Out edition: cross-outlet checks
+ * own that case), else { expected, reason } where expected is the registered
+ * edition the URL belongs to, or null when that city has no outlet.
+ * @returns {{ expected: string|null, reason: string } | null}
+ */
+function timeoutEditionMismatch(outletId, url) {
+  if (!outletId || !url || typeof url !== 'string') return null;
+  let hostname;
+  try {
+    hostname = new URL(url).hostname.replace(/\.+$/, '').replace(/^www\./, '').toLowerCase();
+  } catch {
+    return null;
+  }
+  if (!isTimeoutHost(hostname)) return null;
+  const lower = String(outletId).toLowerCase();
+  const id = TIMEOUT_EDITION_OUTLET_IDS.has(lower) ? lower : normalizeOutlet(outletId);
+  if (!TIMEOUT_EDITION_OUTLET_IDS.has(id)) return null;
+  const resolved = resolveOutletFromUrl(url);
+  const expected = resolved && resolved.outletId ? resolved.outletId : null;
+  if (expected === id) return null;
+  return {
+    expected,
+    reason: expected
+      ? `Time Out URL ${url} is the "${expected}" edition, not "${id}"`
+      : `Time Out URL ${url} is a city edition with no registered outlet; it must not be filed as "${id}"`,
+  };
 }
 
 /**
@@ -1866,20 +1925,16 @@ function resolveOutletFromUrl(url) {
     // newyork.edgemedianetwork.com's bare base and 22 Time Out NY reviews
     // resolved to Edge New York).
     if (hostname.endsWith('.timeout.com')) {
-      const city = hostname.slice(0, -'.timeout.com'.length);
-      if (city === 'newyork' || city === 'new-york' || city === 'ny') return { outletId: 'timeout', displayName: 'Time Out New York' };
-      if (city === 'london' || city === 'uk') return { outletId: 'timeout-london', displayName: 'Time Out London' };
       // Any other city edition (losangeles., hongkong.) or a non-edition host
-      // (media.timeout.com) is neither registered outlet.
-      return null;
+      // (media.timeout.com) is no registered outlet.
+      const edition = timeoutEditionForSubdomain(hostname.slice(0, -'.timeout.com'.length));
+      return edition ? { outletId: edition, displayName: getOutletDisplayName(edition) || edition } : null;
     }
     if (hostname === 'timeout.com' || hostname === 'timeout.co.uk') {
+      // Another city edition with no outlet (Chicago, Melbourne, …) resolves
+      // nothing rather than hand it T1 Time Out New York's weight.
       const edition = timeoutEditionForPath(hostname, urlPath);
-      if (edition === 'timeout-london') return { outletId: 'timeout-london', displayName: 'Time Out London' };
-      if (edition === 'timeout') return { outletId: 'timeout', displayName: 'Time Out New York' };
-      // Another city edition (Chicago, Sydney, …): neither registered outlet.
-      // Resolve nothing rather than hand it T1 Time Out New York's weight.
-      return null;
+      return edition ? { outletId: edition, displayName: getOutletDisplayName(edition) || edition } : null;
     }
 
     const domainIndex = buildDomainToOutletIndex();
@@ -3217,6 +3272,8 @@ module.exports = {
   clearCriticRegistryCache,
   resolveOutletFromUrl,
   resolveOutletFromUrlIfPathInformed,
+  timeoutEditionMismatch,
+  TIMEOUT_CITY_OUTLETS,
   outletOwnsUrlDomain,
   outletOwnsUrlDomainIgnoringPath,
   isCrossOutletUrl,

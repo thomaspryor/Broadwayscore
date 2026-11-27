@@ -78,7 +78,7 @@ describe('findUndeclaredDomainCollisions', () => {
       ['express-uk', 'sunday-express'],
       ['sunday-times', 'times-uk'], // BRO-5137
       ['daily-mail', 'mail-on-sunday'], // BRO-5373
-      ['timeout', 'timeout-london'],
+      ['timeout', 'timeout-london', 'timeout-sydney'], // BRO-8393
     ]);
   });
 

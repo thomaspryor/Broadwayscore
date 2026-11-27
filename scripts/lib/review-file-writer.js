@@ -32,6 +32,7 @@ const {
   getOutletDisplayName,
   resolveOutletFromUrl,
   loadOutletRegistry,
+  timeoutEditionMismatch,
 } = require('./review-normalization');
 // Lazy: scripts/lib is copied flat into fixtures and sparse checkouts that carry no subdirectory, so a top-level require would break them.
 const laneBypasses = (...args) => require('./opening-night-lane/trust-model').laneBypasses(...args);
@@ -637,6 +638,19 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
         console.warn(`  ⚠️  Outlet mismatch for ${showId}: URL=${urlResolved.outletId} (${input.url}) vs name=${outletId}. Preferring URL.`);
         outletId = urlResolved.outletId;
       }
+    }
+  }
+
+  // --- Guard: Time Out edition (BRO-8393) ---
+  // The refinement above moves a registered city edition (timeout.com/sydney)
+  // onto its own outlet. A city with NO outlet (timeout.com/chicago) resolves
+  // to null, so a name-derived "timeout" would be stored as T1 Time Out New
+  // York. Refuse it rather than borrow that weight.
+  if (input.url) {
+    const editionMismatch = timeoutEditionMismatch(outletId, input.url);
+    if (editionMismatch) {
+      console.warn(`  ⚠️  Skipping ${showId}: ${editionMismatch.reason}`);
+      return { action: 'skipped', reason: 'timeout-edition-mismatch' };
     }
   }
 

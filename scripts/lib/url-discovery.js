@@ -25,7 +25,7 @@ const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filter
 const { isLondonMarket } = require('./venue-classification');
 const { reviewSearchKeyword } = require('./opening-night-discovery-policy');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
-const { resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
+const { resolveOutletFromUrlIfPathInformed, timeoutEditionMismatch } = require('./review-normalization');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
 const { evaluateSerpAcceptance, downgradeBaselineUrl } = require('./serp-review-acceptance');
 const { isTransientScrapingdogError, scrapingdogErrorMessage } = require('./sd-transient-error');
@@ -1602,6 +1602,13 @@ async function _discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
       log(`    ✗ Path-split edition mismatch (expected "${outletId}", URL resolves to "${pathResolved.outletId}"): ${url.substring(0, 80)}`);
       continue;
     }
+    // BRO-8393: a city edition with NO registered outlet (timeout.com/chicago)
+    // resolves to null above, so it also needs the explicit edition check.
+    const editionMismatch = timeoutEditionMismatch(outletId, url);
+    if (editionMismatch) {
+      log(`    ✗ ${editionMismatch.reason}`);
+      continue;
+    }
 
     const title = (result.title || '').toLowerCase();
 
@@ -2000,6 +2007,10 @@ function validateUrlDomain(url, outletId) {
     if (pathResolved && pathResolved.outletId !== String(outletId).toLowerCase()) {
       return { valid: false, reason: `URL ${url} is a path-split edition of "${pathResolved.outletId}", not "${outletId}"` };
     }
+    // BRO-8393: unregistered city editions (timeout.com/chicago) resolve to
+    // null above and used to validate as Time Out New York.
+    const editionMismatch = timeoutEditionMismatch(outletId, url);
+    if (editionMismatch) return { valid: false, reason: editionMismatch.reason };
     return { valid: true };
   } catch {
     return { valid: true }; // Invalid URL — let downstream handle

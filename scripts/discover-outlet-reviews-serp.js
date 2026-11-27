@@ -28,7 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle } = require('./lib/show-matching');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, resolveOutletFromUrlIfPathInformed, getOutletDisplayName } = require('./lib/review-normalization');
 const { sanitizeCriticName } = require('./lib/byline-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { validateUrlDomain, serpQuery } = require('./lib/url-discovery');
@@ -284,7 +284,13 @@ async function discoverForOutlet(outletId, config, shows, opts) {
       // Sanitize: never persist a URL-shaped byline as the critic name. This
       // writer bypasses the shared review-file-writer, so apply the same guard.
       const criticName = sanitizeCriticName(extractCriticFromUrl(result.url, config)) || 'Unknown';
-      const normOutlet = normalizeOutlet(config.outletName);
+      // BRO-8393: the config names ONE outlet ("Time Out New York") but a
+      // timeout.com query also returns other city editions. File the review
+      // under the edition its URL path names (timeout.com/sydney → Time Out
+      // Sydney); an edition with no outlet is then refused by validateUrlDomain.
+      const urlEdition = resolveOutletFromUrlIfPathInformed(result.url);
+      const normOutlet = urlEdition ? urlEdition.outletId : normalizeOutlet(config.outletName);
+      const outletDisplayName = urlEdition ? (getOutletDisplayName(normOutlet) || urlEdition.displayName) : config.outletName;
       const normCritic = normalizeCritic(criticName);
       const filename = generateReviewFilename(normOutlet, normCritic);
 
@@ -312,7 +318,7 @@ async function discoverForOutlet(outletId, config, shows, opts) {
       let reviewData = {
         showId,
         outletId: normOutlet,
-        outlet: config.outletName,
+        outlet: outletDisplayName,
         criticName: criticName,
         url: result.url,
         source: 'outlet-serp-discovery',
