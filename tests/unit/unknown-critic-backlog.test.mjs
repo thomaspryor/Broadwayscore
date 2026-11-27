@@ -21,6 +21,8 @@ import os from 'node:os';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+// The writer's credited-creative guard loads shows.json: point it at an empty fixture, never live data.
+process.on('exit', require('../../scripts/lib/shows-json-fixture.js').useShowsFixture([]));
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 
 const { criticProfileKey } = require('../../scripts/lib/url-slug.js');
