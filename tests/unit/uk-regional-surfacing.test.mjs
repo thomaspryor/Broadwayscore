@@ -55,3 +55,10 @@ test('dropdown count equals the page count', () => {
   const list = getBrowseList('beyond-london');
   assert.equal(getMarketStats().ukRegional.shows, list.shows.length);
 });
+
+// BRO-8411: the Australia menu row shows the same count the Australian Theatre page lists.
+test('Australia dropdown count equals the page count', () => {
+  const list = getBrowseList('australian-theatre');
+  assert.ok(list, 'australian-theatre list missing (regional flag off?)');
+  assert.equal(getMarketStats().auRegional.shows, list.shows.length);
+});

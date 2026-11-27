@@ -4,8 +4,9 @@ import { usePathname } from 'next/navigation';
 import { createContext, createElement, useContext, type ReactNode } from 'react';
 import type { EffectiveMarket } from '@/lib/show-market';
 
-export type MarketId = 'nyc' | 'west-end' | 'off-west-end' | 'off-broadway' | 'regional' | 'uk-regional' | 'tour';
-export type ShowMarketOverrides = Readonly<Record<string, EffectiveMarket>>;
+export type MarketId = 'nyc' | 'west-end' | 'off-west-end' | 'off-broadway' | 'regional' | 'uk-regional' | 'au-regional' | 'tour';
+// 'au-regional' is navigation-only (BRO-8411): the Australia menu row. Everywhere else an AU show is plain 'regional'.
+export type ShowMarketOverrides = Readonly<Record<string, EffectiveMarket | 'au-regional'>>;
 const ShowMarketContext = createContext<ShowMarketOverrides>({});
 
 /** Server-provided venue exceptions, available on first render and navigation. */
@@ -24,7 +25,10 @@ export function useCurrentMarket(distinguishUkRegional = false): MarketId {
   const market = getMarketFromPath(pathname, showMarkets);
   // Search, subscriptions and footer branding belong to the West End family;
   // the navigation pill can request the more specific UK Regional label.
-  return market === 'uk-regional' && !distinguishUkRegional ? 'west-end' : market;
+  // The pill likewise distinguishes Australia; everything else sees an AU show as plain regional.
+  if (!distinguishUkRegional && market === 'uk-regional') return 'west-end';
+  if (!distinguishUkRegional && market === 'au-regional') return 'regional';
+  return market;
 }
 
 export function getMarketFromPath(pathname: string, showMarkets: ShowMarketOverrides = {}): MarketId {
@@ -37,8 +41,9 @@ export function getMarketFromPath(pathname: string, showMarkets: ShowMarketOverr
 
   // Pre-Broadway browse hub — the market dropdown's regional destination
   if (pathname.startsWith('/browse/pre-broadway-out-of-town-shows')) return 'regional';
-  // Australian pilot hub (BRO-8389): AU productions are regional shows, so the pill reads Regional like their show pages.
-  if (pathname.startsWith('/browse/australian-theatre')) return 'regional';
+  // Australian pilot hub (BRO-8389/BRO-8411): its own navigation market, so the menu marks
+  // the Australia row (not Pre-Broadway). useCurrentMarket() maps it back to 'regional'.
+  if (pathname.startsWith('/browse/australian-theatre')) return 'au-regional';
   if (pathname === '/browse/beyond-london' || pathname === '/browse/beyond-london/') return 'uk-regional';
   // National tours hub (BRO-4211)
   if (pathname.startsWith('/browse/broadway-national-tours')) return 'tour';

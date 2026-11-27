@@ -11,8 +11,8 @@ import FooterExploreCards from '@/components/FooterExploreCards';
 import FooterBranding from '@/components/FooterBranding';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { siteRobots } from '@/lib/indexable-deploy';
-import { getSiteStats, getMarketStats, getUkRegionalShows } from '@/lib/data-core';
-import { getEffectiveMarket } from '@/lib/show-market';
+import { getSiteStats, getMarketStats, getUkRegionalShows, getAuRegionalShows } from '@/lib/data-core';
+import { getEffectiveMarket, type EffectiveMarket } from '@/lib/show-market';
 import { ShowMarketProvider } from '@/hooks/useCurrentMarket';
 import MarketNav from '@/components/MarketNav';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
@@ -80,7 +80,11 @@ export default function RootLayout({
   const { totalReviews } = getSiteStats();
   const marketStats = getMarketStats();
   // Only ship the small set whose venue changes its navigation market.
-  const showMarkets = Object.fromEntries(getUkRegionalShows().map(show => [show.slug, getEffectiveMarket(show)]));
+  const showMarkets: Record<string, EffectiveMarket | 'au-regional'> = Object.fromEntries([
+    ...getUkRegionalShows().map(show => [show.slug, getEffectiveMarket(show)] as const),
+    // Australian productions mark the Australia menu row, not Pre-Broadway (BRO-8411).
+    ...getAuRegionalShows().map(show => [show.slug, 'au-regional'] as const),
+  ]);
 
   return (
     // suppressHydrationWarning: the Profitability Scorecard gate's boot script sets

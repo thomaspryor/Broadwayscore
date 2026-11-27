@@ -102,11 +102,15 @@ test('BRO-6796: a city hub own production says its town, a tryout still says try
   assert.equal(getDurationSuffix('regional', 'Goodman Theatre, Chicago, IL 60601', true), 'in Chicago');
 });
 
-// BRO-8389: the Australian pilot hub must read Regional in the header pill, like its show pages.
-test('Australian Theatre browse page maps to the regional market', () => {
-  assert.equal(getMarketFromPath('/browse/australian-theatre'), 'regional');
-  assert.equal(getMarketFromPath('/browse/australian-theatre/'), 'regional');
+// BRO-8411: the Australian pilot hub, and AU show pages given the server's overrides, select the
+// Australia menu row. Without an override an AU slug still falls back to plain regional.
+test('Australian Theatre browse page and AU show pages map to the au-regional nav market', () => {
+  assert.equal(getMarketFromPath('/browse/australian-theatre'), 'au-regional');
+  assert.equal(getMarketFromPath('/browse/australian-theatre/'), 'au-regional');
+  const overrides = { 'whispering-jack-regional-2026': 'au-regional' } as const;
+  assert.equal(getMarketFromPath('/show/whispering-jack-regional-2026', overrides), 'au-regional');
   assert.equal(getMarketFromPath('/show/whispering-jack-regional-2026'), 'regional');
+  assert.equal(getMarketFromPath('/browse/pre-broadway-out-of-town-shows'), 'regional');
 });
 
 test('AU regional shows say where they play, not "in tryout" (BRO-8389)', () => {
