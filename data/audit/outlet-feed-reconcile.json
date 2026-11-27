@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T03:42:09.070Z",
+  "generatedAt": "2026-11-27T05:01:18.198Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -157,11 +157,15 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
+      "outletId": "londonpubtheatres",
+      "error": "Client network socket disconnected before secure TLS connection was established"
+    },
+    {
       "outletId": "stagebuddy",
       "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 905,
+  "itemsScanned": 887,
   "matchedGaps": 2,
   "possibleGaps": 5,
   "gaps": [

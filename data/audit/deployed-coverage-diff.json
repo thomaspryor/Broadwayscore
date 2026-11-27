@@ -1,51 +1,13 @@
 {
-  "generatedAt": "2026-11-27T03:42:08.708Z",
+  "generatedAt": "2026-11-27T05:01:17.710Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 370,
-  "clean": 368,
-  "defective": 2,
-  "byType": {
-    "score-drift": 1,
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "peter-pan-goes-wrong-regional-2026",
-      "title": "Peter Pan Goes Wrong",
-      "openingDate": "2026-11-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theater-mirror"
-        }
-      ],
-      "missingFromProd": [
-        "theater-mirror"
-      ],
-      "localCount": 3,
-      "deployedCount": 2,
-      "firstDefectAt": "2026-11-27T03:42:05.357Z"
-    },
-    {
-      "showId": "attention-off-west-end-2026",
-      "title": "Attention",
-      "openingDate": "2026-11-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 67.92 vs local 67.61 (Δ0.31)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-11-27T02:36:22.057Z"
-    }
-  ],
+  "checked": 374,
+  "clean": 374,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

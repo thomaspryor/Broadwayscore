@@ -1113,20 +1113,6 @@
     "queuedAt": "2026-11-26T07:51:03.670Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:now-you-see-me-live-2026",
-    "title": "Review gap — \"Now You See Me Live\" missing 1 cited review(s)",
-    "description": "Now You See Me Live (now-you-see-me-live-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=now-you-see-me-live-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-26T08:54:21.752Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:trilogies-triathlon-off-broadway-2026",
     "title": "Auto-remediation gave up on trilogies-triathlon-off-broadway-2026",
     "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"trilogies-triathlon-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
@@ -1570,20 +1556,6 @@
     "queuedAt": "2026-11-27T01:31:30.124Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-27.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-27T03:41:50.651Z"
-  },
-  {
     "conditionKey": "corpus-drift:monitor-only",
     "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-27.",
     "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
@@ -1611,6 +1583,34 @@
     "testId": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
     "fields": [],
     "queuedAt": "2026-11-27T04:11:30.701Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:now-you-see-me-live-2026",
+    "title": "Review gap — \"Now You See Me Live\" missing 1 cited review(s)",
+    "description": "Now You See Me Live (now-you-see-me-live-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=now-you-see-me-live-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-27T05:00:19.912Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-27.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-27T05:00:47.275Z"
   },
   {
     "conditionKey": "land:land/bro-8389-au-plan",
