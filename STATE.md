@@ -1,5 +1,4 @@
-# BRO-8282 state
-Done: scripts/lib/owner-decision-session-link.js (+email link in buildDecisionEmail/buildRoundupEmail, wired in send-owner-decision-emails.js), tests pass (39/39 incl. visual-approval-email).
-Pushed to origin/land/job/linear-BRO-8282-mwvfppda (tip 4f39918ece); land.yml run 45529426259 was still queued.
-Remaining: confirm it landed, then report done.
-Next: git fetch origin main && git merge-base --is-ancestor 4f39918ece origin/main && node --test scripts/lib/owner-decision-email.test.mjs
+# BRO-6956 state (headless job, 2026-11-27)
+Done: fix committed on job/linear-BRO-6956-mwyq869q (Muck Rack via shared Browserbase fetcher, classified reads, latch, rate-limit queue; BWW drift guard; blind-week snapshot + drift guard; workflow BB secrets). Tests: scripts/lib/author-pages-muckrack.test.mjs, author-pages-bww.test.mjs, critic-coverage-blind.test.mjs.
+Remaining: full audit run evidence -> `node scripts/lib/review-coverage.mjs --record --answer=...` -> `bash scripts/merge-worktree-to-main.sh` -> on main `node scripts/audit-critic-coverage.js --limit=3` + `npx tsc --noEmit` -> `gh workflow run audit-critic-coverage.yml` -> `node scripts/linear-session.js report --issue=BRO-6956 --status=done`.
+Side card: BRO-8396 (stagebuddy lane source gap, pre-existing test red), dispatch refused on disk pressure.
