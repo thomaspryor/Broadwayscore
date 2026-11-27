@@ -393,6 +393,30 @@ land_via_landing_branch() {
         die "live-data-lane floor: a changed test reads live data without a LIVE-DATA-LANE marker; land.yml would refuse it at lint-workflows::live-data-lane. Fix per the ::error:: line above (a fixture first, e.g. scripts/lib/shows-json-path.js useShowsFixture for data/shows.json; else the marker), commit, re-run (MERGE_SKIP_LIVE_DATA_LANE=1 to bypass)"
       fi
     fi
+    # ── fast-tests floor (BRO-7150) ──────────────────────────────────────────
+    # The cheap part of land.yml's gauntlet: the repo-wide invariant tests that
+    # refused real lands plus the tests that name a changed file
+    # (scripts/lib/land-fast-tests.js), ~30 s here. The land/** push hook runs
+    # them for a direct push, but this script's own push is not seen by it, so
+    # job/* lands (221 runs, 34% refused, 2026-11-20..27) reached land.yml with
+    # none run. Judged vs the fork point, so a test main fixed after the fork is
+    # not a false refusal. Exit 1 (a NEW failure) refuses; any other exit warns
+    # and land.yml decides. Skipped on a resume. MERGE_SKIP_FAST_TESTS=1 bypasses.
+    local fast="$src_dir/scripts/lib/land-fast-tests.js"
+    if [ "${MERGE_SKIP_FAST_TESTS:-}" = "1" ]; then
+      log "fast-tests floor: skipped (MERGE_SKIP_FAST_TESTS=1)"
+    elif [ "$land_tip" = "$tip" ]; then
+      log "fast-tests floor: skipped (origin/$land_name is already at ${tip:0:10}; resuming the wait)"
+    elif [ -f "$fast" ] && command -v node >/dev/null 2>&1; then
+      log "fast-tests floor: invariant + targeted land tests on ${tip:0:10} vs ${fork:0:10} (scripts/lib/land-fast-tests.js)"
+      local fast_rc=0
+      (cd "$src_dir" && node "$fast" run --base "$fork" --tip "$tip" --worktree --timeout-ms 120000) || fast_rc=$?
+      if [ "$fast_rc" -eq 1 ]; then
+        die "fast-tests floor: the test(s) above fail on $BRANCH but pass at its fork point; land.yml would refuse this land ~20 min in. Fix them, commit, re-run (MERGE_SKIP_FAST_TESTS=1 to bypass a failure that is not yours)"
+      elif [ "$fast_rc" -ne 0 ]; then
+        log "fast-tests floor: could not judge (exit $fast_rc) — continuing; land.yml decides"
+      fi
+    fi
     log "push audits + tsc: run by scripts/hooks/pre-push on the land/** push below (range ${fork:0:10}..${tip:0:10})"
   fi
 
