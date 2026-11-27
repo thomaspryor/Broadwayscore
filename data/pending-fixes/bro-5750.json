@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5750",
   "planId": "91daac5a-8f54-40ee-82c0-9c7c3bbc092e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-27T09:02:15.824Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,29 @@
         "description": "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json: isNonReview"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-27T09:48:04.226Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-afronauts-west-end-2026/theatremonkey--unknown.json isNonReviewReason: null -> \"manual (not a review): theatremonkey seating-guide page (summary of other critics or reader comments), no first-hand critic verdict, no publish date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-afronauts-west-end-2026/theatremonkey--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json isNonReviewReason: null -> \"manual (not a review): theatremonkey seating-guide page (summary of other critics or reader comments), no first-hand critic verdict, no publish date\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
