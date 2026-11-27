@@ -38,7 +38,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isUkRegional = marketId === 'uk-regional';
-  const isAustralia = pathname === '/browse/australian-theatre';
+  const isAustralia = marketId === 'au-regional';
   const activeHub = hubForPath(pathname);
   const isHubPath = (slug: string) => activeHub?.slug === slug;
   // Treat opera show pages as NOT off-broadway / West End / Off-West End for the
@@ -71,7 +71,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Close on route change
   useEffect(() => {
     setIsOpen(false);
-  }, [marketId, activeHub?.slug]);
+  }, [pathname]);
 
   return (
     <div className="flex items-center gap-2 sm:gap-3" ref={dropdownRef}>
@@ -347,7 +347,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
               </Fragment>
             );
           })}
-          {featureFlags.regional && stats.auRegional && stats.auRegional.shows > 0 && (
+          {featureFlags.regional && ((stats.auRegional?.shows ?? 0) > 0 || isAustralia) && (
             <>
             <div className="h-px bg-white/[0.06] mx-2 my-1" />
             <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">Australia</div>
@@ -362,7 +362,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 <span className={`w-1.5 h-1.5 rounded-full ${isAustralia ? 'bg-teal-400 shadow-[0_0_6px_rgba(45,212,191,0.5)]' : 'bg-teal-500/60'}`} />
                 <div>
                   <div className={`text-sm font-semibold ${isAustralia ? 'text-teal-200' : 'text-white'}`}>Australian Theatre</div>
-                  <div className="text-[11px] text-fg-muted">Pilot · {stats.auRegional.shows} scored {stats.auRegional.shows === 1 ? 'show' : 'shows'}</div>
+                  <div className="text-[11px] text-fg-muted">Pilot · {stats.auRegional?.shows ?? 0} scored {stats.auRegional?.shows === 1 ? 'show' : 'shows'}</div>
                 </div>
               </div>
               {isAustralia && (

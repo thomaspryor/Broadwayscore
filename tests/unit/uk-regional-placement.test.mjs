@@ -9,7 +9,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { isUkRegionalShow, isUsRegionalShow } from '../../src/lib/market-utils';
 import { isLocalOnlyShow } from '../../src/lib/local-market';
-import { getRegionalShows, getUkRegionalShows, getAllShows } from '../../src/lib/data-core';
+import { getRegionalShows, getUkRegionalShows, getAuRegionalShows, getAllShows } from '../../src/lib/data-core';
 import { BROWSE_PAGES } from '../../src/config/browse-pages';
 import { getBrowseList, getAllBrowseSlugs } from '../../src/lib/data-core';
 import { getEffectiveMarket, getEffectiveMarketLabel } from '../../src/lib/show-market';
@@ -25,14 +25,18 @@ test('isUkRegionalShow: only regional shows at a listed UK house', () => {
   assert.equal(isUkRegionalShow({ category: 'regional' }), false);
 });
 
-test('the Pre-Broadway list and the UK list split every regional show exactly once', () => {
+// BRO-8411: the Australian pilot (BRO-8389) added a third regional list; every regional show is on exactly one of the three.
+test('the Pre-Broadway, UK and Australian lists split every regional show exactly once', () => {
   const tryouts = getRegionalShows();
   const uk = getUkRegionalShows();
+  const au = getAuRegionalShows();
   // Local-only shows (BRO-6518) are on neither list by design; every other regional show is on exactly one.
   const allRegional = getAllShows().filter((s) => s.category === 'regional' && !isLocalOnlyShow(s));
-  assert.equal(tryouts.length + uk.length, allRegional.length);
+  assert.equal(tryouts.length + uk.length + au.length, allRegional.length);
   const ids = new Set(tryouts.map((s) => s.id));
+  const ukIds = new Set(uk.map((s) => s.id));
   for (const s of uk) assert.equal(ids.has(s.id), false, `${s.id} is on both lists`);
+  for (const s of au) assert.equal(ids.has(s.id) || ukIds.has(s.id), false, `${s.id} is an AU show on another list`);
   for (const s of tryouts) assert.equal(isUkRegionalShow(s), false, `${s.id} is a UK show on the tryouts list`);
 });
 
@@ -197,7 +201,8 @@ test('Beyond London browse lists the entire eligible UK shelf and is registered 
 test('UK market overrides and the view-all link are wired to existing UI callers (BRO-6420)', async () => {
   const { readFileSync } = await import('node:fs');
   const layout = readFileSync('src/app/layout.tsx', 'utf8');
-  assert.match(layout, /getUkRegionalShows\(\)\.map\(show => \[show.slug, getEffectiveMarket\(show\)\]\)/);
+  assert.match(layout, /getUkRegionalShows\(\)\.map\(show => \[show.slug, getEffectiveMarket\(show\)\]/);
+  assert.match(layout, /getAuRegionalShows\(\)\.map\(show => \[show.slug, 'au-regional'\]/);
   assert.match(layout, /<ShowMarketProvider showMarkets=\{showMarkets\}>/);
   assert.match(layout, /<MarketNav stats=\{marketStats\}/);
   const nav = readFileSync('src/components/MarketNav.tsx', 'utf8');
