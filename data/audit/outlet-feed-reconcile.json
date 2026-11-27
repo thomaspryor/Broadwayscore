@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T16:55:52.483Z",
+  "generatedAt": "2026-11-27T18:54:11.109Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -29,9 +29,19 @@
       "openingDate": "2026-11-24"
     },
     {
+      "id": "samson-et-dalila-off-broadway-2026",
+      "title": "Samson et Dalila",
+      "openingDate": "2026-11-27"
+    },
+    {
       "id": "attention-off-west-end-2026",
       "title": "Attention",
       "openingDate": "2026-11-24"
+    },
+    {
+      "id": "jack-and-the-beanstalk-off-west-end-2026",
+      "title": "Jack and The Beanstalk",
+      "openingDate": "2026-11-27"
     },
     {
       "id": "seven-guitars-off-broadway-2026",
@@ -79,6 +89,11 @@
       "openingDate": "2026-11-23"
     },
     {
+      "id": "ebony-scrooge-off-west-end-2026",
+      "title": "Ebony Scrooge",
+      "openingDate": "2026-11-27"
+    },
+    {
       "id": "arrowhead-regional-2026",
       "title": "Arrowhead",
       "openingDate": "2026-11-21"
@@ -92,6 +107,11 @@
       "id": "cygnets-a-magical-holiday-regional-2026",
       "title": "Cygnet's A Magical Holiday",
       "openingDate": "2026-11-24"
+    },
+    {
+      "id": "frozen-regional-2026",
+      "title": "Frozen",
+      "openingDate": "2026-11-27"
     },
     {
       "id": "a-clockwork-orange-a-play-with-music-regional-2026",
@@ -134,13 +154,14 @@
       "openingDate": "2026-11-25"
     }
   ],
-  "skipped": [],
+  "skipped": [
+    {
+      "showId": "trilogies-triathlon-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    }
+  ],
   "feedsChecked": 87,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -160,14 +181,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 917,
-  "matchedGaps": 3,
+  "itemsScanned": 922,
+  "matchedGaps": 4,
   "possibleGaps": 6,
   "gaps": [
     {
@@ -187,6 +204,15 @@
       "url": "https://www.britishtheatreguide.info/reviews/matthew-bourne-the-lowry-salf-26239",
       "headline": "Matthew Bourne's Cinderella!",
       "publishDate": "2026-11-25"
+    },
+    {
+      "showId": "jack-and-the-beanstalk-off-west-end-2026",
+      "title": "Jack and The Beanstalk",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/jack-and-the-beanstalk-newcastle-theatre-royal/",
+      "headline": "Jack and the Beanstalk &#8211; Newcastle Theatre Royal",
+      "publishDate": "2026-11-27"
     },
     {
       "showId": "the-afronauts-west-end-2026",

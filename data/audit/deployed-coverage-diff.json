@@ -1,48 +1,13 @@
 {
-  "generatedAt": "2026-11-27T16:55:52.046Z",
+  "generatedAt": "2026-11-27T18:54:10.694Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 377,
-  "clean": 375,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "title": "Matilda The Musical",
-      "openingDate": "2011-11-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 90.92 vs local 91.02 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-11-27T16:55:48.147Z"
-    },
-    {
-      "showId": "perfect-crime-off-broadway-1987",
-      "title": "Perfect Crime",
-      "openingDate": "1987-04-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 56.94 vs local 56.79 (Δ0.15)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-27T16:55:48.147Z"
-    }
-  ],
+  "checked": 380,
+  "clean": 380,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
