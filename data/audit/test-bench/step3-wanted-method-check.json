@@ -1,0 +1,67 @@
+{
+ "generatedAt": "2026-11-27T10:35:00Z",
+ "generator": "scripts/wanted-method-check.js (BRO-7167 step 3), re-run by BRO-8087",
+ "input": "wanted-2022 2026-11-08 recording, restored from broadway-review-texts commit ddfe0e5248a^ (rotated out of lane-recordings since)",
+ "verdict": "FAIL (inconclusive method check)",
+ "why": "The Wanted recording (2026-11-08) was made under the old recorder limits and hit its byte cap 16 min into its 60-min span (firstCappedAt 02:55Z): 527 of 1290 fetches have no stored body, including the DTLI, Playbill Verdict and BWW index pages, so replayed discovery admitted 0 reviews. The replay can neither vouch for the lane nor fault it. Already addressed upstream: BRO-7247 (landed 2026-11-10) caps stored gzipped bytes at 24 MiB per night and throttles repeat bodies per URL; later recordings store 18-25 MB (downstate 11-15, much-ado 11-19). Step 4 shadow redos grade the lane directly instead.",
+ "passes": 32,
+ "spanMin": 60,
+ "profile": {
+  "firstAt": "2026-11-09T02:38:50.253Z",
+  "lastAt": "2026-11-09T03:38:54.638Z",
+  "fetches": 1288,
+  "noBody": 63,
+  "errors": 56,
+  "notes": {
+   "capped": 527
+  },
+  "firstCappedAt": "2026-11-09T02:55:01.680Z",
+  "bodiesAfterCap": 361
+ },
+ "summary": {
+  "foundCount": 0,
+  "distinctOutlets": 0,
+  "minReviewsRule": 5,
+  "coverageMinute": null
+ },
+ "errors": [
+  {
+   "adapter": "dtli",
+   "error": "404 https://didtheylikeit.com/"
+  },
+  {
+   "adapter": "show-score",
+   "error": "404 https://www.show-score.com/broadway-shows/wanted"
+  },
+  {
+   "adapter": "playbill-verdict",
+   "error": "404 https://playbill.com/category/the-verdict"
+  },
+  {
+   "adapter": "talkin-broadway",
+   "error": "every Talkin' Broadway index failed"
+  },
+  {
+   "adapter": "google-news",
+   "error": "404 https://news.google.com/rss/search?q=%22Wanted%22+review&hl=en-US&gl=US&ceid=US%3Aen"
+  },
+  {
+   "adapter": "dtli",
+   "error": "recording incomplete for https://didtheylikeit.com/: body not stored (capped)"
+  },
+  {
+   "adapter": "playbill-verdict",
+   "error": "recording incomplete for https://playbill.com/category/the-verdict: body not stored (capped)"
+  },
+  {
+   "adapter": "bww-roundup",
+   "error": "recording incomplete for https://www.broadwayworld.com/: body not stored (capped)"
+  }
+ ],
+ "rejections": {
+  "section-index:not-review-like": 1,
+  "rss:outside-night-window": 2,
+  "rss:not-review-like": 1
+ },
+ "unrecordedCount": 11
+}
