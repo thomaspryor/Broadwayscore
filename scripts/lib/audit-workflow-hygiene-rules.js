@@ -1526,6 +1526,24 @@ function findEolNodeVersions(raw) {
 }
 
 /**
+ * Rule (af): `npx supabase` must name an exact CLI version (BRO-8383). An
+ * unpinned `npx supabase` installs whatever npm calls latest on every run:
+ * supabase@3.4.0 started refusing hosted changes without --yes, and every
+ * edge-function deploy failed (run 45961348571) with no code change here.
+ * Catches `npx [-y|--yes] supabase`, `supabase@latest` and ranges.
+ */
+const NPX_SUPABASE_RE = /\bnpx\s+(?:(?:-y|--yes|-q|--quiet)\s+)*supabase(@\S*)?/;
+function findUnpinnedSupabaseCli(raw) {
+  const hits = [];
+  raw.split('\n').forEach((l, i) => {
+    if (l.trim().startsWith('#')) return;
+    const m = NPX_SUPABASE_RE.exec(l.replace(/\s#.*$/, ''));
+    if (m && !/^@\d+\.\d+\.\d+$/.test(m[1] || '')) hits.push({ lineNum: i + 1, text: l.trim() });
+  });
+  return hits;
+}
+
+/**
  * Rule (ad): advisory --strict audit with no --alert (BRO-7181). A step with
  * `continue-on-error: true` that runs a `--strict` audit only turns itself red
  * inside a green job, which nobody reads: the approved-fix drift audit sat
@@ -1709,6 +1727,7 @@ module.exports = {
   findSparseFileRecheckouts,
   findMissingTopLevelPermissions,
   findUnpinnedActionUses,
+  findUnpinnedSupabaseCli,
   findEolNodeVersions,
   findStrictAdvisoryWithoutAlert,
   NODE_MIN_MAJOR,

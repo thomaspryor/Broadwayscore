@@ -272,6 +272,7 @@ const {
   findGitNetUsedBeforeSource,
   findMissingTopLevelPermissions,
   findUnpinnedActionUses,
+  findUnpinnedSupabaseCli,
   findEolNodeVersions,
   findStrictAdvisoryWithoutAlert,
   findOversizedExpressionRunBlocks,
@@ -994,6 +995,7 @@ async function main() {
     pushNoWrite: [],
     noTopLevelPermissions: [],
     unpinnedUses: [],
+    unpinnedSupabaseCli: [],
     eolNodeVersion: [],
     strictWithoutAlert: [],
     dispatchNoActionsWrite: [],
@@ -1197,6 +1199,12 @@ async function main() {
     if (!raw.includes('hygiene-pin-ok:')) {
       const hits = findUnpinnedActionUses(raw);
       if (hits.length > 0) violations.unpinnedUses.push({ file, hits });
+    }
+
+    // ── Rule (af): npx supabase without an exact version (BRO-8383) ─
+    if (!raw.includes('hygiene-supabase-cli-ok:')) {
+      const hits = findUnpinnedSupabaseCli(raw);
+      if (hits.length > 0) violations.unpinnedSupabaseCli.push({ file, hits });
     }
 
     // ── Rule (ac): node-version at or below EOL (BRO-6398) ─
@@ -1461,6 +1469,7 @@ async function main() {
     violations.pushNoWrite.length +
     violations.noTopLevelPermissions.length +
     violations.unpinnedUses.length +
+    violations.unpinnedSupabaseCli.length +
     violations.eolNodeVersion.length +
     violations.strictWithoutAlert.length +
     violations.dispatchNoActionsWrite.length +
@@ -1756,6 +1765,18 @@ async function main() {
     }
     console.error('\nFix: `uses: owner/repo@<40-hex sha> # vN` (git ls-remote --tags https://github.com/owner/repo refs/tags/vN).');
     console.error('Exempt: add  # hygiene-pin-ok: <reason>  anywhere in the file.\n');
+  }
+
+  if (violations.unpinnedSupabaseCli.length) {
+    console.error('── (af) npx supabase without an exact version ─');
+    console.error('An unpinned CLI floats to whatever npm calls latest; supabase@3.4.0 began refusing');
+    console.error('hosted changes without --yes and broke every edge-function deploy (BRO-8383).\n');
+    for (const { file, hits } of violations.unpinnedSupabaseCli) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      line ${h.lineNum}: ${h.text}`);
+    }
+    console.error('\nFix: npx supabase@<major.minor.patch> ... (bump on purpose, after reading its changelog).');
+    console.error('Exempt: add  # hygiene-supabase-cli-ok: <reason>  anywhere in the file.\n');
   }
 
   if (violations.eolNodeVersion.length) {

@@ -77,11 +77,11 @@ jobs:
             echo "::error::No ANTHROPIC_API_KEY_THEATR or ANTHROPIC_API_KEY secret, so Theatr screenshot import cannot work"
             exit 1
           fi
-          npx supabase secrets set "ANTHROPIC_API_KEY=$THEATR_KEY" --project-ref "$SUPABASE_PROJECT_REF"
+          npx supabase@3.4.0 secrets set "ANTHROPIC_API_KEY=$THEATR_KEY" --project-ref "$SUPABASE_PROJECT_REF" --yes
       - name: Unit-test delete-account (Apple token revocation)
         # handler.mjs/apple-revoke.mjs are plain JS, so deno check above does
         # not type them; this runs the real handler with a mocked fetch.
-        run: node --test tests/unit/apple-revoke.test.mjs tests/unit/delete-account-coverage.test.mjs
+        run: node --test tests/unit/apple-revoke.test.mjs tests/unit/delete-account-coverage.test.mjs tests/unit/delete-account-auth-first.test.mjs
       - name: Push the Apple key delete-account reads
         # Account deletion revokes the user's Sign in with Apple grant
         # (App Review 5.1.1(v), BRO-6290) with the same key rotate-apple-secret.yml
@@ -109,17 +109,21 @@ jobs:
             });
           '
       - name: Deploy edge functions
+        # The CLI is pinned (BRO-8383): unpinned `npx supabase` floated to 3.4.0,
+        # which refuses hosted changes without --yes, and every deploy failed.
+        # Bump the version on purpose; audit-workflow-hygiene.js rule (af) fails
+        # an unpinned call.
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
-          npx supabase functions deploy show-score-proxy \
-            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
-          npx supabase functions deploy mezzanine-search \
-            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
-          npx supabase functions deploy delete-account \
-            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
-          npx supabase functions deploy theatr-screenshot-import \
-            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
+          npx supabase@3.4.0 functions deploy show-score-proxy \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api --yes
+          npx supabase@3.4.0 functions deploy mezzanine-search \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api --yes
+          npx supabase@3.4.0 functions deploy delete-account \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api --yes
+          npx supabase@3.4.0 functions deploy theatr-screenshot-import \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api --yes
 
       - name: Probe JWT verification (forged token must get 401)
         continue-on-error: true # advisory first (BRO-2123); BRO-4631
