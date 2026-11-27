@@ -27,7 +27,7 @@
 const path = require('path');
 const { fetchPage } = require(path.join(__dirname, '../scraper.js'));
 
-module.exports = { fetch, close, isProfilePage, classifyPage, parseArticles, _resetForTest, _isClosed: () => _closed };
+module.exports = { fetch, close, isProfilePage, classifyPage, parseArticles, _resetForTest, _isClosed: () => _closed, _gapMs: () => _gapMs };
 
 const BB_KEYS = ['BROWSERBASE_API_KEY', 'BROWSERBASE_PROJECT_ID'];
 const SPAM = /msn\.com|gossipbucket|flipboard|google\.com|aol\.com|yahoo\.com|inkl\.com|ourcommunitynow|thepoke/;
@@ -70,10 +70,12 @@ function parseArticles(html) {
 // critics read at once (seen live 2026-11-27), so every read goes through one
 // queue, MIN_GAP_MS apart, and a rate-limit page backs off before it counts.
 const MIN_GAP_MS = Number(process.env.MUCKRACK_MIN_GAP_MS || 2000);
+const MAX_GAP_MS = 20000; // each rate-limit page doubles the gap for the rest of the run, up to this
 const RATE_LIMIT_BACKOFF_MS = [20000, 60000];
 const MAX_CONSECUTIVE_BLOCKS = 3;
 let _queue = Promise.resolve();
 let _lastReadAt = 0;
+let _gapMs = MIN_GAP_MS;
 let _blocks = 0;
 let _closed = false;
 let _bb; // undefined = not built yet, null = unavailable
@@ -81,7 +83,7 @@ let _readerForTest = null;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function _resetForTest(reader = null) {
-  _readerForTest = reader; _queue = Promise.resolve(); _lastReadAt = 0; _blocks = 0; _closed = false; _bb = undefined;
+  _readerForTest = reader; _queue = Promise.resolve(); _lastReadAt = 0; _gapMs = MIN_GAP_MS; _blocks = 0; _closed = false; _bb = undefined;
 }
 
 function browserbase() {
@@ -142,10 +144,9 @@ function read(url) {
       return { kind: 'blocked', html: null, why: `skipped: muckrack.com blocked this run (${_blocks} consecutive blocked reads)` };
     }
     const reader = _readerForTest || readOnce;
-    const gap = _readerForTest ? 0 : MIN_GAP_MS;
     let res;
     for (let attempt = 0; ; attempt++) {
-      const wait = _lastReadAt + gap - Date.now();
+      const wait = _readerForTest ? 0 : _lastReadAt + _gapMs - Date.now();
       if (wait > 0) await sleep(wait);
       _lastReadAt = Date.now();
       try {
@@ -158,7 +159,8 @@ function read(url) {
       }
       if (res.kind !== 'rate-limited' || attempt >= RATE_LIMIT_BACKOFF_MS.length) break;
       const back = _readerForTest ? 0 : RATE_LIMIT_BACKOFF_MS[attempt];
-      console.warn(`  [muckrack] rate limited on ${url}; retrying in ${back / 1000}s`);
+      _gapMs = Math.min(MAX_GAP_MS, _gapMs * 2);
+      console.warn(`  [muckrack] rate limited on ${url}; retrying in ${back / 1000}s, reads now ${_gapMs / 1000}s apart`);
       await sleep(back);
     }
     if (res.kind === 'profile') _blocks = 0;

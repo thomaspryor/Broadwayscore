@@ -99,6 +99,7 @@ test('a rate-limit page is retried, and reads never overlap', async () => {
   assert.ok(got.every((a) => a.length === 1));
   assert.equal(calls, 5);
   assert.equal(maxInFlight, 1);
+  assert.ok(muckrack._gapMs() > 2000, 'a rate limit widens the gap between later reads');
 });
 
 test('close() is final and safe without a session', async () => {
