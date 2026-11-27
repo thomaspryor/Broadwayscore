@@ -1,19 +1,21 @@
 {
-  "updatedAt": "2026-11-26T18:40:52.913Z",
-  "scanned": 4976,
-  "showsWithViolations": 121,
-  "totalViolations": 149,
-  "newSinceLastRun": 0,
+  "updatedAt": "2026-11-27T12:06:25.809Z",
+  "scanned": 4982,
+  "showsWithViolations": 122,
+  "totalViolations": 150,
+  "newSinceLastRun": 1,
   "handled": {
     "not-shipped": 65,
-    "temporal-override-low-confidence": 999,
+    "temporal-override-low-confidence": 1000,
     "duplicate-not-shipped": 57,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 12,
     "self-healed": 75,
-    "prior-run-or-tour-leg": 47
+    "prior-run-or-tour-leg": 48
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "ebony-scrooge-off-west-end-2026::the-spy-in-the-stalls--sammi-xing.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "the-hills-of-california-2024::broadway-and-me--janice-c-simpson.json",
@@ -107,6 +109,7 @@
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
     "spamalot-tour-2025::the-moderate-voice--dough-bursch.json",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2024::broadwayworld--jarrod-michael.json",
+    "ebony-scrooge-off-west-end-2026::the-spy-in-the-stalls--sammi-xing.json",
     "waiting-for-godot-west-end-2024::timeout-london--unknown.json",
     "the-curious-case-of-benjamin-button-west-end-2024::broadwayworld--unknown.json",
     "robin-hood-west-end-2024::whatsonstage--tom-millward.json",
@@ -878,7 +881,7 @@
       "showId": "shadowlands-west-end-2026",
       "title": "Shadowlands",
       "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre's 2019 production that is now being transferred to the West End, not — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
+      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre's 2019 production of Shadowlands. Although the article mentions the  — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
       "violations": [
         {
           "filename": "islingtontribune--unknown.json",
@@ -887,10 +890,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a review of the Chichester Festival Theatre's 2019 production that is now being transferred to the West End, not",
+          "cvReasoning": "This is a review of the Chichester Festival Theatre's 2019 production of Shadowlands. Although the article mentions the ",
           "cvIssues": [
-            "Review evaluates the Chichester Festival Theatre 2019 production, not the West End run opening 2026-02-12 at Aldwych Theatre",
-            "Opening sentence explicitly states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — the critic is reviewing the transferred production from its prior 2019 Chichester staging, not the new West End opening"
+            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End Aldwych Theatre production",
+            "Opening sentence states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — this is a preview/announcement of a transfer, not a review of the West End performance itself"
           ]
         }
       ]
@@ -1913,6 +1916,27 @@
           "cvIssues": [
             "Review is truncated mid-sentence multiple times (indicated by '[...]' marks in substantive passages)",
             "No geographic location or tour venue specified in the scraped content (Fox Cities Performing Arts Center is mentioned only once at the very end, not integrated into the review narrative)"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "ebony-scrooge-off-west-end-2026",
+      "title": "Ebony Scrooge",
+      "openingDate": null,
+      "message": "the-spy-in-the-stalls/Sammi Xing (the-spy-in-the-stalls--sammi-xing.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review of Ebony Scrooge evaluating a performance with detailed critical assessment (praise and criticism — https://thespyinthestalls.com/2026/11/ebony-scrooge-2/",
+      "violations": [
+        {
+          "filename": "the-spy-in-the-stalls--sammi-xing.json",
+          "url": "https://thespyinthestalls.com/2026/11/ebony-scrooge-2/",
+          "outletId": "the-spy-in-the-stalls",
+          "criticName": "Sammi Xing",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "This is a valid review of Ebony Scrooge evaluating a performance with detailed critical assessment (praise and criticism",
+          "cvIssues": [
+            "Venue mismatch: Review describes ZooNation's production at an unspecified venue; expected venue is 'Sadler's Wells East' but no venue is named in the scraped text",
+            "No venue attribution in article: The review does not name the theater where the performance was seen, making it impossible to confirm this is the Sadler's Wells East production"
           ]
         }
       ]

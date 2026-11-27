@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-26T18:43:51.182Z",
-  "scanned": 4976,
-  "showsWithViolations": 4,
-  "totalViolations": 4,
+  "updatedAt": "2026-11-27T12:09:19.141Z",
+  "scanned": 4982,
+  "showsWithViolations": 0,
+  "totalViolations": 0,
   "newSinceLastRun": 0,
   "newViolationKeys": [],
   "actionableViolations": 0,
@@ -11,60 +11,6 @@
   "openActionableCount": 0,
   "actionableOpen": {},
   "actionableKeys": [],
-  "violationKeys": [
-    "cloud-9-west-end-2026",
-    "nine-night-off-west-end-2026",
-    "downstate-2026",
-    "the-ugly-one-off-west-end-2026"
-  ],
-  "hits": [
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "openingDate": "2026-11-10",
-      "message": "cloud-9-west-end-2026 review text mentions \"revival\" 46x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {
-          "titleMatch": false,
-          "mentionCount": 46
-        }
-      ]
-    },
-    {
-      "showId": "nine-night-off-west-end-2026",
-      "title": "Nine Night",
-      "openingDate": "2026-11-12",
-      "message": "nine-night-off-west-end-2026 review text mentions \"revival\" 11x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {
-          "titleMatch": false,
-          "mentionCount": 11
-        }
-      ]
-    },
-    {
-      "showId": "downstate-2026",
-      "title": "Downstate",
-      "openingDate": "2026-11-15",
-      "message": "downstate-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {
-          "titleMatch": false,
-          "mentionCount": 5
-        }
-      ]
-    },
-    {
-      "showId": "the-ugly-one-off-west-end-2026",
-      "title": "The Ugly One",
-      "openingDate": "2026-11-20",
-      "message": "the-ugly-one-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {
-          "titleMatch": false,
-          "mentionCount": 3
-        }
-      ]
-    }
-  ]
+  "violationKeys": [],
+  "hits": []
 }
