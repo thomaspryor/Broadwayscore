@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8415",
   "planId": "8131a1a5-dc3c-4c94-86f1-a9d3ab4f367f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-27T16:00:00.000Z",
   "submitter": {
     "name": null,
@@ -324,5 +324,34 @@
         "description": "Add The Lion King (Lyric Theatre, Brisbane, QLD) as category regional, Australia expansion BRO-8415"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-27T23:16:38.178Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fiddler-on-the-roof-melbourne-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-room-with-a-view-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mrs-doubtfire-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added beetlejuice-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-lion-king-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
