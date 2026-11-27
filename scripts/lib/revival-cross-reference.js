@@ -174,12 +174,13 @@ function isReturnEngagement(show, earlier) {
  * entry isn't wrongly treated as cross-market.
  */
 function detectRevivalByTitleCrossReference(show, existingTitleMap) {
-  const lookup = (key) => {
+  const lookup = (key, bylineAuthor = null) => {
     const others = (existingTitleMap.get(key) || []).filter(c => c.id !== show.id);
     // A title match alone cannot tell a revival from an unrelated work that
     // shares the name. Candidates whose authors differ are dropped one by one,
     // so a genuine earlier production is still found behind an unrelated one.
-    const compatible = others.filter(c => !writersConflict(show.creativeTeam, c.creativeTeam));
+    const compatible = others.filter(c => !writersConflict(show.creativeTeam, c.creativeTeam) &&
+      (!bylineAuthor || !writersConflict([{ name: bylineAuthor, role: 'writer' }], c.creativeTeam)));
     const returnOf = compatible.find(c => isReturnEngagement(show, c)) || null;
     return { match: returnOf || pickBestMatch(compatible, show), returnOf, collided: others.length > 0 && compatible.length === 0, first: others[0] || null };
   };
@@ -187,6 +188,14 @@ function detectRevivalByTitleCrossReference(show, existingTitleMap) {
 
   const fullKey = normalizeRevivalTitle(show.title);
   let { match, returnOf, collided, first } = lookup(fullKey);
+  if (!match && !collided) {
+    // TodayTix can append an unpunctuated genre and author to the title.
+    // Treat the byline as an author credit when checking for title collisions.
+    const byline = show.title.match(/^(.*?)\s+an?\s+(?:comedy|play|musical|drama|opera|operetta|thriller|farce|tragedy)\s+by\s+([\p{L}.'’\-]+(?:\s+[\p{L}.'’\-]+){1,3})\s*$/iu);
+    if (byline && normalizeRevivalTitle(byline[1]).length >= 5) {
+      ({ match, returnOf, collided, first } = lookup(normalizeRevivalTitle(byline[1]), byline[2]));
+    }
+  }
   if (!match && !collided) {
     // Try base title (before colon, dash, or parens) — only if 5+ chars to avoid false positives
     const base = show.title.replace(/\s*[:(\-–—].*/g, '').trim();

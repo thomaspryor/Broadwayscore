@@ -279,3 +279,19 @@ test('BRO-7080: a cross-market same-house-name run is not a return engagement', 
   assert.equal(r.returnEngagement, undefined);
   assert.equal(r.isTransfer, true);
 });
+
+test('TodayTix genre and author suffix finds an earlier same-market production', () => {
+  const map = buildExistingTitleMap([{ id: 'truth-2016', title: 'The Truth', category: 'west-end', type: 'play' }]);
+  const result = detectRevivalByTitleCrossReference({ title: 'THE TRUTH a comedy by Florian Zeller', category: 'west-end' }, map);
+  assert.equal(result.isRevival, true);
+  assert.equal(result.match.id, 'truth-2016');
+});
+
+test('genre byline respects author collisions and cross-market transfers', () => {
+  const earlier = { id: 'truth-old', title: 'The Truth', category: 'west-end', creativeTeam: [{ name: 'Jane Smith', role: 'Playwright' }] };
+  const map = buildExistingTitleMap([earlier]);
+  assert.equal(detectRevivalByTitleCrossReference({ title: 'The Truth a comedy by Florian Zeller', category: 'west-end' }, map).isRevival, false);
+  const transfer = detectRevivalByTitleCrossReference({ title: 'The Truth a comedy by Jane Smith', category: 'broadway' }, map);
+  assert.equal(transfer.isRevival, false);
+  assert.equal(transfer.isTransfer, true);
+});
