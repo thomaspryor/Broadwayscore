@@ -839,8 +839,16 @@
         {
           "at": "2026-11-26T19:17:13.758Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-27T19:12:06.390Z",
+          "outcome": "no_evidence"
         }
-      ]
+      ],
+      "autoAck": {
+        "ackedAt": "2026-11-27T19:12:06.390Z",
+        "note": "auto (BRO-7312): 3 targeted searches of broadwayworld for harry-potter-and-the-cursed-child-one-part-west-end-2026 found no review (2026-11-25, 2026-11-26, 2026-11-27)"
+      }
     },
     "harry-potter-and-the-cursed-child-one-part-west-end-2026::london-theatre": {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
@@ -990,6 +998,10 @@
         {
           "at": "2026-11-25T13:24:07.370Z",
           "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-27T19:11:27.008Z",
+          "outcome": "existing_file"
         }
       ]
     },
@@ -1001,6 +1013,10 @@
       "attempts": [
         {
           "at": "2026-11-25T13:24:07.370Z",
+          "outcome": "no_evidence"
+        },
+        {
+          "at": "2026-11-27T19:11:27.008Z",
           "outcome": "no_evidence"
         }
       ]
@@ -1018,6 +1034,60 @@
           "url": "https://variety.com/2026/legit/news/tom-hiddleston-hayley-atwell-broadway-much-ado-about-nothing-1236667301/",
           "collectorOutcome": "rejected",
           "collectorReason": "onMerge-aborted"
+        },
+        {
+          "at": "2026-11-27T19:11:27.008Z",
+          "outcome": "rejected",
+          "reason": "onMerge-aborted",
+          "url": "https://variety.com/2026/legit/news/tom-hiddleston-hayley-atwell-broadway-much-ado-about-nothing-1236667301/"
+        }
+      ]
+    },
+    "its-a-wonderful-life-a-live-radio-play-2026::cititour": {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "outletId": "cititour",
+      "openingDate": "2026-11-23",
+      "firstSeenMissingAt": "2026-11-27T19:10:51.245Z",
+      "attempts": [
+        {
+          "at": "2026-11-27T19:11:57.312Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "its-a-wonderful-life-a-live-radio-play-2026::nypost": {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "outletId": "nypost",
+      "openingDate": "2026-11-23",
+      "firstSeenMissingAt": "2026-11-27T19:10:51.245Z",
+      "attempts": [
+        {
+          "at": "2026-11-27T19:11:57.312Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "its-a-wonderful-life-a-live-radio-play-2026::theatrely": {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "outletId": "theatrely",
+      "openingDate": "2026-11-23",
+      "firstSeenMissingAt": "2026-11-27T19:10:51.245Z",
+      "attempts": [
+        {
+          "at": "2026-11-27T19:11:57.312Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "its-a-wonderful-life-a-live-radio-play-2026::variety": {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "outletId": "variety",
+      "openingDate": "2026-11-23",
+      "firstSeenMissingAt": "2026-11-27T19:10:51.245Z",
+      "attempts": [
+        {
+          "at": "2026-11-27T19:11:57.312Z",
+          "outcome": "no_evidence"
         }
       ]
     }
