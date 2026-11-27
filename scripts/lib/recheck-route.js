@@ -192,13 +192,6 @@ async function refreshRewatchTargets(targets, { getIssue, toCard, gateFor } = {}
 }
 
 /**
- * The night's routable failures, as one card's title and body.
- * @param {{rows:object[], handedOff?:string[], ledgerEntries?:object[], now?:number, tsxTests?:Set<string>, sha?:string}} o
- *   rows: this run's results or its ledger 'recheck' rows (same fields)
- *   sha: the fresh-main commit the checks ran on (each entry names it)
- * @returns {{cards:object[], overflow:number, title:string|null, body:string|null, skipped:{env:number, handedOff:number, routed:number}}}
- */
-/**
  * BRO-8403. PURE. Card ids from tonight's results whose card is NOT Done and is held on the owner
  * or a real PARKED line: the same isHeldForHandoff rule decideHandoff (recheck-handoff.js) uses to
  * refuse a hand-off. Such a failure is the expected state of an open decision, not a regression.
@@ -217,6 +210,13 @@ function heldForOwner(results, cardsById) {
   return out;
 }
 
+/**
+ * The night's routable failures, as one card's title and body.
+ * @param {{rows:object[], handedOff?:string[], held?:string[], ledgerEntries?:object[], now?:number, tsxTests?:Set<string>, sha?:string}} o
+ *   rows: this run's results or its ledger 'recheck' rows (same fields)
+ *   sha: the fresh-main commit the checks ran on (each entry names it)
+ * @returns {{cards:object[], overflow:number, title:string|null, body:string|null, skipped:{env:number, handedOff:number, held:number, routed:number}}}
+ */
 function buildRouteBatch({ rows, handedOff = [], held = [], ledgerEntries = [], now = Date.now(), tsxTests, sha = null, coverIndex = null } = {}) {
   const handed = new Set(handedOff);
   // BRO-8403: a Paused/Backlog card parked on an owner DECISION NEEDED (or a real PARKED hold)
