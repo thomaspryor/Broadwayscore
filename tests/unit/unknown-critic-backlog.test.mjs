@@ -11,8 +11,7 @@
  *      registry defaultCritic, so rebuild/gather fill his name.
  *    - The Arts Desk: "Aleks Sierz" fills were refused as an outlet name because sierz.co.uk is
  *      named after him.
- * 3. Backlog ceiling: the live reviews.json Unknown count may not grow past what was measured
- *    (2,979 on 2026-11-27, ceiling 3,000). Lower it as fixes land. Skipped when data is absent.
+ * 3. The live backlog ceiling is in unknown-critic-backlog-live-data.test.mjs (live-data lane).
  */
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
@@ -29,8 +28,6 @@ const { readPageByline } = require('../../scripts/lib/page-byline.js');
 const { decideByline, isOutletNamePlaceholder } = require('../../scripts/fix-printed-bylines.js');
 const { isOutletRegistryName } = require('../../scripts/lib/review-file-writer.js');
 const { shouldFillDefaultCritic } = require('../../scripts/lib/critic-fill-rules.js');
-
-const UNKNOWN_CEILING = 3000;
 
 describe('live pages hide Unknown bylines', () => {
   test('ReviewsList credits the outlet staff instead of printing Unknown', () => {
@@ -108,17 +105,6 @@ describe('Aleks Sierz: single-author site and Arts Desk critic', () => {
     assert.equal(isOutletRegistryName('Aleks Sierz'), false);
     assert.equal(isOutletRegistryName('All That Dazzles'), true);
     assert.equal(isOutletRegistryName('The Arts Desk'), true);
-  });
-});
-
-describe('Unknown-critic backlog ceiling', () => {
-  const file = path.join(ROOT, 'data/reviews.json');
-  test(`live reviews.json carries at most ${UNKNOWN_CEILING} Unknown/missing critic names`, { skip: !fs.existsSync(file) && 'data/reviews.json not present' }, () => {
-    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
-    const reviews = Array.isArray(data) ? data : data.reviews || [];
-    assert.ok(reviews.length > 1000, `reviews.json looks truncated (${reviews.length} rows)`);
-    const unknown = reviews.filter((r) => !r.criticName || /^(unknown|unnamed)$/i.test(String(r.criticName).trim())).length;
-    assert.ok(unknown <= UNKNOWN_CEILING, `${unknown} reviews have no critic name (ceiling ${UNKNOWN_CEILING}); fix the source parser, do not raise the ceiling`);
   });
 });
 
