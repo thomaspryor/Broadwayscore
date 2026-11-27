@@ -1,39 +1,13 @@
 {
-  "generatedAt": "2026-11-27T10:10:28.391Z",
+  "generatedAt": "2026-11-27T11:34:02.588Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 377,
-  "clean": 376,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "seven-guitars-off-broadway-2026",
-      "title": "Seven Guitars",
-      "openingDate": "2026-11-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: amsterdamnews"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.61 vs local 85.87 (Δ0.26)"
-        }
-      ],
-      "missingFromProd": [
-        "amsterdamnews"
-      ],
-      "localCount": 18,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-11-27T10:10:19.699Z"
-    }
-  ],
+  "clean": 377,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
