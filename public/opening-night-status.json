@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T17:40:35.104Z",
+  "generatedAt": "2026-11-27T18:52:00.483Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "opera",
       "openingDate": "2026-11-27",
-      "status": "upcoming",
+      "status": "open",
       "slug": "samson-et-dalila-off-broadway",
       "thumbnail": "/images/shows/samson-et-dalila-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -391,13 +391,175 @@
       ]
     },
     {
+      "id": "jack-and-the-beanstalk-off-west-end-2026",
+      "title": "Jack and The Beanstalk",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-11-27",
+      "status": "open",
+      "slug": "jack-and-the-beanstalk-off-west-end",
+      "thumbnail": "/images/shows/jack-and-the-beanstalk-off-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": 76,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 2,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 1,
+      "t2": 0,
+      "t3": 0,
+      "positive": 1,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:1/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-27T18:52:00.483Z",
+          "rc": 1,
+          "s": 76,
+          "t1": 1,
+          "t2": 0,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
       "id": "dick-whittington-adults-only-off-west-end-2026",
       "title": "Dick Whittington: Adults Only",
       "market": "west-end",
       "category": "off-west-end",
       "type": "musical",
       "openingDate": "2026-11-27",
-      "status": "previews",
+      "status": "open",
       "slug": "dick-whittington-adults-only-off-west-end",
       "thumbnail": "/images/shows/dick-whittington-adults-only-off-west-end-2026/thumbnail.jpg",
       "siteScore": null,
@@ -543,13 +705,169 @@
       ]
     },
     {
+      "id": "ebony-scrooge-off-west-end-2026",
+      "title": "Ebony Scrooge",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-11-27",
+      "status": "open",
+      "slug": "ebony-scrooge-off-west-end",
+      "thumbnail": "/images/shows/ebony-scrooge-off-west-end-2026/thumbnail.webp",
+      "siteScore": 76.78,
+      "liveScore": 77,
+      "scoreDrift": 0.21999999999999886,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 6,
+      "t1": 0,
+      "t2": 2,
+      "t3": 4,
+      "positive": 5,
+      "mixed": 1,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "6/8 total",
+          "T1:0/3"
+        ],
+        "highConfidence": 6,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-27T18:52:00.483Z",
+          "rc": 6,
+          "s": 76.78,
+          "t1": 0,
+          "t2": 2,
+          "t3": 4,
+          "p": 5,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
       "id": "frozen-regional-2026",
       "title": "Frozen",
       "market": "broadway",
       "category": "regional",
       "type": "play",
       "openingDate": "2026-11-27",
-      "status": "upcoming",
+      "status": "open",
       "slug": "frozen-regional-2026",
       "thumbnail": "/images/shows/frozen-regional-2026/thumbnail.webp",
       "siteScore": null,
@@ -937,7 +1255,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-11-27",
-      "status": "upcoming",
+      "status": "open",
       "slug": "trilogies-triathlon-off-broadway",
       "thumbnail": "/images/shows/trilogies-triathlon-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -2128,28 +2446,26 @@
       "status": "open",
       "slug": "whispering-jack-regional-2026",
       "thumbnail": "/images/shows/whispering-jack-regional-2026/thumbnail.jpg",
-      "siteScore": 84.57,
-      "liveScore": 85,
-      "scoreDrift": 0.4300000000000068,
+      "siteScore": 86.24,
+      "liveScore": 86,
+      "scoreDrift": -0.23999999999999488,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 8,
       "t1": 1,
-      "t2": 2,
+      "t2": 3,
       "t3": 4,
-      "positive": 7,
+      "positive": 8,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/12 total",
-          "T1:1/3",
-          "T2:2/3",
-          "hi-conf:7/8"
+          "8/12 total",
+          "T1:1/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2429,10 +2745,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Sydney Morning Herald",
-          "isDualMarket": false
-        },
-        {
           "name": "The Spectator (UK)",
           "isDualMarket": false
         },
@@ -2538,6 +2850,18 @@
           "t2": 2,
           "t3": 4,
           "p": 7,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-27T18:52:00.483Z",
+          "rc": 8,
+          "s": 86.24,
+          "t1": 1,
+          "t2": 3,
+          "t3": 4,
+          "p": 8,
           "m": 0,
           "n": 0,
           "bc": "waiting"
