@@ -1806,26 +1806,30 @@ function _compactName(n) {
   return foldDiacritics(String(n || '')).toLowerCase()
     .replace(/\([^)]*\)/g, '').replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
 }
-function isOutletRegistryName(name) {
+let _ownCriticByOutlet = null;
+function isOutletRegistryName(name, outletId) {
   if (!_outletNameSet) {
     _outletNameSet = new Set();
+    _ownCriticByOutlet = new Map();
     try {
       const reg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'outlet-registry.json'), 'utf8'));
       const outlets = reg.outlets || reg;
-      for (const e of Object.values(outlets)) {
+      for (const [id, e] of Object.entries(outlets)) {
         if (!e || typeof e !== 'object') continue;
-        // BRO-8212: a self-branded outlet (the critic's own site: Aleks Sierz, Carole Di Tosti) names a
-        // person; its defaultCritic is a real byline, so that name is not an outlet name (same rule as
-        // placeholder-byline.js).
+        // BRO-8212: a self-branded outlet (Aleks Sierz's own site) names a person; its own defaultCritic is a
+        // real byline on ITS files only (same rule as placeholder-byline.js), never on another outlet's.
         const own = _compactName(e.defaultCritic);
+        if (own) _ownCriticByOutlet.set(own, (_ownCriticByOutlet.get(own) || new Set()).add(id));
         for (const a of [e.displayName, e.name, ...(e.aliases || [])]) {
           const c = _compactName(a);
-          if (c && c !== own) _outletNameSet.add(c);
+          if (c) _outletNameSet.add(c);
         }
       }
     } catch { /* no registry: fall back to the name checks alone */ }
   }
-  return _outletNameSet.has(_compactName(name));
+  const c = _compactName(name);
+  if (outletId && (_ownCriticByOutlet.get(c) || new Set()).has(outletId)) return false;
+  return _outletNameSet.has(c);
 }
 
 /**
@@ -1878,7 +1882,7 @@ function pageBylineRefusal(filepath, existing, ctx) {
   if (isJunkCriticName(criticName)) return 'implausible-name';
   const { isValidAuthorName } = require('./content-quality');
   if (!isPlausiblePersonName(criticName) || !isValidAuthorName(criticName)) return 'implausible-name';
-  if (isOutletRegistryName(criticName)) return 'outlet-name';
+  if (isOutletRegistryName(criticName, normalizeOutlet(existing.outletId || path.basename(filepath).split('--')[0]))) return 'outlet-name';
   const showDir = path.dirname(filepath);
   const self = path.basename(filepath);
   const outletId = normalizeOutlet(existing.outletId || self.split('--')[0]);

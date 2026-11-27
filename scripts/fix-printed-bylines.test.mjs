@@ -64,5 +64,11 @@ test('a self-branded outlet\'s own defaultCritic is not refused as an outlet nam
   assert.equal(ok.applied, true, JSON.stringify(ok));
   const bad = applyPageByline(f, rec, { showId: 'a-show-west-end-2019', criticName: 'Islington Tribune', source: 'printed-text', dryRun: true });
   assert.deepEqual([bad.applied, bad.reason], [false, 'outlet-name']);
+  // The exemption is per outlet: another outlet's file may not take Sierz's name as a self-branded pass.
+  const other = path.join(show, 'islingtontribune--unknown.json');
+  const rec2 = { ...rec, outletId: 'islingtontribune', outlet: 'Islington Tribune', url: 'https://islingtontribune.co.uk/x' };
+  fs.writeFileSync(other, JSON.stringify(rec2));
+  const cross = applyPageByline(other, rec2, { showId: 'a-show-west-end-2019', criticName: 'Aleks Sierz', source: 'printed-text', dryRun: true });
+  assert.deepEqual([cross.applied, cross.reason], [false, 'outlet-name']);
   fs.rmSync(dir, { recursive: true, force: true });
 });
