@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T23:56:57.644Z",
+  "generatedAt": "2026-11-27T23:37:20.290Z",
   "promoted": [
     {
       "id": "jack-and-the-beanstalk-off-west-end-2027",
@@ -30,6 +30,11 @@
       "id": "kara-mickey-and-pol-too-off-west-end-2027",
       "source": "venue-page:riverside-studios",
       "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
+    },
+    {
+      "id": "turings-law-off-west-end-2027",
+      "source": "venue-page:waterloo-east-theatre",
+      "sourceUrl": "https://waterlooeast.ticketsolve.com/shows/873669644/events"
     }
   ],
   "rejected": [
@@ -1168,14 +1173,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as whats-the-fking-point-off-west-end-2027 (normalized-equal)"
-    },
-    {
-      "title": "Act of God",
-      "venue": "Riverside Studios",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as act-of-god-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "An Intervention",
