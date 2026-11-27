@@ -800,7 +800,7 @@ Then re-run this command.`);
   // Bound into contentHash. Dirty UI files: id comes from the working tree (the screenshots show it), not committed HEAD.
   try {
     const D = createRequire(import.meta.url)('./lib/visual-approval-durable.js');
-    const dirty = execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).split('\n').some((l) => D.UI_RE.test(l.slice(3)));
+    const dirty = execFileSync('git', ['status', '--porcelain', '--untracked-files=all'], { encoding: 'utf8' }).split('\n').some((l) => D.UI_RE.test(l.slice(3)));
     // BRO-8164: dirty tree -> id of the working-tree UI content (equals the committed id once the same content is committed).
     const pid = dirty ? D.uiPatchIdWorkingTree(process.cwd()) : D.uiPatchId(process.cwd());
     if (pid) verdict.uiPatchId = pid;
