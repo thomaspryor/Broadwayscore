@@ -30,7 +30,6 @@ const KNOWN_HOMELESS = new Set([
   'cbsnews|Shania Russell',
   'journaltimes|Michael Sommers',
   'lets-go-to-the-theater|Karen Nowosad',
-  'sfgate|Lily Janiak',
 ]);
 
 test('no new registry defaultCritic that the outlet has never published under', () => {
