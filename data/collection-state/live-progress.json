@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-27T00:57:04.741Z",
-  "processed": 147,
-  "failed": 92,
-  "successRate": "61.5%",
+  "updatedAt": "2026-11-27T01:23:51.137Z",
+  "processed": 206,
+  "failed": 133,
+  "successRate": "60.8%",
   "tierBreakdown": {
-    "playwright": 94,
+    "playwright": 135,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 21,
+    "scrapingdog": 24,
     "scrapingbee": 0,
-    "brightdata": 7,
-    "archiveToday": 13,
-    "archive": 31
+    "brightdata": 10,
+    "archiveToday": 17,
+    "archive": 45
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-11-27T00:12:05.875Z",
@@ -83,6 +83,28 @@
       "t": "2026-11-27T00:54:55.190Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-27T01:03:47.050Z",
+      "event": "bb-session",
+      "session": "0277ad87",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-27T01:03:47.777Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-27T01:04:04.680Z",
+      "event": "bb-session",
+      "session": "88d61b6d",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-27T01:04:05.326Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
     }
   ]
 }
