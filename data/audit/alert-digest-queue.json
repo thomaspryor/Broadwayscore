@@ -1417,20 +1417,6 @@
     "queuedAt": "2026-11-26T19:59:31.973Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +17 more). Checked 2026-11-26.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-26T20:21:00.945Z"
-  },
-  {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h (still open — BRO-5532)",
     "description": "Still firing after 90 notifications since it was filed. Tracked at BRO-5532.\n\n1 T1/T2 outlet(s) still missing >24h after they became measurable.",
@@ -1611,5 +1597,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-27T03:41:50.651Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-27.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-27T03:58:59.773Z"
   }
 ]
