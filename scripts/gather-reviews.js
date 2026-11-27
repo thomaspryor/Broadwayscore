@@ -681,8 +681,8 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     // BRO-7531: OB / off-West-End press nights keep "never cache an empty" but
     // skip the ScrapingBee/Bright Data re-ask after a clean Scrapingdog empty.
     secondOpinion: serpSecondOpinionForShow(_showsById().get(showId)),
-    // BRO-8323: a non-Broadway press-night empty is parked 4h, so the 3h re-gathers
-    // re-ask each outlet about every 6h (owner: other markets may take 6-8h).
+    // BRO-8323: a non-Broadway press-night empty is parked 2.5h, so back-to-back
+    // re-gathers stop re-paying it (owner: other markets may take 6-8h).
     ...gatherNegativeCacheOpts({ show: _showsById().get(showId), emptyAuthoritative: emptySerpAuthoritativeForGather({ openingNight, show: _showsById().get(showId) }) }),
   });
 

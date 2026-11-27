@@ -4,12 +4,12 @@
  * (BRO-8323; policy: gatherNegativeCacheTtlMs in serp-negative-cache-policy.js).
  *
  * Same get/set contract as serp-negative-cache.js (the poller's 45-min store),
- * but a 4h TTL and stored FLAT in serp-cache.js's directory under its own key
+ * but a 2.5h TTL and stored FLAT in serp-cache.js's directory under its own key
  * namespace (`neg: 'gather'`, a field serp-cache never puts in a key, so the two
  * can never answer for each other). Flat on purpose: gather-reviews.yml already
  * restores, uploads and merges /tmp/bd-serp-cache across runs and matrix shards
  * (its merge step copies files with a plain `cp`, which a subdirectory breaks),
- * so these entries survive from one 3h tick to the next with no workflow change.
+ * so these entries survive between gather runs with no workflow change.
  */
 const { createTtlCache } = require('./ttl-cache');
 const { GATHER_NEGATIVE_CACHE_TTL_MS } = require('./serp-negative-cache-policy');

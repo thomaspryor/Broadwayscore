@@ -1,6 +1,6 @@
 /**
- * BRO-8323: gather-reviews parks a non-Broadway press-night SERP empty for 4h,
- * so the 3h re-gathers stop re-paying the same ~150 outlet queries. Broadway
+ * BRO-8323: gather-reviews parks a non-Broadway press-night SERP empty for 2.5h,
+ * so back-to-back re-gathers stop re-paying the same ~150 outlet queries. Broadway
  * and unknown categories keep re-asking every pass.
  * Drives the real _serpWithChain with axios stubbed (no network, no spend).
  * Run: node --test scripts/lib/serp-gather-negative-cache.test.mjs
@@ -68,9 +68,9 @@ async function gatherAsk(query, showId) {
 }
 
 test('policy: only non-Broadway press-night calls opt in, Broadway and unknown never do', () => {
-  const four = 4 * 60 * 60 * 1000;
+  const ttl = 2.5 * 60 * 60 * 1000;
   for (const category of ['west-end', 'off-west-end', 'off-broadway', 'regional', 'tour']) {
-    assert.deepEqual(policy.gatherNegativeCacheOpts({ show: { category }, emptyAuthoritative: false }), { negativeCacheTtlMs: four, negativeCacheStore: 'gather' }, category);
+    assert.deepEqual(policy.gatherNegativeCacheOpts({ show: { category }, emptyAuthoritative: false }), { negativeCacheTtlMs: ttl, negativeCacheStore: 'gather' }, category);
   }
   for (const category of ['broadway', null, undefined, 'opera', '']) {
     assert.deepEqual(policy.gatherNegativeCacheOpts({ show: { category }, emptyAuthoritative: false }), {}, String(category));
@@ -80,7 +80,7 @@ test('policy: only non-Broadway press-night calls opt in, Broadway and unknown n
   assert.deepEqual(policy.gatherNegativeCacheOpts({ show: { category: 'west-end' }, emptyAuthoritative: false }, { GATHER_SERP_NEGCACHE_DISABLED: '1' }), {});
 });
 
-test('West End press night: second pass within 4h is answered from the cache (zero provider calls)', async () => {
+test('West End press night: second pass within 2.5h is answered from the cache (zero provider calls)', async () => {
   const query = `site:thestage.co.uk "We Show" review ${q++}`;
   await gatherAsk(query, 'we-show-2026');
   assert.ok(calls.length > 0, 'first pass asks providers');
@@ -91,11 +91,11 @@ test('West End press night: second pass within 4h is answered from the cache (ze
   assert.match(r.provider, /negcached$/);
 });
 
-test('West End: an entry older than 4h is re-asked (outlet re-checked about every 6h)', async () => {
+test('West End: an entry older than 2.5h is re-asked', async () => {
   const query = `site:thestage.co.uk "We Show" review ${q++}`;
   await gatherAsk(query, 'we-show-2026');
   for (const f of fs.readdirSync(process.env.BD_SERP_CACHE_DIR)) {
-    const old = (Date.now() - 4.1 * 60 * 60 * 1000) / 1000;
+    const old = (Date.now() - 2.6 * 60 * 60 * 1000) / 1000;
     fs.utimesSync(path.join(process.env.BD_SERP_CACHE_DIR, f), old, old);
   }
   calls.length = 0;

@@ -33,13 +33,16 @@ function serpNegativeCacheTtlMs(show) {
  * 2026-11-25..26 a West End opening cost ~700-1,300 Scrapingdog credits per
  * pass, almost all of it empties already answered 3h earlier. For the markets
  * the owner allows 6-8h (everything but Broadway, same allowlist as
- * sb-market-gate.js) a 4h empty-answer cache makes every other tick re-ask:
- * an outlet is re-checked about every 6h. Hits are never cached here (a found
+ * sb-market-gate.js) a 2.5h empty-answer cache drops the passes that land
+ * within 2.5h of the last real ask. Replay of 2026-11-25..27 press-night
+ * gather rows: 42% of those credits saved, no show's worst gap between real
+ * asks grew (3h+ TTLs saved up to 57% but stretched one West End show from
+ * 8.0h to 10.5h, past the 6-8h budget). Hits are never cached here (a found
  * review is on disk and skipped next pass anyway). Broadway and unknown
  * categories get null: every pass re-asks, exactly as before.
  * Kill switch: GATHER_SERP_NEGCACHE_DISABLED=1.
  */
-const GATHER_NEGATIVE_CACHE_TTL_MS = 4 * 60 * 60 * 1000;
+const GATHER_NEGATIVE_CACHE_TTL_MS = 2.5 * 60 * 60 * 1000;
 
 function gatherNegativeCacheTtlMs(show, env = process.env) {
   if (env.GATHER_SERP_NEGCACHE_DISABLED === '1') return null;

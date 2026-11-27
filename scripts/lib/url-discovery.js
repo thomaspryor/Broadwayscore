@@ -1292,7 +1292,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
  * @param {boolean} [options.forceHistorical] - If true, skip date filter entirely from the first query (best for pre-2005 shows where Google date metadata is unreliable).
  * @param {boolean} [options.emptyAuthoritative] - Default true. If false, a Scrapingdog SERP success with 0 results does NOT short-circuit the BD/SB fallback and is never cached — use for flows where "no results yet" may mean "not published yet" (e.g. opening-night-poller.js).
  * @param {number|null} [options.negativeCacheTtlMs] - Opt-in short negative-result cache for emptyAuthoritative:false callers (T11 — see scripts/lib/serp-negative-cache-policy.js). Default null (no negative caching, existing behavior).
- * @param {'gather'|null} [options.negativeCacheStore] - Which negative cache: 'gather' = 4h store kept in the 24h cache dir (gather-reviews non-Broadway press night, BRO-8323); default the poller's 45-min store.
+ * @param {'gather'|null} [options.negativeCacheStore] - Which negative cache: 'gather' = 2.5h store kept in the 24h cache dir (gather-reviews non-Broadway press night, BRO-8323); default the poller's 45-min store.
  * @param {boolean} [options.secondOpinion] - Default true. Set false (with emptyAuthoritative:false) to accept a clean Scrapingdog empty for this call without re-asking ScrapingBee/Bright Data; the empty is still never written to the 24h cache. Policy: scripts/lib/serp-second-opinion-policy.js (BRO-7531).
  * @returns {string|null|'__SERP_UNAVAILABLE__'|{url: string, serpTitle: string}} - Discovered URL (or object if returnMetadata)
  */
