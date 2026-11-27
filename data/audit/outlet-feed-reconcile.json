@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T07:39:39.914Z",
+  "generatedAt": "2026-11-27T09:14:15.575Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,12 +138,20 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "theater-pizzazz",
-      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -162,15 +170,15 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "fringereview",
-      "error": "Timeout fetching https://fringereview.co.uk/feed/"
+      "outletId": "exeunt-magazine",
+      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
     },
     {
-      "outletId": "lighting-and-sound-america",
-      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
+      "outletId": "fringereview",
+      "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 903,
+  "itemsScanned": 800,
   "matchedGaps": 2,
   "possibleGaps": 5,
   "gaps": [
@@ -196,19 +204,19 @@
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
       "level": "possible",
-      "outletId": "theater-scene",
-      "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
-      "headline": "It’s a Wonderful Life: A Live Radio Play",
-      "publishDate": "2026-11-23"
+      "outletId": "the-spy-in-the-stalls",
+      "url": "https://thespyinthestalls.com/2026/11/ebony-scrooge-2/",
+      "headline": "EBONY SCROOGE★★★½Sadler&#8217;s Wells East",
+      "publishDate": "2026-11-27"
     },
     {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
       "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/christmas-carol-shakespeare-north-playhouse-prescot/",
-      "headline": "Christmas Carol &#8211; Shakespeare North Playhouse, Prescot",
-      "publishDate": "2026-11-25"
+      "outletId": "theater-scene",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
+      "headline": "It’s a Wonderful Life: A Live Radio Play",
+      "publishDate": "2026-11-23"
     },
     {
       "showId": "a-christmas-carol-west-end-2026",
