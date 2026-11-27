@@ -283,3 +283,27 @@ test('foldSessionRows: no glued rows without a final newline, CRLF rows still de
 test('the Gemini CLI helper model is priced', () => {
   assert.notEqual(L.estimateCostUsd('gemini-3-flash-preview', 1e6, 1e6), null);
 });
+
+// BRO-8356: pre-a6d3bb4 reviewer rows were written as kind 'api' to the home file, so the
+// fold dropped them and main had no reviewer spend for 2026-11-24..26.
+test('foldSessionRows folds legacy reviewer api rows as session rows, once; summary counts them once', () => {
+  const { mergeRowSets } = require('./llm-usage-summary.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8356-legacy-'));
+  const from = path.join(dir, 'home.jsonl');
+  const to = path.join(dir, 'tracked.jsonl');
+  try {
+    const legacy = { ts: '2026-11-25T01:20:00.000Z', provider: 'gemini', workflow: 'local', script: 'scripts/gemini/review.js', kind: 'api', caller: 'scripts/gemini/review.js', model: 'gemini-3.8-flash', costUsd: 0.2 };
+    const skeptic = { ts: '2026-11-25T01:21:00.000Z', provider: 'openai', script: 'scripts/lib/skeptic-review-stop.mjs', kind: 'api', caller: null, costUsd: 0.01 };
+    const ci = { ts: '2026-11-25T01:22:00.000Z', provider: 'gemini', script: 'scripts/some-ci-job.js', kind: 'api', costUsd: 9 };
+    fs.writeFileSync(from, [legacy, skeptic, ci].map((r) => JSON.stringify(r)).join('\n') + '\n');
+    assert.equal(L.foldSessionRows({ from, to }), 2, 'both reviewer rows fold, the CI api row does not');
+    assert.equal(L.foldSessionRows({ from, to }), 0, 'a second fold adds nothing');
+    const tracked = fs.readFileSync(to, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+    assert.deepEqual(tracked.map((r) => r.kind), ['session', 'session']);
+    assert.equal(tracked[1].caller, 'scripts/lib/skeptic-review-stop.mjs');
+    const home = fs.readFileSync(from, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+    const merged = mergeRowSets([tracked, home]);
+    const usd = merged.reduce((s, r) => s + r.costUsd, 0);
+    assert.equal(Math.round(usd * 100) / 100, 9.21, 'the folded copy and its home original count once');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});

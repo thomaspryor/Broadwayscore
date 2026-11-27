@@ -8,7 +8,7 @@
 'use strict';
 
 const fs = require('fs');
-const { LEDGER_PATH, TRACKED_SESSION_LEDGER_PATH, sessionLedgerPath } = require('./gemini-usage-ledger');
+const { LEDGER_PATH, TRACKED_SESSION_LEDGER_PATH, sessionLedgerPath, normalizeLegacySessionRow } = require('./gemini-usage-ledger');
 
 function readFile(p) {
   try {
@@ -38,7 +38,9 @@ function readRows(p) {
 function mergeRowSets(lists) {
   const seen = new Set();
   const out = [];
-  for (const rows of lists) for (const r of rows) {
+  for (const rows of lists) for (const raw of rows) {
+    // BRO-8356: a legacy reviewer api row left in the home file equals its folded session copy.
+    const r = normalizeLegacySessionRow(raw);
     if (r && r.kind === 'session') {
       const k = JSON.stringify(r);
       if (seen.has(k)) continue;

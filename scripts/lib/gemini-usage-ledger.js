@@ -366,14 +366,34 @@ function sessionLedgerPath() {
  * here at wrap-up (record-claude-session-cost.js), into the tracked merge=union file the
  * session commits with its cost row. Copies only lines not already there. Returns rows added.
  */
+/**
+ * BRO-8356: before a6d3bb4 (2026-11-27) the two in-session reviewers' metered calls were written
+ * to the home file as kind 'api', so the fold skipped them and the 11-24..11-26 reviewer spend
+ * never reached main. Such a row is session spend: return it as the session row the fixed code
+ * now writes. Any other row comes back unchanged (CI api rows never fold). Used by the fold AND
+ * by llm-usage-summary mergeRowSets, so a folded copy and its home original dedupe to one row. Pure.
+ */
+const LEGACY_SESSION_API_SCRIPTS = new Set(['scripts/gemini/review.js', 'scripts/lib/skeptic-review-stop.mjs']);
+function normalizeLegacySessionRow(r) {
+  if (!r || r.kind !== 'api' || !LEGACY_SESSION_API_SCRIPTS.has(r.script)) return r;
+  return { ...r, kind: 'session', caller: r.caller || r.script };
+}
+
 function foldSessionRows({ from = sessionLedgerPath(), to = TRACKED_SESSION_LEDGER_PATH } = {}) {
   // Never fold the main ledger (CI, or GEMINI_USAGE_LEDGER_PATH set): it is committed already.
   if (path.resolve(from) === path.resolve(to) || path.resolve(from) === path.resolve(_ledgerPath())) return 0;
   // A missing file is "nothing to fold"; any other read error throws so the caller reports it.
   const lines = (p) => { try { return fs.readFileSync(p, 'utf8').split(/\r?\n/).filter((l) => l.trim()); } catch (e) { if (e.code === 'ENOENT') return []; throw e; } };
   const have = new Set(lines(to));
-  const isSessionRow = (l) => { try { return JSON.parse(l).kind === 'session'; } catch { return false; } };
-  const add = lines(from).filter((l) => { if (have.has(l) || !isSessionRow(l)) return false; have.add(l); return true; });
+  // Native session lines are copied verbatim; a legacy reviewer api row as its session form.
+  const asSessionLine = (l) => {
+    let r; try { r = JSON.parse(l); } catch { return null; }
+    if (r && r.kind === 'session') return l;
+    const n = normalizeLegacySessionRow(r);
+    return n !== r ? JSON.stringify(n) : null;
+  };
+  const add = [];
+  for (const raw of lines(from)) { const l = asSessionLine(raw); if (l === null || have.has(l)) continue; have.add(l); add.push(l); }
   if (!add.length) return 0;
   fs.mkdirSync(path.dirname(to), { recursive: true });
   // A hand-edited or conflict-resolved file may lack its final newline: never glue two rows.
@@ -632,4 +652,5 @@ module.exports = {
   LEDGER_PATH,
   TRACKED_SESSION_LEDGER_PATH,
   foldSessionRows,
+  normalizeLegacySessionRow,
 };
