@@ -162,7 +162,7 @@ test('routeLines: auto and silent results with a card name it; no-card, dispatch
     assert.equal(c.disposition, 'auto');
     assert.equal(c.cooldownHours, 24);
     assert.deepEqual(c.dispatchAtFiling, { runId: '9', runUrl: 'u' });
-    assert.match(c.description, /RECHECK-AFTER/);
+    assert.match(c.description, /Keep the card open until that check passes/);
   }
 });
 

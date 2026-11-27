@@ -336,8 +336,9 @@ async function runRedFirstPass({ dryRun = false, log = console.log, now = Date.n
     if (findUnresolvedDispatchComment(fresh)) { summary.skipped.push({ identifier: id, reason: 'dispatched-comment' }); continue; }
     const gate = classifyHeadlessDispatchability({ subject: fresh.title, notes: fresh.description || '' });
     if (!gate.dispatchable) {
-      summary.skipped.push({ identifier: id, reason: `human-gated:${(gate.blockers || []).join('+')}` });
-      if (!dryRun) d.appendJournal({ event: 'refused', identifier: id, conditionKey: conditionKeyFromIssue(fresh), reason: (gate.blockers || []).join('+') });
+      const reason = gate.blockers.map((blocker) => blocker.code).join('+');
+      summary.skipped.push({ identifier: id, reason: `human-gated:${reason}` });
+      if (!dryRun) d.appendJournal({ event: 'refused', identifier: id, conditionKey: conditionKeyFromIssue(fresh), reason });
       continue;
     }
     if (dryRun) { log(`[red-first] DRY-RUN would dispatch ${id} (${fresh.title})`); summary.dispatched.push(id); continue; }

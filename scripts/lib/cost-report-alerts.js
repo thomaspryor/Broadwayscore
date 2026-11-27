@@ -76,8 +76,10 @@ function evaluateCostReport(m = {}) {
     + 'The owner does not need to act: a worker session takes this card.\n\n'
     + 'Done means: the cause is found and fixed, or shown to be legitimate use (say which, with numbers). '
     + 'Whether to raise a spend budget is not this card\'s call (provider-spend:overspend in the daily digest asks the owner that). '
-    + 'The VERIFY line below reads the alert ledger and only passes once the next weekly report (Mondays 14:00 UTC) is clear, '
-    + 'so after landing a fix report the card Paused with RECHECK-AFTER: <next Monday> rather than Done.';
+    // BRO-8207: a future pause marker here blocks dispatch before repair starts.
+    + 'Investigate and fix the cause in this session; after landing, record the fix and verification evidence. '
+    + 'The VERIFY line below reads the alert ledger, updated by the weekly report (Mondays 14:00 UTC). '
+    + 'Keep the card open until that check passes; code tests alone do not establish Done.';
 
   const failed = int(m.totalFailed) || 0;
   const cancelled = int(m.totalCancelled) || 0;

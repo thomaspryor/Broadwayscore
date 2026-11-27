@@ -9,6 +9,8 @@ const {
   selectRedFirstCandidates, decideCardFollowUp, followUpCommentBody, runRedFirstPass,
 } = require('./red-first-dispatch.js');
 const { DISPATCH_AT_FILING_MARKER, AUTO_FILED_MARKER } = require('./linear-drain-parked.js');
+const { evaluateCostReport, CARD_KEYS } = require('./cost-report-alerts.js');
+const { buildCardNotes } = require('./owner-alert-router.js');
 
 const NOW = Date.parse('2026-09-23T12:00:00.000Z');
 const ago = (ms) => new Date(NOW - ms).toISOString();
@@ -20,6 +22,64 @@ const redCard = (n, { key = `test-yml:red:Unit Tests:${String(n).padStart(8, '0'
   title: `main test.yml red: Unit Tests / Run unit tests — "t${n}"`,
   state: { name: stateType === 'unstarted' ? 'Todo' : stateType, type: stateType },
   description: `${DISPATCH_AT_FILING_MARKER} (BRO-4054; condition: ${key}). The Mac-side red-first pass dispatches it.\n\n## Problem\nmain is red.\n\n## Acceptance criteria\n${verify}\n`,
+});
+
+async function captureDispatch(issues) {
+  const journal = [], alerts = [], dispatched = [];
+  const summary = await runRedFirstPass({ now: NOW, log: () => {}, deps: {
+    listOpenIssues: async () => issues,
+    getIssue: async (id) => issues.find((issue) => issue.identifier === id),
+    openJobTaskIds: () => new Set(),
+    readJournal: () => journal.slice(),
+    appendJournal: (row) => journal.push({ ts: new Date(NOW).toISOString(), ...row }),
+    readTrackedLedger: () => ({ conditions: {} }),
+    dispatch: (id) => dispatched.push(id),
+    updateIssue: () => assert.fail('no follow-up expected'),
+    routeSkipAlert: async (alert) => alerts.push(alert),
+  } });
+  return { summary, journal, alerts, dispatched };
+}
+
+// RULE21 / BRO-8207: exercise the writer and its consumer together. A fresh
+// repair card must not carry a future pause instruction that prevents repair.
+test('cost-report repair cards dispatch before their weekly closure check', async () => {
+  const { lines } = evaluateCostReport({
+    totalFailed: 21, totalCancelled: 153,
+    failedByWorkflow: { 'gather-reviews.yml': 13, 'opening-night-poller.yml': 5, 'collect-review-texts.yml': 3 },
+    bbCost: 25, bbCostSource: 'billed', bbSessions: 3000,
+    sbProjected: 1500000, sbCap: 1000000, sbStatus: 'exhausted',
+  });
+  const cards = lines.filter((line) => line.card);
+  assert.deepEqual(cards.map((line) => line.conditionKey).sort(), [...CARD_KEYS].sort());
+  const issues = cards.map((line, i) => ({
+    ...redCard(9000 + i),
+    title: line.card.title,
+    description: `${DISPATCH_AT_FILING_MARKER}\n\n${buildCardNotes({ ...line.card, conditionKey: line.conditionKey })}`,
+  }));
+  const { summary, journal, alerts, dispatched } = await captureDispatch(issues);
+  assert.deepEqual(summary.skipped, []);
+  assert.deepEqual(dispatched, issues.map((issue) => issue.identifier));
+  assert.ok(journal.every((row) => row.event === 'dispatch'));
+  assert.deepEqual(alerts, []);
+});
+
+test('real human holds still refuse dispatch and report blocker codes in every output', async () => {
+  const issue = redCard(9100);
+  issue.description += '\nRECHECK-AFTER: 2026-09-30\nDECISION NEEDED: The owner must approve the budget.';
+  const { summary, journal, alerts, dispatched } = await captureDispatch([issue]);
+  const reason = 'ASYNC_WAIT_GATE+OWNER_DECISION_GATE';
+  assert.deepEqual(dispatched, []);
+  assert.deepEqual(summary.skipped, [{ identifier: issue.identifier, reason: `human-gated:${reason}` }]);
+  assert.equal(journal.length, 1);
+  assert.equal(journal[0].event, 'refused');
+  assert.equal(journal[0].reason, reason);
+  assert.equal(alerts.length, 1);
+  assert.equal(alerts[0].conditionKey, `red-first-skip:${issue.identifier}`);
+  assert.ok(alerts[0].title.includes(`human-gated:${reason}`));
+  assert.ok(alerts[0].description.includes(`human-gated:${reason}`));
+  assert.deepEqual(alerts[0].fields.find((field) => field.name === 'Skip reason'), {
+    name: 'Skip reason', value: `human-gated:${reason}`,
+  });
 });
 
 test('conditionKeyFromIssue reads the conditionKey out of the provenance line', () => {
