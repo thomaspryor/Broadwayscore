@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "showId": "ebony-scrooge-off-west-end-2026",
+  "night": "2026-11-27",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-27T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-27T20:30:04.988Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-27T22:55:10.962Z",
+    "lastOkSampleAt": "2026-11-27T22:55:10.962Z"
+  },
+  "firstLiveAt": "2026-11-27T20:30:04.988Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-27T20:30:04.988Z",
+  "liveCount": 6,
+  "liveCountAt": {
+    "1h": 6,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-27T22:00:08.675Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-27",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "londontheatre1|alan fitter",
+      "outlet": "LondonTheatre1",
+      "critic": "Alan Fitter",
+      "tier": 2,
+      "publishAt": "2026-11-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-27T20:30:04.988Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "the reviews hub|chris lilly",
+      "outlet": "The Reviews Hub",
+      "critic": "Chris Lilly",
+      "tier": 2,
+      "publishAt": "2026-11-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-27T20:30:04.988Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "all that dazzles (uk)|cat wiltshire",
+      "outlet": "All That Dazzles (UK)",
+      "critic": "Cat Wiltshire",
+      "tier": 3,
+      "publishAt": "2026-11-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-27T20:30:04.988Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "loureviews|louise penn",
+      "outlet": "LouReviews",
+      "critic": "Louise Penn",
+      "tier": 3,
+      "publishAt": "2026-11-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-27T20:30:04.988Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "theatrereviews.design|unknown",
+      "outlet": "TheatreReviews.design",
+      "critic": null,
+      "tier": 4,
+      "publishAt": null,
+      "publishPrecision": "unknown",
+      "firstLiveAt": "2026-11-27T20:30:04.988Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "the spy in the stalls|sammi xing",
+      "outlet": "The Spy in the Stalls",
+      "critic": "Sammi Xing",
+      "tier": 4,
+      "publishAt": "2026-11-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-27T20:30:04.988Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 6,
+      "fetchedAt": "2026-11-27T23:00:33.429Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-27T23:00:33.532Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-27T23:00:34.351Z",
+    "files": [
+      {
+        "file": "all-that-dazzles-uk--cat-wiltshire.json",
+        "outletId": "all-that-dazzles-uk",
+        "outlet": "All That Dazzles (UK)",
+        "critic": "Cat Wiltshire",
+        "firstSeenAt": "2026-11-27T17:16:40.908Z",
+        "scoredAt": "2026-11-27T17:30:32.282Z",
+        "publishDate": "2026-11-27",
+        "url": "allthatdazzles.co.uk/post/review-ebony-scrooge-sadler-s-wells-east",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "all-that-dazzles-uk--unknown.json",
+        "outletId": "all-that-dazzles-uk",
+        "outlet": "All That Dazzles (UK)",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-27T17:16:40.908Z",
+        "scoredAt": "2026-11-27T17:30:36.426Z",
+        "publishDate": "2026-11-27",
+        "url": "allthatdazzles.co.uk/post/review-ebony-scrooge-sadler-s-wells-east",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "londontheatre1--alan-fitter.json",
+        "outletId": "londontheatre1",
+        "outlet": "LondonTheatre1",
+        "critic": "Alan Fitter",
+        "firstSeenAt": "2026-11-27T17:16:44.698Z",
+        "scoredAt": "2026-11-27T17:30:41.519Z",
+        "publishDate": "2026-11-27",
+        "url": "londontheatre1.com/reviews/ebony-scrooge-2026-sadlers-wells-east",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "londontheatre1--unknown.json",
+        "outletId": "londontheatre1",
+        "outlet": "LondonTheatre1",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-27T17:16:44.698Z",
+        "scoredAt": "2026-11-27T17:30:46.986Z",
+        "publishDate": "2026-11-27",
+        "url": "londontheatre1.com/reviews/ebony-scrooge-2026-sadlers-wells-east",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "loureviews--louise-penn.json",
+        "outletId": "loureviews",
+        "outlet": "LouReviews",
+        "critic": "Louise Penn",
+        "firstSeenAt": "2026-11-27T17:26:31.967Z",
+        "scoredAt": "2026-11-27T17:30:51.859Z",
+        "publishDate": "2026-11-27",
+        "url": "loureviews.blog/2026/11/27/dance-review-ebony-scrooge-at-sadlers-wells-east",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-spy-in-the-stalls--sammi-xing.json",
+        "outletId": "the-spy-in-the-stalls",
+        "outlet": "The Spy in the Stalls",
+        "critic": "Sammi Xing",
+        "firstSeenAt": "2026-11-27T08:44:36.626Z",
+        "scoredAt": "2026-11-27T08:57:00.361Z",
+        "publishDate": "2026-11-27",
+        "url": "thespyinthestalls.com/2026/11/ebony-scrooge-2",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatrereviews-design--unknown.json",
+        "outletId": "theatrereviews-design",
+        "outlet": "TheatreReviews.design",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-25T16:51:39.860Z",
+        "scoredAt": "2026-11-25T17:05:20.845Z",
+        "publishDate": null,
+        "url": "theatrereviews.design/ebony-scrooge",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thereviewshub--chris-lilly.json",
+        "outletId": "thereviewshub",
+        "outlet": "The Reviews Hub",
+        "critic": "Chris Lilly",
+        "firstSeenAt": "2026-11-27T17:16:38.921Z",
+        "scoredAt": "2026-11-27T17:30:56.679Z",
+        "publishDate": "2026-11-27",
+        "url": "thereviewshub.com/zoonation-ebony-scrooge-sadlers-wells-east-london",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thereviewshub--unknown.json",
+        "outletId": "thereviewshub",
+        "outlet": "The Reviews Hub",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-27T17:16:38.921Z",
+        "scoredAt": "2026-11-27T17:31:00.385Z",
+        "publishDate": "2026-11-27",
+        "url": "thereviewshub.com/zoonation-ebony-scrooge-sadlers-wells-east-london",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
