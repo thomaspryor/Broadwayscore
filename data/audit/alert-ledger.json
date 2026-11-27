@@ -41668,21 +41668,18 @@
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-outlet-registry-gaps": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Data audit failing: Audit outlet-registry gaps",
       "firstSeen": "2026-11-10T15:36:09.494Z",
-      "incidentOpenedAt": "2026-11-25T20:42:52.862Z",
+      "incidentOpenedAt": "2026-11-27T15:12:42.224Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-26T17:03:53.575Z",
-      "lastNotifiedAt": "2026-11-25T20:42:52.862Z",
-      "lastSurfacedAt": "2026-11-25T20:42:52.862Z",
-      "notifyCount": 11,
+      "lastSeen": "2026-11-27T15:12:42.224Z",
+      "lastNotifiedAt": "2026-11-27T15:12:42.224Z",
+      "lastSurfacedAt": "2026-11-27T15:12:42.224Z",
+      "notifyCount": 12,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 30,
-      "resolvedAt": "2026-11-26T20:09:45.396Z",
-      "resolveReason": "step passed"
+      "linearIdentifier": null
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
       "status": "resolved",

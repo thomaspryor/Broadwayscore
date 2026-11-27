@@ -494,31 +494,18 @@
     "queuedAt": "2026-11-25T19:50:59.200Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
-    "title": "Data audit failing: Audit outlet-registry gaps",
-    "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "conditionKey": "review-gap:opening-window:a-christmas-carol-west-end-2026",
+    "title": "Review gap — \"A Christmas Carol\" missing 1 cited review(s)",
+    "description": "A Christmas Carol (a-christmas-carol-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-christmas-carol-west-end-2026 --checkpoint --ingest-missing",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45696135332",
+    "url": null,
     "decision": false,
     "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "Job",
-        "value": "Data Validation"
-      },
-      {
-        "name": "Step",
-        "value": "Audit outlet-registry gaps"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/45696135332)"
-      }
-    ],
-    "queuedAt": "2026-11-25T20:42:52.864Z"
+    "fields": [],
+    "queuedAt": "2026-11-27T15:04:37.376Z"
   },
   {
     "conditionKey": "land-preexisting:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers #759a229310",
@@ -1851,20 +1838,6 @@
     "queuedAt": "2026-11-27T14:27:20.069Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:a-christmas-carol-west-end-2026",
-    "title": "Review gap — \"A Christmas Carol\" missing 1 cited review(s)",
-    "description": "A Christmas Carol (a-christmas-carol-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-christmas-carol-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-27T15:04:37.376Z"
-  },
-  {
     "conditionKey": "t1-gaps:needs-manual-recovery",
     "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-27.",
     "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
@@ -1891,5 +1864,32 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-27T14:23:00.058Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
+    "title": "Data audit failing: Audit outlet-registry gaps",
+    "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46021473770",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit outlet-registry gaps"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/46021473770)"
+      }
+    ],
+    "queuedAt": "2026-11-27T15:12:42.228Z"
   }
 ]
