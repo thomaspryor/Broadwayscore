@@ -530,3 +530,13 @@ test('LBO rejects a different Goes Wrong roundup with overlapping title words', 
     assert.deepEqual(run().wrongRoundup, []);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('previous-production labels exclude older-year tiles even for claimed prior runs', () => {
+  const show = { id: 'the-dead-1904-off-broadway-2026', openingDate: '2026-11-24', priorRuns: [{ openingDate: '2024-11-01', closingDate: '2024-12-31' }] };
+  const labelled = (url, date) => ssTile(url, date).replace('<div class="review-tile-v2__body">', '<div class="review-tile-v2__date-based-label">For a previous production</div><div class="review-tile-v2__body">');
+  const old = labelled('https://culturesauce.com/review', 'November 26th, 2024');
+  const current = labelled('https://www.nytimes.com/review', 'November 1st, 2026');
+  const undated = labelled('https://www.theatermania.com/review', '');
+  assert.deepEqual(parseShowScore(old + current + undated, show.id, show).map(r => r.outletId), ['nytimes', 'theatermania']);
+  assert.equal(parseShowScore(ssTile('https://culturesauce.com/review', 'November 26th, 2024'), show.id, show).length, 1);
+});

@@ -197,6 +197,13 @@ function parseShowScore(content, showId, show) { // eslint-disable-line no-unuse
   if (show && tilesFn) {
     const { isShowScoreTileDateOutOfRun } = require('./gap-ingest-policy');
     try {
+      const tiles = tilesFn(content) || [];
+      const openingYear = /^\d{4}-\d{2}-\d{2}$/.test(show.openingDate || '') ? Number(show.openingDate.slice(0, 4)) : null;
+      // A labelled prior-production notice is not owed at this opening, even when
+      // its date belongs to an inherited prior run or the page is exempt.
+      for (const t of tiles) {
+        if (openingYear && t.previousProduction && /^\d{4}-\d{2}-\d{2}$/.test(t.date || '') && Number(t.date.slice(0, 4)) < openingYear) outOfRun.add(norm(t.url));
+      }
       // BRO-8308: the page-level SAME_PRODUCTION exemption keeps the PAGE; it does not make a tile from an earlier
       // era an owed review of tonight. The Dead, 1904 (Irish Rep remount, declared prior run 2024) owed 2016-18
       // NYT/THR/amNY/TheaterMania notices and failed the night. A show that DECLARES priorRuns has said which earlier
@@ -205,7 +212,7 @@ function parseShowScore(content, showId, show) { // eslint-disable-line no-unuse
       const { exemptionFor } = require('./show-score-production-window');
       const declared = Array.isArray(show.priorRuns) && show.priorRuns.length > 0;
       if (declared || !exemptionFor(show, archiveCanonicalUrl(content))) {
-        for (const t of tilesFn(content) || []) if (isShowScoreTileDateOutOfRun(t.date, show)) outOfRun.add(norm(t.url));
+        for (const t of tiles) if (isShowScoreTileDateOutOfRun(t.date, show)) outOfRun.add(norm(t.url));
       }
     } catch (_) { /* fail open */ }
   }
