@@ -47,7 +47,7 @@
 
 'use strict';
 
-const { WIRE_SERVICE_OUTLETS, normalizeOutlet, resolveOutletFromUrl } = require('./review-normalization');
+const { WIRE_SERVICE_OUTLETS, normalizeOutlet, resolveOutletFromUrl, timeoutEditionMismatch } = require('./review-normalization');
 const { canonicalPublicationHost } = require('./host-suffix-lists');
 
 // The only source this check applies to — see the SCOPE note above. Widen
@@ -266,6 +266,21 @@ function classifyOutletHostMismatch({ outletId, url } = {}, registry) {
   out.outletId = canonicalId;
   out.outletTier = outlet.tier || 3;
   if (WIRE_SERVICE_OUTLETS.has(canonicalId)) return { ...out, reason: 'wire-service' };
+  // BRO-8393: owning timeout.com does not make every city edition yours —
+  // Time Out New York on timeout.com/sydney or /chicago is a misattribution.
+  const editionMismatch = timeoutEditionMismatch(canonicalId, url);
+  if (editionMismatch) {
+    const expectedTier = editionMismatch.expected && registry.outlets[editionMismatch.expected]
+      ? (registry.outlets[editionMismatch.expected].tier || 3) : null;
+    return {
+      ...out,
+      mismatch: true,
+      hostOutletId: editionMismatch.expected,
+      hostOutletTier: expectedTier,
+      tiersDiffer: expectedTier == null || expectedTier !== out.outletTier,
+      reason: editionMismatch.reason,
+    };
+  }
   if (hostMatchesOutletDomain(url, canonicalId, registry) === true) return { ...out, reason: 'outlet-owns-host' };
   const resolved = resolveOutletFromUrl(url);
   const hostOutletId = resolved && resolved.outletId ? String(resolved.outletId) : null;

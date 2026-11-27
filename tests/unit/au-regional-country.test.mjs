@@ -84,3 +84,74 @@ test('AU regional runs use Sydney calendar day and the stale-run rule (BRO-8389)
   assert.equal(ac.getMarketDate('regional', now, 'Roslyn Packer Theatre, Sydney, NSW'), '2026-11-26');
   assert.equal(ac.getMarketDate('regional', now, 'Arena Stage, Washington, DC'), '2026-11-25');
 });
+
+// BRO-8393: Whispering Jack's timeout.com/sydney review was filed as T1 Time Out New York, and
+// its Guardian review (Steve Dow) was credited to Alexis Soloski. Real functions, real registry.
+const norm = require('../../scripts/lib/review-normalization.js');
+const { validateUrlDomain } = require('../../scripts/lib/url-discovery.js');
+const { classifyOutletHostMismatch } = require('../../scripts/lib/outlet-domain-validation.js');
+const { EDITION_PAIRS } = require('../../scripts/lib/outlet-registry-domain-collisions.js');
+const { defaultCriticForOutlet } = require('../../scripts/lib/gather-default-critic.js');
+const registry = JSON.parse(fs.readFileSync(new URL('../../data/outlet-registry.json', import.meta.url), 'utf8'));
+const outletTiers = JSON.parse(fs.readFileSync(new URL('../../src/config/outlet-tiers.json', import.meta.url), 'utf8'));
+const WJ_TIMEOUT = 'https://www.timeout.com/sydney/theatre/whispering-jack-the-john-farnham-musical';
+
+test('Time Out Sydney is its own T2 outlet, the same tier as the SMH and The Australian', () => {
+  const entry = registry.outlets['timeout-sydney'];
+  assert.ok(entry, 'timeout-sydney registered');
+  assert.equal(entry.displayName, 'Time Out Sydney');
+  assert.equal(entry.tier, registry.outlets.smh.tier);
+  assert.equal(entry.tier, registry.outlets.australian.tier);
+  assert.equal(entry.tier, 2);
+  assert.equal(outletTiers['timeout-sydney']?.tier, 2, 'outlet-tiers.json carries the same tier');
+  assert.equal(norm.normalizeOutlet('Time Out Sydney'), 'timeout-sydney');
+  assert.equal(norm.normalizeOutlet('time-out-sydney'), 'timeout-sydney', 'the old id still resolves');
+  const group = EDITION_PAIRS.find((p) => p.includes('timeout'));
+  for (const id of Object.values(norm.TIMEOUT_CITY_OUTLETS)) {
+    assert.ok(registry.outlets[id], `${id} registered`);
+    assert.ok(group.includes(id), `${id} declared in the timeout.com edition group`);
+  }
+});
+
+test('a timeout.com/<city> URL never resolves to Time Out New York outside NYC', () => {
+  assert.equal(norm.resolveOutletFromUrl(WJ_TIMEOUT)?.outletId, 'timeout-sydney');
+  assert.equal(norm.resolveOutletFromUrl('https://sydney.timeout.com/theatre/x')?.outletId, 'timeout-sydney');
+  for (const u of ['https://www.timeout.com/melbourne/theatre/x', 'https://www.timeout.com/chicago/theater/x',
+    'https://www.timeout.com/san-francisco/theater/x', 'https://www.timeout.com/brisbane/theatre/x']) {
+    assert.notEqual(norm.resolveOutletFromUrl(u)?.outletId, 'timeout', u);
+  }
+  // NYC and London are unchanged.
+  assert.equal(norm.resolveOutletFromUrl('https://www.timeout.com/newyork/theater/x')?.outletId, 'timeout');
+  assert.equal(norm.resolveOutletFromUrl('https://www.timeout.com/theater-reviews/x')?.outletId, 'timeout');
+  assert.equal(norm.resolveOutletFromUrl('https://www.timeout.com/london/theatre/x')?.outletId, 'timeout-london');
+});
+
+test('class guard: a Time Out NY (or London) id on another city edition is refused everywhere', () => {
+  assert.equal(norm.timeoutEditionMismatch('timeout', WJ_TIMEOUT)?.expected, 'timeout-sydney');
+  const chicago = norm.timeoutEditionMismatch('timeout', 'https://www.timeout.com/chicago/theater/x');
+  assert.ok(chicago && chicago.expected === null, 'unregistered city: mismatch with no outlet to move to');
+  assert.ok(norm.timeoutEditionMismatch('timeout-london', WJ_TIMEOUT), 'London id on a Sydney URL');
+  assert.equal(norm.timeoutEditionMismatch('timeout-sydney', WJ_TIMEOUT), null);
+  assert.equal(norm.timeoutEditionMismatch('Time Out New York', 'https://www.timeout.com/newyork/theater/x'), null);
+  assert.equal(norm.timeoutEditionMismatch('timeout', 'https://www.theguardian.com/stage/x'), null);
+  // The write-path domain gate and the rebuild's host-mismatch audit both use it.
+  assert.equal(validateUrlDomain(WJ_TIMEOUT, 'timeout').valid, false);
+  assert.equal(validateUrlDomain('https://www.timeout.com/chicago/theater/x', 'timeout').valid, false);
+  assert.equal(validateUrlDomain(WJ_TIMEOUT, 'timeout-sydney').valid, true);
+  assert.equal(validateUrlDomain('https://www.timeout.com/newyork/theater/x', 'timeout').valid, true);
+  const audit = classifyOutletHostMismatch({ outletId: 'timeout', url: WJ_TIMEOUT }, registry);
+  assert.equal(audit.mismatch, true);
+  assert.equal(audit.hostOutletId, 'timeout-sydney');
+  assert.equal(classifyOutletHostMismatch({ outletId: 'timeout-sydney', url: WJ_TIMEOUT }, registry).mismatch, false);
+});
+
+test('gather default critic: a legacy NYC critic list never names a byline', () => {
+  const legacy = JSON.parse(fs.readFileSync(new URL('../../scripts/config/critic-outlets.json', import.meta.url), 'utf8'));
+  const guardian = legacy.tier1.find((o) => o.id === 'guardian');
+  assert.deepEqual(guardian.critics, ['Alexis Soloski'], 'fixture: the legacy list still has one name');
+  assert.equal(defaultCriticForOutlet(guardian), 'Unknown', 'Whispering Jack Guardian review was Steve Dow');
+  assert.equal(defaultCriticForOutlet(legacy.tier3.find((o) => o.id === 'broadwayworld')), 'Unknown');
+  assert.equal(defaultCriticForOutlet({ id: 'x', critics: ['Jane Roe'], criticsAreDefaults: true }), 'Jane Roe');
+  assert.equal(defaultCriticForOutlet({ id: 'x', critics: ['A', 'B'], criticsAreDefaults: true }), 'Unknown');
+  assert.equal(defaultCriticForOutlet(null), 'Unknown');
+});
