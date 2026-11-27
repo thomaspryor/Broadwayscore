@@ -381,7 +381,26 @@ function linkIgnored(root, dir, made = []) {
     fs.symlinkSync(path.join(root, name), dest);
     made.push(dest);
   }
+  // BRO-7150: a job worktree (~/Broadwayscore/.claude/worktrees/job-*) has no node_modules of its own;
+  // Node finds the main checkout's by walking up. A throwaway worktree under os.tmpdir() cannot, so
+  // every base re-run there crashed ("Cannot find module 'typescript'") and the fast tests could
+  // never refuse from a job worktree. Link the node_modules <root> actually resolves.
+  const nm = path.join(dir, 'node_modules');
+  const resolved = !fs.existsSync(nm) && resolvedNodeModules(root);
+  if (resolved) {
+    fs.symlinkSync(resolved, nm);
+    made.push(nm);
+  }
   return made;
+}
+
+/** The node_modules directory Node resolves from <root>: its own, else the nearest ancestor's. -> path | null */
+function resolvedNodeModules(root) {
+  for (let d = path.resolve(root); ; d = path.dirname(d)) {
+    const nm = path.join(d, 'node_modules');
+    try { if (fs.statSync(nm).isDirectory()) return nm; } catch { /* keep walking */ }
+    if (path.dirname(d) === d) return null;
+  }
 }
 
 /** True when <head> changes package.json or package-lock.json relative to <base>. */
@@ -681,7 +700,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { deepenRounds, nextHistoryStep, noCommonHistoryRecipe, findMergeBase, headShallowRoots, DEEPEN_TIMEOUT_MS, isolatedRecheckPlan, aloneRunFinished, writeScopeFiles, adoptAloneResult, MAX_ISOLATED_FILES, cleanupStaleRuns, staleRunDecision, processCwds, liveProcessIn, parseWorktreeList, clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { deepenRounds, nextHistoryStep, noCommonHistoryRecipe, findMergeBase, headShallowRoots, DEEPEN_TIMEOUT_MS, isolatedRecheckPlan, aloneRunFinished, writeScopeFiles, adoptAloneResult, MAX_ISOLATED_FILES, cleanupStaleRuns, staleRunDecision, processCwds, liveProcessIn, parseWorktreeList, clearStaleDevTypes, dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, resolvedNodeModules, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.

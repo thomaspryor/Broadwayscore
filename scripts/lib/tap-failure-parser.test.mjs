@@ -143,3 +143,23 @@ test('parseTapOutput: a `# TODO` not-ok is not a failure; an escaped \\# in a na
   assert.deepEqual([...failures.keys()], ['tests/unit/x.test.mjs::title mentions \\# TODO literally']);
   assert.equal(unlocated, 0);
 });
+
+test('BRO-7150: a tree reached through a symlink (macOS /tmp -> /private/tmp) still keys repo-relative', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const real = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'tapsym-')));
+  const link = `${real}-link`;
+  fs.symlinkSync(real, link);
+  try {
+    const abs = path.join(real, 'scripts', 'lib', 'x.test.mjs');
+    const tap = `TAP version 13\nnot ok 1 - boom\n  ---\n  location: '${abs}:3:1'\n  failureType: 'testCodeFailure'\n  ...\n# tests 1\n`;
+    const { failures } = parseTapOutput(tap, link); // the root as given (the symlinked spelling)
+    assert.deepEqual([...failures.values()].map((v) => v.file), ['scripts/lib/x.test.mjs']);
+    const { relativeToTree } = require('./tap-failure-parser.js');
+    assert.equal(relativeToTree(link, path.join(link, 'a.js')), 'a.js');
+    assert.equal(relativeToTree(link, '/elsewhere/b.js'), path.relative(link, '/elsewhere/b.js'), 'outside the tree: unchanged');
+  } finally {
+    fs.rmSync(link, { force: true });
+    fs.rmSync(real, { recursive: true, force: true });
+  }
+});

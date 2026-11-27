@@ -858,3 +858,25 @@ test('BRO-7731: findMergeBase gives up after bounded rounds instead of unshallow
   const failed = findMergeBase(head, { cwd: clone, rounds: [{ depth: 2, args: ['fetch', '-q', '--deepen=2', 'no-such-remote', 'main'] }, { depth: 9, args: [] }], log: () => {} });
   assert.deepEqual([failed.reason, failed.deepened], ['fetch-failed', 1], 'a failed fetch stops the rounds');
 });
+
+test('BRO-7150: linkIgnored links the ancestor node_modules a job worktree resolves (none of its own)', (t) => {
+  const { linkIgnored, resolvedNodeModules } = require('./land-local-check.js');
+  const top = fs.realpathSync(mkdtempSync(join(tmpdir(), 'lic-nm-')));
+  t.after(() => rmSync(top, { recursive: true, force: true }));
+  fs.mkdirSync(join(top, 'node_modules', 'typescript'), { recursive: true });
+  const root = join(top, '.claude', 'worktrees', 'job-x');
+  fs.mkdirSync(root, { recursive: true });
+  execFileSync('git', ['init', '-q', root]);
+  assert.equal(resolvedNodeModules(root), join(top, 'node_modules'));
+  const dir = mkdtempSync(join(tmpdir(), 'lic-nm-dst-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const made = linkIgnored(root, dir);
+  assert.ok(made.includes(join(dir, 'node_modules')), 'node_modules linked');
+  assert.equal(fs.realpathSync(join(dir, 'node_modules')), join(top, 'node_modules'));
+  assert.ok(existsSync(join(dir, 'node_modules', 'typescript')));
+  // a destination that already has node_modules is left alone
+  const dir2 = mkdtempSync(join(tmpdir(), 'lic-nm-dst2-'));
+  t.after(() => rmSync(dir2, { recursive: true, force: true }));
+  fs.mkdirSync(join(dir2, 'node_modules'));
+  assert.ok(!linkIgnored(root, dir2).includes(join(dir2, 'node_modules')));
+});

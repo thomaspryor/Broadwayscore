@@ -36,6 +36,7 @@
 //   are `not ok N - <file>` with `location: <file>:1:1` in the nested shape;
 //   scripts/lib/land-gate-delta.js, BRO-3873) can read it off the value.
 
+const fs = require('node:fs');
 const path = require('node:path');
 
 // Payload capture (BRO-2793). A guard making ONE assertion over MANY inputs
@@ -53,6 +54,21 @@ const path = require('node:path');
  *   relative to (the checkout root the test files were run from)
  * @returns {{failures: Map<string,{file:string,name:string,failureType?:string}>, totals:{tests:number|null,fail:number|null}, sawTap: boolean, unlocated: number}}
  */
+/**
+ * <abs> relative to <treeRoot>. node prints the REAL path of a test file; on macOS a tree under
+ * os.tmpdir() is reached through a symlink (/tmp -> /private/tmp, /var -> /private/var), so a plain
+ * path.relative gave '../../../private/tmp/…/scripts/lib/x.test.mjs' and every local fast-test base
+ * re-run failed to find the file (BRO-7150: 0 refusals in 52 hook runs). Try the real root too.
+ */
+function relativeToTree(treeRoot, abs) {
+  const plain = path.relative(treeRoot, abs);
+  if (!plain.startsWith('..')) return plain;
+  let real;
+  try { real = fs.realpathSync(treeRoot); } catch { return plain; }
+  const viaReal = path.relative(real, abs);
+  return viaReal.startsWith('..') ? plain : viaReal;
+}
+
 function parseTapOutput(tapOutput, treeRoot) {
   const failures = new Map();
   const totals = { tests: null, fail: null };
@@ -127,7 +143,7 @@ function parseTapOutput(tapOutput, treeRoot) {
       const loc = /^\s*location:\s*'(.+?)'\s*$/.exec(line);
       if (loc) {
         const abs = String(loc[1]).replace(/:\d+:\d+$/, '');
-        const file = (treeRoot ? path.relative(treeRoot, abs) : abs) || abs;
+        const file = (treeRoot ? relativeToTree(treeRoot, abs) : abs) || abs;
         last = { file, name: pending };
         failures.set(`${file}::${pending}`, last);
         pending = null;
@@ -159,4 +175,4 @@ function parseTapOutput(tapOutput, treeRoot) {
   return { failures, totals, sawTap, unlocated };
 }
 
-module.exports = { parseTapOutput };
+module.exports = { parseTapOutput, relativeToTree };
