@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8393",
   "planId": "b34f3f4d-f726-4123-b317-7785c901b0ca",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-27T13:01:28.771Z",
   "submitter": {
     "name": null,
@@ -163,5 +163,94 @@
         "description": "Phantom copy of broadwayworld--jade-kops.json (same URL; page author Jade Kops). Sasanow was stamped by the legacy one-critic list (BRO-8393)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-27T17:14:02.792Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whispering-jack-regional-2026/guardian--alexis-soloski.json criticName: \"Alexis Soloski\" -> \"Steve Dow\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-going-on-30-manchester-regional-2025/guardian--alexis-soloski.json criticName: \"Alexis Soloski\" -> \"Catherine Love\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026/guardian--alexis-soloski.json criticName: \"Alexis Soloski\" -> \"Mark Fisher\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "even-these-things-royal-exchange-regional-2026/observer--david-cote.json criticName: \"David Cote\" -> \"Clare Brennan\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: torch-song-2018/timeout--adam-feldman.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "vape-the-grease-parody-regional-2026/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"Lauren Brocato\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-beautiful-blue-morning-sky-regional-2026/broadwayworld--richard-sasanow.json criticName: \"Richard Sasanow\" -> \"Roger Catlin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bat-boy-the-musical-regional-2026/broadwayworld--richard-sasanow.json criticName: \"Richard Sasanow\" -> \"Michael Rabice\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "carmen-regional-2026/broadwayworld--richard-sasanow.json criticName: \"Richard Sasanow\" -> \"Andrew Child\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-jekyll-and-mr-hyde-regional-2026/broadwayworld--richard-sasanow.json criticName: \"Richard Sasanow\" -> \"R. Scott Reedy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mean-girls-regional-2026/broadwayworld--richard-sasanow.json criticName: \"Richard Sasanow\" -> \"Mariah Olesen\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sparked-the-vanishing-at-buzzard-point-regional-2026/broadwayworld--richard-sasanow.json criticName: \"Richard Sasanow\" -> \"Aidan O'Connor\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-urmetazoan-regional-2026/broadwayworld--richard-sasanow.json criticName: \"Richard Sasanow\" -> \"Marc Savitt\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-winters-tale-mrs-regional-2026/broadwayworld--richard-sasanow.json criticName: \"Richard Sasanow\" -> \"Emily Werner\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-winters-tale-regional-2026/broadwayworld--richard-sasanow.json criticName: \"Richard Sasanow\" -> \"Zac Thriffiley\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted whispering-jack-regional-2026/broadwayworld--richard-sasanow.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-beautiful-noise-regional-2026/broadwayworld--richard-sasanow.json"
+    }
+  ],
+  "executedIn": "ci"
 }
