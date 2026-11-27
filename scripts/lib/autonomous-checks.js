@@ -669,10 +669,29 @@ function runSafeChecks(o) {
 // Preferring raw stderr made a failed `npx tsc --noEmit` read as nothing but
 // the npm notice, hiding the error from the ledger, the owner and envCauseOf.
 const NPM_NOISE_RE = /^npm (?:notice|warn)\b.*$/gim;
+const ERROR_LINE_RE = /❌|\bERROR\b|\bFAILED\b|\w*Error:/;
 const defaultDetail = (err) => {
   if (!err) return '';
   const stderr = String(err.stderr || '').replace(NPM_NOISE_RE, '').trim();
-  return String(stderr || err.stdout || err.stderr || err.message || '').slice(0, 400);
+  const text = String(stderr || err.stdout || err.stderr || err.message || '');
+  const head = text.slice(0, 400);
+  // BRO-8394: validate-data prints dozens of warning lines before its ERROR
+  // lines, so the 400-char head held only warnings and the real failure was
+  // lost. Promote the first 1-3 error lines that fall outside the head.
+  const errLines = [];
+  let used = 0;
+  // Scan only the stream the head came from, so a noisy stdout cannot
+  // outrank a short stderr message. Promoted block is capped at 300 chars and
+  // the head is kept whole, so envCauseOf still sees all 400 head chars.
+  for (const raw of text.split('\n')) {
+    const line = raw.trim().slice(0, 120);
+    if (!line || !ERROR_LINE_RE.test(line) || head.includes(line) || errLines.includes(line)) continue;
+    if (used + line.length > 300) break;
+    errLines.push(line);
+    used += line.length + 3;
+    if (errLines.length === 3) break;
+  }
+  return errLines.length ? `${errLines.join(' | ')} | ${head}` : head;
 };
 
 // A file-level `not ok` (syntax error, crash) carries only `error: 'test

@@ -115,3 +115,25 @@ test('defaultDetail: npm chatter on stderr does not hide the real error on stdou
   assert.equal(defaultDetail({ stderr: 'real stderr error', stdout: 'out' }), 'real stderr error');
   assert.equal(defaultDetail({ stderr: 'npm notice only' }), 'npm notice only');
 });
+
+// BRO-8394: validate-data style output, 50 warnings then the real error.
+test('defaultDetail surfaces an ERROR line that falls outside the 400-char head', () => {
+  const warn = Array.from({ length: 50 }, (_, i) => `⚠️  WARNING: something minor ${i}`).join('\n');
+  const err = { stderr: `${warn}\n❌ ERROR: show foo-2026 missing venue\n`, stdout: '' };
+  const d = defaultDetail(err);
+  assert.match(d, /^❌ ERROR: show foo-2026 missing venue \| ⚠️  WARNING: something minor 0/);
+  // unchanged when there is no error line, or it is already in the head
+  const quiet = { stderr: warn, stdout: '' };
+  assert.equal(defaultDetail(quiet), warn.slice(0, 400));
+  const early = { stderr: '❌ ERROR: early\n' + warn, stdout: '' };
+  assert.equal(defaultDetail(early), early.stderr.slice(0, 400));
+});
+
+test('defaultDetail keeps the whole 400-char head and ignores the unchosen stream (BRO-8394 review)', () => {
+  const stderr = 'x'.repeat(400) + `\n${'❌ ERROR: '.padEnd(150, 'e')}\n❌ ERROR: b\n❌ ERROR: c\n❌ ERROR: d`;
+  const d = defaultDetail({ stderr, stdout: 'AssertionError: from passing log' });
+  assert.ok(d.endsWith(stderr.slice(0, 400)), 'head intact at the end');
+  assert.doesNotMatch(d, /AssertionError/);
+  assert.ok(d.length <= 400 + 305 + 3);
+  assert.equal(d.split(' | ').length, 4, '3 promoted lines + head');
+});
