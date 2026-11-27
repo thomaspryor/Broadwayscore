@@ -144,7 +144,7 @@ const OUTLET_STRATEGY_CONFIG = {
   // BRO-8125: NYT review headlines rarely say "Review" ("In 'Much Ado,' Tom Hiddleston and Hayley
   // Atwell Will Make You Swoon"); the word is in the URL slug (.../waiting-for-lefty-review-odets.html).
   // A headline-only filter dropped Waiting for Lefty and Ms. Blakk, found later by audit-aggregator-gap.
-  nytimes:             { strategy: 'rss', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', titleOrUrlFilter: /\b(review|critic['’]?s[\s-]+pick)\b/i },
+  nytimes:             { strategy: 'rss', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', urlFilter: /nytimes\.com\/\d{4}\/\d{2}\/\d{2}\/theater\//, titleOrUrlFilter: /\b(review|critic['’]?s[\s-]+pick)\b/i },
   // TheaterMania: /rss.xml → 302 → sitemap.rss (site-wide feed, no reviews).
   // Listing page at /news/?categories=reviews is SSR; plain fetch returns review anchors.
   // theatermania: WP_API_CONFIG below (BRO-6921). The /news/?categories=reviews
@@ -296,7 +296,7 @@ const OUTLET_STRATEGY_CONFIG = {
   totaltheater1:             { strategy: 'rss', url: 'https://totaltheater1.wordpress.com/feed/' },
   // pageConfirmAll: general-arts feeds (film, books, Boston stages). A feed
   // match alone is not trusted here: every match must also page-confirm.
-  artsfuse:                  { strategy: 'rss', url: 'https://artsfuse.org/feed/', titleOrUrlFilter: /\b(theat(er|re)|review|stage|play|musical|off-broadway)\b/i, pageConfirmAll: true },
+  artsfuse:                  { strategy: 'rss', url: 'https://artsfuse.org/feed/', titleFilter: /\b(theat(er|re)|review|stage|play|musical|off-broadway)\b/i, pageConfirmAll: true },
   // BRO-7217: the site-wide /feed/ went empty (0 items) when Exeunt moved reviews to a custom post type; /reviews/feed/ carries them.
   'exeunt-magazine':         { strategy: 'rss', url: 'https://exeuntnyc.com/reviews/feed/', pageConfirmAll: true },
   // BRO-7051: frequent Off-Broadway / Off-West End reviewers that were SERP-only, so the
@@ -307,7 +307,7 @@ const OUTLET_STRATEGY_CONFIG = {
   'partially-obstructed-view': { strategy: 'rss', url: 'https://partially-obstructed-view.blogspot.com/feeds/posts/default' },
   stagebuddy:                { strategy: 'rss', url: 'https://stagebuddy.com/feed', pageConfirmAll: true },
   'the-knockturnal':         { strategy: 'rss', url: 'https://theknockturnal.com/feed/', pageConfirmAll: true },
-  'lighting-and-sound-america': { strategy: 'rss', url: 'https://lightingandsoundamerica.com/news/rss.asp', titleOrUrlFilter: /\b(review|theat(er|re)|broadway|musical|play)\b/i, pageConfirmAll: true },
+  'lighting-and-sound-america': { strategy: 'rss', url: 'https://lightingandsoundamerica.com/news/rss.asp', titleFilter: /\b(review|theat(er|re)|broadway|musical|play)\b/i, pageConfirmAll: true },
   // BRO-7051: New York Sun reviews appear at /article/<slug> (25 OB reviews in 6 months) but the
   // site has no RSS/WP API we could find, and nysun.com answered 429 to every probe from the
   // sandbox, so the arts section page is read instead. Unverified from here: confirm with a
@@ -654,12 +654,14 @@ async function fetchXmlWithProxyRetry(url, label, isExpected, { proxyRetry = tru
 
 // Keep only the items an outlet's config accepts (shared by the in-window list
 // and the cutoff-free health read, so both apply the same filters).
+function urlPath(u) { try { return new URL(u).pathname; } catch { return String(u || ''); } }
+
 function applyRssFilters(items, config) {
   let out = items;
   if (config.urlFilter) out = out.filter(i => config.urlFilter.test(i.url));
   if (config.titleFilter) out = out.filter(i => config.titleFilter.test(i.headline));
   // titleOrUrlFilter (BRO-8125): keep an item whose headline OR URL slug matches.
-  if (config.titleOrUrlFilter) out = out.filter(i => config.titleOrUrlFilter.test(i.headline) || config.titleOrUrlFilter.test(i.url));
+  if (config.titleOrUrlFilter) out = out.filter(i => config.titleOrUrlFilter.test(i.headline) || config.titleOrUrlFilter.test(urlPath(i.url)));
   return out;
 }
 

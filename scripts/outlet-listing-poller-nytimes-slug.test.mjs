@@ -29,23 +29,25 @@ test('nytimes still drops features and news with no review word anywhere', () =>
   assert.deepEqual(keep(news), []);
 });
 
-test('live feed fixture: slug-review items reach the first pass, news does not', () => {
+test('live feed fixture (headlines and links only): exactly the six theater reviews are kept', () => {
   const xml = fs.readFileSync(new URL('./fixtures/nyt-theater-rss-2026-11-27.xml', import.meta.url), 'utf8');
   const urls = keep(parseRssFeed(xml, new Date(0)));
-  assert.ok(urls.some((u) => /much-ado-about-nothing-review/.test(u)), 'Much Ado review (no "Review" in headline) kept');
-  assert.ok(urls.some((u) => /seven-guitars-review/.test(u)), 'Seven Guitars review kept');
-  assert.ok(!urls.some((u) => /mousetrap-75th|griselda-gambaro-dead/.test(u)), 'news dropped');
-});
-
-test('class guard: no rss outlet filters on the headline alone (slug-only review words are missed)', () => {
-  for (const [id, c] of Object.entries(poller.OUTLET_STRATEGY_CONFIG)) {
-    assert.ok(!(c && c.strategy === 'rss' && c.titleFilter), `${id}: use titleOrUrlFilter so a slug-only "review" is not dropped`);
+  const slugs = urls.map((u) => u.split('/').pop().replace('.html', ''));
+  assert.equal(urls.length, 6, slugs.join(', '));
+  for (const k of ['seven-guitars-review', 'much-ado-about-nothing-review', 'the-fantasticks-review', 'eurotrash-young-vic-london-review', 'exhibitionist-good-thief-review', 'its-a-wonderful-life-blue-man-group-now-you-see-me-review']) {
+    assert.ok(slugs.some((s) => s.startsWith(k)), `${k} kept`);
   }
 });
 
-test("nytimes keeps a critic's-pick slug and drops the film/arts items in the live fixture", () => {
-  assert.deepEqual(keep([{ headline: 'A Gem', url: 'https://www.nytimes.com/2026/11/03/theater/x-critics-pick-play.html' }]).length, 1);
-  const xml = fs.readFileSync(new URL('./fixtures/nyt-theater-rss-2026-11-27.xml', import.meta.url), 'utf8');
-  const urls = keep(parseRssFeed(xml, new Date(0)));
-  assert.ok(!urls.some((u) => /\/(movies|arts)\//.test(u)), 'movies/arts items dropped');
+test('nytimes drops a film review (/movies/) and a critic\'s-pick slug is kept', () => {
+  assert.equal(keep([{ headline: 'A Film', url: 'https://www.nytimes.com/2026/10/22/movies/possible-love-review-the-lives-of-others.html' }]).length, 0);
+  assert.equal(keep([{ headline: 'A Gem', url: 'https://www.nytimes.com/2026/11/03/theater/x-critics-pick-play.html' }]).length, 1);
+});
+
+test('class guard: an rss outlet whose reviews are slug-only must use titleOrUrlFilter, not a headline-only titleFilter', () => {
+  const headlineOnlyOk = new Set(['artsfuse', 'lighting-and-sound-america']); // general-arts feeds, pageConfirmAll
+  for (const [id, c] of Object.entries(poller.OUTLET_STRATEGY_CONFIG)) {
+    if (c && c.strategy === 'rss' && c.titleFilter && !headlineOnlyOk.has(id)) assert.fail(`${id}: use titleOrUrlFilter`);
+  }
+  assert.ok(poller.OUTLET_STRATEGY_CONFIG.nytimes.titleOrUrlFilter && !poller.OUTLET_STRATEGY_CONFIG.nytimes.titleFilter);
 });
