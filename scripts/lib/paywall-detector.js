@@ -59,7 +59,8 @@ const OUTLET_HARD_MARKERS = {
 
 /**
  * Detect a paywall overlay at the START of the text, plus outlet-specific
- * hard markers in the first 600 chars.
+ * hard markers in the first 600 chars. The explicit Pages on Stages paid
+ * prompt may follow the public lede.
  *
  * @param {string} text — the fullText field
  * @param {string} [urlOrDomain] — optional URL or domain for outlet-specific checks
@@ -68,6 +69,11 @@ const OUTLET_HARD_MARKERS = {
 function detectHardPaywall(text, urlOrDomain) {
   if (!text || typeof text !== 'string') {
     return { detected: false, marker: null, reason: null };
+  }
+  // BRO-8264: this explicit paid-content prompt follows the public lede.
+  // The generic WordPress subscription footer is deliberately not a signal.
+  if (extractDomain(urlOrDomain) === 'pagesonstages.com' && /log in or pay to keep reading/i.test(text)) {
+    return { detected: true, marker: 'Log in or pay to keep reading', reason: 'subscriber-paywall' };
   }
   const head = text.slice(0, 600);
 
@@ -138,7 +144,53 @@ function isRegistrationWallStub(text) {
   return !!m && m.index < REGISTRATION_WALL_STUB_MAX_PRE;
 }
 
+/** Read the raw HTML while the paid prompt still exists. A subscriber-view
+ * class alone also occurs around content available to logged-in readers.
+ */
+function detectSubscriberPaywall(html, url) {
+  const absent = { detected: false, marker: null, reason: null };
+  if (extractDomain(url) !== 'pagesonstages.com' || typeof html !== 'string' || !html) return absent;
+  const $ = require('cheerio').load(html);
+  $('script, style, noscript').remove();
+  const text = $.root().text().replace(/\s+/g, ' ').trim();
+  return /log in or pay to keep reading/i.test(text)
+    ? { detected: true, marker: 'Log in or pay to keep reading', reason: 'subscriber-paywall' }
+    : absent;
+}
+
+function paywallTextHash(text) {
+  // Furniture removal is not article recovery. Use the storage cleaner so
+  // later normalization cannot release the same paid teaser for scoring.
+  const cleaned = require('./text-cleaning').cleanText(String(text || ''));
+  return require('crypto').createHash('sha256').update(cleaned.replace(/\s+/g, ' ').trim()).digest('hex');
+}
+
+/** Stamp only the fetched body that the writer actually kept, never a retained
+ * complete copy or a refused URL replacement. Hash binding releases a later
+ * full-text recovery without trusting stale flags from a previous fetch.
+ * Returns whether the record changed, including a metadata-only refetch.
+ */
+function stampSubscriberPaywall(data, html, url, fetchedText) {
+  if (!data || !data.fullText || !fetchedText || data.url !== url
+      || !detectSubscriberPaywall(html, url).detected
+      || paywallTextHash(data.fullText) !== paywallTextHash(fetchedText)) return false;
+  const hash = paywallTextHash(data.fullText);
+  const changed = data.paywalled !== true || data.paywallTextHash !== hash;
+  data.paywalled = true;
+  data.paywallTextHash = hash;
+  return changed;
+}
+
+function isPaywalledText(data) {
+  if (data && detectHardPaywall(data.fullText, data.url).reason === 'subscriber-paywall') return true;
+  return !!(data && data.paywalled === true && data.paywallTextHash
+    && data.paywallTextHash === paywallTextHash(data.fullText));
+}
+
 module.exports = {
+  detectSubscriberPaywall,
+  stampSubscriberPaywall,
+  isPaywalledText,
   hasRegistrationWallTail,
   isRegistrationWallStub,
   detectHardPaywall,

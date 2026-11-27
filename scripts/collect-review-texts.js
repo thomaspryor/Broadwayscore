@@ -6059,6 +6059,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     const trim = forcedRefetchTrim(fullTextBeforeUpdate, data.fullText);
     if (trim) data.fullTextTrimmed = trim;
   }
+  // Raw HTML still carries the Jetpack wall after the body has been cleaned.
+  require('./lib/paywall-detector').stampSubscriberPaywall(data, html, review.url, cleanedText);
   persistReviewSnapshot({ filePath: review.filePath, data: data });
 
   // BRO-4431: a multi-show article (photo-caption sections, capsule round-ups
@@ -7408,6 +7410,9 @@ function stampDatelessRetry(filePath) {
  * Returns null when the text is under 200 words or the verifier threw.
  */
 async function verifyFetchedContent(review, result, validation, { discoveredUrl = null } = {}) {
+  // A subscriber teaser is insufficient evidence for an LLM content verdict.
+  // updateReviewJson preserves the raw-page wall evidence on the stored body.
+  if (require('./lib/paywall-detector').detectSubscriberPaywall(result.html, discoveredUrl || review.url).detected) return null;
   let contentVerification = null;
   if (validation.wordCount >= 200) {
     console.log(`  LLM Verification...`);

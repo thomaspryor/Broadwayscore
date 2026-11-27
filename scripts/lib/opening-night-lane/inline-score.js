@@ -249,6 +249,15 @@ function createInlineScoring({
       // Read off the page whatever text is kept: a rating printed beside a teaser is still the critic's.
       let rating = null;
       try { rating = ratingFields(extractRating(html, text, { url: candidate.url, outletId: candidate.outletId, showTitle: show.title })); } catch { /* no rating is not a failure */ }
+      // BRO-8264: never score the locked teaser or pay to refetch it. Keep the
+      // existing no-LLM aggregator rating path, including ratings arriving later.
+      if (require('../paywall-detector').detectSubscriberPaywall(html, candidate.url).detected) {
+        const why = 'subscriber-paywall: publisher requires paid access';
+        if (!thumbScore) return awaitEvidence('fetch', key, why, { why, ...meta, rating });
+        const out = { ...fallback('subscriber-paywall'), ...meta, ...(rating ? { rating } : {}) };
+        fetched.set(key, out);
+        return out;
+      }
       // BRO-7280: a short page fetched direct-only inside the pre-embargo window may be a block page the paid tiers would get past:
       // retry once the window closes, never spend an attempt or a same-length strike on it.
       if (page.laneDirectOnly && text.length < BODY_GATE_CHARS && !(text.length < minTextChars && thumbScore)) fail('fetch', key, Object.assign(new Error(`short page (${text.length} chars) fetched direct-only`), { laneDeferred: true }));

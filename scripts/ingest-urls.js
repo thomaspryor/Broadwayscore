@@ -218,6 +218,7 @@ async function main() {
     let fullText = null;
     let fetchMethod = null;
     let archiveSnapshot = null;
+    let paywallHtml = null;
     let criticName = null;
     let bylineConflict = null;
     let publishDate = null;
@@ -238,6 +239,7 @@ async function main() {
         if (got.via === 'archive' && verbose) console.log(`    → Live fetch failed; read the archive.org copy from ${got.snapshot}`);
         if (result && result.content) {
           fetchMethod = result.source;
+          paywallHtml = result.content;
           // Extract main article text from outlet HTML rather than storing
           // raw chrome. Falls back to raw HTML only if no extractor pattern
           // matched and the raw HTML doesn't look like a full page.
@@ -337,6 +339,7 @@ async function main() {
       bylineFromListing: byline.bylineFromListing,
       url,
       source: 'ingest-urls',
+      html: paywallHtml,
       // BRO-7934: a run with no named dispatcher is a person or session: record that as 'manual'
       // instead of leaving the file with no caller (164 files in one week).
       fields: { ingestSource: ingestCaller || 'manual' },

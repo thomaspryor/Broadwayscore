@@ -1716,6 +1716,7 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     sources: [input.source],
     ...fields,
   };
+  require('./paywall-detector').stampSubscriberPaywall(newReview, input.html, input.url, fields.fullText);
   // BRO-3908 (Codex adversarial ship-check finding): `fields` is caller-owned
   // and can echo back a stale wrongProductionAutoCleared breadcrumb (e.g. an
   // import/replay payload) alongside the wrongProduction:true classifyMarketRouting/
@@ -2489,6 +2490,9 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       changed = true;
     }
   }
+
+  // A same-body refetch still needs to persist newly observed wall evidence.
+  if (require('./paywall-detector').stampSubscriberPaywall(existing, input.html, input.url, fields.fullText)) changed = true;
 
   if (!changed) {
     return _withRecord({ action: 'skipped', reason: 'no-changes', filepath }, existing);

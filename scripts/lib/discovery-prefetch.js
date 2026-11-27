@@ -76,6 +76,8 @@ async function prefetchDiscoveredArticle(url, opts = {}) {
   const criticName = resolved === 'Unknown' ? null : resolved;
   return {
     fullText: hasBody ? text : null,
+    // Carry raw evidence to the canonical writer before furniture is lost.
+    ...(require('./paywall-detector').detectSubscriberPaywall(html, url).detected ? { html } : {}),
     publishDate,
     criticName,
   };
@@ -86,6 +88,7 @@ function applyPrefetch(input, pre) {
   const out = { ...input, fields: { ...input.fields } };
   if (pre && pre.criticName) out.criticName = pre.criticName;
   if (pre && pre.fullText) out.fields.fullText = pre.fullText;
+  if (pre && pre.html) out.html = pre.html;
   if (pre && pre.publishDate) out.fields.publishDate = pre.publishDate;
   return out;
 }

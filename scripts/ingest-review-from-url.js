@@ -811,6 +811,7 @@ if (!show) {
     criticName: critic,
     url,
     source: 'submit-review-form',
+    html,
     fields,
     // BRO-4431: this is one explicit url, so a longer copy of the same
     // article may replace a truncated stored body (issue 908).

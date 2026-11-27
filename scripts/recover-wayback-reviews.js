@@ -1364,6 +1364,7 @@ async function processRecoveredText(candidate, text, html, archiveData) {
 
   // Update with recovered text
   data.fullText = cleanedText;
+  require('./lib/paywall-detector').stampSubscriberPaywall(data, html, candidate.url || data.url, cleanedText);
   data.isFullReview = cleanedText.length > 1500;
   data.textWordCount = countWords(cleanedText);
   data.textFetchedAt = new Date().toISOString();
