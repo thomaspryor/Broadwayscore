@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8212-g",
   "planId": "a9c8a3c1-6a98-4799-ade1-3cac48f7ac8e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-27T15:22:35.631Z",
   "submitter": {
     "name": null,
@@ -77,5 +77,44 @@
         "description": "wuthering-heights-west-end-2022/islingtontribune--unknown.json: criticName"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-27T17:06:10.657Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "when-we-have-sufficiently-tortured-each-other-west-end-2019/sierz-co-uk--unknown.json criticName: \"Unknown\" -> \"Aleks Sierz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/islingtontribune--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/sierz-co-uk--unknown.json criticName: \"Unknown\" -> \"Aleks Sierz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woman-in-mind-west-end-2025/sierz-co-uk--unknown.json criticName: \"Unknown\" -> \"Aleks Sierz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woyzeck-west-end-2017/islingtontribune--unknown.json criticName: \"Unknown\" -> \"Julie Tomlin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woyzeck-west-end-2017/sierz-co-uk--unknown.json criticName: \"Unknown\" -> \"Aleks Sierz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wuthering-heights-west-end-2022/islingtontribune--unknown.json criticName: \"Unknown\" -> \"Lucy Popescu\""
+    }
+  ],
+  "executedIn": "ci"
 }
