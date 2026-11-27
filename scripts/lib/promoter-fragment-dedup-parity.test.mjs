@@ -5,6 +5,8 @@
 // for the whole batch ("Sasha Velour's Travesty" beside "Travesty" aborted every
 // OB promotion run). Any script that writes through the guard AND dedups with
 // duplicateOfCandidate must also ask the fragment detector before it mints a row.
+// newRowDuplicate(..., { ticketOnly: true }) does NOT count: it skips the
+// fragment pass and checks ticketing identity only.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -14,15 +16,32 @@ import { fileURLToPath } from 'node:url';
 const SCRIPTS = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const strip = (src) => src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
 
+// Exempt by name, with the reason. A new entry here needs a reason a reviewer can check.
+const EXEMPT = {
+  'add-verified-tours.js': 'writes tour rows that are declared pairs of their parent (tourOf), checked for ticketing identity only',
+  'create-tour-entries.js': 'writes tour rows that are declared pairs of their parent (tourOf), checked for ticketing identity only',
+};
+
+const runsFragmentCheck = (src) => src.split('\n').some((line) =>
+  /newRowFragmentFindings\s*\(/.test(line) || (/newRowDuplicate\s*\(/.test(line) && !/ticketOnly/.test(line)));
+
 test('guarded promoters that dedup with duplicateOfCandidate also run the fragment check (BRO-8407)', () => {
   const offenders = [];
-  let checked = 0;
+  const inspected = [];
   for (const f of fs.readdirSync(SCRIPTS).filter((n) => n.endsWith('.js'))) {
     const src = strip(fs.readFileSync(path.join(SCRIPTS, f), 'utf8'));
     if (!/createShowsWriteGuard\s*\(/.test(src) || !/duplicateOfCandidate\s*\(/.test(src)) continue;
-    checked++;
-    if (!/newRowFragmentFindings\s*\(|newRowDuplicate\s*\(/.test(src)) offenders.push(f);
+    inspected.push(f);
+    if (!EXEMPT[f] && !runsFragmentCheck(src)) offenders.push(f);
   }
-  assert.ok(checked >= 2, `expected to inspect the guarded promoters, saw ${checked}`);
+  for (const f of ['promote-ob-venue-candidates.js', 'promote-owe-venue-candidates.js']) {
+    assert.ok(inspected.includes(f), `${f} must be inspected by this guard`);
+  }
   assert.deepEqual(offenders, [], `these write through shows-write-guard but never run the title-fragment check, so one candidate can abort the whole run at save: ${offenders.join(', ')}`);
+});
+
+test('the guard rejects a ticketOnly-only newRowDuplicate call (the hole the ship-check found)', () => {
+  assert.equal(runsFragmentCheck("const d = newRowDuplicate(s, e, [e.tourOf], { ticketOnly: true });"), false);
+  assert.equal(runsFragmentCheck("const d = newRowDuplicate(s, e, []);"), true);
+  assert.equal(runsFragmentCheck("const f = newRowFragmentFindings(pool, [...pool, entry]);"), true);
 });

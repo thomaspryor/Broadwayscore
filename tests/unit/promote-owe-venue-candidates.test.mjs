@@ -436,6 +436,31 @@ test('main (real run, nothing to promote): duplicates still leave staging and th
   assert.equal(state.rejected.length, 1);
 });
 
+// BRO-8407: a candidate whose title only extends a catalogued row's ("Sasha Velour's Travesty"
+// beside "Travesty") at the same house with overlapping dates gets past the earlier dedup rules,
+// and the write guard then refuses it as a title fragment. The promoter must prune it itself
+// instead of minting it and aborting the whole save.
+test('main (real run): a title-fragment duplicate of a catalogued row is pruned, not minted, and the save is not aborted (BRO-8407)', async () => {
+  const paths = scratchRepo();
+  const shows = JSON.parse(fs.readFileSync(paths.showsPath, 'utf8'));
+  shows.shows.push({ id: 'travesty-off-west-end-2026', slug: 'travesty-off-west-end', title: 'Travesty', venue: 'Almeida Theatre', category: 'off-west-end', market: 'west-end', status: 'announced', type: 'play', previewsStartDate: '2026-11-10', closingDate: '2026-12-20' });
+  shows._meta.totalShows = shows.shows.length;
+  fs.writeFileSync(paths.showsPath, JSON.stringify(shows, null, 2) + '\n');
+  writeStagingCandidates([
+    candidate("Sasha Velour's Travesty", 'Almeida Theatre', { openingDate: '2026-11-10', closingDate: '2026-12-20' }),
+    candidate('Triumph', 'Almeida Theatre'), // unrelated, still promotes in the same run
+  ], paths.stagingPath);
+  const res = await main([], scratchIo(paths, { fetchPage: async (url) => {
+    if (url === ALMEIDA.url) return { content: almeidaHtml(['sasha-velours-travesty', 'triumph']) };
+    throw new Error('HTTP 403');
+  } }));
+  const after = JSON.parse(fs.readFileSync(paths.showsPath, 'utf8')).shows.map((s) => s.id);
+  assert.ok(!after.includes('sasha-velours-travesty-off-west-end-2026'), 'the fragment duplicate must not be minted');
+  assert.ok(after.includes('triumph-off-west-end-2026'), 'the unrelated candidate still promotes in the same run');
+  assert.ok(res.pruned.some((p) => /velour/i.test(p.candidate.title) && /travesty-off-west-end-2026/.test(p.reason)), 'pruned as a duplicate of the catalogued row');
+  assert.ok(!loadStaging(paths.stagingPath).some((c) => /velour/i.test(c.title)), 'the duplicate leaves staging so it cannot fail the next run');
+});
+
 // --- lib/owe-venue-staging.js: updateStaging ---
 
 test('updateStaging: locked read-modify-write on a scratch path; a non-array mutateFn result throws and leaves the file untouched', () => {
