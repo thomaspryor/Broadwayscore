@@ -1,13 +1,34 @@
 {
-  "generatedAt": "2026-11-27T18:54:10.694Z",
+  "generatedAt": "2026-11-27T19:58:03.474Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 380,
-  "clean": 380,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 379,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "title": "Julius Caesar",
+      "openingDate": "2026-11-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: daily-mail"
+        }
+      ],
+      "missingFromProd": [
+        "daily-mail"
+      ],
+      "localCount": 22,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-11-27T19:57:53.572Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
