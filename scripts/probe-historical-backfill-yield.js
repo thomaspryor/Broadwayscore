@@ -47,7 +47,14 @@ function main() {
   if (hasHelpFlag(args)) { console.log('Usage: node scripts/probe-historical-backfill-yield.js [--json]'); return; }
   const all = [...new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/backfill-batches.json'), 'utf8')).flat())];
   const cursor = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/audit/historical-backfill-cursor.json'), 'utf8'));
-  const r = measureYield(all, cursor, loadFirstSeen(all, path.join(ROOT, 'data/review-texts')));
+  const textsDir = require('./lib/review-texts-env-dir').reviewTextsDirFromEnv(path.join(ROOT, 'data/review-texts'));
+  // BRO-8323: a missing review-texts checkout used to print "0 shows ... -> low-yield",
+  // a verdict to stop the backfill drawn from no data. Refuse instead.
+  if (!fs.existsSync(textsDir) || fs.readdirSync(textsDir).length === 0) {
+    console.error(`No review data at ${textsDir} (run scripts/setup-local-data.sh); no verdict.`);
+    process.exit(2);
+  }
+  const r = measureYield(all, cursor, loadFirstSeen(all, textsDir));
   if (args.includes('--json')) { console.log(JSON.stringify(r, null, 2)); return; }
   console.log(`cycle ${cursor.cycle} since ${r.cycleStart}, cursor ${cursor.next}/${cursor.total}`);
   console.log(`revisited: ${r.visited.shows} shows, ${r.visited.newSinceVisit} new reviews (${r.visitedPerShow.toFixed(2)}/show/30d)`);
