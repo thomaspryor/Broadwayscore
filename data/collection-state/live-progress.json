@@ -1,19 +1,26 @@
 {
-  "updatedAt": "2026-11-27T20:06:43.951Z",
-  "processed": 3,
-  "failed": 1,
-  "successRate": "75.0%",
+  "updatedAt": "2026-11-27T20:17:03.603Z",
+  "processed": 58,
+  "failed": 42,
+  "successRate": "58.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 38,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "brightdata": 5,
+    "archiveToday": 1,
+    "archive": 10
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-11-27T20:15:16.869Z",
+      "event": "bb-session",
+      "session": "afe5d899",
+      "url": "http://www.publictheater.org/"
+    }
+  ]
 }
