@@ -562,21 +562,6 @@
     "queuedAt": "2026-11-25T21:15:32.321Z"
   },
   {
-    "conditionKey": "live-data-test:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
-    "title": "Live-data test failing: real data loads and gives the expected answers for the four JS outlets (tests/unit/site-search-market-history-live.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real data loads and gives the expected answers for the four JS outlets\" in tests/unit/site-search-market-history-live.test.mjs is red against the live corpus.\n\nExpected values to be strictly equal:\n+ actual - expected\n\n+ 'covered'\n- 'never-covered'\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "testId": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
-    "fields": [],
-    "queuedAt": "2026-11-25T22:02:00.292Z"
-  },
-  {
     "conditionKey": "cron-fire-rate:process-feedback.yml",
     "title": "process-feedback.yml is running 2% of the time it should",
     "description": "In the last 14 days GitHub started 48 scheduled runs of process-feedback.yml where its cron (*/10 * * * *) calls for 2016. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
@@ -1611,5 +1596,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-27T03:58:59.773Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
+    "title": "Live-data test failing: real data loads and gives the expected answers for the four JS outlets (tests/unit/site-search-market-history-live.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real data loads and gives the expected answers for the four JS outlets\" in tests/unit/site-search-market-history-live.test.mjs is red against the live corpus.\n\nExpected values to be strictly equal:\n+ actual - expected\n\n+ 'covered'\n- 'never-covered'\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
+    "fields": [],
+    "queuedAt": "2026-11-27T04:11:30.701Z"
   }
 ]
