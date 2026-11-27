@@ -139,6 +139,7 @@ async function main() {
     process.exit(code);
   };
   const caller = arg('caller', 'gemini-review');
+  if (ledger) ledger.setSessionUsageCaller(caller);
   const model = arg('model', process.env.GEMINI_REVIEW_MODEL || DEFAULT_MODEL);
   const thinking = process.env.GEMINI_REVIEW_THINKING || DEFAULT_THINKING;
   const timeoutSec = Number(arg('timeout-sec', '900'));

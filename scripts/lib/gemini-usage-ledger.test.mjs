@@ -8,6 +8,28 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const L = require('./gemini-usage-ledger.js');
 
+test('reviewer metered calls are folded as session spend', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro8356-'));
+  const from = path.join(dir, 'session.jsonl');
+  const to = path.join(dir, 'tracked.jsonl');
+  const previous = process.env.GEMINI_USAGE_LEDGER_PATH;
+  try {
+    process.env.GEMINI_USAGE_LEDGER_PATH = from;
+    L.setSessionUsageCaller('ship-check');
+    L.recordUsage({ model: 'gemini-2.5-pro', usage: { inputTokens: 1000, outputTokens: 100 } });
+    const [row] = L.flush();
+    assert.equal(row.kind, 'session');
+    assert.equal(row.caller, 'ship-check');
+    delete process.env.GEMINI_USAGE_LEDGER_PATH;
+    assert.equal(L.foldSessionRows({ from, to }), 1);
+    assert.equal(JSON.parse(fs.readFileSync(to, 'utf8')).costUsd, row.costUsd);
+  } finally {
+    L.setSessionUsageCaller(null);
+    if (previous === undefined) delete process.env.GEMINI_USAGE_LEDGER_PATH; else process.env.GEMINI_USAGE_LEDGER_PATH = previous;
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test('a call records workflow, model, tokens and cost', () => {
   const usage = L.extractUsage({ usageMetadata: { promptTokenCount: 1000000, candidatesTokenCount: 100000, thoughtsTokenCount: 100000 } });
   assert.deepEqual(usage, { inputTokens: 1000000, outputTokens: 200000 });

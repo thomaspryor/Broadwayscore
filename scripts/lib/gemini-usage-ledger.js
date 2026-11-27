@@ -205,6 +205,10 @@ function modelFromUrl(url) {
 const _agg = new Map(); // `${provider}|${model}` -> counters
 const _seen = new Set(); // request hashes, this process only
 const _pending = new Set(); // in-flight body reads
+let _sessionUsageCaller = null;
+
+// A reviewer runs inside a session, even though its calls use the fetch meter.
+function setSessionUsageCaller(caller) { _sessionUsageCaller = caller || null; }
 
 /** Resolves once every in-flight body read has been recorded (tests, explicit flushes). */
 function settle() {
@@ -223,6 +227,7 @@ function _counter(key) {
 /** Add one call. usage is an extract*Usage() result or null (unknown). Never throws. */
 function recordUsage({ provider = 'gemini', model, usage, grounded = 0, dup = false, kind = 'api', caller = null }) {
   try {
+    if (kind === 'api' && _sessionUsageCaller) { kind = 'session'; caller = _sessionUsageCaller; }
     const a = _counter([provider, model || 'unknown', kind, caller || ''].join('|'));
     a.calls += 1;
     if (dup) a.dupCalls += 1;
@@ -612,6 +617,7 @@ module.exports = {
   classifyUrl,
   requestHash,
   recordUsage,
+  setSessionUsageCaller,
   recordBatchUsage,
   logSessionCall,
   sessionLedgerPath,

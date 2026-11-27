@@ -224,8 +224,11 @@ export async function callReviewer(input, { env = process.env, fetchImpl = globa
  * the tracked ledger again under GITHUB_ACTIONS or a test run. Call before the first reviewer request.
  */
 export function meterToSessionLedger(env = process.env) {
-  if (env.GEMINI_USAGE_LEDGER_PATH) return;
-  try { env.GEMINI_USAGE_LEDGER_PATH = require('./gemini-usage-ledger.js').sessionLedgerPath(); } catch { /* record only */ }
+  try {
+    const ledger = require('./gemini-usage-ledger.js');
+    ledger.setSessionUsageCaller('skeptic-review-stop');
+    if (!env.GEMINI_USAGE_LEDGER_PATH) env.GEMINI_USAGE_LEDGER_PATH = ledger.sessionLedgerPath();
+  } catch { /* record only */ }
 }
 
 /** PURE. Does an accepted NO-SKEPTIC bypass appear in this chunk (or the claim)? */
