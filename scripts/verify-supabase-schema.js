@@ -28,6 +28,7 @@ const {
   diffFunctionBodies,
   findUnexpectedPolicies,
   findUndeletedUserTables,
+  missingRequiredCascades,
   liveSiblings,
   LIVE_CATALOG_QUERY,
 } = require('./lib/supabase-schema-expectations');
@@ -156,6 +157,15 @@ async function main() {
   for (const t of findUndeletedUserTables(liveRows, fnSource, DELETE_ACCOUNT_EXEMPT)) {
     console.log(`::warning::per-user table ${t} survives account deletion: not in delete-account/handler.mjs, no cascade from auth.users/profiles, not in scripts/lib/delete-account-exempt.js`);
   }
+
+  // Blocking (BRO-8383): delete-account depends on this cascade, and this run
+  // gates the function deploy in supabase-functions.yml.
+  const cascadesMissing = missingRequiredCascades(liveRows);
+  for (const c of cascadesMissing) {
+    console.error(`::error::required ON DELETE CASCADE missing in prod: ${c.name} (${c.why})`);
+  }
+  if (cascadesMissing.length) process.exit(1);
+  console.log('✓ required cascades present: profiles -> auth.users');
 
   if (missing.length === 0 && drifted.length === 0) {
     console.log(`✓ all ${expected.size} expected objects exist in prod (${bodiesChecked} function bodies match)`);

@@ -94,36 +94,6 @@ export async function selectAll(fetch, base, auth, table, query, order) {
   }
 }
 
-/** Delete the auth user. 404 means an earlier attempt already removed it
- *  (its response was lost); everything before it is idempotent, so a retry
- *  finishes the job instead of failing forever. Never throws. */
-async function deleteAuthUser(fetch, base, auth, userId) {
-  try {
-    const res = await fetch(`${base}/auth/v1/admin/users/${userId}`, { method: 'DELETE', headers: auth });
-    return res.ok || res.status === 404 ? { ok: true } : { ok: false, reason: String(res.status) };
-  } catch (e) {
-    return { ok: false, reason: e instanceof Error ? e.message : 'network error' };
-  }
-}
-
-/** Re-insert the caller's profile row after a failed auth-user delete, so a
- *  half-finished deletion never leaves a live login without a profile
- *  (BRO-8383). Best effort: a failure here is logged, not thrown, so the
- *  caller still reports the original error. */
-export async function restoreProfile(fetch, base, auth, rows) {
-  if (!rows || rows.length === 0) return;
-  try {
-    const res = await fetch(`${base}/rest/v1/profiles?on_conflict=id`, {
-      method: 'POST',
-      headers: { ...auth, Prefer: 'return=minimal,resolution=ignore-duplicates' },
-      body: JSON.stringify(rows),
-    });
-    if (!res.ok) console.error('[delete-account] profile restore failed:', res.status);
-  } catch (e) {
-    console.error('[delete-account] profile restore failed:', e instanceof Error ? e.message : e);
-  }
-}
-
 /** The optional appleAuthorizationCode the iOS app sends when the account
  *  has an Apple identity. Older app builds send no body at all. */
 async function readAppleCode(req) {
@@ -252,19 +222,27 @@ export async function handleDeleteAccount(req, { env, fetch = globalThis.fetch, 
     await deleteRows(fetch, base, auth, 'critic_profiles', 'user_id', userId);
     await deleteRows(fetch, base, auth, 'critic_claims', 'user_id', userId);
     await deleteRows(fetch, base, auth, 'critic_requests', 'user_id', userId);
-    // plan_shares and diary_shares cascade from profiles. The row is read
-    // first so it can be put back if the auth user cannot be deleted below.
-    const profileRows = await selectAll(fetch, base, auth, 'profiles', `id=eq.${userId}&select=*`, 'id');
-    await deleteRows(fetch, base, auth, 'profiles', 'id', userId);
-
-    const authDeleted = await deleteAuthUser(fetch, base, auth, userId);
-    if (!authDeleted.ok) {
-      // BRO-8383: the user is still signed in. Without their profiles row
-      // every later save fails with 23503 on <table>_user_id_fkey (Sentry
-      // "UGC insert reviews failed (23503)", BRO-7727/BRO-8031). Put it back.
-      await restoreProfile(fetch, base, auth, profileRows);
-      throw new Error(`delete auth user failed: ${authDeleted.reason}`);
+    // The auth user goes BEFORE the profile (BRO-8383). profiles.id
+    // references auth.users ON DELETE CASCADE, so this one call removes the
+    // profile (and plan_shares, diary_shares, seen_unrated, which cascade from
+    // it) in the same transaction. Deleting the profile first meant a failed
+    // auth delete left a signed-in user with no profiles row, and every later
+    // save failed with 23503 (Sentry "UGC insert reviews failed", BRO-7726,
+    // BRO-7727, BRO-8031). scripts/verify-supabase-schema.js fails the
+    // function deploy if that cascade is ever missing in prod.
+    const deleteUserRes = await fetch(`${base}/auth/v1/admin/users/${userId}`, {
+      method: 'DELETE',
+      headers: auth,
+    });
+    // 404 means an earlier attempt already removed the auth user (its
+    // response was lost); everything above is idempotent, so a retry
+    // finishes the job instead of failing forever.
+    if (!deleteUserRes.ok && deleteUserRes.status !== 404) {
+      throw new Error(`delete auth user failed: ${deleteUserRes.status}`);
     }
+    // Normally a no-op (the cascade already removed it). Kept so a profile
+    // the cascade missed never outlives its account.
+    await deleteRows(fetch, base, auth, 'profiles', 'id', userId);
 
     // Only after the account is gone, so a failed deletion never leaves a
     // live account with its Apple grant revoked.

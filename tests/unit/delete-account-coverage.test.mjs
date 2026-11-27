@@ -67,11 +67,10 @@ test('exemptions are not also deleted (stale exemption)', () => {
 // already gone. The Admin API answers 404, and treating that as a failure
 // left the user unable to ever finish deleting (BRO-4525).
 test('a 404 from the admin user delete counts as already deleted', () => {
-  // Behavior is also run end to end in delete-account-profile-restore.test.mjs (gone404).
-  const at = fnSource.indexOf('async function deleteAuthUser');
+  const at = fnSource.indexOf('const deleteUserRes');
   assert.ok(at > 0, 'admin user delete not found');
   const tail = fnSource.slice(at, at + 600);
-  assert.match(tail, /status === 404/, 'admin user delete must tolerate 404 so retries can finish');
+  assert.match(tail, /status !== 404/, 'admin user delete must tolerate 404 so retries can finish');
 });
 
 // PostgREST returns at most max-rows per request (1000 by default), so a

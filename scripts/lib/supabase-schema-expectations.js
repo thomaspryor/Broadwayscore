@@ -527,7 +527,25 @@ function findUndeletedUserTables(liveRows, fnSource, exempt = {}) {
     .sort();
 }
 
+// BRO-8383: ON DELETE CASCADE foreign keys code relies on. delete-account
+// deletes the auth user and lets profiles go with it; without the cascade that
+// delete fails in prod and nobody can delete an account. Names use the
+// catalog's cascadefk form "<public table>:<schema>.<table>".
+const REQUIRED_CASCADES = {
+  'profiles:auth.users': 'supabase/functions/delete-account/handler.mjs deletes the auth user before the profile (BRO-8383)',
+};
+
+// @returns {{name: string, why: string}[]} required cascades missing in prod
+function missingRequiredCascades(liveRows, required = REQUIRED_CASCADES) {
+  const live = new Set(liveRows.filter((r) => r.kind === 'cascadefk').map((r) => r.name));
+  return Object.entries(required)
+    .filter(([name]) => !live.has(name))
+    .map(([name, why]) => ({ name, why }));
+}
+
 module.exports = {
+  missingRequiredCascades,
+  REQUIRED_CASCADES,
   deriveExpectations,
   diffAgainstLive,
   diffFunctionBodies,
