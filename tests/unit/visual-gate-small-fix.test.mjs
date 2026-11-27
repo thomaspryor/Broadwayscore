@@ -5,6 +5,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync, symlinkSync, realpathSync, appendFileSync } from 'node:fs';
 import { tmpdir, homedir } from 'node:os';
 import { join, dirname } from 'node:path';
@@ -16,7 +17,9 @@ import {
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const HOOK = join(REPO_ROOT, '.claude', 'hooks', 'pre-push-visual-gate.sh');
-const STOP_HOOK = join(REPO_ROOT, '.claude', 'hooks', 'visual-small-fix-stop.sh');
+const SETTINGS = join(REPO_ROOT, '.claude', 'settings.json');
+// The Stop check runs at the top of verify-edits.sh, before its Mac self-skip (no new hook file: the budget is capped).
+const VERIFY_EDITS = join(REPO_ROOT, '.claude', 'hooks', 'verify-edits.sh');
 const OWNER = 'The score badge text is too small on show pages, please make it a little bigger';
 const QUOTE = 'please make it a little bigger';
 const PAGE = 'https://broadwayscorecard.com/shows/hamilton';
@@ -94,11 +97,13 @@ test('decide: kill switch and every condition', () => {
 
 test('enforcementProblem: the session must run the Stop check', () => {
   const files = (map) => (f) => { for (const [k, v] of Object.entries(map)) if (f.endsWith(k)) return v; throw new Error('ENOENT'); };
-  const good = { 'settings.json': '"visual-small-fix-stop.sh"', 'visual-small-fix-stop.sh': 'node visual-small-fix.mjs' };
-  assert.equal(enforcementProblem({ projectDir: '/p', env: {}, read: files(good) }), null);
-  assert.match(enforcementProblem({ projectDir: '/p', env: {}, read: files({ 'settings.json': '{}' }) }), /does not run the screenshot Stop check/);
-  assert.equal(enforcementProblem({ projectDir: '/p', env: { CLAUDE_CODE_REMOTE: 'true' }, read: files({ 'verify-edits.sh': 'visual-small-fix.mjs' }) }), null);
-  assert.match(enforcementProblem({ projectDir: '/p', env: { CLAUDE_CODE_REMOTE: 'true' }, read: files({ 'verify-edits.sh': 'old' }) }), /Stop check/);
+  const settings = JSON.stringify({ hooks: { Stop: [{ hooks: [{ command: 'bash "$R/.claude/hooks/verify-edits.sh"' }] }] } });
+  const good = { 'settings.json': settings, 'verify-edits.sh': 'node "$_vsf" --stop-hook ... visual-small-fix.mjs" --stop-hook' };
+  assert.equal(enforcementProblem({ projectDir: '/p', read: files(good) }), null);
+  assert.equal(enforcementProblem({ projectDir: '/p', read: files({ 'settings.json': readFileSync(SETTINGS, 'utf8'), 'verify-edits.sh': readFileSync(VERIFY_EDITS, 'utf8') }) }), null, 'this checkout passes');
+  assert.match(enforcementProblem({ projectDir: '/p', read: files({ ...good, 'settings.json': '{}' }) }), /does not run the screenshot Stop check/);
+  assert.match(enforcementProblem({ projectDir: '/p', read: files({ ...good, 'settings.json': 'not json' }) }), /does not run the screenshot Stop check/);
+  assert.match(enforcementProblem({ projectDir: '/p', read: files({ ...good, 'verify-edits.sh': 'old' }) }), /Stop check/);
 });
 
 test('claimsClosing: cloud, Mac and machine verdicts; not a mid-session update', () => {
@@ -181,8 +186,8 @@ function fixture(t, { uiLines = 3, stopWired = true } = {}) {
   commitFile(repo, 'src/components/Badge.tsx', `${body}\n`, 'ui: bigger badge');
   if (stopWired) { // this session's checkout runs the Stop check (enforcementProblem reads these)
     mkdirSync(join(repo, '.claude', 'hooks'), { recursive: true });
-    writeFileSync(join(repo, '.claude', 'settings.json'), readFileSync(join(REPO_ROOT, '.claude', 'settings.json')));
-    writeFileSync(join(repo, '.claude', 'hooks', 'visual-small-fix-stop.sh'), readFileSync(STOP_HOOK));
+    writeFileSync(join(repo, '.claude', 'settings.json'), readFileSync(SETTINGS));
+    writeFileSync(join(repo, '.claude', 'hooks', 'verify-edits.sh'), readFileSync(VERIFY_EDITS));
   }
   return fx;
 }
@@ -203,7 +208,7 @@ function env(fx, extra = {}) {
 
 const MARKED = `git push origin feat-ui  # SMALL-FIX: page=${PAGE} owner="${QUOTE}"`;
 function push(fx, tp, { command = MARKED, hook = HOOK, extraEnv = {} } = {}) {
-  const r = spawnSync('bash', [hook], {
+  const r = spawnSyncStdinFile('bash', [hook], {
     cwd: fx.repo, encoding: 'utf8', timeout: 90_000, env: env(fx, extraEnv),
     input: JSON.stringify({ tool_input: { command }, session_id: 'sess-small-fix', transcript_path: tp, tool_use_id: 'tu1' }),
   });
@@ -310,9 +315,13 @@ test('Stop hook: refuses the closing until a screenshot was sent, then passes; b
   const fx = fixture(t);
   assert.equal(push(fx, transcript(fx, OWNER)).status, 0);
   const tp = join(fx.root, 'stop.jsonl');
+  const macHome = join(fx.root, 'machome');
+  mkdirSync(join(macHome, '.claude', 'hooks'), { recursive: true });
+  writeFileSync(join(macHome, '.claude', 'hooks', 'verify-edits.sh'), '#!/usr/bin/env bash\nexit 0\n');
   const stop = (last, rows = []) => {
     writeFileSync(tp, rows.map((r) => JSON.stringify(r)).join('\n') + '\n');
-    return spawnSync('bash', [STOP_HOOK], { encoding: 'utf8', env: env(fx), input: JSON.stringify({ session_id: 'sess-small-fix', transcript_path: tp, last_assistant_message: last, stop_hook_active: false }) });
+    // HOME holds a stand-in master verify-edits.sh, exactly the Mac shape: the block runs, then the self-skip exits 0.
+    return spawnSyncStdinFile('bash', [VERIFY_EDITS], { encoding: 'utf8', env: env(fx, { HOME: macHome }), input: JSON.stringify({ session_id: 'sess-small-fix', transcript_path: tp, last_assistant_message: last, stop_hook_active: false }) });
   };
   const closing = 'The badge is bigger now.\nYou can close this tab.';
   const r1 = stop(closing);
@@ -329,16 +338,18 @@ test('Stop hook: refuses the closing until a screenshot was sent, then passes; b
   // Budget: after STOP_BLOCK_BUDGET refusals (two so far) it lets the session go (never an endless loop).
   assert.equal(STOP_BLOCK_BUDGET, 2);
   assert.equal(stop(closing).status, 0);
-  // Cloud skips this file (verify-edits.sh runs the same check there).
-  const cloud = spawnSync('bash', [STOP_HOOK], { encoding: 'utf8', env: env(fx, { CLAUDE_CODE_REMOTE: 'true' }), input: '{}' });
-  assert.equal(cloud.status, 0);
+  // Kill switch silences it.
+  const off = spawnSyncStdinFile('bash', [VERIFY_EDITS], { encoding: 'utf8', env: env(fx, { HOME: macHome, VISUAL_SMALL_FIX_STOP_DISABLED: '1' }), input: '{}' });
+  assert.equal(off.status, 0);
 });
 
-test('wiring: Stop hook registered, verify-edits.sh carries the cloud copy', () => {
+test('wiring: verify-edits.sh is the registered Stop hook and runs the check before its Mac self-skip', () => {
   const settings = JSON.parse(readFileSync(join(REPO_ROOT, '.claude', 'settings.json'), 'utf8'));
   const stops = settings.hooks.Stop.flatMap((g) => g.hooks.map((h) => h.command));
-  assert.ok(stops.some((c) => c.includes('visual-small-fix-stop.sh')), 'visual-small-fix-stop.sh is not a registered Stop hook');
-  assert.match(readFileSync(join(REPO_ROOT, '.claude', 'hooks', 'verify-edits.sh'), 'utf8'), /visual-small-fix\.mjs" --stop-hook[\s\S]*VE:SMALLFIXSHOT/);
+  assert.ok(stops.some((c) => c.includes('verify-edits.sh')), 'verify-edits.sh is not a registered Stop hook');
+  const ve = readFileSync(VERIFY_EDITS, 'utf8');
+  const call = ve.indexOf('node "$_vsf" --stop-hook');
+  assert.ok(ve.includes('scripts/lib/visual-small-fix.mjs') && call > 0 && call < ve.indexOf('# Self-skip if the user-level master'), 'the check must run before the Mac self-skip');
 });
 
 // Cousin (BRO-7298): on the Mac the REGISTERED gate is the user-level master; the repo copy self-skips when it exists.

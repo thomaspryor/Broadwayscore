@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+# BRO-7298: a small-fix-lane push owes the owner a live screenshot before closing. Runs BEFORE the self-skip below so the Mac
+# (whose master copy differs) and cloud both enforce it; logic in scripts/lib/visual-small-fix.mjs, kill VISUAL_SMALL_FIX_STOP_DISABLED=1.
+input=$(cat); _vsf="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)/scripts/lib/visual-small-fix.mjs"
+if [ "${VISUAL_SMALL_FIX_STOP_DISABLED:-0}" != "1" ] && [ -z "${VE_ONLY_CODES:-}" ] && [ -f "$_vsf" ] && command -v node >/dev/null 2>&1; then
+  _vsf_err=$(printf '%s' "$input" | node "$_vsf" --stop-hook 2>&1 >/dev/null); [ $? -eq 2 ] && { printf '%s\n[VE:SMALLFIXSHOT]\n' "$_vsf_err" >&2; exit 2; }
+fi
 
 # Self-skip if the user-level master hook exists (local CLI scenario).
 # Cloud sandboxes do not have ~/.claude/hooks/, so the project copy runs there.
@@ -33,7 +39,6 @@ export VISUAL_QA_OK=1
 # Bypass: include `NO-VERIFY: <reason>` in your final message text if the change is
 # genuinely untestable (comment-only, docs, config that has no runtime effect).
 
-input=$(cat)
 transcript=$(echo "$input" | jq -r '.transcript_path // empty' 2>/dev/null)
 
 if [ -z "$transcript" ] || [ ! -f "$transcript" ]; then
@@ -136,12 +141,6 @@ if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "$
 fi
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${STRANDED_CHILD_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/stranded-child-stop.mjs" ] && command -v node >/dev/null 2>&1; then
   _scs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/stranded-child-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:STRANDEDKID]\n' "$_scs_err" >&2; exit 2; fi; _ve_pre_died stranded-child-stop.mjs $_ve_s
-fi
-# BRO-7298: a small UI fix pushed through the visual gate's small-fix lane (no pre-push yes) owes the owner a screenshot of the
-# live page before closing (visual-small-fix.mjs --stop-hook: silent unless the lane was used, own budget, kill VISUAL_SMALL_FIX_STOP_DISABLED=1).
-# Cloud copy; on the Mac .claude/hooks/visual-small-fix-stop.sh runs it.
-if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${VISUAL_SMALL_FIX_STOP_DISABLED:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/visual-small-fix.mjs" ] && command -v node >/dev/null 2>&1; then
-  _vsf_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/visual-small-fix.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:SMALLFIXSHOT]\n' "$_vsf_err" >&2; exit 2; fi; _ve_pre_died visual-small-fix.mjs $_ve_s
 fi
 # BRO-7839: an independent reviewer asks the owner's "is this fully tested?" at SAFE TO ARCHIVE after code edits and the session must
 # close the gaps it names (skeptic-review-stop.mjs: cloud only, one LLM call capped at 25s, fails open, one block per chunk until its

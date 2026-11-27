@@ -28,8 +28,8 @@
 // Kill switches: VISUAL_SMALL_FIX_DISABLED=1 closes the lane (debts already owed are still enforced);
 // VISUAL_SMALL_FIX_STOP_DISABLED=1 silences the Stop check. Every lane use, block and waiver is logged.
 //
-// Wired in .claude/hooks/pre-push-visual-gate.sh (lane), .claude/hooks/visual-small-fix-stop.sh (Mac Stop) and
-// .claude/hooks/verify-edits.sh (cloud Stop). Pinned by tests/unit/visual-gate-small-fix.test.mjs.
+// Wired in .claude/hooks/pre-push-visual-gate.sh (lane) and at the top of .claude/hooks/verify-edits.sh (Stop), BEFORE its
+// self-skip, so the Mac (whose ~/.claude master verify-edits.sh differs) and every cloud container enforce it from one file. Pinned by tests/unit/visual-gate-small-fix.test.mjs.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -113,13 +113,11 @@ export const ownerQuoteProblem = (events, quote) => ownerQuote(events, quote).pr
 
 /** PURE. Why this session would not enforce the screenshot debt (its settings lack the Stop check), or null. */
 export function enforcementProblem({ projectDir, env = process.env, read = (f) => fs.readFileSync(f, 'utf8') }) {
+  void env;
   try {
-    if (String(env.CLAUDE_CODE_REMOTE || '') === 'true') {
-      if (read(path.join(projectDir, '.claude', 'hooks', 'verify-edits.sh')).includes('visual-small-fix.mjs')) return null;
-    } else if (read(path.join(projectDir, '.claude', 'settings.json')).includes('visual-small-fix-stop.sh')
-      && read(path.join(projectDir, '.claude', 'hooks', 'visual-small-fix-stop.sh')).includes('visual-small-fix.mjs')) {
-      return null;
-    }
+    const stops = (JSON.parse(read(path.join(projectDir, '.claude', 'settings.json'))).hooks?.Stop || []).flatMap((g) => (g.hooks || []).map((h) => String(h.command || '')));
+    if (stops.some((c) => c.includes('verify-edits.sh'))
+      && /visual-small-fix\.mjs[\s\S]*--stop-hook/.test(read(path.join(projectDir, '.claude', 'hooks', 'verify-edits.sh')))) return null;
   } catch { /* unreadable: refuse below */ }
   return "this session's checkout does not run the screenshot Stop check yet (merge main into it first)";
 }

@@ -206,16 +206,10 @@ if [ -n "$_NV_MATCH" ]; then
   exit 0
 fi
 
-# >>> BRO-7298 small-fix lane (owner decision 2026-11-10, option A; the replay test strips this block to prove the red case)
-# A small UI fix the OWNER asked for in this chat ships without the pre-push yes when the push command is ONE plain
-#   git push [flags] origin <src>[:refs/heads/<dst>]  # SMALL-FIX: page=<https://broadwayscorecard.com/...> owner="<their exact words>"
-# scripts/lib/visual-small-fix.mjs (CANONICAL ROOT copy only, so a branch cannot loosen it) resolves <src> from the command
-# itself (never DIFF_REF, which falls back to HEAD for a src:dst refspec), sizes its whole UI diff against origin/main,
-# checks the quote against the owner's LAST message (one change per owner request), refuses headless/job sessions,
-# chained commands, binary files, diffs over its limits and sessions whose settings do not run the screenshot Stop check,
-# then records the screenshot debt that Stop check (visual-small-fix-stop.sh / verify-edits.sh) enforces. Never records a
-# ledger approval or mints a durable one. Fail closed: any error or timeout falls through to the normal gate.
-# Kill VISUAL_SMALL_FIX_DISABLED=1.
+# >>> BRO-7298 small-fix lane (owner option A, 2026-11-10; the replay test strips this block to prove the red case)
+# An owner-asked small UI fix ships without the yes: ONE plain `git push ... origin <src>[:<dst>]  # SMALL-FIX: page=<prod url>
+# owner="<their exact words>"`. All rules live in the canonical copy of scripts/lib/visual-small-fix.mjs (a branch cannot loosen
+# them); it records the screenshot debt the Stop check (top of verify-edits.sh) enforces. Never records/mints approvals. Fails closed. Kill VISUAL_SMALL_FIX_DISABLED=1.
 _SMALL="$CANONICAL_ROOT/scripts/lib/visual-small-fix.mjs"
 _SMALL_REFUSED=""
 if [ "${VISUAL_SMALL_FIX_DISABLED:-0}" != "1" ] && [ -f "$_SMALL" ] && command -v timeout >/dev/null 2>&1 \
@@ -229,11 +223,8 @@ if [ "${VISUAL_SMALL_FIX_DISABLED:-0}" != "1" ] && [ -f "$_SMALL" ] && command -
   _SMALL_WHY=$(printf '%s' "$_SMALL_OUT" | jq -r '.reason // empty' 2>/dev/null)
   _SMALL_REFUSED="Small-fix lane refused: ${_SMALL_WHY:-the check timed out or crashed, so the normal gate applies}."
 fi
-_SMALL_LINE() {
-  if [ -n "$_SMALL_REFUSED" ]; then echo "$_SMALL_REFUSED"; return 0; fi
-  [ "${VISUAL_SMALL_FIX_DISABLED:-0}" != "1" ] && [ -f "$_SMALL" ] && command -v timeout >/dev/null 2>&1 || return 0
-  (cd "$SESSION_ROOT" && timeout 15 node "$_SMALL" explain --repo="$SESSION_ROOT" --range="origin/main...$DIFF_REF" --pattern="$UI_PATTERN" 2>/dev/null) || true
-}
+_SMALL_LINE() { [ -n "$_SMALL_REFUSED" ] && { echo "$_SMALL_REFUSED"; return 0; }; [ "${VISUAL_SMALL_FIX_DISABLED:-0}" != "1" ] && [ -f "$_SMALL" ] && command -v timeout >/dev/null 2>&1 || return 0
+  (cd "$SESSION_ROOT" && timeout 15 node "$_SMALL" explain --repo="$SESSION_ROOT" --range="origin/main...$DIFF_REF" --pattern="$UI_PATTERN" 2>/dev/null) || true; }
 # <<< BRO-7298 small-fix lane
 
 # NO-VERIFY override — scans the in-flight turn containing the gated tool_use.
