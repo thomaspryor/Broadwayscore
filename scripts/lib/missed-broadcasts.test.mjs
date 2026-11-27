@@ -268,17 +268,17 @@ test('wasCoveredByWeeklyRoundup: true only for issues actually delivered to the 
   // filled featuredShowIds with West End show ids — is NOT proof West End
   // subscribers received it.
   assert.strictEqual(
-    wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-31', edition: 'broadway', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026'),
+    wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-31', edition: 'broadway', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026', '2026-08-24'),
     false,
     "a 'broadway'-edition issue must not count as West End coverage"
   );
   assert.strictEqual(
-    wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-24', edition: 'west-end', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026'),
+    wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-24', edition: 'west-end', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026', '2026-08-24'),
     true
   );
   // Pre edition-split issues (no `edition` field) had one combined audience.
   assert.strictEqual(
-    wasCoveredByWeeklyRoundup([{ weekStart: '2026-06-01', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026'),
+    wasCoveredByWeeklyRoundup([{ weekStart: '2026-06-01', featuredShowIds: ['electra-persona-west-end-2026'] }], 'electra-persona-west-end-2026', '2026-06-01'),
     true
   );
   assert.strictEqual(wasCoveredByWeeklyRoundup([{ weekStart: '2026-08-31', featuredShowIds: [] }], 'electra-persona-west-end-2026'), false);
@@ -288,13 +288,10 @@ test('wasCoveredByWeeklyRoundup: true only for issues actually delivered to the 
 });
 
 test('regression: BRO-3088 — a West End show already in a real west-end-edition Round-up does not page as missed', () => {
-  // The real shape on 2026-09-07: electra-persona-west-end-2026, the-story-west-end-2026,
-  // and abigails-party-west-end-2026 all paged "Opening Night Email Never Reached
-  // Subscribers" despite each already having a properly edition:'west-end'-tagged
-  // Round-up card (2026-08-24 issue) that actually reached West End subscribers —
-  // a redundant force_broadcast ask the owner declined.
+  // Reviewed openings in a West End issue still suppress a redundant draft.
+  // The issue must cover the opening week, not an earlier Coming Up mention.
   const newsletterIssues = [
-    { weekStart: '2026-08-24', edition: 'west-end', featuredShowIds: ['electra-persona-west-end-2026', 'the-story-west-end-2026', 'a-month-in-the-country-west-end-2026'] },
+    { weekStart: '2026-08-31', edition: 'west-end', featuredShowIds: ['electra-persona-west-end-2026', 'the-story-west-end-2026', 'a-month-in-the-country-west-end-2026'] },
   ];
   const shows = [
     show({ id: 'electra-persona-west-end-2026', openingDate: '2026-09-01' }),

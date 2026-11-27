@@ -30,7 +30,9 @@
  * broadcast on a show whose draft may already have gone out would double-send
  * to real subscribers (CLAUDE.md §17). See classifyBroadcastState.
  *
- * Pure — no I/O, no clock of its own. scripts/check-missed-broadcasts.js does
+ * No clock of its own. The legacy two-argument roundup predicate reads the
+ * show's opening date locally; callers with show data pass it explicitly.
+ * scripts/check-missed-broadcasts.js does
  * the file reads and the alert routing (CLAUDE.md §15).
  */
 
@@ -307,9 +309,27 @@ function hasCompletedBroadcast(sentShows, showId) {
  * risk for the next week. Untagged issues (pre edition-split) count, since
  * before the split there was one combined audience.
  */
-function wasCoveredByWeeklyRoundup(issues, showId) {
+function wasCoveredByWeeklyRoundup(issues, showId, openingDate) {
   if (!showId) return false;
+  // The workflow still calls the two-argument API. Resolve its date from the
+  // same local show data, but never replace an explicitly missing/invalid date.
+  if (openingDate === undefined) {
+    try {
+      openingDate = require('../../data/shows.json').shows.find(s => s.id === showId)?.openingDate;
+    } catch { return false; }
+  }
+  const calendarMs = value => {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return NaN;
+    const ms = Date.parse(`${value}T00:00:00Z`);
+    return Number.isFinite(ms) && new Date(ms).toISOString().slice(0, 10) === value ? ms : NaN;
+  };
+  const openedAt = calendarMs(openingDate);
+  if (!Number.isFinite(openedAt)) return false;
+  // RULE21 BRO-8274: featuredShowIds includes Coming Up links, and the sent
+  // reconciler preserves every linked show. A week ending before press night
+  // cannot cover its reviews. The newsletter week ends on Sunday (+6 days).
   return (issues || []).some((issue) => issue && issue.edition !== 'broadway'
+    && calendarMs(issue.weekStart) + 6 * MS_PER_DAY >= openedAt
     && Array.isArray(issue.featuredShowIds) && issue.featuredShowIds.includes(showId));
 }
 
@@ -405,7 +425,7 @@ function findMissedBroadcasts({
     // coverage (a stray draft, an ambiguous 404), so don't paper over those.
     const roundupCovered = state === 'never-drafted'
       && s.category === 'west-end'
-      && wasCoveredByWeeklyRoundup(newsletterIssues, s.id);
+      && wasCoveredByWeeklyRoundup(newsletterIssues, s.id, s.openingDate);
 
     // West End gets the shorter bound regardless of state (draft-stuck
     // included) — the Sunday roundup covers it either way. Broadway has no

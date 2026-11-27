@@ -84,7 +84,7 @@ test('a cancelled draft past the requeue cooldown is owed again', () => {
 
 test('West End covered by the Weekly Round-up is not forced (BRO-3088)', () => {
   const shows = [{ id: 'we', openingDate: '2026-09-28', category: 'west-end' }];
-  const newsletterIssues = [{ edition: 'west-end', featuredShowIds: ['we'] }];
+  const newsletterIssues = [{ weekStart: '2026-09-28', edition: 'west-end', featuredShowIds: ['we'] }];
   const nowMs = at('2026-09-30T12:00:00Z');
   assert.deepEqual(pastDeadlineShows({ showIds: ['we'], shows, sentShows: {}, newsletterIssues, nowMs }), []);
   assert.equal(pastDeadlineShows({ showIds: ['we'], shows, sentShows: {}, nowMs }).length, 1);
