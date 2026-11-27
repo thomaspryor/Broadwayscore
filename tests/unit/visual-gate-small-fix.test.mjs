@@ -172,7 +172,7 @@ function fixture(t, { uiLines = 3, stopWired = true } = {}) {
   const fx = { root, repo, home: join(root, 'home'), logs: join(root, 'logs'), state: join(root, 'state'), tmp: join(root, 'tmp') };
   for (const d of [repo, fx.home, fx.logs, fx.tmp]) mkdirSync(d, { recursive: true });
   git(root, 'init', '-q', '--bare', '-b', 'main', origin);
-  for (const [k, v] of [['gc.auto', '0'], ['receive.autogc', 'false']]) git(origin, 'config', k, v);
+  for (const [k, v] of [['gc.auto', '0'], ['gc.autoDetach', 'false'], ['maintenance.auto', 'false'], ['receive.autogc', 'false']]) git(origin, 'config', k, v);
   git(repo, 'init', '-q', '-b', 'main');
   for (const [k, v] of [['user.email', 't@example.com'], ['user.name', 'T'], ['commit.gpgsign', 'false'], ['gc.auto', '0']]) git(repo, 'config', k, v);
   git(repo, 'remote', 'add', 'origin', origin);
