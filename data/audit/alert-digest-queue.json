@@ -1588,5 +1588,28 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-27T01:00:48.080Z"
+  },
+  {
+    "conditionKey": "red-first-skip:BRO-8385",
+    "title": "Red-first dispatch skipped BRO-8385 — no job spawned (recent-attempt:follow-up)",
+    "description": "The BRO-4054 red-first pass skipped \"Opening-night readiness check failed for dick-whittington-adults-only-off-west-end-2026\" (BRO-8385) this tick with reason \"recent-attempt:follow-up\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Card",
+        "value": "BRO-8385"
+      },
+      {
+        "name": "Skip reason",
+        "value": "recent-attempt:follow-up"
+      }
+    ],
+    "queuedAt": "2026-11-27T01:31:30.124Z"
   }
 ]
