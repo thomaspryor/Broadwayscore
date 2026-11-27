@@ -2,15 +2,15 @@
   "version": 1,
   "showId": "whispering-jack-regional-2026",
   "openingDate": "2026-11-25",
-  "detectedAt": "2026-11-27T05:28:04.191Z",
+  "detectedAt": "2026-11-27T05:37:01.628Z",
   "windowDays": 7,
   "orphans": [
     {
-      "file": "rolling-stone-au--neil-griffiths.json",
-      "outletId": "rolling-stone-au",
-      "criticName": "Neil Griffiths",
-      "url": "https://au.rollingstone.com/music/music-live-reviews/whispering-jack-review-michael-paynter-john-farnham-103726/",
-      "fullTextLen": 6008,
+      "file": "smh--unknown.json",
+      "outletId": "smh",
+      "criticName": "Unknown",
+      "url": "https://www.smh.com.au/culture/whispering-jack-the-john-farnham-musical-20261126-p61hg7.html",
+      "fullTextLen": 2132,
       "dispatchActionable": true,
       "skipReason": null,
       "rescoreBlockedReason": null,
@@ -19,15 +19,15 @@
       "originalScore": null,
       "originalScoreNormalized": null,
       "llmScore": null,
-      "contentTier": "complete",
+      "contentTier": "truncated",
       "eligibilityReason": null
     },
     {
-      "file": "suzy-goes-see--suzy-wrong.json",
-      "outletId": "suzy-goes-see",
-      "criticName": "Suzy Wrong",
-      "url": "https://suzygoessee.com/2026/11/25/review-whispering-jack-sydney-theatre-company/",
-      "fullTextLen": 4589,
+      "file": "timeout--justin-clarke.json",
+      "outletId": "timeout",
+      "criticName": "Justin Clarke",
+      "url": "https://www.timeout.com/sydney/theatre/whispering-jack-the-john-farnham-musical",
+      "fullTextLen": 7019,
       "dispatchActionable": true,
       "skipReason": null,
       "rescoreBlockedReason": null,
@@ -44,6 +44,6 @@
   "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-11-27T05:28:04.191Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
