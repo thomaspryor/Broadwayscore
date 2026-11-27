@@ -137,3 +137,12 @@ test('defaultDetail keeps the whole 400-char head and ignores the unchosen strea
   assert.ok(d.length <= 400 + 305 + 3);
   assert.equal(d.split(' | ').length, 4, '3 promoted lines + head');
 });
+
+test('defaultDetail matches error markers past col 120 and fills slots after an oversized line (BRO-8394 ship-check)', () => {
+  const filler = 'w'.repeat(500);
+  const long = `${'p'.repeat(150)} ERROR: late marker`;
+  const err = { stderr: `${filler}\n${long}\n${long}x\n${long}y\nERROR: short root cause`, stdout: '' };
+  const d = defaultDetail(err);
+  assert.match(d, /ERROR: short root cause/);
+  assert.ok(d.startsWith('pppp'), 'long line with marker past col 120 is promoted');
+});

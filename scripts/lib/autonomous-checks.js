@@ -684,9 +684,11 @@ const defaultDetail = (err) => {
   // outrank a short stderr message. Promoted block is capped at 300 chars and
   // the head is kept whole, so envCauseOf still sees all 400 head chars.
   for (const raw of text.split('\n')) {
-    const line = raw.trim().slice(0, 120);
-    if (!line || !ERROR_LINE_RE.test(line) || head.includes(line) || errLines.includes(line)) continue;
-    if (used + line.length > 300) break;
+    const full = raw.trim();
+    if (!full || !ERROR_LINE_RE.test(full)) continue; // match the whole line, clip only for display
+    const line = full.slice(0, 120);
+    if (head.includes(line) || errLines.includes(line)) continue;
+    if (used + line.length > 300) continue; // a later, shorter error may still fit
     errLines.push(line);
     used += line.length + 3;
     if (errLines.length === 3) break;
