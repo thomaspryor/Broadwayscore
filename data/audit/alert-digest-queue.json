@@ -508,33 +508,6 @@
     "queuedAt": "2026-11-27T15:04:37.376Z"
   },
   {
-    "conditionKey": "land-preexisting:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers #759a229310",
-    "title": "Test red on main: real data loads and gives the expected answers for the four JS outlets [testCodeFailure]",
-    "description": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8324-shownotmentioned-guard. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45698791663",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "test",
-        "value": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets [testCodeFailure]"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45698791663"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:15:32.321Z"
-  },
-  {
     "conditionKey": "cron-cancelled:scrape-new-aggregators.yml",
     "title": "scrape-new-aggregators.yml: 4 of its 13 scheduled runs were cancelled",
     "description": "Cancelled runs skip failure notification (`if: always()` does not run on cancel), so a workflow killed at its timeout cap or by a concurrency group is silent. 4 of 13 scheduled runs in the last 14 days were cancelled.",
@@ -2101,5 +2074,63 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-27T21:32:19.881Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-8409",
+    "title": "Landing blocked: lint-workflows red on land/codex-bro-8409",
+    "description": "land.yml did not land land/codex-bro-8409: the lint-workflows gate went red at 8ae486c5f6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46072827270",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-8409"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "8ae486c5f6807e59e4800a8ef021836c6bcc61ce"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46072827270"
+      }
+    ],
+    "queuedAt": "2026-11-27T22:10:40.877Z"
+  },
+  {
+    "conditionKey": "land-preexisting:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers #759a229310",
+    "title": "Test red on main: real data loads and gives the expected answers for the four JS outlets [testCodeFailure]",
+    "description": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/codex-bro-8409. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46072827270",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46072827270"
+      }
+    ],
+    "queuedAt": "2026-11-27T22:10:41.141Z"
   }
 ]
