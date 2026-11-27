@@ -21,7 +21,7 @@
 const path = require('path');
 const { fetchPage } = require(path.join(__dirname, '../scraper.js'));
 
-module.exports = { fetch, close, isProfilePage, parseArticles };
+module.exports = { fetch, close, isProfilePage, parseArticles, fetchHtmlDefault, _resetForTest, _isClosed: () => _closed };
 
 const BB_KEYS = ['BROWSERBASE_API_KEY', 'BROWSERBASE_PROJECT_ID'];
 
@@ -46,6 +46,25 @@ function parseArticles(html) {
 
 // ── Browserbase session (lazy, shared) ───────────────────────────────────────
 let _bb = null; // Promise<{browser, context} | null>
+let _closed = false; // close() is final: a later fetch must not open an unowned session
+// Consecutive failed page reads across every route. Past the limit the host is
+// treated as unreachable for the rest of the run: each further read would only
+// spend BD/SB/Browserbase time on a challenge it cannot pass (ship-check BRO-6956).
+const MAX_CONSECUTIVE_FAILURES = 3;
+let _consecutiveFailures = 0;
+let _readerForTest = null;
+// Muck Rack answers "Rate limited | Muck Rack" when the audit's 4 parallel
+// critics read at once (seen live 2026-11-27). So every read goes through one
+// queue, MIN_GAP_MS apart, and a rate-limit page backs off and retries before
+// it counts as a failed read.
+const MIN_GAP_MS = Number(process.env.MUCKRACK_MIN_GAP_MS || 2000);
+const RATE_LIMIT_BACKOFF_MS = [20000, 60000];
+let _queue = Promise.resolve();
+let _lastReadAt = 0;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const isRateLimited = (html) => /<title[^>]*>\s*Rate limited/i.test(html || '');
+/** Test seam: replace the network read and reset run state. */
+function _resetForTest(reader = null) { _readerForTest = reader; _consecutiveFailures = 0; _closed = false; _bb = null; _queue = Promise.resolve(); _lastReadAt = 0; }
 
 function bbCreds() {
   const env = {};
@@ -59,7 +78,7 @@ function bbCreds() {
 function bbContext() {
   if (_bb) return _bb;
   _bb = (async () => {
-    if (process.env.MUCKRACK_BROWSERBASE_DISABLED === '1') return null;
+    if (_closed || process.env.MUCKRACK_BROWSERBASE_DISABLED === '1') return null;
     const creds = bbCreds();
     if (!creds) return null;
     try {
@@ -77,7 +96,7 @@ function bbContext() {
       const context = browser.contexts()[0] || await browser.newContext();
       return { browser, context };
     } catch (e) {
-      console.warn(`  [muckrack] Browserbase unavailable (${e.message}); falling back to fetchPage`);
+      console.warn(`::warning::[muckrack] Browserbase unavailable (${e.message}); falling back to fetchPage, which Cloudflare usually blocks`);
       return null;
     }
   })();
@@ -86,6 +105,7 @@ function bbContext() {
 
 /** Close the shared Browserbase session, if one was opened. Safe to call twice. */
 async function close() {
+  _closed = true;
   const p = _bb;
   _bb = null;
   if (!p) return;
@@ -94,6 +114,37 @@ async function close() {
 }
 
 async function fetchHtmlDefault(url) {
+  if (_consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+    throw new Error(`skipped: muckrack.com unreachable this run (${_consecutiveFailures} consecutive failed reads)`);
+  }
+  const run = _queue.then(() => readWithBackoff(url));
+  _queue = run.catch(() => {});
+  try {
+    const html = await run;
+    if (isProfilePage(html)) _consecutiveFailures = 0; else _consecutiveFailures++;
+    return html;
+  } catch (e) {
+    _consecutiveFailures++;
+    throw e;
+  }
+}
+
+async function readWithBackoff(url) {
+  const reader = _readerForTest || readOnce;
+  const gap = _readerForTest ? 0 : MIN_GAP_MS;
+  for (let attempt = 0; ; attempt++) {
+    const wait = _lastReadAt + gap - Date.now();
+    if (wait > 0) await sleep(wait);
+    _lastReadAt = Date.now();
+    const html = await reader(url);
+    if (!isRateLimited(html) || attempt >= RATE_LIMIT_BACKOFF_MS.length) return html;
+    const back = _readerForTest ? 0 : RATE_LIMIT_BACKOFF_MS[attempt];
+    console.warn(`  [muckrack] rate limited on ${url}; retrying in ${back / 1000}s`);
+    await sleep(back);
+  }
+}
+
+async function readOnce(url) {
   const bb = await bbContext();
   if (bb) {
     let page = null;
@@ -101,7 +152,7 @@ async function fetchHtmlDefault(url) {
       const { readBrowserPage } = require(path.join(__dirname, '../browser-read-page.js'));
       page = await bb.context.newPage();
       const r = await readBrowserPage(page, url, { waits: 10 });
-      if (isProfilePage(r.html)) return r.html;
+      if (isProfilePage(r.html) || isRateLimited(r.html)) return r.html;
       console.warn(`  [muckrack] Browserbase got a non-profile page for ${url} (title "${r.title}")`);
     } catch (e) {
       console.warn(`  [muckrack] Browserbase read failed for ${url}: ${e.message}`);

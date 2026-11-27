@@ -48,6 +48,11 @@ jobs:
           SCRAPINGBEE_DISABLED: ${{ vars.SCRAPINGBEE_DISABLED }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          # BRO-6956: muckrack.com is behind a Cloudflare managed challenge only
+          # Browserbase passes; muckrack.js opens one session per run.
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
         run: node scripts/audit-critic-coverage.js
 
       - name: Bucketize coverage gaps

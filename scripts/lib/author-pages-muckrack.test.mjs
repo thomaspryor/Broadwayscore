@@ -41,3 +41,44 @@ test('isProfilePage', () => {
   assert.equal(muckrack.isProfilePage(CHALLENGE), false);
   assert.equal(muckrack.isProfilePage(null), false);
 });
+
+test('after 3 consecutive failed reads the host is skipped without another network call', async () => {
+  let calls = 0;
+  muckrack._resetForTest(async () => { calls++; return BLOCK; });
+  for (let i = 0; i < 3; i++) await muckrack.fetchHtmlDefault(`https://muckrack.com/c${i}/articles`);
+  await assert.rejects(muckrack.fetch('c4'), /unreachable this run/);
+  assert.equal(calls, 3);
+  muckrack._resetForTest();
+});
+
+test('a good read resets the failure streak', async () => {
+  let n = 0;
+  muckrack._resetForTest(async () => (++n % 3 === 0 ? PROFILE(1) : BLOCK));
+  for (let i = 0; i < 9; i++) await muckrack.fetchHtmlDefault('https://muckrack.com/x/articles');
+  assert.equal(n, 9);
+  muckrack._resetForTest();
+});
+
+test('close() is final and safe without a session', async () => {
+  muckrack._resetForTest();
+  await muckrack.close();
+  await muckrack.close();
+  assert.equal(muckrack._isClosed(), true);
+  muckrack._resetForTest();
+});
+
+test('a rate-limit page is retried, and reads never overlap', async () => {
+  const RL = `<html><head><title>Rate limited | Muck Rack</title></head><body>${pad}</body></html>`;
+  let calls = 0, inFlight = 0, maxInFlight = 0;
+  muckrack._resetForTest(async () => {
+    calls++; inFlight++; maxInFlight = Math.max(maxInFlight, inFlight);
+    await new Promise((r) => setTimeout(r, 5));
+    inFlight--;
+    return calls === 1 ? RL : PROFILE(1);
+  });
+  const got = await Promise.all([0, 1, 2, 3].map((i) => muckrack.fetchHtmlDefault(`https://muckrack.com/c${i}/articles`)));
+  assert.ok(got.every((h) => muckrack.isProfilePage(h)));
+  assert.equal(calls, 5);
+  assert.equal(maxInFlight, 1);
+  muckrack._resetForTest();
+});
