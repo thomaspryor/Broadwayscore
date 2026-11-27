@@ -449,6 +449,30 @@ async function main() {
     check('rating: owner can delete', del.ok, `HTTP ${del.status}`, NOT_URGENT);
     const gone = await rest('GET', `reviews?id=eq.${reviewId}&select=id`, tokenA);
     check('rating: delete persists', Array.isArray(gone.json) && gone.json.length === 0, '', NOT_URGENT);
+
+    // ── ACCOUNT DELETION (BRO-8383): the real delete-account edge function ──
+    // It deletes the auth user and lets the profile cascade with it. A
+    // profile deleted while the login survives makes every later save fail
+    // with 23503 (Sentry "UGC insert reviews failed"), so check both are gone.
+    const userD = await makeUser('del'); created.push(userD);
+    const tokenD = await mintToken(userD.email);
+    await rest('POST', 'profiles', tokenD, { id: userD.id, display_name: 'Roundtrip Test' }, 'return=minimal,resolution=merge-duplicates');
+    const dRev = await rest('POST', 'reviews', tokenD, { user_id: userD.id, show_id: SHOW_ID, rating: 3 }, 'return=minimal');
+    check('account deletion: test account has a saved rating', dRev.ok, `HTTP ${dRev.status} ${dRev.ok ? '' : dRev.text.slice(0, 120)}`, NOT_URGENT);
+    const dFn = await fetch(`${URL}/functions/v1/delete-account`, {
+      signal: AbortSignal.timeout(60000),
+      method: 'POST',
+      headers: { apikey: ANON, Authorization: `Bearer ${tokenD}`, 'Content-Type': 'application/json' },
+      body: '{}',
+    });
+    const dBody = await dFn.json().catch(() => ({}));
+    check('account deletion: delete-account answers ok', dBody.ok === true, `HTTP ${dFn.status} ${JSON.stringify(dBody).slice(0, 120)}`, NOT_URGENT);
+    const dAuth = await adminFetch('GET', `admin/users/${userD.id}`);
+    check('account deletion: login removed', dAuth.status === 404, `HTTP ${dAuth.status}`, NOT_URGENT);
+    const dProf = await rest('GET', `profiles?id=eq.${userD.id}&select=id`, SERVICE);
+    check('account deletion: profile removed', dProf.ok && Array.isArray(dProf.json) && dProf.json.length === 0, `HTTP ${dProf.status} ${dProf.text.slice(0, 80)}`, NOT_URGENT);
+    const dLeft = await rest('GET', `reviews?user_id=eq.${userD.id}&select=id`, SERVICE);
+    check('account deletion: saved rating removed', dLeft.ok && Array.isArray(dLeft.json) && dLeft.json.length === 0, `HTTP ${dLeft.status}`, NOT_URGENT);
   } finally {
     // Always remove every user we created — cascades to their reviews/watchlist/lists.
     for (const u of created) {
