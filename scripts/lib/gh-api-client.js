@@ -64,12 +64,27 @@ function logCall(caller, method, url) {
  * @param {string|Buffer} [opts.body]
  * @returns {Promise<any>} parsed JSON body, or null for a 204
  */
+// BRO-7150: a local session usually has no GH_TOKEN in its env but is logged in to the gh CLI. Without this
+// fallback every call went out unauthenticated (60/hour per IP) and a ~100-call report died on HTTP 403.
+let cachedCliToken;
+function resolveToken({ env = process.env, exec = execFileSync } = {}) {
+  const fromEnv = env.GH_TOKEN || env.GITHUB_TOKEN;
+  if (fromEnv) return fromEnv;
+  if (exec === execFileSync && cachedCliToken !== undefined) return cachedCliToken;
+  let t = null;
+  try {
+    t = String(exec('gh', ['auth', 'token'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 5000 })).trim() || null;
+  } catch { t = null; }
+  if (exec === execFileSync) cachedCliToken = t;
+  return t;
+}
+
 async function fetchGitHubJSON(url, opts = {}) {
   const { method = 'GET', headers = {}, token, caller, body, timeoutMs = 15000 } = opts;
   const callerName = caller || defaultCallerName();
   logCall(callerName, method, url);
 
-  const authToken = token || process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  const authToken = token || resolveToken();
   const finalHeaders = {
     'User-Agent': 'bsc-gh-api-client',
     Accept: 'application/vnd.github+json',
@@ -170,6 +185,7 @@ module.exports = {
   dispatchWorkflow,
   fetchGitHubJSON,
   fetchGitHubJSONCached,
+  resolveToken,
   hasLowHeadroom,
   getRateLimitHeadroom,
   logCall,
