@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T09:14:15.575Z",
+  "generatedAt": "2026-11-27T10:10:28.698Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -147,27 +147,11 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "theater-pizzazz",
       "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
-    },
-    {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
       "outletId": "exeunt-magazine",
@@ -176,10 +160,18 @@
     {
       "outletId": "fringereview",
       "error": "HTTP 403 for https://fringereview.co.uk/feed/"
+    },
+    {
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 800,
-  "matchedGaps": 2,
+  "itemsScanned": 773,
+  "matchedGaps": 3,
   "possibleGaps": 5,
   "gaps": [
     {
@@ -190,6 +182,15 @@
       "url": "https://www.allthatdazzles.co.uk/post/review-a-christmas-carol-reading-rep-theatre",
       "headline": "Review: A Christmas Carol (Reading Rep Theatre)",
       "publishDate": "2026-11-26"
+    },
+    {
+      "showId": "attention-off-west-end-2026",
+      "title": "Attention",
+      "level": "matched",
+      "outletId": "theatreandtonic",
+      "url": "https://theatreandtonic.co.uk/blog/attention-bush-theatre-london-review",
+      "headline": "Attention at Bush Theatre London Review",
+      "publishDate": "2026-11-27"
     },
     {
       "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
