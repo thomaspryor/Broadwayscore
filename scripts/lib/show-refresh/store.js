@@ -4,8 +4,8 @@
  *
  * Two homes, chosen by how each object changes:
  *   - Storage bucket `show-refresh` (private): immutable slices
- *     show/<id>/<hash>.json (1-year cache), plus covered.json, health.json and
- *     flagged/<sha>.json (later phases; service role only).
+ *     show/<id>/<hash>.json (1-year cache), plus covered.json, health.json,
+ *     revalidate-pending.json (BRO-8410) and flagged/<sha>.json (later phases; service role only).
  *   - Table public.show_refresh_state, read through PostgREST: the MUTABLE
  *     pointers home (index the reader follows) and kill (kill switch), plus a
  *     'probe' row for --selftest.
@@ -44,6 +44,7 @@ const PATHS = Object.freeze({
   covered: 'covered.json',
   health: 'health.json',
   probe: 'probe.json',
+  revalidatePending: 'revalidate-pending.json',
 });
 const ID_RE = /^[a-z0-9][a-z0-9-]{0,120}$/;
 const HASH_RE = /^[0-9a-f]{16}$/;

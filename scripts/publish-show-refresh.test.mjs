@@ -6,6 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import './lib/show-refresh/revalidate-queue.test.mjs'; // BRO-8410: queue tests ride this file's VERIFY run
 import { parseArgs, readFlagged, loadManifest, main, codeMatchOf, rebuildStepAllowed, sliceCodeClosure, SLICE_ENTRY_POINTS, CLOSURE_ALWAYS, DEFAULT_MANIFEST_URL } from './publish-show-refresh.ts';
 
 import tmpLib from './lib/tmpdir-for-tests.js';

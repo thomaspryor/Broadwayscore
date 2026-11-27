@@ -40,6 +40,7 @@ const { isUsableManifest } = require('./lib/show-refresh/manifest');
 const { coverageInputsFromSlice } = require('./lib/show-refresh/slice');
 const store = require('./lib/show-refresh/store');
 const { writePublish } = require('./lib/show-refresh/publish-write');
+const { revalidateWithQueue } = require('./lib/show-refresh/revalidate-queue');
 const { healShows } = require('./lib/heal-shows');
 /* eslint-enable @typescript-eslint/no-require-imports */
 
@@ -414,11 +415,22 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
         const swapped = !!(e && typeof e === 'object' && (e as { pointerSwapped?: boolean }).pointerSwapped);
         console.error(`::error::show-refresh write failed (${swapped ? 'the NEW pointer is live; check the home row' : 'old pointer left in place'}): ${e instanceof Error ? e.message : e}`);
       }
-      if (writeResult && writeResult.homeWritten && writeResult.changedIds.length) {
-        revalidate = await revalidateSlugs(env, writeResult.changedIds.map((id) => m.shows[id] && m.shows[id].slug).filter(Boolean) as string[]);
-        console.log(`[publish-show-refresh] revalidate: ${revalidate}`);
-      }
     }
+  }
+  // BRO-8410: revalidate this run's changed slugs and drain earlier failures.
+  // Runs on every write-mode run (a backstop run with nothing to publish still
+  // retries the queue); the queue lives in private Storage, never the reader's path.
+  let revalidateQueue: { retried: string[]; pending: string[]; abandoned: string[]; queueNote: string } | null = null;
+  if (write && outcome !== 'parity-failed') {
+    const newSlugs = writeResult && writeResult.homeWritten
+      ? writeResult.changedIds.map((id) => m.shows[id] && m.shows[id].slug).filter(Boolean) as string[]
+      : [];
+    let storage: ReturnType<typeof store.storeFromEnv> | null = null;
+    try { storage = store.storeFromEnv(env, { timeoutMs: 15000 }); } catch { storage = null; }
+    const r = await revalidateWithQueue({ env, storage, newSlugs });
+    revalidate = r.message;
+    revalidateQueue = { retried: r.retried, pending: r.pending, abandoned: r.abandoned, queueNote: r.queueNote };
+    if (r.message !== 'skipped (no slugs)') console.log(`[publish-show-refresh] revalidate: ${r.message}`);
   }
 
   const ms = Date.now() - t0;
@@ -428,6 +440,7 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
     mode: args.mode,
     write: writeResult,
     revalidate,
+    revalidateQueue,
     manifestSource: args.manifest,
     manifestId: m.manifestId,
     publicSha: m.publicSha ?? null,
@@ -457,33 +470,6 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
   if (outcome === OUTCOMES.KILLED) console.log(`::warning::show-refresh: stopped by the kill switch (${(kill && kill.reason) || 'see write log'})`);
   if (!codeMatch) console.log(`::notice::show-refresh: code ${codeSha ? codeSha.slice(0, 9) : 'unknown'} vs deployed ${m.publicSha ? m.publicSha.slice(0, 9) : '(none)'}: ${codeHow}; a write would be refused`);
   return exitCode;
-}
-
-/**
- * Ask the site to re-render the changed shows' pages (plan §1.5 step 8). Never
- * fails the run: the pointer is already right, and while the reader is off the
- * route has nothing to refresh. No secret = skipped.
- */
-async function revalidateSlugs(env: NodeJS.ProcessEnv, slugs: string[], fetchImpl: typeof fetch = fetch): Promise<string> {
-  const secret = env.SHOW_REFRESH_REVALIDATE_SECRET || '';
-  if (!secret) return 'skipped (SHOW_REFRESH_REVALIDATE_SECRET unset)';
-  if (!slugs.length) return 'skipped (no slugs)';
-  const base = env.SHOW_REFRESH_SITE || 'https://broadwayscorecard.com';
-  try {
-    const res = await fetchImpl(new URL('/api/show-refresh/revalidate', base).toString(), {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-show-refresh-secret': secret },
-      body: JSON.stringify({ slugs, home: true }),
-      signal: AbortSignal.timeout(60000),
-    });
-    const msg = `HTTP ${res.status} for ${slugs.length} show(s)`;
-    if (!res.ok) console.log(`::warning::show-refresh revalidate ${msg}`);
-    return msg;
-  } catch (e) {
-    const msg = `failed: ${e instanceof Error ? e.message : e}`;
-    console.log(`::warning::show-refresh revalidate ${msg}`);
-    return msg;
-  }
 }
 
 if (require.main === module) {
