@@ -50,9 +50,16 @@ function properCase(name) {
   return name.toLowerCase().replace(/(^|[\s'\u2019-])([a-z])/g, (m, a, b) => a + b.toUpperCase());
 }
 
+// BRO-8255: a sentence-final period rides along with a name taken from prose ("Michela Smith.").
+// Strip it after a 2+ letter word; an initial ("J.") and Jr./Sr. keep theirs.
+function stripTrailingDot(name) {
+  if (typeof name !== 'string') return name;
+  return name.replace(/\s+$/, '').replace(/([A-Za-z\u00C0-\u024F'\u2019-]{2,})\.$/, (m, w) => (/^(?:Jr|Sr)$/i.test(w) ? m : w));
+}
+
 function readPageBylineForShowCased(args) {
   const res = readPageBylineForShow(args);
-  return res.criticName ? { ...res, criticName: properCase(res.criticName) } : res;
+  return res.criticName ? { ...res, criticName: stripTrailingDot(properCase(res.criticName)) } : res;
 }
 
 /**
@@ -69,4 +76,4 @@ function readPageBylineWithMetaFallback({ html, text = '', url, outletId } = {})
   return name ? properCase(name) : null;
 }
 
-module.exports = { readPageBylineForShow: readPageBylineForShowCased, properCase, readPageBylineWithMetaFallback };
+module.exports = { readPageBylineForShow: readPageBylineForShowCased, properCase, stripTrailingDot, readPageBylineWithMetaFallback };

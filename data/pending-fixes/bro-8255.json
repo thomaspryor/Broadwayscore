@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-8255",
+  "planId": "2545099c-546f-40e3-939b-2f1e2355b48b",
+  "status": "pending",
+  "createdAt": "2026-11-27T23:36:53.958Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Strip sentence-final period from three stored criticName values (BRO-8255 cousins)",
+    "steps": [
+      "cock-regional-2024/third-coast-review--row-light.json: criticName",
+      "red-2010/variety--marilyn-stasio.json: criticName",
+      "the-jonathan-larson-project-off-west-end-2026/theatre-south-east--tara-whenray.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cock-regional-2024/third-coast-review--row-light.json",
+        "field": "criticName",
+        "oldValue": "Row Light.",
+        "newValue": "Row Light",
+        "description": "cock-regional-2024/third-coast-review--row-light.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "red-2010/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio.",
+        "newValue": "Marilyn Stasio",
+        "description": "red-2010/variety--marilyn-stasio.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-jonathan-larson-project-off-west-end-2026/theatre-south-east--tara-whenray.json",
+        "field": "criticName",
+        "oldValue": "Tara Whenray.",
+        "newValue": "Tara Whenray",
+        "description": "the-jonathan-larson-project-off-west-end-2026/theatre-south-east--tara-whenray.json: criticName"
+      }
+    ]
+  }
+}
