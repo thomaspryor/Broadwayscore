@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-8004",
+  "planId": "415ce96b-6727-4c24-8ccb-7a034eb249e8",
+  "status": "pending",
+  "createdAt": "2026-11-27T20:55:15.136Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear verified Cloud 9 review title-mention false positive",
+    "steps": [
+      "cloud-9-west-end-2026/thestage--sam-marlowe.json: showNotMentionedManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cloud-9-west-end-2026/thestage--sam-marlowe.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "Article names playwright Caryl Churchill, director Dominic Cooke and all seven credited cast members matching this production; published the day after opening.",
+        "description": "cloud-9-west-end-2026/thestage--sam-marlowe.json: showNotMentionedManualClear"
+      }
+    ]
+  }
+}
