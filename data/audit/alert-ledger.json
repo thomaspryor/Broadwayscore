@@ -38081,18 +38081,17 @@
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-26T04:15:04.277Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T04:11:30.670Z",
-      "lastNotifiedAt": "2026-11-26T04:15:04.277Z",
-      "lastSurfacedAt": "2026-11-26T04:15:04.277Z",
-      "notifyCount": 14,
+      "lastSeen": "2026-11-27T14:27:19.135Z",
+      "lastNotifiedAt": "2026-11-27T14:27:19.135Z",
+      "lastSurfacedAt": "2026-11-27T14:27:19.135Z",
+      "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 7
+      "linearIdentifier": "BRO-7855"
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -40448,21 +40447,18 @@
       "silentRefires": 1
     },
     "live-data-test:tests/unit/id-year-drift.test.mjs::real shows.json: zero un-reviewed hits": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: real shows.json: zero un-reviewed hits (tests/unit/id-year-drift.test.mjs)",
       "firstSeen": "2026-11-09T13:43:08.396Z",
-      "incidentOpenedAt": "2026-11-09T13:43:08.396Z",
+      "incidentOpenedAt": "2026-11-27T14:27:19.775Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-10T04:13:19.735Z",
-      "lastNotifiedAt": "2026-11-09T13:43:08.396Z",
-      "lastSurfacedAt": "2026-11-09T13:43:08.396Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-27T14:27:19.775Z",
+      "lastNotifiedAt": "2026-11-27T14:27:19.775Z",
+      "lastSurfacedAt": "2026-11-27T14:27:19.775Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 5,
-      "resolvedAt": "2026-11-10T11:35:14.220Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "opening-night-remediation-exhausted-t1-missing:msblackforpresident-off-broadway-2026": {
       "status": "resolved",
@@ -42448,7 +42444,7 @@
       "resolveReason": "BRO-6082: no automated path left; reported on the digest FYI line"
     },
     "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) (tests/unit/opening-night-lane-sources.test.mjs)",
       "firstSeen": "2026-11-11T15:05:44.026Z",
@@ -42460,7 +42456,9 @@
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 6,
+      "resolvedAt": "2026-11-27T14:27:20.093Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-7373-cost": {
       "status": "open",
@@ -43579,7 +43577,7 @@
       "resolveReason": "absent"
     },
     "live-data-test:scripts/lib/default-critic-home.live.test.mjs::allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS) (scripts/lib/default-critic-home.live.test.mjs)",
       "firstSeen": "2026-11-14T02:43:17.309Z",
@@ -43591,7 +43589,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 5,
+      "resolvedAt": "2026-11-27T14:27:20.116Z",
+      "resolveReason": "live-data test green"
     },
     "express-retry-still-thin:potus-off-broadway-2026": {
       "status": "resolved",
@@ -49334,18 +49334,17 @@
     },
     "live-data-test:tests/unit/trace-excludes-data-dirs-live-data.test.mjs::real detect-route graph stays under the function size budget (when data is present)": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "Live-data test failing: real detect-route graph stays under the function size budget (when data is present) (tests/unit/trace-excludes-data-dirs-live-data.test.mjs)",
       "firstSeen": "2026-11-23T14:53:31.566Z",
       "incidentOpenedAt": "2026-11-23T14:53:31.566Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T04:11:30.717Z",
-      "lastNotifiedAt": "2026-11-26T04:15:04.352Z",
-      "lastSurfacedAt": "2026-11-26T04:15:04.352Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-11-27T14:27:19.939Z",
+      "lastNotifiedAt": "2026-11-27T14:27:19.939Z",
+      "lastSurfacedAt": "2026-11-27T14:27:19.939Z",
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-8344",
-      "silentRefires": 7
+      "linearIdentifier": "BRO-8344"
     },
     "land:land/bro-8150-fn-size-guard": {
       "status": "resolved",
@@ -49683,33 +49682,31 @@
     },
     "live-data-test:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "Live-data test failing: live build yields season and deep-dive prompts with shows (scripts/tests/research-prompts.test.mjs)",
       "firstSeen": "2026-11-23T18:37:33.367Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.367Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T04:11:29.998Z",
-      "lastNotifiedAt": "2026-11-26T14:22:56.858Z",
+      "lastSeen": "2026-11-27T14:26:18.369Z",
+      "lastNotifiedAt": "2026-11-27T14:26:18.369Z",
       "lastSurfacedAt": "2026-11-26T14:22:56.858Z",
-      "notifyCount": 4,
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-8379",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-8379"
     },
     "live-data-test:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "Live-data test failing: build refuses to splice without Form D files unless --no-formd (scripts/tests/research-prompts.test.mjs)",
       "firstSeen": "2026-11-23T18:37:33.463Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.463Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T04:11:30.526Z",
-      "lastNotifiedAt": "2026-11-26T14:23:04.118Z",
+      "lastSeen": "2026-11-27T14:27:18.997Z",
+      "lastNotifiedAt": "2026-11-27T14:27:18.997Z",
       "lastSurfacedAt": "2026-11-26T14:23:04.118Z",
-      "notifyCount": 4,
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-8380",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-8380"
     },
     "land:land/bro-8163-score-gate": {
       "status": "open",
@@ -50202,13 +50199,13 @@
       "firstSeen": "2026-11-24T07:48:45.483Z",
       "incidentOpenedAt": "2026-11-24T07:48:45.483Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T04:11:29.979Z",
+      "lastSeen": "2026-11-27T14:26:18.102Z",
       "lastNotifiedAt": "2026-11-26T19:58:26.683Z",
       "lastSurfacedAt": "2026-11-26T19:58:26.683Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-8386",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-t1-missing:the-afronauts-west-end-2026": {
       "status": "open",
@@ -51167,12 +51164,13 @@
       "firstSeen": "2026-11-25T22:02:00.291Z",
       "incidentOpenedAt": "2026-11-25T22:02:00.291Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T04:11:30.700Z",
+      "lastSeen": "2026-11-27T14:27:19.914Z",
       "lastNotifiedAt": "2026-11-27T04:11:30.700Z",
       "lastSurfacedAt": "2026-11-27T04:11:30.700Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-8116-session-spend": {
       "status": "resolved",
@@ -51640,6 +51638,20 @@
       "lastSeen": "2026-11-27T13:46:57.711Z",
       "lastNotifiedAt": "2026-11-27T13:46:57.711Z",
       "lastSurfacedAt": "2026-11-27T13:46:57.711Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/uk-regional-placement.test.mjs::the Pre-Broadway list and the UK list split every regional show exactly once": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: the Pre-Broadway list and the UK list split every regional show exactly once (tests/unit/uk-regional-placement.test.mjs)",
+      "firstSeen": "2026-11-27T14:27:20.068Z",
+      "incidentOpenedAt": "2026-11-27T14:27:20.068Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-27T14:27:20.068Z",
+      "lastNotifiedAt": "2026-11-27T14:27:20.068Z",
+      "lastSurfacedAt": "2026-11-27T14:27:20.068Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

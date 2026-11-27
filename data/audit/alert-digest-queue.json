@@ -1044,21 +1044,6 @@
     "queuedAt": "2026-11-26T02:40:38.163Z"
   },
   {
-    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
-    "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'merge: CurtainUp, Charles Wright (1) -> Charles Wright (38) [extra words on a 1-review page, shared outlet CurtainUp]'\n+ ]\n- []\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
-    "fields": [],
-    "queuedAt": "2026-11-26T04:15:04.278Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:trilogies-triathlon-off-broadway-2026",
     "title": "Auto-remediation gave up on trilogies-triathlon-off-broadway-2026",
     "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"trilogies-triathlon-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
@@ -1834,5 +1819,63 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-27T14:07:20.842Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs) — already tracked at BRO-7855",
+    "description": "This condition already has an open tracker (BRO-7855); not filing a duplicate. It will go quiet in the digest from here.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'merge: Joe Dziediamowicz (1) -> Joe Dziemianowicz (470) [typo, shared outlet New York Daily News]',\n+   'merge: CurtainUp, Charles Wright (1) -> Charles Wright (38) [extra words on a 1-review page, shared outlet CurtainUp]',\n+   'merge: Portia Yurun Li (1) -> Portia Yuran Li (1) [typo, shared outlet The Spy in the Stalls]'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-7855",
+    "fields": [],
+    "queuedAt": "2026-11-27T14:27:19.752Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/id-year-drift.test.mjs::real shows.json: zero un-reviewed hits",
+    "title": "Live-data test failing: real shows.json: zero un-reviewed hits (tests/unit/id-year-drift.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real shows.json: zero un-reviewed hits\" in tests/unit/id-year-drift.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'life-and-times-of-michael-k-regional-2027'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/id-year-drift.test.mjs::real shows.json: zero un-reviewed hits",
+    "fields": [],
+    "queuedAt": "2026-11-27T14:27:19.776Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/trace-excludes-data-dirs-live-data.test.mjs::real detect-route graph stays under the function size budget (when data is present)",
+    "title": "Live-data test failing: real detect-route graph stays under the function size budget (when data is present) (tests/unit/trace-excludes-data-dirs-live-data.test.mjs) (still open — BRO-8344)",
+    "description": "Still firing after 5 notifications since it was filed. Tracked at BRO-8344.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"real detect-route graph stays under the function size budget (when data is present)\" in tests/unit/trace-excludes-data-dirs-live-data.test.mjs is red against the live corpus.\n\ndetect route traces 658MB of repo files (budget 200MB); a data/ tree is leaking in",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8344",
+    "fields": [],
+    "queuedAt": "2026-11-27T14:27:20.047Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/uk-regional-placement.test.mjs::the Pre-Broadway list and the UK list split every regional show exactly once",
+    "title": "Live-data test failing: the Pre-Broadway list and the UK list split every regional show exactly once (tests/unit/uk-regional-placement.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the Pre-Broadway list and the UK list split every regional show exactly once\" in tests/unit/uk-regional-placement.test.mjs is red against the live corpus.\n\nExpected values to be strictly equal:\n\n377 !== 380\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/uk-regional-placement.test.mjs::the Pre-Broadway list and the UK list split every regional show exactly once",
+    "fields": [],
+    "queuedAt": "2026-11-27T14:27:20.069Z"
   }
 ]
