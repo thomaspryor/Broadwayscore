@@ -33,7 +33,7 @@ const DEFAULTS = Object.freeze({
   dailyMax: 3,
   capUsd: 50,
   // Plan cost table (docs/bro-7167-opening-night-test-bench.md): $1-3 scraping + about $1 scoring per night.
-  estRunUsd: 4,
+  estRunUsd: 5,
   gapH: 24,
   windowMin: 120,
   setupMin: 15,
@@ -44,7 +44,7 @@ const DEFAULTS = Object.freeze({
 // overestimate of the plan's 3 cents because scoring cost is not logged per call.
 const RATES = Object.freeze({ brightdataPerCall: 0.0015, browserbasePerRow: 0.01, scoringPerReview: 0.05 });
 
-const LEDGER = path.join(__dirname, '..', 'data', 'audit', 'test-bench', 'redo-ledger.jsonl');
+const LEDGER = process.env.TEST_BENCH_REDO_LEDGER || path.join(__dirname, '..', 'data', 'audit', 'test-bench', 'redo-ledger.jsonl');
 
 function readJsonl(file) {
   if (!fs.existsSync(file)) return [];
@@ -74,8 +74,15 @@ function openingInstants(shows, { markets = DEFAULTS.markets, embargoAt = null }
 
 /** One row per run: a later row with the same `id` (record after claim) replaces the earlier one. */
 function latestRows(rows) {
+  // A settled row replaces its claim whatever the line order, so a reordered merge never puts a reservation back.
   const byId = new Map(); let anon = 0;
-  for (const r of rows || []) if (r) byId.set(r.id || `anon-${anon++}`, r);
+  for (const r of rows || []) {
+    if (!r) continue;
+    const id = r.id || `anon-${anon++}`;
+    const prev = byId.get(id);
+    if (prev && prev.status !== 'started' && r.status === 'started') continue;
+    byId.set(id, r);
+  }
   return [...byId.values()];
 }
 
@@ -153,12 +160,16 @@ function main(argv) {
     const atMs = Date.now();
     const c = paceCheck({ rows, openings: openingInstants(loadShows(repoDir), { markets }), atMs, windowMin });
     printReading(c.reading);
-    if (!c.ok) { console.log('REFUSED:'); for (const r of c.reasons) console.log(`  - ${r}`); return 3; }
+    // Serial only (plan Phase 2): an open claim means a run is in flight or was never recorded.
+    const open = latestRows(rows).filter((r) => r.status === 'started');
+    if (open.length) c.reasons.push(`claim ${open[0].id} is still open: record it (or record it --status=failed) before starting another run`);
+    if (c.reasons.length) { console.log('REFUSED:'); for (const r of c.reasons) console.log(`  - ${r}`); return 3; }
     const id = `${arg('show')}@${new Date(atMs).toISOString()}`;
     const row = { id, show: arg('show'), night: arg('night'), startedAt: new Date(atMs).toISOString(), windowMin, status: 'started', spendUsd: { total: DEFAULTS.estRunUsd, basis: 'claim: per-run estimate until recorded' } };
     fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
     fs.appendFileSync(LEDGER, `${JSON.stringify(row)}\n`);
     console.log(`CLAIMED ${id}`);
+    console.log(`dispatch with window_min=${windowMin} (the CI default is 300; a longer run leaves the checked interval)`);
     return 0;
   }
   if (cmd === 'check' || cmd === 'next') {
@@ -188,6 +199,11 @@ function main(argv) {
     if (!Number.isFinite(startMs) || !Number.isFinite(endMs)) { console.error('bad --started/--ended'); return 2; }
     const spendRows = readJsonl(arg('spend-ledger') || path.join(repoDir, 'data', 'audit', 'scraper-spend-ledger.jsonl'));
     const spendUsd = redoSpend(spendRows, { showId: arg('show'), startMs, endMs, scored: Number(arg('scored')) || 0 });
+    // No spend rows for the run (its CI ledger push failed, or this checkout is stale): keep the reservation, never $0.
+    if (Object.values(spendUsd.calls).every((n) => n === 0)) {
+      spendUsd.total = Math.max(spendUsd.total, DEFAULTS.estRunUsd);
+      spendUsd.basis = `no scraper-spend rows for this run: kept at the $${DEFAULTS.estRunUsd} per-run estimate; ${spendUsd.basis}`;
+    }
     const prior = latestRows(rows).find((r) => r.id && r.id === arg('id'));
     const row = { id: arg('id') || `${arg('show')}@${new Date(startMs).toISOString()}`, show: arg('show'), night: arg('night'), runId: arg('run-id'), startedAt: new Date(startMs).toISOString(), endedAt: new Date(endMs).toISOString(), status: arg('status') || 'graded', scored: Number(arg('scored')) || 0, grade: arg('grade') || null, spendUsd, recordedAt: new Date().toISOString() };
     fs.mkdirSync(path.dirname(LEDGER), { recursive: true });
