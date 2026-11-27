@@ -1,26 +1,37 @@
 {
-  "updatedAt": "2026-11-27T20:33:06.693Z",
-  "processed": 73,
-  "failed": 41,
-  "successRate": "64.0%",
+  "updatedAt": "2026-11-27T20:34:11.372Z",
+  "processed": 91,
+  "failed": 59,
+  "successRate": "60.7%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 58,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 14,
     "scrapingbee": 0,
-    "brightdata": 8,
+    "brightdata": 6,
     "archiveToday": 2,
-    "archive": 11
+    "archive": 24
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-11-27T20:15:16.869Z",
       "event": "bb-session",
       "session": "afe5d899",
       "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-11-27T20:21:24.694Z",
+      "event": "bb-session",
+      "session": "8d4d9e1c",
+      "url": "https://www.nytimes.com/theater/debra-winger-arliss-howard-gin-game"
+    },
+    {
+      "t": "2026-11-27T20:21:25.495Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
