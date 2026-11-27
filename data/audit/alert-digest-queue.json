@@ -1954,5 +1954,36 @@
     "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
     "fields": [],
     "queuedAt": "2026-11-27T16:45:18.815Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-8274",
+    "title": "Landing blocked: lint-workflows red on land/codex-bro-8274",
+    "description": "land.yml did not land land/codex-bro-8274: the lint-workflows gate went red at 8f05230ca2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46046635455",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-8274"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "8f05230ca2823a662dc8a07c40d638f05b541a12"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46046635455"
+      }
+    ],
+    "queuedAt": "2026-11-27T18:24:27.589Z"
   }
 ]
