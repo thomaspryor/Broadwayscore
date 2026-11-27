@@ -1870,7 +1870,9 @@ function pageBylineRefusal(filepath, existing, ctx) {
   // BRO-4502: a file stored under a junk byline ("Read more articles by X",
   // "Sam - Admin") is as unnamed as an --unknown file, and gets the same
   // guarded rename. A real stored name is never replaced.
-  const junkNamed = isJunkCriticName(existing.criticName);
+  // BRO-5572: placeholderNamed is the caller's verified claim that the stored name is the outlet's
+  // own name ("All That Dazzles" at All That Dazzles), which names nobody, like a junk byline.
+  const junkNamed = isJunkCriticName(existing.criticName) || ctx.placeholderNamed === true;
   if (!junkNamed && !/--unknown\.json$/.test(path.basename(filepath))) return 'not-unknown-file';
   if (!junkNamed && existing.criticName && !/^unknown$/i.test(String(existing.criticName).trim())) return 'already-named';
   if (isJunkCriticName(criticName)) return 'implausible-name';
@@ -1918,8 +1920,8 @@ function pageBylineRefusal(filepath, existing, ctx) {
  * hold the file (backfill-unknown-critics.js) rather than an incoming write.
  * @returns {{ applied: boolean, reason?: string, newPath?: string }}
  */
-function applyPageByline(filepath, existing, { showId, criticName, source, pageText = null, dryRun = false }) {
-  const reason = pageBylineRefusal(filepath, existing, { showId, criticName, pageText });
+function applyPageByline(filepath, existing, { showId, criticName, source, pageText = null, dryRun = false, placeholderNamed = false }) {
+  const reason = pageBylineRefusal(filepath, existing, { showId, criticName, pageText, placeholderNamed });
   if (reason) return { applied: false, reason };
   const named = path.join(path.dirname(filepath), generateReviewFilename(normalizeOutlet(existing.outletId || path.basename(filepath).split('--')[0]), criticName));
   if (dryRun) return { applied: true, newPath: named };

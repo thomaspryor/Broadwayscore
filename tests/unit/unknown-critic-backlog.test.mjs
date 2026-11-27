@@ -17,16 +17,17 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 
 const { criticProfileKey } = require('../../scripts/lib/url-slug.js');
-const { extractByline, extractAllThatDazzlesPageByline } = require('../../scripts/lib/byline-extraction.js');
+const { extractByline, extractAllThatDazzlesPageByline, extractArtsdeskPageByline } = require('../../scripts/lib/byline-extraction.js');
 const { readPageByline } = require('../../scripts/lib/page-byline.js');
 const { decideByline, isOutletNamePlaceholder } = require('../../scripts/fix-printed-bylines.js');
-const { isOutletRegistryName } = require('../../scripts/lib/review-file-writer.js');
+const { isOutletRegistryName, pageBylineRefusal } = require('../../scripts/lib/review-file-writer.js');
 const { shouldFillDefaultCritic } = require('../../scripts/lib/critic-fill-rules.js');
 
 describe('live pages hide Unknown bylines', () => {
@@ -111,4 +112,30 @@ describe('Aleks Sierz: single-author site and Arts Desk critic', () => {
 test('page-override refuses a non-person page credit', () => {
   const data = { outlet: 'All That Dazzles (UK)', url: 'u', fullText: 'x', criticName: 'All That Dazzles' };
   assert.equal(decideByline('all-that-dazzles-uk', data, atdPage('Review by All That Dazzles')), null);
+});
+
+test('ATD: no closing </article> -> names nobody (body end unknown)', () => {
+  assert.equal(extractAllThatDazzlesPageByline(atdPage('Review by Daz Gale').replace('</article>', '')), null);
+});
+
+test('Arts Desk page reader reads only the class="author" byline, never JSON-LD', () => {
+  const ld = '<script type="application/ld+json">{"@type":"Article","author":{"@type":"Person","name":"Some Editor"}}</script>';
+  assert.equal(extractArtsdeskPageByline(`${ld}<div class="field author">by&nbsp;<a href="/user/1">Rachel Halliburton</a></div>`), 'Rachel Halliburton');
+  assert.equal(extractArtsdeskPageByline(`${ld}<p>No byline here</p>`), null);
+});
+
+test('page-override runs the Unknown-fill guards (placeholderNamed), and only with that claim', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5572-'));
+  const show = path.join(dir, 'some-show');
+  fs.mkdirSync(show);
+  const f = path.join(show, 'all-that-dazzles-uk--all-that-dazzles.json');
+  const rec = { outletId: 'all-that-dazzles-uk', outlet: 'All That Dazzles (UK)', criticName: 'All That Dazzles', url: 'https://www.allthatdazzles.co.uk/post/review-x' };
+  fs.writeFileSync(f, JSON.stringify(rec));
+  try {
+    assert.equal(pageBylineRefusal(f, rec, { showId: 'some-show', criticName: 'Daz Gale' }), 'not-unknown-file');
+    assert.equal(pageBylineRefusal(f, rec, { showId: 'some-show', criticName: 'Daz Gale', placeholderNamed: true }), null);
+    // A sibling already holding this URL still refuses, as for an --unknown file.
+    fs.writeFileSync(path.join(show, 'all-that-dazzles-uk--daz-gale-2.json'), JSON.stringify({ ...rec, criticName: 'Someone' }));
+    assert.equal(pageBylineRefusal(f, rec, { showId: 'some-show', criticName: 'Daz Gale', placeholderNamed: true }), 'sibling-same-url');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

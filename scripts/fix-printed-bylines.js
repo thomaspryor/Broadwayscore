@@ -33,7 +33,7 @@ const { extractBylineFromText, printedBylineOverride } = require('./lib/byline-f
 const { applyPageByline } = require('./lib/review-file-writer');
 const { safeRenameReview, safeWriteReview } = require('./lib/review-write-guard');
 const { generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
-const { isJunkCriticName, isPlausiblePersonName } = require('./lib/byline-recovery');
+const { isJunkCriticName } = require('./lib/byline-recovery');
 const { isPlaceholderByline } = require('./lib/placeholder-byline');
 
 const USAGE = `fix-printed-bylines.js: name review files from the credit the article prints.
@@ -47,15 +47,15 @@ Usage:
 // extractor that reads its printed credit. The page's generic author is a house account there
 // (Musical Theatre Review: "Admin", and "Angela Thomas" on press-release posts; Spy in the Stalls:
 // the site name), so the generic extractor chain is deliberately not used.
-const { extractSignOffBeforeShare, extractReviewedByLine, extractAllThatDazzlesPageByline, extractByline } = require('./lib/byline-extraction');
+const { extractSignOffBeforeShare, extractReviewedByLine, extractAllThatDazzlesPageByline, extractArtsdeskPageByline } = require('./lib/byline-extraction');
 const PAGE_EXTRACTORS = {
   'musical-theatre-review': extractSignOffBeforeShare,
   'the-spy-in-the-stalls': extractReviewedByLine,
   // Text outlets whose stored text often lacks the printed credit (empty or a paywall/donation
   // banner), BRO-5572: All That Dazzles' bold "Review by X" body paragraph (JSON-LD names the
-  // site), and The Arts Desk's class="author" byline (the scoped artsdesk rule in extractByline).
+  // site), and The Arts Desk's class="author" byline only (never the generic chain's JSON-LD or sidebars).
   'all-that-dazzles-uk': extractAllThatDazzlesPageByline,
-  'artsdesk': (html) => extractByline(html, { outletId: 'artsdesk' }),
+  'artsdesk': extractArtsdeskPageByline,
 };
 const PAGE_ONLY_OUTLETS = new Set(['musical-theatre-review', 'the-spy-in-the-stalls']);
 const TEXT_OUTLETS = new Set(['stage-raw', 'the-show-report', 'south-london', 'theatreandtonic', 'all-that-dazzles-uk', 'talkinbroadway', 'nytg', 'timeout', 'timeout-london', 'artsdesk']);
@@ -118,9 +118,8 @@ function decideByline(outletId, data, page) {
   // override), never a stored real name.
   if (isOutletNamePlaceholder(outletId, data)) {
     const name = page && PAGE_EXTRACTORS[outletId] ? PAGE_EXTRACTORS[outletId](page) : null;
-    // No applyPageByline here (it only takes --unknown files), so its person-name checks run inline.
-    const ok = name && !isUnnamed(name) && isPlausiblePersonName(name) && !isOutletNamePlaceholder(outletId, { ...data, criticName: name });
-    return ok ? { kind: 'page-override', name } : null;
+    // Applied through applyPageByline (placeholderNamed), so every Unknown-fill guard runs.
+    return name && !isUnnamed(name) && !isOutletNamePlaceholder(outletId, { ...data, criticName: name }) ? { kind: 'page-override', name } : null;
   }
   if (!isUnnamed(stored)) return null;
   if (override) return { kind: 'fill', name: override };
@@ -166,11 +165,11 @@ async function main() {
       }
       if (!decision) { counts.noop++; continue; }
       let result;
-      if (decision.kind === 'override' || decision.kind === 'page-override') {
+      if (decision.kind === 'override') {
         const dst = path.join(dir, generateReviewFilename(outletId, decision.name));
         if (!apply) result = { applied: true, newPath: dst };
         else {
-          const updated = { ...data, criticName: decision.name, criticEnrichedFrom: decision.kind === 'page-override' ? 'printed-byline:page-override' : 'printed-byline:text-override' };
+          const updated = { ...data, criticName: decision.name, criticEnrichedFrom: 'printed-byline:text-override' };
           if (path.resolve(dst) === path.resolve(filePath)) {
             // The slug already names the critic; only the stored criticName is stale.
             const w = safeWriteReview(filePath, updated);
@@ -181,7 +180,7 @@ async function main() {
           }
         }
       } else {
-        result = applyPageByline(filePath, data, { showId: show, criticName: decision.name, source: decision.kind === 'page' ? 'printed-page' : 'printed-text', dryRun: !apply });
+        result = applyPageByline(filePath, data, { showId: show, criticName: decision.name, source: decision.kind === 'fill' ? 'printed-text' : 'printed-page', dryRun: !apply, placeholderNamed: decision.kind === 'page-override' });
       }
       if (result.applied) {
         counts[decision.kind]++;

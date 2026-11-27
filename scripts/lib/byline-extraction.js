@@ -165,7 +165,7 @@ function firstInlineByline(html) {
  * text drops that paragraph (BRO-5572: 195 files filed as "All That Dazzles", 49 as Unknown).
  * Read only inside the post body (data-hook="post-description" up to </article>), so a
  * related-post teaser elsewhere on the page can never supply the name, and only from the body's
- * first 600 characters, where the credit sits. The name check is the text reader's
+ * first 400 characters (the text reader's window), where the credit sits. The name check is the text reader's
  * (extractAllThatDazzlesByline), so page and text agree on what counts as a person.
  */
 function extractAllThatDazzlesPageByline(html) {
@@ -174,15 +174,27 @@ function extractAllThatDazzlesPageByline(html) {
   const start = s.indexOf('data-hook="post-description"');
   if (start < 0) return null;
   const end = s.indexOf('</article>', start);
-  const body = s.slice(start, end < 0 ? undefined : end)
+  // No closing tag: the body's end is unknown, so a related-post teaser could follow. Name nobody.
+  if (end < 0) return null;
+  const body = s.slice(start, end)
     .replace(/^[^>]*>/, '')
     .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ')
     .replace(/<\/(?:p|div|h[1-6]|li)>|<br\s*\/?>/gi, '\n')
     .replace(/<[^>]+>/g, '')
     .replace(/&nbsp;|&#160;|&#xa0;/gi, ' ');
-  const flat = decodeHtmlEntities(body).replace(/[ \t]+/g, ' ').replace(/\n\s*/g, '\n').trimStart().slice(0, 600);
+  const flat = decodeHtmlEntities(body).replace(/[ \t]+/g, ' ').replace(/\n\s*/g, '\n').trimStart().slice(0, 400);
   const hit = extractBylineFromText('all-that-dazzles-uk', flat);
   return hit && hit.known ? hit.name : null;
+}
+
+// The Arts Desk byline: a class="author" wrapper holding "by&nbsp;<a href=/user/N>Name</a>"
+// (BRO-6716). One rule, shared by extractByline's chain and fix-printed-bylines --fetch.
+const ARTSDESK_AUTHOR_RE = /<(?:span|div|p)[^>]+class=["'](?:[^"']*\s)?author(?:\s[^"']*)?["'][^>]*>\s*(?:by(?:&nbsp;|\s|\u00a0)+)?<a[^>]*>([^<]+)<\/a>/i;
+function extractArtsdeskPageByline(html) {
+  const m = html ? ARTSDESK_AUTHOR_RE.exec(String(html)) : null;
+  if (!m) return null;
+  const name = stripBylineSuffixes(decodeHtmlEntities(m[1]).replace(/\s+/g, ' ').trim());
+  return name && looksLikeProseName(name) && !isCmsAccountName(name) ? name : null;
 }
 
 function extractByline(html, { outletId, text } = {}) {
@@ -215,7 +227,7 @@ function extractByline(html, { outletId, text } = {}) {
     // A class="author" wrapper holding "by&nbsp;<a href=/user/N>Name</a>" (The Arts Desk,
     // BRO-6716). Before INLINE_BY_RE, which read "designed </a>by Hildegard Bechtler" in the body.
     // Arts Desk only: elsewhere a bare class="author" link can be a teaser list or a comment.
-    outletId === 'artsdesk' && /<(?:span|div|p)[^>]+class=["'](?:[^"']*\s)?author(?:\s[^"']*)?["'][^>]*>\s*(?:by(?:&nbsp;|\s|\u00a0)+)?<a[^>]*>([^<]+)<\/a>/i,
+    outletId === 'artsdesk' && ARTSDESK_AUTHOR_RE,
     // Condé Nast (verso) bylines: <span>By </span><a class="byline__name-link">
     // Name</a>. Its meta author is the publisher (BRO-3414).
     /<a[^>]+class=["'][^"']*byline__name-link[^"']*["'][^>]*>([^<]+)<\/a>/i,
@@ -392,5 +404,5 @@ function isPublicationName(name, registry) {
 module.exports = {
   isNotACriticName, isPublicationName,
   extractReviewerLine, extractReviewedByLine, extractSignOffBeforeShare, extractByline, extractJsonLdAuthor,
-  extractAllThatDazzlesPageByline,
+  extractAllThatDazzlesPageByline, extractArtsdeskPageByline,
   extractTheaterManiaAuthorTag, detectBylineConflict, decodeEntities: (s) => decodeHtmlEntities(s || '') };
