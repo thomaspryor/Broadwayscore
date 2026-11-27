@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T22:43:36.795Z",
+  "generatedAt": "2026-11-27T02:36:31.009Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -39,11 +39,6 @@
       "openingDate": "2026-11-23"
     },
     {
-      "id": "bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026",
-      "title": "Bigfoot Ripped My Dog In Half I Saw It",
-      "openingDate": "2026-11-20"
-    },
-    {
       "id": "fourteen-again-off-west-end-2026",
       "title": "Fourteen Again",
       "openingDate": "2026-11-24"
@@ -64,19 +59,9 @@
       "openingDate": "2026-11-22"
     },
     {
-      "id": "elektra-off-broadway-2026",
-      "title": "Elektra",
-      "openingDate": "2026-11-20"
-    },
-    {
       "id": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
       "title": "The Curious Incident of the Dog in the Night-Time",
       "openingDate": "2026-11-25"
-    },
-    {
-      "id": "the-ugly-one-off-west-end-2026",
-      "title": "The Ugly One",
-      "openingDate": "2026-11-20"
     },
     {
       "id": "in-my-own-little-world-off-west-end-2026",
@@ -119,24 +104,9 @@
       "openingDate": "2026-11-22"
     },
     {
-      "id": "all-the-world-regional-2026",
-      "title": "All the World",
-      "openingDate": "2026-11-20"
-    },
-    {
-      "id": "constellations-regional-2026",
-      "title": "Constellations",
-      "openingDate": "2026-11-20"
-    },
-    {
       "id": "hanukkah-spectacular-regional-2026",
       "title": "Hanukkah Spectacular",
       "openingDate": "2026-11-23"
-    },
-    {
-      "id": "purpose-geffen-regional-2026",
-      "title": "Purpose",
-      "openingDate": "2026-11-20"
     },
     {
       "id": "home-im-darling-regional-2026",
@@ -159,22 +129,9 @@
       "openingDate": "2026-11-25"
     }
   ],
-  "skipped": [
-    {
-      "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "joris-lacoste-nexus-de-ladoration-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    }
-  ],
+  "skipped": [],
   "feedsChecked": 87,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -194,13 +151,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 908,
+  "itemsScanned": 915,
   "matchedGaps": 2,
   "possibleGaps": 5,
   "gaps": [
@@ -253,19 +206,19 @@
       "showId": "attention-off-west-end-2026",
       "title": "Attention",
       "level": "possible",
+      "outletId": "adventuresintheatreland",
+      "url": "https://www.adventuresintheatreland.com/post/pinocchio-theatr-clwyd",
+      "headline": "Pinocchio | Theatr Clwyd",
+      "publishDate": "2026-11-26"
+    },
+    {
+      "showId": "attention-off-west-end-2026",
+      "title": "Attention",
+      "level": "possible",
       "outletId": "all-that-dazzles-uk",
       "url": "https://www.allthatdazzles.co.uk/post/review-pink-rabbit-soho-theatre",
       "headline": "Review: Pink Rabbit (Soho Theatre)",
       "publishDate": "2026-11-26"
-    },
-    {
-      "showId": "purpose-geffen-regional-2026",
-      "title": "Purpose",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/alicias-amazing-adventure-to-find-the-first-black-britons-the-grove-hall-south-kirkby/",
-      "headline": "Alicia’s Amazing Adventure to Find the First Black Britons &#8211; The Grove Hall, South Kirkby",
-      "publishDate": "2026-11-22"
     }
   ]
 }
