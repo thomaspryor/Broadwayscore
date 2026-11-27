@@ -104,6 +104,10 @@ const LANE_FEEDS = [
   // The Guide's headlines are the show title alone ("Other Desert Cities"), as Bob's are: titledReviews.
   { url: 'https://recliningstandards.com/feed/', outletId: 'reclining-standards', name: 'Reclining Standards' },
   { url: 'https://www.showmosexualsguide.com/feed', outletId: 'showmosexualsguide', name: "The Intelligent Showmosexual's Guide", titledReviews: true },
+  // BRO-8396: It's a Wonderful Life: A Live Radio Play (opened 2026-11-23) had Stage Buddy's review on 11-24 with no lane source.
+  // The listing poller's feed (outlet-listing-poller.js) answers 200 through fetchPage directOnly with the review on top
+  // (probed 2026-11-27). Reviews sit under /theater/theater-review/ (the review signal); features under /theater-feature/.
+  { url: 'https://stagebuddy.com/feed', outletId: 'stagebuddy', name: 'Stage Buddy' },
 ];
 
 // On-time outlets the lane cannot poll for free, and what finds them instead. A gap needs a reason a reader can check.

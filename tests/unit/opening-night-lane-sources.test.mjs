@@ -296,3 +296,25 @@ test('live history: no outlet the registry calls defunct published a review in t
   }
   assert.deepEqual([...live].sort(), [], 'still publishing: set accessModel to free/metered/paywalled in data/outlet-registry.json');
 });
+
+// BRO-8396: Stage Buddy reviewed It's A Wonderful Life: A Live Radio Play (opened 2026-11-23) on 11-24 with no lane source.
+// Its site feed is now a lane feed; the items below are the feed's own shape (2026-11-27): reviews under /theater-review/,
+// headlines the show title alone, features under /theater-feature/.
+const SB_FEED_URL = 'https://stagebuddy.com/feed';
+const SB_SHOW = { id: 'its-a-wonderful-life-a-live-radio-play-2026', title: 'It’s A Wonderful Life: A Live Radio Play', category: 'broadway' };
+const SB_FEED = `<?xml version="1.0"?><rss version="2.0"><channel><title>StageBuddy.com</title><link>https://stagebuddy.com</link>
+<item><title>It&#8217;s A Wonderful Life: A Live Radio Play</title><link>https://stagebuddy.com/theater/theater-review/wonderful-life-live-radio-play</link><pubDate>Mon, 24 Nov 2026 15:00:00 +0000</pubDate></item>
+<item><title>A Few Good Men</title><link>https://stagebuddy.com/theater/theater-review/a-few-good-men</link><pubDate>Fri, 14 Nov 2026 15:00:00 +0000</pubDate></item>
+<item><title>Broadway Eats: Timothy Matthew Flores</title><link>https://stagebuddy.com/theater/theater-feature/broadway-eats-timothy-matthew-flores</link><pubDate>Mon, 10 Nov 2026 15:00:00 +0000</pubDate></item>
+</channel></rss>`;
+
+test('BRO-8396: a Broadway night reads the Stage Buddy feed and finds its review of the show', async () => {
+  const feed = ls.laneFeeds(SB_SHOW).find((f) => f.url === SB_FEED_URL);
+  assert.ok(feed && feed.outletId === 'stagebuddy' && feed.directOnly, 'Stage Buddy feed is a direct lane feed on Broadway nights');
+  assert.ok(!ls.laneFeeds({ ...SB_SHOW, category: 'west-end', market: 'west-end' }).some((f) => f.url === SB_FEED_URL), 'not on a West End night');
+  const out = await d.rssAdapter({ feeds: [feed] })
+    .discover({ show: SB_SHOW, fetchText: async (u) => { if (u !== SB_FEED_URL) throw new Error('404'); return SB_FEED; } });
+  assert.deepEqual(out.filter((c) => c.source === 'outlet-index').map((c) => [c.url, c.outletId]),
+    [['https://stagebuddy.com/theater/theater-review/wonderful-life-live-radio-play', 'stagebuddy']]);
+  assert.ok(d.hasReviewSignal(out[0].url, out[0].title), 'the /theater-review/ path is the review signal');
+});
