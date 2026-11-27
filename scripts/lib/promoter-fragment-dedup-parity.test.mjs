@@ -22,8 +22,11 @@ const EXEMPT = {
   'create-tour-entries.js': 'writes tour rows that are declared pairs of their parent (tourOf), checked for ticketing identity only',
 };
 
-const runsFragmentCheck = (src) => src.split('\n').some((line) =>
-  /newRowFragmentFindings\s*\(/.test(line) || (/newRowDuplicate\s*\(/.test(line) && !/ticketOnly/.test(line)));
+// Reads each newRowDuplicate call as a whole (to the end of its statement), so a call
+// split across lines with ticketOnly on a later line is still seen as ticketOnly.
+const callText = (src, from) => { const end = src.indexOf(';', from); return src.slice(from, end < 0 ? from + 400 : end); };
+const runsFragmentCheck = (src) => /newRowFragmentFindings\s*\(/.test(src)
+  || [...src.matchAll(/newRowDuplicate\s*\(/g)].some((m) => !/ticketOnly/.test(callText(src, m.index)));
 
 test('guarded promoters that dedup with duplicateOfCandidate also run the fragment check (BRO-8407)', () => {
   const offenders = [];
@@ -43,5 +46,6 @@ test('guarded promoters that dedup with duplicateOfCandidate also run the fragme
 test('the guard rejects a ticketOnly-only newRowDuplicate call (the hole the ship-check found)', () => {
   assert.equal(runsFragmentCheck("const d = newRowDuplicate(s, e, [e.tourOf], { ticketOnly: true });"), false);
   assert.equal(runsFragmentCheck("const d = newRowDuplicate(s, e, []);"), true);
+  assert.equal(runsFragmentCheck("const d = newRowDuplicate(\n  s, e, [e.tourOf],\n  { ticketOnly: true },\n);"), false, 'a call split across lines');
   assert.equal(runsFragmentCheck("const f = newRowFragmentFindings(pool, [...pool, entry]);"), true);
 });
