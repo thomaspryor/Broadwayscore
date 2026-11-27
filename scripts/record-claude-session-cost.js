@@ -53,13 +53,16 @@ function main() {
     // BRO-8116: a Mac wrap-up has no cost row, but its reviewer rows still need to reach the tracked ledger.
     try {
       if (process.env.GITHUB_ACTIONS || process.env.GEMINI_USAGE_LEDGER_PATH) { console.log('fold disabled here (CI or GEMINI_USAGE_LEDGER_PATH set): nothing folded.'); return 0; }
-      const n = require('./lib/gemini-usage-ledger.js').foldSessionRows();
-      console.log(n ? `${SESSION_USAGE_REL}: ${n} session LLM row(s) added; commit it (BRO-8116).` : `${SESSION_USAGE_REL}: nothing new to fold.`);
+      // --to=<file>: fold into another checkout's tracked ledger (scripts/push-session-llm-usage.sh, BRO-8356).
+      const to = typeof args.to === 'string' && args.to ? path.resolve(args.to) : undefined;
+      const n = require('./lib/gemini-usage-ledger.js').foldSessionRows(to ? { to } : {});
+      const rel = to || SESSION_USAGE_REL;
+      console.log(n ? `${rel}: ${n} session LLM row(s) added; commit it (BRO-8116).` : `${rel}: nothing new to fold.`);
       return 0;
     } catch (e) { console.error(`session LLM rows NOT folded: ${e.message}`); return 1; }
   }
   if (!args['from-json']) {
-    console.error('Usage: record-claude-session-cost.js --fold-only | --list [--hours=24] | --from-json=<file> [--date=YYYY-MM-DD] [--hours=24] [--cards=BRO-N,...] [--dry-run]');
+    console.error('Usage: record-claude-session-cost.js --fold-only [--to=<ledger>] | --list [--hours=24] | --from-json=<file> [--date=YYYY-MM-DD] [--hours=24] [--cards=BRO-N,...] [--dry-run]');
     return 2;
   }
   const date = args.date || new Date().toISOString().slice(0, 10);

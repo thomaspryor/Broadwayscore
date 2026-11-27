@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Land this Mac's session LLM (reviewer) spend rows on main every 6h (BRO-8356).
+
+         Mac sessions meter reviewer calls into ~/.claude/state/llm-session-usage.jsonl;
+         CI's session-spend alarm and the BRO-8160 recheck only read the tracked copy on
+         main, and nothing folded the home file there after 2026-11-24.
+         scripts/push-session-llm-usage.sh folds it into a throwaway worktree at origin/main
+         and pushes the one ledger file (data-only, push-with-retry.sh). No-op when nothing is new.
+
+         Install:  cp scripts/launchd/com.broadwayscore.session-llm-usage-push.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.session-llm-usage-push.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.session-llm-usage-push
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.session-llm-usage-push -->
+    <key>Label</key>
+    <string>com.broadwayscore.session-llm-usage-push</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/tompryor/Broadwayscore/scripts/push-session-llm-usage.sh</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>21600</integer>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/tmp/session-llm-usage-push-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/session-llm-usage-push-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>
