@@ -1089,3 +1089,32 @@ test('trackedDirty: uncommitted code counts; a dirty data/ ledger does not (BRO-
   sh(wt, 'echo 2 >> scripts/lib/z.js');
   assert.deepEqual(trackedDirty(wt), [' M scripts/lib/z.js']);
 });
+
+test('nodeModulesCheck (BRO-7788): refuses unresolvable next/cheerio; fails open everywhere else', async () => {
+  const { nodeModulesCheck } = await import('../../scripts/lib/land-preflight.mjs');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'nm-check-'));
+  try {
+    const code = ['scripts/x.js'];
+    assert.equal(nodeModulesCheck({ root: dir, files: code, env: {} }).status, 'skip', 'no package.json');
+    fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ dependencies: { next: '1', cheerio: '1' } }));
+    const notFound = () => { const e = new Error('nf'); e.code = 'MODULE_NOT_FOUND'; throw e; };
+    const r = nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: notFound } });
+    assert.equal(r.status, 'fail');
+    assert.deepEqual(r.missing, ['next', 'cheerio']);
+    assert.match(r.message, /npm ci/);
+    assert.match(r.message, /NO-LAND-PREFLIGHT/);
+    assert.equal(nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: () => '/x' } }).status, 'clean');
+    assert.equal(nodeModulesCheck({ root: dir, files: ['data/shows.json'], env: {}, seams: { resolve: notFound } }).status, 'skip', 'data-only diff');
+    const adv = nodeModulesCheck({ root: dir, files: code, env: { LAND_NODE_MODULES_ADVISORY: '1' }, seams: { resolve: notFound } });
+    assert.equal(adv.status, 'clean');
+    assert.match(adv.warning, /advisory/);
+    assert.equal(nodeModulesCheck({ root: dir, files: code, env: { LAND_NODE_MODULES_DISABLE: '1' }, seams: { resolve: notFound } }).status, 'off');
+    const other = () => { const e = new Error('perm'); e.code = 'EACCES'; throw e; };
+    assert.equal(nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: other } }).status, 'skip', 'non-MODULE_NOT_FOUND errors fail open');
+    fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ dependencies: { left: '1' } }));
+    assert.equal(nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: notFound } }).status, 'skip', 'probe packages undeclared');
+    // real resolver, dangling-free tmp root without node_modules: declared + unresolvable -> fail
+    fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ dependencies: { 'bro-7788-no-such-pkg': '1' } }));
+    assert.equal(nodeModulesCheck({ root: dir, files: code, env: {} }).status, 'skip');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
