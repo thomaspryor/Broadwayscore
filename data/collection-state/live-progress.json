@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-27T00:25:49.300Z",
-  "processed": 74,
-  "failed": 55,
-  "successRate": "57.4%",
+  "updatedAt": "2026-11-27T00:57:04.741Z",
+  "processed": 147,
+  "failed": 92,
+  "successRate": "61.5%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 94,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 18,
+    "scrapingdog": 21,
     "scrapingbee": 0,
-    "brightdata": 3,
-    "archiveToday": 6,
-    "archive": 14
+    "brightdata": 7,
+    "archiveToday": 13,
+    "archive": 31
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-11-27T00:12:05.875Z",
@@ -43,6 +43,46 @@
       "t": "2026-11-27T00:13:21.876Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-11-27T00:48:20.721Z",
+      "event": "bb-session",
+      "session": "c06e566b",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-27T00:48:21.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-27T00:50:11.911Z",
+      "event": "bb-session",
+      "session": "cc490431",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-27T00:50:37.085Z",
+      "event": "bb-session",
+      "session": "03c8ab51",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-27T00:51:42.629Z",
+      "event": "bb-session",
+      "session": "4be67d28",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-27T00:54:54.453Z",
+      "event": "bb-session",
+      "session": "fe233e0d",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-27T00:54:55.190Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
