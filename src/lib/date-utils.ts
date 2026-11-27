@@ -1,4 +1,4 @@
-import { getUkRegionalVenueCity, getUsVenueCity } from './market-utils';
+import { getAuRegionalVenueCity, getUkRegionalVenueCity, getUsVenueCity } from './market-utils';
 
 /**
  * Today (YYYY-MM-DD) in the viewer's own device timezone — for personal data
@@ -245,6 +245,8 @@ export function getDurationSuffix(category?: string, venue?: string, hubProducti
   if (category === 'regional') {
     const ukCity = getUkRegionalVenueCity(category, venue);
     if (ukCity) return `in ${ukCity}`;
+    const auCity = getAuRegionalVenueCity(category, venue);
+    if (auCity) return `in ${auCity}`;
     // A city hub's own production (Steppenwolf, Arena Stage) is not a Broadway
     // tryout: say the town it plays in (BRO-6796).
     const usCity = hubProduction ? getUsVenueCity(venue) : undefined;

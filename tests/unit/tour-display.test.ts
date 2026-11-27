@@ -108,3 +108,7 @@ test('Australian Theatre browse page maps to the regional market', () => {
   assert.equal(getMarketFromPath('/browse/australian-theatre/'), 'regional');
   assert.equal(getMarketFromPath('/show/whispering-jack-regional-2026'), 'regional');
 });
+
+test('AU regional shows say where they play, not "in tryout" (BRO-8389)', () => {
+  assert.equal(getDurationSuffix('regional', 'Roslyn Packer Theatre, Sydney'), 'in Sydney');
+});
