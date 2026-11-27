@@ -50,6 +50,8 @@ const DEFAULT_MIN_TEXT_LENGTH = 50;
  * @returns {{ text: string, isExcerpt: boolean } | null} null when nothing is scoreable
  */
 function selectScorableText(data, options) {
+  // BRO-8264: do not pay the ensemble to reject an explicitly locked teaser.
+  if (require('./paywall-detector').isPaywalledText(data)) return null;
   const opts = options || {};
   const minTextLength = opts.minTextLength != null ? opts.minTextLength : DEFAULT_MIN_TEXT_LENGTH;
 
