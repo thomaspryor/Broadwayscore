@@ -36,6 +36,9 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { walkTranscript } from './transcript-scan.mjs';
 import { isMainModule } from './is-main-module.mjs';
+import { createRequire } from 'node:module';
+
+const { exitFlushed } = createRequire(import.meta.url)('./exit-flushed.js');
 
 export const MAX_FILES = 3;
 export const MAX_LINES = 40;
@@ -343,9 +346,9 @@ async function main(argv) {
 }
 
 if (isMainModule(import.meta.url)) {
-  main(process.argv.slice(2)).then((c) => process.exit(c), (e) => {
+  main(process.argv.slice(2)).then((c) => exitFlushed(c), (e) => {
     // Fail toward the normal gate: a crash in `check` exits 1 (lane closed); the Stop hook passes.
     console.error(`visual-small-fix: ${e?.message || e}`);
-    process.exit(process.argv[2] === 'check' ? 1 : 0);
+    exitFlushed(process.argv[2] === 'check' ? 1 : 0);
   });
 }
