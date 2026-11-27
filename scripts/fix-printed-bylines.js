@@ -11,7 +11,8 @@
  *     Talkin' Broadway "Theatre Review by", NYTG "Review by", Time Out "Written by <name><role>").
  *   - page (--fetch): the credit lives only in the page HTML, not in the stored text (The Spy in the
  *     Stalls "Reviewed on <date> / by <name>", Musical Theatre Review's sign-off before the share
- *     widget). The page is read once over plain HTTP and run through that outlet's one credit extractor.
+ *     widget; All That Dazzles and The Arts Desk when the stored text lost the credit). The page is
+ *     read once over plain HTTP and run through that outlet's one credit extractor.
  *
  * Fills go through applyPageByline (every guard of the Unknown-byline backfill: flagged/locked files,
  * credited creatives, sibling collisions). Overrides rename through safeRenameReview and are refused
@@ -32,7 +33,8 @@ const { extractBylineFromText, printedBylineOverride } = require('./lib/byline-f
 const { applyPageByline } = require('./lib/review-file-writer');
 const { safeRenameReview, safeWriteReview } = require('./lib/review-write-guard');
 const { generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
-const { isJunkCriticName } = require('./lib/byline-recovery');
+const { isJunkCriticName, isPlausiblePersonName } = require('./lib/byline-recovery');
+const { isPlaceholderByline } = require('./lib/placeholder-byline');
 
 const USAGE = `fix-printed-bylines.js: name review files from the credit the article prints.
 
@@ -45,16 +47,41 @@ Usage:
 // extractor that reads its printed credit. The page's generic author is a house account there
 // (Musical Theatre Review: "Admin", and "Angela Thomas" on press-release posts; Spy in the Stalls:
 // the site name), so the generic extractor chain is deliberately not used.
-const { extractSignOffBeforeShare, extractReviewedByLine } = require('./lib/byline-extraction');
+const { extractSignOffBeforeShare, extractReviewedByLine, extractAllThatDazzlesPageByline, extractByline } = require('./lib/byline-extraction');
 const PAGE_EXTRACTORS = {
   'musical-theatre-review': extractSignOffBeforeShare,
   'the-spy-in-the-stalls': extractReviewedByLine,
+  // Text outlets whose stored text often lacks the printed credit (empty or a paywall/donation
+  // banner), BRO-5572: All That Dazzles' bold "Review by X" body paragraph (JSON-LD names the
+  // site), and The Arts Desk's class="author" byline (the scoped artsdesk rule in extractByline).
+  'all-that-dazzles-uk': extractAllThatDazzlesPageByline,
+  'artsdesk': (html) => extractByline(html, { outletId: 'artsdesk' }),
 };
-const PAGE_ONLY_OUTLETS = new Set(Object.keys(PAGE_EXTRACTORS));
+const PAGE_ONLY_OUTLETS = new Set(['musical-theatre-review', 'the-spy-in-the-stalls']);
 const TEXT_OUTLETS = new Set(['stage-raw', 'the-show-report', 'south-london', 'theatreandtonic', 'all-that-dazzles-uk', 'talkinbroadway', 'nytg', 'timeout', 'timeout-london', 'artsdesk']);
 
 function isUnnamed(name) {
   return !name || /^(unknown|unnamed)$/i.test(String(name).trim()) || isJunkCriticName(name);
+}
+
+let _registry = null;
+function registryEntry(outletId) {
+  if (!_registry) {
+    try { _registry = require('../data/outlet-registry.json'); } catch { _registry = {}; }
+  }
+  const outlets = (_registry && (_registry.outlets || _registry)) || {};
+  return outlets[outletId] || null;
+}
+
+/**
+ * BRO-5572: a stored name that is the outlet's own name ("All That Dazzles" at All That Dazzles,
+ * 195 files) names nobody. A self-branded outlet's registry defaultCritic ("Aleks Sierz" at
+ * sierz.co.uk) is a real byline and never counts (placeholder-byline.js).
+ */
+function isOutletNamePlaceholder(outletId, data) {
+  if (!data || isUnnamed(data.criticName)) return false;
+  const entry = registryEntry(outletId) || {};
+  return isPlaceholderByline(data.criticName, data.outlet || entry.displayName, { defaultCritic: entry.defaultCritic });
 }
 
 function getPage(url, redirects = 3) {
@@ -77,7 +104,7 @@ function getPage(url, redirects = 3) {
 
 /**
  * Pure: the action for one review-text record, or null. `page` is the fetched HTML (page-only outlets).
- * @returns {{kind: 'override'|'fill'|'page', name: string} | null}
+ * @returns {{kind: 'override'|'page-override'|'fill'|'page', name: string} | null}
  */
 function decideByline(outletId, data, page) {
   if (!data || data.wrongProduction || data.duplicateOf || data.criticNameManual || data._locked === true) return null;
@@ -87,6 +114,14 @@ function decideByline(outletId, data, page) {
   // A stored real name that disagrees with the printed credit is replaced (override); an unnamed file
   // takes the credit through the guarded Unknown-byline path (fill).
   if (override && !isUnnamed(stored) && String(override).toLowerCase() !== String(stored || '').toLowerCase()) return { kind: 'override', name: override };
+  // The outlet's own name as the byline: the page's printed credit replaces it (a rename, like an
+  // override), never a stored real name.
+  if (isOutletNamePlaceholder(outletId, data)) {
+    const name = page && PAGE_EXTRACTORS[outletId] ? PAGE_EXTRACTORS[outletId](page) : null;
+    // No applyPageByline here (it only takes --unknown files), so its person-name checks run inline.
+    const ok = name && !isUnnamed(name) && isPlausiblePersonName(name) && !isOutletNamePlaceholder(outletId, { ...data, criticName: name });
+    return ok ? { kind: 'page-override', name } : null;
+  }
   if (!isUnnamed(stored)) return null;
   if (override) return { kind: 'fill', name: override };
   const hit = TEXT_OUTLETS.has(outletId) ? extractBylineFromText(outletId, text) : null;
@@ -108,7 +143,7 @@ async function main() {
   const outlets = arg('outlet') ? new Set(arg('outlet').split(',')) : null;
   const onlyShow = arg('show');
 
-  const counts = { override: 0, fill: 0, page: 0, refused: 0, noop: 0 };
+  const counts = { override: 0, 'page-override': 0, fill: 0, page: 0, refused: 0, noop: 0 };
   const refusals = {};
   const report = [];
   for (const show of fs.readdirSync(root)) {
@@ -124,18 +159,18 @@ async function main() {
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
       let decision = decideByline(outletId, data, null);
-      if (!decision && fetchPages && PAGE_ONLY_OUTLETS.has(outletId) && isUnnamed(data.criticName) && data.url && !data.wrongProduction && !data.duplicateOf) {
+      if (!decision && fetchPages && PAGE_EXTRACTORS[outletId] && (isUnnamed(data.criticName) || isOutletNamePlaceholder(outletId, data)) && data.url && !data.wrongProduction && !data.duplicateOf) {
         const page = await getPage(data.url);
         decision = decideByline(outletId, data, page);
         await new Promise((r) => setTimeout(r, 400));
       }
       if (!decision) { counts.noop++; continue; }
       let result;
-      if (decision.kind === 'override') {
+      if (decision.kind === 'override' || decision.kind === 'page-override') {
         const dst = path.join(dir, generateReviewFilename(outletId, decision.name));
         if (!apply) result = { applied: true, newPath: dst };
         else {
-          const updated = { ...data, criticName: decision.name, criticEnrichedFrom: 'printed-byline:text-override' };
+          const updated = { ...data, criticName: decision.name, criticEnrichedFrom: decision.kind === 'page-override' ? 'printed-byline:page-override' : 'printed-byline:text-override' };
           if (path.resolve(dst) === path.resolve(filePath)) {
             // The slug already names the critic; only the stored criticName is stale.
             const w = safeWriteReview(filePath, updated);
@@ -161,9 +196,9 @@ async function main() {
   for (const r of report.slice(0, 400)) {
     console.log(`${r.refused ? 'REFUSED ' + r.refused : (apply ? 'NAMED' : 'WOULD NAME')} [${r.kind}] ${r.show}/${r.file}: ${r.from} -> ${r.to}`);
   }
-  console.log(`\n${apply ? 'APPLIED' : 'DRY RUN'}: override ${counts.override}, fill ${counts.fill}, page ${counts.page}, refused ${counts.refused} ${JSON.stringify(refusals)}, untouched ${counts.noop}`);
+  console.log(`\n${apply ? 'APPLIED' : 'DRY RUN'}: override ${counts.override}, page-override ${counts['page-override']}, fill ${counts.fill}, page ${counts.page}, refused ${counts.refused} ${JSON.stringify(refusals)}, untouched ${counts.noop}`);
 }
 
-module.exports = { decideByline, isUnnamed };
+module.exports = { decideByline, isUnnamed, isOutletNamePlaceholder };
 
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

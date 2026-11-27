@@ -159,8 +159,39 @@ function firstInlineByline(html) {
   return null;
 }
 
+/**
+ * All That Dazzles (Wix) prints the critic as a bold "Review by Daz Gale" paragraph at the top of
+ * the post body, while its JSON-LD author is the site itself ("All That Dazzles") and the stored
+ * text drops that paragraph (BRO-5572: 195 files filed as "All That Dazzles", 49 as Unknown).
+ * Read only inside the post body (data-hook="post-description" up to </article>), so a
+ * related-post teaser elsewhere on the page can never supply the name, and only from the body's
+ * first 600 characters, where the credit sits. The name check is the text reader's
+ * (extractAllThatDazzlesByline), so page and text agree on what counts as a person.
+ */
+function extractAllThatDazzlesPageByline(html) {
+  if (!html) return null;
+  const s = String(html);
+  const start = s.indexOf('data-hook="post-description"');
+  if (start < 0) return null;
+  const end = s.indexOf('</article>', start);
+  const body = s.slice(start, end < 0 ? undefined : end)
+    .replace(/^[^>]*>/, '')
+    .replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<\/(?:p|div|h[1-6]|li)>|<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;|&#160;|&#xa0;/gi, ' ');
+  const flat = decodeHtmlEntities(body).replace(/[ \t]+/g, ' ').replace(/\n\s*/g, '\n').trimStart().slice(0, 600);
+  const hit = extractBylineFromText('all-that-dazzles-uk', flat);
+  return hit && hit.known ? hit.name : null;
+}
+
 function extractByline(html, { outletId, text } = {}) {
   if (!html) return null;
+  // The printed credit beats the site-named JSON-LD author at All That Dazzles (see above).
+  if (outletId === 'all-that-dazzles-uk' || outletId === 'all-that-dazzles') {
+    const atd = extractAllThatDazzlesPageByline(html);
+    if (atd) return atd;
+  }
   const reviewer = extractReviewerLine(html) || extractReviewedByLine(html) || extractSignOffBeforeShare(html);
   if (reviewer) return reviewer;
   // TheaterMania's visible author tag beats its JSON-LD, which names the account that POSTED the
@@ -361,4 +392,5 @@ function isPublicationName(name, registry) {
 module.exports = {
   isNotACriticName, isPublicationName,
   extractReviewerLine, extractReviewedByLine, extractSignOffBeforeShare, extractByline, extractJsonLdAuthor,
+  extractAllThatDazzlesPageByline,
   extractTheaterManiaAuthorTag, detectBylineConflict, decodeEntities: (s) => decodeHtmlEntities(s || '') };
