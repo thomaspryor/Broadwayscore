@@ -65,7 +65,7 @@ const { selectRecheckTargets, summarize, decideAutoClose, describeResult, should
 const { closeCardAfterPass } = require('./lib/recheck-autoclose.js');
 const { decideHandoff, handoffCard } = require('./lib/recheck-handoff.js');
 const reopenLib = require('./lib/recheck-reopen.js');
-const { routeMode, buildRouteBatch, fileRouteBatch, buildCoverIndex, coveredBy, selectRewatchTargets, refreshRewatchTargets, MAX_REWATCH } = require('./lib/recheck-route.js');
+const { routeMode, heldForOwner, buildRouteBatch, fileRouteBatch, buildCoverIndex, coveredBy, selectRewatchTargets, refreshRewatchTargets, MAX_REWATCH } = require('./lib/recheck-route.js');
 const { verifiabilityForCard } = require('./lib/autonomous-recheck-core.js');
 const { mapIssueToCard } = require('./lib/linear-recheck-source.js');
 const { fetchLinearRecheckCandidates, fetchRecentlyCompletedLinearCandidates, fetchLinearIssuesByIdentifier } = require('./lib/linear-recheck-source.js');
@@ -209,7 +209,7 @@ function enforcementState(cfg, entries) {
 // routed before) go to ONE worker card. Shadow until RECHECK_ROUTE_FROM: the
 // ledger row says what it would have filed. Never throws: routing is a side
 // channel and must not cost the night's summary row.
-async function routeRealFailures({ runId, results, handedOff, sha = null, env = process.env, now = Date.now(), file = fileRouteBatch, coverIndex = null, maxBatches = 1 } = {}) {
+async function routeRealFailures({ runId, results, handedOff, held = [], sha = null, env = process.env, now = Date.now(), file = fileRouteBatch, coverIndex = null, maxBatches = 1 } = {}) {
   try {
     const mode = routeMode({ env, now });
     if (mode.mode === 'off') { console.error('[recheck] routing off (RECHECK_ROUTE=off)'); return null; }
@@ -221,7 +221,7 @@ async function routeRealFailures({ runId, results, handedOff, sha = null, env = 
     const done = [...(handedOff || [])];
     let last = null;
     for (let i = 0; i < Math.max(1, maxBatches); i++) {
-      const batch = buildRouteBatch({ rows, handedOff: done, sha, ledgerEntries: ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], now, coverIndex });
+      const batch = buildRouteBatch({ rows, handedOff: done, held, sha, ledgerEntries: ledger.readEntries(RECHECK_LEDGER_PATH).entries || [], now, coverIndex });
       if (!batch.title) break;
       const cardIds = batch.cards.map((c) => c.cardId);
       let out = { filed: false, identifier: null, error: null };
@@ -239,7 +239,7 @@ async function routeRealFailures({ runId, results, handedOff, sha = null, env = 
   }
 }
 
-function printRouteDryRun() {
+async function printRouteDryRun() {
   const entries = ledger.readEntries(RECHECK_LEDGER_PATH).entries || [];
   const lastRun = [...entries].reverse().find((e) => e && e.event === 'recheck' && e.runId);
   if (!lastRun) { console.log('No recheck rows in the ledger yet.'); return; }
@@ -248,9 +248,18 @@ function printRouteDryRun() {
   const before = entries.filter((e) => e && e.ts < (rows[0] && rows[0].ts || ''));
   const mode = routeMode();
   const sha = (rows.find((r) => r.sha) || {}).sha || null;
-  const batch = buildRouteBatch({ rows, handedOff, sha, ledgerEntries: before });
+  // BRO-8403: apply the live run's owner-hold rule too. Read-only Linear fetch; on failure the
+  // preview says so and holds nothing back (it can only over-report, never hide a regression).
+  let held = [];
+  const failIds = [...new Set(rows.filter((r) => r.status === 'fail' && r.cardId).map((r) => r.cardId))];
+  if (failIds.length) {
+    const got = await fetchLinearIssuesByIdentifier(null, failIds).catch((e) => ({ cards: [], error: String(e && e.message || e) }));
+    if (got.error) console.log(`(could not read the failing cards from Linear, owner holds not applied: ${got.error})`);
+    held = heldForOwner(rows, new Map((got.cards || []).map((c) => [c.id, c])));
+  }
+  const batch = buildRouteBatch({ rows, handedOff, held, sha, ledgerEntries: before });
   console.log(`Run ${lastRun.runId}: ${rows.length} rechecked; mode tonight: ${mode.mode} (${mode.why})`);
-  console.log(`Not routed: ${batch.skipped.env} could not run here, ${batch.skipped.handedOff} handed off, ${batch.skipped.routed} routed before, ${batch.skipped.coveredOpen} covered by an open card, ${batch.skipped.exhausted} retried the maximum times`);
+  console.log(`Not routed: ${batch.skipped.env} could not run here, ${batch.skipped.handedOff} handed off, ${batch.skipped.held || 0} held for the owner, ${batch.skipped.routed} routed before, ${batch.skipped.coveredOpen} covered by an open card, ${batch.skipped.exhausted} retried the maximum times`);
   if (!batch.title) { console.log('Nothing to route.'); return; }
   console.log(`\nTITLE: ${batch.title}\n\n${batch.body}`);
 }
@@ -267,7 +276,7 @@ async function main(argv = process.argv.slice(2)) {
     return;
   }
   const args = parseArgs(argv);
-  if (args['route-dry-run']) { printRouteDryRun(); return; }
+  if (args['route-dry-run']) { await printRouteDryRun(); return; }
   const dryRun = !!args['dry-run'];
   const windowHours = Number(args['window-hours']) || DEFAULT_WINDOW_HOURS;
   // RECHECK_AUTOCLOSE_DISABLED (repo variable) is the off switch, like ACCEPTANCE_RECHECK_KILL_SWITCH:
@@ -671,7 +680,9 @@ async function main(argv = process.argv.slice(2)) {
     if (checkout) removeCheckout(checkout);
   }
 
-  await routeRealFailures({ runId, results, handedOff: [...handedOff, ...reopened, ...parked, ...queued], sha: (checkout && checkout.sha) || null, coverIndex, maxBatches: args.backlog ? 3 : 1 });
+  // BRO-8403: same hold rule decideHandoff applies, so an owner-blocked Paused card is never routed.
+  const held = heldForOwner(results, cardsById);
+  await routeRealFailures({ runId, results, handedOff: [...handedOff, ...reopened, ...parked, ...queued], held, sha: (checkout && checkout.sha) || null, coverIndex, maxBatches: args.backlog ? 3 : 1 });
 
   const counts = summarize(results, { noCriteria: dropped.length });
   const couldNotRun = results.filter((x) => !x.skip && x.envCause).length;

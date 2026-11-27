@@ -198,11 +198,34 @@ async function refreshRewatchTargets(targets, { getIssue, toCard, gateFor } = {}
  *   sha: the fresh-main commit the checks ran on (each entry names it)
  * @returns {{cards:object[], overflow:number, title:string|null, body:string|null, skipped:{env:number, handedOff:number, routed:number}}}
  */
-function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.now(), tsxTests, sha = null, coverIndex = null } = {}) {
+/**
+ * BRO-8403. PURE. Card ids from tonight's results whose card is NOT Done and is held on the owner
+ * or a real PARKED line: the same isHeldForHandoff rule decideHandoff (recheck-handoff.js) uses to
+ * refuse a hand-off. Such a failure is the expected state of an open decision, not a regression.
+ * A Done card is never held: its failing check is a real "done claim no longer holds".
+ * @param {{cardId?:string}[]} results
+ * @param {Map<string,{stateType?:string,notes?:string}>} cardsById
+ * @returns {string[]}
+ */
+function heldForOwner(results, cardsById) {
+  const { isHeldForHandoff } = require('./recheck-past-date.js');
+  const out = [];
+  for (const r of results || []) {
+    const c = r && r.cardId && cardsById && cardsById.get(r.cardId);
+    if (c && c.stateType !== 'completed' && isHeldForHandoff(c.notes) && !out.includes(r.cardId)) out.push(r.cardId);
+  }
+  return out;
+}
+
+function buildRouteBatch({ rows, handedOff = [], held = [], ledgerEntries = [], now = Date.now(), tsxTests, sha = null, coverIndex = null } = {}) {
   const handed = new Set(handedOff);
+  // BRO-8403: a Paused/Backlog card parked on an owner DECISION NEEDED (or a real PARKED hold)
+  // is not a done claim that regressed. decideHandoff already refuses it; routing it anyway
+  // dispatched a worker that could only re-report "still waiting on the owner".
+  const heldSet = new Set(held);
   const routed = alreadyRouted(ledgerEntries, { now, coverKnown: !!coverIndex });
   const routes = liveRoutesByCard(ledgerEntries);
-  const skipped = { env: 0, handedOff: 0, routed: 0, coveredOpen: 0, exhausted: 0, coveredBy: {} };
+  const skipped = { env: 0, handedOff: 0, held: 0, routed: 0, coveredOpen: 0, exhausted: 0, coveredBy: {} };
   const seen = new Set();
   const fails = [];
   for (const r of rows || []) {
@@ -211,6 +234,7 @@ function buildRouteBatch({ rows, handedOff = [], ledgerEntries = [], now = Date.
     if (v.status !== 'fail') { if (v.envCause) skipped.env++; continue; }
     seen.add(r.cardId);
     if (handed.has(r.cardId)) { skipped.handedOff++; continue; }
+    if (heldSet.has(r.cardId)) { skipped.held++; continue; }
     if (routed.has(r.cardId)) { skipped.routed++; continue; }
     if (coverIndex && coverIndex.has(r.cardId)) { skipped.coveredOpen++; skipped.coveredBy[r.cardId] = coveredBy(r.cardId, { coverIndex }); continue; }
     if ((routes.get(r.cardId) || []).length >= MAX_REROUTES) { skipped.exhausted++; continue; }
@@ -292,4 +316,4 @@ async function fileRouteBatch({ title, body, linearBrainMain, timeoutMs = 60000 
   }
 }
 
-module.exports = { DEFAULT_ROUTE_FROM, MAX_ROUTED, ROUTE_RETRY_NIGHTS, MAX_REROUTES, MAX_REWATCH, liveRoutesByCard, buildCoverIndex, coveredBy, selectRewatchTargets, refreshRewatchTargets, QUIET_ALERT_NOTE_H, quietAlertHours, routeMode, alreadyRouted, buildRouteBatch, fileRouteBatch };
+module.exports = { heldForOwner, DEFAULT_ROUTE_FROM, MAX_ROUTED, ROUTE_RETRY_NIGHTS, MAX_REROUTES, MAX_REWATCH, liveRoutesByCard, buildCoverIndex, coveredBy, selectRewatchTargets, refreshRewatchTargets, QUIET_ALERT_NOTE_H, quietAlertHours, routeMode, alreadyRouted, buildRouteBatch, fileRouteBatch };

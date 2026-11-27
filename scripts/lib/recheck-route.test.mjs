@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const here = path.dirname(fileURLToPath(import.meta.url));
-const { routeMode, buildRouteBatch, fileRouteBatch, MAX_ROUTED, DEFAULT_ROUTE_FROM } = require('./recheck-route.js');
+const { routeMode, heldForOwner, buildRouteBatch, fileRouteBatch, MAX_ROUTED, DEFAULT_ROUTE_FROM } = require('./recheck-route.js');
 
 const realRows = fs.readFileSync(path.join(here, '..', '..', 'tests', 'fixtures', 'recheck-real-fails-2026-11.jsonl'), 'utf8')
   .trim().split('\n').map((l) => JSON.parse(l));
@@ -252,4 +252,31 @@ test('selectRewatchTargets: a later env-cause row does not hide an earlier real 
     { ...base, ts: '2026-11-13T00:00:00Z', exit: 1, ok: false, status: 'unverifiable', envCause: 'missing-secret' },
   ];
   assert.deepEqual(R.selectRewatchTargets({ ledgerEntries: rows, now: NOW }).targets.map((t) => t.cardId), ['BRO-1']);
+});
+
+// BRO-8403: BRO-8138 was Paused on an owner DECISION NEEDED with a RECHECK-AFTER stamp. Its check
+// failed as expected, decideHandoff refused it ("waiting on the owner"), and the router filed it
+// anyway as "1 done claim no longer holds", dispatching a worker that could only re-report the wait.
+test('heldForOwner + buildRouteBatch: an owner-held Paused card is not routed; a Done card always is', () => {
+  const decisionNotes = 'DECISION NEEDED: build an unattended regional venue-page synopsis/ticket filler, or demote regional rows below high severity.\nWhy this is your call: new pipeline spend.\nRECHECK-AFTER: 2026-11-27. Recheck: node scripts/check-health-row-absent.js --row-b64 RGF0YQ';
+  const cardsById = new Map([
+    ['BRO-8138', { stateType: 'backlog', status: 'Paused', notes: decisionNotes }],
+    ['BRO-2', { stateType: 'backlog', status: 'Paused', notes: 'RECHECK-AFTER: 2026-11-27. fix landed, waiting a day' }],
+    ['BRO-3', { stateType: 'completed', status: 'Done', notes: decisionNotes }],
+  ]);
+  const rows = [
+    { cardId: 'BRO-8138', name: 'freshness', status: 'fail', detail: 'still listed', verifyCmd: 'node scripts/check-health-row-absent.js --row-b64 RGF0YQ' },
+    { cardId: 'BRO-2', name: 'b', status: 'fail', detail: 'x', verifyCmd: 'node --test b.test.mjs' },
+    { cardId: 'BRO-3', name: 'c', status: 'fail', detail: 'y', verifyCmd: 'node --test c.test.mjs' },
+    { cardId: 'BRO-404', name: 'unknown card', status: 'fail', detail: 'z', verifyCmd: 'node --test d.test.mjs' },
+  ];
+  const held = heldForOwner(rows, cardsById);
+  assert.deepEqual(held, ['BRO-8138'], 'only the open, owner-held card is held; Done and unknown cards are not');
+  const b = buildRouteBatch({ rows, held, ledgerEntries: [], now: NOW, tsxTests: new Set() });
+  assert.deepEqual(b.cards.map((c) => c.cardId), ['BRO-2', 'BRO-3', 'BRO-404']);
+  assert.equal(b.skipped.held, 1);
+  assert.doesNotMatch(b.body, /BRO-8138/);
+  const only = buildRouteBatch({ rows: rows.slice(0, 1), held, ledgerEntries: [], now: NOW, tsxTests: new Set() });
+  assert.equal(only.title, null, 'a night whose only failure is owner-held files no card');
+  assert.deepEqual(heldForOwner(rows, null), [], 'no card map never holds anything back');
 });
