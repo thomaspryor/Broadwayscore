@@ -462,7 +462,7 @@ export function getAllLondonShows(): ComputedShow[] {
  */
 /** Market-menu counts for one city hub. Same phase rule as the hub page, so "playing now" cannot disagree with it. */
 function hubMarketStats(metro: string): { shows: number; openShows: number } {
-  const local = getAllShows().filter(s => s.city === metro && s.category === 'regional');
+  const local = getAllShows().filter(s => s.city === metro && isUsRegionalShow(s) || s.city === metro && isUkRegionalShow(s));
   const today = new Date().toISOString().slice(0, 10);
   // "N playing now" in the market menu must match the hub's Now Playing list, which
   // shows tour stops beside local productions (src/app/tours/[city]/page.tsx split()).

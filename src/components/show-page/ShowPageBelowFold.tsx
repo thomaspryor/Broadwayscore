@@ -6,7 +6,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { featureFlags } from '@/config/feature-flags';
 import { dependsOnDate, hasLocalDateArrived } from '@/lib/show-rateability';
-import { getMarketLabel } from '@/lib/market-utils';
+import { getMarketLabel, isUsRegionalShow } from '@/lib/market-utils';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import { formatShowDate as formatDate } from '@/lib/show-date-line';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -557,7 +557,7 @@ export default function ShowPageBelowFold({
               {show.theaterAddress && (
                 <>
                   {/* A regional venue already carries "Theatre, City, ST": a comma before the address reads as a stray one. */}
-                  {isRegional ? ' · ' : ', '}
+                  {isRegional && isUsRegionalShow(show) ? ' · ' : ', '}
                   <a
                     href={getGoogleMapsUrl(show.theaterAddress)}
                     target="_blank"
