@@ -3486,12 +3486,9 @@ async function discoverShows() {
       // tests/unit/discover-new-shows-category.test.mjs can assert the real function.
       Object.assign(showEntry, classifyShow(show));
       showEntry.theaterAddress = registryAddressFor(show.venue, showEntry.market);
-
-      const duplicate = duplicateOfCandidate(data.shows, showEntry);
-      if (duplicate) { console.log(`Skip ${showEntry.id}: exists as ${duplicate.existing.id}`); continue; }
-      // BRO-8407: the save guard also refuses a title fragment of a catalogued row at the same venue; ask it here so the run cannot abort at save.
-      const fragDup = fragmentDuplicateOfCandidate(data.shows, showEntry);
-      if (fragDup) { console.log(`Skip ${showEntry.id}: exists as ${fragDup.existing.id} (${fragDup.reason})`); continue; }
+      // BRO-8407: the save guard refuses title fragments too.
+      const dup = duplicateOfCandidate(data.shows, showEntry) || fragmentDuplicateOfCandidate(data.shows, showEntry);
+      if (dup) { console.log(`Skip ${showEntry.id}: exists as ${dup.existing.id}`); continue; }
       data.shows.push(showEntry);
       addedShows.push(show);
       addedDetections.push(detection);
