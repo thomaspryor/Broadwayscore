@@ -92,6 +92,7 @@ data/followers.json
 # the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
 data/pending-fixes/*
 !data/pending-fixes/bro-8384.json
+!data/pending-fixes/bro-8389.json
 !data/pending-fixes/bro-7916.json
 !data/pending-fixes/bro-7855.json
 !data/pending-fixes/bro-7207.json
