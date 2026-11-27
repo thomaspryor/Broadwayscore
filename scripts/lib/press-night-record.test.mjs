@@ -1039,3 +1039,17 @@ test('BRO-8308: prior-run excusal has no post-close grace (a remount\'s own pre-
   r.priorRuns = [{ openingDate: '2024-11-26', closingDate: '2025-01-05' }];
   assert.equal(sn(r).status, 'fail');
 });
+
+test('BRO-8308: a night census snapshot listing only outlets a later rebuild excluded is no proof anyone published (Specimen encore)', () => {
+  const mk = (laterExcluded) => {
+    const rec = fresh();
+    for (let m = -5; m <= 360; m += 5) lib.applySample(rec, { at: at(m), reviews: [] });
+    rec.reference['2h-live'] = { status: 'incomplete', count: 2, covered: 0, coverage: 0, missing: ['front-row-center', 'theater-scene'] };
+    rec.reference['2h'] = { status: 'no-census-yet', count: 0, covered: null, coverage: null, missing: [], method: 'timeline',
+      excluded: laterExcluded.map((o) => ({ outletId: o, reason: 'listing is a review from a declared earlier run (priorRuns), not owed tonight' })) };
+    return lib.evaluateCheck(rec).gates.find((g) => g.name === 'first-live');
+  };
+  assert.equal(mk(['front-row-center', 'theater-scene']).status, 'unknown');
+  // one listed outlet not excluded since: it still proves an outlet published, and nothing went live
+  assert.equal(mk(['front-row-center']).status, 'fail');
+});

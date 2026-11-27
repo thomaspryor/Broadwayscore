@@ -73,7 +73,7 @@ function createObserver(show, night, { embargoMs }) {
         const pn = require('./lib/press-night-record');
         const files = state.readReviewFileState(show.id, show);
         const excluded = files.available
-          ? state.censusExclusions(census, files.files, { windowStartMs: embargoMs - pn.DEFAULT_GATES.nightStartH * 3600000, night })
+          ? state.censusExclusions(census, files.files, { windowStartMs: embargoMs - pn.DEFAULT_GATES.nightStartH * 3600000, night, priorRuns: show.priorRuns || null })
           : [];
         cache = { census: pn.filterCensus(census, excluded), builtAt: nowMs, url: census.bwwRoundupUrl || (cache && cache.url) || null };
         console.log(`census: ${cache.census.count} reviews (${note})${excluded.length ? `, ${excluded.length} excluded` : ''}`);

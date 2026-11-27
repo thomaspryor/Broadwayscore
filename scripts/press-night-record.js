@@ -182,7 +182,7 @@ function stampFileState(rec, show, census) {
   if (!files) console.log('[press-night] review-texts not available: census exclusions and same-night-completeness stay unknown');
   const g = lib.DEFAULT_GATES;
   const embMs = new Date(rec.embargoAt).getTime();
-  const opts = Number.isFinite(embMs) ? { windowStartMs: embMs - g.nightStartH * 3600000, night: rec.night } : {};
+  const opts = Number.isFinite(embMs) ? { windowStartMs: embMs - g.nightStartH * 3600000, night: rec.night, priorRuns: rec.priorRuns || null } : {};
   return files ? state.censusExclusions(census, files, opts) : [];
 }
 

@@ -715,15 +715,9 @@ function sameNightCheck(rec, g) {
   // BRO-8308: a review file published inside a declared earlier run (a 2024 Time Out page first picked up on the
   // 2026 night of a return engagement) is that run's review, not one owed tonight. The date alone never excuses
   // a file dated on or after the night.
-  // Strict window (no post-close review-lag grace): a quick remount's own pre-opening review must stay owed.
-  const { priorRunWindow } = require('./wrong-production-autoclear');
-  const isWithinPriorRun = (d, runs) => runs.some((run) => {
-    if (!run || run.inheritReviews === false) return false;
-    const w = priorRunWindow(run, { allowGrace: false });
-    return !!w && d.getTime() >= w.fromMs && d.getTime() <= w.toMs;
-  });
-  const inPriorRun = (f) => !!(Array.isArray(rec.priorRuns) && rec.priorRuns.length && /^\d{4}-\d{2}-\d{2}/.test(String(f.publishDate || ''))
-    && String(f.publishDate).slice(0, 10) < String(rec.night) && isWithinPriorRun(new Date(String(f.publishDate).slice(0, 10)), rec.priorRuns));
+  // Strict window (no post-close grace), shared with the census side: press-night-review-state.isPriorRunFile.
+  const { isPriorRunFile } = require('./press-night-review-state');
+  const inPriorRun = (f) => isPriorRunFile(f, rec.night, rec.priorRuns);
   const nightFiles = fsnap.files.filter((f) => f.includable && f.outletId && !inPriorRun(f) && toMs(f.firstSeenAt) != null
     && toMs(f.firstSeenAt) >= embMs - g.nightStartH * HOUR && toMs(f.firstSeenAt) <= embMs + g.sameNightEndH * HOUR);
   const perOutletFiles = new Map();
@@ -892,7 +886,12 @@ function gradeNight(rec, g) {
     // Nothing live is only our failure if some outlet demonstrably published (a census entry, a lane
     // discovery); a night no critic wrote up is not a slow site.
     const refs = Object.values(rec.reference || {});
-    const published = refs.some((r) => r && r.count > 0) || !!(rec.laneShadow && rec.laneShadow.firstDiscoveredAt);
+    // BRO-8308: a census snapshot kept from the night ('2h-live') can list only outlets a later rebuild excluded
+    // (Specimen's encore: four reviews of its declared May run). Nothing covered and every listed outlet since
+    // excluded is no proof that anyone published a review of this night.
+    const laterExcluded = new Set(refs.flatMap((r) => (r && Array.isArray(r.excluded) ? r.excluded.map((e) => e.outletId) : [])));
+    const allSinceExcluded = (r) => !r.covered && Array.isArray(r.missing) && r.missing.length === r.count && r.missing.every((o) => laterExcluded.has(o));
+    const published = refs.some((r) => r && r.count > 0 && !allSinceExcluded(r)) || !!(rec.laneShadow && rec.laneShadow.firstDiscoveredAt);
     if (waited != null && waited > g.firstLiveWithinMin && !published) {
       gates.push(gate('first-live', 'unknown', `no review of the night live ${waited} min after the embargo, and no census or lane discovery shows any outlet published`));
     } else if (waited != null && waited > g.firstLiveWithinMin) {

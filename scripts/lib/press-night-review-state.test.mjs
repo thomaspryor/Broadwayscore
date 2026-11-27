@@ -53,3 +53,40 @@ test('censusExclusions: an outlet whose every file is excluded leaves the census
   // deadline has no file at all (a listing we have not ingested): it stays in the denominator
   assert.ok(!ex.some((e) => e.outletId === 'deadline'));
 });
+
+test('BRO-8308: a census listing of a declared prior run\'s live review is not owed on the encore night (Specimen 2026-10-30)', () => {
+  const runs = [{ previewsStartDate: '2026-05-06', openingDate: '2026-05-09', closingDate: '2026-06-06' }];
+  const night = '2026-10-30';
+  const opts = { windowStartMs: Date.parse('2026-10-30T20:00:00Z'), night, priorRuns: runs };
+  const census = { entries: [
+    { outletId: 'front-row-center', urls: ['https://www.frontrowcenter.com/2026/05/21/specimen-review/'] },
+    { outletId: 'theater-scene', urls: ['https://www.theaterscene.net/plays/specimen/x/'] }, // its file is the encore's own
+    { outletId: 'nytimes', urls: ['https://www.nytimes.com/2026/10/30/theater/specimen-review.html'] }, // not ingested yet
+  ] };
+  const files = [
+    { outletId: 'front-row-center', includable: true, publishDate: '2026-05-21', firstSeenAt: '2026-05-22T00:00:00Z', url: 'frontrowcenter.com/2026/05/21/specimen-review' },
+    { outletId: 'theater-scene', includable: true, publishDate: '2026-10-30', firstSeenAt: '2026-10-31T03:30:00Z', url: 'theaterscene.net/plays/specimen/x' },
+  ];
+  const ex = state.censusExclusions(census, files, opts);
+  assert.deepEqual(ex.map((e) => e.outletId), ['front-row-center']);
+  assert.match(ex[0].reason, /declared earlier run/);
+  // without priorRuns the same listing stays owed (legacy behaviour)
+  assert.deepEqual(state.censusExclusions(census, files, { ...opts, priorRuns: null }), []);
+  // a run marked inheritReviews:false is another production and excuses nothing
+  assert.deepEqual(state.censusExclusions(census, files, { ...opts, priorRuns: [{ ...runs[0], inheritReviews: false }] }), []);
+  // strict window: a review 3 days after the prior run closed is the remount's own, still owed
+  const lag = [{ ...files[0], publishDate: '2026-06-09' }];
+  assert.deepEqual(state.censusExclusions(census, lag, opts), []);
+});
+
+test('BRO-8308: isPriorRunFile is strict, day-precise only and never excuses a file dated on or after the night', () => {
+  const runs = [{ openingDate: '2024-11-26', closingDate: '2025-01-05' }];
+  assert.equal(state.isPriorRunFile({ publishDate: '2024-12-03' }, '2026-11-24', runs), true);
+  assert.equal(state.isPriorRunFile({ publishDate: '2026-11-24' }, '2026-11-24', runs), false);
+  assert.equal(state.isPriorRunFile({ publishDate: 'December 3, 2024' }, '2026-11-24', runs), true); // written day-precise date
+  assert.equal(state.isPriorRunFile({ publishDate: 'December 3rd, 2024' }, '2026-11-24', runs), true);
+  assert.equal(state.isPriorRunFile({ publishDate: 'Dec 2024' }, '2026-11-24', runs), false); // month-only: not day-precise
+  assert.equal(state.isPriorRunFile({ publishDate: 'garbage' }, '2026-11-24', runs), false);
+  assert.equal(state.isPriorRunFile({ publishDate: '2024-12-03' }, '2026-11-24', []), false);
+  assert.equal(state.isPriorRunFile({ publishDate: '2025-01-08' }, '2026-11-24', runs), false);
+});

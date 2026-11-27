@@ -33,6 +33,40 @@ const REJECTED_LISTING_KINDS = new Set(['not_a_review']);
 // Both sides go through normUrl first (BRO-6702): fileState urls are stored normalized, census urls are raw.
 const urlKey = (u) => String(normUrl(u) || u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/#.*$/, '').replace(/[?&](utm_[^=&]*|fbclid|gclid)=[^&]*/g, '').replace(/\?$/, '').replace(/\/+$/, '');
 
+/**
+ * A file's publish day as YYYY-MM-DD, or null. ISO stays as-is; a written date ("May 20th, 2026", Specimen's This
+ * Week in New York file) goes through date-utils.normalizeDate, but only when it names a day of the month: a
+ * month-only "Nov 2024" would read as the 1st and could fall inside a run it was never in.
+ */
+function publishDay(raw) {
+  const s = String(raw || '').trim();
+  const iso = /^(\d{4}-\d{2}-\d{2})/.exec(s);
+  if (iso) return iso[1];
+  if (!/\b\d{1,2}(?:st|nd|rd|th)?\b/i.test(s.replace(/\b\d{4}\b/g, ''))) return null;
+  const d = require('./date-utils').normalizeDate(s);
+  return d && /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : null;
+}
+
+/**
+ * BRO-8308: is a review file dated inside a declared earlier run of the show (and before `night`)? Such a file is
+ * that run's review, inherited onto the page, never one owed on this night. Strict window (no post-close
+ * review-lag grace) so a quick remount's own pre-opening review stays owed; day-precise dates only (publishDay); a run with
+ * inheritReviews:false is a different production and never excuses anything. The one predicate both the census
+ * side (censusExclusions) and the file side (press-night-record sameNightCheck) use.
+ */
+function isPriorRunFile(f, night, priorRuns) {
+  if (!f || !night || !Array.isArray(priorRuns) || !priorRuns.length) return false;
+  const day = publishDay(f.publishDate);
+  if (!day || day >= String(night)) return false;
+  const { priorRunWindow } = require('./wrong-production-autoclear');
+  const t = new Date(day).getTime();
+  return priorRuns.some((run) => {
+    if (!run || run.inheritReviews === false) return false;
+    const w = priorRunWindow(run, { allowGrace: false });
+    return !!w && t >= w.fromMs && t <= w.toMs;
+  });
+}
+
 function normUrl(u) {
   if (!u) return null;
   try { return require('./review-normalization').normalizeUrl(String(u)) || null; } catch (_) { return null; }
@@ -97,13 +131,18 @@ function readReviewFileState(showId, show, { dir = DEFAULT_DIR } = {}) {
  * @returns {Array<{outletId:string, reason:string, priorRunCandidate?:boolean}>}
  */
 function censusExclusions(census, files, opts = {}) {
-  const { windowStartMs = null, night = null } = opts;
+  const { windowStartMs = null, night = null, priorRuns = null } = opts;
   // BRO-6701: a listing whose exact URL the rebuild already judged another production's review (Medea: an
   // aggregator row for a 2013 staging) is not a review of the night, whenever the file was first seen.
   const wrongListing = new Map();
   for (const f of files) {
     if (f.url && !f.includable && (WRONG_PRODUCTION_REASONS.has(f.reason) || (REJECTED_LISTING_REASONS.has(f.reason) && REJECTED_LISTING_KINDS.has(f.rejectionKind)))) wrongListing.set(urlKey(f.url), f);
   }
+  // BRO-8308 cousin (Specimen, 2026-10-30 encore): once priorRuns is declared, the earlier run's reviews are
+  // includable and live, and an aggregator page still listing them made them read as owed tonight. A listing
+  // whose every URL is one of our includable files dated inside a declared earlier run is not owed tonight.
+  const priorRunUrls = new Set();
+  for (const f of files) if (f.url && f.includable && isPriorRunFile(f, night, priorRuns)) priorRunUrls.add(urlKey(f.url));
   if (windowStartMs != null) {
     files = files.filter((f) => {
       const seen = f.firstSeenAt ? Date.parse(f.firstSeenAt) : NaN;
@@ -131,6 +170,10 @@ function censusExclusions(census, files, opts = {}) {
       out.push({ outletId: e.outletId, reason: `listing is another production's review (${wl.reason})`, ...(wl.reason === 'wrongProduction' ? { priorRunCandidate: true } : {}) });
       continue;
     }
+    if (urls.length && priorRunUrls.size && urls.every((u) => priorRunUrls.has(urlKey(u)))) {
+      out.push({ outletId: e.outletId, reason: 'listing is a review from a declared earlier run (priorRuns), not owed tonight' });
+      continue;
+    }
     const fs_ = byOutlet.get(e.outletId) || byOutlet.get(e.outletId.replace(/-london$/, '')) || byOutlet.get(`${e.outletId}-london`) || [];
     if (!fs_.length || fs_.some((f) => f.includable)) continue;
     const synd = fs_.find((f) => f.syndicatedUnder || SYNDICATED_REASONS.has(f.reason));
@@ -142,4 +185,4 @@ function censusExclusions(census, files, opts = {}) {
   return out;
 }
 
-module.exports = { readReviewFileState, censusExclusions, SYNDICATED_REASONS, outletIdOfFile };
+module.exports = { readReviewFileState, censusExclusions, isPriorRunFile, SYNDICATED_REASONS, outletIdOfFile };
