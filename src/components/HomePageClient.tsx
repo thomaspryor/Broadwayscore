@@ -805,8 +805,9 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
 
       {/* Market + Type Filter Row — Broadway+ / Bway only split replaces the old
           OFF-BWAY PICKS: SHOWN/HIDDEN toggle row (it pushed all content down) */}
-      <div className="flex items-center gap-2 sm:gap-4 mb-4">
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-4 mb-4">
         <MarketFilterBar
+          className="basis-full sm:basis-0"
           pair="nyc"
           activeMarket="broadway"
           primaryCount={hasObPicks ? marketOpenCounts.broadwayPlus : marketOpenCounts.broadway}
