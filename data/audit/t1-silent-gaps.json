@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T02:33:06.611Z",
+  "generatedAt": "2026-11-27T03:41:50.650Z",
   "windowDays": 45,
   "showsScanned": 306,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 427.5156938888889,
+      "fileAgeHours": 428.66126305555554,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 404.9673086111111,
+      "nonTerminalAgeHours": 406.112875,
       "needsManualRecovery": true
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 396.74758444444444,
+      "fileAgeHours": 397.8931522222222,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 395.6028636111111,
+      "nonTerminalAgeHours": 396.74843,
       "needsManualRecovery": true
     }
   ],
