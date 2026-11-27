@@ -1235,20 +1235,6 @@
     "queuedAt": "2026-11-26T17:29:12.483Z"
   },
   {
-    "conditionKey": "corpus-drift:orphan-production-clusters",
-    "title": "Corpus drift: wrongProduction reviews of a production missing from shows.json (cluster baseline-diff)",
-    "description": "check-corpus-drift.js audit \"orphan-production-clusters\" (node scripts/cluster-orphan-productions.js --gate) has been drifting. Latest output:\n\norphan wrongProduction reviews: 560; clusters: 390; clusters >=3: 37 (147 reviews)\nFAIL: 1 orphan production cluster(s) new or grown vs baseline (a production is missing from shows.json):\n  whenwearemarried|west-end count=6 baseline=5 hosts=when-we-are-married-west-end-2010",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-26T18:05:19.140Z"
-  },
-  {
     "conditionKey": "corpus-drift:cv-flag-contradiction",
     "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff) (still open — BRO-5563)",
     "description": "Still firing after 36 notifications since it was filed. Tracked at BRO-5563.\n\ncheck-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 320 shows in the last 30d window, 15 contradiction(s) found.\n  [wrongProduction] a-christmas-carol-west-end-2026/independent--paul-taylor.json (563w)\n  [wrongProduction] a-christmas-carol-west-end-2026/lost-in-theatreland--amy-rye.json (535w)\n  [wrongProduction] a-christmas-carol-west-end-2026/whatsonstage--alun-hood.json (475w)\n  [wrongProduction] a-christmas-carol-west-end-2026/whatsonstage--sarah-crompton.json (504w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] jack-and-the-beanstalk-off-west-end-2026/telegraph--claire-allfree.json (567w)\n  [wrongProduction] jack-and-the-beanstalk-off-west-end-2026/times-uk--rachel-halliburton.json (406w)\n  [wrongProduction] feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/standard--nick-clark.json (461w)\n  [wrongProduction] nine-night-off-west-end-2026/thestage--chris-bartlett.json (420w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\n  [wrongProduction] much-ado-about-nothing-2026/london-theatre--marianka-swain.json (793w)\n  [wrongProduction] much-ado-about-nothing-2026/newyorker--anthony-lane.json (2313w)\n  [wrongProduction] a-beautiful-noise-the-neil-diamond-musical-tour-2026/dayton-local--michael-woody.json (618w)\nCoverage: examined 225 of 6158 corpus show(s) (2906 review file(s) parsed).\n  --window=30d selected 320 show(s): 204 already opened, 116 not yet opened (the window filter has no upper bound).\n  95 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  5933 corpus show(s) were NOT examined, of which 430 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(6 baselined, 9 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] a-christmas-carol-west-end-2026/independent--paul-taylor.json\n  [wrongProduction] a-christmas-carol-west-end-2026/lost-in-theatreland--amy-rye.json\n  [wrongProduction] a-christmas-carol-west-end-2026/whatsonstage--alun-hood.json\n  [wrongProduction] a-christmas-carol-west-end-2026/whatsonstage--sarah-crompton.json\n  [wrongProduction] jack-and-the-beanstalk-off-west-end-2026/telegraph--claire-allfree.json\n  [wrongProduction] jack-and-the-beanstalk-off-west-end-2026/times-uk--rachel-halliburton.json\n  [wrongProduction] feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/standard--nick-clark.json\n  [wrongProduction] nine-night-off-west-end-2026/thestage--chris-bartlett.json\n  [wrongProduction] much-ado-about-nothing-2026/newyorker--anthony-lane.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
@@ -1954,6 +1940,34 @@
     "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
     "fields": [],
     "queuedAt": "2026-11-27T16:45:18.815Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphan-production-clusters",
+    "title": "Corpus drift: wrongProduction reviews of a production missing from shows.json (cluster baseline-diff)",
+    "description": "check-corpus-drift.js audit \"orphan-production-clusters\" (node scripts/cluster-orphan-productions.js --gate) has been drifting. Latest output:\n\norphan wrongProduction reviews: 559; clusters: 389; clusters >=3: 37 (147 reviews)\nFAIL: 1 orphan production cluster(s) new or grown vs baseline (a production is missing from shows.json):\n  whenwearemarried|west-end count=6 baseline=5 hosts=when-we-are-married-west-end-2010",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-27T18:38:28.626Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +17 more). Checked 2026-11-27.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-27T18:38:30.389Z"
   },
   {
     "conditionKey": "land:land/codex-bro-8274",
