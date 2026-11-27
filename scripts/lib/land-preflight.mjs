@@ -1159,7 +1159,7 @@ export const NODE_MODULES_PROBE = ['next', 'cheerio'];
 export function nodeModulesCheck({ root, files = null, env = process.env, seams = {} }) {
   try {
     if (env.LAND_NODE_MODULES_DISABLE === '1') return { status: 'off', reason: 'LAND_NODE_MODULES_DISABLE=1' };
-    if (files && !files.some((f) => /^(src|scripts|tests)\//.test(f))) return { status: 'skip', reason: 'no code in the diff' };
+    if (files && !files.some((f) => /^(src|scripts|tests|\.github|\.claude)\/|^(package(-lock)?\.json|next\.config\.[cm]?js)$/.test(f))) return { status: 'skip', reason: 'no code in the diff' };
     const pkgPath = path.join(root, 'package.json');
     if (!fs.existsSync(pkgPath)) return { status: 'skip', reason: 'no package.json' };
     const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
@@ -1177,8 +1177,8 @@ export function nodeModulesCheck({ root, files = null, env = process.env, seams 
     }
     if (!missing.length) return { status: 'clean' };
     const text = `land preflight: ${missing.join(', ')} cannot be resolved from ${root}. The guard tests would fail with MODULE_NOT_FOUND here and the real refusal would only show in land.yml 10-25 minutes later. ` +
-      'Fix: npm ci (or node scripts/cloud-doctor.js --fix npm-ci; in a worktree: ln -sfn <main checkout>/node_modules node_modules), then push again. ' +
-      'If this is deliberate, bypass this push with `# NO-LAND-PREFLIGHT: <reason>`.';
+      'Fix: npm ci (in a worktree under the main checkout it resolves the parent's node_modules; elsewhere link it: ln -sfn <main checkout>/node_modules node_modules), then push again. ' +
+      'If this is deliberate, bypass this push with `# NO-LAND-PREFLIGHT: <reason of 15+ characters>`.';
     if (env.LAND_NODE_MODULES_ADVISORY === '1') return { status: 'clean', warning: `(advisory) ${text}` };
     return { status: 'fail', message: text, missing };
   } catch (e) {
@@ -1249,7 +1249,7 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     // BRO-7788: unresolvable next/cheerio. After the bypass, before any judging.
     {
       const nmDiff = git(root, ['diff', '--name-only', `${seams.base || 'origin/main'}...${t.src || 'HEAD'}`]);
-      const nmFiles = ok(nmDiff) ? out(nmDiff).split('\n').filter(Boolean) : [];
+      const nmFiles = ok(nmDiff) ? out(nmDiff).split('\n').filter(Boolean) : null; // null: diff failed, so judge as code
       const nm = (seams.nodeModulesCheck || nodeModulesCheck)({ root, files: nmFiles, env, seams: seams.nodeModules || {} });
       if (nm.status === 'fail') {
         logEvent(root, { event: 'block', target: t.dst, reason: 'node-modules-unresolvable', missing: nm.missing });

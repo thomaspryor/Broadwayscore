@@ -1113,9 +1113,13 @@ test('nodeModulesCheck (BRO-7788): refuses unresolvable next/cheerio; fails open
     assert.equal(nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: other } }).status, 'skip', 'non-MODULE_NOT_FOUND errors fail open');
     fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ dependencies: { left: '1' } }));
     assert.equal(nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: notFound } }).status, 'skip', 'probe packages undeclared');
-    // real resolver: next declared, no node_modules anywhere above the tmp root -> fail
-    fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ dependencies: { next: '1' } }));
-    assert.equal(nodeModulesCheck({ root: dir, files: code, env: {} }).status, 'fail');
+    fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify({ devDependencies: { cheerio: '1' } }));
+    assert.equal(nodeModulesCheck({ root: dir, files: ['package-lock.json'], env: {}, seams: { resolve: notFound } }).status, 'fail', 'devDependencies and lockfile-only diffs count');
+    assert.equal(nodeModulesCheck({ root: dir, files: null, env: {}, seams: { resolve: notFound } }).status, 'fail', 'failed diff is judged as code');
+    const noExports = () => { const e = new Error('x'); e.code = 'ERR_PACKAGE_PATH_NOT_EXPORTED'; throw e; };
+    assert.equal(nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: noExports } }).status, 'clean');
+    fs.writeFileSync(path.join(dir, 'package.json'), '{not json');
+    assert.equal(nodeModulesCheck({ root: dir, files: code, env: {}, seams: { resolve: notFound } }).status, 'skip', 'malformed package.json fails open');
     assert.equal(nodeModulesCheck({ root: dir, files: [], env: {}, seams: { resolve: notFound } }).status, 'skip', 'empty diff');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
