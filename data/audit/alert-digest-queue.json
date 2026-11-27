@@ -535,215 +535,6 @@
     "queuedAt": "2026-11-25T21:15:32.321Z"
   },
   {
-    "conditionKey": "cron-fire-rate:process-feedback.yml",
-    "title": "process-feedback.yml is running 2% of the time it should",
-    "description": "In the last 14 days GitHub started 48 scheduled runs of process-feedback.yml where its cron (*/10 * * * *) calls for 2016. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "48 / 2016 (2%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:44.579Z"
-  },
-  {
-    "conditionKey": "cron-fire-rate:send-welcome-emails.yml",
-    "title": "send-welcome-emails.yml is running 4% of the time it should",
-    "description": "In the last 14 days GitHub started 48 scheduled runs of send-welcome-emails.yml where its cron (7,22,37,52 * * * *) calls for 1344. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "48 / 1344 (4%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:44.617Z"
-  },
-  {
-    "conditionKey": "cron-fire-rate:replay-push-rescue.yml",
-    "title": "replay-push-rescue.yml is running 14% of the time it should",
-    "description": "In the last 14 days GitHub started 46 scheduled runs of replay-push-rescue.yml where its cron (41 * * * *) calls for 336. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "46 / 336 (14%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:44.677Z"
-  },
-  {
-    "conditionKey": "cron-fire-rate:opening-night-completeness-check.yml",
-    "title": "opening-night-completeness-check.yml is running 22% of the time it should",
-    "description": "In the last 14 days GitHub started 149 scheduled runs of opening-night-completeness-check.yml where its cron (*/15 * * * *) calls for 672. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "149 / 672 (22%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:44.708Z"
-  },
-  {
-    "conditionKey": "cron-fire-rate:evidence-review-catchup.yml",
-    "title": "evidence-review-catchup.yml is running 24% of the time it should",
-    "description": "In the last 14 days GitHub started 40 scheduled runs of evidence-review-catchup.yml where its cron (17 */2 * * *) calls for 168. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "40 / 168 (24%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:44.756Z"
-  },
-  {
-    "conditionKey": "cron-fire-rate:opening-night-broadcast.yml",
-    "title": "opening-night-broadcast.yml is running 24% of the time it should",
-    "description": "In the last 14 days GitHub started 41 scheduled runs of opening-night-broadcast.yml where its cron (30 12 * * *, 41 13-23 * * *) calls for 168. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "41 / 168 (24%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:44.784Z"
-  },
-  {
-    "conditionKey": "cron-fire-rate:opening-night-reviews.yml",
-    "title": "opening-night-reviews.yml is running 59% of the time it should",
-    "description": "In the last 14 days GitHub started 66 scheduled runs of opening-night-reviews.yml where its cron (0 5 * * *, 0 17 * * *, 0 2,8,11,14,20,23 * * *) calls for 112. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "66 / 112 (59%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:44.847Z"
-  },
-  {
-    "conditionKey": "cron-fire-rate:audit-reverse-discovery.yml",
-    "title": "audit-reverse-discovery.yml is running 61% of the time it should",
-    "description": "In the last 14 days GitHub started 34 scheduled runs of audit-reverse-discovery.yml where its cron (25 4,10,16,22 * * *) calls for 56. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "34 / 56 (61%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:44.876Z"
-  },
-  {
-    "conditionKey": "cron-fire-rate:enrich-reviews.yml",
-    "title": "enrich-reviews.yml is running 62% of the time it should",
-    "description": "In the last 14 days GitHub started 36 scheduled runs of enrich-reviews.yml where its cron (30 4,10,16,22 * * *, 30 1 * * 0) calls for 58. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "36 / 58 (62%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:44.906Z"
-  },
-  {
-    "conditionKey": "cron-fire-rate:mirror-to-gitlab.yml",
-    "title": "mirror-to-gitlab.yml is running 66% of the time it should",
-    "description": "In the last 14 days GitHub started 37 scheduled runs of mirror-to-gitlab.yml where its cron (0 */6 * * *) calls for 56. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "37 / 56 (66%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:44.985Z"
-  },
-  {
-    "conditionKey": "cron-fire-rate:collect-review-texts.yml",
-    "title": "collect-review-texts.yml is running 68% of the time it should",
-    "description": "In the last 14 days GitHub started 30 scheduled runs of collect-review-texts.yml where its cron (30 4,10,18 * * *, 0 0 * * 0) calls for 44. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Fired / expected",
-        "value": "30 / 44 (68%)"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:45.020Z"
-  },
-  {
     "conditionKey": "cron-cancelled:scrape-new-aggregators.yml",
     "title": "scrape-new-aggregators.yml: 4 of its 13 scheduled runs were cancelled",
     "description": "Cancelled runs skip failure notification (`if: always()` does not run on cancel), so a workflow killed at its timeout cap or by a concurrency group is silent. 4 of 13 scheduled runs in the last 14 days were cancelled.",
@@ -761,39 +552,6 @@
       }
     ],
     "queuedAt": "2026-11-25T21:54:45.287Z"
-  },
-  {
-    "conditionKey": "cron-cancelled:opening-night-orchestrator.yml",
-    "title": "opening-night-orchestrator.yml: 35 of its 98 scheduled runs were cancelled",
-    "description": "Cancelled runs skip failure notification (`if: always()` does not run on cancel), so a workflow killed at its timeout cap or by a concurrency group is silent. 35 of 98 scheduled runs in the last 14 days were cancelled.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Cancelled / scheduled runs",
-        "value": "35 / 98"
-      }
-    ],
-    "queuedAt": "2026-11-25T21:54:45.807Z"
-  },
-  {
-    "conditionKey": "discovery-caller-missing",
-    "title": "289 review files were ingested with no caller recorded",
-    "description": "Every ingest must name its pipeline; 289 files stamped since 2026-11-22 have source submit-review-form (or similar) and no ingestSource, so the discovery-share report cannot say who found them.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-25T21:54:50.648Z"
   },
   {
     "conditionKey": "land:land/bro-8116-session-spend",
@@ -2103,17 +1861,245 @@
     "queuedAt": "2026-11-27T20:32:37.604Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-27.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
+    "conditionKey": "cron-fire-rate:process-feedback.yml",
+    "title": "process-feedback.yml is running 2% of the time it should",
+    "description": "In the last 14 days GitHub started 46 scheduled runs of process-feedback.yml where its cron (*/10 * * * *) calls for 2016. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
     "url": null,
     "decision": false,
-    "info": true,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "46 / 2016 (2%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.189Z"
+  },
+  {
+    "conditionKey": "cron-fire-rate:send-welcome-emails.yml",
+    "title": "send-welcome-emails.yml is running 3% of the time it should",
+    "description": "In the last 14 days GitHub started 46 scheduled runs of send-welcome-emails.yml where its cron (7,22,37,52 * * * *) calls for 1344. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "46 / 1344 (3%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.243Z"
+  },
+  {
+    "conditionKey": "cron-fire-rate:replay-push-rescue.yml",
+    "title": "replay-push-rescue.yml is running 13% of the time it should",
+    "description": "In the last 14 days GitHub started 44 scheduled runs of replay-push-rescue.yml where its cron (41 * * * *) calls for 336. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "44 / 336 (13%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.283Z"
+  },
+  {
+    "conditionKey": "cron-fire-rate:evidence-review-catchup.yml",
+    "title": "evidence-review-catchup.yml is running 23% of the time it should",
+    "description": "In the last 14 days GitHub started 39 scheduled runs of evidence-review-catchup.yml where its cron (17 */2 * * *) calls for 168. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "39 / 168 (23%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.323Z"
+  },
+  {
+    "conditionKey": "cron-fire-rate:opening-night-broadcast.yml",
+    "title": "opening-night-broadcast.yml is running 24% of the time it should",
+    "description": "In the last 14 days GitHub started 41 scheduled runs of opening-night-broadcast.yml where its cron (30 12 * * *, 41 13-23 * * *) calls for 168. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "41 / 168 (24%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.366Z"
+  },
+  {
+    "conditionKey": "cron-fire-rate:opening-night-completeness-check.yml",
+    "title": "opening-night-completeness-check.yml is running 28% of the time it should",
+    "description": "In the last 14 days GitHub started 188 scheduled runs of opening-night-completeness-check.yml where its cron (*/15 * * * *) calls for 672. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "188 / 672 (28%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.404Z"
+  },
+  {
+    "conditionKey": "cron-fire-rate:opening-night-reviews.yml",
+    "title": "opening-night-reviews.yml is running 57% of the time it should",
+    "description": "In the last 14 days GitHub started 64 scheduled runs of opening-night-reviews.yml where its cron (0 5 * * *, 0 17 * * *, 0 2,8,11,14,20,23 * * *) calls for 112. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "64 / 112 (57%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.482Z"
+  },
+  {
+    "conditionKey": "cron-fire-rate:audit-reverse-discovery.yml",
+    "title": "audit-reverse-discovery.yml is running 59% of the time it should",
+    "description": "In the last 14 days GitHub started 33 scheduled runs of audit-reverse-discovery.yml where its cron (25 4,10,16,22 * * *) calls for 56. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "33 / 56 (59%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.520Z"
+  },
+  {
+    "conditionKey": "cron-fire-rate:enrich-reviews.yml",
+    "title": "enrich-reviews.yml is running 60% of the time it should",
+    "description": "In the last 14 days GitHub started 35 scheduled runs of enrich-reviews.yml where its cron (30 4,10,16,22 * * *, 30 1 * * 0) calls for 58. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "35 / 58 (60%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.560Z"
+  },
+  {
+    "conditionKey": "cron-fire-rate:mirror-to-gitlab.yml",
+    "title": "mirror-to-gitlab.yml is running 63% of the time it should",
+    "description": "In the last 14 days GitHub started 35 scheduled runs of mirror-to-gitlab.yml where its cron (0 */6 * * *) calls for 56. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "35 / 56 (63%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.609Z"
+  },
+  {
+    "conditionKey": "cron-fire-rate:collect-review-texts.yml",
+    "title": "collect-review-texts.yml is running 68% of the time it should",
+    "description": "In the last 14 days GitHub started 30 scheduled runs of collect-review-texts.yml where its cron (30 4,10,18 * * *, 0 0 * * 0) calls for 44. Reviews this workflow collects arrive late or not at all while it is skipped, and its success-age check still passes because a few runs land.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Fired / expected",
+        "value": "30 / 44 (68%)"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:12.700Z"
+  },
+  {
+    "conditionKey": "cron-cancelled:opening-night-orchestrator.yml",
+    "title": "opening-night-orchestrator.yml: 34 of its 98 scheduled runs were cancelled",
+    "description": "Cancelled runs skip failure notification (`if: always()` does not run on cancel), so a workflow killed at its timeout cap or by a concurrency group is silent. 34 of 98 scheduled runs in the last 14 days were cancelled.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Cancelled / scheduled runs",
+        "value": "34 / 98"
+      }
+    ],
+    "queuedAt": "2026-11-27T21:32:13.674Z"
+  },
+  {
+    "conditionKey": "discovery-caller-missing",
+    "title": "272 review files were ingested with no caller recorded",
+    "description": "Every ingest must name its pipeline; 272 files stamped since 2026-11-22 have source submit-review-form (or similar) and no ingestSource, so the discovery-share report cannot say who found them.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-27T21:28:39.819Z"
+    "queuedAt": "2026-11-27T21:32:19.881Z"
   }
 ]
