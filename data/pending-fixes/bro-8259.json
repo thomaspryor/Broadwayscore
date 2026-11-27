@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8259",
   "planId": "926c1082-2bb3-40cb-ab08-15fbfcb951ec",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-27T10:32:40.101Z",
   "submitter": {
     "name": null,
@@ -84,5 +84,44 @@
         "description": "shows.json: life-and-times-of-michael-k-regional-2027.closingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-27T11:12:18.812Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for in-old-age-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for life-and-times-of-michael-k-regional-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for life-and-times-of-michael-k-regional-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for life-and-times-of-michael-k-regional-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for life-and-times-of-michael-k-regional-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for life-and-times-of-michael-k-regional-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for life-and-times-of-michael-k-regional-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
