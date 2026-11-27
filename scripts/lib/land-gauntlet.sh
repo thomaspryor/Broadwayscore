@@ -110,6 +110,9 @@ if [ -n "$CHECKOUT" ] && [ -z "$RETURN_TO" ]; then echo "land-gauntlet.sh: --che
 mkdir -p "$OUT"  # before --checkout: npm_ci logs into it (BRO-6114)
 npm_ci() {
   local log="$OUT/prep-npm-ci-$1.log"
+  # BRO-7150: a throwaway local worktree links node_modules to the shared main checkout's install
+  # (land-local-check.js linkIgnored); npm ci through that link would wipe it for every session.
+  if [ -L node_modules ]; then echo "refusing npm ci ($1): node_modules is a symlink to a shared install ($(readlink node_modules))" | tee -a "$log" >&2; return 1; fi
   npm ci --prefer-offline --no-audit --no-fund > "$log" 2>&1 && return 0
   echo "npm ci ($1) failed once, retrying in 15s" | tee -a "$log"; sleep "${GAUNTLET_NPM_RETRY_SEC:-15}"
   npm ci --prefer-offline --no-audit --no-fund >> "$log" 2>&1

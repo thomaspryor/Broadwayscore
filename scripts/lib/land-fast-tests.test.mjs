@@ -198,3 +198,12 @@ test('a .github change selects tests that scan .github through fs without naming
   assert.deepEqual(pick(['.github/workflows/land.yml']), ['tests/unit/scan.test.mjs']);
   assert.deepEqual(pick(['scripts/lib/widget-maker.js']), [], 'a non-.github change does not pull it in');
 });
+
+test('BRO-7150: depsChangedFiles names a package.json/lock change on base...tip (the CLI then skips)', () => {
+  let seen;
+  const stub = (out, code = 0) => (cwd, args) => { seen = args; return { code, stdout: out, stderr: '' }; };
+  assert.deepEqual(F.depsChangedFiles('/r', 'B', 'T', stub('package-lock.json\npackage.json')), ['package-lock.json', 'package.json']);
+  assert.deepEqual(seen, ['diff', '--name-only', 'B...T', '--', 'package.json', 'package-lock.json']);
+  assert.deepEqual(F.depsChangedFiles('/r', 'B', 'T', stub('')), []);
+  assert.deepEqual(F.depsChangedFiles('/r', 'B', 'T', stub('package.json', 128)), [], 'git failure: judge as usual');
+});

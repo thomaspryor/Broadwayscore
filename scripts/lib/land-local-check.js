@@ -398,7 +398,7 @@ function linkIgnored(root, dir, made = []) {
 function resolvedNodeModules(root) {
   for (let d = path.resolve(root); ; d = path.dirname(d)) {
     const nm = path.join(d, 'node_modules');
-    try { if (fs.statSync(nm).isDirectory()) return nm; } catch { /* keep walking */ }
+    if (fs.existsSync(nm)) return nm; // follows a symlinked node_modules; a dangling one is skipped
     if (path.dirname(d) === d) return null;
   }
 }

@@ -241,6 +241,12 @@ function git(cwd, args) {
   return { code: r.status === null ? 1 : r.status, stdout: (r.stdout || '').trim(), stderr: (r.stderr || '').trim() };
 }
 
+/** package.json / package-lock.json changed on <base>...<tip> -> [paths] ([] when unchanged or git fails). */
+function depsChangedFiles(cwd, base, tip, run = git) {
+  const r = run(cwd, ['diff', '--name-only', `${base}...${tip}`, '--', 'package.json', 'package-lock.json']);
+  return r.code === 0 && r.stdout ? r.stdout.split('\n').filter(Boolean) : [];
+}
+
 function changedFiles(cwd, base, tip) {
   const r = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${tip}`]);
   return r.code === 0 ? r.stdout.split('\n').filter(Boolean) : null;
@@ -481,6 +487,15 @@ async function main(argv = process.argv.slice(2)) {
   const tip = git(ROOT, ['rev-parse', '--verify', '-q', `${o.tip}^{commit}`]).stdout;
   if (!tip) { console.error(`land-fast-tests: unknown --tip ${o.tip}`); return 3; }
   const clean = !git(ROOT, ['status', '--porcelain', '--untracked-files=no']).stdout;
+  // BRO-7150 review: a branch that changes dependencies would run here on this checkout's (or the
+  // shared main's) install, not its own; land.yml reinstalls (--deps-changed). Judge nothing.
+  const deps = depsChangedFiles(ROOT, o.base, tip);
+  if (deps.length) {
+    const res = { status: 'skip', reason: `the branch changes ${deps.join(', ')}; land.yml reinstalls and judges it`, newFailures: [], ran: 0, ms: 0 };
+    if (o.json) console.log(JSON.stringify(res, null, 2));
+    else console.log(`land-fast-tests: skip (${res.reason})`);
+    return 3;
+  }
   const judge = async (root) => {
     if (root !== ROOT) mirrorLandRegeneration(root, o.base);
     const sel = selectForTree(root, o.base, tip, { profile: o.profile });
@@ -503,6 +518,6 @@ async function main(argv = process.argv.slice(2)) {
   return res.status === 'fail' ? 1 : res.status === 'skip' ? 3 : 0;
 }
 
-module.exports = { MIRRORED_SOURCES, MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, MAX_STRONG, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, colocatedTests, writeScopeDir, runFast, runGateFiles, changedFiles, parseArgs };
+module.exports = { depsChangedFiles, MIRRORED_SOURCES, MAX_CHANGED_FOR_TARGETING, LOCAL_SKIP, withWorktree, mirrorLandRegeneration, INVARIANT_TESTS, BROAD_DIRS, SLOW_TESTS, MAX_TARGETED, MAX_STRONG, FAST_GATES, gateFor, matchTier, selectFastTests, universeFor, selectForTree, colocatedTests, writeScopeDir, runFast, runGateFiles, changedFiles, parseArgs };
 
 if (require.main === module) { hookTerm(); main().then((code) => { process.exitCode = code; }); }

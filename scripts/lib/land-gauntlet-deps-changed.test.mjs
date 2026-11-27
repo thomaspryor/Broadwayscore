@@ -104,3 +104,18 @@ test('a return-side install that fails twice only warns: the measurement is comp
   assert.ok(fs.existsSync(join(r.out, 'meta.json')));
   assert.equal(r.head, ctx.branch);
 });
+
+test('BRO-7150: a symlinked node_modules (shared install) is never reinstalled through, and the base is not judged', () => {
+  const ctx = setup();
+  const shared = join(ctx.root, 'shared-node_modules');
+  fs.mkdirSync(shared);
+  fs.writeFileSync(join(shared, 'keep.txt'), 'x');
+  fs.symlinkSync(shared, join(ctx.repo, 'node_modules'));
+  fs.appendFileSync(join(ctx.repo, '.git', 'info', 'exclude'), 'node_modules\n');
+  const r = runGauntlet(ctx);
+  assert.equal(r.status, 1, r.log);
+  assert.match(r.log, /refusing npm ci \(checkout\): node_modules is a symlink/);
+  assert.deepEqual(r.calls, [], 'npm never ran');
+  assert.ok(fs.existsSync(join(shared, 'keep.txt')), 'the shared install is intact');
+  assert.equal(r.head, ctx.branch, 'returned to the branch');
+});

@@ -220,6 +220,8 @@ test('missingInvariants names per-file causes behind 3+ refusals not on the fast
     { file: 'tests/unit/b.test.mjs', gate: 'unit-tests-node', refusals: 3 },
   ]);
   assert.deepEqual(R.missingInvariants([], { invariants: [] }), []);
+  // summed across gates (Codex review): 2 + 2 in two gates clears the 3-refusal bar
+  assert.deepEqual(R.missingInvariants([{ cause: 'unit-tests-node: tests/unit/c.test.mjs', refusals: 2 }, { cause: 'scripts-lib-tests: tests/unit/c.test.mjs', refusals: 2 }], { invariants: [] }).map((m) => [m.file, m.refusals]), [['tests/unit/c.test.mjs', 4]]);
   assert.equal(R.parseArgs(['--check-invariants']).checkInvariants, true);
   assert.match(R.parseArgs(['--gates', '--check-invariants']).error, /--gates/);
 });

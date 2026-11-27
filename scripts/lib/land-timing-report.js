@@ -327,12 +327,16 @@ function printText(rep, { days, split }) {
  */
 function missingInvariants(causes, { invariants, slow = new Set(), minRefusals = 3 } = {}) {
   const have = new Set(invariants || []);
-  const out = [];
+  // Summed per file across gates: a file that refused 2 lands in each of two gates is a 4-refusal offender.
+  const byFile = new Map();
   for (const c of causes || []) {
     const m = String(c.cause || '').match(/^([\w-]+): (\S+\.test\.m?[jt]sx?)$/);
-    if (!m || c.refusals < minRefusals || have.has(m[2]) || slow.has(m[2])) continue;
-    out.push({ file: m[2], gate: m[1], refusals: c.refusals });
+    if (!m || have.has(m[2]) || slow.has(m[2])) continue;
+    const e = byFile.get(m[2]) || { file: m[2], gate: m[1], refusals: 0 };
+    e.refusals += c.refusals;
+    byFile.set(m[2], e);
   }
+  const out = [...byFile.values()].filter((e) => e.refusals >= minRefusals);
   return out.sort((a, b) => b.refusals - a.refusals || (a.file < b.file ? -1 : 1));
 }
 

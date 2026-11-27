@@ -409,9 +409,13 @@ land_via_landing_branch() {
       log "fast-tests floor: skipped (origin/$land_name is already at ${tip:0:10}; resuming the wait)"
     elif [ -f "$fast" ] && command -v node >/dev/null 2>&1; then
       log "fast-tests floor: invariant + targeted land tests on ${tip:0:10} vs ${fork:0:10} (scripts/lib/land-fast-tests.js)"
-      local fast_rc=0
-      (cd "$src_dir" && node "$fast" run --base "$fork" --tip "$tip" --worktree --timeout-ms 120000) || fast_rc=$?
-      if [ "$fast_rc" -eq 1 ]; then
+      local fast_rc=0 fast_json fast_status=""
+      fast_json=$(mktemp "${TMPDIR:-/tmp}/merge-fast-tests.XXXXXX")
+      (cd "$src_dir" && node "$fast" run --base "$fork" --tip "$tip" --worktree --timeout-ms 120000 --json > "$fast_json") || fast_rc=$?
+      # Refuse only on the tool's own verdict: a crash on load also exits 1 and proves nothing.
+      fast_status=$(node -e 'try{const r=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));console.log(r.status||"");for(const f of r.newFailures||[])console.error(`  NEW ${f.gate}: ${f.file} :: ${f.name}`);if(r.reason)console.error(`  (${r.reason})`)}catch{console.log("")}' "$fast_json")
+      rm -f "$fast_json"
+      if [ "$fast_rc" -eq 1 ] && [ "$fast_status" = "fail" ]; then
         die "fast-tests floor: the test(s) above fail on $BRANCH but pass at its fork point; land.yml would refuse this land ~20 min in. Fix them, commit, re-run (MERGE_SKIP_FAST_TESTS=1 to bypass a failure that is not yours)"
       elif [ "$fast_rc" -ne 0 ]; then
         log "fast-tests floor: could not judge (exit $fast_rc) — continuing; land.yml decides"
