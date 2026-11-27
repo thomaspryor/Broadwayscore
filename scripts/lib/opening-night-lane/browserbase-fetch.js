@@ -65,6 +65,8 @@ class BrowserbaseUnavailable extends Error {
  * @param {(sessionId: string) => Promise<void>} [p.releaseSession] - ends a created session that never got a browser
  * @param {object} [p.env] - needs BROWSERBASE_API_KEY and BROWSERBASE_PROJECT_ID, or the route is off
  * @param {string} [p.caller] - session attribution and allowance key: CALLER (the live night) or SHADOW_CALLER
+ * @param {string} [p.host] - host recorded on the session's ledger row (default talkinbroadway.com; BRO-6956 muckrack.js passes its own)
+ * @param {string} [p.purpose] - free-text session purpose for the ledger
  * @param {number} [p.maxSessions] - sessions this run may create
  * @param {number} [p.sessionTimeoutSec] - Browserbase session timeout; the session is replaced 5 min before it
  * @param {number} [p.fetchTimeoutMs] - one fetch, navigation and challenge wait together
@@ -73,7 +75,8 @@ class BrowserbaseUnavailable extends Error {
  */
 function createBrowserbaseFetcher({
   createSession, connect, readPage, releaseSession = async () => {}, env = process.env, now = Date.now, log = () => {},
-  caller = CALLER, maxSessions = 8, sessionTimeoutSec = 3600, fetchTimeoutMs = 60000, cooldownMs = 15 * 60 * 1000,
+  caller = CALLER, host = BROWSERBASE_HOSTS[0], purpose = 'opening-night lane fetch (Talkin Broadway, logged-in WSJ)',
+  maxSessions = 8, sessionTimeoutSec = 3600, fetchTimeoutMs = 60000, cooldownMs = 15 * 60 * 1000,
   reconnectTimeoutMs = 15000, cookiesFor = (host) => require('../cookie-loader').loadCookiesForDomain(host),
 }) {
   let offReason = env.BROWSERBASE_API_KEY && env.BROWSERBASE_PROJECT_ID ? null : 'BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set';
@@ -97,7 +100,7 @@ function createBrowserbaseFetcher({
     let session;
     try {
       session = await createSession({
-        caller, purpose: 'opening-night lane fetch (Talkin Broadway, logged-in WSJ)', host: BROWSERBASE_HOSTS[0], category: 'discovery',
+        caller, purpose, host, category: 'discovery',
         body: { timeout: sessionTimeoutSec, browserSettings: { solveCaptchas: true } },
       });
     } catch (e) {
@@ -287,6 +290,14 @@ function defaultIsFullPage(html, url) {
   return String(extractArticleText(html, hostOf(url)) || '').trim().length >= floor;
 }
 
+/** Ends a created Browserbase session (it bills until its timeout otherwise). */
+function bbSessionReleaser(env = process.env) {
+  return (id) => fetch(`${require('../browserbase-session').SESSIONS_URL}/${id}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'X-BB-API-Key': env.BROWSERBASE_API_KEY },
+    body: JSON.stringify({ projectId: env.BROWSERBASE_PROJECT_ID, status: 'REQUEST_RELEASE' }),
+  }).then(() => {});
+}
+
 /** The real wiring: scraper.fetchPage plus a Browserbase fetcher over createBbSession and Playwright, loaded lazily. */
 function createLaneFetch({ env = process.env, log = (m) => console.log(m), caller = CALLER } = {}) {
   const { fetchPage } = require('../scraper');
@@ -295,12 +306,9 @@ function createLaneFetch({ env = process.env, log = (m) => console.log(m), calle
     createSession: (opts) => require('../browserbase-session').createBbSession(opts),
     connect: (connectUrl) => require('playwright').chromium.connectOverCDP(connectUrl),
     readPage: (page, url, opts) => require('../browser-read-page').readBrowserPage(page, url, opts),
-    releaseSession: (id) => fetch(`${require('../browserbase-session').SESSIONS_URL}/${id}`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json', 'X-BB-API-Key': env.BROWSERBASE_API_KEY },
-      body: JSON.stringify({ projectId: env.BROWSERBASE_PROJECT_ID, status: 'REQUEST_RELEASE' }),
-    }).then(() => {}),
+    releaseSession: bbSessionReleaser(env),
   });
   return { fetchPage: laneFetchPage({ fetchPage, browserbase }), browserbase, close: () => browserbase.close() };
 }
 
-module.exports = { BROWSERBASE_HOSTS, LOGGED_IN_HOSTS, routesLoggedIn, CALLER, SHADOW_CALLER, routesThroughBrowserbase, BrowserbaseUnavailable, createBrowserbaseFetcher, laneFetchPage, createLaneFetch };
+module.exports = { BROWSERBASE_HOSTS, LOGGED_IN_HOSTS, routesLoggedIn, CALLER, SHADOW_CALLER, routesThroughBrowserbase, BrowserbaseUnavailable, createBrowserbaseFetcher, bbSessionReleaser, laneFetchPage, createLaneFetch };
