@@ -137,6 +137,42 @@ test('main: dry-run is read-only; a real guarded save dates all four duplicates 
   }
 });
 
+// BRO-8407: "Sasha Velour's Travesty" (venue page) vs the catalog's "Travesty"
+// (TodayTix), same room, same dates. findExistingOB never paired them, so the
+// promoter minted a second row and shows-write-guard threw at save, aborting
+// every other promotion in the run on each retry. The promoter must now skip
+// the candidate itself, using the guard's own detector, and still promote the rest.
+test('main: a title-fragment duplicate of a catalogued show is skipped, not minted, and does not abort the run (BRO-8407)', async () => {
+  const dir = fs.mkdtempSync(path.join(ROOT, '.tmp-ob-fragment-dup-'));
+  try {
+    const io = {
+      showsPath: path.join(dir, 'shows.json'), stagingPath: path.join(dir, 'staging.json'),
+      lastPromotionFile: path.join(dir, 'last-promotions.json'), promotionLog: path.join(dir, 'promotion-log.jsonl'),
+      reverseDiscoveryPath: path.join(dir, 'missing-reverse-discovery.json'), todayIso: '2026-11-27',
+      fetchTmOffBroadway: async () => ({ rows: [] }),
+    };
+    const base = { category: 'off-broadway', market: 'broadway', type: 'play', status: 'upcoming', openingDate: null };
+    const catalogued = {
+      ...base, id: 'travesty-off-broadway-2027', title: 'Travesty', slug: 'travesty-off-broadway', venue: 'Daryl Roth Theatre',
+      previewsStartDate: '2027-02-23', closingDate: '2027-03-21',
+    };
+    createShowsWriteGuard(io.showsPath).saveShows({ _meta: { totalShows: 1 }, shows: [catalogued] });
+    const listing = { category: 'off-broadway', discoveredAt: '2026-11-26T18:02:36.805Z', listingEvidence: 'editorial-listing' };
+    writeStagingCandidates([
+      { ...listing, title: "Sasha Velour's Travesty", venue: 'Daryl Roth Theatre', slug: 'sasha-velours-travesty', source: 'venue-page:daryl-roth-theatre', listingFirstDate: '2027-02-23', listingLastDate: '2027-03-21', candidateHash: 'edf453efddeaa931' },
+      { ...listing, title: 'An Unrelated Brand New Play', venue: 'Daryl Roth Theatre', slug: 'an-unrelated-brand-new-play', source: 'venue-page:daryl-roth-theatre', listingFirstDate: '2027-04-10', listingLastDate: '2027-05-30', candidateHash: '1111111111111111' },
+    ], io.stagingPath);
+    const result = await main(['--regional-only'], io);
+    const ids = JSON.parse(fs.readFileSync(io.showsPath, 'utf8')).shows.map(s => s.id);
+    assert.ok(!ids.includes('sasha-velours-travesty-off-broadway-2027'), 'the fragment-title duplicate must not be minted');
+    assert.ok(result.skipped.some(s => /sasha velour/i.test(s.candidate.title) && /travesty-off-broadway-2027/.test(s.reason)), 'skipped as a duplicate of the catalogued row');
+    assert.ok(ids.includes('an-unrelated-brand-new-play-off-broadway-2027'), 'an unrelated candidate in the same run still promotes');
+    assert.ok(!loadStaging(io.stagingPath).some(c => c.candidateHash === 'edf453efddeaa931'), 'the duplicate leaves staging so it cannot fail the next run');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 const BASE = {
   title: 'Some OB Show',
   venue: "St. Luke's Theatre", // canonical off-broadway venue

@@ -114,7 +114,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
+const { duplicateOfCandidate, newRowFragmentFindings } = require('./lib/shows-duplicate-rule');
 const { createShowsWriteGuard, SHOWS_PATH } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { findExistingMatch } = require('./lib/candidate-dedup');
@@ -1203,6 +1203,16 @@ async function evaluateCandidates(candidates, ctx) {
       const duplicate = duplicateOfCandidate([...allShows, ...promoted.map(p => p.entry)], entry);
       if (duplicate) {
         prune(c, 'skip-duplicate', `exists as ${duplicate.existing.id}`, { id: entry.id });
+        continue;
+      }
+
+      // BRO-8407: ask the save guard's own title-fragment detector before minting a row,
+      // so a "Performer: Title" listing beside a catalogued "Title" is skipped here
+      // instead of throwing at save and aborting the whole run.
+      const poolForFragment = [...allShows, ...promoted.map(p => p.entry)];
+      const fragment = newRowFragmentFindings(poolForFragment, [...poolForFragment, entry])[0];
+      if (fragment) {
+        prune(c, 'skip-duplicate', `exists as ${fragment.existing.id} (${fragment.reason})`, { id: entry.id });
         continue;
       }
 

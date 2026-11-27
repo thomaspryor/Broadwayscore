@@ -60,7 +60,7 @@ const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { resolveMetro } = require('./lib/venue-metro');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
 const { decideUkFlagshipPromotion, stageUkRegionalCandidates, ukFlagshipShows, findSameProduction } = require('./lib/uk-regional-guardian');
-const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
+const { duplicateOfCandidate, newRowFragmentFindings } = require('./lib/shows-duplicate-rule');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { datedBackfillFor } = require('./lib/ob-venue-date-backfill');
 const { productionIdYear } = require('./lib/todaytix-dates');
@@ -1026,6 +1026,22 @@ async function main(args = process.argv.slice(2), io = {}) {
       skipped.push({ candidate: c, reason });
       logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, id: entry.id, reason });
       continue;
+    }
+    // BRO-8407: the save guard (shows-write-guard) refuses a new row whose title
+    // is a fragment of a catalogued one at the same venue with overlapping dates
+    // ("Sasha Velour's Travesty" beside "Travesty"). findExistingOB never paired
+    // them, so one such candidate threw at save and aborted every promotion in
+    // the run, every run. Ask the guard's own detector here instead, so the two
+    // cannot disagree. A declared distinctFrom on either row still wins.
+    {
+      const pool = [...showsData.shows, ...promoted.map(p => p.entry)];
+      const frag = newRowFragmentFindings(pool, [...pool, entry])[0];
+      if (frag) {
+        const reason = `exists as ${frag.existing.id} (${frag.reason})`;
+        skipped.push({ candidate: c, reason });
+        logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, id: entry.id, matchedTo: frag.existing.id, matchReason: frag.reason });
+        continue;
+      }
     }
     existingSlugs.add(entry.slug);
     promoted.push({ candidate: c, entry, confirmationSource: source, confirmationReason: reason });
