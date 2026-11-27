@@ -556,7 +556,8 @@ export default function ShowPageBelowFold({
               )}
               {show.theaterAddress && (
                 <>
-                  {', '}
+                  {/* A regional venue already carries "Theatre, City, ST": a comma before the address reads as a stray one. */}
+                  {isRegional ? ' · ' : ', '}
                   <a
                     href={getGoogleMapsUrl(show.theaterAddress)}
                     target="_blank"
