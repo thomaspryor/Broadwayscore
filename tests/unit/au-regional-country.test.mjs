@@ -76,3 +76,11 @@ test('class guard: every "not UK" regional consumer was reviewed for AU', () => 
   walk('src'); walk('scripts');
   assert.deepEqual(hits.filter((h) => !REVIEWED.has(h)), [], 'unreviewed !isUkRegional* consumers');
 });
+
+test('AU regional runs use Sydney calendar day and the stale-run rule (BRO-8389)', () => {
+  const ac = require('../../scripts/lib/auto-close-expired.js');
+  // 2026-11-25 16:00 UTC is already 2026-11-26 in Sydney, still 2026-11-25 in New York.
+  const now = new Date('2026-11-25T16:00:00Z');
+  assert.equal(ac.getMarketDate('regional', now, 'Roslyn Packer Theatre, Sydney, NSW'), '2026-11-26');
+  assert.equal(ac.getMarketDate('regional', now, 'Arena Stage, Washington, DC'), '2026-11-25');
+});

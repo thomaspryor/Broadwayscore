@@ -20,11 +20,11 @@ const { getMarketDate } = require('./auto-close-expired');
 
 /**
  * @template {string} S
- * @param {{ status: S, category?: string, openingDate?: string | null, closingDate?: string | null }} show
+ * @param {{ status: S, category?: string, venue?: string, openingDate?: string | null, closingDate?: string | null }} show
  * @param {string} [today] YYYY-MM-DD in the show's market; defaults to now
  * @returns {S | 'open' | 'closed'}
  */
-function normalizeShowStatus(show, today = getMarketDate(show.category)) {
+function normalizeShowStatus(show, today = getMarketDate(show.category, new Date(), show.venue)) {
   if (show.status === 'previews' && show.openingDate && show.openingDate <= today) return 'open';
   if (show.status === 'open' && show.closingDate && show.closingDate < today) return 'closed';
   return show.status;
@@ -32,11 +32,11 @@ function normalizeShowStatus(show, today = getMarketDate(show.category)) {
 
 /**
  * @template {string} S
- * @param {{ status: S, category?: string, openingDate?: string | null, closingDate?: string | null, previewsStartDate?: string | null }} show
+ * @param {{ status: S, category?: string, venue?: string, openingDate?: string | null, closingDate?: string | null, previewsStartDate?: string | null }} show
  * @param {string} [today] YYYY-MM-DD in the show's market; defaults to now
  * @returns {S | 'open' | 'closed' | 'upcoming'}
  */
-function effectiveShowStatus(show, today = getMarketDate(show.category)) {
+function effectiveShowStatus(show, today = getMarketDate(show.category, new Date(), show.venue)) {
   const status = normalizeShowStatus(show, today);
   if (status === 'previews' && show.previewsStartDate && show.previewsStartDate > today) return 'upcoming';
   return status;

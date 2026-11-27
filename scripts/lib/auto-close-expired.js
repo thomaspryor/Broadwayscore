@@ -3,11 +3,13 @@
  * Closing dates are calendar dates in the show's market timezone
  * (ET for Broadway/OB, London for WE/OWE); UTC comparison can close a day early.
  */
-const { isUkRegionalVenue } = require('./market-label');
+const { isUkRegionalVenue, isAuRegionalVenue } = require('./market-label');
 
-function getMarketDate(category, now = new Date()) {
+function getMarketDate(category, now = new Date(), venue) {
+  // BRO-8389: an Australian regional run's calendar day is Sydney's, ~15h ahead of New York.
   const tz = (category === 'west-end' || category === 'off-west-end')
     ? 'Europe/London'
+    : (category === 'regional' && venue && isAuRegionalVenue(venue)) ? 'Australia/Sydney'
     : 'America/New_York';
   return new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(now);
 }
@@ -20,7 +22,7 @@ const UK_REGIONAL_NO_CLOSE_DAYS = 90;
 
 function isStaleUkRegionalRun(show, today) {
   if (show.category !== 'regional' || show.closingDate || !show.openingDate) return false;
-  if (!isUkRegionalVenue(show.venue)) return false;
+  if (!isUkRegionalVenue(show.venue) && !isAuRegionalVenue(show.venue)) return false;
   const age = (Date.parse(today) - Date.parse(show.openingDate)) / 86400000;
   return age > UK_REGIONAL_NO_CLOSE_DAYS;
 }
@@ -29,7 +31,7 @@ function isStaleUkRegionalRun(show, today) {
 function closeExpiredShows(shows, { apply = false, now = new Date() } = {}) {
   const closedList = [];
   for (const show of Object.values(shows)) {
-    const today = getMarketDate(show.category, now);
+    const today = getMarketDate(show.category, now, show.venue);
     const expired = show.closingDate && show.closingDate < today;
     // BRO-5489: a run that ends inside previews (a two-night engagement, a run
     // cancelled before press night) has no openingDate, so it never became 'open'
