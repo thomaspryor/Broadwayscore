@@ -483,8 +483,14 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
   const moreRev = more?.rev;
   const moreKey = moreUrl ? JSON.stringify([moreUrl, moreRev]) : null;
   const rest = loaded?.key === moreKey ? loaded.rows : null;
-  // BRO-8176 (owner 2026-11-26, option B): a mismatch shows no note. The list
-  // keeps only the inline rows, and Show more retries the fetch on click.
+  // The key of the current props, so a late answer for older props is dropped.
+  const moreKeyRef = useRef(moreKey);
+  moreKeyRef.current = moreKey;
+  // BRO-8176 (owner 2026-11-26, option B): a revision mismatch shows no note.
+  // The idle prefetch drops mismatched rows (only the inline rows show); a
+  // click retries the fetch and, if it is still mismatched, uses the newest
+  // rows rather than leave a button that never loads. Show more expands only
+  // once the rows are in, so it never flips to Show less over nothing.
   // Prefetch when the browser is idle so Show more and the sorts are instant;
   // an interaction before that fetches too.
   useEffect(() => {
@@ -499,7 +505,17 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
       if (hasIdle) window.cancelIdleCallback(id); else window.clearTimeout(id);
     };
   }, [moreUrl, moreRev]);
-  const ensureMore = () => { if (moreUrl && moreKey && !rest) loadMore(moreUrl, moreRev).then(d => { if (d.state === 'ok') setLoaded({ key: moreKey, rows: d.rows }); }); };
+  // Resolves true once the full list is in place (or there is nothing to load).
+  const ensureMore = (): Promise<boolean> => {
+    if (!moreUrl || !moreKey || rest) return Promise.resolve(true);
+    const key = moreKey;
+    return loadMore(moreUrl, moreRev).then(d => {
+      const rows = d.state === 'ok' ? d.rows : d.state === 'mismatch' ? d.latestRows : null;
+      if (!rows || moreKeyRef.current !== key) return false;
+      setLoaded({ key, rows });
+      return true;
+    });
+  };
   const inlineKeys = useMemo(() => new Set(inlineReviews.map(getReviewKey)), [inlineReviews]);
   const reviews = useMemo(() => (rest ? [...inlineReviews, ...rest.filter(r => !inlineKeys.has(getReviewKey(r)))] : inlineReviews), [inlineReviews, inlineKeys, rest]);
   const totalCount = more ? Math.max(more.totalCount, reviews.length) : reviews.length;
@@ -539,20 +555,20 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
         <div className="flex items-center gap-3 text-xs text-fg-muted mb-1">
           <span>Sort:</span>
           <button
-            onClick={() => { ensureMore(); setSortMode('score'); }}
+            onClick={() => { void ensureMore(); setSortMode('score'); }}
             className={`font-medium transition-colors ${sortMode === 'score' ? 'text-white' : 'text-fg-muted hover:text-gray-300'}`}
           >
             By Score
           </button>
           <button
-            onClick={() => { ensureMore(); setSortMode('date'); }}
+            onClick={() => { void ensureMore(); setSortMode('date'); }}
             className={`font-medium transition-colors ${sortMode === 'date' ? 'text-white' : 'text-fg-muted hover:text-gray-300'}`}
           >
             By Date
           </button>
           {hasStops && (
             <button
-              onClick={() => { ensureMore(); setSortMode('city'); }}
+              onClick={() => { void ensureMore(); setSortMode('city'); }}
               className={`font-medium transition-colors ${sortMode === 'city' ? 'text-white' : 'text-fg-muted hover:text-gray-300'}`}
             >
               By City
@@ -599,7 +615,7 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
 
       {shouldCollapse && (
         <button
-          onClick={() => { ensureMore(); setIsExpanded(!isExpanded); }}
+          onClick={() => { if (isExpanded) setIsExpanded(false); else ensureMore().then(ok => { if (ok) setIsExpanded(true); }); }}
           className="w-full py-3 px-4 mt-2 flex items-center justify-center gap-2 text-sm font-medium text-brand hover:text-brand-hover bg-surface-overlay/50 hover:bg-surface-overlay rounded-lg transition-all border border-white/5 hover:border-white/10"
           aria-expanded={isExpanded}
           aria-controls="reviews-list"

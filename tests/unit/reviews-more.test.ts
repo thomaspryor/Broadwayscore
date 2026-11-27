@@ -54,9 +54,9 @@ test('stale reviews.json: retried once past the browser cache, then used when it
   assert.deepEqual(sleeps, [MORE_RETRY_DELAY_MS]);
 });
 
-test('still another revision after the retry: mismatch, the old rows are never returned', async () => {
-  const { f } = fakeFetch(res([{ old: 1 }], 'base'), res([{ old: 1 }], 'base'));
-  assert.deepEqual(await fetchMoreRows('/show/x/reviews.json', H1, { fetch: f, sleep }), { state: 'mismatch' });
+test('still another revision after the retry: mismatch, never ok; only the retry rows ride along for an explicit click', async () => {
+  const { f } = fakeFetch(res([{ first: 1 }], 'base'), res([{ retry: 1 }], 'base'));
+  assert.deepEqual(await fetchMoreRows('/show/x/reviews.json', H1, { fetch: f, sleep }), { state: 'mismatch', latestRows: [{ retry: 1 }] });
 });
 
 test('reader off (no expected rev): rows used as before, header ignored, no retry', async () => {
@@ -81,7 +81,9 @@ test('wiring: reviews.json carries the marker only while the flag is set', () =>
   assert.match(page, /showRefreshConfigured\(\) \? \{ other: \{ \[SHOW_REFRESH_REV_META\]/);
   assert.match(page, /rev: showRefreshConfigured\(\) \? render\.rev : undefined/);
   assert.match(list, /fetchMoreRows<ReviewListItem>\(url, rev\)/);
-  assert.match(list, /d\.state === 'ok'\) setLoaded/, 'only rows from the same revision are merged');
+  assert.match(list, /!cancelled && d\.state === 'ok'\) setLoaded/, 'the idle prefetch merges only same-revision rows');
+  assert.match(list, /d\.state === 'mismatch' \? d\.latestRows/, 'a click uses the newest rows rather than a dead button');
+  assert.match(list, /ensureMore\(\)\.then\(ok => \{ if \(ok\) setIsExpanded\(true\)/, 'Show more expands only once the rows are in');
   // Owner 2026-11-26 (BRO-8176 option B): no "being updated" note on a mismatch.
   assert.doesNotMatch(list, /being updated/i, 'no mismatch note in ReviewsList');
 });

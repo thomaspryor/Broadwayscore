@@ -9,12 +9,15 @@
 // `expectedRev` and reviews.json answers with the x-show-refresh-hash header.
 // A mismatch is retried once after a pause, bypassing the browser cache (the
 // first stale hit has started the CDN's background regeneration). Still
-// mismatched => 'mismatch': the list shows only the inline rows, never a mix.
+// mismatched => 'mismatch' carrying the retry's rows as latestRows. The caller
+// decides: a background prefetch drops them (the list keeps only the inline
+// rows); an explicit click uses them (BRO-8176: a tab left open past a publish
+// must not get a Show more button that never loads, and the owner chose no note).
 // With no expectedRev (reader off: the page never passes one) the response is
 // used as before, header unchecked. Client-safe: no server imports.
 import { SHOW_REFRESH_REV_HEADER, isRefreshedRev } from './show-refresh-core';
 
-export type MoreRowsResult<T> = { state: 'ok'; rows: T[] } | { state: 'mismatch' } | { state: 'error'; error: string };
+export type MoreRowsResult<T> = { state: 'ok'; rows: T[] } | { state: 'mismatch'; latestRows: T[] } | { state: 'error'; error: string };
 
 /**
  * Same data? 'base' and 'base-error' both mean the build's data, and an absent
@@ -49,7 +52,7 @@ export async function fetchMoreRows<T>(
     if (sameRenderData(expectedRev, again.headers.get(SHOW_REFRESH_REV_HEADER))) {
       return { state: 'ok', rows: (await again.json()) as T[] };
     }
-    return { state: 'mismatch' };
+    return { state: 'mismatch', latestRows: (await again.json()) as T[] };
   } catch (e) {
     return { state: 'error', error: e instanceof Error ? e.message : String(e) };
   }
