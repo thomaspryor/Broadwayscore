@@ -316,32 +316,6 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
               )}
             </Link>
           )}
-          {featureFlags.regional && stats.auRegional && stats.auRegional.shows > 0 && (
-            <>
-            <div className="h-px bg-white/[0.06] mx-2 my-1" />
-            <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">Australia</div>
-            <Link
-              href="/browse/australian-theatre"
-              className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
-                isAustralia ? 'bg-teal-500/[0.10]' : 'hover:bg-white/[0.04]'
-              }`}
-              onClick={() => setIsOpen(false)}
-            >
-              <div className="flex items-center gap-2">
-                <span className={`w-1.5 h-1.5 rounded-full ${isAustralia ? 'bg-teal-400 shadow-[0_0_6px_rgba(45,212,191,0.5)]' : 'bg-teal-500/60'}`} />
-                <div>
-                  <div className={`text-sm font-semibold ${isAustralia ? 'text-teal-200' : 'text-white'}`}>Australian Theatre</div>
-                  <div className="text-[11px] text-fg-muted">Pilot · {stats.auRegional.shows} scored {stats.auRegional.shows === 1 ? 'show' : 'shows'}</div>
-                </div>
-              </div>
-              {isAustralia && (
-                <svg className="w-4 h-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              )}
-            </Link>
-            </>
-          )}
           {featureFlags.regional && Object.entries(HUB_CITIES).map(([slug, hub]) => {
             const hubStats = stats.hubs?.[slug];
             const isHub = isHubPath(slug);
@@ -373,6 +347,32 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
               </Fragment>
             );
           })}
+          {featureFlags.regional && stats.auRegional && stats.auRegional.shows > 0 && (
+            <>
+            <div className="h-px bg-white/[0.06] mx-2 my-1" />
+            <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">Australia</div>
+            <Link
+              href="/browse/australian-theatre"
+              className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+                isAustralia ? 'bg-teal-500/[0.10]' : 'hover:bg-white/[0.04]'
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              <div className="flex items-center gap-2">
+                <span className={`w-1.5 h-1.5 rounded-full ${isAustralia ? 'bg-teal-400 shadow-[0_0_6px_rgba(45,212,191,0.5)]' : 'bg-teal-500/60'}`} />
+                <div>
+                  <div className={`text-sm font-semibold ${isAustralia ? 'text-teal-200' : 'text-white'}`}>Australian Theatre</div>
+                  <div className="text-[11px] text-fg-muted">Pilot · {stats.auRegional.shows} scored {stats.auRegional.shows === 1 ? 'show' : 'shows'}</div>
+                </div>
+              </div>
+              {isAustralia && (
+                <svg className="w-4 h-4 text-teal-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </Link>
+            </>
+          )}
         </div>
       )}
     </div>
