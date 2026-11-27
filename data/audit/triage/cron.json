@@ -1,30 +1,30 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-11-26T17:59:35.453Z",
+  "lastChecked": "2026-11-27T11:06:05.189Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Cron: Update Show Status",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "17h ago, success (newest run cancelled — superseded, not a failure)"
     },
     {
       "name": "Cron: Rebuild Reviews",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Test Suite",
@@ -34,52 +34,52 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "15h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "19h ago, success"
+      "message": "1d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "6h ago, success"
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "23h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "3h ago, success"
+      "message": "20h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Weekly Show Origins",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "21h ago, ran (success; liveness-only check)"
+      "message": "14h ago, ran (failure; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
@@ -89,17 +89,17 @@
     {
       "name": "Cron: Cloud Memory Reconcile",
       "status": "pass",
-      "message": "9h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: exempt-cron liveness",
       "status": "warn",
-      "message": "3 of 141 exempt scheduled workflow(s) stopped starting: audit-cross-production-weekly.yml (last start 262h ago, limit 192h); audit-time-bomb-tests.yml (last start 571h ago, limit 192h); detect-revivals-ibdb.yml (no scheduled start in last 5 runs, limit 192h)."
+      "message": "4 of 141 exempt scheduled workflow(s) stopped starting: audit-cross-production-weekly.yml (last start 279h ago, limit 192h); audit-time-bomb-tests.yml (last start 588h ago, limit 192h); check-linear-drain-health.yml (last start 59h ago, limit 48h); detect-revivals-ibdb.yml (no scheduled start in last 5 runs, limit 192h)."
     },
     {
       "name": "Cron: failing every scheduled run",
       "status": "warn",
-      "message": "6 of 145 scheduled workflow(s) failed their last scheduled runs (3 in a row, 2 for weekly crons): audit-provisional-venues.yml (3+ in a row, last 2026-11-26); check-cookie-health.yml (3+ in a row, last 2026-11-24); check-corpus-drift.yml (4+ in a row, last 2026-11-25); clear-stale-suspected-misattribution-flags.yml (4+ in a row, last 2026-11-25); commercial-broadway-journal-sweep.yml (3+ in a row, last 2026-11-24); promote-owe-venue-candidates.yml (5+ in a row, last 2026-11-25)."
+      "message": "6 of 145 scheduled workflow(s) failed their last scheduled runs (3 in a row, 2 for weekly crons): audit-provisional-venues.yml (4+ in a row, last 2026-11-27); check-cookie-health.yml (3+ in a row, last 2026-11-24); check-corpus-drift.yml (4+ in a row, last 2026-11-26); clear-stale-suspected-misattribution-flags.yml (4+ in a row, last 2026-11-25); commercial-broadway-journal-sweep.yml (3+ in a row, last 2026-11-24); promote-owe-venue-candidates.yml (5+ in a row, last 2026-11-26)."
     }
   ]
 }

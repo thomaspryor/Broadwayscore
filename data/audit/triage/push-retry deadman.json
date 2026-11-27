@@ -1,7 +1,7 @@
 {
   "system": "push-retry deadman",
   "status": "error",
-  "lastChecked": "2026-11-26T17:59:35.454Z",
+  "lastChecked": "2026-11-27T11:06:05.189Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Push-retry deadman",
       "status": "error",
-      "message": "58 push-retry failure(s) in the last 7d across Broadwayscore:main [Opening Night Poller x22, Collect Review Texts x12, LLM Ensemble Score Reviews x10, Scoring Experiment x8, Land x2, Rebuild Reviews Data x1, Gather Review Data x1, Scrape New Aggregators x1, Collect WE/OB Review Texts x1]. Most recent reason: api-fallback-exhausted(race-or-other,deadline). 208 committed file(s) discarded across 50 run(s). 194 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
+      "message": "44 push-retry failure(s) in the last 7d across Broadwayscore:main [Opening Night Poller x19, Scoring Experiment x8, Collect Review Texts x7, LLM Ensemble Score Reviews x7, Land x1, Collect WE/OB Review Texts x1, Rebuild Reviews (Fast) x1]. Most recent reason: commit-dropped-post-push(rebase-clean(-X theirs)). 256 committed file(s) discarded across 36 run(s). 177 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
     }
   ]
 }
