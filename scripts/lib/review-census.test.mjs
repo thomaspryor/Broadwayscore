@@ -497,3 +497,36 @@ test('BRO-8308: a SAME_PRODUCTION-exempt Show Score page still drops tiles dated
   const ids = parseShowScore(html, show.id, show).map((r) => r.outletId);
   assert.deepEqual(ids, ['culturesauce'], '2016-17 tiles are not owed on the 2026 night');
 });
+
+
+test('West End Theatre census rejects an incompatible extracted article title', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-wet-title-'));
+  try {
+    fs.mkdirSync(path.join(dir, 'westendtheatre'));
+    const archive = path.join(dir, 'westendtheatre', 'play.json');
+    const show = { title: 'The Play That Goes Wrong' };
+    const run = () => buildCensusFromArchives('play', { archiveDir: dir, market: 'west-end', show });
+    const ratings = [{ outlet: 'The Guardian', stars: 4 }];
+    fs.writeFileSync(archive, JSON.stringify({ extractedTitle: 'Christmas Carol Goes Wrong', ratings }));
+    assert.equal(run().count, 0);
+    assert.deepEqual(run().wrongRoundup, ['westendtheatre']);
+    fs.writeFileSync(archive, JSON.stringify({ extractedTitle: 'The Play That Goes Wrong at the Apollo', ratings }));
+    assert.equal(run().count, 1);
+    fs.writeFileSync(archive, JSON.stringify({ ratings }));
+    assert.equal(run().count, 1, 'legacy archives without article title fail open');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+
+test('LBO rejects a different Goes Wrong roundup with overlapping title words', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'census-lbo-title-'));
+  try {
+    fs.mkdirSync(path.join(dir, 'lbo-roundups'));
+    const archive = path.join(dir, 'lbo-roundups', 'play.html');
+    const run = () => buildCensusFromArchives('play', { archiveDir: dir, market: 'west-end', show: { title: 'The Play That Goes Wrong' } });
+    fs.writeFileSync(archive, '<title>Review Round-Up: CHRISTMAS CAROL GOES WRONG at the Apollo Theatre</title>');
+    assert.deepEqual(run().wrongRoundup, ['lbo']);
+    fs.writeFileSync(archive, '<title>Review Round-Up: The Play That Goes Wrong at the Apollo Theatre</title>');
+    assert.deepEqual(run().wrongRoundup, []);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});

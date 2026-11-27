@@ -262,13 +262,13 @@ function sourceExtractors(market = 'west-end') {
   ];
   let extractLbo = null;
   try { ({ extractReviewsFromLBO: extractLbo } = require('../scrape-london-box-office-roundups')); } catch (_) {}
-  if (extractLbo) sources.push({ name: 'lbo', dir: 'lbo-roundups', fn: extractLbo });
+  if (extractLbo) sources.push({ name: 'lbo', dir: 'lbo-roundups', fn: extractLbo, validateGoesWrong: true });
 
   let extractStage = null;
   try { ({ extractReviews: extractStage } = require('./thestage-extract')); } catch (_) {}
   if (extractStage) sources.push({ name: 'thestage', dir: 'thestage-roundups', fn: extractStage });
 
-  sources.push({ name: 'westendtheatre', dir: 'westendtheatre', ext: 'json', fn: parseWetArchive });
+  sources.push({ name: 'westendtheatre', dir: 'westendtheatre', ext: 'json', fn: parseWetArchive, validateExtractedTitle: true });
   return sources;
 }
 
@@ -420,6 +420,36 @@ function buildCensusFromArchives(showId, opts = {}) {
       // and let extraction + outlet-union be the safety net, rather than nuking a
       // genuine roundup we simply can't verify.
       if (!v.isValid && v.rejectReason !== 'no-significant-title-tokens') { wrongRoundup.push(s.name); continue; }
+    }
+    // The Goes Wrong series shares two title words across distinct shows.
+    // The general one-token verifier cannot distinguish their roundup titles.
+    if (s.validateGoesWrong && opts.show && /\bgoes wrong\b/i.test(opts.show.title || '')) {
+      const { extractHtmlTitle, titleTokens } = require('./show-match-verifier');
+      const title = extractHtmlTitle(html);
+      if (/\bgoes wrong\b/i.test(title)) {
+        const pageWords = new Set(title.match(/[a-z0-9]+/g) || []);
+        const distinctive = titleTokens(opts.show.title).filter(t => t !== 'goes' && t !== 'wrong');
+        if (distinctive.length && distinctive.every(t => !pageWords.has(t))) {
+          wrongRoundup.push(s.name);
+          continue;
+        }
+      }
+    }
+    // WET archives contain parsed JSON, not HTML. Only its independently
+    // extracted article title can validate the show; `title` is our own label.
+    if (s.validateExtractedTitle && opts.show && opts.show.title) {
+      let extractedTitle;
+      try { extractedTitle = JSON.parse(html).extractedTitle; } catch (_) { /* parser reports invalid archive */ }
+      if (typeof extractedTitle === 'string') {
+        const { normalizeTitle } = require('./title-match');
+        const expected = normalizeTitle(opts.show.title);
+        const actual = normalizeTitle(extractedTitle);
+        const containsTitle = (longer, shorter) => (` ${longer} `).includes(` ${shorter} `);
+        if (expected && actual && !containsTitle(expected, actual) && !containsTitle(actual, expected)) {
+          wrongRoundup.push(s.name);
+          continue;
+        }
+      }
     }
     if (s.productionWindow && opts.show && (opts.show.openingDate || opts.show.previewsStartDate)) {
       const { checkPageProductionWindow } = require('./show-score-production-window');
