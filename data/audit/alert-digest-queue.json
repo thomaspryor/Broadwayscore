@@ -2132,5 +2132,36 @@
       }
     ],
     "queuedAt": "2026-11-27T22:10:41.141Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8411-au-nav",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-8411-au-nav",
+    "description": "land.yml did not land land/bro-8411-au-nav: the unit-tests-tsx gate went red at 8a40421d92. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46075235318",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8411-au-nav"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "8a40421d92e9bf21a32de5e1246153b29fa111c2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46075235318"
+      }
+    ],
+    "queuedAt": "2026-11-27T22:18:03.370Z"
   }
 ]
