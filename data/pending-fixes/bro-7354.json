@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-7354",
+  "planId": "ddd8ca1b-07da-45f9-963d-48d1f3885672",
+  "status": "pending",
+  "createdAt": "2026-11-27T05:07:41.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7354: clear the two revival-unverified backlog hits. Cloud 9 (NT Lyttelton 2026) is Dominic Cooke's National Theatre revival of Caryl Churchill's 1979 play; Nine Night (Kiln 2026) is Amit Sharma's revival of Natasha Gordon's 2018 play. Multiple included reviews say 'this revival'.",
+    "steps": [
+      "shows.json: cloud-9-west-end-2026.isRevival",
+      "shows.json: nine-night-off-west-end-2026.isRevival"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cloud-9-west-end-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "Cloud 9 at the Lyttelton is the National Theatre revival of Caryl Churchill's 1979 play (reviews: 'This National Theatre revival', 'Dominic Cooke's current revival')."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nine-night-off-west-end-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "Nine Night at the Kiln is Amit Sharma's revival of Natasha Gordon's 2018 debut play (reviews: 'this revival of Natasha Gordon's debut play')."
+      }
+    ]
+  }
+}
