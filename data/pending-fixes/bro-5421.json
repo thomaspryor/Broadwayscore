@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5421",
   "planId": "61746419-b8ed-4260-ad53-e0f08919edd3",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-27T18:59:56.904Z",
   "submitter": {
     "name": null,
@@ -38,5 +38,14 @@
         "description": "shows.json: sea-wall-off-broadway-2026.cast"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-27T20:02:02.289Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for sea-wall-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
