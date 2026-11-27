@@ -24,4 +24,15 @@ function findMissingOpeningDates(shows, baselineIds = loadBaselineIds()) {
   return { newOffenders: off.filter((s) => !baselineIds.has(s.id)), baselined: off.filter((s) => baselineIds.has(s.id)) };
 }
 
-module.exports = { BASELINE_PATH, needsOpeningDate, loadBaselineIds, findMissingOpeningDates };
+/**
+ * Baseline ids that no longer need an openingDate (backfilled, removed, or now previews/upcoming).
+ * The ratchet only shrinks, so these should be pruned from the baseline; until then a regression
+ * on one of them would be silently tolerated. Advisory only: CI backfills dates on its own schedule.
+ * @returns {string[]}
+ */
+function findStaleBaselineIds(shows, baselineIds = loadBaselineIds()) {
+  const offenders = new Set((shows || []).filter(needsOpeningDate).map((s) => s.id));
+  return [...baselineIds].filter((id) => !offenders.has(id)).sort();
+}
+
+module.exports = { BASELINE_PATH, needsOpeningDate, loadBaselineIds, findMissingOpeningDates, findStaleBaselineIds };
