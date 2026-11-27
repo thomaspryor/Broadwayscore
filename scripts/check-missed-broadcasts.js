@@ -194,7 +194,7 @@ async function main() {
   const pageableDrafts = selectPageableStaleDrafts(staleDrafts, {
     alertableMissedIds: alertable.filter((m) => m.state === 'draft-stuck').map((m) => m.id),
     roundupCoveredIds: (showsRaw.shows || [])
-      .filter((s) => s.category === 'west-end' && wasCoveredByWeeklyRoundup(newsletterIssues, s.id))
+      .filter((s) => s.category === 'west-end' && wasCoveredByWeeklyRoundup(newsletterIssues, s.id, s.openingDate))
       .map((s) => s.id),
   });
 

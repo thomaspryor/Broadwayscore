@@ -85,7 +85,7 @@ function pastDeadlineShows({ showIds, shows, sentShows, newsletterIssues = [], n
     if (sentOnSiblingRecord(sent, id)) continue;
     // BRO-3088: the owner declined individual West End sends once the Weekly
     // Round-up covered the show, so a deadline must not force one.
-    if (show.category === 'west-end' && wasCoveredByWeeklyRoundup(newsletterIssues, id)) continue;
+    if (show.category === 'west-end' && wasCoveredByWeeklyRoundup(newsletterIssues, id, show.openingDate)) continue;
     out.push({ id, deadlineAt: deadline.toISOString() });
   }
   return out;
