@@ -222,7 +222,7 @@ function isExemptFromPlaybillCheck(show) {
   // third-party proof is 2+ dated critic reviews at https URLs carried in evidenceUrls, and the
   // venue must be a known AU house (data/au-regional-venues.json) or an AU state suffix.
   if (show.category === 'regional' && isAuRegionalVenue(show.venue)
-    && (show.evidenceUrls || []).filter((u) => /^https:\/\//.test(u)).length >= 2) return true;
+    && new Set((show.evidenceUrls || []).filter((u) => /^https:\/\//.test(u))).size >= 2) return true; // distinct URLs
   // Chicago local productions (BRO-6518): theatreinchicago.com lists them with 3+
   // dated critic reviews; Playbill has no page for most, and the page it does have
   // for a same-title show is usually the Broadway transfer. localOnly shows.
