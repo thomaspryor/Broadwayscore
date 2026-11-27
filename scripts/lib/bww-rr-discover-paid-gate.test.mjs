@@ -4,14 +4,14 @@
  * show missing from the cheap listing is missing from the paid render too
  * (80 poller runs 11-17..24: 223 misses, 0 paid finds, ~$31/week spent).
  *
- * Run: node --test tests/unit/bww-rr-discover-paid-gate.test.mjs
+ * Run: node --test scripts/lib/bww-rr-discover-paid-gate.test.mjs
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { discoverBwwRoundupUrl, isPaidCanaryCall } = require('../../scripts/lib/bww-rr-discover.js');
+const { discoverBwwRoundupUrl, isPaidCanaryCall } = require('./bww-rr-discover.js');
 
 const LISTING = [
   'https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-SOME-OTHER-SHOW-20261120',
