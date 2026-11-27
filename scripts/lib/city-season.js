@@ -117,23 +117,38 @@ const OPENS_RE = new RegExp(`\\b(?:opening(?:\\s+night)?|opens|official opening)
 const pad2 = (n) => String(n).padStart(2, '0');
 const monN = (m) => MON_N[String(m).toLowerCase().slice(0, 3)];
 const okDate = (y, m, d) => { const t = new Date(Date.UTC(y, m - 1, d)); return t.getUTCMonth() === m - 1 && t.getUTCDate() === d; };
+/** One RANGE_RE match -> { first, end } (ISO), or null for a non-date or a window that is not a run. */
+function runFromMatch(m, year) {
+  const m1 = monN(m[1]); const d1 = Number(m[2]);
+  const m2 = m[4] ? monN(m[4]) : m1; const d2 = Number(m[5]);
+  // "Jan 5 – Feb 9, 2027": the end's year names the start's too (one earlier when the run wraps the new year)
+  const y1 = Number(m[3] || (m[6] ? Number(m[6]) - (m2 < m1 ? 1 : 0) : year));
+  if (!y1 || !m1 || !m2 || !okDate(y1, m1, d1)) return null;
+  let y2 = Number(m[6] || y1);
+  if (!m[6] && (m2 < m1 || (m2 === m1 && d2 < d1))) y2 = y1 + 1;
+  if (!okDate(y2, m2, d2)) return null;
+  const first = `${y1}-${pad2(m1)}-${pad2(d1)}`;
+  const end = `${y2}-${pad2(m2)}-${pad2(d2)}`;
+  const days = (Date.parse(end) - Date.parse(first)) / 86400000;
+  if (days < 1 || days > MAX_RUN_DAYS) return null; // a single performance window or a season banner
+  return { first, end, y1 };
+}
+/**
+ * The first run printed, as { first, end, opening, snippet, runs }. `runs` lists EVERY run the page prints
+ * ({ first, end }, the first one included) so a caller can tell "last year's dates" from "only last year's dates".
+ */
 function runRangeFromShowPage(text, { year } = {}) {
   const t = String(text || '').replace(/\s+/g, ' ');
-  RANGE_RE.lastIndex = 0;
+  const re = new RegExp(RANGE_RE.source, RANGE_RE.flags);
   let m;
-  while ((m = RANGE_RE.exec(t))) {
-    const m1 = monN(m[1]); const d1 = Number(m[2]);
-    const m2 = m[4] ? monN(m[4]) : m1; const d2 = Number(m[5]);
-    // "Jan 5 – Feb 9, 2027": the end's year names the start's too (one earlier when the run wraps the new year)
-    const y1 = Number(m[3] || (m[6] ? Number(m[6]) - (m2 < m1 ? 1 : 0) : year));
-    if (!y1 || !m1 || !m2 || !okDate(y1, m1, d1)) continue;
-    let y2 = Number(m[6] || y1);
-    if (!m[6] && (m2 < m1 || (m2 === m1 && d2 < d1))) y2 = y1 + 1;
-    if (!okDate(y2, m2, d2)) continue;
-    const first = `${y1}-${pad2(m1)}-${pad2(d1)}`;
-    const end = `${y2}-${pad2(m2)}-${pad2(d2)}`;
-    const days = (Date.parse(end) - Date.parse(first)) / 86400000;
-    if (days < 1 || days > MAX_RUN_DAYS) continue; // a single performance window or a season banner
+  let out = null;
+  const runs = [];
+  while ((m = re.exec(t))) {
+    const run = runFromMatch(m, year);
+    if (!run) continue;
+    const { first, end, y1 } = run;
+    runs.push({ first, end });
+    if (out) continue;
     let opening = first;
     const pv = PREVIEW_RE.exec(t);
     const op = OPENS_RE.exec(t);
@@ -144,9 +159,9 @@ function runRangeFromShowPage(text, { year } = {}) {
     const lastPreview = pv && pick(pv[2] || pv[1], pv[3]);
     if (opened) opening = opened;
     else if (lastPreview) opening = pv[4] ? lastPreview : addDays(lastPreview, 1);
-    return { first, end, opening, snippet: t.slice(Math.max(0, m.index - 30), m.index + m[0].length + 10).trim() };
+    out = { first, end, opening, snippet: t.slice(Math.max(0, m.index - 30), m.index + m[0].length + 10).trim() };
   }
-  return null;
+  return out && { ...out, runs };
 }
 
 /** Days between two ISO dates (absolute). */
@@ -198,7 +213,9 @@ function settleRunDates(row, range, pageUrl) {
   // BRO-8259: the page prints THIS run in another year (ArtsEmerson's "Past Event Jan 31—Feb 09, 2025" for
   // Life & Times of Michael K; the season-page LLM gave it 2027). The row's year is a guess, the page's is not:
   // hold it rather than drop the range as a sidebar and publish a past production as upcoming.
-  if (range && sameRunOtherYear(row, range)) {
+  // An annual show whose page also prints THIS year's run (any printed run overlapping the row) is not held.
+  const overlaps = (r) => r.first <= row.end && r.end >= row.start;
+  if (range && sameRunOtherYear(row, range) && !(range.runs || []).some(overlaps)) {
     return { row, held: `production page prints this run in ${range.end.slice(0, 4)} ("${range.snippet}"), not ${row.end.slice(0, 4)}: a past (or future) season, not this one` };
   }
   // A range that does not even overlap what the sources said is another production's (a sidebar, "also playing").

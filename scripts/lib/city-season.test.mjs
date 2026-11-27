@@ -45,3 +45,21 @@ test('a different run of the same title in another year (different days) is not 
   const out = S.settleRunDates(r, range, 'https://example.org/x');
   assert.equal(out.held, null);
 });
+
+test('annual show: page lists last year first AND this year: not held, this year is kept', () => {
+  const text = 'A Christmas Carol. Last season: Dec 1 – Dec 24, 2025. This season: Dec 2 – Dec 24, 2026';
+  const r = { ...row('2026-12-02', '2026-12-24'), title: 'A Christmas Carol' };
+  const range = S.runRangeFromShowPage(text, { year: 2026 });
+  assert.equal(range.first, '2025-12-01');
+  assert.deepEqual(range.runs.map((x) => x.first), ['2025-12-01', '2026-12-02']);
+  const out = S.settleRunDates(r, range, 'https://example.org/carol');
+  assert.equal(out.held, null);
+  assert.equal(out.row.start, '2026-12-02');
+});
+
+test('run wrapping the new year, printed a year earlier: held', () => {
+  const r = row('2026-12-20', '2027-01-10');
+  const range = S.runRangeFromShowPage('Past Event Dec 20, 2025 – Jan 10, 2026', { year: 2026 });
+  assert.equal(range.end, '2026-01-10');
+  assert.match(S.settleRunDates(r, range, 'https://example.org/x').held, /in 2026/);
+});
