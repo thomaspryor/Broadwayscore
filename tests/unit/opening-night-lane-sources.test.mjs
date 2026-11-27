@@ -318,3 +318,15 @@ test('BRO-8396: a Broadway night reads the Stage Buddy feed and finds its review
     [['https://stagebuddy.com/theater/theater-review/wonderful-life-live-radio-play', 'stagebuddy']]);
   assert.ok(d.hasReviewSignal(out[0].url, out[0].title), 'the /theater-review/ path is the review signal');
 });
+
+test('BRO-8396: a Stage Buddy feature naming the show carries no review signal (the poller page-confirms; the lane needs the path)', async () => {
+  const feed = ls.laneFeeds(SB_SHOW).find((f) => f.url === SB_FEED_URL);
+  const FEATURE = SB_FEED.replace('broadway-eats-timothy-matthew-flores', 'broadway-eats-wonderful-life-cast')
+    .replace('Broadway Eats: Timothy Matthew Flores', 'Broadway Eats: the cast of It&#8217;s A Wonderful Life: A Live Radio Play');
+  const out = await d.rssAdapter({ feeds: [feed] })
+    .discover({ show: SB_SHOW, fetchText: async () => FEATURE });
+  const feature = out.find((c) => /theater-feature/.test(c.url || ''));
+  assert.ok(feature, 'the feature names the show, so it is a candidate like any whole-site feed item');
+  assert.ok(!feature.reviewSignalGiven, 'a feature is never vouched for as a review');
+  assert.ok(!d.hasReviewSignal(feature.url, feature.title), 'no review word in a /theater-feature/ path or headline');
+});
