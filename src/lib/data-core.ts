@@ -482,6 +482,7 @@ export function getMarketStats() {
   const obOpen = obShows.filter(s => s.status === 'open' || s.status === 'previews');
   const oweOpen = oweShows.filter(s => s.status === 'open' || s.status === 'previews');
   const ukRegional = getUkRegionalShows();
+  const auRegional = getAuRegionalShows();
   return {
     nyc: {
       openShows: bwOpen.length,
@@ -502,6 +503,11 @@ export function getMarketStats() {
     ukRegional: {
       shows: pickRegionalShelf(ukRegional, { limit: Infinity, requireEnoughReviews: true }).length,
       openShows: ukRegional.filter(s => s.status === 'open' || s.status === 'previews').length,
+    },
+    // Australian pilot (/browse/australian-theatre, BRO-8389/BRO-8411). Same listed-count rule as ukRegional.
+    auRegional: {
+      shows: pickRegionalShelf(auRegional, { limit: Infinity, requireEnoughReviews: true }).length,
+      openShows: auRegional.filter(s => s.status === 'open' || s.status === 'previews').length,
     },
     // City hubs (/tours/<slug>, BRO-6498, BRO-6771): regional productions in the metro.
     // openShows counts tour stops playing now too, like the hub's Now Playing list.
