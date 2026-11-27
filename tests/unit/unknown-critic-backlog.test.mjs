@@ -7,10 +7,8 @@
  *    - All That Dazzles: the page prints a bold "Review by X" body paragraph while its JSON-LD
  *      author is the site itself; the page reader now reads the credit (gather/ingest via
  *      readPageByline) and fix-printed-bylines --fetch can rename files stored under the site name.
- *    - sierz.co.uk is Aleks Sierz's own site (schema.org publisher Person "Aleks Sierz"):
- *      registry defaultCritic, so rebuild/gather fill his name.
- *    - The Arts Desk: "Aleks Sierz" fills were refused as an outlet name because sierz.co.uk is
- *      named after him.
+ *    - The Arts Desk: when the stored text lost the byline, fix-printed-bylines --fetch reads the
+ *      page's class="author" credit only (extractArtsdeskPageByline).
  * 3. The live backlog ceiling is in unknown-critic-backlog-live-data.test.mjs (live-data lane).
  */
 import { test, describe } from 'node:test';
@@ -29,8 +27,7 @@ const { criticProfileKey } = require('../../scripts/lib/url-slug.js');
 const { extractByline, extractAllThatDazzlesPageByline, extractArtsdeskPageByline } = require('../../scripts/lib/byline-extraction.js');
 const { readPageByline } = require('../../scripts/lib/page-byline.js');
 const { decideByline, isOutletNamePlaceholder } = require('../../scripts/fix-printed-bylines.js');
-const { isOutletRegistryName, pageBylineRefusal } = require('../../scripts/lib/review-file-writer.js');
-const { shouldFillDefaultCritic } = require('../../scripts/lib/critic-fill-rules.js');
+const { pageBylineRefusal } = require('../../scripts/lib/review-file-writer.js');
 
 describe('live pages hide Unknown bylines', () => {
   test('ReviewsList credits the outlet staff instead of printing Unknown', () => {
@@ -77,10 +74,10 @@ describe('All That Dazzles page byline', () => {
 
 describe('fix-printed-bylines: page credit replaces the outlet name stored as a byline', () => {
   const base = { outlet: 'All That Dazzles (UK)', url: 'https://www.allthatdazzles.co.uk/post/review-x', fullText: 'There are few shows I can think of as iconic.' };
-  test('site name is a placeholder; a real critic and a self-branded defaultCritic are not', () => {
+  test('site name is a placeholder; a real critic and a self-branded outlet own name are not', () => {
     assert.equal(isOutletNamePlaceholder('all-that-dazzles-uk', { ...base, criticName: 'All That Dazzles' }), true);
     assert.equal(isOutletNamePlaceholder('all-that-dazzles-uk', { ...base, criticName: 'Daz Gale' }), false);
-    assert.equal(isOutletNamePlaceholder('sierz-co-uk', { outlet: 'Aleks Sierz', criticName: 'Aleks Sierz' }), false);
+    assert.equal(isOutletNamePlaceholder('carole-di-tosti', { outlet: 'Carole Di Tosti', criticName: 'Carole Di Tosti' }), false);
   });
   test('placeholder + page credit -> page-override; no page -> nothing', () => {
     const data = { ...base, criticName: 'All That Dazzles' };
@@ -94,20 +91,6 @@ describe('fix-printed-bylines: page credit replaces the outlet name stored as a 
   });
   test('flagged files are left alone', () => {
     assert.equal(decideByline('all-that-dazzles-uk', { ...base, criticName: 'All That Dazzles', wrongProduction: true }, atdPage('Review by Daz Gale')), null);
-  });
-});
-
-describe('Aleks Sierz: single-author site and Arts Desk critic', () => {
-  test('sierz.co.uk fills its own critic', () => {
-    const reg = require('../../data/outlet-registry.json');
-    const e = (reg.outlets || reg)['sierz-co-uk'];
-    assert.equal(e.defaultCritic, 'Aleks Sierz');
-    assert.equal(shouldFillDefaultCritic(e), true);
-  });
-  test('his name is not an outlet name (Arts Desk fills were refused), real outlet names still are', () => {
-    assert.equal(isOutletRegistryName('Aleks Sierz'), false);
-    assert.equal(isOutletRegistryName('All That Dazzles'), true);
-    assert.equal(isOutletRegistryName('The Arts Desk'), true);
   });
 });
 

@@ -1814,13 +1814,9 @@ function isOutletRegistryName(name) {
       const outlets = reg.outlets || reg;
       for (const e of Object.values(outlets)) {
         if (!e || typeof e !== 'object') continue;
-        // A self-branded outlet named after its one critic (sierz.co.uk "Aleks Sierz", registry
-        // defaultCritic = its own name) does not make that critic's name an outlet name: he also
-        // writes for The Arts Desk, whose "Aleks Sierz" fills were refused as outlet-name (BRO-5572).
-        const self = _compactName(e.defaultCritic);
         for (const a of [e.displayName, e.name, ...(e.aliases || [])]) {
           const c = _compactName(a);
-          if (c && c !== self) _outletNameSet.add(c);
+          if (c) _outletNameSet.add(c);
         }
       }
     } catch { /* no registry: fall back to the name checks alone */ }
@@ -2537,4 +2533,4 @@ const WRITE_GUARD_REFUSED_REASONS = new Set([
   'unknown-show-id',
 ]);
 
-module.exports = { createOrMergeReviewFile, classifyHeldOut, unknownShowFolderRefused, warnIfStampedCopy, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline, isOutletRegistryName, revertBodyFromRefusedUrl };
+module.exports = { createOrMergeReviewFile, classifyHeldOut, unknownShowFolderRefused, warnIfStampedCopy, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline, revertBodyFromRefusedUrl };

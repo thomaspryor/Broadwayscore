@@ -75,8 +75,8 @@ function registryEntry(outletId) {
 
 /**
  * BRO-5572: a stored name that is the outlet's own name ("All That Dazzles" at All That Dazzles,
- * 195 files) names nobody. A self-branded outlet's registry defaultCritic ("Aleks Sierz" at
- * sierz.co.uk) is a real byline and never counts (placeholder-byline.js).
+ * 195 files) names nobody. A self-branded outlet's registry defaultCritic ("Carole Di Tosti" at
+ * carole-di-tosti) is a real byline and never counts (placeholder-byline.js).
  */
 function isOutletNamePlaceholder(outletId, data) {
   if (!data || isUnnamed(data.criticName)) return false;
