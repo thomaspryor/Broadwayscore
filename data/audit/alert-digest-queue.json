@@ -1611,5 +1611,36 @@
     "testId": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
     "fields": [],
     "queuedAt": "2026-11-27T04:11:30.701Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8389-au-plan",
+    "title": "Landing blocked: rebase red on land/bro-8389-au-plan",
+    "description": "land.yml did not land land/bro-8389-au-plan: the rebase gate went red at 4cf6ededdd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45940905138",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8389-au-plan"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "4cf6ededddd28136dd19500c9a09cb39889bb99f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45940905138"
+      }
+    ],
+    "queuedAt": "2026-11-27T04:39:00.010Z"
   }
 ]
