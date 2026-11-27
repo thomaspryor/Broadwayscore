@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T05:01:18.198Z",
+  "generatedAt": "2026-11-27T06:08:41.304Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,6 +127,11 @@
       "id": "cult-of-love-regional-2026",
       "title": "Cult of Love",
       "openingDate": "2026-11-25"
+    },
+    {
+      "id": "whispering-jack-regional-2026",
+      "title": "Whispering Jack: The John Farnham Musical",
+      "openingDate": "2026-11-25"
     }
   ],
   "skipped": [],
@@ -155,17 +160,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londonpubtheatres",
-      "error": "Client network socket disconnected before secure TLS connection was established"
-    },
-    {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 887,
+  "itemsScanned": 909,
   "matchedGaps": 2,
   "possibleGaps": 5,
   "gaps": [

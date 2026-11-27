@@ -1572,20 +1572,6 @@
     "queuedAt": "2026-11-27T05:00:19.912Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-27.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-27T05:00:47.275Z"
-  },
-  {
     "conditionKey": "land:land/bro-8389-au-plan",
     "title": "Landing blocked: rebase red on land/bro-8389-au-plan",
     "description": "land.yml did not land land/bro-8389-au-plan: the rebase gate went red at 4cf6ededdd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45940905138",
@@ -1644,6 +1630,20 @@
     "queuedAt": "2026-11-27T05:34:39.790Z"
   },
   {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-27.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-27T06:08:21.575Z"
+  },
+  {
     "conditionKey": "land:land/bro-8389-outlets",
     "title": "Landing blocked: unit-tests-node red on land/bro-8389-outlets",
     "description": "land.yml did not land land/bro-8389-outlets: the unit-tests-node gate went red at 68d66caace. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45947077379",
@@ -1673,32 +1673,5 @@
       }
     ],
     "queuedAt": "2026-11-27T06:04:40.735Z"
-  },
-  {
-    "conditionKey": "land-preexisting:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is#4468752443",
-    "title": "Test red on main: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a ",
-    "description": "tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8389-outlets. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45947077379",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "test",
-        "value": "tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) [testCodeFailure]"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/45947077379"
-      }
-    ],
-    "queuedAt": "2026-11-27T06:04:40.946Z"
   }
 ]
