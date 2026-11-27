@@ -32,6 +32,12 @@ assert.ok(edited && edited !== wt, 'an edit after the screenshot gives a differe
 g('checkout', '-q', 'src/a.tsx');
 
 fs.writeFileSync(path.join(dir, 'src/new.tsx'), 'export const N = () => null;\n');
-assert.strictEqual(uiPatchIdWorkingTree(dir), '', 'untracked UI file -> no id');
-fs.unlinkSync(path.join(dir, 'src/new.tsx'));
+// BRO-8164 (repeat asks): an untracked UI file is part of the design, so it gets an id (it used to be '', which meant
+// the approval could never be kept) that differs from the id without it and equals the id once committed.
+const withNew = uiPatchIdWorkingTree(dir);
+assert.ok(withNew && withNew !== wt, 'untracked UI file -> its own id, different from the diff without it');
+g('add', '-A'); g('commit', '-q', '-m', 'new');
+assert.strictEqual(uiPatchId(dir), withNew, 'committing the new file keeps the id');
+g('reset', '-q', '--hard', 'HEAD~1');
+assert.ok(!fs.existsSync(path.join(dir, 'src/new.tsx')), 'reset removed the new file');
 assert.strictEqual(uiPatchIdWorkingTree(dir), wt, 'clean tree after the commit still ids the branch diff');

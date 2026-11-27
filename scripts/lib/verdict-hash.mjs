@@ -71,10 +71,21 @@ const DIGEST_HASH_FIELDS_SCREENSHOTS = ['bytesSha'];
 const DIGEST_HASH_FIELDS_CROPS = ['selector', 'geometry', 'bytesSha'];
 const DIGEST_HASH_FIELDS_REFS = ['bytesSha', 'role'];
 
+// BRO-8164: when the verdict carries uiPatchId (the --verbatim patch-id of exactly the UI diff it screenshotted), that
+// id binds the design, so headSha is dropped: a re-run on the same pixels after a test-only commit, a rebase or a merge
+// of main used to rotate the hash, rewrite verdict.json (making the owner's yes older than the verdict) and miss the
+// ledger, so the owner was asked again for an unchanged design. Without an id, headSha still binds (fail closed).
+export function hashExcludedFields(verdict) {
+  return verdict && typeof verdict.uiPatchId === 'string' && verdict.uiPatchId
+    ? [...HASH_EXCLUDED_TOP_LEVEL_FIELDS, 'headSha']
+    : HASH_EXCLUDED_TOP_LEVEL_FIELDS;
+}
+
 function pickStableShape(verdict) {
   const out = {};
+  const excluded = hashExcludedFields(verdict);
   for (const [k, v] of Object.entries(verdict)) {
-    if (HASH_EXCLUDED_TOP_LEVEL_FIELDS.includes(k)) continue;
+    if (excluded.includes(k)) continue;
     out[k] = v;
   }
   // Project digest arrays to the stable subset so per-run file-path strings
