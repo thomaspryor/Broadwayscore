@@ -89,7 +89,7 @@ const { detectRefusalPattern, SCRAPED_PAGE_CHROME_RE } = require('./lib/synopsis
 const { synopsisSourceProblem } = require('./lib/synopsis-source');
 const { checkAwardClaims, findSharedSentences, loadAwardsByShow, ledeTitleMismatch } = require('./lib/synopsis-fact-check');
 const { openingDateSourceHint, venuePageDomainSourceProblem } = require('./lib/opening-date-sources');
-const { needsOpeningDate, loadBaselineIds } = require('./lib/opening-date-required');
+const { needsOpeningDate, loadBaselineIds, findStaleBaselineIds } = require('./lib/opening-date-required');
 const MISSING_OPENING_BASELINE = loadBaselineIds();
 const { isNonTheatricalGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
@@ -831,6 +831,13 @@ function validateDates(shows) {
     if (!k) continue;
     if (!sameTitleGroups.has(k)) sameTitleGroups.set(k, []);
     sameTitleGroups.get(k).push(s);
+  }
+
+  // BRO-7929: baseline ids that no longer need an openingDate (backfilled/removed) would silently tolerate a
+  // regression; advisory, prune with the ratchet. Ids are plain strings from the tracked baseline.
+  const staleOpeningBaseline = findStaleBaselineIds(shows, MISSING_OPENING_BASELINE);
+  if (staleOpeningBaseline.length) {
+    warn(`missing-opening-date baseline has ${staleOpeningBaseline.length} stale id(s) (now dated/removed): ${staleOpeningBaseline.slice(0, 5).join(', ')}${staleOpeningBaseline.length > 5 ? ', ...' : ''}. Prune data/audit/missing-opening-date-baseline.json (BRO-7929).`);
   }
 
   for (const show of shows) {
