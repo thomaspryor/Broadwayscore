@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Social video lane: one entry per show video (scripts/social-autopost/video-run.js)",
-    "lastUpdated": "2026-11-27T01:57:36.155Z"
+    "lastUpdated": "2026-11-27T13:06:49.479Z"
   },
   "posts": [
     {
@@ -354,6 +354,11 @@
     {
       "key": "score:billy-crystal-860-2026",
       "at": "2026-11-27T01:57:12.958Z",
+      "error": "render.js failed (1): Error: billy-crystal-860-2026: score 82.23 is within 1 point of the Gold line (83); one new review could flip the tier, skipping |     at Object..js (node:internal/modules/cjs/loader:1913:10) |     at Module.load (node:internal/modules/cjs/loader:1505:32) |     at Function._load (node:internal/modules/cjs/loader:1309:12) |     at wrapModuleLoad (node:internal/modules/cjs/load"
+    },
+    {
+      "key": "score:billy-crystal-860-2026",
+      "at": "2026-11-27T13:06:27.833Z",
       "error": "render.js failed (1): Error: billy-crystal-860-2026: score 82.23 is within 1 point of the Gold line (83); one new review could flip the tier, skipping |     at Object..js (node:internal/modules/cjs/loader:1913:10) |     at Module.load (node:internal/modules/cjs/loader:1505:32) |     at Function._load (node:internal/modules/cjs/loader:1309:12) |     at wrapModuleLoad (node:internal/modules/cjs/load"
     }
   ]
