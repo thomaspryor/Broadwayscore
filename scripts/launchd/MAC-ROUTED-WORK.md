@@ -19,6 +19,7 @@ Verdicts: **moved** (now a GitHub Actions cron, plist deleted), **needs-Mac** (c
 |---|---|---|
 | com.broadwayscore.autonomous-shadow | cloud-capable | Shadow run of the retired loop; plist says retire on the owner's decision. |
 | com.broadwayscore.checkout-sync | needs-Mac | Keeps this Mac's checkout fresh. |
+| com.broadwayscore.session-llm-usage-push | needs-Mac | Pushes this Mac's reviewer-spend rows (home file under ~/.claude/state) to main (BRO-8356). |
 | com.broadwayscore.claude-auth-health | needs-Mac | Probes the Mac's own Claude OAuth token. |
 | com.broadwayscore.cmux-auth-stall-watchdog | needs-Mac | Reads local cmux tabs. |
 | com.broadwayscore.cmux-reachability | needs-Mac | Probes the local cmux socket. |
