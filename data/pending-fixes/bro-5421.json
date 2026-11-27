@@ -1,0 +1,42 @@
+{
+  "issueNumber": "bro-5421",
+  "planId": "61746419-b8ed-4260-ad53-e0f08919edd3",
+  "status": "pending",
+  "createdAt": "2026-11-27T18:59:56.904Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct Sea Wall 2026 cast to Andrew Scott",
+    "steps": [
+      "shows.json: sea-wall-off-broadway-2026.cast"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sea-wall-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Tom Sturridge",
+            "role": "Alex"
+          },
+          {
+            "name": "Jake Gyllenhaal",
+            "role": "Abe"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Andrew Scott",
+            "role": "Alex"
+          }
+        ],
+        "description": "shows.json: sea-wall-off-broadway-2026.cast"
+      }
+    ]
+  }
+}
