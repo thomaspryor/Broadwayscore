@@ -1,0 +1,88 @@
+{
+  "issueNumber": "bro-8259",
+  "planId": "926c1082-2bb3-40cb-ab08-15fbfcb951ec",
+  "status": "pending",
+  "createdAt": "2026-11-27T10:32:40.101Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8259 boston-ma hub audit: In Old Age venue is Emerson Paramount Center (ArtsEmerson is the presenter; every review names the Paramount Center). Life & Times of Michael K ran Jan 31-Feb 9, 2025 (artsemerson.org event page: Past Event, JSON-LD startDate/endDate 2025); it was added as upcoming 2027 by a season-page year guess.",
+    "steps": [
+      "shows.json: in-old-age-regional-2026.venue",
+      "shows.json: life-and-times-of-michael-k-regional-2027.venue",
+      "shows.json: life-and-times-of-michael-k-regional-2027.status",
+      "shows.json: life-and-times-of-michael-k-regional-2027.openingDate",
+      "shows.json: life-and-times-of-michael-k-regional-2027.openingDateSource",
+      "shows.json: life-and-times-of-michael-k-regional-2027.closingDate",
+      "shows.json: life-and-times-of-michael-k-regional-2027.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-old-age-regional-2026",
+        "field": "venue",
+        "oldValue": "ArtsEmerson, Boston, MA",
+        "newValue": "Emerson Paramount Center, Boston, MA",
+        "description": "shows.json: in-old-age-regional-2026.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "life-and-times-of-michael-k-regional-2027",
+        "field": "venue",
+        "oldValue": "ArtsEmerson, Boston, MA",
+        "newValue": "Emerson Paramount Center, Boston, MA",
+        "description": "shows.json: life-and-times-of-michael-k-regional-2027.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "life-and-times-of-michael-k-regional-2027",
+        "field": "status",
+        "oldValue": "upcoming",
+        "newValue": "closed",
+        "description": "shows.json: life-and-times-of-michael-k-regional-2027.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "life-and-times-of-michael-k-regional-2027",
+        "field": "openingDate",
+        "oldValue": "2027-01-31",
+        "newValue": "2025-01-31",
+        "description": "shows.json: life-and-times-of-michael-k-regional-2027.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "life-and-times-of-michael-k-regional-2027",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "theatre-show-page: artsemerson.org event page \"Past Event Jan 31—Feb 09, 2025\" (BRO-8259)",
+        "description": "shows.json: life-and-times-of-michael-k-regional-2027.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "life-and-times-of-michael-k-regional-2027",
+        "field": "closingDate",
+        "oldValue": "2027-02-09",
+        "newValue": "2025-02-09",
+        "description": "shows.json: life-and-times-of-michael-k-regional-2027.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "life-and-times-of-michael-k-regional-2027",
+        "field": "closingDateSource",
+        "oldValue": "theatre-season-page",
+        "newValue": "theatre-show-page: artsemerson.org event page \"Past Event Jan 31—Feb 09, 2025\" (BRO-8259)",
+        "description": "shows.json: life-and-times-of-michael-k-regional-2027.closingDateSource"
+      }
+    ]
+  }
+}

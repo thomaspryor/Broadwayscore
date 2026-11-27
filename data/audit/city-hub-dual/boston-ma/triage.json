@@ -17,6 +17,18 @@
       "status": "",
       "item": "show:paranormal-activity-boston-regional-2026:opening-date",
       "reason": "Page date Jul 11 is the run start (first performance of Jul 11-30 run). Our 2026-07-15 is press night: Boston Globe and BroadwayWorld reviews are dated 07-16, none earlier. openingDateSource manual, cross-verified. BRO-7321."
+    },
+    "review:a-streetcar-named-desire-regional-2026|https://parterre.com/2026/11/14/the-trolley-problem|harry rose:wrong-production": {
+      "verdict": "false-positive",
+      "status": "",
+      "item": "review:a-streetcar-named-desire-regional-2026|https://parterre.com/2026/11/14/the-trolley-problem|harry rose:wrong-production",
+      "reason": "Our a-streetcar-named-desire-regional-2026 IS the Boston Lyric Opera production of Previn's opera (type opera, Emerson Cutler Majestic, Nov 5-8 2026; Globe, Herald, BWW, OperaWire, Crimson all name the Cutler Majestic). Parterre reviews that same BLO staging. BRO-8259."
+    },
+    "show:in-old-age-regional-2026:venue": {
+      "verdict": "confirmed",
+      "status": "fixed",
+      "item": "show:in-old-age-regional-2026:venue",
+      "reason": "ArtsEmerson is the presenter, not a building: all 7 reviews name the Emerson Paramount Center (Jackie Liebergott Black Box). Venue set to \"Emerson Paramount Center, Boston, MA\" via data/pending-fixes/bro-8259.json. BRO-8259."
     }
   }
 }
