@@ -108,6 +108,7 @@ test('claimsClosing: cloud, Mac and machine verdicts; not a mid-session update',
   assert.equal(claimsClosing('DONE x\nTHIS SESSION: CLOSE ME — done'), true);
   assert.equal(claimsClosing('Pushed. Waiting for the deploy.\nKeep this tab open.'), false);
   assert.equal(claimsClosing('```\nSAFE TO ARCHIVE\n```\nstill working'), false);
+  assert.equal(claimsClosing('SAFE TO ARCHIVE — done\n\nDeployed: https://broadwayscorecard.com/'), true, 'a line under the verdict does not hide it');
 });
 
 test('screenshotSentSince / stopDecision', () => {
@@ -135,6 +136,9 @@ test('screenshotSentSince / stopDecision', () => {
   assert.equal(sd([], { env: { VISUAL_SMALL_FIX_STOP_DISABLED: '1' } }), false);
   assert.equal(sd([], { env: { VISUAL_SMALL_FIX_DISABLED: '1' } }), true, 'closing the lane does not forgive a debt already owed');
   assert.equal(screenshotSentSince(shot('2026-11-27T10:05:00Z'), '2026-11-27T10:00:00Z', { mtime }), '/Users/x/Documents/claude-outputs/badge-390.png');
+  const seen = [];
+  screenshotSentSince(shot('2026-11-27T10:05:00Z', ['~/Documents/claude-outputs/b.png']), '2026-11-27T10:00:00Z', { mtime: (f) => { seen.push(f); return after; } });
+  assert.equal(seen[0], join(homedir(), 'Documents/claude-outputs/b.png'), '~/ paths are expanded');
 });
 
 // ── the real hook ──────────────────────────────────────────────────────────────

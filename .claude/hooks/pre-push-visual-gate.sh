@@ -226,7 +226,8 @@ if [ "${VISUAL_SMALL_FIX_DISABLED:-0}" != "1" ] && [ -f "$_SMALL" ] && command -
     echo "[visual-gate] small-fix lane: pushing without the pre-push yes. You now owe the owner a screenshot of $(printf '%s' "$_SMALL_OUT" | jq -r '.page' 2>/dev/null) once it is live (SendUserFile), before you close." >&2
     exit 0
   fi
-  _SMALL_REFUSED="Small-fix lane refused: $(printf '%s' "$_SMALL_OUT" | jq -r '.reason // "the check failed"' 2>/dev/null || echo 'the check failed')."
+  _SMALL_WHY=$(printf '%s' "$_SMALL_OUT" | jq -r '.reason // empty' 2>/dev/null)
+  _SMALL_REFUSED="Small-fix lane refused: ${_SMALL_WHY:-the check timed out or crashed, so the normal gate applies}."
 fi
 _SMALL_LINE() {
   if [ -n "$_SMALL_REFUSED" ]; then echo "$_SMALL_REFUSED"; return 0; fi

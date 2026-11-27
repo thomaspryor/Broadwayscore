@@ -208,8 +208,8 @@ export function claimsClosing(message) {
   const text = String(message || '').replace(/```[\s\S]*?```/g, '');
   if (/THIS SESSION:\s*(?:CLOSE ME|IDLE)\b/.test(text)) return true;
   const lines = text.split('\n').map((l) => l.trim().replace(/^[*_>#\s•-]+/, '').replace(/[*_\s]+$/, '')).filter(Boolean);
-  const last = lines[lines.length - 1] || '';
-  return /^(?:SAFE TO (?:ARCHIVE|EXIT)\b|You can close this tab\b|Nothing is running here\b)/i.test(last);
+  // Any line, not only the last: a link or status line under the verdict must not hide it.
+  return lines.some((l) => /^(?:SAFE TO (?:ARCHIVE|EXIT)\b|You can close this tab\b|Nothing is running here\b)/i.test(l));
 }
 
 const defaultMtime = (f) => { try { return fs.statSync(f).mtimeMs; } catch { return null; } };
@@ -227,7 +227,8 @@ export function screenshotSentSince(events, sinceIso, { cwd = process.cwd(), mti
     const r = results.get(e.id);
     if (!r || r.isError) continue;
     const files = Array.isArray(e.input?.files) ? e.input.files : [];
-    const img = files.find((f) => IMAGE_RE.test(String(f)) && mtime(path.resolve(cwd, String(f))) >= since);
+    const abs = (f) => (/^~(?=\/|$)/.test(f) ? path.join(os.homedir(), f.slice(1)) : path.resolve(cwd, f));
+    const img = files.find((f) => IMAGE_RE.test(String(f)) && mtime(abs(String(f))) >= since);
     if (img) return img;
   }
   return null;
