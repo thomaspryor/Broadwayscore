@@ -1,13 +1,89 @@
 {
-  "generatedAt": "2026-11-27T06:08:41.016Z",
+  "generatedAt": "2026-11-27T07:39:39.450Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 377,
-  "clean": 377,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 374,
+  "defective": 3,
+  "byType": {
+    "missing-from-prod": 3,
+    "score-drift": 3
+  },
+  "shows": [
+    {
+      "showId": "whispering-jack-regional-2026",
+      "title": "Whispering Jack: The John Farnham Musical",
+      "openingDate": "2026-11-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "2 scored outlet(s) absent from the deployed payload: musicaltheatre-au-reviews, theatre-thoughts-aus"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.51 vs local 84.93 (Δ0.42)"
+        }
+      ],
+      "missingFromProd": [
+        "musicaltheatre-au-reviews",
+        "theatre-thoughts-aus"
+      ],
+      "localCount": 7,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-27T07:39:32.033Z"
+    },
+    {
+      "showId": "my-fair-lady-regional-2026",
+      "title": "My Fair Lady",
+      "openingDate": "2026-11-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "3 scored outlet(s) absent from the deployed payload: noise11, the-au-review, the-scoop-au"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed payload has no numeric cs (local 94.39)"
+        }
+      ],
+      "missingFromProd": [
+        "noise11",
+        "the-au-review",
+        "the-scoop-au"
+      ],
+      "localCount": 5,
+      "deployedCount": 2,
+      "firstDefectAt": "2026-11-27T07:39:32.033Z"
+    },
+    {
+      "showId": "a-beautiful-noise-regional-2026",
+      "title": "A Beautiful Noise: The Neil Diamond Musical",
+      "openingDate": "2026-11-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "4 scored outlet(s) absent from the deployed payload: dance-australia, sydney-travel-guide, the-scoop-au, theatre-travels"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed payload has no numeric cs (local 79.78)"
+        }
+      ],
+      "missingFromProd": [
+        "dance-australia",
+        "sydney-travel-guide",
+        "the-scoop-au",
+        "theatre-travels"
+      ],
+      "localCount": 6,
+      "deployedCount": 2,
+      "firstDefectAt": "2026-11-27T07:39:32.033Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

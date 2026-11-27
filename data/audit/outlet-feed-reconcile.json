@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T06:08:41.304Z",
+  "generatedAt": "2026-11-27T07:39:39.914Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,12 +138,12 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -160,9 +160,17 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "fringereview",
+      "error": "Timeout fetching https://fringereview.co.uk/feed/"
+    },
+    {
+      "outletId": "lighting-and-sound-america",
+      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 909,
+  "itemsScanned": 903,
   "matchedGaps": 2,
   "possibleGaps": 5,
   "gaps": [
