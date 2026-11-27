@@ -1,0 +1,328 @@
+{
+  "issueNumber": "bro-8415",
+  "planId": "8131a1a5-dc3c-4c94-86f1-a9d3ab4f367f",
+  "status": "pending",
+  "createdAt": "2026-11-27T16:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add five current major Australian productions (Fiddler on the Roof Melbourne, A Room with a View MTC, Mrs. Doubtfire Melbourne, Beetlejuice Sydney, The Lion King Brisbane) as category regional for the Australia expansion, BRO-8415.",
+    "steps": [
+      "Append the five add-show entries to shows.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "fiddler-on-the-roof-melbourne-regional-2026",
+          "title": "Fiddler on the Roof",
+          "slug": "fiddler-on-the-roof-melbourne-regional-2026",
+          "venue": "Her Majesty's Theatre, Melbourne, VIC",
+          "openingDate": "2026-11-06",
+          "previewsStartDate": "2026-10-31",
+          "closingDate": "2026-12-27",
+          "status": "open",
+          "type": "musical",
+          "isRevival": true,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional",
+            "revival"
+          ],
+          "images": {
+            "poster": "/images/shows/fiddler-on-the-roof-melbourne-regional-2026/poster.jpg",
+            "thumbnail": "/images/shows/fiddler-on-the-roof-melbourne-regional-2026/thumbnail.jpg",
+            "hero": "/images/shows/fiddler-on-the-roof-melbourne-regional-2026/hero.jpg"
+          },
+          "synopsis": "In the Russian village of Anatevka, the dairyman Tevye tries to hold to tradition while his daughters' choices and the pressure of the outside world pull his family and community apart. This is the Australian premiere of Jordan Fein's West End production at Her Majesty's Theatre.",
+          "openingDateSource": "inferred-from-reviews",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": "219 Exhibition Street, Melbourne VIC 3000",
+          "officialUrl": "https://hmt.com.au/fiddler-on-the-roof/",
+          "ticketLinks": [
+            {
+              "platform": "Her Majesty's Theatre",
+              "url": "https://hmt.com.au/fiddler-on-the-roof/"
+            }
+          ],
+          "evidenceUrls": [
+            "https://thescoop.au/review-fiddler-on-the-roof-celebrates-resilience-faith-love/",
+            "https://www.weekendnotes.com/fiddler-on-the-roof-her-majestys-theatre-review/",
+            "https://thephrasemaker.com/2026/11/08/fiddler-on-the-roof-review/"
+          ],
+          "cast": [
+            {
+              "name": "Troy Sussman",
+              "role": "Tevye"
+            },
+            {
+              "name": "Sigrid Thornton",
+              "role": "Yente"
+            },
+            {
+              "name": "Alexis Fishman",
+              "role": "Golde"
+            },
+            {
+              "name": "John Waters",
+              "role": "Lazar Wolf"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Jordan Fein",
+              "role": "Director"
+            },
+            {
+              "name": "Julia Cheng",
+              "role": "Choreographer"
+            },
+            {
+              "name": "Tom Scutt",
+              "role": "Set Designer"
+            },
+            {
+              "name": "Joseph Stein",
+              "role": "Book"
+            },
+            {
+              "name": "Jerry Bock",
+              "role": "Music"
+            },
+            {
+              "name": "Sheldon Harnick",
+              "role": "Lyrics"
+            }
+          ]
+        },
+        "description": "Add Fiddler on the Roof (Her Majesty's Theatre, Melbourne, VIC) as category regional, Australia expansion BRO-8415"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-room-with-a-view-regional-2026",
+          "title": "A Room with a View",
+          "slug": "a-room-with-a-view-regional-2026",
+          "venue": "Southbank Theatre, Melbourne, VIC",
+          "openingDate": "2026-11-19",
+          "previewsStartDate": "2026-11-14",
+          "closingDate": "2026-12-19",
+          "status": "open",
+          "type": "play",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "images": {
+            "poster": "/images/shows/a-room-with-a-view-regional-2026/poster.jpg",
+            "thumbnail": "/images/shows/a-room-with-a-view-regional-2026/thumbnail.jpg",
+            "hero": "/images/shows/a-room-with-a-view-regional-2026/hero.jpg"
+          },
+          "synopsis": "Lucy Honeychurch's orderly life is disrupted on a holiday in Florence with her cousin Charlotte, above all by her connection with George Emerson. Back in England she must choose between the future expected of her and the urge to want more. Grace Chapple's new stage adaptation of E. M. Forster's novel is a Melbourne Theatre Company, Belvoir St Theatre and Black Swan State Theatre Company co-production.",
+          "openingDateSource": "inferred-from-reviews",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": "140 Southbank Boulevard, Southbank VIC 3006",
+          "officialUrl": "https://www.mtc.com.au/plays-and-tickets/whats-on/season-2026/a-room-with-a-view",
+          "ticketLinks": [
+            {
+              "platform": "Melbourne Theatre Company",
+              "url": "https://www.mtc.com.au/plays-and-tickets/whats-on/season-2026/a-room-with-a-view"
+            }
+          ],
+          "evidenceUrls": [
+            "https://www.mtc.com.au/plays-and-tickets/whats-on/season-2026/a-room-with-a-view",
+            "https://thescoop.au/theatre-reviews-melbourne/"
+          ],
+          "cast": [
+            {
+              "name": "Nathalie Morris",
+              "role": "Lucy Honeychurch"
+            },
+            {
+              "name": "Luke Wiltshire",
+              "role": "George Emerson"
+            },
+            {
+              "name": "Hayley McElhinney",
+              "role": "Charlotte"
+            },
+            {
+              "name": "Charles Wu",
+              "role": "Cecil Vyse"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Grace Chapple",
+              "role": "Adaptor"
+            },
+            {
+              "name": "Hannah Goodwin",
+              "role": "Director"
+            },
+            {
+              "name": "Zoë Atkinson",
+              "role": "Set & Costume Designer"
+            },
+            {
+              "name": "Amelia Lever-Davidson",
+              "role": "Lighting Designer"
+            }
+          ]
+        },
+        "description": "Add A Room with a View (Southbank Theatre, Melbourne, VIC) as category regional, Australia expansion BRO-8415"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "mrs-doubtfire-regional-2026",
+          "title": "Mrs. Doubtfire",
+          "slug": "mrs-doubtfire-regional-2026",
+          "venue": "Princess Theatre, Melbourne, VIC",
+          "openingDate": "2026-11-25",
+          "previewsStartDate": "2026-11-25",
+          "closingDate": "2027-02-14",
+          "status": "previews",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "images": {
+            "poster": "/images/shows/mrs-doubtfire-regional-2026/poster.jpg",
+            "thumbnail": "/images/shows/mrs-doubtfire-regional-2026/thumbnail.jpg",
+            "hero": "/images/shows/mrs-doubtfire-regional-2026/hero.jpg"
+          },
+          "synopsis": "Out-of-work actor Daniel Hillard loses custody of his children in a divorce and, to stay in their lives, reinvents himself as the Scottish nanny Euphegenia Doubtfire. This is the Australian premiere of the Broadway and West End musical, directed by Jerry Zaks, at the Princess Theatre.",
+          "openingDateSource": "inferred-from-reviews",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": "163 Spring Street, Melbourne VIC 3000",
+          "officialUrl": "https://marrinergroup.com.au/index.php/shows/mrs-doubtfire-the-musical",
+          "ticketLinks": [
+            {
+              "platform": "Marriner Group",
+              "url": "https://marrinergroup.com.au/index.php/shows/mrs-doubtfire-the-musical"
+            }
+          ],
+          "evidenceUrls": [
+            "https://www.todaytix.com/melbourne/shows/48601-mrs-doubtfire-the-musical",
+            "https://whatson.melbourne.vic.gov.au/things-to-do/mrs-doubtfire"
+          ],
+          "creativeTeam": [
+            {
+              "name": "Jerry Zaks",
+              "role": "Director"
+            }
+          ]
+        },
+        "description": "Add Mrs. Doubtfire (Princess Theatre, Melbourne, VIC) as category regional, Australia expansion BRO-8415"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "beetlejuice-regional-2026",
+          "title": "Beetlejuice The Musical",
+          "slug": "beetlejuice-regional-2026",
+          "venue": "Capitol Theatre, Sydney, NSW",
+          "openingDate": "2026-11-21",
+          "previewsStartDate": "2026-11-21",
+          "closingDate": "2027-01-10",
+          "status": "previews",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "images": {
+            "poster": "/images/shows/beetlejuice-regional-2026/poster.jpg",
+            "thumbnail": "/images/shows/beetlejuice-regional-2026/thumbnail.jpg",
+            "hero": "/images/shows/beetlejuice-regional-2026/hero.jpg"
+          },
+          "synopsis": "Lydia Deetz, a goth teenager obsessed with death, summons the mischievous demon Beetlejuice to help her cope with grief in the afterlife-haunted house her family has moved into. Eddie Perfect plays the title role in the Australian production, which concludes its national tour at the Capitol Theatre.",
+          "openingDateSource": "inferred-from-reviews",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": "13 Campbell Street, Haymarket NSW 2000",
+          "officialUrl": "https://www.capitoltheatre.com.au/beetlejuice-the-musical",
+          "ticketLinks": [
+            {
+              "platform": "Capitol Theatre",
+              "url": "https://www.capitoltheatre.com.au/beetlejuice-the-musical"
+            }
+          ],
+          "evidenceUrls": [
+            "https://www.ellaslist.com.au/sydney/events/beetlejuice-the-musical",
+            "https://michaelcassel.com/tony-award-nominated-broadway-hit-beetlejuice-the-musical-to-play-sydney-from-november-2026/"
+          ],
+          "cast": [
+            {
+              "name": "Eddie Perfect",
+              "role": "Beetlejuice"
+            }
+          ]
+        },
+        "description": "Add Beetlejuice The Musical (Capitol Theatre, Sydney, NSW) as category regional, Australia expansion BRO-8415"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-lion-king-regional-2026",
+          "title": "The Lion King",
+          "slug": "the-lion-king-regional-2026",
+          "venue": "Lyric Theatre, Brisbane, QLD",
+          "openingDate": "2026-11-15",
+          "previewsStartDate": "2026-11-15",
+          "closingDate": "2027-03-07",
+          "status": "previews",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "images": {
+            "poster": "/images/shows/the-lion-king-regional-2026/poster.jpg",
+            "thumbnail": "/images/shows/the-lion-king-regional-2026/thumbnail.jpg",
+            "hero": "/images/shows/the-lion-king-regional-2026/hero.jpg"
+          },
+          "synopsis": "Young lion cub Simba flees the Pride Lands after his father Mukasa is killed, and must grow up, face his past and take his place as king. Julie Taymor's staging of the Disney musical with music by Elton John and Tim Rice returns to Brisbane at the Lyric Theatre, QPAC.",
+          "openingDateSource": "inferred-from-reviews",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": "Queensland Performing Arts Centre, Cultural Centre, South Bank QLD 4101",
+          "officialUrl": "https://qpac.com.au/whats-on/2026/the-lion-king",
+          "ticketLinks": [
+            {
+              "platform": "QPAC",
+              "url": "https://qpac.com.au/whats-on/2026/the-lion-king"
+            }
+          ],
+          "evidenceUrls": [
+            "https://qpac.com.au/whats-on/2026/the-lion-king",
+            "https://suzygoessee.com/2026/04/23/review-the-lion-king-capitol-theatre/"
+          ],
+          "creativeTeam": [
+            {
+              "name": "Julie Taymor",
+              "role": "Director"
+            },
+            {
+              "name": "Garth Fagan",
+              "role": "Choreographer"
+            }
+          ]
+        },
+        "description": "Add The Lion King (Lyric Theatre, Brisbane, QLD) as category regional, Australia expansion BRO-8415"
+      }
+    ]
+  }
+}
