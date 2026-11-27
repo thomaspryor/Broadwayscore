@@ -1574,5 +1574,19 @@
       }
     ],
     "queuedAt": "2026-11-26T23:05:09.300Z"
+  },
+  {
+    "conditionKey": "pending-drain-growth",
+    "title": "_pending grew by 51 files over 4 sweeps",
+    "description": "The _pending backlog rose on every one of the last 4 sweeps (now 5973): intake is outrunning the drain, or a discovery path is writing junk.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-27T01:00:48.080Z"
   }
 ]
