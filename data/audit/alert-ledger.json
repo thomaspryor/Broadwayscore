@@ -49556,7 +49556,7 @@
       "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.296Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.296Z",
-      "lastSeen": "2026-11-27T06:26:57.182Z",
+      "lastSeen": "2026-11-27T06:28:15.676Z",
       "lastNotifiedAt": "2026-11-26T20:02:00.480Z",
       "lastSurfacedAt": "2026-11-26T20:02:00.480Z",
       "notifyCount": 4,
@@ -49570,7 +49570,7 @@
       "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.324Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.324Z",
-      "lastSeen": "2026-11-27T06:26:57.211Z",
+      "lastSeen": "2026-11-27T06:28:15.696Z",
       "lastNotifiedAt": "2026-11-26T20:02:00.506Z",
       "lastSurfacedAt": "2026-11-26T20:02:00.506Z",
       "notifyCount": 4,
@@ -50152,7 +50152,7 @@
       "title": "Test red on main: the same week in the Broadway edition does not get the West End exception [testCodeFailure]",
       "firstSeen": "2026-11-24T07:28:53.020Z",
       "incidentOpenedAt": "2026-11-24T07:28:53.020Z",
-      "lastSeen": "2026-11-27T06:26:57.347Z",
+      "lastSeen": "2026-11-27T06:28:15.727Z",
       "lastNotifiedAt": "2026-11-26T07:51:03.669Z",
       "lastSurfacedAt": "2026-11-26T07:51:03.669Z",
       "notifyCount": 3,
@@ -50642,7 +50642,7 @@
       "title": "Test red on main: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a ",
       "firstSeen": "2026-11-25T05:33:43.517Z",
       "incidentOpenedAt": "2026-11-25T05:33:43.517Z",
-      "lastSeen": "2026-11-27T06:26:57.235Z",
+      "lastSeen": "2026-11-27T06:28:15.712Z",
       "lastNotifiedAt": "2026-11-27T06:04:40.942Z",
       "lastSurfacedAt": "2026-11-27T06:04:40.942Z",
       "notifyCount": 3,
@@ -50992,7 +50992,7 @@
       "title": "Test red on main: allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS) [testCodeFailure]",
       "firstSeen": "2026-11-25T15:34:42.083Z",
       "incidentOpenedAt": "2026-11-25T15:34:42.083Z",
-      "lastSeen": "2026-11-27T06:26:57.418Z",
+      "lastSeen": "2026-11-27T06:28:15.774Z",
       "lastNotifiedAt": "2026-11-26T16:01:37.077Z",
       "lastSurfacedAt": "2026-11-26T16:01:37.077Z",
       "notifyCount": 2,
@@ -51116,7 +51116,7 @@
       "title": "Test red on main: real data loads and gives the expected answers for the four JS outlets [testCodeFailure]",
       "firstSeen": "2026-11-25T21:15:32.320Z",
       "incidentOpenedAt": "2026-11-25T21:15:32.320Z",
-      "lastSeen": "2026-11-27T06:26:57.372Z",
+      "lastSeen": "2026-11-27T06:28:15.743Z",
       "lastNotifiedAt": "2026-11-26T22:01:12.208Z",
       "lastSurfacedAt": "2026-11-26T22:01:12.208Z",
       "notifyCount": 2,
@@ -51490,7 +51490,7 @@
       "title": "Test red on main: the Pre-Broadway list and the UK list split every regional show exactly once [testCodeFailure]",
       "firstSeen": "2026-11-27T05:34:39.789Z",
       "incidentOpenedAt": "2026-11-27T05:34:39.789Z",
-      "lastSeen": "2026-11-27T06:26:57.396Z",
+      "lastSeen": "2026-11-27T06:28:15.759Z",
       "lastNotifiedAt": "2026-11-27T05:34:39.789Z",
       "lastSurfacedAt": "2026-11-27T05:34:39.789Z",
       "notifyCount": 1,
@@ -51499,7 +51499,7 @@
       "silentRefires": 4
     },
     "land:land/bro-8389-outlets": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-8389-outlets",
       "firstSeen": "2026-11-27T06:04:40.734Z",
@@ -51509,7 +51509,8 @@
       "lastSurfacedAt": "2026-11-27T06:04:40.734Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-27T06:28:15.589Z"
     }
   }
 }
