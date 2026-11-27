@@ -51,6 +51,7 @@ const { checkLanded, isAncestor } = require('./lib/landing-verify.js');
 const { pickBlobShaMeta } = require('./lib/core-data-blob-meta.js');
 const { prodProofFromLog, listingLooksStale, DEPLOY_JOB } = require('./lib/deploy-log-proof.js');
 const { firstLine } = require('./lib/log-lines.js');
+const { resolveUnknownLiveness } = require('./lib/prod-live-fallback.js');
 
 const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 // BRO-6058: job-log reads need the escape-sequence retry in runGhWithFallback.
@@ -213,6 +214,14 @@ function isLive(commit, deployedSha, cwd = process.cwd()) {
   if (deployIsBehind(commit, deployedSha, cwd)) return false;
   const result = checkLanded({ sha: commit, ref: deployedSha, cwd, log: (m) => console.error(m) });
   if (result.verdict === 'UNKNOWN') {
+    // BRO-6730: a shallow cloud clone cannot unshallow, so ask the GitHub compare API before giving up.
+    const viaCompare = resolveUnknownLiveness({
+      fullSha: pinCommit(commit, cwd),
+      deployedSha,
+      compare: (full, deployed) => ghJson(`repos/${REPO}/compare/${full}...${deployed}`).status,
+      log: (m) => console.error(`⚠️  ${m}`),
+    });
+    if (viaCompare !== null) return viaCompare;
     console.error(`⚠️  Could not determine whether ${commit} is live (reason=${result.reason}); verify via VERCEL_TOKEN dashboard or 'git ls-remote origin main'.`);
     return null; // exit 2, same as the GitHub fallback (BRO-5836)
   }
