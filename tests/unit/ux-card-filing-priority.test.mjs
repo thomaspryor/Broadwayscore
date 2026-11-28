@@ -26,9 +26,9 @@ test('UX walkthrough never files its cards above normal priority', () => {
       { summary: 'Dead control on the diary sheet date picker', severity: 'high', deterministic: true, models: ['dead-control'] },
       { summary: 'Rate stars overlap the poster bookmark on mobile', severity: 'high', agreementCount: 3, models: ['a', 'b', 'c'] },
     ],
-    existing: okBoard,
+    existing: { ...okBoard, recentCount: 0 },
   });
-  assert.equal(plan.toFile.length, 2);
+  assert.equal(plan.toFile.length, 1); // one card per run (BRO-8435)
   for (const item of plan.toFile) {
     // Every walkthrough card is in the class the headless lane refuses...
     assert.match(item.title, UI_CARD_CLASS_RE);

@@ -39,10 +39,15 @@ const { foldDiacritics } = require('./title-match.js');
 
 const PRIORITY_NORMAL = 3;
 
-// Two independent models agreeing is the bar for a model opinion. Findings
+// All three models agreeing is the bar for a model opinion (BRO-8435, owner 2026-11-28: every one of the 8
+// model-opinion cards ever filed, 2-of-3 included, was closed as noise and none led to a fix). Findings
 // from the deterministic detectors (dead control, structural probe, iOS quirk)
 // are measurements, not opinions, and carry no agreement requirement.
-const MIN_AGREEMENT = 2;
+const MIN_AGREEMENT = 3;
+
+// Model opinions file at most once per this many days: the same theme comes back reworded every few days
+// (add-show button x3, delete color x2) and word-overlap dedupe cannot see it. Deterministic findings are exempt.
+const MODEL_COOLDOWN_DAYS = 7;
 
 // Jaccard-ish overlap over words longer than 3 characters. Kept at the value
 // the walkthrough has always used; it is a dedup heuristic, not a threshold
@@ -51,7 +56,7 @@ const DUPE_SIMILARITY = 0.6;
 
 // Per-run volume cap (BRO-6478). A filed card now costs a worker session, and about 17 of 18 findings were noise
 // (BRO-340), so a bad night files a few. The rest are reported as skippedOverCap; a real defect shows up in the next night's run and files then.
-const MAX_FILINGS_PER_RUN = 3;
+const MAX_FILINGS_PER_RUN = 1;
 
 // Each filing gets a unique key from the caller, so an earlier finding's resolution cannot close a recurrence.
 const VERIFY_LINE = 'VERIFY: node scripts/lib/ux-walkthrough-resolution.js --key=';
@@ -132,7 +137,7 @@ function priorityFor(_finding) {
  * @param {object}   args.existing   {titles: string[], ok: boolean} from the
  *                                   board read. `ok:false` means the read
  *                                   FAILED — not that the board is empty.
- * @returns {{refused:boolean, reason:string|null, toFile:Array, skippedDuplicate:Array, skippedLowAgreement:Array}}
+ * @returns {{refused:boolean, reason:string|null, toFile:Array, skippedDuplicate:Array, skippedLowAgreement:Array, skippedOverCap:Array, skippedCooldown:Array}}
  */
 function planFilings({ findings = [], existing = null } = {}) {
   if (!existing || existing.ok !== true) {
@@ -144,6 +149,7 @@ function planFilings({ findings = [], existing = null } = {}) {
       skippedDuplicate: [],
       skippedLowAgreement: [],
       skippedOverCap: [],
+      skippedCooldown: [],
     };
   }
 
@@ -152,11 +158,20 @@ function planFilings({ findings = [], existing = null } = {}) {
   const skippedDuplicate = [];
   const skippedLowAgreement = [];
   const skippedOverCap = [];
+  const skippedCooldown = [];
+  // Cards filed in the last MODEL_COOLDOWN_DAYS (any outcome). An unreadable count fails CLOSED for model
+  // opinions (one skipped night costs nothing; a transient Linear error must not void the 1-a-week promise).
+  const recentFiled = Number.isFinite(existing.recentCount) ? existing.recentCount : Infinity;
+  let modelFiledThisRun = 0;
 
   for (const f of findings || []) {
     if (!f) continue;
     if (!f.deterministic && !(f.agreementCount >= MIN_AGREEMENT)) {
       skippedLowAgreement.push(titleFor(f));
+      continue;
+    }
+    if (!f.deterministic && (recentFiled > 0 || modelFiledThisRun > 0)) {
+      skippedCooldown.push(titleFor(f));
       continue;
     }
     const title = titleFor(f);
@@ -174,9 +189,10 @@ function planFilings({ findings = [], existing = null } = {}) {
       continue;
     }
     toFile.push({ title, priority: priorityFor(f), finding: f });
+    if (!f.deterministic) modelFiledThisRun++;
   }
 
-  return { refused: false, reason: null, toFile, skippedDuplicate, skippedLowAgreement, skippedOverCap };
+  return { refused: false, reason: null, toFile, skippedDuplicate, skippedLowAgreement, skippedOverCap, skippedCooldown };
 }
 
 module.exports = {
@@ -184,6 +200,7 @@ module.exports = {
   MIN_AGREEMENT,
   DUPE_SIMILARITY,
   MAX_FILINGS_PER_RUN,
+  MODEL_COOLDOWN_DAYS,
   VERIFY_LINE,
   cardNotes,
   normalizeWords,

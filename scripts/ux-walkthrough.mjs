@@ -5,8 +5,8 @@
 // project, seeds realistic diary/watchlist/list data through it, captures a
 // screenshot matrix of the signed-in surfaces on demo.broadwayscorecard.com,
 // and runs the screenshots past three independent vision models (GPT-4o,
-// Gemini, Claude) for a holistic UX review. Findings two-or-more models agree
-// on get filed as Linear issues. The synthetic user is always torn down.
+// Gemini, Claude) for a holistic UX review. Findings all three models agree
+// on (at most one a night, one a week) get filed as Linear issues; BRO-8435. The synthetic user is always torn down.
 //
 // This exists because narrow e2e assertions ("did the POST succeed") miss
 // what a human QA pass catches by looking: flow outcomes, cross-surface
@@ -59,10 +59,10 @@ import { launchExtras } from './lib/playwright-exe.js';
 // ["poster","missing"], similarity 1.0, so dedupeFindings MERGES two
 // unrelated defects on two different shows, keeps only the first summary, and
 // hands the survivor a fabricated agreementCount of 2 — clearing the
-// two-model bar and filing a finding no two models ever agreed on.
+// three-model bar and filing a finding no two models ever agreed on.
 // tests/unit/sibling-matchers-diacritics.test.mjs globs .js only, so CI is
 // structurally unable to catch a copy living in a .mjs file.
-const { normalizeWords: _normalizeWords, similarity: _similarity } =
+const { normalizeWords: _normalizeWords, similarity: _similarity, MODEL_COOLDOWN_DAYS } =
   _createRequire(import.meta.url)('./lib/ux-walkthrough-filing.js');
 
 function loadDotenv(path = '.env') {
@@ -1195,6 +1195,7 @@ async function existingCardTitles() {
     const linear = require('./lib/linear-client.js');
     const openIssues = await linear.listOpenIssuesWithDescriptions();
     const titles = (openIssues || []).map(i => i.title).filter(Boolean);
+    let recentCount; // set only when the UX-audit history read succeeds
 
     // CLOSED findings count for dedup too. listOpenIssuesWithDescriptions
     // filters out completed/canceled/duplicate, but a UX finding closed as
@@ -1211,12 +1212,17 @@ async function existingCardTitles() {
           issues(filter: { team: { key: { eq: "BRO" } }, title: { startsWith: "UX audit:" } },
                  first: 250, after: $after, includeArchived: true) {
             pageInfo { hasNextPage endCursor }
-            nodes { title }
+            nodes { title createdAt }
           }
         }`,
         { after: null }
       );
-      for (const n of closed?.issues?.nodes || []) if (n.title) titles.push(n.title);
+      recentCount = 0;
+      const cutoff = Date.now() - MODEL_COOLDOWN_DAYS * 86400000;
+      for (const n of closed?.issues?.nodes || []) {
+        if (n.title) titles.push(n.title);
+        if (Date.parse(n.createdAt) >= cutoff) recentCount++;
+      }
     } catch (err) {
       // Non-fatal: dedup against the open board still works, we just lose the
       // closed-findings half. Say so rather than silently narrowing.
@@ -1237,7 +1243,7 @@ async function existingCardTitles() {
       console.error('[ux-walkthrough] board read returned ZERO open issues — treating as a failed read, not an empty board (see this function\'s comment).');
       return { titles: [], ok: false };
     }
-    return { titles, ok: true };
+    return { titles, ok: true, recentCount };
   } catch (err) {
     console.error(`[ux-walkthrough] could not fetch existing UX-audit issues: ${err.message}`);
     return { titles: [], ok: false };
@@ -1275,6 +1281,9 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
   }
   for (const t of plan.skippedDuplicate) console.error(`[ux-walkthrough] skip (existing issue match): ${t}`);
   for (const t of plan.skippedOverCap) console.error(`[ux-walkthrough] skip (per-run cap): ${t}`);
+  for (const t of plan.skippedCooldown) console.error(`[ux-walkthrough] skip (model-opinion cooldown, or UX card history unreadable): ${t}`);
+  for (const t of plan.skippedLowAgreement) console.error(`[ux-walkthrough] skip (not all 3 models agreed): ${t}`);
+  if (respondingCount < 3) console.error(`[ux-walkthrough] only ${respondingCount}/3 models responded: no model opinion can reach unanimity tonight`);
 
   const filed = [];
   const failed = [];

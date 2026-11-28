@@ -3,7 +3,7 @@ name: Nightly UX Walkthrough
 # Signed-in UX walkthrough: mints a throwaway @bsc-test.dev user, seeds
 # realistic diary/watchlist/list data, captures a screenshot matrix of the
 # signed-in surfaces on demo.broadwayscorecard.com, and runs them past a
-# 3-model vision review panel (GPT-4o, Gemini, Claude). Findings 2-of-3
+# 3-model vision review panel (GPT-4o, Gemini, Claude). Findings 3-of-3
 # models agree on get filed as Notion cards automatically. See card #219 —
 # this catches flow/consistency/affordance/hierarchy issues that narrow e2e
 # assertions miss (they only check that a POST succeeded, not how it looks).

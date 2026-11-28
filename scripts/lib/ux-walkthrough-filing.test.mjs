@@ -15,6 +15,7 @@ import {
   PRIORITY_NORMAL,
   MIN_AGREEMENT,
   DUPE_SIMILARITY,
+  MAX_FILINGS_PER_RUN,
   normalizeWords,
   similarity,
   titleFor,
@@ -23,7 +24,7 @@ import {
 } from './ux-walkthrough-filing.js';
 
 const model = (summary, extra = {}) => ({ summary, agreementCount: MIN_AGREEMENT, models: ['a', 'b'], severity: 'medium', ...extra });
-const okBoard = (titles = []) => ({ titles, ok: true });
+const okBoard = (titles = []) => ({ titles, ok: true, recentCount: 0 });
 
 test('a FAILED board read files nothing — it is not an empty board', () => {
   // The whole point. ok:false must never be treated as "nothing on the board".
@@ -131,11 +132,48 @@ test('similarity is symmetric, bounded, and empty-safe', () => {
 
 test('unrelated findings are not collapsed into one', () => {
   const plan = planFilings({
-    findings: [model('Watchlist button does nothing on mobile'), model('Diary calendar wheel truncates the year')],
+    findings: [model('Watchlist button does nothing on mobile', { deterministic: true }), model('Diary calendar wheel truncates the year', { deterministic: true })],
     existing: okBoard([]),
   });
-  assert.equal(plan.toFile.length, 2);
+  // Neither is a duplicate of the other; the one-per-run cap (BRO-8435) is what holds the second back.
   assert.equal(plan.skippedDuplicate.length, 0);
+  assert.equal(plan.toFile.length + plan.skippedOverCap.length, 2);
+});
+
+// BRO-8435: all 8 model-opinion cards ever filed were noise, so the bar is unanimity, one a night, one a week.
+test('a 2-of-3 model finding is not filed; 3-of-3 is', () => {
+  const plan = planFilings({
+    findings: [model('Filter row looks cramped on phones', { agreementCount: 2 }), model('Date styling differs between views', { agreementCount: 3 })],
+    existing: { titles: [], ok: true, recentCount: 0 },
+  });
+  assert.equal(MIN_AGREEMENT, 3);
+  assert.deepEqual(plan.toFile.map((t) => t.title), ['UX audit: Date styling differs between views']);
+  assert.equal(plan.skippedLowAgreement.length, 1);
+});
+
+test('at most one card is filed per run', () => {
+  const plan = planFilings({ findings: [model('First unanimous finding here'), model('Second unanimous finding there')], existing: { titles: [], ok: true, recentCount: 0 } });
+  assert.equal(MAX_FILINGS_PER_RUN, 1);
+  assert.equal(plan.toFile.length, 1);
+  assert.equal(plan.skippedOverCap.length + plan.skippedCooldown.length, 1);
+});
+
+test('a model opinion is held while a UX card was filed in the last week, but a deterministic finding still files', () => {
+  const plan = planFilings({
+    findings: [model('Unanimous opinion about spacing'), model('Dead control on watchlist', { deterministic: true })],
+    existing: { titles: [], ok: true, recentCount: 1 },
+  });
+  assert.deepEqual(plan.toFile.map((t) => t.title), ['UX audit: Dead control on watchlist']);
+  assert.equal(plan.skippedCooldown.length, 1);
+});
+
+test('an unreadable history count fails closed for model opinions but not for deterministic findings', () => {
+  const plan = planFilings({
+    findings: [model('Unanimous opinion about spacing'), model('Dead control on watchlist', { deterministic: true })],
+    existing: { titles: [], ok: true },
+  });
+  assert.deepEqual(plan.toFile.map((t) => t.title), ['UX audit: Dead control on watchlist']);
+  assert.equal(plan.skippedCooldown.length, 1);
 });
 
 test('no findings is a clean empty plan, not a refusal', () => {

@@ -241,8 +241,9 @@ test('a UX walkthrough card has a runnable check, no limbo, passes the picker, a
   assert.match(notes, /demo\.broadwayscorecard\.com/);
   assert.equal(startNowUnpickableReason({ title: 'UX audit: x', description: `START-NOW: test\n${notes}`, priority: 2, mode: 'dispatch' }), null);
   const topics = ['carousel arrows hidden', 'footer links overlap', 'tooltip clipped', 'modal scrolls twice', 'search dropdown flickers', 'avatar menu misaligned', 'poster images stretch', 'filter chips wrap'];
-  const findings = topics.map(summary => ({ summary, agreementCount: 2, screenshot: 's' }));
-  const plan = planFilings({ findings, existing: { ok: true, titles: [] } });
+  const findings = topics.map(summary => ({ summary, agreementCount: 3, screenshot: 's' }));
+  const plan = planFilings({ findings, existing: { ok: true, titles: [], recentCount: 0 } });
+  // Model opinions: one a run (MAX_FILINGS_PER_RUN); the rest wait behind the cap or the weekly cooldown.
+  assert.equal(plan.skippedOverCap.length + plan.skippedCooldown.length, 8 - MAX_FILINGS_PER_RUN);
   assert.equal(plan.toFile.length, MAX_FILINGS_PER_RUN);
-  assert.equal(plan.skippedOverCap.length, 8 - MAX_FILINGS_PER_RUN);
 });
