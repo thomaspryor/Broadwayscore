@@ -44,6 +44,19 @@ test('findDuplicate: same-title Chicago regional or nearby tour', () => {
   assert.equal(s.findDuplicate(e, [{ id: 'p', title: 'Parade', category: 'broadway', openingDate: '1998-12-17' }]), null);
 });
 
+test('findDuplicate: a same-title production in another market or metro is not a duplicate (BRO-8450)', () => {
+  const e = { title: 'A Christmas Carol', openingDate: '2026-11-20' };
+  const others = [
+    { id: 'a-christmas-carol-west-end-2026', title: 'A Christmas Carol', category: 'west-end', venue: 'Old Vic, London', openingDate: '2026-11-25' },
+    { id: 'acc-ob', title: 'A Christmas Carol', category: 'off-broadway', venue: 'Theatre, New York, NY', openingDate: '2026-12-01' },
+    { id: 'acc-manc', title: 'A Christmas Carol', category: 'regional', venue: 'Royal Exchange, Manchester', openingDate: '2026-11-28' },
+    { id: 'acc-bos', title: 'A Christmas Carol', category: 'regional', venue: 'Huntington Theatre, Boston, MA', openingDate: '2026-11-28' },
+  ];
+  assert.equal(s.findDuplicate(e, others), null);
+  // The same metro still dedupes, whatever the stored category.
+  assert.ok(s.findDuplicate(e, [{ id: 'acc-chi', title: 'A Christmas Carol', category: 'regional', venue: 'Goodman Theatre, Chicago, IL', openingDate: '2026-11-15' }]));
+});
+
 test('dedupeId: venue suffix on an id collision', () => {
   const e = { id: 'hamlet-regional-2024', slug: 'hamlet-regional-2024', venue: 'Writers Theatre, Glencoe, IL' };
   s.dedupeId(e, { id: 77 }, new Set(['hamlet-regional-2024']));

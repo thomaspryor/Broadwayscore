@@ -226,7 +226,11 @@ function findDuplicate(entry, existingShows, city = getCity('chicago')) {
       if (Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 400 * 86400000) return s;
       continue;
     }
-    if (Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
+    // Any other row must be in this metro too (BRO-8450): a same-title West End, Off-Broadway,
+    // Manchester or other-city regional row is a different production, and a duplicate verdict
+    // is final, so the old any-market fallthrough silently dropped real local productions
+    // (Paramount A Christmas Carol vs the West End row, Citadel It's a Wonderful Life vs Broadway).
+    if (sameMetro(s.venue) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
   }
   return null;
 }
