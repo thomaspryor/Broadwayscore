@@ -71,7 +71,10 @@ function reviewPostsForShow(posts, show, source) {
   for (const p of posts) {
     const link = p && typeof p.link === 'string' ? p.link : '';
     if (!link || !source.linkFilter.test(link)) continue;
-    const headline = `${_strip(p.title && p.title.rendered)} ${_strip(p.excerpt && p.excerpt.rendered)}`;
+    // TheaterMania excerpts contain tags and references to other shows. Neither
+    // establishes that the post reviews the searched-for production.
+    const excerpt = source.id === 'theatermania' ? '' : _strip(p.excerpt && p.excerpt.rendered);
+    const headline = `${_strip(p.title && p.title.rendered)} ${excerpt}`;
     let slug = '';
     try { slug = new URL(link).pathname; } catch { slug = link; }
     if (findMatchingShows(headline, slug, [show]).length === 0) continue;
