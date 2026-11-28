@@ -205,7 +205,13 @@ function planFilings({ findings = [], existing = null } = {}) {
     // otherwise both be filed — the board read cannot know about a title
     // minted seconds ago.
     const priorTitles = existingTitles.concat(toFile.map((t) => t.title));
-    if (priorTitles.some((t) => similarity(t, title) >= DUPE_SIMILARITY)) {
+    // Deterministic titles are templated and name the exact control ("Dead control: \"X\" (a) on tab ..."), so fuzzy word
+    // overlap calls two DIFFERENT dead controls duplicates (0.77). They match on the exact title instead; model
+    // opinions keep the fuzzy match (reworded repeats are the thing it exists for).
+    const isDuplicate = f.deterministic
+      ? priorTitles.includes(title)
+      : priorTitles.some((t) => similarity(t, title) >= DUPE_SIMILARITY);
+    if (isDuplicate) {
       skippedDuplicate.push(title);
       continue;
     }

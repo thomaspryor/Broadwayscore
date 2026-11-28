@@ -316,3 +316,14 @@ test('a deterministic finding takes the one nightly slot before a model opinion'
   });
   assert.deepEqual(plan.toFile.map((t) => t.title), ['UX audit: Dead control on watchlist']);
 });
+
+// BRO-8448: templated dead-control titles must not collapse into each other under fuzzy dedupe.
+test('two different dead controls both file; the same one repeated is skipped', () => {
+  const dead = (label, tab) => model(`Dead control: "${label}" (button) on ${tab} produced no visible change in the mobile viewport after clicking`, { deterministic: true });
+  const first = titleFor(dead('Skip to main content', 'lists_tab')); // real board titles come from titleFor (cut at 120)
+  const diff = planFilings({ findings: [dead('Add to watchlist', 'diary_tab')], existing: okBoard([first]) });
+  assert.equal(diff.toFile.length, 1);
+  const same = planFilings({ findings: [dead('Skip to main content', 'lists_tab')], existing: okBoard([first]) });
+  assert.equal(same.toFile.length, 0);
+  assert.equal(same.skippedDuplicate.length, 1);
+});
