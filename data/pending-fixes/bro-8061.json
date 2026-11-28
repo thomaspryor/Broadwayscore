@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8061",
   "planId": "e13eae15-bcdc-420f-b6ff-cb5ff104302f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T21:01:02.151Z",
   "submitter": {
     "name": null,
@@ -46,5 +46,14 @@
         "description": "shows.json: gotta-dance-off-broadway-2026.creativeTeam"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T22:14:45.876Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for gotta-dance-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
