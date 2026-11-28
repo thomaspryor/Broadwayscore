@@ -313,5 +313,36 @@
       }
     ],
     "queuedAt": "2026-11-28T14:11:35.931Z"
+  },
+  {
+    "conditionKey": "land:land/cron-inflight-fix",
+    "title": "Landing blocked: scripts-lib-tests red on land/cron-inflight-fix",
+    "description": "land.yml did not land land/cron-inflight-fix: the scripts-lib-tests gate went red at b4dc3c8934. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46154465592",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/cron-inflight-fix"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "b4dc3c893418446ba4dadbf250c777da842544f1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46154465592"
+      }
+    ],
+    "queuedAt": "2026-11-28T14:29:48.110Z"
   }
 ]
