@@ -12,6 +12,7 @@
  *   node scripts/scrape-dtli.js --all-historical
  */
 
+const { stripProductionYearSuffix } = require('./lib/slug-year');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -161,7 +162,7 @@ function getDTLIUrlVariations(show) {
 
   // Base variations (without suffix)
   const baseVariations = [
-    show.slug.replace(/-\d{4}$/, ''),  // Remove year suffix
+    stripProductionYearSuffix(show),  // Remove year suffix (only a real production year, BRO-8447)
     titleSlug,
     titleNoArticle,
     show.title.toLowerCase().replace(/:/g, '').replace(/[^a-z0-9]+/g, '-'),
@@ -224,7 +225,7 @@ function getDTLIUrlVariations(show) {
     'titanique': ['titanique-bway'],
   };
 
-  const baseSlug = show.slug.replace(/-\d{4}$/, '');
+  const baseSlug = stripProductionYearSuffix(show);
 
   // Check special cases for baseSlug
   if (specialCases[baseSlug]) {

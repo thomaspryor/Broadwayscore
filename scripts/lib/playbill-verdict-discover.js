@@ -401,7 +401,28 @@ function createFallbackTracker(showIds) {
   };
 }
 
+/**
+ * Is an archived Verdict page still worth reusing? (BRO-8447)
+ *
+ * A page that yields zero review links is normally a stub captured before the
+ * critics' links were added (Verdict articles are published at the curtain and
+ * filled in over the night). Reusing it for the normal 14 days pinned
+ * its-a-wonderful-life-a-live-radio-play-2026 at 0 reviews even though the live
+ * article listed 13. A zero-link page is only reusable for `emptyMaxAgeHours`.
+ */
+function isArchiveReusable(html, mtimeMs, opts = {}) {
+  const { now = Date.now(), maxAgeDays = 14, emptyMaxAgeHours = 24 } = opts;
+  if (!html || !Number.isFinite(mtimeMs)) return false;
+  const ageHours = (now - mtimeMs) / 3600000;
+  if (ageHours >= maxAgeDays * 24) return false;
+  if (extractReviewLinksFromArticle(html, 'archive-check').length === 0) {
+    return ageHours < emptyMaxAgeHours;
+  }
+  return true;
+}
+
 module.exports = {
+  isArchiveReusable,
   VERDICT_CATEGORY_URL,
   VERDICT_SITEMAP_URL,
   extractArticlesFromCategoryPage,

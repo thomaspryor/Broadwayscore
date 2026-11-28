@@ -247,133 +247,9 @@ const NYSR_CRITICS = [
 // Extract review links from a Verdict article
 // ---------------------------------------------------------------------------
 
-function extractReviewLinksFromArticle(html, showId) {
-  const reviews = [];
-  const cheerio = require('cheerio');
-  const $ = cheerio.load(html);
-
-  // Playbill Verdict articles typically list reviews as links with outlet/critic info
-  // Pattern: <a href="review-url">Outlet Name</a> or embedded in text
-
-  // Find all links in the article body
-  const articleContent = $('article, .article-content, .article-body, .entry-content, main').first();
-  const container = articleContent.length ? articleContent : $.root();
-
-  container.find('a').each((_, el) => {
-    const href = $(el).attr('href');
-    const linkText = $(el).text().trim();
-
-    if (!href || !linkText) return;
-
-    // Skip non-review links: internal playbill, social media, ads, stores, platforms
-    if (href.includes('playbill.com') || href.includes('playbillder.com') ||
-        href.includes('playbillstore.com') || href.includes('playbilltravel.com')) return;
-    if (href.includes('facebook.com') || href.includes('twitter.com') ||
-        href.includes('instagram.com') || href.includes('youtube.com') ||
-        href.includes('tiktok.com') || href.includes('threads.net')) return;
-    if (href.includes('ticketmaster') || href.includes('telecharge') ||
-        href.includes('todaytix') || href.includes('seatgeek')) return;
-    if (href.includes('.ffm.to') || href.includes('spotify.com') ||
-        href.includes('apple.com') || href.includes('amazon.com')) return;
-    if (href.includes('americanrepertorytheater.org') || href.includes('americantheatrewing.org')) return;
-    if (href.includes('wikipedia.org') || href.includes('google.com')) return;
-    // Internal Playbill links and theater venue websites
-    if (href.includes('playbillvault.com')) return;
-    if (href.includes('eugeneoneillbroadway.com') || href.includes('2st.com') ||
-        href.includes('roundabouttheatre.org') || href.includes('broadwayinhollywood.com') ||
-        href.includes('minskoffbroadway.com') || href.includes('shubert.nyc')) return;
-    // Ticketing, aggregator, and affiliate sites (not review sources)
-    if (href.includes('criterionticketing.com') || href.includes('didtheylikeit.com') ||
-        href.includes('broadwaybox.com') || href.includes('nbc.com') ||
-        href.includes('yahoo.com') || href.includes('people.com')) return;
-    if (href.includes('tidd.ly') || href.includes('bit.ly') || href.includes('tinyurl.com') ||
-        href.includes('stubhub') || href.includes('vividseat') ||
-        href.includes('broadwaydirect.com') || href.includes('luckyseat.com') ||
-        href.includes('rush.todaytix.com') || href.includes('lottery.broadwaydirect.com')) return;
-    if (href.length < 20) return;
-
-    // Must look like a review URL (contains a path, not just a domain)
-    try {
-      const urlObj = new URL(href);
-      if (urlObj.pathname === '/' || urlObj.pathname === '') return;
-    } catch (e) {
-      return;
-    }
-
-    // This looks like a review link — extract outlet info from link text or surrounding text
-    const parentText = $(el).parent().text().trim().slice(0, 300);
-
-    // Try to identify outlet from the URL domain
-    let outlet = '';
-    try {
-      const domain = new URL(href).hostname.replace('www.', '');
-      outlet = domain;
-    } catch (e) {
-      // Invalid URL
-      return;
-    }
-
-    // Try to extract critic name from text near the link
-    // Common patterns: "Outlet (Critic Name)", "Critic Name, Outlet"
-    let critic = '';
-    const parenMatch = parentText.match(/\(([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\)/);
-    if (parenMatch) {
-      critic = parenMatch[1];
-    }
-
-    // Strip parenthetical critic name from link text (e.g., "The Times (Nancy Durrant)" → "The Times")
-    const cleanOutlet = (linkText || outlet).replace(/\s*\([^)]+\)\s*$/, '');
-
-    reviews.push({
-      url: href,
-      outlet: cleanOutlet,
-      outletDomain: outlet,
-      critic,
-      showId,
-    });
-  });
-
-  // Domain supplement — catch outlets in outlet-registry that the anchor-text walk above
-  // missed because their href resolved but their LINK TEXT didn't pass the heuristic.
-  // Verified 2026-04-22 that resolveOutletFromUrl returns null for every domain in
-  // Playbill's hand-maintained blocklist (ticketmaster, todaytix, playbillstore, facebook,
-  // criterionticketing, yahoo), so the supplement cannot sidestep it.
-  try {
-    const { supplementOutletsFromAnchors } = require('./lib/outlet-domain-supplement');
-    const { resolveOutletFromUrl } = require('./lib/review-normalization');
-    const existingShape = reviews.map(r => ({ outletId: r.outletDomain ? resolveOutletFromUrl('https://' + r.outletDomain)?.outletId : null }));
-    const { added, newReviews } = supplementOutletsFromAnchors({
-      html,
-      reviews: existingShape,
-      showId,
-      sourceName: 'playbill-verdict-domain-supplement',
-      excludeDomains: ['playbill.com', 'playbillder.com', 'playbillstore.com', 'playbillvault.com'],
-      // BRO-7077 (BRO-4369): Verdict accepts creative slugs, but an anchor whose
-      // slug announces another show ("review-in-falls-for-jodie-...") is a
-      // sidebar/related link, not this show's review (School Girls 2026).
-      urlTitleCheck: (u, t) => !require('./lib/review-normalization').reviewSlugNamesDifferentShow(u, t, { reviewInOnly: true }),
-      makeStub: (oid, url) => {
-        let outletDomain = '';
-        try { outletDomain = new URL(url).hostname.replace(/^www\./, ''); } catch {}
-        return {
-          url,
-          outlet: oid,
-          outletDomain,
-          critic: '',
-          showId,
-        };
-      },
-    });
-    reviews.push(...newReviews);
-    if (added > 0) {
-      console.log(`    [Playbill supplement] added ${added} outlet(s) missed by anchor-text walk`);
-    }
-  } catch (e) {
-    console.log(`    [Playbill supplement] error (non-fatal): ${(e.message || '').substring(0, 100)}`);
-  }
-
-  return reviews;
-}
+// Single shared extractor (scripts/lib/playbill-verdict-discover.js); the copy that
+// lived here had drifted from it (BRO-8447).
+const { extractReviewLinksFromArticle, isArchiveReusable } = require('./lib/playbill-verdict-discover');
 
 // ---------------------------------------------------------------------------
 // Save review data
@@ -452,6 +328,10 @@ async function processShowViaGoogle(show, showId, shows) {
     // can all put a poisoned file on disk). A prior version of this fix
     // REPLACED the year/category check with the category-aware check
     // instead of adding it — flagged in review as a real regression.
+    if (!isArchiveReusable(html, fs.statSync(effectiveArchive).mtimeMs, { maxAgeDays: Infinity })) {
+      console.log(`  [CACHE] ${showId}: archived page has no review links; re-fetching (BRO-8447)`);
+      fs.unlinkSync(effectiveArchive);
+    } else {
     const cacheValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, category: show.category });
     const catCheck = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
     if (!cacheValidation.valid || !catCheck.ok) {
@@ -484,6 +364,7 @@ async function processShowViaGoogle(show, showId, shows) {
         }
       }
       return;
+    }
     }
   }
 
@@ -851,10 +732,13 @@ async function scrapePlaybillVerdict() {
     // Use cached archive if fresh (<14 days), otherwise re-fetch
     let html;
     let fromCache = false;
-    const archiveFresh = fs.existsSync(effectiveArchive) &&
-      (Date.now() - fs.statSync(effectiveArchive).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
+    // A zero-link archive is a stub captured before the critics' links landed,
+    // so it expires after a day instead of 14 (BRO-8447).
+    const cachedHtml = fs.existsSync(effectiveArchive) ? fs.readFileSync(effectiveArchive, 'utf8') : null;
+    const archiveFresh = cachedHtml !== null &&
+      isArchiveReusable(cachedHtml, fs.statSync(effectiveArchive).mtimeMs);
     if (archiveFresh) {
-      html = fs.readFileSync(effectiveArchive, 'utf8');
+      html = cachedHtml;
       fromCache = true;
       console.log(`  [CACHE] ${article.showId}: Using archived HTML`);
     } else {

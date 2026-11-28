@@ -505,6 +505,22 @@ describe('catch 7: T1 outlets missing or unscored', () => {
   });
 });
 
+describe('catch 7b: no core T1 expectation outside the main markets (BRO-8447)', () => {
+  const base = { id: 'jack-and-the-beanstalk-off-west-end-2026', title: 'Jack and The Beanstalk', compositeScore: 60, openingDate: '2026-04-10', market: 'west-end' };
+  it('does not flag Telegraph/Times missing for an off-west-end panto', () => {
+    const result = t1OutletsScored.run({ ...base, category: 'off-west-end' }, makeContext({ reviewsDoc: {} }));
+    assert.equal(result.ok, true);
+  });
+  it('does not flag a UK regional show', () => {
+    assert.equal(t1OutletsScored.run({ ...base, category: 'regional', market: 'regional' }, makeContext({ reviewsDoc: {} })).ok, true);
+  });
+  it('still flags a West End show missing guardian/telegraph/times-uk', () => {
+    const result = t1OutletsScored.run({ ...base, id: 'x-west-end-2026', category: 'west-end' }, makeContext({ reviewsDoc: {} }));
+    assert.equal(result.ok, false);
+    assert.deepEqual(result.details.missing, ['guardian', 'telegraph', 'times-uk']);
+  });
+});
+
 describe('catch 8: empty cast at opening', () => {
   const show = { id: SHOW_ID, title: 'The 2026-04-15 Show', status: 'open', cast: [] };
 

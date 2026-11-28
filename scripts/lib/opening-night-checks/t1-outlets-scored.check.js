@@ -13,6 +13,19 @@ const description = 'Core T1 outlets are missing reviews or have unscored review
 const BROADWAY_CORE_T1 = ['nytimes', 'vulture', 'variety'];
 const WEST_END_CORE_T1 = ['guardian', 'telegraph', 'times-uk'];
 
+/**
+ * Core T1 outlets a show is expected to be reviewed by (BRO-8447).
+ * The Telegraph and The Times do not cover Off-West-End, fringe or regional
+ * runs (Hackney Empire panto "Jack and the Beanstalk" was flagged missing both),
+ * so the West End list applies only to category 'west-end'. Anything that is not
+ * a mainstream West End or Broadway-market show has no core T1 expectation.
+ */
+function coreT1ForShow(show) {
+  if (show.category === 'off-west-end' || show.category === 'regional') return [];
+  const market = show.market || (show.category === 'west-end' ? 'west-end' : 'broadway');
+  return market === 'west-end' ? WEST_END_CORE_T1 : BROADWAY_CORE_T1;
+}
+
 // An edition split (The Sunday Times out of times-uk, BRO-5137) fills its
 // parent's slot: a show reviewed only by the Sunday Times has its Times review.
 function coreSlot(outletId) {
@@ -49,8 +62,10 @@ function run(show, context) {
   }
 
   const reviews = context.reviewsDoc[show.id] || [];
-  const market = show.market || (show.category === 'west-end' || show.category === 'off-west-end' ? 'west-end' : 'broadway');
-  const coreT1 = market === 'west-end' ? WEST_END_CORE_T1 : BROADWAY_CORE_T1;
+  const coreT1 = coreT1ForShow(show);
+  if (coreT1.length === 0) {
+    return { ok: true, severity: 'ok', message: `No core T1 expectation for category ${show.category}` };
+  }
 
   // Find which core T1 outlets have reviews (any state — even unscored)
   const presentOutlets = new Set(reviews.map(r => coreSlot(r.outletId)));
@@ -114,4 +129,4 @@ function run(show, context) {
   };
 }
 
-module.exports = { name, description, run, BROADWAY_CORE_T1, WEST_END_CORE_T1 };
+module.exports = { name, description, run, coreT1ForShow, BROADWAY_CORE_T1, WEST_END_CORE_T1 };

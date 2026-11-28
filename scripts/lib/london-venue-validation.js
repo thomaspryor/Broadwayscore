@@ -17,6 +17,8 @@ const LONDON_LISTINGS = ['londontheatre.co.uk', 'officiallondontheatre.com'];
 const EXTRA_VENUES = [
   { name: 'Barbican Theatre', url: 'https://www.barbican.org.uk/whats-on/theatre-dance' },
   { name: 'Coronet Theatre', url: 'https://www.thecoronettheatre.com/whats-on/' },
+  // No ticketing feed (ob-venue-reader-coverage.js), but each /show/<slug>/ page prints the run range (BRO-8447).
+  { name: 'Jermyn Street Theatre', url: 'https://www.jermynstreettheatre.co.uk/whats-on/' },
 ];
 
 function isLondonShow(show) {
@@ -149,7 +151,7 @@ function parseLondonEvidence(html, show) {
     }
     // An explicit year is mandatory; parseDateRangeText's nearest-year
     // inference is suitable for discovery, not cross-validating a revival.
-    const range = nearby.match(/(?:\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\s+)?\b\d{1,2}(?:st|nd|rd|th)?(?:\s+[A-Za-z]+)?\s*[-\u2013\u2014]\s*(?:(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\s+)?\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4}\b/i);
+    const range = nearby.match(/(?:\b(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\s+)?\b\d{1,2}(?:st|nd|rd|th)?(?:\s+[A-Za-z]+)?(?:\s+\d{4})?\s*[-\u2013\u2014]\s*(?:(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\s+)?\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4}\b/i);
     if (!range) return null;
     const dates = parseDateRangeText(range[0], { dayFirst: true });
     if (!dates.firstDate || !dates.lastDate) return null;

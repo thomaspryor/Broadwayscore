@@ -41,6 +41,7 @@ const { isOffBroadwayUrlForBroadwayShow } = require('./lib/review-url-market-gua
 const { hasExcerpt: hasAnyExcerpt } = require('./lib/excerpt-fields');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { dropWrongProductionProvenance } = require('./lib/wrongproduction-provenance');
+const { stripProductionYearSuffix } = require('./lib/slug-year');
 const fs = require('fs');
 const { withTimeout } = require('./lib/with-timeout');
 const path = require('path');
@@ -1050,7 +1051,7 @@ async function searchDTLI(show) {
 
   const titleSlug = slugify(show.title);
   const titleNoArticle = slugify(show.title.replace(/^(the|a|an)\s+/i, ''));
-  const baseSlug = show.slug.replace(/-\d{4}$/, ''); // Remove year suffix
+  const baseSlug = stripProductionYearSuffix(show); // Remove year suffix (only a real production year, BRO-8447)
 
   // Base variations (without suffix)
   const baseVariations = [
