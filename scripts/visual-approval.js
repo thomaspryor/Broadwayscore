@@ -147,7 +147,7 @@ async function carryOverApproval({ issueId, heldSha, cwd, dryRun }) {
   // Only an approval of the LATEST ask counts (an older ask's yes was for another change).
   const askedAt = Math.max(0, ...comments.filter((c) => /^Asked the owner to look at/.test(link.unescapeMarkdown(c.body || '').trim())).map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite));
   const approvedOnCard = comments.some((c) => !(new Date(c.createdAt).getTime() < askedAt) && link.unescapeMarkdown(c.body || '').includes(va.MARK.approved));
-  const reuse = va.reuseExistingAsk({ state, approvedOnCard });
+  const reuse = va.reuseExistingAsk({ state, approvedOnCard, askedAt });
   if (!reuse) return null;
   const sha = va.evidenceSha(issue.description);
   if (!sha) return null;
@@ -157,12 +157,21 @@ async function carryOverApproval({ issueId, heldSha, cwd, dryRun }) {
     tip = va.git(['rev-parse', '--verify', '--quiet', `${sha}^1`], { cwd });
   } catch { return null; } // an older ask's evidence commit has no parent: ask as usual
   if (!/^[0-9a-f]{40}$/.test(tip)) return null;
-  const same = va.changeSignature('origin/main', tip, cwd) === va.changeSignature('origin/main', heldSha, cwd);
+  // The lander's own rule (carryOverOk): the evidence tip is the signed patch and HEAD changes the same lines.
+  const signedPatch = (link.parseVisualApproval(issue.description) || {}).patch;
+  const same = va.carryOverOk({ signedPatch, approvedTipPatch: va.patchId('origin/main', tip, cwd), approvedSig: va.changeSignature('origin/main', tip, cwd), currentSig: va.changeSignature('origin/main', heldSha, cwd) });
   const what = reuse === 'approval' ? 'an owner approval' : 'an open ask the owner has not answered';
   if (!same) { console.error(`[visual-approval] ${issueId} has ${what}, but this change edits different lines than the asked one (${tip.slice(0, 10)}); this is a real design change, so asking again.`); return null; }
   const hold = va.holdBranch(issueId);
   if (dryRun) { console.log(`[dry-run] ${reuse === 'approval' ? "the owner's approval carries over" : 'the open ask stands'}: would push HEAD -> ${hold} only`); return 0; }
-  va.git(['push', '--force', 'origin', `${heldSha}:refs/heads/${hold}`], { cwd });
+  // Leased on the hold as read now: a concurrent request or the lander moving it makes this push fail (and ask as usual
+  // on the next run) instead of overwriting the other session's tip.
+  let leaseSha = '';
+  try { leaseSha = va.git(['ls-remote', 'origin', `refs/heads/${hold}`], { cwd }).split(/\s+/)[0] || ''; } catch { return null; }
+  try { va.git(['push', `--force-with-lease=refs/heads/${hold}:${leaseSha}`, 'origin', `${heldSha}:refs/heads/${hold}`], { cwd }); } catch (e) {
+    console.error(`[visual-approval] ${issueId}: the held change moved while this ran (another session?); not pushed. Re-run request. ${e.message}`);
+    return 1;
+  }
   if (reuse === 'approval') {
     await linear.createComment(issue.id, `Rebased the held change (${heldSha.slice(0, 10)}). It changes exactly the lines the owner approved (only the surrounding code moved), so the approval carries over and the owner is not asked again. The lander re-checks this before it ships.`);
     console.log(`[visual-approval] ${issueId}: the owner's approval carries over; pushed the rebased change to ${hold}. Do not ask again. Stop work on this card; the lander ships it.`);

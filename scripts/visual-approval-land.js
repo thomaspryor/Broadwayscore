@@ -72,14 +72,7 @@ function askedSince(issue) {
 }
 
 /** What to do with one card. Pure: the CLI below does the git and Linear writes. */
-/**
- * BRO-8462: may an approval of the signed patch ship a hold that a rebase rewrote? Only when the approved tip
- * (the evidence commit's parent) really is the signed patch, and the hold changes exactly the same lines in
- * every file (UI or not); only diff context and line numbers may differ. Pure: inputs come from git in main.
- */
-function carryOverOk({ signedPatch, approvedTipPatch, approvedSig, currentSig }) {
-  return Boolean(signedPatch && approvedTipPatch === signedPatch && approvedSig && currentSig && approvedSig === currentSig);
-}
+const { carryOverOk } = va; // BRO-8462: one rule, shared with request()
 
 // facts (BRO-8462): { holdSettled: the hold has nothing left that main lacks (or is gone), carriedOver: carryOverOk() for currentPatch }
 function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedSha = null, autoOk = false, facts = {}) {
@@ -96,7 +89,8 @@ function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedS
   // BRO-7495: a signed CI result that every before/after picture matched exactly counts as the approval (autoOk is decided by planAuto in main; the owner's own tap still wins).
   if (autoOk && !approvedNow) {
     if (currentPatch === null) return { action: 'land', v, mac, auto: true };
-    return currentPatch === v.patch ? { action: 'land', v, mac, auto: true } : { action: 'void', why: 'the held branch no longer matches the checked change', v, mac };
+    // BRO-8462: a moved hold under a still-waiting ask (request reused the ask) is the owner's to approve, not void.
+    return currentPatch === v.patch ? { action: 'land', v, mac, auto: true } : { action: 'skip', why: 'the held branch moved since the signed check; waiting for the owner', v, mac };
   }
   if (approvedNow) {
     const approvedAt = approvalTime(comments, link.visualMarker(mac));

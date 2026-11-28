@@ -141,7 +141,7 @@ test('fix 3: changeSignature ignores moved context, sees any edited line in any 
   assert.notEqual(va.changeSignature('main', 'HEAD', dir), approvedSig);
   // An evidence parent that is not the signed patch does not count.
   assert.equal(land.carryOverOk({ signedPatch: 'f'.repeat(40), approvedTipPatch: signed, approvedSig, currentSig: approvedSig }), false);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
 
 test('fix 3: a carried-over approval lands; without it the old "no longer matches" stop stands', () => {
@@ -172,7 +172,7 @@ test('fix 3: the evidence commit keeps the approved tip as its parent; changeOnM
   g('commit', '-qam', 'gold (landed)');
   assert.notEqual(va.patchId('main', 'hold', dir), null, 'the plain patch check still sees a diff after landing');
   assert.equal(va.changeOnMain('hold', dir, 'main'), true);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
 
 // ── review follow-ups (ship-check) ───────────────────────────────────────────────────────────────────────────
@@ -210,38 +210,63 @@ test('fix 3: a line moved into another function, or a whitespace edit inside a l
   assert.notEqual(sig('@@ -10,0 +11 @@ function Header() {\n+  <span className="gold  big">AU</span>\n'), sig('@@ -10,0 +11 @@ function Header() {\n+  <span className="gold big">AU</span>\n'), 'whitespace in a class string');
 });
 
-// ── 4. one ask per card: a new tip with the same screen changes reuses the ask already on the card ─────────
-test('one ask per card: an open ask or an unshipped approval is reused; a Reject or shipped change asks again', () => {
-  assert.equal(va.reuseExistingAsk({ state: 'waiting', approvedOnCard: false }), 'open-ask');
-  assert.equal(va.reuseExistingAsk({ state: 'approved', approvedOnCard: true }), 'approval');
-  assert.equal(va.reuseExistingAsk({ state: 'void', approvedOnCard: true }), 'approval');
+// ── 4. one ask per card: a new tip with the same lines reuses the ask already on the card ───────────────────
+const DAY = 24 * 3600e3;
+test('one ask per card: an open ask or an unshipped approval is reused; a Reject, a shipped change or a near-expiry ask asks again', () => {
+  const now = ASK_AT + DAY;
+  assert.equal(va.reuseExistingAsk({ state: 'waiting', approvedOnCard: false, askedAt: ASK_AT, now }), 'open-ask');
+  assert.equal(va.reuseExistingAsk({ state: 'waiting', approvedOnCard: false, askedAt: ASK_AT, now: ASK_AT + 13 * DAY }), null, 'about to expire');
+  assert.equal(va.reuseExistingAsk({ state: 'waiting', approvedOnCard: false, askedAt: 0, now }), null, 'no ask comment');
+  assert.equal(va.reuseExistingAsk({ state: 'approved', approvedOnCard: true, askedAt: ASK_AT, now }), 'approval');
+  assert.equal(va.reuseExistingAsk({ state: 'void', approvedOnCard: true, askedAt: ASK_AT, now }), 'approval');
   for (const state of ['void', 'rejected', 'answered', 'landed', 'expired', 'unverified', 'none']) {
-    assert.equal(va.reuseExistingAsk({ state, approvedOnCard: false }), null, state);
+    assert.equal(va.reuseExistingAsk({ state, approvedOnCard: false, askedAt: ASK_AT, now }), null, state);
   }
-  // request() goes through it before it builds a new ask (a reverted wiring would ask every time).
+  // request() decides with the lander's own rule, before it builds a new ask, and leases the hold push.
   const src = fs.readFileSync(new URL('../../scripts/visual-approval.js', import.meta.url), 'utf8');
-  assert.match(src, /va\.reuseExistingAsk\(/);
+  assert.match(src, /va\.reuseExistingAsk\(\{ state, approvedOnCard, askedAt \}\)/);
+  assert.match(src, /const same = va\.carryOverOk\(/);
+  assert.match(src, /--force-with-lease=refs\/heads\/\$\{hold\}/);
   assert.ok(src.indexOf('carryOverApproval({') < src.indexOf('va.buildBlock('), 'reuse check runs before a new ask is built');
+  assert.equal(land.carryOverOk, va.carryOverOk, 'one shared rule');
 });
 
-test('BRO-8451 replay: Yes, wrong Void, rebase v2, rebase v3 reach the owner as one ask', async () => {
-  let asks = 1; // the 19:19Z ask
-  const yesAt = Date.parse('2026-11-28T19:59:00Z');
-  // 19:59Z the chat "Yes" was recorded as Void. Now refused while the hold has unshipped code.
-  const facts = await roa.voidFacts(visualIssue, 'Yes', { git: () => 'x', changeOnMain: () => false });
-  assert.ok(roa.resolveDecision(visualIssue, 'void', facts).error, 'Void refused');
-  // The lander sees an answered card with no Reject: it keeps the held change (no 20:35Z cleanup).
-  const voided = card([ask, decision(VOID, 'Yes', yesAt)]);
-  assert.notEqual(land.planCard(voided, S, yesAt + 36 * 60e3).action, 'cleanup');
-  // The yes is recorded as the approval instead; rebases v2 and v3 change the same lines and carry it over.
-  const approved = card([ask, { id: 'ap', createdAt: at(yesAt), body: `Visual change approved by the owner. ${va.MARK.approved}` }], block());
-  const state = va.classifyStatus(approved.description, approved.comments.nodes);
-  for (const rebase of ['v2', 'v3']) {
-    const reuse = va.reuseExistingAsk({ state, approvedOnCard: true });
-    assert.ok(reuse, `${rebase} reuses the approval`);
-    if (!reuse) asks += 1;
+test('a signed auto-ship result for an old patch never voids a moved hold under a waiting ask', () => {
+  const plan = land.planCard(card([ask], block()), S, ASK_AT + 60e3, 'e'.repeat(40), null, true);
+  assert.equal(plan.action, 'skip');
+  assert.equal(land.planCard(card([ask], block()), S, ASK_AT + 60e3, PATCH, null, true).action, 'land');
+});
+
+test('BRO-8451 replay on real git: ask v1, rebase v2 and v3 while waiting, owner Approve ships v3, one ask total', () => {
+  const { dir, g, write } = repo();
+  const badge = (body) => (t) => t.replace(`      <p>${body}</p>\n`, `      <p>${body}</p>\n      <span className="gold">AU</span>\n`);
+  const edit = (f, fn) => write(f, fn(fs.readFileSync(path.join(dir, f), 'utf8')));
+  g('checkout', '-qb', 'v1'); edit('src/page.tsx', badge('Body')); g('commit', '-qam', 'gold');
+  const v1 = g('rev-parse', 'HEAD');
+  const signed = va.patchId('main', v1, dir); // the ask's block patch; the evidence commit's parent is v1
+  let asks = 1;
+  const tips = [];
+  for (const [i, body] of [['2', 'Body two'], ['3', 'Body three']]) {
+    g('checkout', '-q', 'main'); edit('src/page.tsx', (t) => t.replace(/<p>Body[^<]*<\/p>/, `<p>${body}</p>`)); g('commit', '-qam', `main moves ${i}`);
+    g('checkout', '-qb', `v${i}`); edit('src/page.tsx', badge(body)); g('commit', '-qam', `gold (rebase v${i})`);
+    const tip = g('rev-parse', 'HEAD'); tips.push(tip);
+    assert.notEqual(va.patchId('main', tip, dir), signed, `v${i} has a new patch id`);
+    const state = va.classifyStatus(block(), [ask]);
+    const reuse = va.reuseExistingAsk({ state, approvedOnCard: false, askedAt: ASK_AT, now: ASK_AT + 3600e3 });
+    const same = va.carryOverOk({ signedPatch: signed, approvedTipPatch: va.patchId('main', v1, dir), approvedSig: va.changeSignature('main', v1, dir), currentSig: va.changeSignature('main', tip, dir) });
+    if (!(reuse && same)) asks += 1;
   }
-  // Before the owner answers, a rebased tip reuses the open ask too.
-  if (!va.reuseExistingAsk({ state: va.classifyStatus(block(), [ask]), approvedOnCard: false })) asks += 1;
   assert.equal(asks, 1, 'the owner is asked once');
+  // The owner taps Approve on the one ask; the lander ships the latest tip (v3) through the same rule.
+  const blk = va.buildBlock({ what: 'the AU gold badge', patch: signed, verdict: VERDICT, hold: 'visual-hold/bro-8451', evidence: [{ label: 'Home', url: EV }], summary: 'ok' });
+  const mac = link.visualMac(S, ID, signed, VERDICT);
+  const tapped = card([ask, { id: 'a', body: link.visualMarker(mac), createdAt: at(ASK_AT + 2 * 3600e3) }], blk);
+  const v3 = tips[1];
+  const carriedOver = land.carryOverOk({ signedPatch: signed, approvedTipPatch: va.patchId('main', v1, dir), approvedSig: va.changeSignature('main', v1, dir), currentSig: va.changeSignature('main', v3, dir) });
+  const plan = land.planCard(tapped, S, ASK_AT + 3 * 3600e3, va.patchId('main', v3, dir), null, false, { carriedOver });
+  assert.equal(plan.action, 'land');
+  // A real design change (another line) is not carried: that one asks again.
+  edit('src/page.tsx', (t) => t.replace('gold', 'gold big')); g('commit', '-qam', 'design change');
+  assert.equal(va.carryOverOk({ signedPatch: signed, approvedTipPatch: va.patchId('main', v1, dir), approvedSig: va.changeSignature('main', v1, dir), currentSig: va.changeSignature('main', 'HEAD', dir) }), false);
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });

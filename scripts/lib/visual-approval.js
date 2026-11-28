@@ -312,14 +312,28 @@ function checkVerdict(raw, expectedHash) {
  * waiting | approved (tapped, lander has not pushed yet) | landed | rejected | answered (own words) | void | unverified | expired | none
  */
 /**
+ * BRO-8462: may an approval of the signed patch ship a hold that a rebase rewrote? Only when the approved tip
+ * (the evidence commit's parent) really is the signed patch, and the hold changes exactly the same lines in
+ * every file (UI or not); only diff context and line numbers may differ. Pure. Shared by request (before it
+ * suppresses a new ask) and the lander (before it ships), so both apply the same rule.
+ */
+function carryOverOk({ signedPatch, approvedTipPatch, approvedSig, currentSig }) {
+  return Boolean(signedPatch && approvedTipPatch === signedPatch && approvedSig && currentSig && approvedSig === currentSig);
+}
+
+// A waiting ask this close to the lander's 14-day expiry is not reused: it would expire right after the new tip
+// was pushed under it, and the owner would see nothing new.
+const REUSE_ASK_MAX_AGE_MS = 12 * 24 * 60 * 60 * 1000;
+
+/**
  * BRO-8462 (one ask per card): what a new request on a card that already holds an ask should reuse.
  * 'approval': the owner approved the latest ask and it has not shipped (or the lander voided it only because
- * the hold moved). 'open-ask': the latest ask is still waiting. Either way, when the new tip changes the same
- * lines, only the hold is updated and the owner is not asked again. null: ask as usual.
+ * the hold moved). 'open-ask': the latest ask is still waiting and not near expiry. Either way, when the new tip
+ * passes carryOverOk, only the hold is updated and the owner is not asked again. null: ask as usual.
  */
-function reuseExistingAsk({ state, approvedOnCard }) {
+function reuseExistingAsk({ state, approvedOnCard, askedAt = 0, now = Date.now() }) {
   if (state === 'approved' || (state === 'void' && approvedOnCard)) return 'approval';
-  if (state === 'waiting') return 'open-ask';
+  if (state === 'waiting' && askedAt > 0 && now - askedAt < REUSE_ASK_MAX_AGE_MS) return 'open-ask';
   return null;
 }
 
@@ -386,4 +400,4 @@ function landCheckGate({ status, sha = '', env = {}, okReason = '' }) {
   return { action: 'warn', message: `WARNING: ${text} ${fix}`, reason: String(okReason).trim() || null };
 }
 
-module.exports = { reuseExistingAsk, changeOnMain, changeSignature, changeSignatureOfDiff, answerKind, latestVisualAnswer, landCheckGate, LAND_CHECK_CMD, visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, cropCoverageProblem, whatProblem, makeEmailThumb, thumbName, fullUrlForThumb, THUMB_MAX_BYTES, THUMB_MAX_HEIGHT, MAX_CROPS, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
+module.exports = { reuseExistingAsk, carryOverOk, REUSE_ASK_MAX_AGE_MS, changeOnMain, changeSignature, changeSignatureOfDiff, answerKind, latestVisualAnswer, landCheckGate, LAND_CHECK_CMD, visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, cropCoverageProblem, whatProblem, makeEmailThumb, thumbName, fullUrlForThumb, THUMB_MAX_BYTES, THUMB_MAX_HEIGHT, MAX_CROPS, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };

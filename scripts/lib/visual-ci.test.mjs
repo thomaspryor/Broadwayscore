@@ -121,7 +121,7 @@ test('lander planCard: auto only when the caller proved it, and the owner tap st
   assert.equal(land.planCard(c, S, AFTER, null, null, false).action, 'wait');
   assert.equal(land.planCard(c, S, AFTER, null, null, true).action, 'land');
   assert.equal(land.planCard(c, S, AFTER, null, null, true).auto, true);
-  assert.equal(land.planCard(c, S, AFTER, 'f'.repeat(40), null, true).action, 'void', 'hold branch moved on');
+  assert.equal(land.planCard(c, S, AFTER, 'f'.repeat(40), null, true).action, 'skip', 'hold branch moved on: wait for the owner, never ship or void on an old signed check (BRO-8462)');
   assert.equal(land.planCard(c, S, AFTER, PATCH, null, true).action, 'land');
 });
 
