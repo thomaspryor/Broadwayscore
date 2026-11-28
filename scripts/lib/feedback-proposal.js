@@ -108,15 +108,15 @@ function selectAutoCloseMatch(message, submitterShow, shows) {
   if (matches.length === 0) return [];
   const showNorm = norm(submitterShow);
   const exact = showNorm ? matches.filter((m) => norm(m.title) === showNorm) : [];
-  if (exact.length === 1) return exact;
+  if (exact.length === 1) return exact[0].status === 'closed' ? [] : exact;
   // Same title in several productions: keep the one whose place word the reader typed.
   const text = ` ${norm(message)} `;
   const placed = matches.filter((m) => {
     const titleTok = new Set(norm(m.title).split(' '));
     return String(m.id).split('-').some((t) => t.length > 3 && !titleTok.has(t) && !/^(regional|broadway|off|west|end|\d+)$/.test(t) && text.includes(` ${t} `));
   });
-  if (placed.length === 1 && !/\b(reviews?|transfer|revival|revived)\b/i.test(String(message || ''))) return placed;
-  if (matches.length === 1 && !/\b(reviews?|west end|london|transfer|revival|revived|national tour|tour)\b/i.test(String(message || ''))) return matches;
+  if (placed.length === 1 && !/\b(reviews?|transfer|revival|revived)\b/i.test(String(message || ''))) return placed[0].status === 'closed' ? [] : placed;
+  if (matches.length === 1 && !/\b(reviews?|west end|london|transfer|revival|revived|national tour|tour)\b/i.test(String(message || ''))) return matches[0].status === 'closed' ? [] : matches;
   return [];
 }
 

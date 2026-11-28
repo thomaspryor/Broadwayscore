@@ -161,6 +161,17 @@ test('auto-close needs one clear catalog match and no review/transfer ask (revie
   assert.deepEqual(P.selectAutoCloseMatch('', '', shows), []);
 });
 
+test('auto-close never selects a closed production through any fallback', () => {
+  const closed = { id: 'unique-show-boston-2020', title: 'Unique Show', status: 'closed' };
+  assert.deepEqual(P.selectAutoCloseMatch('Please add Unique Show', 'Unique Show', [closed]), []);
+  assert.deepEqual(P.selectAutoCloseMatch('Please add Unique Show in Boston', '', [closed]), []);
+  assert.deepEqual(P.selectAutoCloseMatch('Please add Unique Show', '', [closed]), []);
+  const upcoming = { ...closed, status: 'upcoming' };
+  assert.equal(P.selectAutoCloseMatch('Please add Unique Show', 'Unique Show', [upcoming]).length, 1);
+  const open = { ...closed, id: 'unique-show-new-york-2026', status: 'open' };
+  assert.deepEqual(P.selectAutoCloseMatch('Please add Unique Show in Boston', '', [closed, open]), []);
+});
+
 test('a plan edit with no newValue is never "already applied"', () => {
   const s = shows.find((x) => x.status === 'closed');
   assert.equal(P.checkPlanAlreadyApplied({ actions: [{ type: 'data-edit', showId: s.id, field: 'definitelyMissingField' }] }, shows).fixed, false);
