@@ -296,8 +296,31 @@ function stageWestDirectAcceptable(pathname, status, content) {
   return content.length >= 3000;
 }
 
+/**
+ * Stage West pages carry the site-wide archive sidebar before the review, and the generic article extractor
+ * picked the sidebar (219 words, identical on every page). Keep the head (title/date meta) plus the post's
+ * own `blog-content` block, which ends where the social/comment blocks start. Unrecognised layout: unchanged.
+ */
+function stageWestArticleHtml(html) {
+  const start = html.indexOf('class="blog-content"');
+  if (start < 0) return html;
+  const divStart = html.lastIndexOf('<div', start);
+  const tail = html.slice(divStart);
+  const endRel = tail.search(/class="blog-social|class="blog-comments-bottom/);
+  const body = endRel > 0 ? tail.slice(0, endRel) : tail;
+  const headEnd = html.search(/<\/head>/i);
+  let head = headEnd > 0 ? html.slice(0, headEnd + 7) : '<html><head></head>';
+  const d = /class="date-text">\s*(\d{1,2})\/(\d{1,2})\/(\d{4})\s*</.exec(html);
+  if (d) {
+    const iso = `${d[3]}-${d[1].padStart(2, '0')}-${d[2].padStart(2, '0')}`;
+    head = head.replace(/<\/head>/i, `<meta property="article:published_time" content="${iso}"></head>`);
+  }
+  return head + '<body><article>' + body + '</div></article></body></html>';
+}
+
 module.exports = {
   isStageWestHost,
+  stageWestArticleHtml,
   stageWestDirectAcceptable,
   buildWpSearchUrl,
   parseWpSearchResults,

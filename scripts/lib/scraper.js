@@ -1765,7 +1765,7 @@ async function fetchPage(url, options = {}) {
       const content = await response.text();
       if (!_isChallengeOrGarbage(content) &&
           require('./free-first-fetch').stageWestDirectAcceptable(requestedUrl.pathname, response.status, content)) {
-        const checked = _checkAndReturn({ content, format: 'html', source: 'direct' }, 'Direct');
+        const checked = _checkAndReturn({ content: require('./free-first-fetch').stageWestArticleHtml(content), format: 'html', source: 'direct' }, 'Direct');
         if (checked) return checked;
       } else {
         console.log(`  ⚠️  Direct Stage West fetch not usable (HTTP ${response.status}), trying provider chain...`);

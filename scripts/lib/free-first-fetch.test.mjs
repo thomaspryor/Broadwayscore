@@ -231,3 +231,21 @@ test('Stage West: verifyFetchedUrl accepts the /2/post/ blog alias of the same s
   assert.equal(verifyFetchedUrl(page('http://www.davidcoddon.com/2/post/2025/03/stage-west-3-summers-of-lincoln-at-la-jolla-playhouse.html'), want).verified, true);
   assert.equal(verifyFetchedUrl(page('http://www.davidcoddon.com/2/post/2025/03/some-other-review.html'), want).verified, false);
 });
+
+// BRO-8455 item 2: the direct tier must hand the extractor the post body, not the site archive sidebar
+// (the 2026-11-28 re-ingest stored the same 219-word sidebar for every review).
+{
+  const { stageWestArticleHtml } = _cr(import.meta.url)('./free-first-fetch.js');
+  const { extractArticleTextFromUrl, extractPublishDate } = _cr(import.meta.url)('./article-extractor.js');
+  const sidebar = '<div class="sidebar">David L. Coddon is a Southern California theater critic. ' + 'July 2026 June 2026 '.repeat(40) + '</div>';
+  const post = '<div class="blog-header"><p class="blog-date"><span class="date-text"> 7/25/2026 </span></p></div><div class="blog-content"><div class="paragraph">' + 'The production opens with a confident, funny first act and a quiet, devastating second. '.repeat(30) + '</div></div><div class="blog-social">share</div>';
+  const page = `<html><head><title>STAGE WEST: x</title></head><body>${sidebar}<div class="blog-post">${post}</div></body></html>`;
+  test('Stage West: narrowed html extracts the review body and date, not the sidebar', () => {
+    const n = stageWestArticleHtml(page);
+    const text = extractArticleTextFromUrl(n, 'https://www.davidcoddon.com/theatre-reviews/stage-west-x');
+    assert.ok(text && /confident, funny first act/.test(text));
+    assert.ok(!/Southern California theater critic/.test(text));
+    assert.equal(extractPublishDate(n), '2026-07-25');
+    assert.equal(stageWestArticleHtml('<html>plain</html>'), '<html>plain</html>');
+  });
+}
