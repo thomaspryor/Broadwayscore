@@ -120,7 +120,7 @@
 function scoreTier(s, category) {
   if (s == null) return 'none';
   var r = Math.round(s);
-  var gold = ({"west-end":85,"off-west-end":85})[category] || 83;
+  var gold = ({"west-end":85,"off-west-end":85,"regional-au":85})[category] || 83;
   if (r >= gold) return 'gold';
   if (r >= 75) return 'green';
   if (r >= 65) return 'teal';
