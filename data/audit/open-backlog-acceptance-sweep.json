@@ -1,18 +1,24 @@
 {
-  "generatedAt": "2026-11-28T11:07:34.855Z",
+  "generatedAt": "2026-11-28T16:25:57.275Z",
   "shadow": true,
-  "checkoutSha": "c0a97b50f6ed747cddef0db268935e2e1fc104c3",
-  "totalCandidates": 489,
-  "eligibleCandidates": 181,
+  "checkoutSha": "ffa6aac56b48b4a8c9d5ef458f5e724159bd9906",
+  "totalCandidates": 502,
+  "eligibleCandidates": 179,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 15,
-    "fail": 12,
+    "pass": 14,
+    "fail": 13,
     "unverifiable": 3
   },
   "alreadyDone": [
+    {
+      "id": "BRO-8417",
+      "name": "Footer: link the Australian Theatre page next to UK Regional",
+      "verifyCmd": "node --test tests/unit/uk-regional-surfacing.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-8402",
       "name": "City season sync: presenter rows (ArtsEmerson) get the company name as venue, not the building",
@@ -68,18 +74,6 @@
       "detail": null
     },
     {
-      "id": "BRO-8328",
-      "name": "Recurring session friction: hook:git-check",
-      "verifyCmd": "node --test scripts/lib/session-retro.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-8325",
-      "name": "SB gate cousins: unattributed SB rows (45% have no showId) and West End aggregator page fetches still use ScrapingBee",
-      "verifyCmd": "node scripts/lib/check-sb-credits.js",
-      "detail": null
-    },
-    {
       "id": "BRO-8297",
       "name": "Sentry regression: UgcError: UGC functions mezzanine-search failed (500)",
       "verifyCmd": "npx tsx --test tests/unit/sentry-7815060800.test.mjs",
@@ -98,18 +92,24 @@
       "detail": null
     },
     {
-      "id": "BRO-8260",
-      "name": "Feedback proposals: already-fixed close can strand open; daily cap races; fallback closes closed-show matches",
-      "verifyCmd": "npx tsc --noEmit",
+      "id": "BRO-8239",
+      "name": "Orchestrator-session hook friction: 57 blocks in one multi-worker session",
+      "verifyCmd": "node --test scripts/lib/session-retro.test.mjs scripts/lib/child-idle-watch.test.mjs",
       "detail": null
     }
   ],
   "failing": [
     {
+      "id": "BRO-8440",
+      "name": "Audit: NY + London openings week of Nov 22-28, review collection and scoring completeness",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-22 --opened-to=2026-11-28 --check-gaps",
+      "detail": "gap audit generated 2026-11-28T15:05:10.195Z\nPASS     the-dead-1904-off-broadway-2026: 5 live, 0 cited not live; info: 7 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T15:05:10.195Z\n         frequent outlets with nothing for this show: front-row-center, nytg, off-off-online, theater-scene\nFAIL     a-christmas-carol-west-end-2026: 18 live, 1 cited not live; info: 2 census"
+    },
+    {
       "id": "BRO-8426",
       "name": "Recheck 2026-11-28: 2 done claims no longer hold on main",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 b3BlbmluZy1uaWdodC1yZXZpdmFsLXVudmVyaWZpZWQtdGhlLXVnbHktb25lLW9mZi13ZXN0LWVuZC0yMDI2",
-      "detail": "[check-alert-condition-absent] FAIL: \"opening-night-revival-unverified-the-ugly-one-off-west-end-2026\" still firing — open, last fired 2026-11-21T23:26:13.529Z (155.6h ago, within 168h)"
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class shows-missing-poster-synopsis-tickets --quiet",
+      "detail": "FAIL: last case 5d ago, needs 21\n"
     },
     {
       "id": "BRO-8415",
@@ -127,13 +127,13 @@
       "id": "BRO-8381",
       "name": "Root cause: \"much-ado-about-nothing-: review need a decision\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class review-need-decision --quiet",
-      "detail": "FAIL: last case 1d ago, needs 21\n"
+      "detail": "FAIL: last case 2d ago, needs 21\n"
     },
     {
       "id": "BRO-8350",
       "name": "Root cause: \"Quality: star-vs-score mismatch\" keeps coming back (4 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class star-score-mismatch --quiet",
-      "detail": "FAIL: last case 2d ago, needs 21\n"
+      "detail": "FAIL: last case 3d ago, needs 21\n"
     },
     {
       "id": "BRO-8349",
@@ -151,7 +151,7 @@
       "id": "BRO-8245",
       "name": "Root cause: \"Data: published scores outside the critic's rating\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class published-scores-outside-critic-rating --quiet",
-      "detail": "FAIL: last case 5d ago, needs 21\n"
+      "detail": "FAIL: last case 6d ago, needs 21\n"
     },
     {
       "id": "BRO-8244",
@@ -163,19 +163,19 @@
       "id": "BRO-8243",
       "name": "Root cause: \"Deploy to Vercel\" keeps coming back (3 cards in 30 days)",
       "verifyCmd": "node scripts/recurrence-detector.js --check-class deploy-vercel --quiet",
-      "detail": "FAIL: last case 4d ago, needs 21\n"
+      "detail": "FAIL: last case 5d ago, needs 21\n"
     },
     {
       "id": "BRO-8241",
       "name": "P1: Opening night miss: Seven Guitars (2026-11-23)",
       "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-23 --opened-to=2026-11-23 --check-gaps",
-      "detail": "gap audit generated 2026-11-28T08:50:35.853Z\nPASS     the-afronauts-west-end-2026: 26 live, 0 cited not live; info: 1 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T08:50:35.853Z\nPASS     seven-guitars-off-broadway-2026: 20 live, 0 cited not live; info: 4 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T08:50:35.853Z\n         frequent outlets wit"
+      "detail": "gap audit generated 2026-11-28T15:05:10.195Z\nPASS     the-afronauts-west-end-2026: 26 live, 0 cited not live; info: 1 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T14:05:31.698Z\nPASS     seven-guitars-off-broadway-2026: 20 live, 0 cited not live; info: 4 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T14:05:31.698Z\n         frequent outlets wit"
     },
     {
       "id": "BRO-8240",
       "name": "P1: Opening night miss: It’s A Wonderful Life: A Live Radio Play (2026-11-23)",
       "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-23 --opened-to=2026-11-23 --check-gaps",
-      "detail": "gap audit generated 2026-11-28T08:50:35.853Z\nPASS     the-afronauts-west-end-2026: 26 live, 0 cited not live; info: 1 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T08:50:35.853Z\nPASS     seven-guitars-off-broadway-2026: 20 live, 0 cited not live; info: 4 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T08:50:35.853Z\n         frequent outlets wit"
+      "detail": "gap audit generated 2026-11-28T15:05:10.195Z\nPASS     the-afronauts-west-end-2026: 26 live, 0 cited not live; info: 1 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T14:05:31.698Z\nPASS     seven-guitars-off-broadway-2026: 20 live, 0 cited not live; info: 4 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T14:05:31.698Z\n         frequent outlets wit"
     }
   ],
   "unverifiable": [
@@ -207,13 +207,6 @@
       "landedAt": "2026-11-25T23:45:27.269Z"
     },
     {
-      "id": "BRO-8325",
-      "name": "SB gate cousins: unattributed SB rows (45% have no showId) and West End aggregator page fetches still use ScrapingBee",
-      "branch": "land/codex-bro-8325",
-      "sha": "3514a9bbe1bd2b6aac5c0cc2a28a9c865fd57df5",
-      "landedAt": "2026-11-27T18:18:56.252Z"
-    },
-    {
       "id": "BRO-8294",
       "name": "Cost follow-up: non-Broadway poller targeting + Bright Data theatre.reviews repeats",
       "branch": "land/bro-8294-cost",
@@ -228,11 +221,11 @@
       "landedAt": "2026-11-26T05:04:06.811Z"
     },
     {
-      "id": "BRO-8260",
-      "name": "Feedback proposals: already-fixed close can strand open; daily cap races; fallback closes closed-show matches",
-      "branch": "land/codex-bro-8260",
-      "sha": "00aa1c32f662651c91518ad35bc37abf09768f77",
-      "landedAt": "2026-11-28T03:50:21.319Z"
+      "id": "BRO-8239",
+      "name": "Orchestrator-session hook friction: 57 blocks in one multi-worker session",
+      "branch": "land/bro-8239-hook-friction",
+      "sha": "9f91c6ffaf5fb761644f347fa8fb7846af988983",
+      "landedAt": "2026-11-28T06:57:43.111Z"
     }
   ]
 }
