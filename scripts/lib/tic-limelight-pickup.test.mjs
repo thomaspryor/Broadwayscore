@@ -97,7 +97,7 @@ test('runDaily stages a remount as its own row with its own reviews and clamps t
   const page = { id: 7213, slug: 'a-christmas-carol', empty: false, title: 'A Christmas Carol', venue: 'Goodman Theatre', poster: null, closingDate: '2026-12-31',
     reviews: Array.from({ length: 4 }, (_, i) => ({ outlet: `Outlet ${i}`, critic: 'A', verdict: 'recommended', url: `https://e.com/2026/${i}` })) };
   const det = { empty: false, title: 'A Christmas Carol', venue: 'Goodman Theatre', address: '170 N Dearborn St Chicago', showType: 'Play', closingDate: '2026-12-31' };
-  const io = { page: async () => page, detail: async () => det, dates: async () => ({ openingDate: '2026-11-21', samples: ['2026-11-21'] }) };
+  const io = { page: async () => page, detail: async () => det, dates: async () => ({ openingDate: '2026-11-21', samples: ['2026-11-21'] }), knownUrls: () => new Set(['https://e.com/2025/old']) };
   const out = await daily.runDaily({ today: '2026-11-28', listing: [{ id: 7213, reviewCount: 4 }], shows, seen: { 7213: { reason: 'added', reviews: 4, listed: 4 } }, io });
   const fresh = shows.find((s) => s !== old);
   assert.ok(fresh, 'a second row was staged');
@@ -105,6 +105,11 @@ test('runDaily stages a remount as its own row with its own reviews and clamps t
   assert.notEqual(fresh.id, old.id);
   assert.equal(out.added[0].remountOf, old.id);
   assert.equal(out.added[0].urls.length, 4);
+  // The clamp rides with the save: nothing is closed until the new row is on disk.
+  assert.equal(old.status, 'open');
+  assert.deepEqual(out.added[0].clampPrior, { id: old.id, closingDate: '2026-11-20' });
+  const doc = { shows };
+  daily.saveAddedShows(doc, out.added, { save: () => {}, nextSeen: out.seen, today: '2026-11-28' });
   assert.ok(old.closingDate < fresh.openingDate, `old row closing ${old.closingDate} must end before the new season`);
   assert.equal(old.status, 'closed');
 });
@@ -159,4 +164,33 @@ test('backfill ids join the listing once and never duplicate a live row', () => 
 test('rules version: outside-metro rejections made before the metro towns were added are re-queued', () => {
   const seen = { 7: { reason: 'outside-metro', retry: false }, 8: { reason: 'outside-metro', retry: false, rv: daily.RULES_VERSION } };
   assert.deepEqual(daily.pickCandidates([{ id: 7, reviewCount: 5 }, { id: 8, reviewCount: 5 }], [], seen).map((r) => r.id), [7]);
+});
+
+test('remount: a refused save leaves the prior season untouched', async () => {
+  const old = { ...showRow('a-2025', 7, '2025-11-23', '2026-12-31'), status: 'open' };
+  const fresh = { id: 'a-2026', openingDate: '2026-11-21' };
+  const shows = [old, fresh];
+  const seen = { 7: { reason: 'added', id: 'a-2026', reviews: 4, listed: 4 } };
+  const landed = daily.saveAddedShows({ shows }, [{ id: 'a-2026', remountOf: 'a-2025', clampPrior: { id: 'a-2025', closingDate: '2026-11-20' } }],
+    { save: () => { throw new Error('duplicate of x'); }, nextSeen: seen, today: '2026-11-28' });
+  assert.deepEqual(landed, []);
+  assert.equal(old.closingDate, '2026-12-31');
+  assert.equal(old.status, 'open');
+  assert.equal(seen[7].id, 'a-2025');
+});
+
+test('remount: reviews already ingested for the prior row mean a late review, not a new season', async () => {
+  const old = { ...showRow('a-2025', 7213, '2025-11-23', '2026-12-31'), title: 'A', venue: 'Goodman Theatre', city: 'chicago-il', status: 'open' };
+  const shows = [old];
+  const page = { id: 7213, slug: 'a', empty: false, title: 'A', venue: 'Goodman Theatre', closingDate: '2026-12-31', reviews: Array.from({ length: 4 }, (_, i) => ({ outlet: `O${i}`, critic: 'A', verdict: 'recommended', url: `https://e.com/same/${i}` })) };
+  const known = new Set(page.reviews.map((r) => r.url));
+  const io = { page: async () => page, detail: async () => detailOf('Play'), dates: async () => ({ openingDate: '2026-11-21', samples: ['2026-11-21'] }), knownUrls: () => known };
+  const out = await daily.runDaily({ today: '2026-11-28', listing: [{ id: 7213, reviewCount: 4 }], shows, seen: { 7213: { reason: 'added', reviews: 4, listed: 4 } }, io });
+  assert.equal(out.added.length, 0);
+  assert.equal(shows.length, 1);
+});
+
+test('backfill rows are never topped up and record listed 0', () => {
+  const shows = [showRow('x', 5, '2026-01-01', '2026-02-01')];
+  assert.deepEqual(daily.pickTopups([{ id: 5, reviewCount: 99, backfill: true }], shows, {}, chi), []);
 });

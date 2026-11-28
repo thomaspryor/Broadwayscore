@@ -112,7 +112,7 @@ function pickTopups(listing, shows, seen, city = getCity('chicago')) {
   const have = latestRowByTicId(shows, city);
   const lastSeen = (r) => { const s = seen[r.id]; return s ? (s.listed ?? s.reviews ?? 0) : 0; };
   return listing
-    .filter((row) => have.has(row.id) && lastSeen(row) < row.reviewCount)
+    .filter((row) => !row.backfill && have.has(row.id) && lastSeen(row) < row.reviewCount)
     .sort((a, b) => String((seen[a.id] || {}).on || '').localeCompare(String((seen[b.id] || {}).on || '')));
 }
 
@@ -160,7 +160,43 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
   // Independent writer credits already in the corpus: the byline oracle (BRO-8054).
   const knownWriters = buildKnownWriters(shows);
   const byTic = latestRowByTicId(shows, city);
-  for (const row of pickTopups(listing, shows, seen, city).slice(0, max)) {
+  const remounted = new Set();
+  for (const row of pickRemountChecks(listing, shows, seen, today, city).slice(0, Math.min(5, max))) {
+    try {
+      const prior = byTic.get(row.id);
+      const page = await io.page(row.id);
+      const pre = stage.prefilter(page, city);
+      const stamp = { ...(next[row.id] || { reason: 'added', retry: false }), remountCheckedOn: today };
+      if (!pre.ok || !page.closingDate || page.closingDate < today) { next[row.id] = stamp; continue; }
+      const dates = await io.dates(page);
+      // The sampled publish dates are a few links out of many; a normal long run with one late review would pass.
+      // So also require that the page's links are new: almost none of them were ever ingested for the prior row.
+      const prevUrls = io.knownUrls ? io.knownUrls(prior.id) : null;
+      const links = stage.linkedReviews(page);
+      const overlap = prevUrls ? links.filter((r) => prevUrls.has(r.url)).length : links.length;
+      if (!prevUrls || overlap > links.length * 0.25) { next[row.id] = stamp; continue; }
+      if (!isRemount({ row: prior, dates, closingDate: page.closingDate, today })) { next[row.id] = stamp; continue; }
+      const detail = await io.detail(page);
+      const df = stage.detailFilter(detail, page, city);
+      if (!df.ok) { next[row.id] = stamp; continue; }
+      const show = stage.buildShowEntry({ page, detail, dates, discoveredAt: today, city, knownWriters });
+      stage.dedupeId(show, page, new Set(shows.map((x) => x.id)));
+      const applied = applyAddShow(shows, { type: 'add-show', show, distinctFrom: [prior.id] });
+      if (!applied.ok) { log(`id ${row.id}: remount add-show refused (${applied.error || applied.reason})`); next[row.id] = stamp; continue; }
+      // The earlier season is over: its closing date was overwritten with this season's "Thru". The clamp is
+      // applied by saveAddedShows only once the new row is on disk, so a refused save never closes a show without its successor.
+      const clampPrior = (!prior.closingDate || prior.closingDate >= show.openingDate)
+        ? { id: prior.id, closingDate: new Date(Date.parse(show.openingDate) - DAY).toISOString().slice(0, 10) } : null;
+      const reviews = stage.linkedReviews(page).map((r) => ({ url: r.url, critic: r.critic || null }));
+      next[row.id] = { ...stamp, id: show.id, reviews: reviews.length, listed: row.reviewCount, on: today };
+      added.push({ id: show.id, urls: reviews, remountOf: prior.id, clampPrior });
+      remounted.add(row.id);
+      log(`remount ${show.id} (season of ${prior.id}, ${reviews.length} reviews)`);
+    } catch (e) {
+      log(`id ${row.id}: remount ERROR ${e.message}`);
+    }
+  }
+  for (const row of pickTopups(listing, shows, seen, city).filter((r) => !remounted.has(r.id)).slice(0, max)) {
     try {
       const links = stage.linkedReviews(await io.page(row.id)).map((r) => ({ url: r.url, critic: r.critic || null }));
       const id = byTic.get(row.id).id;
@@ -172,36 +208,6 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
     }
   }
   // Remounts first: they take the same daily budget as new ids, but only a few per day.
-  for (const row of pickRemountChecks(listing, shows, seen, today, city).slice(0, Math.min(5, max))) {
-    try {
-      const prior = byTic.get(row.id);
-      const page = await io.page(row.id);
-      const pre = stage.prefilter(page, city);
-      const stamp = { ...(next[row.id] || { reason: 'added', retry: false }), remountCheckedOn: today };
-      if (!pre.ok || !page.closingDate || page.closingDate < today) { next[row.id] = stamp; continue; }
-      const dates = await io.dates(page);
-      if (!isRemount({ row: prior, dates, closingDate: page.closingDate, today })) { next[row.id] = stamp; continue; }
-      const detail = await io.detail(page);
-      const df = stage.detailFilter(detail, page, city);
-      if (!df.ok) { next[row.id] = stamp; continue; }
-      const show = stage.buildShowEntry({ page, detail, dates, discoveredAt: today, city, knownWriters });
-      stage.dedupeId(show, page, new Set(shows.map((x) => x.id)));
-      const applied = applyAddShow(shows, { type: 'add-show', show, distinctFrom: [prior.id] });
-      if (!applied.ok) { log(`id ${row.id}: remount add-show refused (${applied.error || applied.reason})`); next[row.id] = stamp; continue; }
-      // The earlier season is over: its closing date was overwritten with this season's "Thru".
-      if (!prior.closingDate || prior.closingDate >= show.openingDate) {
-        prior.closingDate = new Date(Date.parse(show.openingDate) - DAY).toISOString().slice(0, 10);
-        prior.closingDateSource = 'tic-remount-clamp';
-        prior.status = 'closed';
-      }
-      const reviews = stage.linkedReviews(page).map((r) => ({ url: r.url, critic: r.critic || null }));
-      next[row.id] = { ...stamp, id: show.id, reviews: reviews.length, listed: row.reviewCount, on: today };
-      added.push({ id: show.id, urls: reviews, remountOf: prior.id });
-      log(`remount ${show.id} (season of ${prior.id}, ${reviews.length} reviews)`);
-    } catch (e) {
-      log(`id ${row.id}: remount ERROR ${e.message}`);
-    }
-  }
   for (const row of pickCandidates(listing, shows, seen, city).slice(0, max)) {
     let res;
     try {
@@ -220,7 +226,7 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
       log(`id ${row.id}: add-show refused (${next[row.id].reason})`);
       continue;
     }
-    next[row.id] = { reason: 'added', id: res.show.id, retry: false, on: today, reviews: res.reviews.length, listed: row.reviewCount, rv: RULES_VERSION };
+    next[row.id] = { reason: 'added', id: res.show.id, retry: false, on: today, reviews: res.reviews.length, listed: row.backfill ? 0 : row.reviewCount, rv: RULES_VERSION };
     added.push({ id: res.show.id, urls: res.reviews });
     log(`added ${res.show.id} (${res.reviews.length} reviews)`);
   }
@@ -274,19 +280,37 @@ async function drainIngestQueue({ queue, check, dispatchOne, sleep = (ms) => new
  */
 function saveAddedShows(doc, added, { save, nextSeen, today, log = () => {} }) {
   const attempt = () => { try { save(doc); return null; } catch (e) { return e; } };
+  // A remount's prior-season clamp rides with its new row: applied for the attempt, undone if the attempt fails.
+  const clamp = (as) => {
+    const undo = [];
+    for (const a of as) {
+      const c = a.clampPrior;
+      const row = c && doc.shows.find((s) => s && s.id === c.id);
+      if (!row) continue;
+      undo.push([row, { closingDate: row.closingDate, closingDateSource: row.closingDateSource, status: row.status }]);
+      row.closingDate = c.closingDate; row.closingDateSource = 'tic-remount-clamp'; row.status = 'closed';
+    }
+    return () => { for (const [row, o] of undo) for (const k of Object.keys(o)) { if (o[k] === undefined) delete row[k]; else row[k] = o[k]; } };
+  };
+  let revert = clamp(added);
   if (!attempt()) return added;
+  revert();
   const rows = added.map((a) => [a, doc.shows.find((s) => s && s.id === a.id)]).filter(([, r]) => r);
   for (const [, row] of rows) doc.shows.splice(doc.shows.indexOf(row), 1);
   const landed = [];
   for (const [a, row] of rows) {
     doc.shows.push(row);
+    revert = clamp([a]);
     const err = attempt();
     if (!err) { landed.push(a); continue; }
+    revert();
     doc.shows.splice(doc.shows.indexOf(row), 1);
     const why = String(err.message).split('\n')[0].slice(0, 200);
     const permanent = /duplicate/i.test(String(err.message));
     for (const k of Object.keys(nextSeen)) {
-      if (!nextSeen[k] || nextSeen[k].reason !== 'added' || nextSeen[k].id !== a.id) continue;
+      if (!nextSeen[k] || nextSeen[k].id !== a.id) continue;
+      if (a.remountOf) { nextSeen[k] = { ...nextSeen[k], id: a.remountOf, remountCheckedOn: undefined }; continue; } // keep the prior row's listed/reviews
+      if (nextSeen[k].reason !== 'added') continue;
       if (permanent) nextSeen[k] = { reason: `write-refused:${why}`, retry: false, on: today };
       else delete nextSeen[k];
     }

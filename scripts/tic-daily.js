@@ -61,16 +61,25 @@ async function stageAndAdd() {
   const live = only ? [] : tic.parseListing((await fetchPage(`${CITY.base}/reviewlistings.php`)).content);
   const listing = withBackfill(live, only || backfill);
   console.log(`[tic-daily] ${listing.length} listed`);
+  let reviewUrls = null;
+  const loadReviewUrls = () => {
+    const m = new Map();
+    const r = readJson(path.join(ROOT, 'data', 'reviews.json'), {}).reviews || [];
+    for (const x of (Array.isArray(r) ? r : Object.values(r))) { if (!x || !x.url) continue; if (!m.has(x.showId)) m.set(x.showId, new Set()); m.get(x.showId).add(x.url); }
+    return m;
+  };
   const io = {
     page: async (id) => tic.parseReviewsPage((await fetchPage(tic.reviewsUrl(id, 'show', CITY.base), { skipVerify: true })).content, id, CITY.base),
     detail: async (page) => tic.parseDetailPage((await fetchPage(tic.detailUrl(page.id, page.slug, CITY.base), { skipVerify: true })).content),
     dates: (page) => openingDateFor(page),
+    // URLs already ingested for a show (derived reviews.json): lets the remount check tell a new season from a late review.
+    knownUrls: (showId) => { reviewUrls = reviewUrls || loadReviewUrls(); return reviewUrls.get(showId) || new Set(); },
   };
   const { added, topups = [], seen: nextSeen } = await runDaily({ listing, shows, seen, today, io, max: Number(arg('max', 15)), log: console.log, city: CITY });
   console.log(`[tic-daily] added ${added.length}, topped up ${topups.length}`);
   // Top-ups ride the ingest queue (ingest-urls skips links it already has); they are not new shows, so no image promotion.
-  const queued = new Set(pending.map((p) => p.id));
-  for (const t of topups) if (!queued.has(t.id)) pending.push(t);
+  // A top-up already waiting for a slot is replaced by the newer, longer link list (its listing count is what we just recorded).
+  for (const t of topups) { const i = pending.findIndex((p) => p.id === t.id); if (i >= 0) pending[i] = t; else pending.push(t); }
   if (flag('dry-run')) return;
   fs.mkdirSync(path.dirname(SEEN), { recursive: true });
   // shows.json first: a crash after it only re-evaluates the ids (dedupe catches them),
