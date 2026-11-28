@@ -1,4 +1,5 @@
 // BRO-8447: "the-dead-1904" is a title, not a year suffix. Requires the real function.
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data) only to guard the slug class (no slug but the-dead-1904 keeps a title-year); pins no score or review fact.
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
