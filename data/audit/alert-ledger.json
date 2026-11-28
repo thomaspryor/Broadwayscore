@@ -49599,7 +49599,7 @@
       "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.296Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.296Z",
-      "lastSeen": "2026-11-28T15:23:04.054Z",
+      "lastSeen": "2026-11-28T15:24:53.528Z",
       "lastNotifiedAt": "2026-11-27T20:24:01.221Z",
       "lastSurfacedAt": "2026-11-27T20:24:01.221Z",
       "notifyCount": 5,
@@ -49613,7 +49613,7 @@
       "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.324Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.324Z",
-      "lastSeen": "2026-11-28T15:23:04.082Z",
+      "lastSeen": "2026-11-28T15:24:53.712Z",
       "lastNotifiedAt": "2026-11-27T20:24:01.250Z",
       "lastSurfacedAt": "2026-11-27T20:24:01.250Z",
       "notifyCount": 5,
@@ -50203,7 +50203,7 @@
       "title": "Test red on main: the same week in the Broadway edition does not get the West End exception [testCodeFailure]",
       "firstSeen": "2026-11-24T07:28:53.020Z",
       "incidentOpenedAt": "2026-11-24T07:28:53.020Z",
-      "lastSeen": "2026-11-28T15:23:04.027Z",
+      "lastSeen": "2026-11-28T15:24:53.504Z",
       "lastNotifiedAt": "2026-11-28T07:56:19.886Z",
       "lastSurfacedAt": "2026-11-28T07:56:19.886Z",
       "notifyCount": 5,
@@ -51172,7 +51172,7 @@
       "title": "Test red on main: real data loads and gives the expected answers for the four JS outlets [testCodeFailure]",
       "firstSeen": "2026-11-25T21:15:32.320Z",
       "incidentOpenedAt": "2026-11-25T21:15:32.320Z",
-      "lastSeen": "2026-11-28T15:23:04.000Z",
+      "lastSeen": "2026-11-28T15:24:53.482Z",
       "lastNotifiedAt": "2026-11-27T22:10:41.140Z",
       "lastSurfacedAt": "2026-11-27T22:10:41.140Z",
       "notifyCount": 3,
@@ -51619,7 +51619,7 @@
       "title": "Test red on main: real shows.json: zero un-reviewed hits [testCodeFailure]",
       "firstSeen": "2026-11-27T12:14:42.889Z",
       "incidentOpenedAt": "2026-11-27T12:14:42.889Z",
-      "lastSeen": "2026-11-28T15:23:03.941Z",
+      "lastSeen": "2026-11-28T15:24:53.432Z",
       "lastNotifiedAt": "2026-11-28T12:16:10.919Z",
       "lastSurfacedAt": "2026-11-28T12:16:10.919Z",
       "notifyCount": 2,
@@ -51633,7 +51633,7 @@
       "title": "Test red on main: ingestion-year stamp (BRO-2829)",
       "firstSeen": "2026-11-27T12:14:42.921Z",
       "incidentOpenedAt": "2026-11-27T12:14:42.921Z",
-      "lastSeen": "2026-11-28T15:23:03.972Z",
+      "lastSeen": "2026-11-28T15:24:53.459Z",
       "lastNotifiedAt": "2026-11-28T12:16:10.952Z",
       "lastSurfacedAt": "2026-11-28T12:16:10.952Z",
       "notifyCount": 2,
@@ -52102,7 +52102,7 @@
       "linearIdentifier": null
     },
     "land:land/cron-inflight-fix": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/cron-inflight-fix",
       "firstSeen": "2026-11-28T14:29:48.110Z",
@@ -52112,7 +52112,8 @@
       "lastSurfacedAt": "2026-11-28T14:29:48.110Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-28T15:24:53.310Z"
     }
   }
 }
