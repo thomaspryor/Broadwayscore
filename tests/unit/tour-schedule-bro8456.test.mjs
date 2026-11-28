@@ -1,4 +1,5 @@
 // BRO-8456: stale tour segments. Real functions, no copied logic (CLAUDE.md 15).
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data) only for a consistency class guard (every open tour has a saved schedule); it pins no individual fact.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
