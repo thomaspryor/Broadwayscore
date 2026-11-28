@@ -143,5 +143,36 @@
       }
     ],
     "queuedAt": "2026-11-28T18:35:50.907Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8455-regional-cleanup",
+    "title": "Landing blocked: lint-workflows red on land/bro-8455-regional-cleanup",
+    "description": "land.yml did not land land/bro-8455-regional-cleanup: the lint-workflows gate went red at 57e35f8fff. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46175460167",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8455-regional-cleanup"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "57e35f8fffbb6319e940b837c374285db43bee02"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46175460167"
+      }
+    ],
+    "queuedAt": "2026-11-28T18:42:36.181Z"
   }
 ]
