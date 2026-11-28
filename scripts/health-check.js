@@ -2599,50 +2599,10 @@ function checkCronHealth() {
           ghRunsQuery(workflow, { limit: 5 })
         );
         const runs = sortRunsNewestFirst(result ? JSON.parse(result) : []);
-        if (!runs.length) {
-          return { name: `Cron: ${name}`, status: 'warn', message: 'No runs found' };
-        }
-        const run = runs[0];
-        const age = hoursAgo(run.createdAt);
-        if (age > maxHours) {
-          return { name: `Cron: ${name}`, status: 'error', message: `Last run ${formatAge(age)} ago (max ${maxHours}h). Conclusion: ${run.conclusion || 'still running'}`, hint: 'Check Actions tab — workflow may be disabled' };
-        }
-        if (livenessOnly && run.conclusion) {
-          // Watchdog-style cron that fails by design when it pages: ran inside the window = alive.
-          return { name: `Cron: ${name}`, status: 'pass', message: `${formatAge(age)} ago, ran (${run.conclusion}; liveness-only check)` };
-        }
-        if (run.conclusion === 'success') {
-          return { name: `Cron: ${name}`, status: 'pass', message: `${formatAge(age)} ago, success` };
-        }
-        if (!run.conclusion) {
-          // Still running/queued — limit=1 with no status filter can return an
-          // in-flight run. Not evidence of a problem, so stays at baseline
-          // urgency rather than routing to the fix-now `Cron failed:` name.
-          return { name: `Cron: ${name}`, status: 'warn', message: `Last run still running (started ${formatAge(age)} ago)` };
-        }
-        // The head run is inconclusive. Before calling that a failure, check
-        // whether a RECENT run actually succeeded: a cancelled head run with a
-        // green run still inside the freshness window means the cron is working
-        // and the newest attempt was just superseded. That is TRUE STATE, not an
-        // unfixed failure, and reporting it as one produced permanent digest
-        // warnings for Rebuild Reviews and Test Suite that no fix could clear.
-        const recentSuccess = runs.find(r => r.conclusion === 'success' && hoursAgo(r.createdAt) <= maxHours);
-        if (recentSuccess) {
-          return {
-            name: `Cron: ${name}`,
-            status: 'pass',
-            message: `${formatAge(hoursAgo(recentSuccess.createdAt))} ago, success (newest run ${run.conclusion} — superseded, not a failure)`,
-          };
-        }
-        // No successful run inside the window: failure / cancelled / skipped /
-        // timed_out / action_required / neutral / stale all mean the cron has not
-        // demonstrably done its job. Emit under a distinct name so the playbook
-        // routes to fix-now urgency (prominent in digest), separate from the
-        // baseline `Cron: X` staleness checks which stay at low urgency.
-        // Previously only 'failure' routed here — cancelled/timed_out runs
-        // silently read as 'pass' (ship-check adversarial finding on #367
-        // surfaced the same bug in checkSecretsHealth(); same fix applied here).
-        return { name: `Cron failed: ${name}`, status: 'warn', message: `Last run inconclusive: ${run.conclusion} (${formatAge(age)} ago), no success in ${maxHours}h` };
+        // Verdict logic lives in scripts/lib/cron-health-verdict.js (tested):
+        // cancelled OR still-in-flight head runs pass when a success sits inside
+        // maxHours (the digest fires at the same minute as several of these crons).
+        return require('./lib/cron-health-verdict').cronHealthVerdict(runs, { name, maxHours, livenessOnly }, hoursAgo, formatAge);
       } catch (err) {
         return { name: `Cron: ${name}`, status: 'warn', message: `gh CLI failed: ${err.message.substring(0, 80)}` };
       }
@@ -6725,4 +6685,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkPipelines, checkPressNightReadiness, invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkUncardedDigestRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth, checkSkepticReview };
+module.exports = { checkCronHealth, checkPipelines, checkPressNightReadiness, invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkUncardedDigestRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth, checkSkepticReview };
