@@ -1,19 +1,132 @@
 {
-  "updatedAt": "2026-11-28T03:01:35.380Z",
-  "processed": 3,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-28T03:10:19.970Z",
+  "processed": 198,
+  "failed": 136,
+  "successRate": "59.3%",
   "tierBreakdown": {
-    "playwright": 2,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 137,
+    "amp": 3,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 20,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 1
+    "brightdata": 9,
+    "archiveToday": 17,
+    "archive": 38
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 14,
+  "recentActivity": [
+    {
+      "t": "2026-11-28T01:40:31.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-28T02:05:01.460Z",
+      "event": "bb-session",
+      "session": "53df8170",
+      "url": "https://concerts.consequence.net/events/getaway-driver-at-central-square-theater"
+    },
+    {
+      "t": "2026-11-28T02:06:02.493Z",
+      "event": "bb-session",
+      "session": "e16ba9f5",
+      "url": "https://www.usatoday.com/2026/11/23/ann-wilson-cancer-heart-documentary"
+    },
+    {
+      "t": "2026-11-28T02:06:03.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-11-28T02:06:19.758Z",
+      "event": "bb-session",
+      "session": "091c9251",
+      "url": "https://www.usatoday.com/2026/11/23/ann-wilson-cancer-heart-documentary"
+    },
+    {
+      "t": "2026-11-28T02:06:20.354Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-11-28T02:22:50.944Z",
+      "event": "bb-session",
+      "session": "4100026d",
+      "url": "https://deadline.com/slam-frank-off-broadway-closing-date-1237209726"
+    },
+    {
+      "t": "2026-11-28T02:40:42.976Z",
+      "event": "bb-session",
+      "session": "1191cb5a",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-28T02:40:43.604Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-28T02:43:55.205Z",
+      "event": "bb-session",
+      "session": "33c5ff3f",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-28T02:44:24.709Z",
+      "event": "bb-session",
+      "session": "0aeff2ef",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-28T02:44:52.763Z",
+      "event": "bb-session",
+      "session": "e389e408",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-28T02:48:02.697Z",
+      "event": "bb-session",
+      "session": "50358a9b",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-28T02:48:03.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-28T02:54:58.365Z",
+      "event": "bb-session",
+      "session": "a58b38ff",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-28T02:54:59.001Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-28T02:55:15.816Z",
+      "event": "bb-session",
+      "session": "155b9d47",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-11-28T02:55:16.453Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-28T03:04:24.437Z",
+      "event": "bb-session",
+      "session": "357992a4",
+      "url": "https://www.nytimes.com/2026/11/01/theater/in-the-heights-review-lin-manuel-mira"
+    },
+    {
+      "t": "2026-11-28T03:04:25.131Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
