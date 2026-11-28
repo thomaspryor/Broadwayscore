@@ -21,7 +21,8 @@ function planUnlink({ shows, reviews, aggregateId, transferLegId }) {
   if (!agg) return { ok: false, reason: `no show with id "${aggregateId}"` };
   const legs = legsByAggregate(shows).get(aggregateId) || [];
   if (legs.length === 0) return { ok: false, reason: `"${aggregateId}" has no legs (no show names it in tourParent)` };
-  const why = aggregateProblems(agg, legs);
+  // A missing openingDate is a data gap, not evidence the legs are unrelated productions (BRO-8456).
+  const why = aggregateProblems(agg, legs).filter((p) => !/no openingDate/.test(p));
   if (why.length === 0) return { ok: false, reason: `"${aggregateId}" looks like a real tour (legs open close together under one director): refusing to take it apart` };
   const transferLeg = legs.find((l) => l.id === transferLegId);
   if (!transferLeg) return { ok: false, reason: `--transfer-leg "${transferLegId}" is not one of the legs (${legs.map((l) => l.id).join(', ')})` };

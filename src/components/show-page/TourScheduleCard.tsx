@@ -51,7 +51,7 @@ function StopRow({ stop, isNow, past, reviewCount, ticketUrl, show, cityHref }: 
   );
 }
 
-export default function TourScheduleCard({ stops, today, reviewCounts, source, tickets = {}, show, cityPages }: {
+export default function TourScheduleCard({ stops, today, reviewCounts, source, tickets = {}, show, cityPages, cityPageSlug }: {
   stops: TourStop[];
   today: string;
   /** Reviews per stop, keyed by stopKey(). */
@@ -63,6 +63,8 @@ export default function TourScheduleCard({ stops, today, reviewCounts, source, t
   show?: TicketShow;
   /** Slugs of the /tours/<city> pages that exist: those cities link there. */
   cityPages?: ReadonlySet<string>;
+  /** Maps a stop's city to its /tours page slug (hub suburbs fold into their hub). */
+  cityPageSlug?: (city: string) => string;
 }) {
   if (stops.length === 0) return null;
   // A closed tour has no current or next stop, whatever the schedule says.
@@ -72,7 +74,7 @@ export default function TourScheduleCard({ stops, today, reviewCounts, source, t
   const ahead = firstAhead === -1 ? [] : stops.slice(firstAhead, firstAhead + UPCOMING_SHOWN);
   const shown = [...(nowIdx >= 0 ? [stops[nowIdx]] : []), ...ahead];
   const row = (s: TourStop) => (
-    <StopRow key={`${s.city}|${s.start}`} stop={s} isNow={s === stops[nowIdx]} past={s.end < today} reviewCount={reviewCounts[stopKey(s)] ?? 0} ticketUrl={tickets[stopKey(s)]} show={show} cityHref={cityPages?.has(citySlug(s.city)) ? `/tours/${citySlug(s.city)}` : undefined} />
+    <StopRow key={`${s.city}|${s.start}`} stop={s} isNow={s === stops[nowIdx]} past={s.end < today} reviewCount={reviewCounts[stopKey(s)] ?? 0} ticketUrl={tickets[stopKey(s)]} show={show} cityHref={cityPages?.has((cityPageSlug ?? citySlug)(s.city)) ? `/tours/${(cityPageSlug ?? citySlug)(s.city)}` : undefined} />
   );
 
   return (

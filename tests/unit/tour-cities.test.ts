@@ -66,3 +66,13 @@ test('class guard: every suburb in the registry resolves to a launched hub page'
   for (const [k, t] of Array.from(m)) assert.ok((registry.hubs as Record<string, { launched?: boolean }>)[t.slug]?.launched, `${k} -> ${t.slug}`);
   assert.ok(m.size >= 40);
 });
+
+test('class guard: every hub suburb slug redirects to its hub (BRO-8456)', async () => {
+  const fs = await import('node:fs');
+  const hubs = JSON.parse(fs.readFileSync('data/city-hubs.json', 'utf8')).hubs;
+  const redirects = JSON.parse(fs.readFileSync('vercel.json', 'utf8')).redirects as Array<{ source: string; destination: string }>;
+  const bySource = new Map(redirects.map(r => [r.source, r.destination]));
+  const map = hubSuburbMap(hubs);
+  assert.ok(map.size > 0);
+  for (const [slug, hub] of Array.from(map)) assert.equal(bySource.get(`/tours/${slug}`), `/tours/${hub.slug}`, `${slug} must redirect to ${hub.slug}`);
+});
