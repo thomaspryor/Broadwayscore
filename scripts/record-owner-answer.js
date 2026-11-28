@@ -13,7 +13,8 @@
  * record-owner-answer.yml, which runs this script with --execute in CI.
  * --check stops after the card check. Cards carrying a VISUAL-APPROVAL line are
  * refused unless --choice void (the change shipped another way, e.g. a VISUAL-OK
- * commit): approving a visual change ships it. The owner's tap on the email approves it; so does their plain yes in the chat, in which case the session lands the held change itself and then voids the ask. Exit 0 recorded (or already answered), 1 refused or
+ * commit): approving a visual change ships it. BRO-8462: a Void is refused while the
+ * held branch still has a diff against origin/main (nothing shipped yet). The owner's tap on the email approves it; so does their plain yes in the chat, in which case the session lands the held change itself and then voids the ask. Exit 0 recorded (or already answered), 1 refused or
  * failed, 2 bad usage.
  */
 'use strict';
@@ -27,7 +28,7 @@ const WORKFLOW = 'record-owner-answer.yml';
 const MAX_VIA = 80;
 
 const ISSUE_QUERY = `query($id: String!) { issue(id: $id) {
-  identifier title description url createdAt labels { nodes { name } } } }`;
+  identifier title description url createdAt labels { nodes { name } } comments(last: 100) { nodes { body createdAt } } } }`;
 
 // In CI the answer text comes from the dispatch payload, not argv or env, so it
 // never appears in the public run log.
@@ -61,11 +62,21 @@ function parseArgs(argv, { readEvent = eventInputs } = {}) {
  * The card's open decision and the choice key to record, or {error}.
  * Pure: takes the fetched issue.
  */
-function resolveDecision(issue, choice) {
+function resolveDecision(issue, choice, facts = {}) {
   if (!issue) return { error: 'card not found' };
   const visual = link.parseVisualApproval(issue.description);
   // BRO-6411: void closes a visual ask whose change shipped another way. It never approves.
   if (choice === 'void' && !visual) return { error: 'void is only for a card with a visual ask (VISUAL-APPROVAL line)' };
+  // BRO-8462: a Void while the held change still has code main lacks is false ("shipped another way" when nothing
+  // shipped). BRO-8451: the owner's chat "Yes" was saved as Void, the hold was then deleted and the owner asked again.
+  // facts.holdSettled comes from git in main(): false = the hold still differs from main. Unknown (CI) is not refused.
+  if (choice === 'void' && visual && facts.holdSettled === false) {
+    const hold = visual.hold || 'visual-hold/<card>';
+    if (facts.holdGone) return { error: `the owner's words read as a yes, but the held change on ${hold} is gone and nothing for ${issue.identifier} is on main since the ask, so Void ("shipped another way") would be false. Their yes in THIS chat is the approval: rebuild the change on a branch and land it yourself (land/${issue.identifier.toLowerCase()}-<slug>, follow the Land run to prod), then re-run with --choice void. Do not ask the owner again.` };
+    return { error: facts.affirmative
+      ? `the owner's words read as a yes, but the held change on ${hold} is not on main yet, so Void ("shipped another way") would be false. Their yes in THIS chat is the approval: ship it yourself (git fetch origin ${hold} && git push origin FETCH_HEAD:refs/heads/land/${issue.identifier.toLowerCase()}-visual, follow the Land run to prod), then re-run with --choice void. Never record a yes as Void before it lands.`
+      : `the held change on ${hold} is not on main, so Void ("shipped another way") would be false. Land it first, or if it truly shipped as a different commit, delete the obsolete hold (git push origin :refs/heads/${hold}) and re-run.` };
+  }
   if (visual && choice !== 'void') {
     return { error: 'this card holds a visual change on visual-hold/<card>. If the owner said yes/Approved in THIS chat, that is the approval: ship the held change yourself (git fetch origin visual-hold/<card> && git push origin FETCH_HEAD:refs/heads/land/<card>, follow the Land run), then re-run with --choice void. Never tell the owner to tap anything. No owner in the chat: wait for their tap on the email.' };
   }
@@ -80,6 +91,39 @@ function resolveDecision(issue, choice) {
     return { error: `"${choice}" is not one of this card's choices: ${[...keys, 'own'].join(', ')}`, decision };
   }
   return { decision, choiceKey: choice };
+}
+
+/** BRO-8462: git facts for a Void: is the held change already on main (or gone)? Does the owner's quote read as a yes? */
+async function voidFacts(issue, text, { git = require('./lib/visual-approval.js').git, changeOnMain = require('./lib/visual-approval.js').changeOnMain } = {}) {
+  const visual = link.parseVisualApproval(issue.description);
+  const hold = visual.hold;
+  if (!/^visual-hold\/[a-z0-9][a-z0-9-]{0,60}$/.test(String(hold || ''))) return { error: `the card names no valid hold branch (${hold})` };
+  let affirmative = false;
+  try { affirmative = (await import('./lib/owner-reply-classifier.mjs')).classifyOwnerReply(String(text || '')) === 'approve'; } catch { /* wording only */ }
+  const first = (e) => String(e && e.message || e).split('\n')[0];
+  try {
+    // Gone from origin = nothing left to ship (the lander's holdSettled reads it the same way). But after an owner
+    // yes (BRO-8451: the hold was deleted by a wrong cleanup) a Void would hide that the yes went nowhere: then
+    // something naming the card must be on main since the ask.
+    if (!git(['ls-remote', '--heads', 'origin', hold])) {
+      if (!affirmative) return { holdSettled: true, affirmative };
+      git(['fetch', '--quiet', 'origin', 'main']);
+      const named = new RegExp(`\\b${issue.identifier}(?![0-9])`, 'i');
+      const since = Math.floor(askedSince(issue) / 1000);
+      const onMain = named.test(git(['log', 'origin/main', `--since=@${since}`, '--format=%s%n%b']));
+      return { holdSettled: onMain, holdGone: !onMain, affirmative };
+    }
+    git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hold}:refs/remotes/origin/${hold}`]);
+  } catch (e) { return { error: first(e) }; }
+  // Landed already (land.yml rebases, so the hold keeps its own commits): the change itself must be in main.
+  try { return { holdSettled: changeOnMain(`origin/${hold}`), affirmative }; } catch (e) { return { error: first(e) }; }
+}
+
+/** When the latest ask was made (ms): the newest "Asked the owner" comment, else the card's creation. */
+function askedSince(issue) {
+  const asks = ((issue.comments && issue.comments.nodes) || []).filter((c) => /^Asked the owner to look at/.test(link.unescapeMarkdown(c.body || '').trim()))
+    .map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite);
+  return asks.length ? Math.max(...asks) : (new Date(issue.createdAt).getTime() || 0);
 }
 
 async function fetchIssue(id) {
@@ -116,7 +160,12 @@ async function main(argv = process.argv.slice(2)) {
 
   // Check the card first, so a wrong card or a letter from a different question fails here.
   let r;
-  try { r = resolveDecision(await fetchIssue(opts.id), opts.choice); } catch (e) { console.error(`[record-owner-answer] could not read the card: ${e.message}`); return 1; }
+  try {
+    const issue = await fetchIssue(opts.id);
+    const facts = opts.choice === 'void' && issue && link.parseVisualApproval(issue.description) ? await voidFacts(issue, opts.text) : {};
+    if (facts.error) { console.error(`[record-owner-answer] refused: could not check the held change against main (${facts.error}); a Void is only recorded once that check passes.`); return 1; }
+    r = resolveDecision(issue, opts.choice, facts);
+  } catch (e) { console.error(`[record-owner-answer] could not read the card: ${e.message}`); return 1; }
   if (r.decision) console.log(describe(r.decision));
   if (r.error) { console.error(`[record-owner-answer] refused: ${r.error}`); return 1; }
   if (opts.check) return 0;
@@ -128,4 +177,4 @@ if (require.main === module) {
   main().then((code) => { process.exitCode = code; }, (err) => { console.error(`[${path.basename(__filename)}] ${err.stack || err.message}`); process.exitCode = 1; });
 }
 
-module.exports = { main, parseArgs, resolveDecision, WORKFLOW };
+module.exports = { main, parseArgs, resolveDecision, voidFacts, WORKFLOW };

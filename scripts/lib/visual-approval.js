@@ -199,11 +199,75 @@ function buildBlock({ what, patch, verdict, hold, evidence, summary }) {
   ].join('\n');
 }
 
-/** Orphan commit holding the screenshots, built with plumbing so the working tree and index are untouched. */
-function buildEvidenceCommit(files, cwd, message) {
+/**
+ * Commit holding the screenshots, built with plumbing so the working tree and index are untouched.
+ * BRO-8462: `parent` is the held tip the owner is shown. It keeps that exact commit reachable from the
+ * evidence branch after the hold is force-pushed by a rebase, so the lander can check (against the signed
+ * patch id) what was approved and carry the approval over when only diff context moved.
+ */
+function buildEvidenceCommit(files, cwd, message, parent = null) {
   const entries = files.map(({ name, abs }) => `100644 blob ${git(['hash-object', '-w', abs], { cwd })}\t${name}`).join('\n');
   const tree = execFileSync('git', ['mktree'], { input: `${entries}\n`, encoding: 'utf8', cwd }).trim();
-  return git(['-c', 'user.name=visual-approval', '-c', 'user.email=visual-approval@users.noreply.github.com', 'commit-tree', tree, '-m', message], { cwd });
+  const parents = parent ? ['-p', parent] : [];
+  return git(['-c', 'user.name=visual-approval', '-c', 'user.email=visual-approval@users.noreply.github.com', 'commit-tree', tree, ...parents, '-m', message], { cwd });
+}
+
+/**
+ * BRO-8462: what a change changes, with diff context and line numbers left out. A rebase that only moved the
+ * lines around the change (a conflict resolved in a neighbouring hunk, main moving underneath) keeps the same
+ * signature; any added, removed or edited line in ANY file (UI or not) changes it. Pure: takes `git diff -U0` text.
+ */
+function changeSignatureOfDiff(diffText) {
+  const kept = String(diffText || '').split('\n')
+    .filter((l) => l && !/^@@ /.test(l) && !/^index [0-9a-f]+\.\.[0-9a-f]+/.test(l))
+    .map((l) => l.replace(/\s+/g, ' ').trimEnd());
+  if (!kept.length) return null;
+  return require('crypto').createHash('sha256').update(kept.join('\n')).digest('hex');
+}
+function changeSignature(base, head, cwd) {
+  return changeSignatureOfDiff(git(['diff', '-U0', '--no-color', '--no-ext-diff', '--binary', `${base}...${head}`], { cwd }));
+}
+
+/**
+ * BRO-8462: is the held change already in `main` (landed: land.yml rebases, so the hold branch keeps its own
+ * commits and still diffs against main)? True when the hold adds nothing, or its diff reverse-applies cleanly to
+ * main's tree (every line it adds is there, every line it removes is gone). Uses a throwaway index file, so the
+ * working tree and the real index are untouched. Throws on a git error (callers fail closed).
+ */
+function changeOnMain(holdRef, cwd, main = 'origin/main') {
+  const diff = git(['diff', '--binary', `${main}...${holdRef}`], { cwd });
+  if (!diff) return true;
+  const os = require('os');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'va-onmain-'));
+  const env = { ...process.env, GIT_INDEX_FILE: path.join(dir, 'index') };
+  try {
+    execFileSync('git', ['read-tree', main], { cwd, env, stdio: ['ignore', 'ignore', 'pipe'] });
+    try { execFileSync('git', ['apply', '--cached', '--check', '-R'], { cwd, env, input: `${diff}\n`, stdio: ['pipe', 'ignore', 'ignore'] }); return true; } catch { return false; }
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+}
+
+/** BRO-8462: what an "Owner decision" Chose: label means. approve | reject | void | own. */
+function answerKind(chose) {
+  const c = String(chose || '').trim();
+  if (/^(Approved|Option A: approve)\b/i.test(c)) return 'approve';
+  if (/^(Rejected|Option B: reject)\b/i.test(c)) return 'reject';
+  if (/^Void\b/i.test(c)) return 'void';
+  return 'own';
+}
+
+/**
+ * BRO-8462: how the latest ask was answered, from the newest "Owner decision" comment on or after it
+ * (recordAnswer's shape: the email tap, a chat answer, or the lander's void). null when there is none.
+ * A Void is "closed without an approval", never a rejection: only 'reject' may delete a held change.
+ */
+function latestVisualAnswer(comments, sinceMs = 0) {
+  const rows = (comments || []).map((c) => ({ t: new Date(c.createdAt).getTime(), body: link.unescapeMarkdown(c.body || '').trim() }))
+    .filter((r) => /^\*\*Owner decision\*\* \((?:answered by the owner|closed without an owner tap) through /.test(r.body))
+    .filter((r) => !(r.t < sinceMs))
+    .sort((a, b) => (b.t || 0) - (a.t || 0));
+  if (!rows.length) return null;
+  const chose = ((/^\s*Chose:\s*(.+)$/m.exec(rows[0].body) || [])[1] || '').trim();
+  return { kind: answerKind(chose), at: rows[0].t };
 }
 
 // Comment markers the lander writes. The MAC-bearing suffix is added by the lander (it holds the secret);
@@ -241,7 +305,7 @@ function checkVerdict(raw, expectedHash) {
 
 /**
  * Where a visual request stands, from the card alone (no secret needed).
- * waiting | approved (tapped, lander has not pushed yet) | landed | rejected | void | unverified | expired | none
+ * waiting | approved (tapped, lander has not pushed yet) | landed | rejected | answered (own words) | void | unverified | expired | none
  */
 function classifyStatus(description, comments) {
   if (!link.parseVisualApproval(description)) return 'none';
@@ -261,7 +325,13 @@ function classifyStatus(description, comments) {
   }
   // A void closes the ask even when no Approve was ever tapped (the owner said yes in chat and the session shipped it).
   if (has(MARK.void)) return 'void';
-  if (/ANSWERED by the owner/.test(description || '')) return 'rejected';
+  if (/ANSWERED by the owner/.test(description || '')) {
+    // BRO-8462: a recorded Void is not a rejection (it read as one and the owner was asked again); own words are their note.
+    const answer = latestVisualAnswer(current, askedAt || 0);
+    if (answer && answer.kind === 'void') return 'void';
+    if (answer && answer.kind === 'own') return 'answered';
+    return 'rejected';
+  }
   return 'waiting';
 }
 
@@ -298,4 +368,4 @@ function landCheckGate({ status, sha = '', env = {}, okReason = '' }) {
   return { action: 'warn', message: `WARNING: ${text} ${fix}`, reason: String(okReason).trim() || null };
 }
 
-module.exports = { landCheckGate, LAND_CHECK_CMD, visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, cropCoverageProblem, whatProblem, makeEmailThumb, thumbName, fullUrlForThumb, THUMB_MAX_BYTES, THUMB_MAX_HEIGHT, MAX_CROPS, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
+module.exports = { changeOnMain, changeSignature, changeSignatureOfDiff, answerKind, latestVisualAnswer, landCheckGate, LAND_CHECK_CMD, visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, cropCoverageProblem, whatProblem, makeEmailThumb, thumbName, fullUrlForThumb, THUMB_MAX_BYTES, THUMB_MAX_HEIGHT, MAX_CROPS, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };

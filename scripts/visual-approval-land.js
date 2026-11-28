@@ -72,7 +72,17 @@ function askedSince(issue) {
 }
 
 /** What to do with one card. Pure: the CLI below does the git and Linear writes. */
-function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedSha = null, autoOk = false) {
+/**
+ * BRO-8462: may an approval of the signed patch ship a hold that a rebase rewrote? Only when the approved tip
+ * (the evidence commit's parent) really is the signed patch, and the hold changes exactly the same lines in
+ * every file (UI or not); only diff context and line numbers may differ. Pure: inputs come from git in main.
+ */
+function carryOverOk({ signedPatch, approvedTipPatch, approvedSig, currentSig }) {
+  return Boolean(signedPatch && approvedTipPatch === signedPatch && approvedSig && currentSig && approvedSig === currentSig);
+}
+
+// facts (BRO-8462): { holdSettled: the hold has nothing left that main lacks (or is gone), carriedOver: carryOverOk() for currentPatch }
+function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedSha = null, autoOk = false, facts = {}) {
   const v = link.parseVisualApproval(issue.description);
   if (!v) return { action: 'skip', why: 'no visual approval line' };
   const mac = link.visualMac(secret, issue.identifier, v.patch, v.verdict);
@@ -91,13 +101,25 @@ function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedS
   if (approvedNow) {
     const approvedAt = approvalTime(comments, link.visualMarker(mac));
     if (currentPatch === null) return { action: 'land', v, mac, approvedAt };
-    return currentPatch === v.patch ? { action: 'land', v, mac, approvedAt } : { action: 'void', why: 'the held branch no longer matches the approved change', v, mac, approvedAt };
+    if (currentPatch === v.patch) return { action: 'land', v, mac, approvedAt };
+    // BRO-8462: a rebase that changed only the context around the approved lines keeps the owner's yes.
+    if (facts.carriedOver === true) return { action: 'land', v, mac, approvedAt, carried: true };
+    return { action: 'void', why: 'the held branch no longer matches the approved change', v, mac, approvedAt };
   }
-  // Answered without an approval (a Reject or the owner's own words): the held refs are dead weight.
-  if (/ANSWERED by the owner/.test(issue.description || '')) return has(cleanedMarker(mac)) ? { action: 'skip', why: 'rejected, already cleaned', v, mac } : { action: 'cleanup', v, mac };
   // Age counts from the worker's own "Asked the owner" comment; a card without one never expires.
   const askedAt = (comments.nodes || []).filter((c) => /^Asked the owner to look at/.test(link.unescapeMarkdown(c.body).trim()))
     .map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite).sort((a, b) => b - a)[0];
+  // Answered without an approval. BRO-8462: only an explicit Reject removes the held change. A Void (closed
+  // without a tap, e.g. the owner said yes in chat) was read as a rejection and BRO-8451's approved hold was
+  // deleted. A Void whose hold is already on main is tidied up; anything else keeps the hold until it is stale.
+  if (/ANSWERED by the owner/.test(issue.description || '')) {
+    if (has(cleanedMarker(mac))) return { action: 'skip', why: 'answered, already cleaned', v, mac };
+    const answer = va.latestVisualAnswer(comments.nodes, askedAt || 0);
+    if (answer && answer.kind === 'reject') return { action: 'cleanup', reason: 'rejected', v, mac };
+    if (answer && answer.kind === 'void' && facts.holdSettled === true) return { action: 'cleanup', reason: 'shipped', v, mac };
+    if (askedAt && now - askedAt > EXPIRE_AFTER_MS) return { action: 'cleanup', reason: 'stale', v, mac };
+    return { action: 'skip', why: `answered (${answer ? answer.kind : 'no answer comment found'}) without a Reject; the held change is kept`, v, mac };
+  }
   if (askedAt && now - askedAt > EXPIRE_AFTER_MS && !/ANSWERED by the owner/.test(issue.description || '')) return { action: 'expire', v, mac };
   return { action: 'wait', v, mac };
 }
@@ -237,6 +259,21 @@ function autoDecision(issue, secret, env = process.env, now = Date.now()) {
   return vci.planAuto({ ci, flagOn: true, emailed, rejected, holdFiles, driftFiles });
 }
 
+/** BRO-8462: git half of carryOverOk. Any git failure (orphan evidence commit from an older ask, fetch error) = no carry-over. */
+function approvedTipMatches(issue, v, holdRef) {
+  try {
+    const sha = va.evidenceSha(issue.description);
+    if (!sha) return false;
+    try { va.git(['fetch', '--quiet', 'origin', `+refs/heads/${va.evidenceBranch(issue.identifier)}:refs/remotes/origin/${va.evidenceBranch(issue.identifier)}`]); } catch { /* try the sha */ }
+    try { va.git(['cat-file', '-e', `${sha}^{commit}`]); } catch { va.git(['fetch', '--quiet', 'origin', sha]); }
+    const tip = va.git(['rev-parse', '--verify', '--quiet', `${sha}^1`]);
+    if (!/^[0-9a-f]{40}$/.test(tip)) return false;
+    const ok = carryOverOk({ signedPatch: v.patch, approvedTipPatch: va.patchId('origin/main', tip), approvedSig: va.changeSignature('origin/main', tip), currentSig: va.changeSignature('origin/main', holdRef) });
+    console.log(`[visual-land] ${issue.identifier}: rebased hold ${ok ? 'changes the same lines as' : 'differs from'} the approved tip ${tip.slice(0, 10)}`);
+    return ok;
+  } catch { return false; }
+}
+
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const dryRun = argv.includes('--dry-run');
@@ -265,7 +302,10 @@ async function main(argv = process.argv.slice(2)) {
     try { if (holdSettled) shippedSha = shippedVisualCommit(va.git(['log', 'origin/main', `--since=@${Math.floor(askedSince(issue) / 1000)}`, '--format=%H%x09%s']), issue.identifier); } catch (e) { console.error(`[visual-land] ${issue.identifier}: could not read main history: ${e.message}`); }
     const autoNow = autoDecision(issue, secret);
     if (autoNow.auto) console.log(`[visual-land] ${issue.identifier}: auto-ship allowed (${autoNow.why})`);
-    const first = planCard(issue, secret, Date.now(), null, shippedSha, autoNow.auto);
+    // BRO-8462: an answered Void tidies up only when its change is really on main (a landed hold keeps its own commits).
+    let voidSettled = holdSettled;
+    if (!voidSettled && /ANSWERED by the owner/.test(issue.description || '')) { try { voidSettled = va.changeOnMain(`origin/${va.holdBranch(issue.identifier)}`); } catch { voidSettled = false; } }
+    const first = planCard(issue, secret, Date.now(), null, shippedSha, autoNow.auto, { holdSettled: voidSettled });
     if (first.action === 'skip' || first.action === 'wait') { console.log(`[visual-land] ${issue.identifier}: ${first.action}${first.why ? ` (${first.why})` : ''}`); continue; }
     const { v, mac } = first;
     const hold = va.holdBranch(issue.identifier);
@@ -274,7 +314,8 @@ async function main(argv = process.argv.slice(2)) {
         if (v.hold !== hold) throw new Error(`hold branch ${v.hold} does not belong to ${issue.identifier}`);
         va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hold}:refs/remotes/origin/${hold}`]);
         const current = va.patchId('origin/main', `origin/${hold}`);
-        const plan = planCard(issue, secret, Date.now(), current, null, first.auto === true);
+        const carriedOver = current !== v.patch && !first.auto && approvedTipMatches(issue, v, `origin/${hold}`);
+        const plan = planCard(issue, secret, Date.now(), current, null, first.auto === true, { holdSettled: voidSettled, carriedOver });
         const stuck = async (why, marker) => {
           console.log(`[visual-land] ${issue.identifier}: not shipping (${why})`);
           const told = (issue.comments.nodes || []).some((c) => link.bodyHasMarker(c.body, marker));
@@ -322,10 +363,15 @@ async function main(argv = process.argv.slice(2)) {
         console.log(`[visual-land] ${issue.identifier}: ${out.status}`);
         if (out.status !== 'recorded' && out.status !== 'answered') throw new Error(`void not recorded (${out.status})`);
       } else if (first.action === 'cleanup') {
-        console.log(`[visual-land] ${issue.identifier}: rejected, removing ${hold}`);
+        console.log(`[visual-land] ${issue.identifier}: cleanup (${first.reason}), removing ${hold}`);
         if (dryRun) continue;
         for (const ref of [hold, va.evidenceBranch(issue.identifier)]) { try { va.git(['push', 'origin', `:refs/heads/${ref}`]); } catch { /* already gone */ } }
-        await comment(issue, `The owner did not approve this change, so the held branch and screenshots were removed.\n\n${cleanedMarker(mac)}`);
+        const why = {
+          rejected: 'The owner did not approve this change, so the held branch and screenshots were removed.',
+          shipped: 'The held change is already on main, so the held branch and screenshots were removed.',
+          stale: 'This ask was answered without an approval more than 14 days ago, so the held branch and screenshots were removed.',
+        }[first.reason] || 'The held branch and screenshots were removed.';
+        await comment(issue, `${why}\n\n${cleanedMarker(mac)}`);
       } else if (first.action === 'expire') {
         console.log(`[visual-land] ${issue.identifier}: expired`);
         if (dryRun) continue;
@@ -343,4 +389,4 @@ async function main(argv = process.argv.slice(2)) {
 if (require.main === module) {
   main().then((c) => { process.exitCode = c; }, (e) => { console.error(`[visual-land] ${e.stack || e.message}`); process.exitCode = 3; });
 }
-module.exports = { autoDecision, autoMarker, planRecovery, askedHold, lostBlockAnswer, planCard, shippedVisualCommit, askedSince, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };
+module.exports = { carryOverOk, approvedTipMatches, autoDecision, autoMarker, planRecovery, askedHold, lostBlockAnswer, planCard, shippedVisualCommit, askedSince, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };

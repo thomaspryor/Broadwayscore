@@ -23,7 +23,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const va = require('./lib/visual-approval.js');
 const link = require('../src/lib/owner-decision-link.js');
 
-const USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N | request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run] [--shared-style-change] [--land-check-ok="<why>"] [--page-shots-ok="<why whole pages show the change>"]';
+const USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N | request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run] [--shared-style-change] [--land-check-ok="<why>"] [--page-shots-ok="<why whole pages show the change>"] [--ask-again]';
 
 function arg(argv, name) { const a = argv.find((x) => x.startsWith(`--${name}=`)); return a ? a.slice(name.length + 3) : ''; }
 
@@ -50,6 +50,11 @@ async function request(argv) {
   // BRO-7501: the held tip must have passed land-local-check, or the approved change can fail its land.
   let landCheckNote = '';
   const heldSha = va.git(['rev-parse', 'HEAD'], { cwd }); // the one commit checked, judged and pushed (a concurrent commit must not slip in)
+  // BRO-8462: a rebase (a conflict fixed next to the change, main moved) must not re-ask an owner who already said yes.
+  if (!argv.includes('--ask-again')) {
+    const carried = await carryOverApproval({ issueId, heldSha, cwd, dryRun });
+    if (carried !== null) return carried;
+  }
   {
     const lc = require('./lib/land-local-check-log.js').verdictForRef(cwd, heldSha);
     const gate = va.landCheckGate({ status: lc.status, sha: lc.sha, env: process.env, okReason: arg(argv, 'land-check-ok') });
@@ -93,7 +98,7 @@ async function request(argv) {
   process.on('exit', () => { try { fs.rmSync(tmp, { recursive: true, force: true }); } catch { /* best effort */ } });
   files.push({ abs: path.join(dir, 'verdict.json'), name: 'verdict.json' });
   // Screenshot URLs name the evidence COMMIT, not the branch: a branch can be force-pushed after the owner was emailed.
-  const ev = va.buildEvidenceCommit(files, cwd, `Visual evidence for ${issueId}`);
+  const ev = va.buildEvidenceCommit(files, cwd, `Visual evidence for ${issueId}\n\nHeld tip: ${heldSha}`, heldSha);
   const evidence = thumbs.map((t) => ({ label: va.labelFor(t.full), url: va.rawUrl(ev, t.name) }));
   const block = va.buildBlock({ what, patch, verdict: verdict.contentHash, hold, evidence, summary: arg(argv, 'summary') });
 
@@ -126,6 +131,38 @@ async function request(argv) {
   return 0;
 }
 
+/**
+ * BRO-8462: the card already holds an unshipped owner approval and HEAD changes exactly the lines the approved
+ * tip (the evidence commit's parent) changed, in every file. Then only the hold is updated: the lander checks the
+ * approved tip against the signed patch itself before it ships. Returns an exit code, or null to ask as usual.
+ */
+async function carryOverApproval({ issueId, heldSha, cwd, dryRun }) {
+  const linear = require('./lib/linear-client.js');
+  const issue = await linear.getIssue(issueId);
+  if (!issue || !link.parseVisualApproval(issue.description)) return null;
+  const comments = (await linear.listIssueComments([issueId])).get(issueId) || [];
+  const state = va.classifyStatus(issue.description, comments);
+  // approved: tapped, not shipped yet. void here can also be the lander's "held branch no longer matches" after an approval.
+  const approvedOnCard = comments.some((c) => link.unescapeMarkdown(c.body || '').includes(va.MARK.approved));
+  if (!(state === 'approved' || (state === 'void' && approvedOnCard))) return null;
+  const sha = va.evidenceSha(issue.description);
+  if (!sha) return null;
+  let tip;
+  try {
+    try { va.git(['fetch', '--quiet', 'origin', `+refs/heads/${va.evidenceBranch(issueId)}:refs/remotes/origin/${va.evidenceBranch(issueId)}`], { cwd }); } catch { /* sha may still be local */ }
+    tip = va.git(['rev-parse', '--verify', '--quiet', `${sha}^1`], { cwd });
+  } catch { return null; } // an older ask's evidence commit has no parent: ask as usual
+  if (!/^[0-9a-f]{40}$/.test(tip)) return null;
+  const same = va.changeSignature('origin/main', tip, cwd) === va.changeSignature('origin/main', heldSha, cwd);
+  if (!same) { console.error(`[visual-approval] ${issueId} has an owner approval, but this change edits different lines than the approved one (${tip.slice(0, 10)}); asking again.`); return null; }
+  const hold = va.holdBranch(issueId);
+  if (dryRun) { console.log(`[dry-run] the owner's approval carries over: would push HEAD -> ${hold} only`); return 0; }
+  va.git(['push', '--force', 'origin', `${heldSha}:refs/heads/${hold}`], { cwd });
+  await linear.createComment(issue.id, `Rebased the held change (${heldSha.slice(0, 10)}). It changes exactly the lines the owner approved (only the surrounding code moved), so the approval carries over and the owner is not asked again. The lander re-checks this before it ships.`);
+  console.log(`[visual-approval] ${issueId}: the owner's approval carries over; pushed the rebased change to ${hold}. Do not ask again. Stop work on this card; the lander ships it.`);
+  return 0;
+}
+
 /** Where the owner's answer stands, read from the card itself (the Owner decision comment and the lander's markers). Never infer "still waiting" from memory. */
 async function status(argv) {
   const issueId = arg(argv, 'issue');
@@ -144,7 +181,8 @@ const STATUS_TEXT = {
   approved: 'the owner tapped Approve; the lander ships it on its next run',
   landed: 'pushed to a land ref; follow the Land run and prod',
   rejected: 'the owner said no; read their note on the card and rework',
-  void: 'approved, but the held branch no longer matches; restore it or ask again',
+  void: 'closed without an approval: the change shipped another way, or an approved hold no longer matches (re-run request: a rebase that kept the same lines carries the approval over)',
+  answered: 'the owner answered in their own words; read their note on the card',
   unverified: 'approved, but the evidence check did not pass; ask again',
   expired: 'nobody answered in 14 days; redo and ask again',
   none: 'no visual approval request on this card',
