@@ -1,0 +1,72 @@
+{
+  "issueNumber": "bro-8440",
+  "planId": "b2845526-4eef-47f1-adac-e7e99af7e4e6",
+  "status": "pending",
+  "createdAt": "2026-11-28T16:53:18.622Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude 3 live other-production reviews the url-place tier's carve-outs let through (Birmingham Rep Peter Pan x2 on Polka Theatre's Peter Pan; touring Operation Mincemeat on the West End listing)",
+    "steps": [
+      "peter-pan-off-west-end-2026/thestage--matt-barton.json: wrongProduction",
+      "peter-pan-off-west-end-2026/thestage--matt-barton.json: wrongProductionReason",
+      "peter-pan-off-west-end-2026/the-recs--the-recs-wt.json: wrongProduction",
+      "peter-pan-off-west-end-2026/the-recs--the-recs-wt.json: wrongProductionReason",
+      "operation-mincemeat-west-end-2024/the-recs--alexandra-taylor.json: wrongProduction",
+      "operation-mincemeat-west-end-2024/the-recs--alexandra-taylor.json: wrongProductionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-off-west-end-2026/thestage--matt-barton.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "peter-pan-off-west-end-2026/thestage--matt-barton.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-off-west-end-2026/thestage--matt-barton.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Birmingham Rep Peter Pan (url peter-pan-review-birmingham-rep); The Stage reviews Polka separately in thestage--oliver-jones",
+        "description": "peter-pan-off-west-end-2026/thestage--matt-barton.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-off-west-end-2026/the-recs--the-recs-wt.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "peter-pan-off-west-end-2026/the-recs--the-recs-wt.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-off-west-end-2026/the-recs--the-recs-wt.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Birmingham Rep Peter Pan; same url as the-recs--unknown, already excluded",
+        "description": "peter-pan-off-west-end-2026/the-recs--the-recs-wt.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-west-end-2024/the-recs--alexandra-taylor.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "operation-mincemeat-west-end-2024/the-recs--alexandra-taylor.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-west-end-2024/the-recs--alexandra-taylor.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "UK touring production (url operation-mincemeat-touring); belongs to operation-mincemeat-tour-2026",
+        "description": "operation-mincemeat-west-end-2024/the-recs--alexandra-taylor.json: wrongProductionReason"
+      }
+    ]
+  }
+}
