@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8433-2",
   "planId": "e0a8de56-caf7-4c23-b88b-9f292fc135b2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T15:44:24.923Z",
   "submitter": {
     "name": null,
@@ -56,5 +56,39 @@
         "description": "BRO-8433: fetch failed (scraper breaker), textless stub; re-ingest Richard Cotter's review"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T16:51:44.440Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted my-fair-lady-regional-2026/age--thuy-on.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fiddler-on-the-roof-melbourne-regional-2026/age--thuy-on.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-room-with-a-view-regional-2026/age--giselle-au-nhien-nguyen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-room-with-a-view-regional-2026/limelight-magazine-au--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted whispering-jack-regional-2026/limelight-magazine-au--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-beautiful-noise-regional-2026/australian-stage--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
