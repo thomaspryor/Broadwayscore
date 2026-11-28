@@ -342,3 +342,26 @@ test('a model finding a detector merged into keeps fuzzy dedupe, so a reworded r
   const plan = planFilings({ findings: [reworded], existing: okBoard([prior]) });
   assert.equal(plan.toFile.length, 0);
 });
+
+// BRO-8448 second-opinion: every measured template in ux-walkthrough.mjs must dedupe across runs when only the
+// measured numbers move. Each row is [name, summary(n)] using the real templates (probes ~628-656, iOS quirks ~856/~967).
+const DRIFT_TEMPLATES = [
+  ['font floor', (n) => `Sub-16px text input on mobile: <input> "Search" renders at ${12 + n}px font-size on home — iOS Safari auto-zooms the viewport on focus below 16px`],
+  ['deformed toggle', (n) => `Deformed toggle on home (iphone-15): "Ranked" renders ${40 + n}x${30 + n} (aspect ${(1.3 + n / 10).toFixed(2)}) — outside the expected pill-toggle ratio, likely squashed by a tap-minimum`],
+  ['overflow', (n) => `Horizontal overflow on home (iphone-15): page scrollWidth exceeds clientWidth by ${3 + n}px`],
+  ['autofocus (short label)', (n) => `iOS quirk: autofocused <input> "Q" in the sign-in modal (iphone-15) sits outside the viewport (top=${700 + n}, bottom=${744 + n})`],
+  ['autofocus (long label, cut at 120)', (n) => `iOS quirk: autofocused <input> "List name" in the Create List sheet (iphone-15) sits outside the viewport (top=${700 + n}, bottom=${744 + n}) — iOS Safari does not auto-scroll`],
+];
+for (const [name, summary] of DRIFT_TEMPLATES) {
+  test(`drifting measurement does not refile: ${name}`, () => {
+    const mk = (n) => model(summary(n), { deterministic: true });
+    const plan = planFilings({ findings: [mk(1)], existing: okBoard([titleFor(mk(0))]) });
+    assert.equal(plan.toFile.length, 0, `refiled: ${plan.toFile.map((t) => t.title).join(' | ')}`);
+    assert.equal(plan.skippedDuplicate.length, 1);
+  });
+}
+test('a different label or state is still a new finding even with the same measurements', () => {
+  const o = (state) => model(`Horizontal overflow on ${state} (iphone-15): page scrollWidth exceeds clientWidth by 3px`, { deterministic: true });
+  const plan = planFilings({ findings: [o('lists_tab')], existing: okBoard([titleFor(o('home'))]) });
+  assert.equal(plan.toFile.length, 1);
+});
