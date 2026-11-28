@@ -24,6 +24,8 @@
 
 // Mirror of the MIN_REVIEWS_FOR_SCORE* / T3_ONLY_EXTRA_REVIEWS constants in
 // src/config/score-buckets.ts.
+const { isBroadwayCategory } = require('./venue-classification');
+
 const MIN_REVIEWS_BY_CATEGORY = {
   broadway: 5,
   'off-broadway': 3,
@@ -536,7 +538,7 @@ function openingDateFixForOpenShow(show, items, isDateReached, { broadcastSafeBe
   const inBounds = (d) => !(show.closingDate && /^\d{4}-\d{2}-\d{2}$/.test(show.closingDate) && d > show.closingDate);
   // Opening-night broadcasts select open West End / Broadway shows by recent openingDate (lookback 2 days):
   // never move a date into that window for those markets, so this fix cannot make a show eligible.
-  const broadcastBlocked = (d) => broadcastSafeBefore && (show.category === 'west-end' || show.category === 'broadway') && d >= broadcastSafeBefore;
+  const broadcastBlocked = (d) => broadcastSafeBefore && (show.category === 'west-end' || isBroadwayCategory(show)) && d >= broadcastSafeBefore;
   const run = runDayOutlets(show, items);
   const stored = show.openingDate;
   if (!stored) {
