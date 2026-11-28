@@ -548,5 +548,28 @@ test('BRO-8446: discovery outlet items skip flagged and pre-previews reviews', (
     { url: 'https://b.com/1', publishDate: '2026-12-02', wrongProduction: true },
     { url: 'https://c.com/1', outletId: 'c', publishDate: '2026-11-01' },
   ], show);
-  assert.deepEqual(out, [{ date: '2026-12-02', outlet: 'a' }]);
+  assert.deepEqual(out, [{ date: '2026-12-02', outlet: 'a.com' }]);
+});
+
+test('BRO-8446: the same review under different outlet keys in two layers is one outlet, flagged reviews never count', () => {
+  const m = countByShow([
+    { showId: 'z', outletId: 'nyt', url: 'https://www.nytimes.com/a', publishDate: '2026-11-10' },
+    { showId: 'z', outletId: 'wrong', url: 'https://x.com/a', publishDate: '2026-11-10', wrongProduction: true },
+  ]);
+  assert.deepEqual(m.z.dayOutlets, [{ date: '2026-11-10', outlet: 'nytimes.com' }]);
+  const disc = wave.dayOutletsFromDiscoveredReviews([{ url: 'https://nytimes.com/a', outlet: 'New York Times', publishDate: '2026-11-10' }], { previewsStartDate: '2026-11-01' });
+  const merged = [...m.z.dayOutlets, ...disc];
+  const show = { status: 'open', openingDate: null, previewsStartDate: '2026-11-01' };
+  assert.equal(wave.openingDateFixForOpenShow(show, merged, on('2026-11-28')), null); // one review twice is not a wave
+});
+
+test('BRO-8446: fix needs previewsStartDate, respects closingDate, and stays out of the broadcast window', () => {
+  const w = items(['2026-11-20', 'a'], ['2026-11-20', 'b']);
+  const reached = on('2026-11-28');
+  assert.equal(wave.openingDateFixForOpenShow({ status: 'closed', openingDate: null }, w, reached), null);
+  assert.equal(wave.openingDateFixForOpenShow({ status: 'closed', openingDate: null, previewsStartDate: '2026-11-01', closingDate: '2026-11-15' }, w, reached), null);
+  const we = { status: 'open', openingDate: null, previewsStartDate: '2026-11-01', category: 'west-end' };
+  assert.equal(wave.openingDateFixForOpenShow(we, w, reached, { broadcastSafeBefore: '2026-11-25' }).date, '2026-11-20');
+  assert.equal(wave.openingDateFixForOpenShow(we, w, reached, { broadcastSafeBefore: '2026-11-19' }), null);
+  assert.equal(wave.openingDateFixForOpenShow({ ...we, category: 'off-west-end' }, w, reached, { broadcastSafeBefore: '2026-11-19' }).date, '2026-11-20');
 });

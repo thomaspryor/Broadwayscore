@@ -54,7 +54,12 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
  * pre-open shows per run — so the directory read is not a hot path. Returns []
  * when the show has no directory, which simply raises no discovery signal.
  */
+const discoveredCache = new Map();
 function loadDiscoveredReviews(showId) {
+  if (!discoveredCache.has(showId)) discoveredCache.set(showId, readDiscoveredReviews(showId));
+  return discoveredCache.get(showId);
+}
+function readDiscoveredReviews(showId) {
   const dir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(dir)) return [];
   const out = [];
@@ -1017,7 +1022,9 @@ async function updateShowStatuses() {
         && (!show.openingDate || REVIEW_DERIVED_SOURCES.has(show.openingDateSource))) {
       const entry = reviewCounts[show.id];
       const items = [...((entry && entry.dayOutlets) || []), ...dayOutletsFromDiscoveredReviews(loadDiscoveredReviews(show.id), show)];
-      const fix = openingDateFixForOpenShow(show, items, isDateReached);
+      // Broadcast lookback is 2 days; keep a day of margin (see openingDateFixForOpenShow).
+      const safeBefore = new Date(Date.now() - 3 * 86400000).toISOString().slice(0, 10);
+      const fix = openingDateFixForOpenShow(show, items, isDateReached, { broadcastSafeBefore: safeBefore });
       if (fix) {
         changes.openingDate = { from: show.openingDate || 'null', to: fix.date };
         changes.note = `${fix.kind === 'fill' ? 'press wave fills missing' : 'press wave of ' + fix.outlets + ' outlets contradicts review-derived'} openingDate (${fix.outlets} outlets on ${fix.date})`;

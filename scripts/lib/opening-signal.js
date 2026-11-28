@@ -141,7 +141,7 @@ function countByShow(reviews, getTier) {
     if (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d)) {
       map[id].dates.push(d.slice(0, 10));
       // BRO-8446: who published on that day, so a press wave (2+ outlets) can be told from one review.
-      const outlet = outletKey(r);
+      const outlet = isFlaggedNonCoverage(r) ? null : waveKey(r);
       if (outlet) map[id].dayOutlets.push({ date: d.slice(0, 10), outlet });
     }
   }
@@ -154,6 +154,24 @@ function outletKey(review) {
   let host = null;
   try { host = new URL(review.url).hostname.replace(/^www\./, ''); } catch { /* no host */ }
   return review.outletId || review.outlet || host || null;
+}
+
+/**
+ * Outlet key for press-wave counting. The URL host wins so the same review keeps one key in
+ * reviews.json (outletId "nyt") and the discovery layer (outlet "New York Times"); falls back to
+ * outletId/outlet only when there is no URL.
+ */
+function waveKey(review) {
+  if (!review || typeof review !== 'object') return null;
+  try { return new URL(review.url).hostname.replace(/^www\./, '').toLowerCase(); } catch { /* no usable url */ }
+  const k = review.outletId || review.outlet;
+  return k ? String(k).toLowerCase() : null;
+}
+
+/** Flags that mean the record is not press coverage of this run (reviews.json is not guaranteed scrubbed). */
+function isFlaggedNonCoverage(review) {
+  return Boolean(review && (review.wrongProduction || review.wrongShow || review.wrongUrl || review.isNonReview
+    || review.isNotReview || review.isRoundupArticle || review.rejectionReason || review.duplicateOf || review.fabricatedEntry));
 }
 
 // BRO-8446: one review is not press night (a preview piece or a wrong-production review stamped
@@ -406,7 +424,7 @@ function dayOutletsFromDiscoveredReviews(files, show) {
     if (typeof d !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(d)) continue;
     const day = d.slice(0, 10);
     if (show && show.previewsStartDate && day < show.previewsStartDate) continue;
-    const outlet = outletKey(review);
+    const outlet = waveKey(review);
     if (outlet) out.push({ date: day, outlet });
   }
   return out;
@@ -510,19 +528,25 @@ function openingDateCorrectionFromCluster(show, files, isDateReached) {
  * @param items [{date, outlet}] from clean reviews of THIS show
  * @returns {{date, kind: 'fill'|'correct', outlets}|null}
  */
-function openingDateFixForOpenShow(show, items, isDateReached) {
+function openingDateFixForOpenShow(show, items, isDateReached, { broadcastSafeBefore = null } = {}) {
   if (!show || (show.status !== 'open' && show.status !== 'closed')) return null;
   if (show.humanCorrectedOpeningDate) return null;
+  // Without previews start a prior production's reviews cannot be told apart from this run's.
+  if (!show.previewsStartDate) return null;
+  const inBounds = (d) => !(show.closingDate && /^\d{4}-\d{2}-\d{2}$/.test(show.closingDate) && d > show.closingDate);
+  // Opening-night broadcasts select open West End / Broadway shows by recent openingDate (lookback 2 days):
+  // never move a date into that window for those markets, so this fix cannot make a show eligible.
+  const broadcastBlocked = (d) => broadcastSafeBefore && (show.category === 'west-end' || show.category === 'broadway') && d >= broadcastSafeBefore;
   const run = runDayOutlets(show, items);
   const stored = show.openingDate;
   if (!stored) {
     const date = pressWaveNight(run, PRESS_WAVE_MIN_OUTLETS);
-    if (!date || !isDateReached(date)) return null;
+    if (!date || !isDateReached(date) || !inBounds(date) || broadcastBlocked(date)) return null;
     return { date, kind: 'fill', outlets: new Set(run.filter((i) => i.date === date).map((i) => i.outlet)).size };
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(stored) || !REVIEW_DERIVED_SOURCES.has(show.openingDateSource)) return null;
   const date = pressWaveNight(run, CONTRADICT_MIN_OUTLETS);
-  if (!date || date === stored || !isDateReached(date)) return null;
+  if (!date || date === stored || !isDateReached(date) || !inBounds(date) || broadcastBlocked(date)) return null;
   const gap = Math.abs(Date.parse(date + 'T00:00:00Z') - Date.parse(stored + 'T00:00:00Z')) / 86400000;
   if (!(gap <= CONTRADICT_MAX_DAYS)) return null;
   const storedOutlets = new Set(run.filter((i) => i.date === stored).map((i) => i.outlet)).size;
@@ -623,6 +647,8 @@ module.exports = {
   CLUSTER_MIN_OUTLETS,
   chooseOpeningDateBackfill,
   outletKey,
+  waveKey,
+  isFlaggedNonCoverage,
   pressWaveNight,
   runDayOutlets,
   dayOutletsFromDiscoveredReviews,
