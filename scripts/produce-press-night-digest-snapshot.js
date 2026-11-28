@@ -28,6 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const D = require('./lib/press-night-digest');
 const { readShowNumbers } = require('./lib/broadcast-refresh');
+const { evaluateBroadcastReadiness } = require('./lib/broadcast-readiness');
 const { hasHelpFlag } = require('./lib/cli-help');
 
 const REPO = process.env.PRESS_NIGHT_ROOT || path.join(__dirname, '..');
@@ -63,7 +64,13 @@ function loadInputs(night) {
   const sentShows = (readJson(path.join(REPO, 'data', 'opening-night-sent.json'), {}) || {}).shows || {};
   const redditDrafts = (readJson(path.join(REPO, 'data', 'audit', 'reddit-post-drafts.json'), {}) || {}).drafts || {};
   const showsDir = path.join(REPO, 'public', 'data', 'shows');
-  return { records, shows, sentShows, redditDrafts, readNumbers: (id) => readShowNumbers(id, showsDir) };
+  // The draft job's own readiness check (scored count + Broadway aggregator), read lazily: reviews.json is large.
+  let allReviews = null;
+  const readReadiness = (id, market) => {
+    if (!allReviews) { const r = readJson(path.join(REPO, 'data', 'reviews.json'), []); allReviews = Array.isArray(r) ? r : (r.reviews || []); }
+    return evaluateBroadcastReadiness(allReviews.filter((x) => x.showId === id), market);
+  };
+  return { records, shows, sentShows, redditDrafts, readNumbers: (id) => readShowNumbers(id, showsDir), readReadiness };
 }
 
 /** Snapshot shape for the renderer: the lines plus counts. Names only, no ids (the owner reads it). */

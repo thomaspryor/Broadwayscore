@@ -157,9 +157,11 @@ function outletName(i) {
  * @param {object} p.sentShows       opening-night-sent.json `shows`
  * @param {object|null} p.redditDraft reddit-post-drafts.json drafts[showId]
  * @param {function} p.readNumbers   showId -> {score, reviewCount} as the site shows them, or null
+ * @param {function} [p.readReadiness] (showId, market) -> {ready} from broadcast-readiness.js on the show's scored reviews
+ *   (West End 12 / Broadway 15 AND an aggregator); absent, the review count alone stands in for it
  * @param {number} p.nowMs
  */
-function gradeEmails({ show, sentShows = {}, redditDraft = null, readNumbers, nowMs }) {
+function gradeEmails({ show, sentShows = {}, redditDraft = null, readNumbers, readReadiness = null, nowMs }) {
   const out = [];
   const market = show.category || show.market;
   const id = show.id;
@@ -203,7 +205,9 @@ function gradeEmails({ show, sentShows = {}, redditDraft = null, readNumbers, no
       // show at 10 reviews a miss while the workflow rightly held it (BRO-8329).
       const floor = market === 'west-end' ? WEST_END_MIN : BROADWAY_MIN;
       const have = (live && live.reviewCount) || 0;
-      if (have < floor) out.push({ kind: 'broadcast', status: 'pending', text: `no opening-night email draft yet (the site has ${have} of the ${floor} reviews a draft needs)` });
+      // Broadway also needs an aggregator row (broadcast-readiness.js), which a bare count cannot see.
+      const ready = readReadiness ? readReadiness(id, market) : null;
+      if (ready ? ready.ready !== true : have < floor) out.push({ kind: 'broadcast', status: 'pending', text: `no opening-night email draft yet (${ready && have >= floor ? `the workflow's readiness check says: ${ready.reason}` : `the site has ${have} of the ${floor} reviews a draft needs`})` });
       else out.push({ kind: 'broadcast', status: 'miss', text: 'no opening-night email draft', files });
     }
   }
@@ -324,7 +328,7 @@ function buildShowLine({ title, reviews, emails = [] }) {
  * @param {{showId, rec}[]} p.records
  * @param {object[]} p.shows          shows.json rows
  */
-function buildSection({ night, records, shows, sentShows = {}, redditDrafts = {}, readNumbers, nowMs }) {
+function buildSection({ night, records, shows, sentShows = {}, redditDrafts = {}, readNumbers, readReadiness = null, nowMs }) {
   const byId = new Map(shows.map((s) => [s.id, s]));
   const seen = new Set();
   const entries = [];
@@ -333,7 +337,7 @@ function buildSection({ night, records, shows, sentShows = {}, redditDrafts = {}
     seen.add(showId);
     const show = byId.get(showId) || { id: showId, title: showId, category: rec && rec.market, openingDate: night };
     const reviews = gradeReviews(rec, nowMs);
-    const emails = gradeEmails({ show, sentShows, redditDraft: redditDrafts[showId] || null, readNumbers, nowMs });
+    const emails = gradeEmails({ show, sentShows, redditDraft: redditDrafts[showId] || null, readNumbers, readReadiness, nowMs });
     const { verdict, line, misses } = buildShowLine({ title: show.title || showId, reviews, emails });
     entries.push({ showId, night, title: show.title || showId, verdict, line, misses });
   };

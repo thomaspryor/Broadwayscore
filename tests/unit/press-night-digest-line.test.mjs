@@ -120,6 +120,16 @@ test('BRO-8329: the draft is owed at the workflow readiness gate (West End 12, B
   assert.equal(grade('broadway', 15).status, 'miss');
 });
 
+test('BRO-8329: a Broadway show with enough reviews but no aggregator is held by the workflow, so no draft is owed yet', () => {
+  const show = { id: 'b-2026', title: 'B', category: 'broadway', openingDate: '2026-11-24' };
+  const grade = (readiness) => D.gradeEmails({ show, sentShows: {}, redditDraft: null, readNumbers: () => ({ score: 70, reviewCount: 20 }), readReadiness: readiness, nowMs: Date.parse('2026-11-25T16:00:00Z') }).filter((x) => x.kind === 'broadcast')[0];
+  const held = grade(() => ({ ready: false, reason: '20 scored reviews but no aggregator yet' }));
+  assert.equal(held.status, 'pending');
+  assert.match(held.text, /no aggregator yet/);
+  assert.equal(grade(() => ({ ready: true, reason: 'ok' })).status, 'miss');
+  assert.equal(grade(null).status, 'miss'); // no readiness reader: the count stands in for it
+});
+
 test('emails: unreadable site numbers are "could not check", never "ready"; a stale draft is not a miss before 10am', () => {
   const r = D.gradeEmails({ show: AFGM_SHOW, sentShows: sentWithDraft(), redditDraft: redditEmailed(60, 23)['a-few-good-men-2026'], readNumbers: () => null, nowMs: AFTER_DEADLINE });
   assert.deepEqual(r.map((e) => e.status), ['pending', 'pending']);
