@@ -1135,7 +1135,7 @@ export function liveDataLaneCheck({ root, base = 'origin/main', env = process.en
     const nv = r.status === 0 ? String(r.stdout || '').match(/NOT VERIFIED locally(?: \(reason: (.*)\); land\.yml)?/) : null;
     if (nv) {
       const why = (nv[1] || 'a trace run timed out').slice(0, 160);
-      return { status: 'skip', reason: `trace incomplete: ${why}`, warning: `live-data-lane preflight: not verified (${why}), so this push was not checked for undeclared live-data tests; land.yml will judge it. Re-run: node scripts/live-data-lane.js --verify-changed --refuse-undeclared --base=${base}` };
+      return { status: 'skip', reason: `not verified: ${why}`, warning: `live-data-lane preflight: not verified (${why}), so this push was not checked for undeclared live-data tests; land.yml will judge it. Re-run: node scripts/live-data-lane.js --verify-changed --refuse-undeclared --base=${base}` };
     }
     if (r.status === 0) return { status: 'clean' };
     if (r.status !== 1) return { status: 'skip', reason: `live-data-lane gave no verdict (exit ${r.status ?? r.signal ?? 'n/a'})` };
@@ -1157,7 +1157,7 @@ export function liveDataLaneCheck({ root, base = 'origin/main', env = process.en
  * BRO-8293: a skipped live-data-lane check is silent, so a push that skipped it (dirty tree, pushed ref not
  * HEAD, budget, no verdict) reaches land.yml unchecked and costs hours when land.yml refuses it. Say so
  * at push time, with the reason and the manual command. Warning only, never a block. 'off' is a
- * deliberate disable and 'already refused' has a better answer, both stay silent; 'trace incomplete'
+ * deliberate disable and 'already refused' has a better answer, both stay silent; 'not verified'
  * already carries its own warning.
  */
 export function liveDataLaneSkipWarning(ld, base = 'origin/main') {
