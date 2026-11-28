@@ -187,3 +187,19 @@ test('url-place-verified release: holds while both witnesses agree, lifts if the
   assert.equal(shouldReleaseOtherProductionUrl(flipped, POLKA_PAN), true);
   assert.equal(shouldReleaseOtherProductionUrl({ ...flipped, wrongProductionManualClear: true }, POLKA_PAN), false);
 });
+
+// BRO-8449 (c): cast overlap proves the show, not the production. A tour reuses the home cast
+// (the Operation Mincemeat tour on the-recs), so a touring url must not take the cast exemption.
+test('url-place-verified (BRO-8449): a body naming the cast does not exempt a touring url, but still exempts a named city', () => {
+  const cast = ['Ava Pollard', 'Tomas Reyne', 'Judith Okafor', 'Liam Castell'];
+  const mince = { id: 'm', title: 'Operation Mincemeat', category: 'west-end', venue: 'Fortune Theatre', previewsStartDate: '2026-11-01', cast: cast.map((name) => ({ name })) };
+  const body = `A joyful night. ${cast.join(' and ')} lead the company with real wit.`;
+  const cv = { wrongProduction: true, confidence: 'high' };
+  const at = (url) => detectOtherProductionUrl({ outletId: 'x', url, publishDate: '2026-11-25', fullText: body, contentVerification: cv }, mince);
+  assert.equal(at('https://example.co.uk/operation-mincemeat-touring/')?.signal, 'url-place-verified');
+  assert.equal(at('https://example.co.uk/operation-mincemeat-uk-tour-review/'), null, 'tour word mid-slug is no place');
+  assert.equal(at('https://example.co.uk/reviews/operation-mincemeat-review-birmingham-rep/'), null, 'a city staging with the home cast stays exempt (transfers share the cast)');
+  // A declared tourLegs window still wins over the url.
+  const legged = { ...mince, tourLegs: [{ startDate: '2026-11-20', endDate: '2026-12-20', venue: 'UK tour' }] };
+  assert.equal(detectOtherProductionUrl({ outletId: 'x', url: 'https://example.co.uk/operation-mincemeat-touring/', publishDate: '2026-11-25', fullText: body, contentVerification: cv }, legged), null);
+});

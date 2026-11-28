@@ -76,7 +76,10 @@ jobs:
           # fetch (a cookie banner, a teaser) stayed on real reviews for months.
           SINCE=$(date -u -d '365 days ago' +%F)
           node scripts/reverify-stale-cv-promoted.js --cv-promoted-nonreview --opened-since=$SINCE --limit=$LIMIT "${EXTRA[@]}" 2>&1 | tee /tmp/reverify-nonreview.log
-          CLEARED=$(cat /tmp/reverify-stale.log /tmp/reverify-nulled.log /tmp/reverify-nonreview.log | grep -c '>>> CLEARED' || true)
+          # BRO-8449: included reviews whose url names another place (tour or regional) with no fresh verdict.
+          # Small population, so a fixed limit of 100 covers it; held rows stay listed by the daily audit.
+          node scripts/reverify-stale-cv-promoted.js --url-place --limit=100 "${EXTRA[@]}" 2>&1 | tee /tmp/reverify-urlplace.log
+          CLEARED=$(cat /tmp/reverify-stale.log /tmp/reverify-nulled.log /tmp/reverify-nonreview.log /tmp/reverify-urlplace.log | grep -c '>>> CLEARED' || true)
           echo "cleared=$CLEARED" >> "$GITHUB_OUTPUT"
 
       - name: Push to private repo
@@ -104,6 +107,7 @@ jobs:
             echo '### stale-hash'; echo '```'; tail -25 /tmp/reverify-stale.log 2>/dev/null; echo '```'
             echo '### nulled'; echo '```'; tail -25 /tmp/reverify-nulled.log 2>/dev/null; echo '```'
             echo '### CV-promoted not-a-review (last 365 days)'; echo '```'; tail -25 /tmp/reverify-nonreview.log 2>/dev/null; echo '```'
+            echo '### url-place (included reviews, url names another place)'; echo '```'; tail -25 /tmp/reverify-urlplace.log 2>/dev/null; echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Notify on failure
