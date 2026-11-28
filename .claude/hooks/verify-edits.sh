@@ -427,14 +427,15 @@ def _session_has_card():
 # BRO-8239: a turn that only reads, get_sessions or comments on a card is not new work, so earlier work (blocked or NO-CARD'd
 # at its own Stop) does not re-block it once the session names a card (first prompt, own earlier reply, a linear-* command).
 _LIGHT_TOOLS = ('Read', 'Grep', 'Glob', 'ToolSearch', 'TaskGet', 'TaskList', 'TaskOutput')
-_LIGHT_SEG_RE = re.compile(r'\s*(?:(?:cat|ls|grep|rg|head|tail|wc|jq|date|echo)\b|git\s+(?:status|log|diff|show|fetch|ls-remote|rev-parse)\b|gh\s+(?:run|pr)\s+(?:view|list)\b'
-                           r'|node\s+(?:\S*/)?scripts/(?:linear-brain\.js\s+(?:comment|get|show|list)\b|check-prod-deploy\.js|board-report\.js))')
+_LIGHT_SEG_RE = re.compile(r'\s*(?:(?:cat|ls|grep|rg|head|tail|wc|jq|date|echo)(?=\s|$)|git\s+(?:status|log|diff|show|ls-remote|rev-parse)(?=\s|$)|gh\s+(?:run|pr)\s+(?:view|list)(?=\s|$)'
+                           r'|node\s+(?:\S*/)?scripts/(?:linear-brain\.js\s+(?:comment|get|show|list)(?=\s|$)|check-prod-deploy\.js(?=\s|$)|board-report\.js(?=\s|$)))')
+_LIGHT_BAD_FLAG_RE = re.compile(r'--(?:output|pre|ext-diff|textconv|exec|open-files-in-pager)\b|\s-O\S')
 def _light_tool(name, inp):
     cmd = (inp.get('command') or '') if isinstance(inp, dict) else ''
     if name != 'Bash':
         return name in _LIGHT_TOOLS or str(name).endswith('__get_session')
     cmd = re.sub(r'\s*(?:2>&1|[12]?>\s*/dev/null)', '', _strip_heredocs(cmd))
-    return not re.search(r'[`>]|\$\(|<\(', cmd) and all(_LIGHT_SEG_RE.match(sg) for sg in re.split(r'[&|;\n]+', cmd) if sg.strip())
+    return not re.search(r'[`>]|\$\(|<\(', cmd) and not _LIGHT_BAD_FLAG_RE.search(cmd) and all(_LIGHT_SEG_RE.match(sg) for sg in re.split(r'[&|;\n]+', cmd) if sg.strip())
 def _nocard_light_turn():
     ts = _turn_starts[-1] if _turn_starts else 0
     if not all(_light_tool(p[0], p[1]) for k, p in events[ts:] if k == 'tool'):

@@ -165,16 +165,23 @@ function liveWatcher(id, { dir = watchDir(), now = Date.now() } = {}) {
 function claimWatch(id, { dir = watchDir(), pid = process.pid, until, now = Date.now() } = {}) {
   const fs = require('fs');
   const f = watchFile(id, dir);
-  fs.mkdirSync(dir, { recursive: true });
   const body = JSON.stringify({ session: id, pid, until: new Date(toMs(until)).toISOString() });
-  for (let i = 0; i < 2; i++) {
-    try { fs.writeFileSync(f, body, { flag: 'wx' }); return { ok: true }; } catch (e) { if (e.code !== 'EEXIST') throw e; }
+  const tmp = f + '.' + pid + '.' + Date.now() + '.tmp';
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(tmp, body);
+  } catch { return { ok: true, unregistered: true }; } // registry unusable: fail open, the plain timer still runs
+  try {
+    for (let i = 0; i < 3; i++) {
+      // link() is atomic and exclusive, and the file is complete the moment it exists (no empty-file window).
+      try { fs.linkSync(tmp, f); return { ok: true }; } catch (e) { if (e.code !== 'EEXIST') return { ok: true, unregistered: true }; }
+      const live = liveWatcher(id, { dir, now });
+      if (live) return { ok: false, live };
+      if (!liveWatcher(id, { dir, now })) { try { fs.unlinkSync(f); } catch { /* raced: retry the exclusive link */ } }
+    }
     const live = liveWatcher(id, { dir, now });
-    if (live) return { ok: false, live };
-    try { fs.unlinkSync(f); } catch { /* raced with another claimant: retry the exclusive create */ }
-  }
-  const live = liveWatcher(id, { dir, now });
-  return live ? { ok: false, live } : { ok: false, live: null };
+    return live ? { ok: false, live } : { ok: true, unregistered: true };
+  } finally { try { fs.unlinkSync(tmp); } catch { /* already gone */ } }
 }
 function releaseWatch(id, { dir = watchDir(), pid = process.pid } = {}) {
   const fs = require('fs');

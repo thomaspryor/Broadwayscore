@@ -434,3 +434,22 @@ test('BRO-8239: a second watch for a child with a live watcher exits at once ins
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test('BRO-8239: claim is complete-on-create, a torn/empty entry is taken over once, and an unusable registry fails open', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ciw-reg2-'));
+  try {
+    const { claimWatch, liveWatcher } = require('./child-idle-watch.js');
+    const until = Date.now() + 60000;
+    fs.writeFileSync(path.join(dir, 'session_03TORN.json'), ''); // a half-written file from a crashed claimant
+    assert.equal(claimWatch('session_03TORN', { dir, until }).ok, true, 'an unreadable entry is stale');
+    assert.equal(liveWatcher('session_03TORN', { dir }).pid, process.pid, 'the claim body is whole');
+    assert.equal(fs.readdirSync(dir).filter((n) => n.endsWith('.tmp')).length, 0, 'no temp file left behind');
+    // dir path is a file: mkdir fails, the watch must still run (unregistered), not throw.
+    const blocked = path.join(dir, 'session_03TORN.json');
+    const r = claimWatch('x', { dir: blocked, until });
+    assert.equal(r.ok, true);
+    assert.equal(r.unregistered, true);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
