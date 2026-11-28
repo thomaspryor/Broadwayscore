@@ -516,5 +516,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-28T21:44:56.774Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8462-void-not-reject",
+    "title": "Landing blocked: unit-tests-node red on land/bro-8462-void-not-reject",
+    "description": "land.yml did not land land/bro-8462-void-not-reject: the unit-tests-node gate went red at 9c1988af2f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46194379940",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8462-void-not-reject"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9c1988af2fe39b99fab648cbd29097adc4389299"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46194379940"
+      }
+    ],
+    "queuedAt": "2026-11-28T22:08:52.303Z"
   }
 ]
