@@ -2300,5 +2300,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-28T03:06:49.781Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:jack-and-the-beanstalk-off-west-end-2026",
+    "title": "Auto-remediation gave up on jack-and-the-beanstalk-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"jack-and-the-beanstalk-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T03:58:50.117Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:ebony-scrooge-off-west-end-2026",
+    "title": "Auto-remediation gave up on ebony-scrooge-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"ebony-scrooge-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T03:58:50.149Z"
   }
 ]
