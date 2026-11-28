@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8255",
   "planId": "2545099c-546f-40e3-939b-2f1e2355b48b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-27T23:36:53.958Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "the-jonathan-larson-project-off-west-end-2026/theatre-south-east--tara-whenray.json: criticName"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T00:56:15.929Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cock-regional-2024/third-coast-review--row-light.json criticName: \"Row Light.\" -> \"Row Light\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "red-2010/variety--marilyn-stasio.json criticName: \"Marilyn Stasio.\" -> \"Marilyn Stasio\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-jonathan-larson-project-off-west-end-2026/theatre-south-east--tara-whenray.json criticName: \"Tara Whenray.\" -> \"Tara Whenray\""
+    }
+  ],
+  "executedIn": "ci"
 }
