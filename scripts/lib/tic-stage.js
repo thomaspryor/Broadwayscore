@@ -241,12 +241,20 @@ function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chi
   return entry;
 }
 
+let tourSchedules = null;
+function defaultTourStops(id) {
+  if (!tourSchedules) {
+    try { tourSchedules = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'data', 'tour-schedules.json'), 'utf8')).tours || {}; } catch { tourSchedules = {}; }
+  }
+  return (tourSchedules[id] || {}).stops || [];
+}
+
 /**
  * Match a staged production against existing shows. Returns the existing show
  * (a duplicate) or null. Titles compare normalised; a tour or earlier run of
  * the same title only counts when its dates are within ~120 days of this one.
  */
-function findDuplicate(entry, existingShows, city = getCity('chicago')) {
+function findDuplicate(entry, existingShows, city = getCity('chicago'), tourStopsFor = defaultTourStops) {
   const nt = normTitle(entry.title);
   const open = Date.parse(entry.openingDate);
   // A row's stored metro slug wins (every US regional row has one); only a row without one is
@@ -261,7 +269,17 @@ function findDuplicate(entry, existingShows, city = getCity('chicago')) {
     const so = Date.parse(s.openingDate || '');
     if (s.category === 'regional' && sameMetro(s) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
     if (s.category === 'tour') {
-      if (Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 400 * 86400000) return s;
+      // BRO-8454: a same-title tour is only this production when it plays this metro near the
+      // staged dates. The old any-market 400-day match dropped real local runs (a tour that never
+      // visits the city). No schedule on file means no proof, so it is not a duplicate.
+      const win = 120 * 86400000;
+      const stops = (tourStopsFor && tourStopsFor(s.id)) || [];
+      const visits = Number.isFinite(open) && stops.some((st) => {
+        if (resolveMetro(`${st.venue || 'Theatre'}, ${st.city}`) !== city.metro) return false;
+        const a = Date.parse(st.start), b = Date.parse(st.end || st.start);
+        return Number.isFinite(a) && open >= a - win && open <= (Number.isFinite(b) ? b : a) + win;
+      });
+      if (visits) return s;
       continue;
     }
     // Any other row must be in this metro too (BRO-8450): a same-title West End, Off-Broadway,

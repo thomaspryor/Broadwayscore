@@ -228,3 +228,14 @@ test('annual-return listing set aside as before-since is re-evaluated when the l
   assert.equal(shows[0].status, 'open');
   assert.equal(shows[0].closingDate, '2026-12-24');
 });
+
+test('a same-title tour only counts as a duplicate when it plays this metro near the dates (BRO-8454)', () => {
+  const entry = { title: 'Paranormal Activity', openingDate: '2026-03-01', venue: 'Some Theatre, Chicago, IL' };
+  const tour = { id: 'pa-tour-2025', title: 'Paranormal Activity', category: 'tour', openingDate: '2025-10-01' };
+  const stops = (list) => () => list;
+  const chi = getCity('chicago');
+  assert.equal(stage.findDuplicate(entry, [tour], chi, stops([{ city: 'Denver, CO', venue: 'Buell', start: '2026-02-20', end: '2026-03-02' }])), null);
+  assert.equal(stage.findDuplicate(entry, [tour], chi, stops([])), null);
+  assert.equal(stage.findDuplicate(entry, [tour], chi, stops([{ city: 'Chicago, IL', venue: 'CIBC Theatre', start: '2026-02-20', end: '2026-03-02' }])), tour);
+  assert.equal(stage.findDuplicate(entry, [tour], chi, stops([{ city: 'Chicago, IL', venue: 'CIBC Theatre', start: '2025-01-01', end: '2025-01-08' }])), null);
+});
