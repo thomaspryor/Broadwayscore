@@ -2,6 +2,7 @@
  * National-tour city pages (BRO-4601 phase 5): slugs, grouping, season label.
  * Calls the real exported functions (CLAUDE.md rule 15).
  */
+// LIVE-DATA-LANE: the redirect guard reads data/city-hubs.json and vercel.json to prove every hub suburb slug redirects to its hub; it pins no individual fact.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { citySlug, cityStops, seasonLabel } from '../../src/lib/tour-cities';
