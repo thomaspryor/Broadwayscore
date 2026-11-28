@@ -1037,9 +1037,11 @@
         },
         {
           "at": "2026-11-27T19:11:27.008Z",
-          "outcome": "rejected",
-          "reason": "onMerge-aborted",
-          "url": "https://variety.com/2026/legit/news/tom-hiddleston-hayley-atwell-broadway-much-ado-about-nothing-1236667301/"
+          "outcome": "no_evidence",
+          "reason": "existing-file-not-this-production",
+          "url": "https://variety.com/2026/legit/news/tom-hiddleston-hayley-atwell-broadway-much-ado-about-nothing-1236667301/",
+          "collectorOutcome": "rejected",
+          "collectorReason": "onMerge-aborted"
         }
       ]
     },
@@ -1087,6 +1089,30 @@
       "attempts": [
         {
           "at": "2026-11-27T19:11:57.312Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "a-christmas-carol-west-end-2026::thestage": {
+      "showId": "a-christmas-carol-west-end-2026",
+      "outletId": "thestage",
+      "openingDate": "2026-11-24",
+      "firstSeenMissingAt": "2026-11-28T17:45:19.088Z",
+      "attempts": [
+        {
+          "at": "2026-11-28T17:45:31.016Z",
+          "outcome": "no_evidence"
+        }
+      ]
+    },
+    "a-christmas-carol-west-end-2026::timeout-london": {
+      "showId": "a-christmas-carol-west-end-2026",
+      "outletId": "timeout-london",
+      "openingDate": "2026-11-24",
+      "firstSeenMissingAt": "2026-11-28T17:45:19.088Z",
+      "attempts": [
+        {
+          "at": "2026-11-28T17:45:31.016Z",
           "outcome": "no_evidence"
         }
       ]
