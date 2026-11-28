@@ -17,11 +17,16 @@
 const path = require('path');
 
 // Script path (as written in a VERIFY line) -> loader of the module exporting
-// earliestPassForArgv. Static requires: the build-dependency scanner fails
-// closed on a computed load (build-script-dependencies.test.mjs).
+// earliestPassForArgv. Loaded only when a stamp names that probe, inside the
+// try below, so a workflow without npm ci (morning-digest-action.yml reaches
+// this through linear-session.js) degrades to "no window known" instead of
+// crashing. path.join(ROOT, 'scripts/...') keeps the target visible to the
+// build-dependency scanner (build-script-dependencies.js) without making it a
+// static edge of every linear-session.js caller (morning-digest-action.test.mjs).
+const ROOT = path.join(__dirname, '..', '..');
 const PROBES = {
-  'scripts/recurrence-detector.js': () => require('../recurrence-detector.js'),
-  'scripts/check-alert-condition-absent.js': () => require('../check-alert-condition-absent.js'),
+  'scripts/recurrence-detector.js': () => require(path.join(ROOT, 'scripts/recurrence-detector.js')),
+  'scripts/check-alert-condition-absent.js': () => require(path.join(ROOT, 'scripts/check-alert-condition-absent.js')),
 };
 
 /**

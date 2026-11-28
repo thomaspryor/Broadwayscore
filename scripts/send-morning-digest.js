@@ -1008,7 +1008,7 @@ function composeDigestEmail({
       const { buildDispatchUrl } = require('./lib/dispatch-link.js');
       // BRO-7685: key on the router's own title, not the resurface/escalation-
       // decorated line, so the card's acceptance check can find its ledger row.
-      const { undecoratedDigestTitle } = require('./check-alert-condition-absent.js');
+      const { undecoratedDigestTitle } = require('./lib/digest-condition-title.js');
       const cfg = (() => { try { return JSON.parse(fs.readFileSync(dispatchConfigPath, 'utf8')); } catch { return {}; } })();
       const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
       const exp = Math.floor(now.getTime() / 1000) + DISPATCH_LINK_EXPIRY_H * 3600;
