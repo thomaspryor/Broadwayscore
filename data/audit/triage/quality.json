@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-28T10:30:53.982Z",
+  "lastChecked": "2026-11-28T16:04:54.886Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,12 +19,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.9% scored (53782/54367)"
+      "message": "98.9% scored (53788/54367)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "35 audit(s) drifting, each reported on its own card or the digest FYI line (4h ago)"
+      "message": "35 audit(s) drifting, each reported on its own card or the digest FYI line (0h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -38,8 +38,8 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "warn",
-      "message": "1 unregistered host(s) name-match a registered outlet (e.g. weekendnotes.co.uk → weekend-notes) — probable domain move dropping reviews via domain-mismatch"
+      "status": "pass",
+      "message": "No probable domain moves in 452 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1936 outlet(s), 85337 review(s)"
+      "message": "No broken-extractor signature in 1936 outlet(s), 85355 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1936 outlet(s), 85337 review(s)"
+      "message": "No broken-extractor signature in 1936 outlet(s), 85355 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",

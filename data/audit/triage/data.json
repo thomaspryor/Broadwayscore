@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-28T10:30:53.982Z",
+  "lastChecked": "2026-11-28T16:04:54.886Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -84,27 +84,27 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "6 of 491 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7385 Migrate pinned models before shutdown: claude-sonnet-4-5 (2026-11-30), gemini-2.5-flash/pro (2026-12-01), retired claude-3-5-sonnet/haiku fallbacks"
+      "message": "7 of 500 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-8439 SEO: put the city in regional/AU show titles (duplicate titles) + Australian page polish"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-27"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-28"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "85 review(s) with no usable text, 47 rejected although verified as a review, 25 never scored, 14 with a blocked URL (0 published on the site), across 783 current shows"
+      "message": "84 review(s) with no usable text, 46 rejected although verified as a review, 32 never scored, 15 with a blocked URL (0 published on the site), across 794 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (51904 checked)"
+      "message": "No published review score contradicts the critic's rating (52029 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "1 early publish date(s) awaiting recheck (limit 40); 240 already attempted and not yet confirmed"
+      "message": "5 early publish date(s) awaiting recheck (limit 40); 240 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
