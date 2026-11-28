@@ -1,14 +1,39 @@
 {
   "processed": [
-    "ebony-scrooge-off-west-end-2026/afridiziak-theatre-news--unknown.json",
-    "ebony-scrooge-off-west-end-2026/whatsonstage--unknown.json"
+    "its-a-wonderful-life-off-west-end-2026/nytimes--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/thereviewshub--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/viewfromthegods--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/british-theatre--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/everything-theatre--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/plays-international--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/south-london--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/theater-life--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/thestage--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/totaltheater1--unknown.json"
+  ],
+  "failed": [
+    "its-a-wonderful-life-off-west-end-2026/theatreandtonic--unknown.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "ebony-scrooge-off-west-end-2026/afridiziak-theatre-news--unknown.json",
-      "ebony-scrooge-off-west-end-2026/whatsonstage--unknown.json"
+      "its-a-wonderful-life-off-west-end-2026/thereviewshub--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/viewfromthegods--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/all-that-dazzles-uk--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/british-theatre--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/everything-theatre--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/plays-international--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/south-london--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/theater-life--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/thestage--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/totaltheater1--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/its-a-wonderful-life-off-west-end-2026/nytimes--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/nytimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [],
@@ -17,7 +42,19 @@
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-28T17:42:04.051Z",
-  "lastProcessed": "ebony-scrooge-off-west-end-2026/whatsonstage--unknown.json",
-  "log": []
+  "startTime": "2026-11-28T17:42:00.596Z",
+  "lastProcessed": "its-a-wonderful-life-off-west-end-2026/totaltheater1--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-28T17:42:07.702Z",
+      "event": "bb-session",
+      "session": "a51b6874",
+      "url": "https://www.nytimes.com/2026/11/23/theater/its-a-wonderful-life-blue-man-group-n"
+    },
+    {
+      "t": "2026-11-28T17:42:07.847Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

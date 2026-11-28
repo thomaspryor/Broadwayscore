@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-28T17:42:27.112Z",
-  "processed": 2,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-28T17:44:28.216Z",
+  "processed": 11,
+  "failed": 1,
+  "successRate": "91.7%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -14,6 +14,18 @@
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-11-28T17:42:07.702Z",
+      "event": "bb-session",
+      "session": "a51b6874",
+      "url": "https://www.nytimes.com/2026/11/23/theater/its-a-wonderful-life-blue-man-group-n"
+    },
+    {
+      "t": "2026-11-28T17:42:07.847Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
