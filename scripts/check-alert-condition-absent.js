@@ -138,7 +138,8 @@ function replayOpeningNightCheck(key, env = process.env) {
   const settled = (target.settledBy || []).some(f => show[f] === true);
   if (target.needsReviewTexts && !settled) {
     let present = false;
-    try { present = !!reviewTextsRoot && fs.statSync(path.join(reviewTextsRoot, show.id)).isDirectory(); } catch { present = false; }
+    // existsSync, not statSync().isDirectory(): false (not a throw) on a dangling symlink.
+    try { present = !!reviewTextsRoot && fs.existsSync(path.join(reviewTextsRoot, show.id)); } catch { present = false; }
     if (!present) return null;
   }
   let result;
