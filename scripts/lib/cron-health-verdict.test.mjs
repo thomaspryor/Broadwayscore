@@ -1,6 +1,7 @@
-'use strict';
-const assert = require('assert');
-const { cronHealthVerdict } = require('./cron-health-verdict');
+import assert from 'node:assert';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { cronHealthVerdict } = require('./cron-health-verdict.js');
 
 const NOW = Date.parse('2026-11-28T11:00:00Z');
 const hoursAgo = (iso) => (NOW - Date.parse(iso)) / 3600000;
