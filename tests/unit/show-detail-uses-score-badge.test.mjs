@@ -16,7 +16,7 @@ test('show detail imports and renders ScoreBadge from the shared card components
 
 test('show detail delegates score rounding and market colors to the shared badge', () => {
   assert.match(scoreBox, /score=\{score\}/);
-  assert.match(scoreBox, /category=\{show\.category\}/);
+  assert.match(scoreBox, /category=\{getTierMarket\(show\)\}/);
   assert.doesNotMatch(page, /getScoreColorClass|const scoreColorClass/);
 });
 
