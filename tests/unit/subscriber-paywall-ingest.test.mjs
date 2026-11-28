@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: the real writer loads critic-registry.json (untracked core data) through its guards
 // RULE21 / BRO-8264: exercise the real writer and fetch callers, without network calls.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -6,6 +7,8 @@ import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
+const { useShowsFixture } = require('../../scripts/lib/shows-json-fixture');
+process.on('exit', useShowsFixture([{ id: 'subscriber-test', title: 'Subscriber Test', slug: 'subscriber-test', type: 'play', venue: 'Test Theatre', openingDate: '2026-01-01', status: 'open' }, { id: 'subscriber-prefetch', title: 'Subscriber Prefetch', slug: 'subscriber-prefetch', type: 'play', venue: 'Test Theatre', openingDate: '2026-01-01', status: 'open' }]));
 const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
 const { prefetchDiscoveredArticle, applyPrefetch } = require('../../scripts/lib/discovery-prefetch');
 const { createInlineScoring, LaneAwaitingEvidenceError } = require('../../scripts/lib/opening-night-lane/inline-score');
