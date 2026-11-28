@@ -4726,6 +4726,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // True when an isolated multi-show item was credited to its own section byline (Nine wrap):
   // the page-author overrides below must not re-credit it to the page's (first item's) critic.
   let sectionCredited = false;
+  let sectionRenameTo = null; // file rename waits until the body is accepted (below, before the author overrides)
 
   // Multi-show blog posts (interestedbystander): keep only THIS show's
   // section, or store nothing (BRO-4387 follow-up: until 2026-09-29 only
@@ -4758,7 +4759,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       sectionCredited = sc.creditsSection;
       if (sc.changed) {
         console.log(`    → Section byline: "${data._priorCriticName || 'Unknown'}" → "${sc.criticName}"`);
-        renameReviewFileForCriticOverride(review, data, sc.criticName);
+        sectionRenameTo = sc.criticName;
       }
     }
   }
@@ -5433,6 +5434,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   //
   // Guards: HTML available, not manually set, stored name is concrete (not
   // Unknown), HC author differs from stored.
+  if (sectionRenameTo) renameReviewFileForCriticOverride(review, data, sectionRenameTo);
   if (html && !data.criticNameManual && !sectionCredited) {
     const hcAuthor = extractHighConfidenceAuthor(html);
     const storedCritic = data.criticName || review.critic || '';

@@ -1,7 +1,7 @@
 // BRO-8433: Nine Publishing review wraps (The Age / SMH live-reviews pages hold
 // several short reviews). Every text path must cut one show's item out, with
 // that item's own critic. Fixtures are synthetic: no review text is copied.
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -129,6 +129,7 @@ const TWO_ITEM = [
   item('THEATRE', 'A Room with a View', '★★★½', 'Sam Sample', 'Second item body with plenty of synthetic words in it to keep it long enough to stand.'),
 ].join(' ');
 m.seedShowTitlesForTest({ 'room-view-2026': 'A Room with a View', 'band-name-2026': 'Band Name' });
+after(() => m.seedShowTitlesForTest(null));
 
 test('sectionCriticFor: section byline, null for an unsigned item, fallback off-host', () => {
   const iso = m.isolateMultiShowSection(WRAP_URL, TWO_ITEM, 'A Room with a View');

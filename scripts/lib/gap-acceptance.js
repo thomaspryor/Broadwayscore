@@ -676,8 +676,7 @@ function fabricatedFlagClearDecision({ filePath, preDiscovery, fetchedText, url,
   const showId = path.basename(path.dirname(filePath)) || preDiscovery.showId;
   const cleanedObj = cleanCandidateText(fetchedText, { url, showId });
   const cleaned = cleanedObj.text || '';
-  ctx.pageByline = bylineForCleaned(cleanedObj, ctx.pageByline);
-  const p = proveIdentity(preDiscovery, cleaned, url, ctx);
+  const p = proveIdentity(preDiscovery, cleaned, url, { ...ctx, pageByline: bylineForCleaned(cleanedObj, ctx.pageByline) });
   return p.proven
     ? { clear: true, via: p.via, reason: 'identity proven' }
     : { clear: false, via: null, reason: `identity unproven: ${(p.missing || []).join('; ')}` };
