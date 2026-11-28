@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "showId": "trilogies-triathlon-off-broadway-2026",
+  "night": "2026-11-27",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-28T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-28T02:30:05.226Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-28T04:55:11.066Z",
+    "lastOkSampleAt": "2026-11-28T04:55:11.066Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-28T04:00:08.997Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-28T05:00:31.883Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "lane",
+    "method": "lane-only-decision",
+    "holder": "gha-46089016425",
+    "stoodDownSeenAt": "2026-11-28T05:00:31.984Z",
+    "checks": [
+      {
+        "at": "2026-11-28T05:00:31.984Z",
+        "label": "2h",
+        "standDown": true,
+        "reason": "lane gha-46089016425 holds trilogies-triathlon-off-broadway-2026 2026-11-27",
+        "holder": "gha-46089016425"
+      }
+    ]
+  }
+}
