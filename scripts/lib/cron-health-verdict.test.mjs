@@ -62,4 +62,27 @@ r = v([
 ]);
 assert.strictEqual(r.status, 'pass', JSON.stringify(r));
 
-console.log('cron-health-verdict: 8/8 passed');
+// 9. In flight, cancelled, then failure -> warn.
+r = v([
+  { createdAt: '2026-11-28T10:30:00Z', conclusion: null },
+  { createdAt: '2026-11-28T10:10:00Z', conclusion: 'cancelled' },
+  { createdAt: '2026-11-28T09:00:00Z', conclusion: 'failure' },
+]);
+assert.strictEqual(r.status, 'warn', JSON.stringify(r));
+
+// 10. In flight with only cancelled / in-flight history -> warn, never a crash.
+r = v([
+  { createdAt: '2026-11-28T10:30:00Z', conclusion: null },
+  { createdAt: '2026-11-28T10:10:00Z', conclusion: 'cancelled' },
+  { createdAt: '2026-11-28T10:00:00Z', conclusion: null },
+]);
+assert.strictEqual(r.status, 'warn', JSON.stringify(r));
+
+// 11. In flight, latest finished is a success older than maxHours -> warn.
+r = v([
+  { createdAt: '2026-11-28T10:30:00Z', conclusion: null },
+  { createdAt: '2026-11-26T10:00:00Z', conclusion: 'success' },
+]);
+assert.strictEqual(r.status, 'warn', JSON.stringify(r));
+
+console.log('cron-health-verdict: 11/11 passed');
