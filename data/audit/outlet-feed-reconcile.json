@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T17:52:43.857Z",
+  "generatedAt": "2026-11-28T19:08:43.134Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -17,6 +17,11 @@
       "id": "the-afronauts-west-end-2026",
       "title": "The Afronauts",
       "openingDate": "2026-11-23"
+    },
+    {
+      "id": "adriana-mater-english-national-opera-west-end-2026",
+      "title": "Adriana Mater - English National Opera",
+      "openingDate": "2026-11-28"
     },
     {
       "id": "samson-et-dalila-off-broadway-2026",
@@ -151,10 +156,6 @@
   ],
   "skipped": [
     {
-      "showId": "adriana-mater-english-national-opera-west-end-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "trilogies-triathlon-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -176,10 +177,6 @@
     {
       "outletId": "theatre-weekly",
       "error": "HTTP 403 for https://theatreweekly.com/feed"
-    },
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
@@ -214,19 +211,10 @@
       "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 792,
-  "matchedGaps": 10,
-  "possibleGaps": 10,
+  "itemsScanned": 805,
+  "matchedGaps": 8,
+  "possibleGaps": 11,
   "gaps": [
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "matched",
-      "outletId": "afridiziak-theatre-news",
-      "url": "https://www.afridiziak.com/reviews/a-christmas-carol-a-version-by-jack-thorne/",
-      "headline": "A Christmas Carol – review",
-      "publishDate": "2026-11-26"
-    },
     {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
@@ -240,19 +228,10 @@
       "showId": "fly-you-fools-off-west-end-2026",
       "title": "Fly You Fools",
       "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-fly-you-fools-southwark-playhouse-borough",
-      "headline": "Review: Fly, You Fools! (Southwark Playhouse Borough)",
+      "outletId": "theatreandtonic",
+      "url": "https://theatreandtonic.co.uk/blog/fly-you-fools-southwark-playhouse-borough-london-review",
+      "headline": "Fly You Fools at Southwark Playhouse (Borough) London Review",
       "publishDate": "2026-11-28"
-    },
-    {
-      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
-      "title": "It’s A Wonderful Life: A Live Radio Play",
-      "level": "matched",
-      "outletId": "totaltheater1",
-      "url": "https://totaltheater1.wordpress.com/2026/11/27/its-a-wonderful-life-a-live-radio-play/",
-      "headline": "It’s a Wonderful Life: A Live Radio Play",
-      "publishDate": "2026-11-27"
     },
     {
       "showId": "its-a-wonderful-life-off-west-end-2026",
@@ -325,6 +304,15 @@
       "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
       "headline": "It’s a Wonderful Life: A Live Radio Play",
       "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "attention-off-west-end-2026",
+      "title": "Attention",
+      "level": "possible",
+      "outletId": "onin",
+      "url": "https://onin.london/tickets-for-the-paddingtonbeartm-experience-are-available-from-www-paddingtonbearexperience-com/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tickets-for-the-paddingtonbeartm-experience-are-available-from-www-paddingtonbearexperience-com",
+      "headline": "TICKETS FOR THE PADDINGTONBEARTM EXPERIENCE ARE AVAILABLE FROM WWW.PADDINGTONBEAREXPERIENCE.COM.",
+      "publishDate": "2026-11-28"
     },
     {
       "showId": "attention-off-west-end-2026",
