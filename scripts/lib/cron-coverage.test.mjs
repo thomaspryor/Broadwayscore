@@ -123,8 +123,12 @@ test('real files: digest list agrees with check-cron-health.yml, and the watchdo
 test('the watchdog digest row is liveness-only (it exits 1 by design when it pages)', () => {
   const w = DIGEST_CRONS.find(d => d.workflow === 'check-cron-health.yml');
   assert.equal(w.livenessOnly, true);
-  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'health-check.js'), 'utf8');
-  assert.match(src, /livenessOnly && run\.conclusion/, 'health-check.js must honour livenessOnly');
+  const here = path.dirname(new URL(import.meta.url).pathname);
+  // Verdict logic lives in cron-health-verdict.js (BRO-8438); health-check.js must pass livenessOnly through.
+  const verdict = fs.readFileSync(path.join(here, 'cron-health-verdict.js'), 'utf8');
+  assert.match(verdict, /livenessOnly && run\.conclusion/, 'cron-health-verdict.js must honour livenessOnly');
+  const src = fs.readFileSync(path.join(here, '..', 'health-check.js'), 'utf8');
+  assert.match(src, /cronHealthVerdict\([^)]*livenessOnly/, 'health-check.js must pass livenessOnly to cronHealthVerdict');
 });
 
 // ── BRO-3492: shared cadence helpers + default liveness sweep ──

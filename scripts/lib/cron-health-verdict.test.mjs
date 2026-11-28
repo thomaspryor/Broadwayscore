@@ -46,4 +46,20 @@ assert.strictEqual(r.name, 'Cron failed: Collect Review Texts');
 // 6. No runs -> warn.
 assert.strictEqual(v([]).status, 'warn');
 
-console.log('cron-health-verdict: 6/6 passed');
+// 7. Codex P1: in flight on top of a failure must NOT pass, even with an older success.
+r = v([
+  { createdAt: '2026-11-28T10:30:00Z', conclusion: null },
+  { createdAt: '2026-11-28T09:00:00Z', conclusion: 'failure' },
+  { createdAt: '2026-11-28T08:00:00Z', conclusion: 'success' },
+]);
+assert.strictEqual(r.status, 'warn', JSON.stringify(r));
+
+// 8. In flight, cancelled casualty, then success -> pass.
+r = v([
+  { createdAt: '2026-11-28T10:30:00Z', conclusion: null },
+  { createdAt: '2026-11-28T10:10:00Z', conclusion: 'cancelled' },
+  { createdAt: '2026-11-28T09:00:00Z', conclusion: 'success' },
+]);
+assert.strictEqual(r.status, 'pass', JSON.stringify(r));
+
+console.log('cron-health-verdict: 8/8 passed');

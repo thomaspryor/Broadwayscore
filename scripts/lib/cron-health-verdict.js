@@ -35,8 +35,12 @@ function cronHealthVerdict(runs, cron, hoursAgo, formatAge) {
   }
   const recentSuccess = runs.find(r => r.conclusion === 'success' && hoursAgo(r.createdAt) <= maxHours);
   if (!run.conclusion) {
-    if (recentSuccess) {
-      return { name: rowName, status: 'pass', message: `${formatAge(hoursAgo(recentSuccess.createdAt))} ago, success (newest run in progress)` };
+    // Lean only on the latest FINISHED run (cancel-cascade casualties skipped):
+    // [in progress, failure, success] must not pass, or an active retry would
+    // hide the failure it is retrying.
+    const lastFinished = runs.find(r => r.conclusion && r.conclusion !== 'cancelled');
+    if (lastFinished && lastFinished.conclusion === 'success' && hoursAgo(lastFinished.createdAt) <= maxHours) {
+      return { name: rowName, status: 'pass', message: `${formatAge(hoursAgo(lastFinished.createdAt))} ago, success (newest run in progress)` };
     }
     // In flight with no recent success to lean on: not proof of a problem,
     // stays at baseline urgency (not the fix-now `Cron failed:` name).
