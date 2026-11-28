@@ -642134,5 +642134,82 @@
     "source": "comparative-rescore",
     "errorDetails": [],
     "logKeepsSince": "2026-11-27T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-28T13:32:34.284Z",
+    "completedAt": "2026-11-28T13:35:36.926Z",
+    "totalReviews": 85769,
+    "processed": 9,
+    "skipped": 85752,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 92900,
+      "output": 3961,
+      "cacheRead": 57105,
+      "cacheWrite": 3807,
+      "total": 234968
+    },
+    "costUsd": 0.085108425,
+    "runId": "46149557861",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "yellow-face-2024",
+        "outletId": "aaartsalliance",
+        "error": "Review text too short or missing"
+      }
+    ],
+    "logKeepsSince": "2026-11-27T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-28T13:37:34.921Z",
+    "completedAt": "2026-11-28T13:41:34.999Z",
+    "totalReviews": 85769,
+    "processed": 177,
+    "skipped": 85062,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 1048098,
+      "output": 62295,
+      "cacheRead": 711046,
+      "cacheWrite": 41466,
+      "total": 2775380
+    },
+    "costUsd": 1.043989925,
+    "runId": "46149557861",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "ilford-boy-off-west-end-2026",
+        "outletId": "revstanstheatreblog",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "yellow-face-2024",
+        "outletId": "aaartsalliance",
+        "error": "Review text too short or missing"
+      }
+    ],
+    "logKeepsSince": "2026-11-27T00:00:00.000Z"
+  },
+  {
+    "startedAt": "2026-11-28T13:42:50.265Z",
+    "completedAt": "2026-11-28T13:47:17.933Z",
+    "totalReviews": 92,
+    "processed": 92,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 227472,
+      "output": 22419,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 249891
+    },
+    "costUsd": 0.21939240000000002,
+    "runId": "46149557861",
+    "source": "comparative-rescore",
+    "errorDetails": [],
+    "logKeepsSince": "2026-11-27T00:00:00.000Z"
   }
 ]
