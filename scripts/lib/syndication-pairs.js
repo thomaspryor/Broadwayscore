@@ -25,7 +25,9 @@ const KNOWN_SYNDICATION_PAIRS = {
   'david gordon': { primary: 'theatermania', secondary: ['whatsonstage'] },
   'mark kennedy': { primary: 'ap', secondary: ['abc-news', 'collider', 'washington-times', 'minneapolis-star-tribune',
     // BRO-6054: AP wire reprints filed under the subscriber's outlet id
-    'washpost', 'sfgate', 'huffpost', 'seattle-post-intelligencer', 'news-tribune', 'npr', 'boston-com', 'abscbnnewscom'] },
+    'washpost', 'sfgate', 'huffpost', 'seattle-post-intelligencer', 'news-tribune', 'npr', 'boston-com', 'abscbnnewscom',
+    // BRO-7207: NBC New York ran the AP wire review (mrs-doubtfire-2021: the ABC News AP copy word for word)
+    'nbcny'] },
   // BRO-7272: Denver Post ran the AP wire review (same slug as the ABC News copy).
   'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune', 'denver-post'] },
   'jocelyn noveck': { primary: 'ap', secondary: ['seattle-post-intelligencer'] },
@@ -40,6 +42,12 @@ const KNOWN_SYNDICATION_PAIRS = {
   // BRO-7080: Sheward's Theater Life review is reprinted (most sentences verbatim)
   // on TotalTheater, whose body prints "Critic: David Sheward (Oct. 2026)."
   'david sheward': { primary: 'theater-life', secondary: ['totaltheater1'] },
+  // BRO-7207: Newsday (amNY's owner until 2015) printed Windman's amNY review under his byline (jerusalem-2011:
+  // same opening, "By Matt Windman", star line). amNY is the original.
+  'matt windman': { primary: 'amny', secondary: ['newsday'] },
+  // BRO-7207: Clarke's Theatre Thoughts post says "Original review written and commissioned" for Time Out Sydney and
+  // repeats that review (whispering-jack-regional-2026).
+  'justin clarke': { primary: 'timeout-sydney', secondary: ['theatre-thoughts-aus'] },
 };
 
 /**
@@ -108,7 +116,10 @@ const PUBLISHING_GROUPS = [
   // BRO-6054: SFGate is the San Francisco Chronicle's free site and reprints Chronicle reviews.
   ['san-francisco-chronicle', 'sfgate'],
   // BRO-6054: content partnership; the i newspaper printed theartsdesk reviews (often cut down) in 2019.
-  ['artsdesk', 'i-paper'],
+  // BRO-7207: sierz.co.uk is Aleks Sierz's own site; it reposts the review theartsdesk, the i or Tribune ran
+  // (7 artsdesk, 2 i-paper and 1 Tribune show pairs, most sentences shared). The outlet id is Sierz's alone.
+  ['artsdesk', 'i-paper', 'sierz-co-uk'],
+  ['tribune', 'sierz-co-uk'],
   // BRO-7238: critic-owned sites that repost the review a publisher ran first (same date, same text). The outlet ids
   // are specific to one critic each, so a group-wide rule cannot misfire on another critic.
   ['dailybeast', 'timteeman'],          // Tim Teeman's own site reposts his Daily Beast pieces (13 shows)
@@ -119,6 +130,9 @@ const PUBLISHING_GROUPS = [
   // BRO-7237: Yahoo Entertainment reprints TheWrap's reviews under a yahoo.com URL (Robert Hofler's Wanted review,
   // 2026-11-08, ran at both). Yahoo is the reprint; TheWrap is the original.
   ['thewrap', 'yahoo'],
+  // BRO-7207: Reuters carried The Hollywood Reporter's theatre reviews ("NEW YORK (Hollywood Reporter) -", Scheck's
+  // lombardi-2010). Generalizes the per-critic David Rooney entry to every THR critic.
+  ['hollywood-reporter', 'reuters'],
 ];
 
 // Outlet ids of aggregator portals (review-normalization.js SYNDICATION_PORTAL_HOSTS: yahoo.com, msn.com, aol.com).

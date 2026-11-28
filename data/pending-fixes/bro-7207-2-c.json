@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7207-2-c",
+  "planId": "7787294f-59bd-4145-9cfb-3920e48f46e0",
+  "status": "pending",
+  "createdAt": "2026-11-28T13:25:40.036Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7207: resolve same-critic outlet pairs (syndicated copies, wrong bylines, wrong-show texts) (part 3 of 3)",
+    "steps": [
+      "anything-goes-2011/nypost--frank-scheck.json: the text reviews The Philanderer, not Anything Goes",
+      "the-great-wave-west-end-2018/times-uk--sam-marlowe.json: the text reviews Caroline, or Change, not The Great Wave"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "anything-goes-2011/nypost--frank-scheck.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "anything-goes-2011/nypost--frank-scheck.json: the text reviews The Philanderer, not Anything Goes"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-wave-west-end-2018/times-uk--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-great-wave-west-end-2018/times-uk--sam-marlowe.json: the text reviews Caroline, or Change, not The Great Wave"
+      }
+    ]
+  }
+}
