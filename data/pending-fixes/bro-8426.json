@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8426",
   "planId": "1116e999-25f0-4d5e-b531-00045e8f386d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T11:25:59.072Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "shows.json: candide-regional-2026.isRevival"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T12:49:41.707Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for candide-regional-2026 (tags: [\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
 }
