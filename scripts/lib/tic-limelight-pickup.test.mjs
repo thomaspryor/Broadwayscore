@@ -209,3 +209,20 @@ test('annual-return page: last season row closes, next season closing date is no
   assert.equal(live.status, 'open');
   assert.equal(live.closingDate, '2026-12-24');
 });
+
+test('annual-return listing set aside as before-since is re-evaluated when the listing credits more reviews', async () => {
+  const la = getCity('la');
+  const mk = (n) => ({ id: 8297, slug: 'a-christmas-carol', empty: false, title: 'A Christmas Carol', venue: 'A Noise Within', closingDate: '2026-12-24', reviews: Array.from({ length: n }, (_, i) => ({ outlet: `O${i}`, critic: 'C', verdict: 'recommended', url: `https://e.com/${i}` })) });
+  const io = { page: async () => mk(3), detail: async () => detailOf('Play', { venue: 'A Noise Within', address: '3352 E Foothill Blvd Pasadena', closingDate: '2026-12-24' }), dates: async () => ({ openingDate: '2025-12-01', samples: ['2025-12-01'] }) };
+  const out = await daily.runDaily({ today: '2026-11-28', listing: [{ id: 8297, reviewCount: 3 }], shows: [], seen: {}, io, city: la });
+  assert.equal(out.added.length, 0);
+  assert.equal(out.seen[8297].reason, 'before-since');
+  assert.equal(out.seen[8297].annual, true);
+  assert.deepEqual(daily.pickCandidates([{ id: 8297, reviewCount: 3 }], [], out.seen, la), []);
+  assert.equal(daily.pickCandidates([{ id: 8297, reviewCount: 5 }], [], out.seen, la).length, 1);
+  // The new season's reviews now date from this year: the row is added open with the printed closing date.
+  const io2 = { ...io, page: async () => mk(5), dates: async () => ({ openingDate: '2026-11-20', samples: ['2026-11-20'] }) };
+  const again = await daily.runDaily({ today: '2026-11-29', listing: [{ id: 8297, reviewCount: 5 }], shows: [], seen: out.seen, io: io2, city: la });
+  assert.equal(again.added.length, 1);
+  assert.equal(again.added[0].status, 'open');
+});
