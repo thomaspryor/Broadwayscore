@@ -20,7 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const tic = require('./lib/theatreinchicago');
-const { runDaily, saveAddedShows } = require('./lib/tic-daily');
+const { runDaily, saveAddedShows, drainIngestQueue } = require('./lib/tic-daily');
 const { getCity, assertRunnable } = require('./lib/tic-cities');
 const { openingDateFor } = require('./tic-stage-shows');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -88,26 +88,21 @@ function ingestLines(entries) {
   return entries.map((e) => (typeof e === 'string' ? e : formatIngestLine({ url: e.url, critic: e.critic }))).join('\n');
 }
 
-function dispatchIngest() {
+async function dispatchIngest() {
   const { dispatch } = require('./lib/rest-dispatch');
   const { checkCap } = require('./lib/workflow-queue-cap');
   const rec = readJson(ADDED, { added: [] });
   const today = new Date().toISOString().slice(0, 10);
   // Today's additions plus anything an earlier run had to defer (the ingest-urls cap, BRO-6532).
   const queue = [...(rec.pending || []), ...(rec.on === today ? rec.added : [])];
-  const left = [];
-  for (const a of queue) {
-    if (left.length) { left.push(a); continue; }
-    const cap = checkCap({ workflow: 'ingest-urls.yml' });
-    if (!cap.ok) { console.log(`[tic-daily] deferred: ${cap.reason}`); left.push(a); continue; }
-    try {
-      dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: a.id, urls: ingestLines(a.urls), caller: 'tic-daily' } });
-      console.log(`[tic-daily] ingest dispatched for ${a.id}`);
-    } catch (e) {
-      console.log(`::warning::ingest dispatch failed for ${a.id}: ${e.message}`);
-      left.push(a);
-    }
-  }
+  // BRO-8454: wait for a slot instead of giving up at the first deferral (LA starved behind Chicago).
+  const { left } = await drainIngestQueue({
+    queue,
+    check: () => checkCap({ workflow: 'ingest-urls.yml' }),
+    dispatchOne: (a) => dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: a.id, urls: ingestLines(a.urls), caller: 'tic-daily' } }),
+    maxWaitMs: Number(process.env.TIC_INGEST_MAX_WAIT_MIN || 7) * 60000,
+    log: (m) => console.log(`[tic-daily] ${m}`),
+  });
   fs.writeFileSync(ADDED, JSON.stringify({ on: rec.on, added: rec.added, pending: left }, null, 1) + '\n');
   console.log(`[tic-daily] ${queue.length - left.length} dispatched, ${left.length} left for the next run`);
 }

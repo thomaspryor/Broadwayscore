@@ -75,12 +75,30 @@ function prefilter(page, city = getCity('chicago')) {
   return { ok: true };
 }
 
+// Type labels that mean "not a play" on some sites and "a play" on others (BRO-8454).
+const AMBIGUOUS_TYPE = /^(comedy|performance art)$/i;
+// Evidence that an ambiguous-type listing really is a non-scripted act.
+const NON_PLAY_TEXT = /\b(stand[\s-]?up|improv(?:isation|ised|isational)?|sketch(?:es)?|revue|mainstage revue|magic(?:ian)?|illusion(?:ist)?|puppet(?:s|ry)?|variety (?:show|act)|burlesque|cabaret|drag (?:show|brunch)|open mic|comedian|clown(?:ing)?|late[\s-]night)\b/i;
+const COMEDY_HOUSES = /second city|\bio (?:chicago|theat)|zanies|comedysportz|laugh factory|improv olympic|annoyance|comedy (?:club|bar|store)|groundlings|upright citizens|\bucb\b|magic parlour/i;
+
+function looksLikeNonPlay(detail, page) {
+  const hay = [detail && detail.description, page && page.title, detail && detail.title].filter(Boolean).join(' ');
+  const venue = [page && page.venue, detail && detail.venue].filter(Boolean).join(' ');
+  return NON_PLAY_TEXT.test(hay) || COMEDY_HOUSES.test(venue);
+}
+
 /** Second gate once the detail page is known. */
 function detailFilter(detail, page = null, city = getCity('chicago')) {
   if (!detail || detail.empty) return { ok: false, reason: 'no-detail' };
   // Theatre In DC files scripted comedies (Much Ado, The Play That Goes Wrong) under "Comedy"; Chicago's "Comedy" is stand-up/improv.
   const allowed = (city.allowTypes || []).some((re) => re.test(detail.showType || ''));
-  if (!allowed && isExcludedType(detail.showType)) return { ok: false, reason: `type:${detail.showType}` };
+  if (!allowed && isExcludedType(detail.showType)) {
+    // BRO-8454: "Comedy" and "Performance Art" are catch-all labels the sites also hang on scripted plays
+    // (Midsummer Night's Dream, Who's Holiday!, Oh, Buddy, The Old Man and The Old Moon). The label alone
+    // is not enough to drop a show: it goes only when the listing itself says the act is stand-up, improv,
+    // sketch, a revue, magic or puppetry, or the house is a comedy club.
+    if (!(AMBIGUOUS_TYPE.test(detail.showType || '') && !looksLikeNonPlay(detail, page))) return { ok: false, reason: `type:${detail.showType}` };
+  }
   // theatreindc also lists Baltimore, Columbia, Annapolis and Frederick houses: keep only
   // venues the shared venue-metro table maps to this city's metro (BRO-6771).
   if (city.requireMetro) {
@@ -253,5 +271,5 @@ function dedupeId(entry, page, taken) {
 module.exports = {
   dedupeId,
   MIN_REVIEWS, TOUR_HOUSES, VIRTUAL_VENUE,
-  normTitle, slugify, linkedReviews, prefilter, detailFilter, venueLine, venueLineFromCities, buildShowEntry, findDuplicate,
+  normTitle, slugify, linkedReviews, prefilter, detailFilter, venueLine, venueLineFromCities, buildShowEntry, findDuplicate, looksLikeNonPlay,
 };
