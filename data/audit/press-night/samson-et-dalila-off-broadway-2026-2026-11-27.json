@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "showId": "samson-et-dalila-off-broadway-2026",
+  "night": "2026-11-27",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-28T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-28T02:30:03.677Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-28T04:55:09.482Z",
+    "lastOkSampleAt": "2026-11-28T04:55:09.482Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-28T04:00:07.271Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-28T05:00:25.687Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "lane",
+    "method": "lane-only-decision",
+    "holder": "gha-46089032429",
+    "stoodDownSeenAt": "2026-11-28T05:00:25.785Z",
+    "checks": [
+      {
+        "at": "2026-11-28T05:00:25.785Z",
+        "label": "2h",
+        "standDown": true,
+        "reason": "lane gha-46089032429 holds samson-et-dalila-off-broadway-2026 2026-11-27",
+        "holder": "gha-46089032429"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-28T05:00:27.430Z",
+    "files": [
+      {
+        "file": "opera-today--david-truslove.json",
+        "outletId": "opera-today",
+        "outlet": "Opera Today",
+        "critic": "David Truslove",
+        "firstSeenAt": "2026-11-27T02:12:46.251Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "operatoday.com/2026/07/a-highly-impressive-samson-et-dalila-from-dorset-opera-festival",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "operawire--david-salazar.json",
+        "outletId": "operawire",
+        "outlet": "Operawire",
+        "critic": "David Salazar",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": "2018-09-25",
+        "url": "operawire.com/metropolitan-opera-208-19-season-review-samson-et-dalila",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "plays-to-see--alessandro-zummo.json",
+        "outletId": "plays-to-see",
+        "outlet": "Plays To See",
+        "critic": "Alessandro Zummo",
+        "firstSeenAt": "2026-11-27T01:48:21.347Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-24",
+        "url": "playstosee.com/reviews/opera-reviews/samson-et-dalila-2",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null,
+        "rejectionKind": "wrong_production"
+      }
+    ]
+  },
+  "priorRuns": [
+    {
+      "id": "samson-et-dalila-off-broadway-2018",
+      "openingDate": "2018-09-24",
+      "venue": "Metropolitan Opera House",
+      "inheritReviews": false
+    }
+  ]
+}
