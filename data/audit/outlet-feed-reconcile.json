@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T16:40:34.228Z",
+  "generatedAt": "2026-11-28T17:52:43.857Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -32,6 +32,16 @@
       "id": "seven-guitars-off-broadway-2026",
       "title": "Seven Guitars",
       "openingDate": "2026-11-23"
+    },
+    {
+      "id": "pride-bridge-theatre-off-west-end-2026",
+      "title": "Pride - Bridge Theatre",
+      "openingDate": "2026-11-25"
+    },
+    {
+      "id": "fly-you-fools-off-west-end-2026",
+      "title": "Fly You Fools",
+      "openingDate": "2026-11-28"
     },
     {
       "id": "dick-whittington-adults-only-off-west-end-2026",
@@ -132,9 +142,18 @@
       "id": "she-loves-me-regional-2026",
       "title": "She Loves Me",
       "openingDate": "2026-11-23"
+    },
+    {
+      "id": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "openingDate": "2026-11-24"
     }
   ],
   "skipped": [
+    {
+      "showId": "adriana-mater-english-national-opera-west-end-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
     {
       "showId": "trilogies-triathlon-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
@@ -145,10 +164,6 @@
     },
     {
       "showId": "mrs-doubtfire-regional-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "its-a-wonderful-life-off-west-end-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
@@ -161,6 +176,10 @@
     {
       "outletId": "theatre-weekly",
       "error": "HTTP 403 for https://theatreweekly.com/feed"
+    },
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
@@ -195,9 +214,9 @@
       "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 800,
-  "matchedGaps": 5,
-  "possibleGaps": 5,
+  "itemsScanned": 792,
+  "matchedGaps": 10,
+  "possibleGaps": 10,
   "gaps": [
     {
       "showId": "a-christmas-carol-west-end-2026",
@@ -218,21 +237,12 @@
       "publishDate": "2026-11-26"
     },
     {
-      "showId": "ebony-scrooge-off-west-end-2026",
-      "title": "Ebony Scrooge",
+      "showId": "fly-you-fools-off-west-end-2026",
+      "title": "Fly You Fools",
       "level": "matched",
-      "outletId": "afridiziak-theatre-news",
-      "url": "https://www.afridiziak.com/reviews/ebony-scrooge-sadlers-wells-east/",
-      "headline": "Ebony Scrooge – review",
-      "publishDate": "2026-11-26"
-    },
-    {
-      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
-      "title": "It’s A Wonderful Life: A Live Radio Play",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/downstate-its-a-wonderful-life-a-live-radio-play/",
-      "headline": "Downstate *****, It’s a Wonderful Life: A Live Radio Play ***",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-fly-you-fools-southwark-playhouse-borough",
+      "headline": "Review: Fly, You Fools! (Southwark Playhouse Borough)",
       "publishDate": "2026-11-28"
     },
     {
@@ -243,6 +253,60 @@
       "url": "https://totaltheater1.wordpress.com/2026/11/27/its-a-wonderful-life-a-live-radio-play/",
       "headline": "It’s a Wonderful Life: A Live Radio Play",
       "publishDate": "2026-11-27"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "matched",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/its-a-wonderful-life-radio-play-broadway-review/",
+      "headline": "&#8216;It&#8217;s a Wonderful Life: A Live Radio Play&#8217; rings all the bells, but can’t settle on a tune",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/its-a-wonderful-life-radio-play-broadway-review/",
+      "headline": "&#8216;It&#8217;s a Wonderful Life: A Live Radio Play&#8217; is a carb-free holiday treat (Broadway review)",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/11/23/its-a-wonderful-life-a-broadway-broadcast-about-bedford-falls/",
+      "headline": "It’s A Wonderful Life: A Broadway Broadcast About Bedford Falls",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/11/23/its-a-wonderful-life-its-a-generally-wonderful-show/",
+      "headline": "It’s a Wonderful Life: It’s A Generally Wonderful Show",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "matched",
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/its-a-wonderful-life-a-little-christmas-magic-on-broadway/",
+      "headline": "It’s a Wonderful Life: A Little Christmas Magic on Broadway",
+      "publishDate": "2026-11-24"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "matched",
+      "outletId": "thewrap",
+      "url": "https://www.thewrap.com/creative-content/theater/its-a-wonderful-life-broadway-review-andrew-rannells-lisa-rinna/",
+      "headline": "&#8216;It&#8217;s a Wonderful Life&#8217; Broadway Review: Andrew Rannells and Lisa Rinna Shine in Xmas Movie Classic",
+      "publishDate": "2026-11-23"
     },
     {
       "showId": "a-christmas-carol-west-end-2026",
@@ -288,6 +352,51 @@
       "url": "https://www.allthatdazzles.co.uk/post/review-pink-rabbit-soho-theatre",
       "headline": "Review: Pink Rabbit (Soho Theatre)",
       "publishDate": "2026-11-26"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "possible",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/11/23/its-a-wonderful-life-a-live-radio-show-broadway-review/",
+      "headline": "It’s a Wonderful Life: A Live Radio Play Broadway Review",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "possible",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/11/23/its-a-wonderful-life-live-radio-play-broadway-review/",
+      "headline": "Broadway Review: IT’S A WONDERFUL LIFE: A LIVE RADIO PLAY (Broadhurst Theatre)",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "possible",
+      "outletId": "stagebuddy",
+      "url": "https://stagebuddy.com/theater/theater-review/wonderful-life-live-radio-play",
+      "headline": "It&#8217;s A Wonderful Life: A Live Radio Play",
+      "publishDate": "2026-11-24"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "possible",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-its-a-wonderful-life-a-live-radio-play-on-broadway_1860171/",
+      "headline": "Review: It’s a Wonderful Life: A Live Radio Play on Broadway",
+      "publishDate": "2026-11-23"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "possible",
+      "outletId": "theater-scene",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
+      "headline": "It’s a Wonderful Life: A Live Radio Play",
+      "publishDate": "2026-11-23"
     }
   ]
 }

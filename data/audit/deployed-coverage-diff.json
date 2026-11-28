@@ -1,14 +1,13 @@
 {
-  "generatedAt": "2026-11-28T16:40:33.779Z",
+  "generatedAt": "2026-11-28T17:52:43.481Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 384,
-  "clean": 383,
-  "defective": 1,
+  "checked": 390,
+  "clean": 385,
+  "defective": 5,
   "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1
+    "score-drift": 5
   },
   "shows": [
     {
@@ -18,20 +17,78 @@
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theatre-thoughts-aus"
-        },
-        {
           "type": "score-drift",
-          "detail": "deployed cs 88.21 vs local 87.84 (Δ0.37)"
+          "detail": "deployed cs 88.57 vs local 87.51 (Δ1.06)"
         }
       ],
-      "missingFromProd": [
-        "theatre-thoughts-aus"
-      ],
-      "localCount": 10,
-      "deployedCount": 9,
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 10,
       "firstDefectAt": "2026-11-28T16:40:30.002Z"
+    },
+    {
+      "showId": "a-room-with-a-view-regional-2026",
+      "title": "A Room with a View",
+      "openingDate": "2026-11-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.57 vs local 91.67 (Δ9.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-11-28T17:52:34.527Z"
+    },
+    {
+      "showId": "fiddler-on-the-roof-melbourne-regional-2026",
+      "title": "Fiddler on the Roof",
+      "openingDate": "2026-11-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.72 vs local 79.38 (Δ4.34)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-28T17:52:34.527Z"
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "title": "Sinatra The Musical",
+      "openingDate": "2026-06-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 64.54 vs local 64.74 (Δ0.2)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 44,
+      "deployedCount": 44,
+      "firstDefectAt": "2026-11-28T17:52:34.527Z"
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "title": "The Devil Wears Prada",
+      "openingDate": "2024-12-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 58.71 vs local 58.15 (Δ0.56)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 30,
+      "deployedCount": 30,
+      "firstDefectAt": "2026-11-28T17:52:34.527Z"
     }
   ],
   "persistentDefective": 0,
