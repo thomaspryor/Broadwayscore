@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8455",
   "planId": "5654cd1d-f547-4279-b3f7-43595ea46fe5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T18:11:23.611418Z",
   "submitter": {
     "name": null,
@@ -161,5 +161,89 @@
         "description": "No published end date found; hub retires the row 42 days after opening (BRO-8455 item 8)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T19:42:09.909Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for something-rotten-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for annie-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for on-your-feet-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for merrily-we-roll-along-sullivan-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for frozen-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dr-jekyll-and-mr-hyde-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for bouncers-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for bouncers-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for bouncers-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for bouncers-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for the-winters-tale-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for body-language-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for not-exactly-a-nun-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for falsettos-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for carmen-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
