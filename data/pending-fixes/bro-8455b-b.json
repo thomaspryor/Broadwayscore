@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8455b-b",
   "planId": "7076fab9-d99f-4e0f-8ac4-d5e6ee69a9dd",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T20:41:05.186Z",
   "submitter": {
     "name": null,
@@ -161,5 +161,114 @@
         "description": "BRO-8455: NYC Theatre roundup excerpt attached to a regional or tour production (wrong production); rebuild guard already skips it, this removes the file"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T20:57:02.183Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted maybe-happy-ending-tour-2026/washpost--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted paranormal-activity-boston-regional-2026/nypost--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted paranormal-activity-boston-regional-2026/nysr--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted paranormal-activity-boston-regional-2026/theatermania--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted paranormal-activity-boston-regional-2026/theatrely--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted paranormal-activity-boston-regional-2026/timeout--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted paranormal-activity-boston-regional-2026/variety--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose-regional-2026/broadwaynews--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose-regional-2026/nytg--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose-regional-2026/theatermania--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose-regional-2026/theatrely--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose-regional-2026/thewrap--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose-regional-2026/variety--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cottage-regional-2026/cititour--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cottage-regional-2026/ew--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cottage-regional-2026/nysr--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cottage-regional-2026/nytg--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cottage-regional-2026/theatermania--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/culturesauce--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/frontmezzjunkies--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/nytimes--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
