@@ -1,14 +1,13 @@
 {
-  "generatedAt": "2026-11-28T03:07:11.183Z",
+  "generatedAt": "2026-11-28T04:09:29.984Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 385,
-  "clean": 382,
-  "defective": 3,
+  "clean": 383,
+  "defective": 2,
   "byType": {
-    "missing-from-prod": 3,
-    "score-drift": 1
+    "missing-from-prod": 2
   },
   "shows": [
     {
@@ -19,21 +18,14 @@
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "4 scored outlet(s) absent from the deployed payload: arts-review-au, i-tell-you-what-i-think, keith-gow, the-blurb-au"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed payload has no numeric cs (local 91.33)"
+          "detail": "1 scored outlet(s) absent from the deployed payload: melbournise-me"
         }
       ],
       "missingFromProd": [
-        "arts-review-au",
-        "i-tell-you-what-i-think",
-        "keith-gow",
-        "the-blurb-au"
+        "melbournise-me"
       ],
       "localCount": 6,
-      "deployedCount": 2,
+      "deployedCount": 5,
       "firstDefectAt": "2026-11-28T03:07:00.782Z"
     },
     {
@@ -44,29 +36,11 @@
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: indaily-qld"
+          "detail": "1 scored outlet(s) absent from the deployed payload: scenestr"
         }
       ],
       "missingFromProd": [
-        "indaily-qld"
-      ],
-      "localCount": 3,
-      "deployedCount": 2,
-      "firstDefectAt": "2026-11-28T03:07:00.782Z"
-    },
-    {
-      "showId": "les-miserables-regional-2026",
-      "title": "Les Miserables",
-      "openingDate": "2026-11-10",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: oazis"
-        }
-      ],
-      "missingFromProd": [
-        "oazis"
+        "scenestr"
       ],
       "localCount": 4,
       "deployedCount": 3,
