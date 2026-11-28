@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7250-d261128-r20",
   "planId": "ae43a0d0-9f95-46b2-893e-daaad5e938c7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T18:40:01.694Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T18:45:10.127Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-christmas-story-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
