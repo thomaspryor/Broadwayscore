@@ -1158,7 +1158,9 @@ export function liveDataLaneCheck({ root, base = 'origin/main', env = process.en
 export function liveDataLaneSkipWarning(ld, base = 'origin/main') {
   if (!ld || ld.status !== 'skip' || ld.warning) return null;
   if (ld.reason === 'already refused') return null;
-  const reason = String(ld.reason || 'unknown').split('\n')[0].slice(0, 120);
+  // This tree has no such script: the manual command below could not run here either.
+  if (/not in this tree/.test(String(ld.reason || ''))) return null;
+  const reason = String(ld.reason || '').trim().split('\n')[0].trim().slice(0, 120) || 'unknown';
   return `live-data-lane preflight skipped (${reason}): this push was NOT checked for undeclared live-data tests, so land.yml may refuse it. Run: node scripts/live-data-lane.js --verify-changed --refuse-undeclared --base=${base}`;
 }
 

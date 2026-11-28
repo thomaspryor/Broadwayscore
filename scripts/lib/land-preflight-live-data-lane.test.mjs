@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
-import { liveDataLaneCheck } from './land-preflight.mjs';
+import { liveDataLaneCheck, liveDataLaneSkipWarning } from './land-preflight.mjs';
 
 test('preflight invokes the changed-test lane and reports undeclared live reads', () => {
   const root = process.cwd();
@@ -19,7 +19,6 @@ test('preflight invokes the changed-test lane and reports undeclared live reads'
   assert.match(result.message, /example\.test\.mjs reads live data/);
 });
 
-import { liveDataLaneSkipWarning } from './land-preflight.mjs';
 
 test('a skipped live-data-lane check warns with reason and manual command (BRO-8293)', () => {
   const w = liveDataLaneSkipWarning({ status: 'skip', reason: 'uncommitted tracked changes: x\nsecond line' });
@@ -36,4 +35,12 @@ test('silent when off, clean, fail, already refused, or the trace-incomplete war
   assert.equal(liveDataLaneSkipWarning({ status: 'skip', reason: 'already refused' }), null);
   assert.equal(liveDataLaneSkipWarning({ status: 'skip', reason: 'trace incomplete', warning: 'w' }), null);
   assert.equal(liveDataLaneSkipWarning(null), null);
+});
+
+test('reason is trimmed, capped, and never empty; a missing script stays silent (BRO-8293)', () => {
+  assert.match(liveDataLaneSkipWarning({ status: 'skip', reason: '\n  errored: boom' }), /skipped \(errored: boom\)/);
+  assert.match(liveDataLaneSkipWarning({ status: 'skip', reason: '' }), /skipped \(unknown\)/);
+  assert.ok(liveDataLaneSkipWarning({ status: 'skip', reason: 'x'.repeat(500) }).length < 420);
+  assert.equal(liveDataLaneSkipWarning({ status: 'skip', reason: 'live-data-lane.js --refuse-undeclared not in this tree' }), null);
+  assert.match(liveDataLaneSkipWarning({ status: 'skip', reason: 'r' }, 'origin/dev'), /--base=origin\/dev/);
 });
