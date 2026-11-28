@@ -1,0 +1,310 @@
+{
+  "schemaVersion": 1,
+  "showId": "fly-you-fools-off-west-end-2026",
+  "night": "2026-11-28",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-28T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-28T20:30:03.003Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-28T22:55:10.526Z",
+    "lastOkSampleAt": "2026-11-28T22:55:10.526Z"
+  },
+  "firstLiveAt": "2026-11-28T20:30:03.003Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-28T21:25:05.598Z",
+  "liveCount": 8,
+  "liveCountAt": {
+    "1h": 8,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-28T22:00:07.735Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-28",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "the reviews hub|jane darcy",
+      "outlet": "The Reviews Hub",
+      "critic": "Jane Darcy",
+      "tier": 2,
+      "publishAt": "2026-11-28",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-28T20:30:03.003Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "theatre and tonic|cathie",
+      "outlet": "Theatre and Tonic",
+      "critic": "Cathie",
+      "tier": 3,
+      "publishAt": "2026-11-28",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-28T20:30:03.003Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "rhombus rota|gonzalo",
+      "outlet": "Rhombus Rota",
+      "critic": "Gonzalo",
+      "tier": 3,
+      "publishAt": "2026-11-28",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-28T20:30:03.003Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "all that dazzles (uk)|phil mccullough",
+      "outlet": "All That Dazzles (UK)",
+      "critic": "Phil McCullough",
+      "tier": 3,
+      "publishAt": "2026-11-28",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-28T20:30:03.003Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "read about stuff|dan english",
+      "outlet": "Read About Stuff",
+      "critic": "Dan English",
+      "tier": 4,
+      "publishAt": "2026-11-28",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-28T20:30:03.003Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "love london love culture|emma clarendon",
+      "outlet": "Love London Love Culture",
+      "critic": "Emma Clarendon",
+      "tier": 4,
+      "publishAt": "2026-11-28",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-28T20:30:03.003Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "the spy in the stalls|hannah bothelton",
+      "outlet": "The Spy in the Stalls",
+      "critic": "Hannah Bothelton",
+      "tier": 4,
+      "publishAt": "2026-11-28",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-28T20:30:03.003Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "everything theatre|unknown",
+      "outlet": "Everything Theatre",
+      "critic": null,
+      "tier": 3,
+      "publishAt": "2026-11-28",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-28T21:25:05.598Z",
+      "prevOkSampleAt": "2026-11-28T21:20:04.948Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 8,
+      "fetchedAt": "2026-11-28T23:00:26.150Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-28T23:00:26.243Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-28T23:00:26.990Z",
+    "files": [
+      {
+        "file": "all-that-dazzles-uk--phil-mccullough.json",
+        "outletId": "all-that-dazzles-uk",
+        "outlet": "All That Dazzles (UK)",
+        "critic": "Phil McCullough",
+        "firstSeenAt": "2026-11-28T18:37:20.805Z",
+        "scoredAt": "2026-11-28T19:10:27.575Z",
+        "publishDate": "2026-11-28",
+        "url": "allthatdazzles.co.uk/post/review-fly-you-fools-southwark-playhouse-borough",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "beyondthecurtain--unknown.json",
+        "outletId": "beyondthecurtain",
+        "outlet": "Beyond the Curtain",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-28T19:21:17.182Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "beyondthecurtain.co.uk/2026/11/fly-you-fools-review",
+        "includable": false,
+        "reason": "noTextOrScoreSignal",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "british-theatre--rebecca-clifton.json",
+        "outletId": "british-theatre",
+        "outlet": "British Theatre Guide",
+        "critic": "Rebecca Clifton",
+        "firstSeenAt": "2026-11-28T22:19:24.819Z",
+        "scoredAt": "2026-11-28T22:34:57.583Z",
+        "publishDate": "2026-11-28",
+        "url": "britishtheatreguide.info/reviews/fly-you-fools-southwark-playh-26254",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "broadway-baby--unknown.json",
+        "outletId": "broadway-baby",
+        "outlet": "Broadway Baby",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-25T19:11:44.333Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "broadwaybaby.com/shows/fly-you-fools/826409",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "everything-theatre--harry-conway.json",
+        "outletId": "everything-theatre",
+        "outlet": "Everything Theatre",
+        "critic": "Harry Conway",
+        "firstSeenAt": "2026-11-28T19:47:37.724Z",
+        "scoredAt": "2026-11-28T20:28:52.485Z",
+        "publishDate": "2026-11-28",
+        "url": "everything-theatre.co.uk/2026/11/review-fly-you-fools-southwark-playhouse",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "lovelondonloveculture--emma-clarendon.json",
+        "outletId": "lovelondonloveculture",
+        "outlet": "Love London Love Culture",
+        "critic": "Emma Clarendon",
+        "firstSeenAt": "2026-11-28T19:06:23.392Z",
+        "scoredAt": "2026-11-28T19:10:31.745Z",
+        "publishDate": "2026-11-28",
+        "url": "lovelondonloveculture.com/2026/11/28/review-fly-you-fools-southwark-playhouse",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "readaboutstuff--dan-english.json",
+        "outletId": "readaboutstuff",
+        "outlet": "Read About Stuff",
+        "critic": "Dan English",
+        "firstSeenAt": "2026-11-28T07:52:35.418Z",
+        "scoredAt": "2026-11-28T08:03:53.743Z",
+        "publishDate": "2026-11-28",
+        "url": "readaboutstuff.com/2026/11/28/review-fly-you-fools-southwark-playhouse-borough-london",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "rhombus-rota--gonzalo.json",
+        "outletId": "rhombus-rota",
+        "outlet": "Rhombus Rota",
+        "critic": "Gonzalo",
+        "firstSeenAt": "2026-11-28T17:37:28.403Z",
+        "scoredAt": "2026-11-28T17:49:55.297Z",
+        "publishDate": "2026-11-28",
+        "url": "rhombusrota.co.uk/2026/11/28/fly-you-fools-at-southwark-playhouse-borough-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-spy-in-the-stalls--hannah-bothelton.json",
+        "outletId": "the-spy-in-the-stalls",
+        "outlet": "The Spy in the Stalls",
+        "critic": "Hannah Bothelton",
+        "firstSeenAt": "2026-11-28T13:08:27.310Z",
+        "scoredAt": "2026-11-28T13:22:28.576Z",
+        "publishDate": "2026-11-28",
+        "url": "thespyinthestalls.com/2026/11/fly-you-fools",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatreandtonic--emmie-newitt.json",
+        "outletId": "theatreandtonic",
+        "outlet": "Theatre and Tonic",
+        "critic": "Emmie Newitt",
+        "firstSeenAt": "2026-11-28T19:06:22.865Z",
+        "scoredAt": "2026-11-28T19:49:31.117Z",
+        "publishDate": "2026-11-28",
+        "url": "theatreandtonic.co.uk/blog/fly-you-fools-southwark-playhouse-borough-london-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thereviewshub--jane-darcy.json",
+        "outletId": "thereviewshub",
+        "outlet": "The Reviews Hub",
+        "critic": "Jane Darcy",
+        "firstSeenAt": "2026-11-28T15:31:34.310Z",
+        "scoredAt": "2026-11-28T15:45:18.896Z",
+        "publishDate": "2026-11-28",
+        "url": "thereviewshub.com/fly-you-fools-southwark-playhouse-borough-london",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
