@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7207-2-c",
   "planId": "7787294f-59bd-4145-9cfb-3920e48f46e0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T13:25:40.036Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "the-great-wave-west-end-2018/times-uk--sam-marlowe.json: the text reviews Caroline, or Change, not The Great Wave"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T16:19:56.527Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anything-goes-2011/nypost--frank-scheck.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-wave-west-end-2018/times-uk--sam-marlowe.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
