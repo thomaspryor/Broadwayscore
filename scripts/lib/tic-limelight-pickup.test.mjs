@@ -195,3 +195,17 @@ test('backfill rows are never topped up and record listed 0', () => {
   const shows = [showRow('x', 5, '2026-01-01', '2026-02-01')];
   assert.deepEqual(daily.pickTopups([{ id: 5, reviewCount: 99, backfill: true }], shows, {}, chi), []);
 });
+
+test('annual-return page: last season row closes, next season closing date is not borrowed (A Noise Within)', () => {
+  assert.equal(stage.isAnnualReturn('2025-12-01', '2026-12-24'), true);
+  assert.equal(stage.isAnnualReturn('2025-12-01', '2026-01-18'), false); // ordinary 7-week run
+  assert.equal(stage.isAnnualReturn('2025-03-01', '2026-09-30'), false); // long run off the anniversary
+  const la = getCity('la');
+  const page = { id: 8297, slug: 'a-christmas-carol', title: 'A Christmas Carol', venue: 'A Noise Within', closingDate: '2026-12-24', reviews: [] };
+  const e = stage.buildShowEntry({ page, detail: { ...detailOf('Play', { venue: 'A Noise Within', address: '3352 E Foothill Blvd Pasadena' }), closingDate: '2026-12-24' }, dates: { openingDate: '2025-12-01' }, discoveredAt: '2026-11-28', city: la });
+  assert.equal(e.status, 'closed');
+  assert.equal(e.closingDate, undefined);
+  const live = stage.buildShowEntry({ page, detail: { ...detailOf('Play', { venue: 'A Noise Within', address: '3352 E Foothill Blvd Pasadena' }), closingDate: '2026-12-24' }, dates: { openingDate: '2026-11-20' }, discoveredAt: '2026-11-28', city: la });
+  assert.equal(live.status, 'open');
+  assert.equal(live.closingDate, '2026-12-24');
+});

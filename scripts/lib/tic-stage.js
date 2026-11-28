@@ -166,6 +166,17 @@ function pickYear(openingDate) {
  * Build the add-show `show` object. `dates.openingDate` is the earliest
  * publish date among the fetched reviews (proxy for press opening).
  */
+/** True when `closing` sits about a whole number of years (1+) after `opening`: the listing's closing
+ *  date is a later season's, not the run the reviews cover. Long open-ended runs rarely land on the
+ *  anniversary, so a +/-45 day window keeps them out. */
+function isAnnualReturn(opening, closing) {
+  if (!opening || !closing) return false;
+  const gap = (Date.parse(closing) - Date.parse(opening)) / 86400000;
+  if (!(gap >= 240)) return false;
+  const years = Math.max(1, Math.round(gap / 365));
+  return Math.abs(gap - years * 365) <= 45;
+}
+
 function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chicago'), knownWriters }) {
   const year = pickYear(dates.openingDate);
   const venue = venueLine(detail, page, city) || String(page.venue || ''); // venue-write-guard-ok: staged entry only; add-show runs sanitizeVenueForWrite on apply
@@ -183,7 +194,12 @@ function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chi
   const title = norm.changed && !norm.manualReview ? norm.title : page.title;
   const base = slugify(title);
   const id = `${base}-regional-${year}`;
-  const closing = detail && detail.closingDate ? detail.closingDate : page.closingDate;
+  const listedClosing = detail && detail.closingDate ? detail.closingDate : page.closingDate;
+  // BRO-8454: a listing page reused every year prints the NEXT season's closing date while its reviews
+  // are last season's (A Noise Within "A Christmas Carol": reviews 2025-12, closing 2026-12-24).
+  // The reviews describe the earlier run, so that row closes with it; the remount check stages the
+  // new season once its own reviews arrive.
+  const closing = isAnnualReturn(dates.openingDate, listedClosing) ? null : listedClosing;
   const today = discoveredAt.slice(0, 10);
   // No "Thru" date: a run opened >120 days ago is treated as closed (open-ended listings are rare).
   const daysOld = (Date.parse(today) - Date.parse(dates.openingDate)) / 86400000;
@@ -275,5 +291,5 @@ function dedupeId(entry, page, taken) {
 module.exports = {
   dedupeId,
   MIN_REVIEWS, TOUR_HOUSES, VIRTUAL_VENUE,
-  normTitle, slugify, linkedReviews, prefilter, detailFilter, venueLine, venueLineFromCities, buildShowEntry, findDuplicate, looksLikeNonPlay,
+  normTitle, slugify, linkedReviews, prefilter, detailFilter, venueLine, venueLineFromCities, buildShowEntry, findDuplicate, looksLikeNonPlay, isAnnualReturn,
 };
