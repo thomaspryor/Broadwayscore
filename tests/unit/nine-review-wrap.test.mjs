@@ -82,3 +82,16 @@ test('isolateForIngest: section critic replaces the page byline; refusal and pas
   const plain = m.isolateForIngest({ url: 'https://example.com/r', text: 'body', showTitle: 'My Fair Lady', criticName: 'X Y', ownerShowIds: () => { throw new Error('not called'); } });
   assert.deepEqual(plain, { refuse: false, isolated: false, text: 'body', criticName: 'X Y', writeFields: {} });
 });
+
+test('all-caps show titles are headings; genre-only runs are not', () => {
+  const t = [item('MUSICAL THEATRE', 'SIX', '★★★★', 'Ann Example', 'Synthetic body.'), item('THEATRE', 'RENT', '★★★', 'Bo Example', 'Synthetic.'), 'THEATRE OPERA ★★'].join(' ');
+  assert.deepEqual(m.findNineWrapHeadings(t).map((h) => h.title), ['SIX', 'RENT']);
+  assert.equal(m.isolateMultiShowSection(WRAP_URL, t, 'SIX').action, 'isolated');
+});
+
+test('a wrap item with no byline is Unknown, never the page (first item) byline', () => {
+  const t = [item('MUSIC', 'Band Name', '★★★', 'Alex Example', 'Body.'), 'THEATRE Some Play ★★★ Venue, until May 1 Synthetic body with no credit line.'].join(' ');
+  const cut = m.isolateForIngest({ url: WRAP_URL, text: t, showTitle: 'Some Play', criticName: 'Alex Example', ownerShowIds: () => [] });
+  assert.equal(cut.isolated, true);
+  assert.equal(cut.criticName, null);
+});

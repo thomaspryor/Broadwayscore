@@ -146,9 +146,9 @@ function findNineWrapHeadings(text) {
       title = title.slice(last.index + last[0].length);
     }
     title = title.trim();
-    // A real title has a lowercase letter or digit; "A A A MUSIC" furniture or an
-    // all-caps run is not one.
-    if (!/[a-z0-9]/.test(title)) continue;
+    // A title made only of genre words ("THEATRE OPERA ★") is not one. All-caps
+    // show titles (SIX, RENT, MJ) are.
+    if (!title || new RegExp(`^(?:(?:${NINE_GENRES.join('|')})\\s*)+$`).test(title)) continue;
     out.push({ start, title });
   }
   return out;
@@ -187,6 +187,11 @@ function isMultiShowPostUrl(url) {
  * section (a Nine wrap credits each item; the page byline is the first item's
  * critic). null when the host has none or the section names nobody.
  */
+function sectionCreditsCritic(url) {
+  const st = multiShowStrategyFor(url);
+  return !!(st && st.sectionByline);
+}
+
 function isolatedSectionByline(url, sectionText) {
   const st = multiShowStrategyFor(url);
   return st && st.sectionByline ? st.sectionByline(sectionText) : null;
@@ -207,7 +212,9 @@ function isolateForIngest({ url, text, showTitle, criticName, ownerShowIds }) {
     refuse: false,
     isolated: true,
     text: iso.text,
-    criticName: isolatedSectionByline(url, iso.text) || criticName,
+    // A host that credits each section: no section byline means Unknown, never the
+    // page byline (that is the first item's critic).
+    criticName: sectionCreditsCritic(url) ? isolatedSectionByline(url, iso.text) : criticName,
     writeFields: isolatedSectionWriteFields(iso, showTitle, ownerShowIds()),
   };
 }
