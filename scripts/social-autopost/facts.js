@@ -3,6 +3,7 @@
 // one of `numbers`. Each fact carries a weight so the writer sees what is unusual first.
 
 const { getScoreTierId, getScoreTierLabel, getReviewBreakdownTierId } = require('../lib/score-tiers.js');
+const { getTierMarket } = require('../lib/market-label.js');
 const { getAudienceGrade, totalAudienceReviews, MIN_AUDIENCE_REVIEWS } = require('../lib/audience-grade.js');
 const { sameTitle, findLondonRun } = require('../lib/transfer-detection.js');
 const { MARKETS, marketOf } = require('./config');
@@ -61,24 +62,24 @@ const hasRankableScore = p => p && Number.isFinite(p.cs) && (p.rc || 0) >= MIN_R
 function buildFactPool(show, ctx, now) {
   const pub = ctx.slim[show.id];
   if (!pub || !Number.isFinite(pub.cs)) throw new Error(`${show.id}: no Critic Score`);
-  const market = marketOf(show), cat = show.category;
+  const market = marketOf(show), cat = show.category, tm = getTierMarket(show);
   if (!MARKETS[market]) throw new Error(`${show.id}: no social market for ${market}`);
   const label = MARKETS[market].label;
-  const score = Math.round(pub.cs), tierId = getScoreTierId(score, cat), tierLabel = getScoreTierLabel(score, cat);
+  const score = Math.round(pub.cs), tierId = getScoreTierId(score, tm), tierLabel = getScoreTierLabel(score, tm);
   const facts = [], nums = new Set();
   const add = (tag, weight, text, numbers = []) => { facts.push({ tag, weight, text }); numbers.forEach(n => nums.add(String(n))); };
 
   // Core facts: always given, never the lead on their own.
   add('score', 1, `Critic Score: ${score} (${tierLabel}) from ${pub.rc} critics' reviews. It is a weighted average; top-tier outlets count most.`, [score, pub.rc]);
-  const b = tally(pub.rv, cat);
-  const pans = (pub.rv || []).filter(r => String(r.b).toLowerCase() === 'pan' && agreedLabel(r, cat) === 'pan');
+  const b = tally(pub.rv, tm);
+  const pans = (pub.rv || []).filter(r => String(r.b).toLowerCase() === 'pan' && agreedLabel(r, tm) === 'pan');
   add('tally', 1, `All reviews: ${b.rave} rave, ${b.positive} positive, ${b.mixed} mixed, ${b.negative} negative${pans.length ? ` (the negatives include ${pans.length} pans: ${pans.slice(0, 4).map(r => r.o).join(', ')})` : ''}.`, [b.rave, b.positive, b.mixed, b.negative, pans.length, b.rave + b.positive, b.mixed + b.negative]);
 
   const top = (pub.rv || []).filter(r => r.t === 1);
-  const t = tally(top, cat), tn = total(t);
+  const t = tally(top, tm), tn = total(t);
   if (tn >= 3) {
     const named = {};
-    for (const r of top) { const l = agreedLabel(r, cat); if (l) (named[l] = named[l] || []).push(r.o); }
+    for (const r of top) { const l = agreedLabel(r, tm); if (l) (named[l] = named[l] || []).push(r.o); }
     const pos = t.rave + t.positive, neg = t.negative;
     const allPos = pos === tn, allNeg = neg === tn;
     add('top-tier', allPos || allNeg ? 3 : (pos && neg ? 2 : 1),

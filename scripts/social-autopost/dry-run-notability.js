@@ -11,6 +11,7 @@ const { targetSets } = require('./routing');
 const { signalsFor } = require('./notable');
 const { loadHandles, handleFor, NETWORKS } = require('./tags');
 const { getScoreTierId } = require('../lib/score-tiers');
+const { getTierMarket } = require("../lib/market-label");
 const C = require('./config');
 
 function rows({ days = 21, now = Date.now() } = {}) {
@@ -32,7 +33,7 @@ function rows({ days = 21, now = Date.now() } = {}) {
     const sig = subject ? signalsFor(subject, ctx.slim[subject.id]) : null;
     const score = Number.isFinite(p.score) ? p.score : subject && ctx.slim[subject.id] ? Math.round(ctx.slim[subject.id].cs) : null;
     const tagged = ok && subject && ['score', 'closing-soon', 'london-compare'].includes(p.type || 'score') && score !== null
-      && ['must-see', 'recommended', 'worth-seeing'].includes(getScoreTierId(score, subject.category))
+      && ['must-see', 'recommended', 'worth-seeing'].includes(getScoreTierId(score, getTierMarket(subject)))
       ? NETWORKS.filter(n => handleFor(handles, subject.id, n)) : [];
     out.push({ date: p.dueAt.slice(0, 10), type: p.type || 'score', id: p.showId || p.id, category: subject && subject.category, ok,
       why: ok ? 'broadway or notable' : !subject ? 'show not found' : sig ? `not notable (${sig.t1Count} tier-1, ${sig.curatedAudience} audience${subject.category === 'off-broadway' ? `; Off-Broadway needs ${C.NOTABLE_ONLY.offBroadwayMinT1}+ tier-1 or ${C.NOTABLE_ONLY.offBroadwayMinAudience}+` : ''}; ${sig.reviewCount} reviews) or not a Broadway-account market` : 'no',

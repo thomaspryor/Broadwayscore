@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useMemo, useState } from 'react';
+import { getTierMarket } from '@/lib/market-utils';
 import Link from 'next/link';
 import TicketLink from '@/components/TicketLink';
 import { ScoreBadge } from '@/components/show-cards';
@@ -86,7 +87,7 @@ function StopRow({ stop, show }: { stop: CityAgendaStop; show: BrowseShow }) {
         reviewCount={show.criticScore?.reviewCount ?? 0}
         tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)}
         status={show.status}
-        category={show.category}
+        category={getTierMarket(show)}
       />
     </li>
   );

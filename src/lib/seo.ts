@@ -13,7 +13,7 @@ import { shortCity, stopPlace, stopKey, type TourNowNext, type TourStop } from '
 import { isTourScored, isTourScoreHidden } from './tour-listing';
 import { displaysCriticScore } from './critic-score-display';
 import { getAudienceGrade, getTotalAudienceReviews, FULL_CONFIDENCE_AUDIENCE_REVIEWS } from './audience-grade-utils';
-import { getCurrencySymbol, isAuRegionalShow } from './market-utils';
+import { getCurrencySymbol, getTierMarket, isAuRegionalShow } from './market-utils';
 import type { AudienceBuzzData, ShowLotteryRush } from './data-types';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
@@ -661,7 +661,7 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
 
   // Q: Is it worth seeing? (highest-intent query — placed first for AI Overview targeting)
   if (score && scoreDisplayed) {
-    const goldMin = getGoldThreshold(show.category);
+    const goldMin = getGoldThreshold(getTierMarket(show));
     const worthSeeingAnswer =
       score >= goldMin
         ? isTour
@@ -682,7 +682,7 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
 
   // Q: What is the score?
   if (score && scoreDisplayed) {
-    const goldMin = getGoldThreshold(show.category);
+    const goldMin = getGoldThreshold(getTierMarket(show));
     faqs.push({
       question: `What is the CriticScore for ${show.title}?`,
       answer: `${show.title} has a CriticScore of ${score}/100 based on ${reviewCount} professional reviews. ${

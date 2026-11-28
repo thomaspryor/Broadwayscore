@@ -14,7 +14,7 @@ import { scoreGateArg } from '@/config/scoring';
 import { getRunAgeLabel, getRunLength, formatOpeningDate, getDurationSuffix, formatShowDate } from '@/lib/date-utils';
 import { formatClosingLabel } from '@/lib/closing-label';
 import { shortCity } from '@/lib/tour-schedule';
-import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
+import { getMarketLabel, isLondonMarket, getTierMarket } from '@/lib/market-utils';
 import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
 import { showsMarketBadge } from '../../../scripts/lib/market-badge';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -92,6 +92,8 @@ const ShowListCard = memo(function ShowListCard({
 }: ShowListCardProps) {
   const isRevival = show.isRevival === true;
   const category = show.category ?? 'broadway';
+  // Tier market (Gold cutoff): AU regional reads 'regional-au'. Review-count gates keep `category`.
+  const tierMarket = getTierMarket(show) ?? 'broadway';
   const isCompact = variant === 'compact';
 
   // Ticket link for CTA (sorted, first link = highest priority affiliate)
@@ -109,7 +111,7 @@ const ShowListCard = memo(function ShowListCard({
   let audienceGrade = show.audienceGrade;
 
   const criticScore = show.criticScore?.score;
-  const criticTier = getScoreTier(criticScore, category);
+  const criticTier = getScoreTier(criticScore, tierMarket);
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
 
@@ -123,7 +125,7 @@ const ShowListCard = memo(function ShowListCard({
     }
   } else {
     score = criticScore;
-    tier = hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show)) ? getScoreTier(score, category) : null;
+    tier = hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show)) ? getScoreTier(score, tierMarket) : null;
     audienceGrade = show.audienceGrade;
   }
 
@@ -421,7 +423,7 @@ const ShowListCard = memo(function ShowListCard({
             reviewCount={reviewCount}
             status={show.status}
             showCrown
-            category={category}
+            category={tierMarket}
             tier1And2Count={t1t2}
             isCuratedHistorical={scoreGateArg(show)}
           />

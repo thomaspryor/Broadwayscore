@@ -297,7 +297,20 @@ function getTourPromptContext() {
   ].join(' ');
 }
 
+/**
+ * The market key the Critic Score tier functions take: the show's category, except an AU
+ * regional production reads 'regional-au' (Gold 85, BRO-8451). JS twin of getTierMarket in
+ * src/lib/market-utils.ts. Pass to tier functions only, never to review-count gates.
+ * @param {{category?: string, venue?: string|null}} show
+ * @returns {string|undefined}
+ */
+function getTierMarket(show) {
+  if (!show) return undefined;
+  return show.category === 'regional' && isAuRegionalVenue(show.venue) ? 'regional-au' : (show.category ?? undefined);
+}
+
 module.exports = {
+  getTierMarket,
   isTourMarket,
   getTourPromptContext,
   MARKET_LABELS,

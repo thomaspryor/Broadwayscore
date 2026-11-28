@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { getTierMarket } from '@/lib/market-utils';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import {
@@ -392,7 +393,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
                         reviewCount={show.criticScore?.reviewCount}
                         status={show.status}
                         showCrown
-                        category={show.category}
+                        category={getTierMarket(show)}
                         tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)}
                         labelTbd
                       />

@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { getTierMarket } from '@/lib/market-utils';
 import { ScoreBadge, getScoreTier } from '@/components/show-cards';
 import { useAuth } from '@/contexts/AuthContext';
 import { useScoreCall, useScoreCallReaders } from '@/hooks/useScoreCall';
 import { isCallableShow, nyToday, gapSentence, readersSentence, rangeCaption, readersCaption, smallPrint, readersMissSentence, FIRST_READER_LINE, resultStrip, resultSentence, forecastMissSentence, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS } from '@/lib/score-call';
 
-interface ShowLike { id: string; category?: string; type?: string; status?: string; openingDate?: string | null; previewsStartDate?: string | null; previewDate?: string | null; cancelledBeforeOpening?: boolean; /** Reviews live on this page. Any review closes predictions (BRO-7857). */ reviewCount?: number }
+interface ShowLike { id: string; category?: string; venue?: string; type?: string; status?: string; openingDate?: string | null; previewsStartDate?: string | null; previewDate?: string | null; cancelledBeforeOpening?: boolean; /** Reviews live on this page. Any review closes predictions (BRO-7857). */ reviewCount?: number }
 
 const ls = (): Storage | null => { try { return window.localStorage; } catch { return null; } };
 // New York date: a UTC date flips at 7-8pm ET and closed predictions a day early (BRO-7857).
@@ -51,9 +52,9 @@ function LockedCard({ show, call }: { show: ShowLike; call: NonNullable<ReturnTy
     <Wrap>
       <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Prediction locked in</p>
       <div className={`flex flex-wrap items-start justify-center gap-y-3 mb-3 pt-1 ${readers && hasF ? 'gap-x-2 sm:gap-x-4' : 'gap-x-4'}`}>
-        <Tile label="Your prediction" score={call.called_score} category={show.category} predicted />
-        {readers && <Tile label="Readers" score={readers.avg} category={show.category} muted predicted caption={readersCaption(readers.n)} />}
-        {hasF && <Tile label="Our forecast" score={call.forecast} category={show.category} muted predicted caption={rng ? <RangeCaption lo50={call.lo50} hi50={call.hi50} /> : undefined} />}
+        <Tile label="Your prediction" score={call.called_score} category={getTierMarket(show)} predicted />
+        {readers && <Tile label="Readers" score={readers.avg} category={getTierMarket(show)} muted predicted caption={readersCaption(readers.n)} />}
+        {hasF && <Tile label="Our forecast" score={call.forecast} category={getTierMarket(show)} muted predicted caption={rng ? <RangeCaption lo50={call.lo50} hi50={call.hi50} /> : undefined} />}
       </div>
       {ready && sentence && <p className="text-sm text-gray-300 text-center m-0 mb-1">{sentence}</p>}
       {ready && !hasF && !readers && <p className="text-sm text-gray-300 text-center m-0 mb-1">We don&apos;t have a forecast for this show.</p>}
@@ -98,7 +99,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
   }, [callable, signedIn, loaded, loadError, call, show.id, lock]);
   useEffect(() => { if (call) clearPendingCall(show.id, ls()); }, [call, show.id]);
   if (!callable) return null;
-  const tier = getScoreTier(value, show.category);
+  const tier = getScoreTier(value, getTierMarket(show));
 
   const onLock = async () => {
     setMsg(null);
@@ -138,7 +139,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
       <h3 className="text-base font-semibold text-white m-0 mb-1">Predict the score</h3>
       <p className="text-sm text-gray-400 m-0 mb-3">What will the critics give it? Lock in a number before the reviews land.</p>
       <div className="flex items-center gap-4">
-        <ScoreBadge score={value} size="md" category={show.category} />
+        <ScoreBadge score={value} size="md" category={getTierMarket(show)} />
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold text-gray-200 m-0 mb-1.5" aria-live="polite"><span className="text-fg-muted font-medium">Your guess · </span>{tier?.label}</p>
           <input type="range" min={0} max={100} step={1} value={value} onChange={(e) => setValue(Number(e.target.value))} aria-label="Your score prediction, 0 to 100" aria-valuetext={`${value}, ${tier?.label ?? ''}`} className="w-full accent-brand" />
@@ -167,10 +168,10 @@ export function CallResultStrip({ show, critic }: { show: ShowLike; critic: numb
       <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">How your prediction did</p>
       <p className="text-base font-semibold text-white m-0 mb-3">{resultSentence({ r })}</p>
       <div className="flex flex-wrap items-start justify-center gap-x-2 gap-y-3 sm:gap-x-5 mb-2 pt-1">
-        <Tile label="Your prediction" score={call.called_score} category={show.category} predicted />
-        {readers && <Tile label="Readers" score={readers.avg} category={show.category} muted predicted caption={readersCaption(readers.n)} />}
-        {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={show.category} muted predicted />}
-        <Tile label="Critic Score" score={r.critic} category={show.category} />
+        <Tile label="Your prediction" score={call.called_score} category={getTierMarket(show)} predicted />
+        {readers && <Tile label="Readers" score={readers.avg} category={getTierMarket(show)} muted predicted caption={readersCaption(readers.n)} />}
+        {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={getTierMarket(show)} muted predicted />}
+        <Tile label="Critic Score" score={r.critic} category={getTierMarket(show)} />
       </div>
       {footer && <p className="text-xs text-fg-muted text-center m-0">{footer}</p>}
     </div>

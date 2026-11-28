@@ -37,7 +37,14 @@
 const MARKET_GOLD_THRESHOLD = {
   'west-end': 85,
   'off-west-end': 85,
+  // Australian productions (category 'regional' at an AU house, BRO-8451). AU press scores in
+  // stars like London, so Gold needs 85. This is a TIER market key, not a show category: derive it
+  // with getTierMarket(show) (src/lib/market-utils.ts, scripts/lib/market-label.js) and pass it
+  // ONLY to the tier functions. Review-count gates keep reading the raw category.
+  'regional-au': 85,
 };
+/** Tier-market key for an Australian regional production. */
+const TIER_MARKET_REGIONAL_AU = 'regional-au';
 const DEFAULT_GOLD_THRESHOLD = 83;
 
 // Lower bounds of the tiers under Gold. They do not vary by market.
@@ -165,6 +172,7 @@ function getReviewBreakdownTierId(verdict, score, category) {
 
 module.exports = {
   MARKET_GOLD_THRESHOLD,
+  TIER_MARKET_REGIONAL_AU,
   DEFAULT_GOLD_THRESHOLD,
   RECOMMENDED_MIN,
   WORTH_SEEING_MIN,
