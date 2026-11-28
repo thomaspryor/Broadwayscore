@@ -39937,23 +39937,20 @@
       "resolvedAt": "2026-11-09T02:23:27.087Z"
     },
     "test-yml:data-validation-red:run-data-validation": {
-      "status": "resolved",
-      "disposition": "auto",
+      "status": "open",
+      "disposition": "digest",
       "title": "Data audit failing: Run data validation",
       "firstSeen": "2026-11-09T03:33:12.490Z",
-      "incidentOpenedAt": "2026-11-25T21:22:56.023Z",
+      "incidentOpenedAt": "2026-11-28T20:46:36.990Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T04:26:06.635Z",
-      "lastNotifiedAt": "2026-11-26T22:09:55.058Z",
-      "lastSurfacedAt": "2026-11-26T22:09:55.058Z",
-      "notifyCount": 19,
+      "lastSeen": "2026-11-28T20:46:36.990Z",
+      "lastNotifiedAt": "2026-11-28T20:46:36.990Z",
+      "lastSurfacedAt": "2026-11-28T20:46:36.990Z",
+      "notifyCount": 20,
       "cardId": null,
-      "linearIdentifier": "BRO-8359",
+      "linearIdentifier": null,
       "notifyCountAtRelease": 16,
-      "sweptTracker": "BRO-8225",
-      "silentRefires": 4,
-      "resolvedAt": "2026-11-27T05:41:45.347Z",
-      "resolveReason": "step passed"
+      "sweptTracker": "BRO-8225"
     },
     "gap:iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json": {
       "status": "resolved",
@@ -41657,7 +41654,7 @@
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-self-contradictory-clear-drain-acceptance-test-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run self-contradictory-clear drain acceptance test (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.437Z",
@@ -41668,7 +41665,9 @@
       "lastSurfacedAt": "2026-11-28T20:12:46.116Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-28T20:46:36.939Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-non-review-content-weather-sports-junk-pages": {
       "status": "resolved",
@@ -41693,12 +41692,13 @@
       "firstSeen": "2026-11-10T15:36:09.494Z",
       "incidentOpenedAt": "2026-11-28T20:21:45.521Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-28T20:21:45.521Z",
+      "lastSeen": "2026-11-28T20:46:37.030Z",
       "lastNotifiedAt": "2026-11-28T20:21:45.521Z",
       "lastSurfacedAt": "2026-11-28T20:21:45.521Z",
       "notifyCount": 14,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
       "status": "resolved",

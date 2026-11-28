@@ -396,6 +396,33 @@
     "queuedAt": "2026-11-28T20:12:46.205Z"
   },
   {
+    "conditionKey": "test-yml:data-validation-red:run-data-validation",
+    "title": "Data audit failing: Run data validation",
+    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46187359305",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run data validation"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/46187359305)"
+      }
+    ],
+    "queuedAt": "2026-11-28T20:46:36.992Z"
+  },
+  {
     "conditionKey": "star-band:regressions",
     "title": "Star-band detector: 2 review(s) flagged for anchored re-score",
     "description": "{\"unanchored\":2} across the whole corpus, by market {\"broadway\":178,\"west-end\":334,\"regional\":44,\"tour\":8}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] the-thanksgiving-play-2023/nyt-theater--jonathan-mandell.json A band 89-94\n- [unanchored] dark-of-the-moon-off-west-end-2026/whatsonstage--maygan-forbes.json 2/5 stars band 31-50",
