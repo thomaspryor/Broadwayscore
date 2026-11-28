@@ -1149,6 +1149,20 @@ export function liveDataLaneCheck({ root, base = 'origin/main', env = process.en
 }
 
 /**
+ * BRO-8293: a skipped live-data-lane check is silent, so a push that skipped it (dirty tree, pushed ref not
+ * HEAD, budget, no verdict) reaches land.yml unchecked and costs hours when land.yml refuses it. Say so
+ * at push time, with the reason and the manual command. Warning only, never a block. 'off' is a
+ * deliberate disable and 'already refused' has a better answer, both stay silent; 'trace incomplete'
+ * already carries its own warning.
+ */
+export function liveDataLaneSkipWarning(ld, base = 'origin/main') {
+  if (!ld || ld.status !== 'skip' || ld.warning) return null;
+  if (ld.reason === 'already refused') return null;
+  const reason = String(ld.reason || 'unknown').split('\n')[0].slice(0, 120);
+  return `live-data-lane preflight skipped (${reason}): this push was NOT checked for undeclared live-data tests, so land.yml may refuse it. Run: node scripts/live-data-lane.js --verify-changed --refuse-undeclared --base=${base}`;
+}
+
+/**
  * BRO-7788: a checkout whose declared packages (next, cheerio) do not resolve cannot run the guard
  * tests, so land-fast-tests and the local checks skip or fail with MODULE_NOT_FOUND noise and the
  * real refusal only shows 10-25 min later in land.yml. Refuse before the push, with the fix.
@@ -1288,6 +1302,8 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     v.detail.liveDataLane = ld;
     if (ld.status === 'fail') { v.decision = 'block'; v.message = ld.message; }
     if (ld.warning) v.warnings = [...(v.warnings || []), ld.warning];
+    const lw = liveDataLaneSkipWarning(ld, base);
+    if (lw) v.warnings = [...(v.warnings || []), lw];
     logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, liveDataLane: ld.status, liveDataLaneReason: ld.reason || null, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status, mergesCarrying: v.detail.merges?.carrying?.length ?? null });
     if (v.decision !== 'block') {
       const cw = coordinatorWarnings({ root, src: t.src || 'HEAD', target: t.dst, seams });
