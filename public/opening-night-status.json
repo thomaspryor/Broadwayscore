@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T15:23:43.122Z",
+  "generatedAt": "2026-11-28T15:45:52.344Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -553,27 +553,27 @@
       "slug": "jack-and-the-beanstalk-off-west-end",
       "thumbnail": "/images/shows/jack-and-the-beanstalk-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 76,
+      "liveScore": null,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 1,
+      "total": 0,
+      "t1": 0,
       "t2": 0,
       "t3": 0,
-      "positive": 1,
+      "positive": 0,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
-          "T1:1/3",
+          "0/8 total",
+          "T1:0/3",
           "T2:0/2",
-          "hi-conf:1/6"
+          "hi-conf:0/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 0,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -632,6 +632,10 @@
         },
         {
           "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -856,10 +860,6 @@
         },
         {
           "name": "The Spectator (UK)",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Reviews Hub",
           "isDualMarket": false
         },
         {
@@ -2950,10 +2950,6 @@
         },
         {
           "name": "Chicago Sun-Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Australian",
           "isDualMarket": false
         },
         {
