@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "showId": "adriana-mater-english-national-opera-west-end-2026",
+  "night": "2026-11-28",
+  "market": "west-end",
+  "embargoAt": "2026-11-28T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-28T20:30:03.810Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-28T22:55:09.559Z",
+    "lastOkSampleAt": "2026-11-28T22:55:09.559Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-28T22:00:07.108Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-28T23:00:30.392Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-28T23:00:30.488Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-28T23:00:31.271Z",
+    "files": [
+      {
+        "file": "bestoftheatre--milo-garth.json",
+        "outletId": "bestoftheatre",
+        "outlet": "Best Of Theatre",
+        "critic": "Milo Garth",
+        "firstSeenAt": "2026-11-28T20:25:51.846Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-28",
+        "url": "bestoftheatre.co.uk/blog/post/adriana-mater-opens-london-coliseum-eno-tosca-sequel",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null,
+        "rejectionKind": "not_a_review"
+      },
+      {
+        "file": "telegraph--unknown.json",
+        "outletId": "telegraph",
+        "outlet": "The Telegraph",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-28T18:38:38.950Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-27",
+        "url": "telegraph.co.uk/theatre/tickets/london/adriana-mater",
+        "includable": false,
+        "reason": "blockedReviewUrl",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
