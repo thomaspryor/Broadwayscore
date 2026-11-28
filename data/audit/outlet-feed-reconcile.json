@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T13:35:56.929Z",
+  "generatedAt": "2026-11-28T14:08:12.555Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -174,32 +174,12 @@
       "error": "HTTP 403 for https://theatreweekly.com/feed"
     },
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "theater-pizzazz",
       "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
-    },
-    {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
       "outletId": "exeunt-magazine",
@@ -210,8 +190,8 @@
       "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 792,
-  "matchedGaps": 2,
+  "itemsScanned": 827,
+  "matchedGaps": 3,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -222,6 +202,15 @@
       "url": "https://www.allthatdazzles.co.uk/post/review-a-christmas-carol-reading-rep-theatre",
       "headline": "Review: A Christmas Carol (Reading Rep Theatre)",
       "publishDate": "2026-11-26"
+    },
+    {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/downstate-its-a-wonderful-life-a-live-radio-play/",
+      "headline": "Downstate *****, It’s a Wonderful Life: A Live Radio Play ***",
+      "publishDate": "2026-11-28"
     },
     {
       "showId": "its-a-wonderful-life-a-live-radio-play-2026",
