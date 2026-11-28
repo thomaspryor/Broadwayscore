@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8455e",
   "planId": "3b84f67c-fcd6-4ac0-a368-33d4f3ed8fbd",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T22:31:03.194Z",
   "submitter": {
     "name": null,
@@ -49,5 +49,34 @@
         "description": "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T22:41:37.144Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-room-in-the-castle-regional-2026/stage-west--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted arcadia-regional-2026/stage-west--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cyrano-regional-2026/stage-west--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hairspray-regional-2026/stage-west--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kims-convenience-regional-2026/stage-west--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
