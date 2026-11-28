@@ -1,15 +1,20 @@
 {
-  "generatedAt": "2026-11-28T11:08:04.748Z",
-  "bannerText": "179/204 Done(14d) verified on main · 7 FAILED · 0 vacuous · 13 stuck-but-done · 5 mis-armed, needs re-arming (BRO-8155, BRO-8152, BRO-8115, +2 more) — PARTIAL RUN: 2 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-28T16:26:25.826Z",
+  "bannerText": "161/184 Done(14d) verified on main · 6 FAILED · 0 vacuous · 20 stuck-but-done · 3 mis-armed, needs re-arming (BRO-8115, BRO-8112, BRO-8014) — PARTIAL RUN: 2 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
+      "title": "FAILED BRO-8308 — P1: Opening night miss: The Dead, 1904 (2026-11-24)",
+      "detail": "gap audit generated 2026-11-28T15:05:10.195Z PASS the-dead-1904-off-broadway-2026: 5 live, 0 cited not live; info: 7 census candidate(s), 0 exclusion(s) confirmed correct; audited…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8308/p1-opening-night-miss-the-dead-1904-2026-11-24"
+    },
+    {
       "title": "FAILED BRO-8148 — P1: Opening night miss: Fantasma (2026-11-22)",
-      "detail": "gap audit generated 2026-11-28T08:50:35.853Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
+      "detail": "gap audit generated 2026-11-28T15:05:10.195Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8148/p1-opening-night-miss-fantasma-2026-11-22"
     },
     {
       "title": "FAILED BRO-8141 — BSC Daily: Data quality: missed opening-night broadcasts",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: missed opening-night broadcasts\" still listed in the 2026-11-28T10:33:04.329Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: missed opening-night broadcasts\" still listed in the 2026-11-28T16:04:56.387Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8141/bsc-daily-data-quality-missed-opening-night-broadcasts"
     },
     {
@@ -24,18 +29,13 @@
     },
     {
       "title": "FAILED BRO-7315 — Guardrail slim-down: cut hooks, rules and CI gates, prove the survivors with tests",
-      "detail": "TAP version 13 # Subtest: every top-level repo hook is wired in .claude/settings.json ok 1 - every top-level repo hook is wired in .claude/settings.json --- duration_ms: 1.535076 …",
+      "detail": "TAP version 13 # Subtest: every top-level repo hook is wired in .claude/settings.json ok 1 - every top-level repo hook is wired in .claude/settings.json --- duration_ms: 1.348791 …",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7315/guardrail-slim-down-cut-hooks-rules-and-ci-gates-prove-the-survivors"
     },
     {
-      "title": "FAILED BRO-8310 — BSC Daily: Quality: outlet domain moves",
-      "detail": "[check-health-row-absent] FAIL: \"Quality: outlet domain moves\" still listed in the 2026-11-28T10:33:04.329Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8310/bsc-daily-quality-outlet-domain-moves"
-    },
-    {
-      "title": "FAILED BRO-8308 — P1: Opening night miss: The Dead, 1904 (2026-11-24)",
-      "detail": "gap audit generated 2026-11-28T08:50:35.853Z PASS the-dead-1904-off-broadway-2026: 5 live, 0 cited not live; info: 7 census candidate(s), 0 exclusion(s) confirmed correct; audited…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8308/p1-opening-night-miss-the-dead-1904-2026-11-24"
+      "title": "STUCK BRO-8305 — Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8305/spend-guard-bd-circuit-breaker-web-unlocker2-cap-drift"
     },
     {
       "title": "STUCK BRO-8277 — One-off large text-recovery batch: honest tried-counts, then work the whole backlog in checkpointed rounds",
@@ -43,5 +43,5 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-8277/one-off-large-text-recovery-batch-honest-tried-counts-then-work-the"
     }
   ],
-  "moreCount": 12
+  "moreCount": 18
 }
