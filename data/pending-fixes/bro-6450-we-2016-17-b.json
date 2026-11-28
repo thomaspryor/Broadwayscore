@@ -1,0 +1,55 @@
+{
+  "issueNumber": "bro-6450-we-2016-17-b",
+  "planId": "3b8925e0-1c8e-4bb4-88fb-9fb167c26349",
+  "status": "applied",
+  "createdAt": "2026-10-27T23:55:51.370Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 1 closed West End production(s) for 2016-2017 from the historical backfill (we-historical:theatricalia; BRO-6450).",
+    "steps": [
+      "Append follies-west-end-2017 (Olivier Theatre, 2017-08-22 to 2018-01-03)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "follies-west-end-2017",
+          "title": "Follies",
+          "slug": "follies-west-end-2017",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2017-08-22",
+          "openingDate": "2017-08-22",
+          "closingDate": "2018-01-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2016-2017",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:51.319Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5ca/follies/production/xdg"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T01:31:42.234Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added follies-west-end-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

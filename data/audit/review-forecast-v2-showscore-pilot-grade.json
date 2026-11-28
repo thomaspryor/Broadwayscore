@@ -1,0 +1,61 @@
+{
+ "pilotShowsWithData": 40,
+ "evaluated": 26,
+ "coverage": {
+  "showsInFile": 54,
+  "withFiveOrMoreBeforeCutoff": 40,
+  "medianN": 90
+ },
+ "correlationWithResidual": 0.63,
+ "groups": [
+  {
+   "group": "all evaluated",
+   "n": 26,
+   "v1Miss": 11.02,
+   "withAudienceMiss": 8.31,
+   "categoryMeanMiss": 12.85,
+   "diff": -2.71,
+   "diffCI95": [
+    -4.02,
+    -0.88
+   ]
+  },
+  {
+   "group": "flops (actual < 55)",
+   "n": 10,
+   "v1Miss": 16.77,
+   "withAudienceMiss": 9.37,
+   "categoryMeanMiss": 18.39,
+   "diff": -7.4,
+   "diffCI95": [
+    -9.91,
+    -2.64
+   ]
+  },
+  {
+   "group": "hits (actual >= 83)",
+   "n": 8,
+   "v1Miss": 7.37,
+   "withAudienceMiss": 9.59,
+   "categoryMeanMiss": 13.43,
+   "diff": 2.21,
+   "diffCI95": [
+    1.01,
+    4.19
+   ]
+  },
+  {
+   "group": "middle (55 to 82)",
+   "n": 8,
+   "v1Miss": 7.48,
+   "withAudienceMiss": 5.72,
+   "categoryMeanMiss": 5.34,
+   "diff": -1.76,
+   "diffCI95": [
+    -3.85,
+    0.41
+   ]
+  }
+ ],
+ "note": "Expanding-window correction of the v1 forecast residual by the shrunk pre-opening member mean; pilot sample is tail-weighted, so absolute misses are not the population miss."
+}

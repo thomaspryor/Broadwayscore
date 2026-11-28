@@ -1,0 +1,92 @@
+{
+  "issueNumber": "bro-5549-b",
+  "planId": "34977e81-9c09-4404-938e-c3cfc50a8571",
+  "status": "applied",
+  "createdAt": "2026-10-17T16:35:26.019Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5549 follow-up: five printed source lines quoted a title inside a quote with double marks, so the show card read \"\"The Band’s Visit\" has recouped\". The Band’s Visit and The Play That Goes Wrong (both added by bro-5549) and The Anarchist (older) now use single marks inside the quote. commercial-record-checks.js warns on doubled quotation marks from now on, which the approved-fix runner refuses on touched records.",
+    "steps": [
+      "Each edit replaces one exact substring of the live value."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bands-visit-2017",
+        "field": "capitalizationSource",
+        "oldValue": "Broadway News (Sep 10, 2018): \"“The Band’s Visit” has recouped its $8.75 million capitalization after 11 months on Broadway, the producers announced Monday.\" https://www.broadwaynews.com/the-bands-visit-recoups-after-11-months-on-broadway/ The SEC Form D (Band’s Visit Broadway, LLC, filed May 15, 2017) gives the same total offering amount, $8,750,000. https://www.sec.gov/Archives/edgar/data/1705879/000170587917000001/xslFormDX01/primary_doc.xml",
+        "newValue": "Broadway News (Sep 10, 2018): \"‘The Band’s Visit’ has recouped its $8.75 million capitalization after 11 months on Broadway, the producers announced Monday.\" https://www.broadwaynews.com/the-bands-visit-recoups-after-11-months-on-broadway/ The SEC Form D (Band’s Visit Broadway, LLC, filed May 15, 2017) gives the same total offering amount, $8,750,000. https://www.sec.gov/Archives/edgar/data/1705879/000170587917000001/xslFormDX01/primary_doc.xml",
+        "description": "the-bands-visit-2017: the card printed \"\"Title\" (a quoted title inside the quote); inner quotes take single marks."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-play-that-goes-wrong-2017",
+        "field": "capitalizationSource",
+        "oldValue": "Broadway News (Aug 21, 2018): \"“The Play That Goes Wrong” has recouped its $4 million capitalization, 17 months after it began performances on Broadway.\" https://www.broadwaynews.com/the-play-that-goes-wrong-recoups-its-4-million-investment/",
+        "newValue": "Broadway News (Aug 21, 2018): \"‘The Play That Goes Wrong’ has recouped its $4 million capitalization, 17 months after it began performances on Broadway.\" https://www.broadwaynews.com/the-play-that-goes-wrong-recoups-its-4-million-investment/",
+        "description": "the-play-that-goes-wrong-2017: the card printed \"\"Title\" (a quoted title inside the quote); inner quotes take single marks."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bands-visit-2017",
+        "field": "recoupedSource",
+        "oldValue": "Broadway News (Sep 10, 2018): \"“The Band’s Visit” has recouped its $8.75 million capitalization after 11 months on Broadway, the producers announced Monday.\" https://www.broadwaynews.com/the-bands-visit-recoups-after-11-months-on-broadway/",
+        "newValue": "Broadway News (Sep 10, 2018): \"‘The Band’s Visit’ has recouped its $8.75 million capitalization after 11 months on Broadway, the producers announced Monday.\" https://www.broadwaynews.com/the-bands-visit-recoups-after-11-months-on-broadway/",
+        "description": "the-bands-visit-2017: the card printed \"\"Title\" (a quoted title inside the quote); inner quotes take single marks."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-play-that-goes-wrong-2017",
+        "field": "recoupedSource",
+        "oldValue": "Broadway News (Aug 21, 2018): \"“The Play That Goes Wrong” has recouped its $4 million capitalization, 17 months after it began performances on Broadway.\" https://www.broadwaynews.com/the-play-that-goes-wrong-recoups-its-4-million-investment/",
+        "newValue": "Broadway News (Aug 21, 2018): \"‘The Play That Goes Wrong’ has recouped its $4 million capitalization, 17 months after it began performances on Broadway.\" https://www.broadwaynews.com/the-play-that-goes-wrong-recoups-its-4-million-investment/",
+        "description": "the-play-that-goes-wrong-2017: the card printed \"\"Title\" (a quoted title inside the quote); inner quotes take single marks."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "field": "recoupedSource",
+        "oldValue": "Variety (Dec 19, 2012) reported the play closed at a loss, citing the: \"losses sustained from the flop of \"The Anarchist,\"\" https://variety.com/2012/legit/news/broadway-glengarry-recoups-1118063828/",
+        "newValue": "Variety (Dec 19, 2012) reported the play closed at a loss: \"losses sustained from the flop of ‘The Anarchist’\" https://variety.com/2012/legit/news/broadway-glengarry-recoups-1118063828/",
+        "description": "the-anarchist-2012: the card printed \"The Anarchist,\"\" with doubled marks after an unfinished \"citing the:\"; single marks inside the quote."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T17:29:00.451Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-bands-visit-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-play-that-goes-wrong-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-bands-visit-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-play-that-goes-wrong-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-anarchist-2012"
+    }
+  ]
+}

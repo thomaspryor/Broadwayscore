@@ -1,0 +1,847 @@
+{
+  "issueNumber": "bro-6450-we-2013-14",
+  "planId": "15677aba-a115-42d6-b68a-3603b5968a01",
+  "status": "applied",
+  "createdAt": "2026-10-27T23:55:46.350Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 25 closed West End production(s) for 2013-2014 from the historical backfill (we-historical:theatricalia; BRO-6450).",
+    "steps": [
+      "Append a-midsummer-nights-dream-west-end-2013 (Noël Coward Theatre, 2013-09-07 to 2013-11-16)",
+      "Append much-ado-about-nothing-west-end-2013 (The Old Vic, 2013-09-07 to 2013-11-30)",
+      "Append barking-in-essex-west-end-2013 (Wyndham's Theatre, 2013-09-16 to 2014-01-04)",
+      "Append routes-west-end-2013 (Royal Court, 2013-09-20 to 2013-10-12)",
+      "Append jeeves-and-wooster-in-perfect-nonsense-west-end-2013 (Duke of York's Theatre, 2013-11-12 to 2014-09-20)",
+      "Append henry-v-west-end-2013 (Noël Coward Theatre, 2013-11-23 to 2014-02-15)",
+      "Append seussical-the-musical-west-end-2013 (Arts Theatre, 2013-11-30 to 2014-01-05)",
+      "Append ghosts-west-end-2013 (Trafalgar Theatre, 2013-12-17 to 2014-03-22)",
+      "Append king-lear-west-end-2014 (Olivier Theatre, 2014-01-14 to 2014-07-02)",
+      "Append the-weir-west-end-2014 (Wyndham's Theatre, 2014-01-22 to 2014-04-19)",
+      "Append tell-me-on-a-sunday-west-end-2014 (Duchess Theatre, 2014-02-18 to 2014-03-08)",
+      "Append blithe-spirit-west-end-2014 (Gielgud Theatre, 2014-03-01 to 2014-06-07)",
+      "Append fatal-attraction-west-end-2014 (Theatre Royal Haymarket, 2014-03-25 to 2014-06-21)",
+      "Append birdland-west-end-2014 (Royal Court, 2014-04-03 to 2014-05-31)",
+      "Append a-small-family-business-west-end-2014 (Olivier Theatre, 2014-04-08 to 2014-08-27)",
+      "Append good-people-west-end-2014 (Noël Coward Theatre, 2014-04-10 to 2014-06-14)",
+      "Append handbagged-west-end-2014 (Vaudeville Theatre, 2014-04-10 to 2014-08-02)",
+      "Append 1984-west-end-2014 (Playhouse Theatre, 2014-04-28 to 2014-08-23)",
+      "Append wolf-hall-west-end-2014 (Aldwych Theatre, 2014-05-01 to 2014-10-04)",
+      "Append bakersfield-mist-west-end-2014 (Duchess Theatre, 2014-05-10 to 2014-08-30)",
+      "Append skylight-west-end-2014 (Wyndham's Theatre, 2014-06-18 to 2014-08-23)",
+      "Append the-importance-of-being-earnest-west-end-2014 (Harold Pinter Theatre, 2014-06-27 to 2014-09-20)",
+      "Append great-britain-west-end-2014 (Lyttelton Theatre, 2014-06-30 to 2014-08-23)",
+      "Append richard-iii-west-end-2014 (Trafalgar Theatre, 2014-07-01 to 2014-09-27)",
+      "Append shakespeare-in-love-west-end-2014 (Noël Coward Theatre, 2014-07-02 to 2015-04-30)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-midsummer-nights-dream-west-end-2013",
+          "title": "A Midsummer Night's Dream",
+          "slug": "a-midsummer-nights-dream-west-end-2013",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2013-09-07",
+          "openingDate": "2013-09-07",
+          "closingDate": "2013-11-16",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.647Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1e/a-midsummer-nights-dream/production/vyw"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "much-ado-about-nothing-west-end-2013",
+          "title": "Much Ado About Nothing",
+          "slug": "much-ado-about-nothing-west-end-2013",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2013-09-07",
+          "openingDate": "2013-09-07",
+          "closingDate": "2013-11-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.704Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1/much-ado-about-nothing/production/vr0"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "barking-in-essex-west-end-2013",
+          "title": "Barking In Essex",
+          "slug": "barking-in-essex-west-end-2013",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2013-09-16",
+          "openingDate": "2013-09-16",
+          "closingDate": "2014-01-04",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.741Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gnn/barking-in-essex/production/1526"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "routes-west-end-2013",
+          "title": "Routes",
+          "slug": "routes-west-end-2013",
+          "venue": "Royal Court",
+          "previewsStartDate": "2013-09-20",
+          "openingDate": "2013-09-20",
+          "closingDate": "2013-10-12",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.763Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fw8/routes/production/10yc"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "jeeves-and-wooster-in-perfect-nonsense-west-end-2013",
+          "title": "Jeeves and Wooster in Perfect Nonsense",
+          "slug": "jeeves-and-wooster-in-perfect-nonsense-west-end-2013",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2013-11-12",
+          "openingDate": "2013-11-12",
+          "closingDate": "2014-09-20",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.783Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/exa/jeeves-and-wooster-in-perfect-nonsense/production/14xp"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "henry-v-west-end-2013",
+          "title": "Henry V",
+          "slug": "henry-v-west-end-2013",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2013-11-23",
+          "openingDate": "2013-11-23",
+          "closingDate": "2014-02-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.806Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1y/henry-v/production/v8h"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "seussical-the-musical-west-end-2013",
+          "title": "Seussical the Musical",
+          "slug": "seussical-the-musical-west-end-2013",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2013-11-30",
+          "openingDate": "2013-11-30",
+          "closingDate": "2014-01-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.829Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/bwx/seussical-the-musical/production/12ez"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "ghosts-west-end-2013",
+          "title": "Ghosts",
+          "slug": "ghosts-west-end-2013",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2013-12-17",
+          "openingDate": "2013-12-17",
+          "closingDate": "2014-03-22",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.851Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/74/ghosts/production/v48"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "king-lear-west-end-2014",
+          "title": "King Lear",
+          "slug": "king-lear-west-end-2014",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2014-01-14",
+          "openingDate": "2014-01-14",
+          "closingDate": "2014-07-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.871Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/y/king-lear/production/16v5"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-weir-west-end-2014",
+          "title": "The Weir",
+          "slug": "the-weir-west-end-2014",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2014-01-22",
+          "openingDate": "2014-01-22",
+          "closingDate": "2014-04-19",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.891Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/6d3/the-weir/production/1529"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "tell-me-on-a-sunday-west-end-2014",
+          "title": "Tell Me On A Sunday",
+          "slug": "tell-me-on-a-sunday-west-end-2014",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2014-02-18",
+          "openingDate": "2014-02-18",
+          "closingDate": "2014-03-08",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.911Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/dmz/tell-me-on-a-sunday/production/133c"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "blithe-spirit-west-end-2014",
+          "title": "Blithe Spirit",
+          "slug": "blithe-spirit-west-end-2014",
+          "venue": "Gielgud Theatre",
+          "previewsStartDate": "2014-03-01",
+          "openingDate": "2014-03-01",
+          "closingDate": "2014-06-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.933Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3gx/blithe-spirit/production/ve7"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "fatal-attraction-west-end-2014",
+          "title": "Fatal Attraction",
+          "slug": "fatal-attraction-west-end-2014",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2014-03-25",
+          "openingDate": "2014-03-25",
+          "closingDate": "2014-06-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.954Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fht/fatal-attraction/production/1091"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "birdland-west-end-2014",
+          "title": "Birdland",
+          "slug": "birdland-west-end-2014",
+          "venue": "Royal Court",
+          "previewsStartDate": "2014-04-03",
+          "openingDate": "2014-04-03",
+          "closingDate": "2014-05-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.975Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fwj/birdland/production/10yr"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-small-family-business-west-end-2014",
+          "title": "A Small Family Business",
+          "slug": "a-small-family-business-west-end-2014",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2014-04-08",
+          "openingDate": "2014-04-08",
+          "closingDate": "2014-08-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:45.993Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5h6/a-small-family-business/production/vkx"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "good-people-west-end-2014",
+          "title": "Good People",
+          "slug": "good-people-west-end-2014",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2014-04-10",
+          "openingDate": "2014-04-10",
+          "closingDate": "2014-06-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:46.014Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/dqh/good-people/production/ve8"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "handbagged-west-end-2014",
+          "title": "Handbagged",
+          "slug": "handbagged-west-end-2014",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2014-04-10",
+          "openingDate": "2014-04-10",
+          "closingDate": "2014-08-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:46.036Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fd9/handbagged/production/14s8"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "1984-west-end-2014",
+          "title": "1984",
+          "slug": "1984-west-end-2014",
+          "venue": "Playhouse Theatre",
+          "previewsStartDate": "2014-04-28",
+          "openingDate": "2014-04-28",
+          "closingDate": "2014-08-23",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:46.057Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/e7m/1984/production/zv3"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "wolf-hall-west-end-2014",
+          "title": "Wolf Hall",
+          "slug": "wolf-hall-west-end-2014",
+          "venue": "Aldwych Theatre",
+          "previewsStartDate": "2014-05-01",
+          "openingDate": "2014-05-01",
+          "closingDate": "2014-10-04",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:46.078Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fxx/wolf-hall/production/110x"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "bakersfield-mist-west-end-2014",
+          "title": "Bakersfield Mist",
+          "slug": "bakersfield-mist-west-end-2014",
+          "venue": "Duchess Theatre",
+          "previewsStartDate": "2014-05-10",
+          "openingDate": "2014-05-10",
+          "closingDate": "2014-08-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:46.099Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gwa/bakersfield-mist/production/133e"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "skylight-west-end-2014",
+          "title": "Skylight",
+          "slug": "skylight-west-end-2014",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2014-06-18",
+          "openingDate": "2014-06-18",
+          "closingDate": "2014-08-23",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:46.120Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/653/skylight/production/152b"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-importance-of-being-earnest-west-end-2014",
+          "title": "The Importance of Being Earnest",
+          "slug": "the-importance-of-being-earnest-west-end-2014",
+          "venue": "Harold Pinter Theatre",
+          "previewsStartDate": "2014-06-27",
+          "openingDate": "2014-06-27",
+          "closingDate": "2014-09-20",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:46.141Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3f/the-importance-of-being-earnest/production/vg5"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "great-britain-west-end-2014",
+          "title": "Great Britain",
+          "slug": "great-britain-west-end-2014",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2014-06-30",
+          "openingDate": "2014-06-30",
+          "closingDate": "2014-08-23",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:46.167Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fhv/great-britain/production/1dag"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "richard-iii-west-end-2014",
+          "title": "Richard III",
+          "slug": "richard-iii-west-end-2014",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2014-07-01",
+          "openingDate": "2014-07-01",
+          "closingDate": "2014-09-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:46.189Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/18/richard-iii/production/1ams"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "shakespeare-in-love-west-end-2014",
+          "title": "Shakespeare in Love",
+          "slug": "shakespeare-in-love-west-end-2014",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2014-07-02",
+          "openingDate": "2014-07-02",
+          "closingDate": "2015-04-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2013-2014",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:46.220Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/dsq/shakespeare-in-love/production/vnz"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T01:06:45.062Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-midsummer-nights-dream-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added much-ado-about-nothing-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added barking-in-essex-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added routes-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added jeeves-and-wooster-in-perfect-nonsense-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added henry-v-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added seussical-the-musical-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ghosts-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added king-lear-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-weir-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added tell-me-on-a-sunday-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added blithe-spirit-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fatal-attraction-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added birdland-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-small-family-business-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added good-people-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added handbagged-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 1984-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added wolf-hall-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added bakersfield-mist-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added skylight-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-importance-of-being-earnest-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added great-britain-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added richard-iii-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added shakespeare-in-love-west-end-2014"
+    }
+  ],
+  "executedIn": "ci"
+}

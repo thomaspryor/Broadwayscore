@@ -1,0 +1,202 @@
+{
+  "issueNumber": "bro-8271-f",
+  "planId": "a0cd439b-e1f9-4ef7-95da-689ed62e39dc",
+  "status": "applied",
+  "createdAt": "2026-11-24T23:52:44.279Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8271 cousins: TodayTix API-default runtimes on rows linked by todaytixUrl only (Hate Radio 3h 15m -> 1h 50m and 6 more)",
+    "steps": [
+      "shows.json: little-women-the-musical-off-broadway-2026.runtime (TodayTix page: 2hr. Incl. 15min intermission.)",
+      "shows.json: little-women-the-musical-off-broadway-2026.intermissions (TodayTix page)",
+      "shows.json: the-other-place-off-broadway-2026.runtime (TodayTix page: 1hr 20min. No intermission.)",
+      "shows.json: the-other-place-off-broadway-2026.intermissions (TodayTix page)",
+      "shows.json: hate-radio-off-broadway-2026.runtime (TodayTix page: 1hr 50min. No intermission.; was the 3hr 15min default)",
+      "shows.json: hate-radio-off-broadway-2026.intermissions (TodayTix page)",
+      "shows.json: not-nobody-off-broadway-2026.runtime (TodayTix page: 1hr 30min. No intermission.)",
+      "shows.json: not-nobody-off-broadway-2026.intermissions (TodayTix page)",
+      "shows.json: gobstopper-off-broadway-2026.runtime (TodayTix page: 55min. No intermission.)",
+      "shows.json: gobstopper-off-broadway-2026.intermissions (TodayTix page)",
+      "shows.json: mj-the-musical-west-end-2024.runtime (TodayTix page: 2hr 35min. Incl. interval.)",
+      "shows.json: this-is-my-favorite-song-off-broadway-2024.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-the-musical-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": "2h",
+        "description": "shows.json: little-women-the-musical-off-broadway-2026.runtime (TodayTix page: 2hr. Incl. 15min intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-the-musical-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: little-women-the-musical-off-broadway-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-other-place-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 40m",
+        "newValue": "1h 20m",
+        "description": "shows.json: the-other-place-off-broadway-2026.runtime (TodayTix page: 1hr 20min. No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-other-place-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: the-other-place-off-broadway-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hate-radio-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 15m",
+        "newValue": "1h 50m",
+        "description": "shows.json: hate-radio-off-broadway-2026.runtime (TodayTix page: 1hr 50min. No intermission.; was the 3hr 15min default)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hate-radio-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: hate-radio-off-broadway-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-nobody-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": "1h 30m",
+        "description": "shows.json: not-nobody-off-broadway-2026.runtime (TodayTix page: 1hr 30min. No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-nobody-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: not-nobody-off-broadway-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gobstopper-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": "55m",
+        "description": "shows.json: gobstopper-off-broadway-2026.runtime (TodayTix page: 55min. No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gobstopper-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: gobstopper-off-broadway-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mj-the-musical-west-end-2024",
+        "field": "runtime",
+        "oldValue": "2h 50m",
+        "newValue": "2h 35m",
+        "description": "shows.json: mj-the-musical-west-end-2024.runtime (TodayTix page: 2hr 35min. Incl. interval.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-is-my-favorite-song-off-broadway-2024",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: this-is-my-favorite-song-off-broadway-2024.runtime cleared: TodayTix API default \"2 hours (no intermission)\" with no page value to confirm it"
+      }
+    ]
+  },
+  "executedAt": "2026-11-25T01:35:35.972Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for little-women-the-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for little-women-the-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-other-place-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for the-other-place-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for hate-radio-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for hate-radio-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for not-nobody-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for not-nobody-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for gobstopper-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for gobstopper-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for mj-the-musical-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for this-is-my-favorite-song-off-broadway-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

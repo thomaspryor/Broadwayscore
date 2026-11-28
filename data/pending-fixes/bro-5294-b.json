@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5294-b",
+  "planId": "9e2d983b-de6a-452a-8107-57f3f39def54",
+  "status": "applied",
+  "createdAt": "2026-10-14T00:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5294 (b): re-queue waiting-for-godot-2009 and master-class-2011 for the section-only rescore; the first run scored them on the full column (detector and heading-trim gaps fixed in f4298c4d6). Scores after run 38484854912: godot 91, master-class 75.",
+    "steps": [
+      "run flag-multishow-column-rescore.js on 2 files"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "flag-multishow-column-rescore.js",
+        "args": "--file=waiting-for-godot-2009/wsj--terry-teachout.json,master-class-2011/wsj--terry-teachout.json",
+        "description": "Set needsRescore (reason multi-show column) on the two rows; the script refuses anything not complete, scored, unlocked and boxed."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T00:27:46.422Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran flag-multishow-column-rescore.js successfully"
+    }
+  ]
+}

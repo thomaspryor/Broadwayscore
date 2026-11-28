@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7272",
+  "planId": "93899256-aa09-4ee4-92fb-b689a416d12a",
+  "status": "applied",
+  "createdAt": "2026-11-10T08:13:06.652Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7272: date The Visitors New York Theatre Guide review from its own page (datePublished 2026-11-09, ET)",
+    "steps": [
+      "the-visitors-off-broadway-2026/nytg--allison-considine.json: publishDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-visitors-off-broadway-2026/nytg--allison-considine.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-11-09",
+        "description": "the-visitors-off-broadway-2026/nytg--allison-considine.json: publishDate"
+      }
+    ]
+  },
+  "executedAt": "2026-11-10T09:49:23.160Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visitors-off-broadway-2026/nytg--allison-considine.json publishDate: null -> \"2026-11-09\""
+    }
+  ],
+  "executedIn": "ci"
+}

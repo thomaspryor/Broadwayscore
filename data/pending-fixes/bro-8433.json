@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-8433",
+  "planId": "0c905e94-c580-4ea0-876d-2aefb704da7c",
+  "status": "applied",
+  "createdAt": "2026-11-28T13:52:07.051Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove anti-defamation-au (advocacy group, not a critic) from Fiddler Melbourne",
+    "steps": [
+      "BRO-8433: Anti-Defamation Commission is an advocacy group, not a critic outlet"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fiddler-on-the-roof-melbourne-regional-2026/anti-defamation-au--adc-news-team.json",
+        "description": "BRO-8433: Anti-Defamation Commission is an advocacy group, not a critic outlet"
+      }
+    ]
+  },
+  "executedAt": "2026-11-28T14:07:21.429Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fiddler-on-the-roof-melbourne-regional-2026/anti-defamation-au--adc-news-team.json"
+    }
+  ],
+  "executedIn": "ci"
+}

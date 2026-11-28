@@ -1,0 +1,287 @@
+{
+  "outletId": "nydailynews",
+  "market": "nyc",
+  "generatedAt": "2026-11-23T23:41:38.949Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "unreadable",
+    "status": "unreadable",
+    "reason": "sitemaps are daily (sitemap.xml?yyyy=&mm=&dd=, about 1.9k since 2021) with no section in the URL, so one paid proxy fetch per day is needed and the stage reviews are only found by slug",
+    "notes": [
+      "unreadable: sitemaps are daily (sitemap.xml?yyyy=&mm=&dd=, about 1.9k since 2021) with no section in the URL, so one paid proxy fetch per day is needed and the stage reviews are only found by slug"
+    ],
+    "incomplete": false,
+    "enumerated": 0,
+    "inWindow": 0,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {},
+    "viaTitleVariant": {},
+    "recall": null,
+    "recallWithCatalog": null
+  },
+  "seasons": {},
+  "corpusSide": {
+    "rowsInWindow": 506,
+    "heldExcludedRows": 0,
+    "notEnumerated": 158,
+    "noUrl": 4,
+    "samples": [
+      {
+        "showId": "1776-2022",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-brodway-1776-review-20221007-o6yecwfuvnecfep45wmrxwnbb4-story.html",
+        "publishDate": "2022-10-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "url": "https://www.nydailynews.com/2022/12/04/broadway-review-neil-diamond-jukebox-musical-a-beautiful-noise-is-nostalgic-fun/",
+        "publishDate": "2022-12-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-christmas-carol-2022",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-christmas-carol-jefferson-mays-review-20221122-mzkeiz4mr5edvjgpvcwyo572mq-story.html",
+        "publishDate": "2022-11-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-few-good-men-2026",
+        "url": "https://www.nydailynews.com/2026/10/29/broadway-review-whitford-shines-blyth-stumbles-in-a-few-good-men/",
+        "publishDate": "2026-10-29",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-midsummer-nights-dream-off-broadway-2017",
+        "url": "http://www.nydailynews.com/entertainment/theater-arts/midsummer-night-dream-central-park-theater-review-article-1.3372083",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "after-midnight-2013",
+        "url": "https://www.nydailynews.com/entertainment/music-arts/broadway-review-midnight-jazzy-fun-article-1.1505997",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "aint-no-mo-2022",
+        "url": "https://www.nydailynews.com/2022/12/02/in-aint-no-mo-black-americans-are-offered-the-chance-to-exit-on-a-boeing-painful-comedy-ensues/",
+        "publishDate": "2022-12-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "almost-famous-2022",
+        "url": "https://www.nydailynews.com/2022/11/03/broadway-review-almost-famous-turns-iconic-movie-into-sweet-story-of-a-broken-family-seeking-redemption/",
+        "publishDate": "2022-11-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "url": "https://www.nydailynews.com/2024/03/18/broadway-review-enemy-of-the-people-is-lively-showcase-for-jeremy-strong-michael-imperioli/",
+        "publishDate": "2024-03-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "art-2025",
+        "url": "https://www.nydailynews.com/2025/09/16/broadway-review-art-revival-james-corden-neil-patrick-harris-bobby-cannavale/",
+        "publishDate": "2025-09-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bad-cinderella-2023",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-bad-cinderella-review-20230324-hxvkscrxrzanfd7htbptvhteri-story.html",
+        "publishDate": "2023-03-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "beaches-2026",
+        "url": "https://www.nydailynews.com/2026/04/22/beaches-musicial-broadway-review/",
+        "publishDate": "2026-04-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "becky-shaw-2026",
+        "url": "https://www.nydailynews.com/2026/04/06/becky-shaw-broadway-review/",
+        "publishDate": "2026-04-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "billy-crystal-860-2026",
+        "url": "https://www.nydailynews.com/2026/10/21/broadway-review-billy-crystal-860/",
+        "publishDate": "2026-10-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "boop-2025",
+        "url": "https://www.nydailynews.com/2025/04/07/broadway-preview-boop-the-musical-is-a-joyous-family-friendly-charmer/",
+        "publishDate": "2025-04-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "buena-vista-social-club-2025",
+        "url": "https://www.nydailynews.com/2025/03/19/broadway-review-buena-vista-social-club-is-fast-paced-celebration-of-old-time-cuban-music/",
+        "publishDate": "2025-03-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bug-2026",
+        "url": "https://www.nydailynews.com/2026/01/09/broadway-review-tracy-letts-bug-carrie-coon/",
+        "publishDate": "2026-01-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cabaret-2024",
+        "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-revival-is-a-money-grabbing-misfire/",
+        "publishDate": "2024-04-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "call-me-izzy-2025",
+        "url": "https://www.nydailynews.com/2025/06/12/broadway-review-jean-smart-rises-above-predictable-plot-in-solo-drama-call-me-izzy/",
+        "publishDate": "2025-06-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "camelot-2023",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-camelot-broadway-review-chris-jones-20230414-dabflhnag5ggbp5m2hg2rek3le-story.html",
+        "publishDate": "2023-04-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "caroline-or-change-2021",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-caroline-or-change-broadway-review-20211028-pdvcx2n2anezbf3z64hnkk5liy-story.html",
+        "publishDate": "2021-10-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cats-the-jellicle-ball-2026",
+        "url": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/",
+        "publishDate": "2026-04-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "celebrity-autobiography-2026",
+        "url": "https://www.nydailynews.com/2026/05/19/broadway-review-celebrity-autobiography-shubert-theatre/",
+        "publishDate": "2026-05-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "chaplin-2012",
+        "url": "https://www.nydailynews.com/entertainment/music-arts/theater-review-chaplin-broadway-article-1.1155972?localLinksEnabled=false",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "chess-2025",
+        "url": "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/",
+        "publishDate": "2025-11-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "chicken-and-biscuits-2021",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-chicken-and-biscuits-broadway-20211011-2u64bhhczfgo7k5k6vavzq5bqu-story.html",
+        "publishDate": "2021-10-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "clydes-2021",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-clydes-second-stage-broadway-review-20211124-a7ukn4crg5egvp52uioa2jpjpq-story.html",
+        "publishDate": "2021-11-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cost-of-living-2022",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-cost-living-20221004-zravxza42vc7ng2jjhxcbr4ps4-story.html",
+        "publishDate": "2022-10-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cult-of-love-2024",
+        "url": "https://www.nydailynews.com/2024/12/12/broadway-review-shailene-woodly-leads-strong-cast-of-intense-family-dysfunction-play-cult-of-love/",
+        "publishDate": "2024-12-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "url": "https://www.nydailynews.com/2024/01/28/broadway-review-cheers-to-days-of-wine-and-roses-a-beautifully-executed-musical/",
+        "publishDate": "2024-01-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "days-of-wine-and-roses-off-broadway-2023",
+        "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-days-of-wine-and-roses-review-20230606-y3ccfhoh55ci5nyfbf7zuvssfq-story.html",
+        "publishDate": "2023-06-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dead-outlaw-2025",
+        "url": "https://www.nydailynews.com/2025/04/27/broadway-review-dead-outlaw-is-lively-quirky-musical-about-real-life-sideshow-attraction/",
+        "publishDate": "2025-04-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "death-becomes-her-2024",
+        "url": "https://www.nydailynews.com/2024/11/22/broadway-review-death-becomes-her-is-silly-campy-laugh-filled-romp/",
+        "publishDate": "2024-11-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dog-day-afternoon-2026",
+        "url": "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/",
+        "publishDate": "2026-03-31",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "doubt-2024",
+        "url": "https://www.nydailynews.com/2024/03/07/broadway-review-doubt-revival-leaves-no-doubt-a-parable-shanley-amy-ryan/",
+        "publishDate": "2024-03-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "downstate-2026",
+        "url": "https://www.nydailynews.com/2026/11/15/broadway-review-downstate-mantello/",
+        "publishDate": "2026-11-15",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "eclipsed-off-broadway-2015",
+        "url": "https://www.nydailynews.com/entertainment/theater-arts/lupita-nyong-brilliant-bleak-blunt-eclipsed-article-1.2397495",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "english-2025",
+        "url": "https://www.nydailynews.com/2025/01/23/broadway-review-english-by-sanaz-toossi/",
+        "publishDate": "2025-01-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "eureka-day-2024",
+        "url": "https://www.nydailynews.com/2024/12/17/broadway-review-eureka-day-is-sharp-amusing-comedy-on-sanctimonious-school-boards/",
+        "publishDate": "2024-12-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "every-brilliant-thing-2026",
+        "url": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
+        "publishDate": "2026-03-12",
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [],
+  "heldAltUrl": [],
+  "misfiles": [],
+  "heldUnmatched": [],
+  "ambiguous": [],
+  "catalogGaps": [],
+  "otherMarketReviews": [],
+  "outOfWindow": [],
+  "heldExcluded": {
+    "count": 0,
+    "note": "Reviews we hold that an exclusion rule keeps off the site. Counted outside recall: gap and held counts shifted because these were reclassified, not because coverage changed."
+  }
+}

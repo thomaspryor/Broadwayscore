@@ -1,0 +1,123 @@
+#!/usr/bin/env node
+/**
+ * BRO-7929: cluster orphaned wrongProduction reviews into proposed missing
+ * productions, and gate the orphan-cluster count.
+ *
+ * Orphan = wrongProduction review dated in the last 2 years whose date is
+ * covered by NO same-title show in shows.json (the production was never added).
+ * Clusters group orphans by title + market + 120-day date gap. Each proposal
+ * must be validated (scripts/validate-show-venue.js + Playbill / venue page)
+ * before the show entry is added; then scripts/apply-orphan-production.js
+ * --rehome rehomes the reviews onto the new sibling production.
+ *
+ * Usage:
+ *   node scripts/cluster-orphan-productions.js [--top N] [--min N] [--json PATH]
+ *   node scripts/cluster-orphan-productions.js --gate             # exit 1 on a cluster not in baseline / grown
+ *   node scripts/cluster-orphan-productions.js --update-baseline  # freeze current clusters (supervised)
+ *   node scripts/cluster-orphan-productions.js --gate --simulate-revert SPEC.json[,SPEC2] [--keep-shows ID]
+ *       # in-memory revert of an applied spec: must FAIL (red-then-green, BRO-8093); SHOWS_FILE env overrides shows.json
+ * Wired into scripts/check-corpus-drift.js AUDITS (non-blocking; BRO-3535 precedent).
+ * Baseline: data/audit/orphan-production-clusters-baseline.json (ratchet: only shrinks).
+ */
+const fs = require('fs');
+const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help');
+const { listShowDirs, corpusDirProblem } = require('./lib/list-show-dirs');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
+const L = require('./lib/orphan-production-clusters');
+
+const ROOT = path.join(__dirname, '..');
+const BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'orphan-production-clusters-baseline.json');
+const ARGV = process.argv.slice(2);
+if (hasHelpFlag(ARGV)) {
+  console.log(fs.readFileSync(__filename, 'utf8').split('*/')[0].replace(/^#!.*\n\/\*\*?/, ''));
+  process.exit(0);
+}
+const arg = (n, d) => { const i = ARGV.indexOf(n); return i >= 0 ? ARGV[i + 1] : d; };
+const GATE = ARGV.includes('--gate');
+const UPDATE = ARGV.includes('--update-baseline');
+const TOP = +arg('--top', 25);
+const MIN = +arg('--min', 3); // clusters below this are stray single reviews, not a missing production
+const JSON_OUT = arg('--json', null);
+const REVERT = arg('--simulate-revert', null); // SPEC[,SPEC]: gate a reverted view of an applied fix (red-then-green)
+const KEEP_SHOWS = arg('--keep-shows', null);
+const SHOWS_PATH = process.env.SHOWS_FILE || path.join(ROOT, 'data', 'shows.json');
+
+function loadShows() {
+  const raw = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  return Array.isArray(raw) ? raw : raw.shows;
+}
+
+function collect() {
+  let shows = loadShows();
+  const outletsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
+  const outlets = outletsRaw.outlets || outletsRaw;
+  const dir = resolveReviewTextsDir();
+  const problem = corpusDirProblem(dir);
+  if (problem) { console.error(`SKIP: ${problem}`); process.exit(2); }
+  try { assertReviewTextCorpus(dir); } catch (err) { exitIfCorpusNotScanned(err); } // BRO-7193 shared guard: exit 2
+  let all = [];
+  for (const id of listShowDirs(dir, { silent: true, skipHolding: true })) {
+    let files;
+    try { files = fs.readdirSync(path.join(dir, id)).filter((f) => f.endsWith('.json')); } catch { continue; }
+    for (const f of files) {
+      let j;
+      try { j = JSON.parse(fs.readFileSync(path.join(dir, id, f), 'utf8')); } catch { continue; }
+      all.push([id, f, j]);
+    }
+  }
+  if (REVERT) {
+    // BRO-8093: in-memory revert of an applied spec (nothing on disk changes) to prove the gate goes red without the fix.
+    const specs = REVERT.split(',').flatMap((p) => JSON.parse(fs.readFileSync(p, 'utf8')));
+    const targets = new Set(specs.map((s) => s.id));
+    const keep = new Set(KEEP_SHOWS ? KEEP_SHOWS.split(',') : []); // spec ids that pre-existed the fix (rehome target only)
+    const badKeep = [...keep].filter((id) => !targets.has(id));
+    if (badKeep.length) { console.error(`--keep-shows ids not in the spec(s): ${badKeep.join(',')}`); process.exit(2); }
+    const added = new Set([...targets].filter((id) => !keep.has(id)));
+    let missingHosts;
+    ({ records: all, shows, missingHosts } = L.revertRehome(all, shows, added, targets));
+    console.log(`SIMULATED REVERT of ${targets.size} spec'd productions (${added.size} removed from shows view)`);
+    if (missingHosts.length) console.warn(`WARN: ${missingHosts.length} rehomed file(s) point at a host not in shows.json (not counted): ${missingHosts.slice(0, 5).join('; ')}`);
+  }
+  return L.findOrphans(all, shows, outlets, Date.now());
+}
+
+// Existing ids, so a proposal for a second same-year production never reuses one (proposeEntry takes -N).
+const EXISTING_IDS = new Set(loadShows().map((s) => s.id));
+const orphans = collect();
+const clusters = L.clusterOrphans(orphans);
+const gated = clusters.filter((c) => c.count >= MIN);
+// Gate keys are title|market totals, NOT per-cluster ids: a cluster id embeds its first review
+// month, which shifts as the rolling 2-year cutoff drops old reviews (false red with no data change).
+const keyTotals = L.gateKeyTotals(clusters, MIN);
+const summary = { orphanReviews: orphans.length, clusters: clusters.length, clustersAtLeastMin: gated.length, min: MIN, reviewsInGatedClusters: gated.reduce((a, c) => a + c.count, 0) };
+
+if (UPDATE && (REVERT || process.env.SHOWS_FILE)) { console.error('refusing --update-baseline with --simulate-revert or SHOWS_FILE (baseline must come from data/shows.json)'); process.exit(2); }
+if (UPDATE) {
+  const out = { generatedAt: new Date().toISOString(), summary, clusters: keyTotals };
+  fs.mkdirSync(path.dirname(BASELINE_PATH), { recursive: true });
+  fs.writeFileSync(BASELINE_PATH, JSON.stringify(out, null, 2) + '\n');
+  console.log(`baseline written: ${Object.keys(keyTotals).length} title/market keys, ${summary.reviewsInGatedClusters} reviews`);
+  process.exit(0);
+}
+
+console.log(`orphan wrongProduction reviews: ${summary.orphanReviews}; clusters: ${summary.clusters}; clusters >=${MIN}: ${summary.clustersAtLeastMin} (${summary.reviewsInGatedClusters} reviews)`);
+if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify({ summary, proposals: gated.map((c) => ({ id: c.id, ...L.proposeEntry(c, EXISTING_IDS) })) }, null, 2));
+if (!GATE) {
+  for (const c of gated.slice(0, TOP)) {
+    const p = L.proposeEntry(c, EXISTING_IDS);
+    console.log(`${String(c.count).padStart(3)}  ${c.market.padEnd(9)} ${p.proposedId}  ${p.estimatedOpeningNoLaterThan}..${p.lastReviewDate}  hosts=${Object.entries(c.hosts).map(([h, n]) => `${h}:${n}`).slice(0, 3).join(',')}`);
+  }
+  process.exit(0);
+}
+
+let base = {};
+try { base = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8')).clusters || {}; } catch { console.error('no baseline; run --update-baseline'); process.exit(1); }
+const bad = L.gateFailures(keyTotals, base).map((b) => ({ id: b.key, count: b.count, hosts: Object.assign({}, ...gated.filter((c) => c.key === b.key).map((c) => c.hosts)) }));
+if (bad.length) {
+  console.error(`FAIL: ${bad.length} orphan production cluster(s) new or grown vs baseline (a production is missing from shows.json):`);
+  for (const c of bad.slice(0, 20)) console.error(`  ${c.id} count=${c.count} baseline=${base[c.id] ?? 'none'} hosts=${Object.keys(c.hosts).join(',')}`);
+  process.exit(1);
+}
+console.log(`PASS: no new/grown orphan clusters (${Object.keys(keyTotals).length} title/market keys <= baseline ${Object.keys(base).length})`);

@@ -1,0 +1,58 @@
+{
+  "issueNumber": "bro-8447",
+  "planId": "b1bc8090-8a9b-4341-9b2a-371722aff770",
+  "status": "applied",
+  "createdAt": "2026-11-28T15:21:08.401Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add Jermyn Street Theatre's It's a Wonderful Life (off-West-End, press night 24 Nov 2026) as a provisional show; validate-show-venue found title and run dates matching the venue page.",
+    "steps": [
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "its-a-wonderful-life-off-west-end-2026",
+          "title": "It’s a Wonderful Life",
+          "slug": "its-a-wonderful-life-off-west-end",
+          "venue": "Jermyn Street Theatre",
+          "openingDate": "2026-11-24",
+          "openingDateSource": "theatre-weekly-press-night",
+          "previewsStartDate": "2026-11-19",
+          "closingDate": "2027-01-03",
+          "status": "open",
+          "category": "off-west-end",
+          "market": "west-end",
+          "type": "play",
+          "runtime": "2h",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.jermynstreettheatre.co.uk/show/its-a-wonderful-life/",
+            "https://theatreweekly.com/full-cast-announced-for-its-a-wonderful-life-at-jermyn-street-theatre/"
+          ],
+          "images": {
+            "thumbnail": null,
+            "poster": null,
+            "hero": null
+          },
+          "tags": []
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-28T16:10:37.211Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added its-a-wonderful-life-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

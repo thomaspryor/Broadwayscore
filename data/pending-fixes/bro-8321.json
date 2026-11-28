@@ -1,0 +1,111 @@
+{
+  "issueNumber": "bro-8321",
+  "planId": "95fc6d5e-b4c6-4f70-a6f3-49dcf103d39e",
+  "status": "partial",
+  "createdAt": "2026-11-25T13:41:13.125Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Old Vic A Christmas Carol: remove the Wolverhampton Christmas Carol Goes Wrong review and the 2022/2023 Arts Desk run reviews, replace the stale Halliburton file with the real 2026 page",
+    "steps": [
+      "Stale file: holds another outlet's 2025 text under a wrong 2025-11-28 date; the real 2026 page is re-ingested by the html handoff below",
+      "Review of an earlier Old Vic run (2022 or 2023), not the 2026 production; Arts Desk page date confirms it",
+      "Review of an earlier Old Vic run (2022 or 2023), not the 2026 production; Arts Desk page date confirms it",
+      "Review of A Christmas Carol Goes Wrong at Grand Theatre Wolverhampton, a different show",
+      "Reason label for the flag above",
+      "Ingest a-christmas-carol-west-end-2026 from handed-off HTML: https://theartsdesk.com/theatre/christmas-carol-old-vic-review-giles-terera-sensational-scrooge-rolls-royce-christmas-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-christmas-carol-west-end-2026/artsdesk--rachel-halliburton.json",
+        "description": "Stale file: holds another outlet's 2025 text under a wrong 2025-11-28 date; the real 2026 page is re-ingested by the html handoff below"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-west-end-2026/artsdesk--demetrios-matheou.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier Old Vic run (2022 or 2023), not the 2026 production; Arts Desk page date confirms it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-west-end-2026/artsdesk--matt-wolf.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier Old Vic run (2022 or 2023), not the 2026 production; Arts Desk page date confirms it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-west-end-2026/thereviewshub--james-garrington.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of A Christmas Carol Goes Wrong at Grand Theatre Wolverhampton, a different show"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-west-end-2026/thereviewshub--james-garrington.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "other-production-url",
+        "description": "Reason label for the flag above"
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "a-christmas-carol-west-end-2026",
+        "url": "https://theartsdesk.com/theatre/christmas-carol-old-vic-review-giles-terera-sensational-scrooge-rolls-royce-christmas-show",
+        "outlet": "artsdesk",
+        "critic": "Rachel Halliburton",
+        "publishDate": "2026-11-25",
+        "description": "BRO-5886 html handoff: ingest https://theartsdesk.com/theatre/christmas-carol-old-vic-review-giles-terera-sensational-scrooge-rolls-royce-christmas-show from HTML fetched outside CI",
+        "htmlBytes": 60936,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "dc3fb95924873d25c5d2724dc300599a168f24701ffc40e28405dd40187dcfb1",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-25T15:19:45.849Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-christmas-carol-west-end-2026/artsdesk--rachel-halliburton.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-west-end-2026/artsdesk--demetrios-matheou.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-west-end-2026/artsdesk--matt-wolf.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://theartsdesk.com/theatre/christmas-carol-old-vic-review-giles-terera-sensational-scrooge-rolls-royce-christmas-show for a-christmas-carol-west-end-2026 from handed-off HTML (60836 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

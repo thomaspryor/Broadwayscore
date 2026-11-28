@@ -1,0 +1,61 @@
+{
+  "issueNumber": "bro-5709",
+  "planId": "298b0dd3-f1d5-4d15-b677-7ded84d8157f",
+  "status": "applied",
+  "createdAt": "2026-10-28T15:20:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the 2015-17 Off-Broadway run of Shear Madness (New World Stages, later Davenport Theatre) as a closed show.",
+    "steps": [
+      "Append shear-madness-off-broadway-2015"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "shear-madness-off-broadway-2015",
+          "title": "Shear Madness",
+          "slug": "shear-madness-off-broadway-2015",
+          "venue": "New World Stages",
+          "openingDate": "2015-11-11",
+          "closingDate": "2017-04-23",
+          "previewsStartDate": "2015-10-22",
+          "status": "closed",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "An interactive whodunit set in a Boston hair salon, in which the audience questions suspects and votes on who committed the murder. The New York run began at New World Stages and moved to the Davenport Theatre in 2016.",
+          "openingDateSource": "playbill",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Bruce Jordan",
+              "role": "Director"
+            }
+          ]
+        },
+        "description": "Add the 2015-17 Off-Broadway run of Shear Madness"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T15:07:31.548Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added shear-madness-off-broadway-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

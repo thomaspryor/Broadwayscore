@@ -1,0 +1,176 @@
+{
+  "issueNumber": "bro-7928-c",
+  "planId": "0f0df690-9399-4097-85a8-becb1a184fbb",
+  "status": "applied",
+  "createdAt": "2026-11-21T10:00:35.370Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Theater Life star ratings: 52 recovered from the outlet's own WP post titles/footers (theaterlife.com times out from CI runners, so the weekly recovery never reached them) and 9 stored ratings corrected (combined-column titles had given every show the last show's stars; Leopoldstadt stored 'A'). Read by recover-explicit-ratings.js phase 2 on the final BRO-7928 code; 509 stored title ratings re-audited against live posts. (part 3 of 3)",
+    "steps": [
+      "the-knight-of-the-burning-pestle-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore",
+      "the-lightning-thief-2019/theater-life--david-sheward.json: originalScore",
+      "the-refuge-plays-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore",
+      "the-skin-of-our-teeth-2022/theater-life--david-sheward.json: originalScore",
+      "the-snow-geese-2013/theater-life--unknown.json: originalScore",
+      "the-wanderers-off-broadway-2023/theater-life--david-sheward.json: originalScore",
+      "time-and-the-conways-2017/theater-life--unknown.json: originalScore",
+      "tru-off-broadway-2026/theater-life--patrick-christiano.json: originalScore",
+      "white-rose-the-musical-off-broadway-2024/theater-life--samuel-l-leiter.json: originalScore",
+      "wish-you-were-here-off-broadway-2022/theater-life--samuel-l-leiter.json: originalScore",
+      "pictures-from-home-2023/theater-life--david-sheward.json: originalScore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-knight-of-the-burning-pestle-off-broadway-2023/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2.5/5 stars",
+        "description": "the-knight-of-the-burning-pestle-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lightning-thief-2019/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5 stars",
+        "description": "the-lightning-thief-2019/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-refuge-plays-off-broadway-2023/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "the-refuge-plays-off-broadway-2023/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-skin-of-our-teeth-2022/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5 stars",
+        "description": "the-skin-of-our-teeth-2022/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-snow-geese-2013/theater-life--unknown.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5 stars",
+        "description": "the-snow-geese-2013/theater-life--unknown.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-wanderers-off-broadway-2023/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2.5/5 stars",
+        "description": "the-wanderers-off-broadway-2023/theater-life--david-sheward.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "time-and-the-conways-2017/theater-life--unknown.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3.5/5 stars",
+        "description": "time-and-the-conways-2017/theater-life--unknown.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tru-off-broadway-2026/theater-life--patrick-christiano.json",
+        "field": "originalScore",
+        "oldValue": "2.5/5 stars",
+        "newValue": "2/5 stars",
+        "description": "tru-off-broadway-2026/theater-life--patrick-christiano.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "white-rose-the-musical-off-broadway-2024/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5 stars",
+        "description": "white-rose-the-musical-off-broadway-2024/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wish-you-were-here-off-broadway-2022/theater-life--samuel-l-leiter.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3.5/5 stars",
+        "description": "wish-you-were-here-off-broadway-2022/theater-life--samuel-l-leiter.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pictures-from-home-2023/theater-life--david-sheward.json",
+        "field": "originalScore",
+        "oldValue": "2/5 stars",
+        "newValue": "4/5 stars",
+        "description": "pictures-from-home-2023/theater-life--david-sheward.json: originalScore"
+      }
+    ]
+  },
+  "executedAt": "2026-11-21T10:55:00.967Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-knight-of-the-burning-pestle-off-broadway-2023/theater-life--samuel-l-leiter.json originalScore: null -> \"2.5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lightning-thief-2019/theater-life--david-sheward.json originalScore: null -> \"2/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-refuge-plays-off-broadway-2023/theater-life--samuel-l-leiter.json originalScore: null -> \"3/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-skin-of-our-teeth-2022/theater-life--david-sheward.json originalScore: null -> \"3/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-snow-geese-2013/theater-life--unknown.json originalScore: null -> \"2/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-wanderers-off-broadway-2023/theater-life--david-sheward.json originalScore: null -> \"2.5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "time-and-the-conways-2017/theater-life--unknown.json originalScore: null -> \"3.5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-broadway-2026/theater-life--patrick-christiano.json originalScore: \"2.5/5 stars\" -> \"2/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "white-rose-the-musical-off-broadway-2024/theater-life--samuel-l-leiter.json originalScore: null -> \"2/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wish-you-were-here-off-broadway-2022/theater-life--samuel-l-leiter.json originalScore: null -> \"3.5/5 stars\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pictures-from-home-2023/theater-life--david-sheward.json originalScore: \"2/5 stars\" -> \"4/5 stars\" (retracted adjudicatedScore, adjudicatedScoreInvalidated, adjudicationHistory, adjudicationNote, originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    }
+  ],
+  "executedIn": "ci"
+}

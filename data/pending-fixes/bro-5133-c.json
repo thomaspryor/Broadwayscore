@@ -1,0 +1,58 @@
+{
+  "issueNumber": "bro-5133-c",
+  "planId": "a88bc4f5-cdd2-4965-9cde-58091bfd23c1",
+  "status": "applied",
+  "createdAt": "2026-10-12T15:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5133 plan c: plan bro-5133 deleted lost-in-del-valle-off-broadway-2026/vulture--kendall-dupre.json (a complete New York Social Diary review mis-filed under vulture) and re-ingested its url, but every fetch tier failed and Playwright returned the site's bot-block page, so the new newyorksocialdiary file holds block-page text and cannot be scored. Delete that file, restore the original from review-texts history (the parent of commit 88e8155a2, the commit that deleted it), then move it to newyorksocialdiary with the outlet-id migration rule.",
+    "steps": [
+      "Delete the block-page file.",
+      "Restore the original review file from the commit before plan bro-5133 removed it.",
+      "Run the vulture-nysd outlet migration so it is filed under newyorksocialdiary."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "lost-in-del-valle-off-broadway-2026/newyorksocialdiary--kendall-dupre.json",
+        "description": "BRO-5133: holds a bot-block page (334 chars) stored by the plan-bro-5133 re-ingest, not the review."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "lost-in-del-valle-off-broadway-2026/vulture--kendall-dupre.json",
+        "fromCommit": "88e8155a27320f9fbc341e451ff8d0b683d8598d^",
+        "description": "BRO-5133: bring back the complete review text plan bro-5133 deleted."
+      },
+      {
+        "type": "run-script",
+        "script": "migrate-outlet-ids.js",
+        "args": "--apply --rule=vulture-nysd-host-to-newyorksocialdiary",
+        "description": "BRO-5133: file the restored review under newyorksocialdiary (url host newyorksocialdiary.com)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T17:06:20.007Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lost-in-del-valle-off-broadway-2026/newyorksocialdiary--kendall-dupre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored lost-in-del-valle-off-broadway-2026/vulture--kendall-dupre.json@88e8155a27320f9fbc341e451ff8d0b683d8598d^ -> lost-in-del-valle-off-broadway-2026/vulture--kendall-dupre.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran migrate-outlet-ids.js successfully"
+    }
+  ]
+}

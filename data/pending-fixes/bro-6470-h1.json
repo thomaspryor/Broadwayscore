@@ -1,0 +1,226 @@
+{
+  "issueNumber": "bro-6470-h1",
+  "planId": "b03f103b-820d-4816-9a3d-7e43f4a780f5",
+  "status": "applied",
+  "createdAt": "2026-10-28T20:13:18.929Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6470 cohort 4: add 6 Off-Broadway shows that opened 2021-06 to 2021-11 (TheaterMania listings, Playbill-validated)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "trevor-off-broadway-2021",
+          "title": "Trevor",
+          "slug": "trevor-off-broadway-2021",
+          "venue": "Stage 42",
+          "previewsStartDate": "2021-10-25",
+          "openingDate": "2021-11-10",
+          "closingDate": "2021-12-19",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/trevorstage-42-2019-2020",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/trevor_333495/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "assassins-off-broadway-2021",
+          "title": "Assassins",
+          "slug": "assassins-off-broadway-2021",
+          "venue": "Classic Stage Company/Lynn F. Angelson Theater",
+          "previewsStartDate": "2021-11-02",
+          "openingDate": "2021-11-14",
+          "closingDate": "2022-01-25",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/assassinsclassic-stage-company-lynn-f-angelson-theater-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/assassins_358154/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "little-christmas-miracles-off-broadway-2021",
+          "title": "Little Christmas Miracles",
+          "slug": "little-christmas-miracles-off-broadway-2021",
+          "venue": "Actors Temple Theatre",
+          "previewsStartDate": "2021-11-20",
+          "openingDate": "2021-12-04",
+          "closingDate": "2022-01-03",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/little-christmas-miraclesactors-temple-theatre-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/little-christmas-miracles_358948/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-importance-of-being-earnestly-lgbtq-off-broadway-2021",
+          "title": "The Importance of Being Earnestly LGBTQ+",
+          "slug": "the-importance-of-being-earnestly-lgbtq-off-broadway-2021",
+          "venue": "Actors Temple Theatre",
+          "previewsStartDate": "2021-07-06",
+          "openingDate": "2021-07-06",
+          "closingDate": "2022-07-28",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-importance-of-being-earnestly-lgbtq-actors-temple-theatre-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-importance-of-being-earnestly-lgbtq_358945/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-alchemist-off-broadway-2021",
+          "title": "The Alchemist",
+          "slug": "the-alchemist-off-broadway-2021",
+          "venue": "New World Stages Stage 5",
+          "previewsStartDate": "2021-11-07",
+          "openingDate": "2021-11-21",
+          "closingDate": "2021-12-19",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-alchemist-off-broadway-new-world-stages-stage-5-2021",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-alchemist_353928/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "kimberly-akimbo-off-broadway-2021",
+          "title": "Kimberly Akimbo",
+          "slug": "kimberly-akimbo-off-broadway-2021",
+          "venue": "Atlantic Theater Company/Linda Gross Theater",
+          "previewsStartDate": "2021-11-05",
+          "openingDate": "2021-12-08",
+          "closingDate": "2022-01-15",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/kimberly-akimboatlantic-theater-company-linda-gross-theater-2021-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/kimberly-akimbo_349092/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T20:31:14.584Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added trevor-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added assassins-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added little-christmas-miracles-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-importance-of-being-earnestly-lgbtq-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-alchemist-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added kimberly-akimbo-off-broadway-2021"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-8454",
+  "planId": "fc4c50a5-8a88-44fe-a944-c8bda816c964",
+  "status": "applied",
+  "createdAt": "2026-11-28T18:17:08.308Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8454 data fixes: theater-of-the-mind venue is Reid Murdoch Building (not Goodman), wild-child resolves to Los Angeles not Laguna Beach",
+    "steps": [
+      "shows.json: theater-of-the-mind-regional-2026.venue",
+      "shows.json: wild-child-regional-2026.city"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "theater-of-the-mind-regional-2026",
+        "field": "venue",
+        "oldValue": "Goodman Theatre, Chicago, IL",
+        "newValue": "Reid Murdoch Building, Chicago, IL",
+        "description": "shows.json: theater-of-the-mind-regional-2026.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wild-child-regional-2026",
+        "field": "city",
+        "oldValue": "laguna-beach-ca",
+        "newValue": "los-angeles-ca",
+        "description": "shows.json: wild-child-regional-2026.city"
+      }
+    ]
+  },
+  "executedAt": "2026-11-28T20:02:17.402Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for theater-of-the-mind-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for wild-child-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,231 @@
+{
+  "issueNumber": "bro-5851-fc2425",
+  "planId": "ff88d0f2-a3a2-4a58-8b55-b0e332815e25",
+  "status": "applied",
+  "createdAt": "2026-10-22T08:22:14.853Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5851: fixes from the redrawn 2024-25 West End historical fact-check sample (78 checked items, 9 wrong): 4 dates, 1 missing press night, 4 synopses, 2 posters from the Broadway production.",
+    "steps": [
+      "Date edits with sourced values",
+      "Synopsis rewrites (no review text)",
+      "Clear wrong-production art"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "unicorn-west-end-2025",
+        "field": "previewsStartDate",
+        "oldValue": "2025-02-05",
+        "newValue": "2025-02-04",
+        "description": "unicorn-west-end-2025: previewsStartDate 2025-02-05 -> 2025-02-04 (performances began 4 Feb 2025; Playbill casting article)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inside-no-9-stage-fright-west-end-2025",
+        "field": "closingDate",
+        "oldValue": "2025-03-29",
+        "newValue": "2025-04-05",
+        "description": "inside-no-9-stage-fright-west-end-2025: closingDate 2025-03-29 -> 2025-04-05 (https://delfontmackintosh.co.uk/whats-on/inside-no-9-stage-fright)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-curious-case-of-benjamin-button-west-end-2024",
+        "field": "closingDate",
+        "oldValue": "2025-10-10",
+        "newValue": "2025-10-11",
+        "description": "the-curious-case-of-benjamin-button-west-end-2024: closingDate 2025-10-10 -> 2025-10-11 (https://officiallondontheatre.com/show/the-curious-case-of-benjamin-button-111444705/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "waiting-for-godot-west-end-2024",
+        "field": "previewsStartDate",
+        "oldValue": "2024-09-05",
+        "newValue": "2024-09-13",
+        "description": "waiting-for-godot-west-end-2024: previewsStartDate 2024-09-05 -> 2024-09-13 (https://playbill.com/article/west-end-revival-of-waiting-for-godot-starring-lucian-msamati-and-ben-whishaw-opens-september-19)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "waiting-for-godot-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-09-19",
+        "description": "waiting-for-godot-west-end-2024: openingDate null -> 2024-09-19 (same Playbill article)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-deep-blue-sea-west-end-2025",
+        "field": "synopsis",
+        "oldValue": "When you're stuck between the devil and the deep blue sea, the deep blue sea can sometimes look very inviting. In this powerful drama of passion versus loyalty, Hester Collyer, the daughter of a clergyman and wife of a judge is floundering in the closing stages of a hopeless affair. She won the Olivier for Best Actress in 2007 for Much Ado About Nothing and has been nominated for The Little Dog Laughed and Women on the Verge of a Breakdown.",
+        "newValue": "Terence Rattigan's 1952 drama. In a London flat, Hester Collyer, the daughter of a clergyman and wife of a High Court judge, is found after a failed suicide attempt, at the end of a hopeless affair with former RAF pilot Freddie Page. Over one day she weighs passion against loyalty and what is left to live for.",
+        "description": "the-deep-blue-sea-west-end-2025: synopsis: drop an actor biography sentence; describe the play (londonboxoffice.co.uk tamsin-greig-the-deep-blue-sea-west-end)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "unicorn-west-end-2025",
+        "field": "synopsis",
+        "oldValue": "Together, the expert cast tells the story of the happily married couple, Polly and Nick, who seem to have it all—they have two children and successful careers. However, they're missing a bit of sparkle.",
+        "newValue": "Mike Bartlett's comedy. Polly and Nick seem to have it all, with two children and successful careers, but the marriage has lost its sparkle. When Polly's student Kate enters their lives, the three of them start to test what a relationship can be.",
+        "description": "unicorn-west-end-2025: synopsis: drop a marketing fragment and add the third character (westendbestfriend.co.uk unicorn listing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "manhunt-west-end-2025",
+        "field": "synopsis",
+        "oldValue": "Together, they tell the gripping tale of  Raoul Moat, who was released from Durham Prison on July 1st, 2010. Over only a few short days, a man was murdered, a police officer was blinded, and one woman was left fighting for her life. The manhunt for Moat was one of the largest in all of UK history as he was traced across Northumberland.",
+        "newValue": "Robert Icke's play about Raoul Moat, released from Durham Prison on 1 July 2010. Within days a man was murdered, a police officer blinded and a woman left fighting for her life, and the hunt for Moat across Northumberland became one of the largest in UK history.",
+        "description": "manhunt-west-end-2025: synopsis: drop a marketing fragment (londontheatre.co.uk manhunt review)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-master-builder-west-end-2025",
+        "field": "synopsis",
+        "oldValue": "This modern reimagining of the Ibsen classic begins on the evening of July 3rd in the Hamptons. The publishing magnate Elena Solness is tirelessly working to prepare a part for her architect husband, Henry Solness. Things don’t go as planned when a former student of Henry’s, with whom he had a previous sexual relationship, arrives at the party. Throughout this complex love triangle, sexual politics and relationship vulnerabilities are explored.",
+        "newValue": "This modern reimagining of the Ibsen classic begins on the evening of July 3rd in the Hamptons. The publishing magnate Elena Solness is tirelessly working to prepare a party for her architect husband, Henry Solness. Things don’t go as planned when a former student of Henry’s, with whom he had a previous sexual relationship, arrives at the party. Throughout this complex love triangle, sexual politics and relationship vulnerabilities are explored.",
+        "description": "my-master-builder-west-end-2025: synopsis: typo part -> party (Playbill production page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "waiting-for-godot-west-end-2024",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/waiting-for-godot-west-end-2024/thumbnail.jpg",
+          "poster": "/images/shows/waiting-for-godot-west-end-2024/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "waiting-for-godot-west-end-2024: clear art from the Broadway production (Godot art names Keanu Reeves and Alex Winter; Every Brilliant Thing art names Daniel Radcliffe), BRO-5851 2024-25 fact-check"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "every-brilliant-thing-west-end-2025",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/every-brilliant-thing-west-end-2025/thumbnail.jpg",
+          "poster": "/images/shows/every-brilliant-thing-west-end-2025/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "every-brilliant-thing-west-end-2025: clear art from the Broadway production (Godot art names Keanu Reeves and Alex Winter; Every Brilliant Thing art names Daniel Radcliffe), BRO-5851 2024-25 fact-check"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "waiting-for-godot-west-end-2024",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-22",
+          "reason": "BRO-5851: stored art was the Broadway production; cleared",
+          "key": "waiting for godot|theatre royal haymarket|2024-09-19"
+        },
+        "description": "waiting-for-godot-west-end-2024: mark no reliable art so the image sweep does not re-fetch the Broadway art just cleared"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "every-brilliant-thing-west-end-2025",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-22",
+          "reason": "BRO-5851: stored art was the Broadway production; cleared",
+          "key": "every brilliant thing|soho place|"
+        },
+        "description": "every-brilliant-thing-west-end-2025: mark no reliable art so the image sweep does not re-fetch the Broadway art just cleared"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T11:08:14.899Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for unicorn-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for inside-no-9-stage-fright-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-curious-case-of-benjamin-button-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for waiting-for-godot-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for waiting-for-godot-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-deep-blue-sea-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for unicorn-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for manhunt-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for my-master-builder-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for waiting-for-godot-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for every-brilliant-thing-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for waiting-for-godot-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for every-brilliant-thing-west-end-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

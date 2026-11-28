@@ -1,0 +1,2445 @@
+{
+  "schemaVersion": 1,
+  "showId": "fourteen-again-off-west-end-2026",
+  "night": "2026-11-24",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-24T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-24T20:30:04.063Z",
+    "endedAt": "2026-11-25T03:00:57.097Z",
+    "intervalMin": 5,
+    "samples": 76,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-25T02:58:48.025Z",
+    "lastOkSampleAt": "2026-11-25T02:58:48.025Z"
+  },
+  "firstLiveAt": "2026-11-24T20:30:04.063Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-24T20:30:04.063Z",
+  "liveCount": 1,
+  "liveCountAt": {
+    "1h": 1,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-24T22:00:07.250Z",
+    "2h": "2026-11-24T23:13:34.395Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-24",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "any"
+  },
+  "perReview": [
+    {
+      "key": "monstagigz|mrmonstagigz",
+      "outlet": "Monstagigz",
+      "critic": "mrmonstagigz",
+      "tier": 4,
+      "publishAt": "2026-11-24",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T20:30:04.063Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-24T10:26:44.900Z"
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-24T23:00:28.152Z",
+      "censusNote": "archive only"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-25T03:00:44.783Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-24T23:00:28.250Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-25T03:00:44.881Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-25T03:00:45.540Z",
+    "files": [
+      {
+        "file": "monstagigz--mrmonstagigz.json",
+        "outletId": "monstagigz",
+        "outlet": "Monstagigz",
+        "critic": "mrmonstagigz",
+        "firstSeenAt": "2026-11-24T10:15:01.174Z",
+        "scoredAt": "2026-11-24T10:26:44.900Z",
+        "publishDate": "2026-11-24",
+        "url": "monstagigz.com/2026/11/24/theatre-review-fourteen-again-starring-sally-ann-triplett-ria-jones-and-neil-morrissey-at-the-menier-chocolate-factory",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      }
+    ]
+  },
+  "pipelineRuns": {
+    "capturedAt": "2026-11-25T03:00:57.039Z",
+    "window": {
+      "from": "2026-11-24T19:00:00Z",
+      "to": "2026-11-25T00:00:00Z"
+    },
+    "complete": true,
+    "runs": [
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator targeted a-christmas-carol-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T17:37:12Z",
+        "updatedAt": "2026-11-24T21:36:12Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T17:37:15Z",
+        "updatedAt": "2026-11-24T19:00:05Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted in-my-own-little-world-off-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T18:00:37Z",
+        "updatedAt": "2026-11-24T19:14:37Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T18:18:07Z",
+        "updatedAt": "2026-11-24T19:01:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45461935531)",
+        "startedAt": "2026-11-24T18:45:06Z",
+        "updatedAt": "2026-11-24T19:05:43Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T18:48:30Z",
+        "updatedAt": "2026-11-24T19:45:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T18:57:47Z",
+        "updatedAt": "2026-11-24T19:11:26Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T18:58:29Z",
+        "updatedAt": "2026-11-24T19:13:37Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator targeted a-christmas-carol-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T19:00:05Z",
+        "updatedAt": "2026-11-24T21:36:14Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted attention-off-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T19:00:17Z",
+        "updatedAt": "2026-11-24T23:31:07Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted fourteen-again-off-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T19:00:27Z",
+        "updatedAt": "2026-11-24T23:02:37Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted in-my-own-little-world-off-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T19:00:37Z",
+        "updatedAt": "2026-11-24T23:20:20Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator targeted the-jungle-book-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T19:00:47Z",
+        "updatedAt": "2026-11-24T21:37:38Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:00:51Z",
+        "updatedAt": "2026-11-24T19:06:43Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T19:01:00Z",
+        "updatedAt": "2026-11-24T19:04:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:01:15Z",
+        "updatedAt": "2026-11-24T19:14:34Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T19:01:20Z",
+        "updatedAt": "2026-11-24T19:45:54Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T19:01:21Z",
+        "updatedAt": "2026-11-24T19:12:57Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T19:01:41Z",
+        "updatedAt": "2026-11-24T19:23:51Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:01:42Z",
+        "updatedAt": "2026-11-24T19:15:37Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T19:01:51Z",
+        "updatedAt": "2026-11-24T19:28:57Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-jungle-book-west-end-2026",
+        "startedAt": "2026-11-24T19:02:06Z",
+        "updatedAt": "2026-11-24T19:29:17Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T19:05:03Z",
+        "updatedAt": "2026-11-24T19:17:50Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — falls-for-jodie-off-broadway-2026",
+        "startedAt": "2026-11-24T19:06:41Z",
+        "updatedAt": "2026-11-24T19:20:54Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:12:13Z",
+        "updatedAt": "2026-11-24T19:27:41Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T19:17:46Z",
+        "updatedAt": "2026-11-24T19:41:32Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:18:51Z",
+        "updatedAt": "2026-11-24T19:43:51Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T19:20:50Z",
+        "updatedAt": "2026-11-24T19:59:58Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:22:39Z",
+        "updatedAt": "2026-11-24T19:28:46Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T19:22:47Z",
+        "updatedAt": "2026-11-24T19:41:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:23:12Z",
+        "updatedAt": "2026-11-24T19:45:14Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T19:24:52Z",
+        "updatedAt": "2026-11-24T19:43:34Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-24T19:24:54Z",
+        "updatedAt": "2026-11-24T19:45:35Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — nine-night-off-west-end-2026",
+        "startedAt": "2026-11-24T19:24:55Z",
+        "updatedAt": "2026-11-24T19:42:46Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T19:24:56Z",
+        "updatedAt": "2026-11-24T19:34:48Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T19:24:58Z",
+        "updatedAt": "2026-11-24T19:46:18Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-24T19:24:59Z",
+        "updatedAt": "2026-11-24T19:34:49Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — nine-night-off-west-end-2026",
+        "startedAt": "2026-11-24T19:25:00Z",
+        "updatedAt": "2026-11-24T19:34:50Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:27:03Z",
+        "updatedAt": "2026-11-24T19:51:55Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-24T19:27:23Z",
+        "updatedAt": "2026-11-24T21:36:14Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T19:28:05Z",
+        "updatedAt": "2026-11-24T19:49:07Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T19:28:07Z",
+        "updatedAt": "2026-11-24T19:29:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45468685770)",
+        "startedAt": "2026-11-24T19:28:43Z",
+        "updatedAt": "2026-11-24T20:02:09Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T19:29:19Z",
+        "updatedAt": "2026-11-24T19:45:21Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T19:30:47Z",
+        "updatedAt": "2026-11-24T20:52:54Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T19:34:45Z",
+        "updatedAt": "2026-11-24T19:36:04Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-24T19:34:46Z",
+        "updatedAt": "2026-11-24T19:36:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — nine-night-off-west-end-2026",
+        "startedAt": "2026-11-24T19:34:48Z",
+        "updatedAt": "2026-11-24T19:36:54Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T19:36:00Z",
+        "updatedAt": "2026-11-24T19:39:40Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-24T19:36:50Z",
+        "updatedAt": "2026-11-24T19:54:37Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — nine-night-off-west-end-2026",
+        "startedAt": "2026-11-24T19:36:51Z",
+        "updatedAt": "2026-11-24T19:51:33Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:37:54Z",
+        "updatedAt": "2026-11-24T20:44:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:38:19Z",
+        "updatedAt": "2026-11-24T19:51:13Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T19:39:14Z",
+        "updatedAt": "2026-11-24T20:01:15Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:39:18Z",
+        "updatedAt": "2026-11-24T19:53:04Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T19:39:37Z",
+        "updatedAt": "2026-11-24T19:52:13Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:41:15Z",
+        "updatedAt": "2026-11-24T20:18:23Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T19:41:43Z",
+        "updatedAt": "2026-11-24T19:43:33Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:42:08Z",
+        "updatedAt": "2026-11-24T20:01:38Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T19:43:30Z",
+        "updatedAt": "2026-11-24T19:45:33Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:43:38Z",
+        "updatedAt": "2026-11-24T20:30:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "skipped",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:43:38Z",
+        "updatedAt": "2026-11-24T19:43:39Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-jungle-book-west-end-2026",
+        "startedAt": "2026-11-24T19:44:33Z",
+        "updatedAt": "2026-11-24T20:06:58Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T19:45:01Z",
+        "updatedAt": "2026-11-24T20:11:26Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T19:45:18Z",
+        "updatedAt": "2026-11-24T20:40:43Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:45:26Z",
+        "updatedAt": "2026-11-24T20:15:33Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T19:45:30Z",
+        "updatedAt": "2026-11-24T20:18:43Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T19:45:32Z",
+        "updatedAt": "2026-11-24T20:25:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45469238853)",
+        "startedAt": "2026-11-24T19:48:27Z",
+        "updatedAt": "2026-11-24T20:46:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:53:02Z",
+        "updatedAt": "2026-11-24T20:18:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:54:04Z",
+        "updatedAt": "2026-11-24T20:21:55Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:57:31Z",
+        "updatedAt": "2026-11-24T20:35:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:58:00Z",
+        "updatedAt": "2026-11-24T21:40:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T19:59:40Z",
+        "updatedAt": "2026-11-24T20:47:49Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-24T20:00:07Z",
+        "updatedAt": "2026-11-24T21:36:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T20:00:32Z",
+        "updatedAt": "2026-11-24T20:06:06Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T20:00:32Z",
+        "updatedAt": "2026-11-24T20:05:43Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45473580108)",
+        "startedAt": "2026-11-24T20:05:23Z",
+        "updatedAt": "2026-11-24T21:19:10Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T20:05:31Z",
+        "updatedAt": "2026-11-24T20:49:05Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T20:05:40Z",
+        "updatedAt": "2026-11-24T20:22:08Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T20:05:49Z",
+        "updatedAt": "2026-11-24T20:59:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:15:44Z",
+        "updatedAt": "2026-11-24T20:54:08Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T20:15:51Z",
+        "updatedAt": "2026-11-24T20:35:40Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:16:10Z",
+        "updatedAt": "2026-11-24T20:54:39Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T20:16:47Z",
+        "updatedAt": "2026-11-24T20:43:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:18:24Z",
+        "updatedAt": "2026-11-24T20:59:27Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T20:22:05Z",
+        "updatedAt": "2026-11-24T21:16:07Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-jungle-book-west-end-2026",
+        "startedAt": "2026-11-24T20:22:24Z",
+        "updatedAt": "2026-11-24T20:55:39Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T20:27:21Z",
+        "updatedAt": "2026-11-24T20:57:57Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:30:00Z",
+        "updatedAt": "2026-11-24T21:00:01Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-fantasticks-2026",
+        "startedAt": "2026-11-24T20:33:10Z",
+        "updatedAt": "2026-11-24T20:44:37Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T20:35:52Z",
+        "updatedAt": "2026-11-24T20:54:28Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:39:45Z",
+        "updatedAt": "2026-11-24T21:00:56Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T20:41:35Z",
+        "updatedAt": "2026-11-24T21:10:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:42:13Z",
+        "updatedAt": "2026-11-24T21:03:15Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:42:28Z",
+        "updatedAt": "2026-11-24T21:04:01Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T20:43:06Z",
+        "updatedAt": "2026-11-24T20:54:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:44:06Z",
+        "updatedAt": "2026-11-24T21:10:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45482464179)",
+        "startedAt": "2026-11-24T20:44:11Z",
+        "updatedAt": "2026-11-24T21:34:25Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:45:55Z",
+        "updatedAt": "2026-11-24T21:43:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:46:04Z",
+        "updatedAt": "2026-11-24T21:45:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:46:13Z",
+        "updatedAt": "2026-11-24T21:11:13Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:46:58Z",
+        "updatedAt": "2026-11-24T21:18:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:47:31Z",
+        "updatedAt": "2026-11-24T21:54:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:48:45Z",
+        "updatedAt": "2026-11-24T21:22:01Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:49:10Z",
+        "updatedAt": "2026-11-24T21:25:33Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:53:58Z",
+        "updatedAt": "2026-11-24T21:26:19Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:54:12Z",
+        "updatedAt": "2026-11-24T21:28:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T20:54:52Z",
+        "updatedAt": "2026-11-24T21:31:47Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T20:56:53Z",
+        "updatedAt": "2026-11-24T21:06:40Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T20:58:46Z",
+        "updatedAt": "2026-11-24T21:07:30Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T21:00:41Z",
+        "updatedAt": "2026-11-24T21:38:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:02:28Z",
+        "updatedAt": "2026-11-24T21:35:45Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T21:06:28Z",
+        "updatedAt": "2026-11-24T21:32:39Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T21:06:37Z",
+        "updatedAt": "2026-11-24T21:36:52Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T21:06:46Z",
+        "updatedAt": "2026-11-24T21:19:31Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:07:06Z",
+        "updatedAt": "2026-11-24T21:38:43Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-jungle-book-west-end-2026",
+        "startedAt": "2026-11-24T21:11:15Z",
+        "updatedAt": "2026-11-24T21:20:43Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:11:28Z",
+        "updatedAt": "2026-11-24T22:16:33Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T21:11:37Z",
+        "updatedAt": "2026-11-24T21:20:52Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:12:13Z",
+        "updatedAt": "2026-11-24T21:45:58Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T21:13:14Z",
+        "updatedAt": "2026-11-24T21:27:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:13:43Z",
+        "updatedAt": "2026-11-24T21:46:40Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T21:21:51Z",
+        "updatedAt": "2026-11-24T21:32:10Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T21:23:03Z",
+        "updatedAt": "2026-11-24T21:35:12Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T21:25:17Z",
+        "updatedAt": "2026-11-24T21:49:11Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T21:25:36Z",
+        "updatedAt": "2026-11-24T22:00:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:25:50Z",
+        "updatedAt": "2026-11-24T22:04:02Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:31:56Z",
+        "updatedAt": "2026-11-24T22:10:29Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T21:32:07Z",
+        "updatedAt": "2026-11-24T21:59:15Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-24T21:32:20Z",
+        "updatedAt": "2026-11-24T21:45:06Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-24T21:32:37Z",
+        "updatedAt": "2026-11-24T21:45:54Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — msblackforpresident-off-broadway-2026",
+        "startedAt": "2026-11-24T21:32:42Z",
+        "updatedAt": "2026-11-24T21:55:47Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:33:36Z",
+        "updatedAt": "2026-11-24T21:48:14Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:34:08Z",
+        "updatedAt": "2026-11-24T22:11:55Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T21:34:34Z",
+        "updatedAt": "2026-11-24T21:35:58Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — the-jungle-book-west-end-2026",
+        "startedAt": "2026-11-24T21:36:01Z",
+        "updatedAt": "2026-11-24T21:37:19Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45490919084)",
+        "startedAt": "2026-11-24T21:36:43Z",
+        "updatedAt": "2026-11-24T22:10:16Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:37:07Z",
+        "updatedAt": "2026-11-24T21:48:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:40:50Z",
+        "updatedAt": "2026-11-24T22:08:39Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T21:42:57Z",
+        "updatedAt": "2026-11-24T21:52:01Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — desire-under-the-elms-off-west-end-2026",
+        "startedAt": "2026-11-24T21:43:29Z",
+        "updatedAt": "2026-11-24T21:54:12Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — very-blue-light-off-broadway-2026",
+        "startedAt": "2026-11-24T21:43:48Z",
+        "updatedAt": "2026-11-24T21:59:06Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "skipped",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:44:24Z",
+        "updatedAt": "2026-11-24T21:44:33Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T21:45:02Z",
+        "updatedAt": "2026-11-24T21:45:52Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — desire-under-the-elms-off-west-end-2026",
+        "startedAt": "2026-11-24T21:45:08Z",
+        "updatedAt": "2026-11-24T21:46:58Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T21:45:49Z",
+        "updatedAt": "2026-11-24T22:00:19Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — desire-under-the-elms-off-west-end-2026",
+        "startedAt": "2026-11-24T21:46:55Z",
+        "updatedAt": "2026-11-24T22:23:25Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:48:48Z",
+        "updatedAt": "2026-11-24T22:29:54Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T21:50:51Z",
+        "updatedAt": "2026-11-24T22:05:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45494342017)",
+        "startedAt": "2026-11-24T21:51:04Z",
+        "updatedAt": "2026-11-24T22:32:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:51:36Z",
+        "updatedAt": "2026-11-24T22:46:21Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — destiny-of-desire-regional-2026",
+        "startedAt": "2026-11-24T21:51:49Z",
+        "updatedAt": "2026-11-24T22:06:16Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-24T21:51:50Z",
+        "updatedAt": "2026-11-24T22:22:38Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T21:51:52Z",
+        "updatedAt": "2026-11-24T22:20:05Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — destiny-of-desire-regional-2026",
+        "startedAt": "2026-11-24T21:51:54Z",
+        "updatedAt": "2026-11-24T21:58:27Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-24T21:51:55Z",
+        "updatedAt": "2026-11-24T21:58:12Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — pride-bridge-theatre-off-west-end-2026",
+        "startedAt": "2026-11-24T21:51:57Z",
+        "updatedAt": "2026-11-24T22:27:30Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:51:57Z",
+        "updatedAt": "2026-11-24T22:14:06Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-fantasticks-2026",
+        "startedAt": "2026-11-24T21:51:58Z",
+        "updatedAt": "2026-11-24T22:25:03Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted the-jungle-book-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T21:53:24Z",
+        "updatedAt": "2026-11-24T21:59:56Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T21:54:09Z",
+        "updatedAt": "2026-11-24T22:16:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:57:23Z",
+        "updatedAt": "2026-11-24T23:37:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T21:57:40Z",
+        "updatedAt": "2026-11-24T23:04:54Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-24T21:58:08Z",
+        "updatedAt": "2026-11-24T21:58:28Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-christmas-carol-off-broadway-2026",
+        "startedAt": "2026-11-24T21:58:22Z",
+        "updatedAt": "2026-11-24T22:30:18Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — destiny-of-desire-regional-2026",
+        "startedAt": "2026-11-24T21:58:24Z",
+        "updatedAt": "2026-11-24T22:24:35Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-24T21:58:25Z",
+        "updatedAt": "2026-11-24T22:10:01Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:00:05Z",
+        "updatedAt": "2026-11-24T23:14:59Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator targeted a-christmas-carol-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T22:03:55Z",
+        "updatedAt": "2026-11-24T22:11:04Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T22:06:12Z",
+        "updatedAt": "2026-11-24T22:32:26Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:07:11Z",
+        "updatedAt": "2026-11-24T23:21:43Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T22:07:29Z",
+        "updatedAt": "2026-11-24T22:21:06Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45495693084)",
+        "startedAt": "2026-11-24T22:07:55Z",
+        "updatedAt": "2026-11-24T23:37:15Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-24T22:09:58Z",
+        "updatedAt": "2026-11-24T22:28:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:10:09Z",
+        "updatedAt": "2026-11-24T22:46:30Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — a-christmas-carol-off-broadway-2026",
+        "startedAt": "2026-11-24T22:10:41Z",
+        "updatedAt": "2026-11-24T22:16:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:12:01Z",
+        "updatedAt": "2026-11-24T22:52:42Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:12:22Z",
+        "updatedAt": "2026-11-24T23:42:57Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:16:04Z",
+        "updatedAt": "2026-11-24T22:58:12Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-christmas-carol-off-broadway-2026",
+        "startedAt": "2026-11-24T22:16:08Z",
+        "updatedAt": "2026-11-24T22:41:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:16:18Z",
+        "updatedAt": "2026-11-24T23:51:48Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T22:16:41Z",
+        "updatedAt": "2026-11-24T22:36:50Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:16:52Z",
+        "updatedAt": "2026-11-24T23:17:23Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "displayTitle": "Opening Night Orchestrator targeted the-jungle-book-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T22:18:39Z",
+        "updatedAt": "2026-11-24T22:20:09Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T22:18:41Z",
+        "updatedAt": "2026-11-24T23:00:25Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-jungle-book-west-end-2026",
+        "startedAt": "2026-11-24T22:18:42Z",
+        "updatedAt": "2026-11-24T22:37:47Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-24T22:19:12Z",
+        "updatedAt": "2026-11-25T02:32:27Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-24T22:19:14Z",
+        "updatedAt": "2026-11-25T02:36:13Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted a-christmas-carol-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T22:19:15Z",
+        "updatedAt": "2026-11-25T02:46:33Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T22:19:17Z",
+        "updatedAt": "2026-11-24T22:48:19Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45497662280)",
+        "startedAt": "2026-11-24T22:19:17Z",
+        "updatedAt": "2026-11-24T23:54:02Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T22:19:18Z",
+        "updatedAt": "2026-11-24T23:29:49Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T22:20:29Z",
+        "updatedAt": "2026-11-24T22:46:31Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-jungle-book-west-end-2026",
+        "startedAt": "2026-11-24T22:21:16Z",
+        "updatedAt": "2026-11-24T23:05:46Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T22:21:39Z",
+        "updatedAt": "2026-11-24T23:23:04Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T22:21:40Z",
+        "updatedAt": "2026-11-24T23:44:58Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T22:21:48Z",
+        "updatedAt": "2026-11-24T22:22:10Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T22:21:57Z",
+        "updatedAt": "2026-11-24T22:56:33Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T22:22:06Z",
+        "updatedAt": "2026-11-24T23:18:22Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T22:22:33Z",
+        "updatedAt": "2026-11-24T22:27:29Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T22:27:27Z",
+        "updatedAt": "2026-11-24T22:30:16Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:29:37Z",
+        "updatedAt": "2026-11-24T23:19:21Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted the-dead-1904-off-broadway-2026 (broadway)",
+        "startedAt": "2026-11-24T22:30:08Z",
+        "updatedAt": "2026-11-25T01:08:34Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T22:30:13Z",
+        "updatedAt": "2026-11-24T22:43:59Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:30:14Z",
+        "updatedAt": "2026-11-24T23:22:28Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T22:30:22Z",
+        "updatedAt": "2026-11-24T22:40:19Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:31:24Z",
+        "updatedAt": "2026-11-24T23:23:33Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-dead-1904-off-broadway-2026",
+        "startedAt": "2026-11-24T22:31:46Z",
+        "updatedAt": "2026-11-24T22:55:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:31:57Z",
+        "updatedAt": "2026-11-24T23:27:36Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:32:09Z",
+        "updatedAt": "2026-11-25T00:04:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45501521092)",
+        "startedAt": "2026-11-24T22:33:33Z",
+        "updatedAt": "2026-11-25T00:16:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:34:23Z",
+        "updatedAt": "2026-11-25T00:17:19Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T22:36:58Z",
+        "updatedAt": "2026-11-24T23:04:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:38:00Z",
+        "updatedAt": "2026-11-25T01:24:05Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T22:40:19Z",
+        "updatedAt": "2026-11-24T22:56:06Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T22:41:58Z",
+        "updatedAt": "2026-11-24T22:45:31Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:43:41Z",
+        "updatedAt": "2026-11-25T00:18:13Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T22:44:25Z",
+        "updatedAt": "2026-11-24T23:06:42Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45503097606)",
+        "startedAt": "2026-11-24T22:45:18Z",
+        "updatedAt": "2026-11-25T00:21:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:47:19Z",
+        "updatedAt": "2026-11-25T00:22:06Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "displayTitle": "Opening Night Orchestrator targeted attention-off-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T22:50:13Z",
+        "updatedAt": "2026-11-24T22:50:43Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "displayTitle": "Opening Night Orchestrator targeted fourteen-again-off-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T22:50:18Z",
+        "updatedAt": "2026-11-24T22:53:59Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "displayTitle": "Opening Night Orchestrator targeted in-my-own-little-world-off-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T22:50:23Z",
+        "updatedAt": "2026-11-24T22:57:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:50:43Z",
+        "updatedAt": "2026-11-24T23:41:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:50:51Z",
+        "updatedAt": "2026-11-25T00:28:12Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T22:52:04Z",
+        "updatedAt": "2026-11-24T22:52:14Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T22:52:11Z",
+        "updatedAt": "2026-11-24T23:14:34Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:53:55Z",
+        "updatedAt": "2026-11-24T23:42:30Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T22:54:53Z",
+        "updatedAt": "2026-11-24T23:08:42Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:55:59Z",
+        "updatedAt": "2026-11-25T00:33:28Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:56:43Z",
+        "updatedAt": "2026-11-24T23:45:18Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T22:57:06Z",
+        "updatedAt": "2026-11-24T23:09:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "skipped",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T22:57:52Z",
+        "updatedAt": "2026-11-24T22:57:54Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45503720854)",
+        "startedAt": "2026-11-24T22:58:38Z",
+        "updatedAt": "2026-11-25T00:36:23Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T22:58:57Z",
+        "updatedAt": "2026-11-24T23:25:19Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:06:31Z",
+        "updatedAt": "2026-11-25T00:38:48Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T23:08:09Z",
+        "updatedAt": "2026-11-24T23:41:14Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T23:08:17Z",
+        "updatedAt": "2026-11-24T23:21:44Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T23:08:23Z",
+        "updatedAt": "2026-11-24T23:27:23Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T23:09:39Z",
+        "updatedAt": "2026-11-24T23:35:45Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-dead-1904-off-broadway-2026",
+        "startedAt": "2026-11-24T23:10:14Z",
+        "updatedAt": "2026-11-24T23:25:51Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T23:10:44Z",
+        "updatedAt": "2026-11-24T23:26:03Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — peter-pan-off-west-end-2026",
+        "startedAt": "2026-11-24T23:10:45Z",
+        "updatedAt": "2026-11-24T23:31:36Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — peter-pan-off-west-end-2026",
+        "startedAt": "2026-11-24T23:10:47Z",
+        "updatedAt": "2026-11-24T23:43:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:12:03Z",
+        "updatedAt": "2026-11-24T23:45:46Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:13:26Z",
+        "updatedAt": "2026-11-24T23:53:45Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:15:36Z",
+        "updatedAt": "2026-11-24T23:54:34Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:18:05Z",
+        "updatedAt": "2026-11-24T23:55:11Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T23:19:50Z",
+        "updatedAt": "2026-11-24T23:32:36Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:20:54Z",
+        "updatedAt": "2026-11-25T00:12:20Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-jungle-book-west-end-2026",
+        "startedAt": "2026-11-24T23:21:03Z",
+        "updatedAt": "2026-11-24T23:38:01Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "skipped",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:23:42Z",
+        "updatedAt": "2026-11-24T23:23:49Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45507524496)",
+        "startedAt": "2026-11-24T23:23:50Z",
+        "updatedAt": "2026-11-25T00:41:37Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-wanderers-off-broadway-2023",
+        "startedAt": "2026-11-24T23:23:55Z",
+        "updatedAt": "2026-11-24T23:37:51Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T23:24:26Z",
+        "updatedAt": "2026-11-24T23:39:26Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T23:26:00Z",
+        "updatedAt": "2026-11-24T23:30:50Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:26:20Z",
+        "updatedAt": "2026-11-25T00:41:30Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T23:30:48Z",
+        "updatedAt": "2026-11-24T23:31:34Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T23:31:31Z",
+        "updatedAt": "2026-11-24T23:47:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:33:21Z",
+        "updatedAt": "2026-11-25T00:18:22Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T23:34:20Z",
+        "updatedAt": "2026-11-24T23:55:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:34:58Z",
+        "updatedAt": "2026-11-25T00:44:06Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:35:34Z",
+        "updatedAt": "2026-11-25T00:45:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:37:27Z",
+        "updatedAt": "2026-11-25T00:29:55Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T23:37:45Z",
+        "updatedAt": "2026-11-25T00:04:30Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — leopoldstadt-2022",
+        "startedAt": "2026-11-24T23:38:20Z",
+        "updatedAt": "2026-11-24T23:46:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45510688400)",
+        "startedAt": "2026-11-24T23:38:37Z",
+        "updatedAt": "2026-11-25T00:50:21Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T23:40:25Z",
+        "updatedAt": "2026-11-24T23:47:38Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:40:29Z",
+        "updatedAt": "2026-11-25T00:49:25Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:41:32Z",
+        "updatedAt": "2026-11-25T00:50:42Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-dead-1904-off-broadway-2026",
+        "startedAt": "2026-11-24T23:42:14Z",
+        "updatedAt": "2026-11-24T23:52:16Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — attention-off-west-end-2026",
+        "startedAt": "2026-11-24T23:43:48Z",
+        "updatedAt": "2026-11-24T23:58:47Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — purpose-geffen-regional-2026",
+        "startedAt": "2026-11-24T23:43:52Z",
+        "updatedAt": "2026-11-24T23:55:00Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:47:05Z",
+        "updatedAt": "2026-11-25T00:56:43Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — my-english-persian-kitchen-regional-2026",
+        "startedAt": "2026-11-24T23:47:12Z",
+        "updatedAt": "2026-11-24T23:56:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:51:03Z",
+        "updatedAt": "2026-11-25T00:36:16Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T23:51:32Z",
+        "updatedAt": "2026-11-25T00:36:55Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45511579230)",
+        "startedAt": "2026-11-24T23:52:17Z",
+        "updatedAt": "2026-11-25T00:55:44Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — its-a-wonderful-life-a-live-radio-play-regional-2025",
+        "startedAt": "2026-11-24T23:52:23Z",
+        "updatedAt": "2026-11-25T00:05:46Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T23:53:01Z",
+        "updatedAt": "2026-11-25T00:30:13Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T23:53:10Z",
+        "updatedAt": "2026-11-25T00:34:46Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — in-my-own-little-world-off-west-end-2026",
+        "startedAt": "2026-11-24T23:53:18Z",
+        "updatedAt": "2026-11-25T00:08:51Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:53:57Z",
+        "updatedAt": "2026-11-25T00:58:04Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-jungle-book-west-end-2026",
+        "startedAt": "2026-11-24T23:54:04Z",
+        "updatedAt": "2026-11-25T00:12:31Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T23:54:57Z",
+        "updatedAt": "2026-11-24T23:56:20Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — fourteen-again-off-west-end-2026",
+        "startedAt": "2026-11-24T23:55:10Z",
+        "updatedAt": "2026-11-25T00:17:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T23:56:10Z",
+        "updatedAt": "2026-11-25T00:58:42Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T23:56:17Z",
+        "updatedAt": "2026-11-25T00:19:01Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — home-im-darling-regional-2026",
+        "startedAt": "2026-11-24T23:57:56Z",
+        "updatedAt": "2026-11-25T00:14:16Z"
+      }
+    ]
+  }
+}

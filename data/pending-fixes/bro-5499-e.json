@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5499-e",
+  "planId": "44b8f53f-fb9a-4155-af4e-1d62a12b7c88",
+  "status": "applied",
+  "createdAt": "2026-10-16T17:26:05.009Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (e): The BroadGAYS review critic is Stephen Kearley (apply after plan a has normalised the url).",
+    "steps": [
+      "edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/stephenkearley--the-broadgays.json",
+        "field": "criticName",
+        "oldValue": "The BroadGAYS",
+        "newValue": "Stephen Kearley",
+        "description": "BRO-5499: The BroadGAYS is the publication; Stephen Kearley is the critic"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T20:18:00.020Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/stephenkearley--the-broadgays.json criticName: \"The BroadGAYS\" -> \"Stephen Kearley\""
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { isInvalidWorkflowFileRun, findInvalidWorkflowFiles } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+
+const P = '.github/workflows/opening-night-orchestrator.yml';
+// Real BRO-7306 shape: runs 1800-1998, 2026-11-10.
+const invalid = (id, at = '2026-11-10T09:41:12Z') => ({
+  id, name: P, path: P, event: 'push', head_branch: 'main', status: 'completed', conclusion: 'failure',
+  created_at: at, updated_at: at, html_url: `https://github.com/x/actions/runs/${id}`,
+});
+const normalFailed = {
+  id: 5, head_branch: 'main', name: 'Opening Night Orchestrator', path: P, event: 'schedule', conclusion: 'failure',
+  created_at: '2026-11-10T08:00:00Z', updated_at: '2026-11-10T08:07:30Z',
+};
+const normalPush = {
+  id: 6, name: 'Test', path: '.github/workflows/test.yml', event: 'push', conclusion: 'success',
+  created_at: '2026-11-10T10:00:00Z', updated_at: '2026-11-10T10:12:00Z',
+};
+
+test('flags the BRO-7306 run shape', () => {
+  assert.equal(isInvalidWorkflowFileRun(invalid(1800)), true);
+});
+test('does not flag a normal failed run or a normal push run', () => {
+  assert.equal(isInvalidWorkflowFileRun(normalFailed), false);
+  assert.equal(isInvalidWorkflowFileRun(normalPush), false);
+});
+test('does not flag a no-name workflow whose real push run failed after running', () => {
+  assert.equal(isInvalidWorkflowFileRun({ ...invalid(7), updated_at: '2026-11-10T09:45:00Z' }), false);
+});
+test('does not flag cancelled/successful instant runs or garbage', () => {
+  assert.equal(isInvalidWorkflowFileRun({ ...invalid(8), conclusion: 'cancelled' }), false);
+  assert.equal(isInvalidWorkflowFileRun({ ...invalid(9), event: 'schedule' }), false);
+  assert.equal(isInvalidWorkflowFileRun(null), false);
+  assert.equal(isInvalidWorkflowFileRun({ ...invalid(10), created_at: 'nope' }), false);
+});
+test('groups per workflow, counts, newest first, ignores normal runs', () => {
+  const runs = [invalid(1800, '2026-11-10T09:41:00Z'), invalid(1998, '2026-11-10T17:59:00Z'), normalFailed, normalPush];
+  const out = findInvalidWorkflowFiles(runs);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].file, 'opening-night-orchestrator.yml');
+  assert.equal(out[0].count, 2);
+  assert.equal(out[0].newestAt, '2026-11-10T17:59:00.000Z');
+});
+test('a later normal run of the same file means it parses again', () => {
+  const fixed = { ...normalFailed, created_at: '2026-11-10T18:30:00Z', updated_at: '2026-11-10T18:40:00Z' };
+  assert.deepEqual(findInvalidWorkflowFiles([invalid(1998, '2026-11-10T17:59:00Z'), fixed]), []);
+});
+
+test('paging key is page-worthy, the ordinary key is not (router would downgrade it)', () => {
+  const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
+  assert.equal(isPageWorthy('workflow-invalid-file:page:opening-night-orchestrator.yml'), true);
+  assert.equal(isPageWorthy('workflow-invalid-file:test.yml'), false);
+});
+test('health-check turns findings into one error row per workflow, pass row when none', () => {
+  const { invalidWorkflowFileResults } = require('../../scripts/health-check.js');
+  const rows = invalidWorkflowFileResults({ skipped: false, invalidWorkflowFiles: findInvalidWorkflowFiles([invalid(1), invalid(2)]) });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].status, 'error');
+  assert.equal(invalidWorkflowFileResults({ skipped: false, invalidWorkflowFiles: [] })[0].status, 'pass');
+  assert.deepEqual(invalidWorkflowFileResults({ skipped: true }), []);
+});
+
+test('branch scoping: unmerged-branch breakage ignored; other-branch good run does not hide main', () => {
+  assert.deepEqual(findInvalidWorkflowFiles([{ ...invalid(1), head_branch: 'land/x' }]), []);
+  const otherGood = { ...normalFailed, head_branch: 'land/x', created_at: '2026-11-10T19:00:00Z', updated_at: '2026-11-10T19:05:00Z' };
+  assert.equal(findInvalidWorkflowFiles([invalid(1998, '2026-11-10T17:59:00Z'), otherGood]).length, 1);
+});
+test('a good run older than the newest invalid run stays flagged', () => {
+  assert.equal(findInvalidWorkflowFiles([invalid(1998, '2026-11-10T17:59:00Z'), normalFailed]).length, 1);
+});
+test('truncated run list: no-finding result is a warn, not a pass', () => {
+  const { invalidWorkflowFileResults } = require('../../scripts/health-check.js');
+  assert.equal(invalidWorkflowFileResults({ skipped: false, partial: true, invalidWorkflowFiles: [] })[0].status, 'warn');
+});
+test('rows are internal (no duplicate START-NOW card) and the key family auto-resolves', () => {
+  const { classifyHealthCheck } = require('../../scripts/lib/digest-audience.js');
+  const { invalidWorkflowFileResults } = require('../../scripts/health-check.js');
+  const row = invalidWorkflowFileResults({ skipped: false, invalidWorkflowFiles: findInvalidWorkflowFiles([invalid(1)]) })[0];
+  assert.equal(classifyHealthCheck({ name: row.name }), 'internal');
+  const src = require('node:fs').readFileSync(new URL('../../scripts/lib/owner-alert-router.js', import.meta.url), 'utf8');
+  assert.match(src, /family: \/\^workflow-invalid-file:\//);
+});
+
+// BRO-7589 class guard: coverage is only "partial" when it really is.
+test('collectRunPages: 240 runs in 3 pages under a 5-page cap is complete, not partial', async () => {
+  const { collectRunPages } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  const pages = [100, 100, 40].map((n) => Array.from({ length: n }, (_, i) => ({ id: i })));
+  const { runs, partial } = await collectRunPages(async (p) => pages[p - 1], { maxPages: 5 });
+  assert.equal(runs.length, 240);
+  assert.equal(partial, false);
+});
+test('collectRunPages: cap hit with a full last page is partial', async () => {
+  const { collectRunPages } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  const full = Array.from({ length: 100 }, (_, i) => ({ id: i }));
+  const { runs, partial } = await collectRunPages(async () => full, { maxPages: 3 });
+  assert.equal(runs.length, 300);
+  assert.equal(partial, true);
+});
+test('collectRunPages: later-page failure is partial, first-page failure propagates', async () => {
+  const { collectRunPages } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  const full = Array.from({ length: 100 }, (_, i) => ({ id: i }));
+  const r = await collectRunPages(async (p) => { if (p === 2) throw new Error('boom'); return full; });
+  assert.equal(r.partial, true);
+  assert.equal(r.runs.length, 100);
+  await assert.rejects(() => collectRunPages(async () => { throw new Error('x'); }), /x/);
+});
+test('health-check reads invalid-file coverage from the push-on-main list, not the all-events list', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../../scripts/health-check.js', import.meta.url), 'utf8');
+  assert.match(src, /findInvalidWorkflowFiles\(invalidInput\)/);
+  assert.match(src, /unionRuns\(pushRuns, results\)/);
+  assert.match(src, /invalidFilesPartial: pushPartial/);
+});
+
+test('BRO-7589: a later schedule run of the same file (not in the push list) clears the finding', () => {
+  const pathP = '.github/workflows/opening-night-orchestrator.yml';
+  const later = { id: 99, name: 'Opening Night Orchestrator', path: pathP, event: 'schedule', head_branch: 'main', status: 'completed', conclusion: 'success', created_at: '2026-11-10T20:00:00Z', updated_at: '2026-11-10T20:05:00Z' };
+  assert.deepEqual(findInvalidWorkflowFiles([invalid(1), later]), []);
+});
+test('invalid-file row reads its own partial flag, not the all-events one', () => {
+  const { invalidWorkflowFileResults } = require('../../scripts/health-check.js');
+  assert.equal(invalidWorkflowFileResults({ skipped: false, partial: true, invalidFilesPartial: false, invalidWorkflowFiles: [] })[0].status, 'pass');
+});
+
+test('collectRunPages: null/malformed page is never a clean read', async () => {
+  const { collectRunPages } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  await assert.rejects(() => collectRunPages(async () => null), /no workflow_runs/);
+  const full = Array.from({ length: 100 }, (_, i) => ({ id: i }));
+  const r = await collectRunPages(async (p) => (p === 1 ? full : null));
+  assert.equal(r.partial, true);
+});
+test('unionRuns: dedupes by id, push list wins, null ids kept, falsy dropped', () => {
+  const { unionRuns } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  const out = unionRuns([{ id: 1, v: 'push' }, null, { id: null }], [{ id: 1, v: 'all' }, { id: 2 }, { id: null }], undefined);
+  assert.deepEqual(out.map((r) => r.v || r.id), ['push', null, 2, null]);
+});
+test('a later schedule run clears a push-list finding through the union path', () => {
+  const { unionRuns } = require('../../scripts/lib/invalid-workflow-file-signature.js');
+  const P2 = '.github/workflows/x.yml';
+  const later = { id: 50, name: 'X', path: P2, event: 'schedule', head_branch: 'main', conclusion: 'success', created_at: '2026-11-10T20:00:00Z', updated_at: '2026-11-10T20:05:00Z' };
+  const bad = { id: 49, name: P2, path: P2, event: 'push', head_branch: 'main', conclusion: 'failure', created_at: '2026-11-10T09:00:00Z', updated_at: '2026-11-10T09:00:00Z' };
+  assert.equal(findInvalidWorkflowFiles(unionRuns([bad], [later])).length, 0);
+  assert.equal(findInvalidWorkflowFiles(unionRuns([bad], [])).length, 1);
+});

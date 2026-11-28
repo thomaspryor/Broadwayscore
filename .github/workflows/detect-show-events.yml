@@ -1,0 +1,55 @@
+name: Detect Show Events
+
+# Records New York closing-date changes in Supabase show_events (BRO-6219) so
+# the iOS app can tell people when a show on their To Watch list posts or moves
+# its closing date. The diff is the table's unique key, not a baseline file, so
+# a missed day is simply caught on the next one. Runs before the app's 15:00 UTC
+# daily send (BroadwayScorecard-app send-notifications.yml); the app only looks
+# at events from the last 3 days, so a late or missed run still lands.
+on:
+  schedule:
+    - cron: '20 13 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Read and report only; write nothing'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  # concurrency-queue-ok: idempotent (ignore-duplicates upsert); a run that queues behind another finds nothing new.
+  group: detect-show-events
+  cancel-in-progress: false
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      # Plain setup-node: the script needs only Node built-ins and in-repo files.
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Record closing-date events
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          args=()
+          [ "$DRY_RUN" = "true" ] && args+=(--dry-run)
+          node scripts/write-show-events.js "${args[@]}"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Detect Show Events Failed'
+          severity: 'warning'

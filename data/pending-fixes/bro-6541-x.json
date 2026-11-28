@@ -1,0 +1,374 @@
+{
+  "issueNumber": "bro-6541-x",
+  "planId": "a232b9de-c7a9-4cfb-adfe-1790893e79fb",
+  "status": "applied",
+  "createdAt": "2026-10-29T20:21:36.248Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: remove non-review ingests on UK hub shows (part 1 of 2)",
+    "steps": [
+      "BRO-6541-photos-release-not-a-review-of-this-production",
+      "BRO-6541: photos-release, not a review of endgame-royal-bath-regional-2025",
+      "BRO-6541-news-story-not-a-review-of-this-production",
+      "BRO-6541: news-story, not a review of anna-karenina-chichester-festival-regional-2025",
+      "BRO-6541-listing-not-a-review-of-this-production",
+      "BRO-6541: listing, not a review of redlands-chichester-festival-regional-2024",
+      "BRO-6541-interview-not-a-review-of-this-production",
+      "BRO-6541: interview, not a review of i-can-die-too-pitlochry-festival-regional-2026",
+      "BRO-6541-preview-not-a-review-of-this-production",
+      "BRO-6541: preview, not a review of lear-pitlochry-festival-regional-2026",
+      "BRO-6541-feature-not-a-review-of-this-production",
+      "BRO-6541: feature, not a review of lear-pitlochry-festival-regional-2026",
+      "BRO-6541-first-look-not-a-review-of-this-production",
+      "BRO-6541: first-look, not a review of crown-of-blood-crucible-regional-2026",
+      "BRO-6541-photos-not-a-review-of-this-production",
+      "BRO-6541: photos, not a review of wish-you-werent-here-sheffield-regional-2024",
+      "BRO-6541-press-night-photos-not-a-review-of-this-production",
+      "BRO-6541: press-night-photos, not a review of driftwood-royal-shakespeare-regional-2026",
+      "BRO-6541-interview-not-a-review-of-this-production",
+      "BRO-6541: interview, not a review of measure-for-measure-royal-shakespeare-regional-2025",
+      "BRO-6541-feature-not-a-review-of-this-production",
+      "BRO-6541: feature, not a review of even-these-things-royal-exchange-regional-2026",
+      "BRO-6541-aggregator-page-not-a-review-of-this-production",
+      "BRO-6541: aggregator-page, not a review of the-memory-of-water-octagon-regional-2026",
+      "BRO-6541-wrong-production-octagon-bolton-not-a-review-of-this-production"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=endgame-royal-bath-regional-2025",
+          "--url=https://theatreweekly.com/first-look-production-images-released-for-endgame-at-theatre-royal-bath/",
+          "--reason=BRO-6541-photos-release-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-photos-release-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "endgame-royal-bath-regional-2025/theatre-weekly--unknown.json",
+        "description": "BRO-6541: photos-release, not a review of endgame-royal-bath-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=anna-karenina-chichester-festival-regional-2025",
+          "--url=https://www.theargus.co.uk/news/25272830.anna-karenina-starring-natalie-dormer-chichester-brought-halt/",
+          "--reason=BRO-6541-news-story-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-news-story-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "anna-karenina-chichester-festival-regional-2025/theargus--annabel-stock.json",
+        "description": "BRO-6541: news-story, not a review of anna-karenina-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=redlands-chichester-festival-regional-2024",
+          "--url=https://airmail.news/arts-intel/events/redlands",
+          "--reason=BRO-6541-listing-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-listing-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "redlands-chichester-festival-regional-2024/airmail--air-mail.json",
+        "description": "BRO-6541: listing, not a review of redlands-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=i-can-die-too-pitlochry-festival-regional-2026",
+          "--url=https://www.westendbestfriend.co.uk/news/interview-ruffelle-ashfield-world-premiere-i-can-die-too-pitlochry-festival-theatre",
+          "--reason=BRO-6541-interview-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-interview-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "i-can-die-too-pitlochry-festival-regional-2026/west-end-best-friend--jacob-bush.json",
+        "description": "BRO-6541: interview, not a review of i-can-die-too-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=lear-pitlochry-festival-regional-2026",
+          "--url=https://www.heraldscotland.com/news/26196418.new-play-king-lear-debut-pitlochry-festival-theatre/",
+          "--reason=BRO-6541-preview-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-preview-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "lear-pitlochry-festival-regional-2026/herald--barry-didcock.json",
+        "description": "BRO-6541: preview, not a review of lear-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=lear-pitlochry-festival-regional-2026",
+          "--url=https://www.heraldscotland.com/news/26248998.maureen-beattie-plays-lear-woman-alan-cummings-pitlochry/",
+          "--reason=BRO-6541-feature-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-feature-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "lear-pitlochry-festival-regional-2026/herald--brian-beacom.json",
+        "description": "BRO-6541: feature, not a review of lear-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=crown-of-blood-crucible-regional-2026",
+          "--url=https://www.afridiziak.com/news/first-look-at-utopia-theatres-crown-of-blood-at-sheffield-theatres/",
+          "--reason=BRO-6541-first-look-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-first-look-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "crown-of-blood-crucible-regional-2026/afridiziak-theatre-news--sophia-jackson.json",
+        "description": "BRO-6541: first-look, not a review of crown-of-blood-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=wish-you-werent-here-sheffield-regional-2024",
+          "--url=https://www.broadwayworld.com/uk-regional/article/Photos-First-Look-At-The-UK-Tour-of-WISH-YOU-WERENT-HERE-By-Katie-Redford-20240125",
+          "--reason=BRO-6541-photos-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-photos-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "wish-you-werent-here-sheffield-regional-2024/broadwayworld--aa-cristi.json",
+        "description": "BRO-6541: photos, not a review of wish-you-werent-here-sheffield-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=driftwood-royal-shakespeare-regional-2026",
+          "--url=https://www.stratford-herald.com/news/driftwood-floats-into-stratford-9463635/",
+          "--reason=BRO-6541-press-night-photos-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-press-night-photos-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "driftwood-royal-shakespeare-regional-2026/stratford-herald--gill-sutherland.json",
+        "description": "BRO-6541: press-night-photos, not a review of driftwood-royal-shakespeare-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=measure-for-measure-royal-shakespeare-regional-2025",
+          "--url=https://www.stratford-herald.com/news/getting-the-measure-of-the-duke-9436254/",
+          "--reason=BRO-6541-interview-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-interview-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "measure-for-measure-royal-shakespeare-regional-2025/stratford-herald--gill-sutherland.json",
+        "description": "BRO-6541: interview, not a review of measure-for-measure-royal-shakespeare-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=even-these-things-royal-exchange-regional-2026",
+          "--url=https://ilovemanchester.com/its-about-what-makes-manchester-manchester-stories-from-local-cast-new-show-even-these-things",
+          "--reason=BRO-6541-feature-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-feature-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "even-these-things-royal-exchange-regional-2026/ilovemanchester--beccie-simms.json",
+        "description": "BRO-6541: feature, not a review of even-these-things-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=the-memory-of-water-octagon-regional-2026",
+          "--url=https://ground.news/article/the-memory-of-water_0e5170",
+          "--reason=BRO-6541-aggregator-page-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-aggregator-page-not-a-review-of-this-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-memory-of-water-octagon-regional-2026/ground--unknown.json",
+        "description": "BRO-6541: aggregator-page, not a review of the-memory-of-water-octagon-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "block-review.js",
+        "args": [
+          "--show=waiting-for-godot-citizens-regional-2026",
+          "--url=https://ilovemanchester.com/waiting-for-godot-octagon-theatre",
+          "--reason=BRO-6541-wrong-production-octagon-bolton-not-a-review-of-this-production"
+        ],
+        "description": "BRO-6541-wrong-production-octagon-bolton-not-a-review-of-this-production"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T22:35:40.744Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted endgame-royal-bath-regional-2025/theatre-weekly--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted anna-karenina-chichester-festival-regional-2025/theargus--annabel-stock.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted redlands-chichester-festival-regional-2024/airmail--air-mail.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted i-can-die-too-pitlochry-festival-regional-2026/west-end-best-friend--jacob-bush.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lear-pitlochry-festival-regional-2026/herald--barry-didcock.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lear-pitlochry-festival-regional-2026/herald--brian-beacom.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted crown-of-blood-crucible-regional-2026/afridiziak-theatre-news--sophia-jackson.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted wish-you-werent-here-sheffield-regional-2024/broadwayworld--aa-cristi.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted driftwood-royal-shakespeare-regional-2026/stratford-herald--gill-sutherland.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted measure-for-measure-royal-shakespeare-regional-2025/stratford-herald--gill-sutherland.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted even-these-things-royal-exchange-regional-2026/ilovemanchester--beccie-simms.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-memory-of-water-octagon-regional-2026/ground--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

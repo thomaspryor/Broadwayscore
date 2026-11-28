@@ -1,0 +1,194 @@
+// BRO-6687: pure helpers of slow-market-grade.js (STALE display, frequent-outlet gaps).
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { displayGrade, frequentMissing, gradeShow } = require('./slow-market-grade.js');
+
+const NOW = Date.parse('2026-10-31T12:00:00Z');
+
+test('displayGrade: fresh PASS stays PASS', () => {
+  const d = displayGrade({ grade: 'PASS', auditedAt: '2026-10-31T00:00:00Z' }, NOW);
+  assert.equal(d.grade, 'PASS');
+  assert.equal(d.stale, false);
+  assert.equal(d.ageHours, 12);
+});
+
+test('displayGrade: PASS older than 24h shows STALE', () => {
+  const d = displayGrade({ grade: 'PASS', auditedAt: '2026-10-30T06:00:00Z' }, NOW);
+  assert.equal(d.grade, 'STALE');
+  assert.equal(d.stale, true);
+});
+
+test('displayGrade: old FAIL stays FAIL (marked stale), missing timestamp is stale', () => {
+  assert.equal(displayGrade({ grade: 'FAIL', auditedAt: '2026-10-20T00:00:00Z' }, NOW).grade, 'FAIL');
+  const d = displayGrade({ grade: 'PASS', auditedAt: null }, NOW);
+  assert.equal(d.grade, 'STALE');
+  assert.equal(d.ageHours, null);
+});
+
+test('displayGrade: NO-AUDIT never becomes STALE; maxAgeHours respected', () => {
+  assert.equal(displayGrade({ grade: 'NO-AUDIT', auditedAt: null }, NOW).grade, 'NO-AUDIT');
+  assert.equal(displayGrade({ grade: 'PASS', auditedAt: '2026-10-29T12:00:00Z' }, NOW, 72).grade, 'PASS');
+});
+
+test('frequentMissing: live outlet, audit-row outlet id and domain match all count as present', () => {
+  const frequent = [
+    { outletId: 'guardian', rate: 0.9 },
+    { outletId: 'the-stage', rate: 0.8 },
+    { outletId: 'whatsonstage', rate: 0.7 },
+    { outletId: 'time-out-london', rate: 0.65 },
+  ];
+  const row = {
+    missing: [{ url: 'https://www.thestage.co.uk/reviews/x' }],
+    flaggedMisses: [{ url: 'https://example.org/a', knownOutletId: 'whatsonstage' }],
+  };
+  const out = frequentMissing(frequent, ['guardian'], row, { 'the-stage': 'thestage.co.uk', 'time-out-london': 'timeout.com' });
+  assert.deepEqual(out.map((f) => f.outletId), ['time-out-london']);
+});
+
+test('frequentMissing: null row and bad URLs do not throw', () => {
+  const frequent = [{ outletId: 'guardian', rate: 0.9 }];
+  assert.deepEqual(frequentMissing(frequent, [], null).map((f) => f.outletId), ['guardian']);
+  assert.deepEqual(frequentMissing(frequent, [], { missing: [{ url: 'not a url' }] }).map((f) => f.outletId), ['guardian']);
+});
+
+test('gradeShow: no row is NO-AUDIT', () => {
+  assert.equal(gradeShow(null, 3).grade, 'NO-AUDIT');
+});
+
+// BRO-6751: OVERDUE reads the scheduler's own promise (real freshnessMsFor), never the grade.
+const _req6751 = require;
+const F6751 = _req6751('./lib/gap-audit-freshness.js');
+const { isOverdue, OVERDUE_GRACE_HOURS } = _req6751('./slow-market-grade.js');
+const N6751 = Date.parse('2026-11-01T12:00:00Z');
+const daysAgo = (d) => new Date(N6751 - d * 864e5).toISOString();
+
+test('isOverdue: closed last-year show follows its own promise (365d clean, 14d with gaps; BRO-6751)', () => {
+  const show = { id: 'x', category: 'broadway', status: 'closed', openingDate: '2026-03-01', closingDate: '2026-06-01' };
+  assert.equal(isOverdue(show, { at: daysAgo(31), gaps: 0, uncollected: 0 }, N6751, F6751), false);
+  assert.equal(isOverdue(show, { at: daysAgo(5), gaps: 2, uncollected: 0 }, N6751, F6751), false);
+  assert.equal(isOverdue(show, { at: daysAgo(15), gaps: 2, uncollected: 0 }, N6751, F6751), true);
+});
+
+test('isOverdue: in-window slow-market show is overdue past its 20h daily promise + grace', () => {
+  const show = { id: 'y', category: 'off-broadway', status: 'open', openingDate: new Date(N6751 - 12 * 864e5).toISOString().slice(0, 10) };
+  const limitH = 20 + OVERDUE_GRACE_HOURS;
+  // the audit always writes slowMarketResidual on a slow-market row (BRO-6687)
+  const row = (h) => ({ at: new Date(N6751 - h * 36e5).toISOString(), gaps: 0, uncollected: 0, slowMarketResidual: 0 });
+  assert.equal(isOverdue(show, row(limitH - 1), N6751, F6751), false);
+  assert.equal(isOverdue(show, row(limitH + 1), N6751, F6751), true);
+  // the same row spliced without it is overdue: the scheduler made it due at once
+  const { slowMarketResidual, ...spliced } = row(limitH - 1);
+  assert.equal(isOverdue(show, spliced, N6751, F6751), true);
+});
+
+test('isOverdue: no checkpoint entry is overdue; unknown show is null', () => {
+  assert.equal(isOverdue({ id: 'z', category: 'broadway', status: 'open', openingDate: '2026-01-01' }, undefined, N6751, F6751), true);
+  assert.equal(isOverdue(undefined, { at: daysAgo(1) }, N6751, F6751), null);
+});
+
+test('isOverdue: never-audited show outside the grind window was promised nothing (null)', () => {
+  assert.equal(isOverdue({ id: 'old', category: 'broadway', status: 'closed', openingDate: '2019-01-01' }, undefined, N6751, F6751), null);
+  assert.equal(isOverdue({ id: 'nodate', category: 'broadway', status: 'closed' }, undefined, N6751, F6751), null);
+});
+
+const { lastYearIds, staleBreach, overdueBreach } = require('./slow-market-grade.js');
+
+test('BRO-6751 lastYearIds: matches the scheduler (previews date anchors only live shows)', () => {
+  const now = Date.parse('2026-11-01T00:00:00Z');
+  const shows = [
+    { id: 'recent', status: 'closed', openingDate: '2026-06-01' },
+    { id: 'previews-only', status: 'previews', previewsStartDate: '2026-10-20' },
+    { id: 'closed-no-opening', status: 'closed', previewsStartDate: '2026-10-01' },
+    { id: 'old', status: 'closed', openingDate: '2025-10-01' },
+    { id: 'future', status: 'previews', openingDate: '2026-12-01' },
+    { id: 'undated', status: 'open' },
+  ];
+  assert.deepEqual(lastYearIds(shows, now), ['recent', 'previews-only']);
+});
+
+test('BRO-6751 staleBreach: stale FAIL and NO-AUDIT count; at-or-above fails, below passes, empty fails', () => {
+  const rows = (bad, total, row = { grade: 'STALE', stale: true }) => Array.from({ length: total }, (_, i) => (i < bad ? row : { grade: 'PASS', stale: false }));
+  assert.equal(staleBreach(rows(4, 100), 5), false);
+  assert.equal(staleBreach(rows(5, 100), 5), true);
+  assert.equal(staleBreach(rows(5, 100, { grade: 'FAIL', stale: true }), 5), true);
+  assert.equal(staleBreach(rows(5, 100, { grade: 'NO-AUDIT', stale: false }), 5), true);
+  assert.equal(staleBreach([], 5), true);
+});
+
+test('BRO-6751 overdueBreach: null rows leave the denominator; at-or-above fails, below passes, none known fails', () => {
+  const rows = (od, total, extraNull = 0) => [
+    ...Array.from({ length: total }, (_, i) => ({ overdue: i < od })),
+    ...Array.from({ length: extraNull }, () => ({ overdue: null })),
+  ];
+  assert.equal(overdueBreach(rows(4, 100), 5), false);
+  assert.equal(overdueBreach(rows(5, 100), 5), true);
+  // 5 of 100 known is a breach even when 900 unknown rows would dilute it to 0.5%
+  assert.equal(overdueBreach(rows(5, 100, 900), 5), true);
+  // no checkpoint: every row null -> breach, never a silent 0%
+  assert.equal(overdueBreach(rows(0, 0, 50), 5), true);
+  assert.equal(overdueBreach([], 5), true);
+});
+
+test('gradeShow census count leaves out syndication-portal noise (BRO-6804)', () => {
+  const row = { showId: 's', title: 'Hadestown', computedAt: '2026-11-01T00:00:00Z', missing: [
+    { url: 'https://www.headtopics.com/a-review', serpCensus: true },
+    { url: 'https://realoutlet.com/2026/10/hadestown-review', serpCensus: true },
+  ], flaggedMisses: [] };
+  assert.equal(gradeShow(row, 3).census, 1);
+});
+
+// BRO-6716: fixed opening-date window + --check-gaps (STALE passes, FAIL/NO-AUDIT fail).
+test('openedBetweenIds is an inclusive YYYY-MM-DD window and skips undated shows', () => {
+  const { openedBetweenIds } = require('./slow-market-grade.js');
+  const shows = [
+    { id: 'a', openingDate: '2025-10-31' }, { id: 'b', openingDate: '2026-10-31T00:00:00Z' },
+    { id: 'c', openingDate: '2025-10-30' }, { id: 'd', openingDate: '2026-11-01' }, { id: 'e', openingDate: null }, { id: 'f' },
+  ];
+  assert.deepEqual(openedBetweenIds(shows, '2025-10-31', '2026-10-31'), ['a', 'b']);
+});
+
+test('hasGap: STALE and PASS pass; FAIL (stale or fresh) and NO-AUDIT fail', () => {
+  const { hasGap } = require('./slow-market-grade.js');
+  assert.equal(hasGap([{ grade: 'PASS' }, { grade: 'STALE', stale: true }]), false);
+  assert.equal(hasGap([{ grade: 'PASS' }, { grade: 'FAIL', stale: true }]), true);
+  assert.equal(hasGap([{ grade: 'NO-AUDIT' }]), true);
+});
+
+test('main refuses a half or reversed window (exit 2) before reading data', () => {
+  const { main } = require('./slow-market-grade.js');
+  assert.equal(main(['--opened-from=2025-10-31', '--check-gaps']), 2);
+  assert.equal(main(['--opened-from=2026-10-31', '--opened-to=2025-10-31']), 2);
+  assert.equal(main(['--opened-from=2025-1-1', '--opened-to=2026-10-31']), 2);
+});
+
+// BRO-8133: an audit row is a snapshot; a review that went live after the audit
+// ran is not a gap (nine-night / the-unbelievers FAILed the 2026-11-23 recheck
+// on rows already live in reviews.json).
+test('gradeShow: rows live in a NEWER reviews.json do not FAIL; an older one cannot hide a gap (BRO-8133)', () => {
+  const url = 'https://www.thetimes.com/culture/theatre-dance/article/nine-night-review-a-family-drama-xzn0lqzxj';
+  const row = {
+    showId: 'x', computedAt: '2026-11-23T14:44:23Z',
+    flaggedMisses: [{ url, exclusion: 'automatedExcluded', reverify: true }],
+    missing: [{ url: 'https://example.com/cited-review', host: 'example.com' }],
+  };
+  const newer = '2026-11-24T00:48:40Z';
+  assert.equal(gradeShow(row, 3).grade, 'FAIL');
+  assert.equal(gradeShow(row, 3).reverify, 1);
+  // Same article, scheme/www/trailing-slash variants (the audit's gapUrlIdentity).
+  const live = new Set(['thetimes.com/culture/theatre-dance/article/nine-night-review-a-family-drama-xzn0lqzxj', 'example.com/cited-review']);
+  const g = gradeShow(row, 3, null, NOW, { liveUrls: live, reviewsBuiltAt: newer });
+  assert.equal(g.reverify, 0);
+  assert.equal(g.cited, 0);
+  assert.notEqual(g.grade, 'FAIL');
+  // A still-missing row keeps the FAIL.
+  const g2 = gradeShow(row, 3, null, NOW, { liveUrls: new Set([live.values().next().value]), reviewsBuiltAt: newer });
+  assert.equal(g2.grade, 'FAIL');
+  assert.equal(g2.cited, 1);
+  assert.equal(g2.reverify, 0);
+  assert.deepEqual(g2.notLive, ['https://example.com/cited-review']);
+  // reviews.json older than the audit row (or undated) proves nothing: the audit wins.
+  assert.equal(gradeShow(row, 3, null, NOW, { liveUrls: live, reviewsBuiltAt: '2026-11-23T10:00:00Z' }).grade, 'FAIL');
+  assert.equal(gradeShow(row, 3, null, NOW, { liveUrls: live }).grade, 'FAIL');
+});

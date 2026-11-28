@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-7594-c",
+  "planId": "0fdfa6de-d95d-4834-94c9-b3de08f512e4",
+  "status": "applied",
+  "createdAt": "2026-11-16T14:02:10.622Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear or correct 78 runtimes copied from TodayTix filler runningTime values (4hrs inc two intervals, 1hr 35mins inc. interval, 1hr 35min no intermission); values from each show's TodayTix page, cleared where the page has none (part 3 of 5)",
+    "steps": [
+      "shows.json: the-truth-a-comedy-by-florian-zeller-west-end-2026.runtime",
+      "shows.json: the-truth-a-comedy-by-florian-zeller-west-end-2026.intermissions",
+      "shows.json: the-authenticator-west-end-2026.runtime",
+      "shows.json: the-afronauts-west-end-2026.runtime",
+      "shows.json: the-afronauts-west-end-2026.intermissions",
+      "shows.json: a-midsummer-nights-dream-off-west-end-2026.runtime",
+      "shows.json: a-midsummer-nights-dream-off-west-end-2026.intermissions",
+      "shows.json: sherlock-holmes-off-west-end-2026.runtime",
+      "shows.json: sherlock-holmes-off-west-end-2026.intermissions",
+      "shows.json: return-of-the-godz-off-west-end-2026.intermissions",
+      "shows.json: the-jungle-book-west-end-2026.runtime",
+      "shows.json: 360-allstars-off-west-end-2026.runtime",
+      "shows.json: 360-allstars-off-west-end-2026.intermissions",
+      "shows.json: eurotrash-off-west-end-2026.runtime",
+      "shows.json: amadeus-west-end-2026.runtime",
+      "shows.json: kiss-of-the-spider-woman-off-broadway-2026.runtime",
+      "shows.json: kiss-of-the-spider-woman-off-broadway-2026.intermissions",
+      "shows.json: hallelujah-baby-off-broadway-2026.runtime",
+      "shows.json: return-to-the-forest-off-west-end-2026.runtime",
+      "shows.json: return-to-the-forest-off-west-end-2026.intermissions",
+      "shows.json: the-rise-and-fall-of-little-voice-west-end-2026.runtime",
+      "shows.json: are-you-now-or-have-you-ever-been-off-broadway-2026.runtime",
+      "shows.json: dad-dont-read-this-off-broadway-2026.intermissions",
+      "shows.json: dogstar-off-west-end-2026.runtime",
+      "shows.json: jumpers-off-west-end-2026.runtime"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 30m",
+        "description": "shows.json: the-truth-a-comedy-by-florian-zeller-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: the-truth-a-comedy-by-florian-zeller-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-authenticator-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: the-authenticator-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-afronauts-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "3h",
+        "description": "shows.json: the-afronauts-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-afronauts-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: the-afronauts-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 40m",
+        "description": "shows.json: a-midsummer-nights-dream-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: a-midsummer-nights-dream-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sherlock-holmes-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 30m",
+        "description": "shows.json: sherlock-holmes-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sherlock-holmes-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: sherlock-holmes-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "return-of-the-godz-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: return-of-the-godz-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-jungle-book-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: the-jungle-book-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "360-allstars-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 5m",
+        "description": "shows.json: 360-allstars-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "360-allstars-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: 360-allstars-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eurotrash-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: eurotrash-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amadeus-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: amadeus-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kiss-of-the-spider-woman-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 30m",
+        "description": "shows.json: kiss-of-the-spider-woman-off-broadway-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kiss-of-the-spider-woman-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: kiss-of-the-spider-woman-off-broadway-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hallelujah-baby-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: hallelujah-baby-off-broadway-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "return-to-the-forest-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 30m",
+        "description": "shows.json: return-to-the-forest-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "return-to-the-forest-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: return-to-the-forest-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-rise-and-fall-of-little-voice-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: the-rise-and-fall-of-little-voice-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "are-you-now-or-have-you-ever-been-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: are-you-now-or-have-you-ever-been-off-broadway-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dad-dont-read-this-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: dad-dont-read-this-off-broadway-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dogstar-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 30m",
+        "description": "shows.json: dogstar-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jumpers-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: jumpers-off-west-end-2026.runtime"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T15:55:46.350Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-truth-a-comedy-by-florian-zeller-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for the-truth-a-comedy-by-florian-zeller-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-authenticator-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-afronauts-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for the-afronauts-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for a-midsummer-nights-dream-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for a-midsummer-nights-dream-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for sherlock-holmes-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for sherlock-holmes-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for return-of-the-godz-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-jungle-book-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for 360-allstars-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for 360-allstars-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for eurotrash-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for amadeus-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for kiss-of-the-spider-woman-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for kiss-of-the-spider-woman-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for hallelujah-baby-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for return-to-the-forest-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for return-to-the-forest-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-rise-and-fall-of-little-voice-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for are-you-now-or-have-you-ever-been-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for dad-dont-read-this-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for dogstar-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for jumpers-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

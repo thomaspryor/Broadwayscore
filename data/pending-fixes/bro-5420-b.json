@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5420-b",
+  "planId": "251a72c9-b557-462a-bd66-32e1d0082be5",
+  "status": "applied",
+  "createdAt": "2026-10-16T02:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (b): move Dominic Maxwell's Just for One Day review (Theatre Record row dated Sunday 2024-02-18, no url) from The Times to The Sunday Times. The Times has no Sunday edition and its daily review is Clive Davis's (2024-02-14, own row). Both outlets are tier 1; the score (26, a pan the text supports: 'miserable time', 'Still hated it') is unchanged.",
+    "steps": [
+      "migrate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "migrate-outlet-ids.js",
+        "args": "--apply --rule=jfod-2024-maxwell-times-to-sunday-times",
+        "description": "BRO-5420: one-file outlet move by the code rule in scripts/lib/outlet-id-migrations.js."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T03:08:06.564Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran migrate-outlet-ids.js successfully"
+    }
+  ]
+}

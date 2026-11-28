@@ -1,0 +1,202 @@
+{
+  "issueNumber": "bro-7336",
+  "planId": "e29beee2-1625-4460-bd17-da9c5b01e82b",
+  "status": "applied",
+  "createdAt": "2026-11-11T00:53:36.814Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Resolve 12 revival-unverified flags: 3 verified originals (revivalVerifiedNot), 9 confirmed revivals (isRevival)",
+    "steps": [
+      "shows.json: six-2021.revivalVerifiedNot",
+      "shows.json: wicked-2003.revivalVerifiedNot",
+      "shows.json: tosca-english-national-opera-west-end-2026.revivalVerifiedNot",
+      "shows.json: maria-stuarda-off-broadway-2026.isRevival",
+      "shows.json: otello-off-broadway-2027.isRevival",
+      "shows.json: parsifal-off-broadway-2027.isRevival",
+      "shows.json: der-rosenkavalier-off-broadway-2027.isRevival",
+      "shows.json: samson-et-dalila-off-broadway-2026.isRevival",
+      "shows.json: the-revlon-girl-off-west-end-2026.isRevival",
+      "shows.json: rope-off-broadway-2026.isRevival",
+      "shows.json: the-royale-regional-2026.isRevival",
+      "shows.json: sacrilegious-off-west-end-2027.isRevival"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "six-2021",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: six-2021.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wicked-2003",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: wicked-2003.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tosca-english-national-opera-west-end-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: tosca-english-national-opera-west-end-2026.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "maria-stuarda-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: maria-stuarda-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "otello-off-broadway-2027",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: otello-off-broadway-2027.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "parsifal-off-broadway-2027",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: parsifal-off-broadway-2027.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "der-rosenkavalier-off-broadway-2027",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: der-rosenkavalier-off-broadway-2027.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "samson-et-dalila-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: samson-et-dalila-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-revlon-girl-off-west-end-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: the-revlon-girl-off-west-end-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rope-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: rope-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-royale-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-royale-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sacrilegious-off-west-end-2027",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: sacrilegious-off-west-end-2027.isRevival"
+      }
+    ]
+  },
+  "executedAt": "2026-11-11T02:41:12.089Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: revivalVerifiedNot updated for six-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: revivalVerifiedNot updated for wicked-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: revivalVerifiedNot updated for tosca-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for maria-stuarda-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for otello-off-broadway-2027 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for parsifal-off-broadway-2027 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for der-rosenkavalier-off-broadway-2027 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for samson-et-dalila-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-revlon-girl-off-west-end-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for rope-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-royale-regional-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for sacrilegious-off-west-end-2027 (tags: [\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
+}

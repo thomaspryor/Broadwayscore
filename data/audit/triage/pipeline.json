@@ -1,0 +1,45 @@
+{
+  "system": "pipeline",
+  "status": "pass",
+  "lastChecked": "2026-11-28T16:04:54.886Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Pipeline: rebuild-reviews",
+      "status": "pass",
+      "message": "Last success 0h ago"
+    },
+    {
+      "name": "Pipeline: update-show-status",
+      "status": "pass",
+      "message": "Last success 22h ago"
+    },
+    {
+      "name": "Pipeline: collect-review-texts",
+      "status": "pass",
+      "message": "Last success 0h ago"
+    },
+    {
+      "name": "Pipeline: weekly-grosses",
+      "status": "pass",
+      "message": "Last success 3d ago"
+    },
+    {
+      "name": "Pipeline: weekly-integrity",
+      "status": "pass",
+      "message": "Last success 6d ago"
+    },
+    {
+      "name": "Pipeline: test",
+      "status": "pass",
+      "message": "Last success 0h ago"
+    },
+    {
+      "name": "Pipeline: ibdb-near-opening",
+      "status": "pass",
+      "message": "Last success 22h ago"
+    }
+  ]
+}

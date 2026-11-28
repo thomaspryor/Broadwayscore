@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-7992",
+  "planId": "e489b51a-fc94-419e-802a-09e54b93b1a9",
+  "status": "applied",
+  "createdAt": "2026-11-21T14:55:57.008Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "WE: add announced final performance dates for White Rabbit Red Rabbit (2026-12-14) and Titanique (2027-01-03)",
+    "steps": [
+      "shows.json: white-rabbit-red-rabbit-west-end-2026.closingDate",
+      "shows.json: titanique-west-end-2024.closingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "white-rabbit-red-rabbit-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-12-14",
+        "description": "shows.json: white-rabbit-red-rabbit-west-end-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "titanique-west-end-2024",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2027-01-03",
+        "description": "shows.json: titanique-west-end-2024.closingDate"
+      }
+    ]
+  },
+  "executedAt": "2026-11-21T15:05:54.505Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for white-rabbit-red-rabbit-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for titanique-west-end-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,62 @@
+{
+  "issueNumber": "bro-5222-b",
+  "planId": "7294142b-166e-4abb-b17d-6a4aad2ce4f7",
+  "status": "applied",
+  "createdAt": "2026-10-13T04:28:03.418993Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5222: point two Time Out rows at the real review page (Once 2012, Amelie 2017) and correct Amelie's critic. Both pages fetched 2026-10-13; the collector refetches and verifies the new urls.",
+    "steps": [
+      "url repair to the real Time Out review page",
+      "criticName to the page byline"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "once-2012/timeout--adam-feldman.json",
+        "field": "url",
+        "oldValue": "https://www.timeout.com/newyork/theater/once",
+        "newValue": "https://www.timeout.com/newyork/theater/once-1",
+        "description": "Stored url is Time Out's short listing capsule for Once (signed David Cote); the full Time Out review of the 2012 Broadway production, also by David Cote, is at /newyork/theater/once-1 (fetched 2026-10-13, ~300-word signed review). Critic corrected in bro-5222-a."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amelie-a-new-musical-2017/timeout--adam-feldman.json",
+        "field": "criticName",
+        "oldValue": "Adam Feldman",
+        "newValue": "David Cote",
+        "description": "Time Out's review of the 2017 Broadway Amelie is by David Cote (page byline 'Broadway review by David Cote', fetched 2026-10-13); the row credited Adam Feldman."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amelie-a-new-musical-2017/timeout--adam-feldman.json",
+        "field": "url",
+        "oldValue": "https://www.timeout.com/newyork/theater/amelie-a-new-musical",
+        "newValue": "https://www.timeout.com/newyork/things-to-do/amelie",
+        "description": "Stored url /newyork/theater/amelie-a-new-musical 404s (legacy web-search url). Time Out's real review of the Broadway production is at /newyork/things-to-do/amelie (fetched 2026-10-13, byline David Cote)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T05:48:18.869Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-2012/timeout--adam-feldman.json url: \"https://www.timeout.com/newyork/theater/once\" -> \"https://www.timeout.com/newyork/theater/once-1\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amelie-a-new-musical-2017/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amelie-a-new-musical-2017/timeout--adam-feldman.json url: \"https://www.timeout.com/newyork/theater/amelie-a-new-musical\" -> \"https://www.timeout.com/newyork/things-to-do/amelie\""
+    }
+  ]
+}

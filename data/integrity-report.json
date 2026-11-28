@@ -1,0 +1,140 @@
+{
+  "timestamp": "2026-11-22T11:03:16.469Z",
+  "hasIssues": true,
+  "current": {
+    "date": "2026-11-22",
+    "totalReviews": 83836,
+    "unknownOutlets": 31,
+    "duplicates": 31,
+    "syncDelta": 31363
+  },
+  "previous": {
+    "date": "2026-11-15",
+    "totalReviews": 82110,
+    "unknownOutlets": 59,
+    "duplicates": 25,
+    "syncDelta": 31370
+  },
+  "issues": [
+    {
+      "type": "unknown_outlets",
+      "severity": "critical",
+      "message": "31 reviews have unknown outlets",
+      "examples": [
+        {
+          "file": "data/review-texts/afterglow-off-broadway-2017/boyculture--matthew-rettenmund.json",
+          "outletId": "boyculture",
+          "outlet": ""
+        },
+        {
+          "file": "data/review-texts/aftermath-art-new-york-off-broadway-2026/frombroadway--kenji-fujishima.json",
+          "outletId": "frombroadway",
+          "outlet": "frombroadway"
+        },
+        {
+          "file": "data/review-texts/attack-of-the-elvis-impersonators-off-broadway-2017/pillow-talking--wayne-j-keeley.json",
+          "outletId": "pillow-talking",
+          "outlet": "pillow-talking"
+        },
+        {
+          "file": "data/review-texts/backstairs-billy-west-end-2023/stagedoor--lyn-gardner.json",
+          "outletId": "stagedoor",
+          "outlet": "stagedoor"
+        },
+        {
+          "file": "data/review-texts/beetlejuice-tour-2022/guide4moms--mandipie4u.json",
+          "outletId": "guide4moms",
+          "outlet": "guide4moms"
+        },
+        {
+          "file": "data/review-texts/call-me-izzy-2025/new-york-stage-reviewpp--unknown.json",
+          "outletId": "new-york-stage-reviewpp",
+          "outlet": "new-york-stage-reviewpp"
+        },
+        {
+          "file": "data/review-texts/copperfield-the-new-musical-off-broadway-2026/frombroadway--pete-hempstead.json",
+          "outletId": "frombroadway",
+          "outlet": "frombroadway"
+        },
+        {
+          "file": "data/review-texts/garry-starr-classic-penguins-off-west-end-2026/frombroadway--helen-shaw.json",
+          "outletId": "frombroadway",
+          "outlet": "frombroadway"
+        },
+        {
+          "file": "data/review-texts/glengarry-glen-ross-2025/purlie-victorious--wilders-our-town.json",
+          "outletId": "purlie-victorious",
+          "outlet": "purlie-victorious"
+        },
+        {
+          "file": "data/review-texts/heathers-the-musical-off-west-end-2026/show-score--unknown.json",
+          "outletId": "show-score",
+          "outlet": "show-score"
+        }
+      ]
+    },
+    {
+      "type": "duplicates",
+      "severity": "critical",
+      "message": "31 duplicate reviews detected",
+      "examples": [
+        {
+          "file": "data/review-texts/affluenza-off-west-end-2026/londontheatredirect--sarah-armer.json",
+          "key": "affluenza-off-west-end-2026|londontheatredirect|barbara großmann"
+        },
+        {
+          "file": "data/review-texts/aladdin-2014/theatermania--zachary-stewart.json",
+          "key": "aladdin-2014|theatermania|zachary stewart"
+        },
+        {
+          "file": "data/review-texts/baghdaddy-west-end-2022/times-uk--unknown.json",
+          "key": "baghdaddy-west-end-2022|times-uk|dominic maxwell"
+        },
+        {
+          "file": "data/review-texts/brigadoon-west-end-2025/thestage--holly-omahony.json",
+          "key": "brigadoon-west-end-2025|thestage|holly o'mahony"
+        },
+        {
+          "file": "data/review-texts/camp-siegfried-west-end-2021/whatsonstage--unknown.json",
+          "key": "camp-siegfried-west-end-2021|whatsonstage|alex wood"
+        },
+        {
+          "file": "data/review-texts/carousel-west-end-2017/observer--susannah-clapp.json",
+          "key": "carousel-west-end-2017|observer|susannah clapp"
+        },
+        {
+          "file": "data/review-texts/cruise-west-end-2021/whatsonstage--sarah-crompton.json",
+          "key": "cruise-west-end-2021|whatsonstage|sarah crompton"
+        },
+        {
+          "file": "data/review-texts/endgame-west-end-2020/times-uk--unknown.json",
+          "key": "endgame-west-end-2020|times-uk|clive davis"
+        },
+        {
+          "file": "data/review-texts/good-time-charlie-off-broadway-2026/cititour--brian-scott.json",
+          "key": "good-time-charlie-off-broadway-2026|cititour|brian scott lipton"
+        },
+        {
+          "file": "data/review-texts/im-every-woman-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+          "key": "im-every-woman-off-west-end-2026|thereviewshub|sonny waheed"
+        }
+      ]
+    },
+    {
+      "type": "sync_delta",
+      "severity": "critical",
+      "message": "review-texts (83836) and reviews.json (52473) are out of sync by 31363 reviews"
+    },
+    {
+      "type": "duplicates_degradation",
+      "severity": "warning",
+      "message": "Duplicates increased from 25 to 31"
+    }
+  ],
+  "summary": {
+    "totalReviews": 83836,
+    "unknownOutlets": 31,
+    "duplicates": 31,
+    "syncDelta": 31363
+  }
+}

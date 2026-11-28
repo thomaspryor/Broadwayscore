@@ -1,0 +1,43 @@
+{
+  "records": 148,
+  "capHit": false,
+  "maxCostUsd": 5,
+  "priorSpend": 0,
+  "claudeControl": 1.23323145,
+  "openaiControl": 1.863035,
+  "gemini": 0.27098619999999995,
+  "claudeShadow": 1.121941,
+  "openaiShadow": 0.15863700000000003,
+  "geminiShadow": 0.26406919999999995,
+  "total": 4.911899849999999,
+  "tokens": {
+    "claudeControl": {
+      "input": 215842,
+      "output": 26306,
+      "cacheWrite": 7523,
+      "cacheRead": 543014
+    },
+    "openaiControl": {
+      "input": 681514,
+      "output": 15925
+    },
+    "gemini": {
+      "input": 727254,
+      "output": 21124
+    },
+    "claudeShadow": {
+      "input": 309717,
+      "output": 32161,
+      "cacheWrite": 10628,
+      "cacheRead": 771635
+    },
+    "openaiShadow": {
+      "input": 681369,
+      "output": 18636
+    },
+    "geminiShadow": {
+      "input": 717964,
+      "output": 19472
+    }
+  }
+}

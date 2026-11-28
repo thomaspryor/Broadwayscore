@@ -1,0 +1,337 @@
+{
+  "issueNumber": "bro-5232-f",
+  "planId": "a68d1457-8567-4fa5-be75-41fd90eb3ee4",
+  "status": "applied",
+  "createdAt": "2026-10-13T09:05:05.171Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5232 batch f: byline/outlet/production fixes for BRO-5222 follow-up rows, each cited to the live page, an aggregator or a sitemap.",
+    "steps": [
+      "duplicateOf or wrongAttribution for cross-outlet copies",
+      "isNonReview for reviews that do not exist",
+      "wrongProduction for other-production texts",
+      "criticName for wrong bylines"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/nbcny--robert-feldberg.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "northjerseycom--robert-feldberg.json",
+        "description": "BRO-5232: Show Score lists Robert Feldberg's Aug 1 2016 Cats review at NorthJersey.com and WNBC's review as Robert Kahn's (sibling nbcny--robert-kahn.json); this stub is a crossed pair (note the northjersey sibling is tier invalid). Evidence: https://www.show-score.com/shows/cats/paginate_critic_reviews?page=4"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/nbcny--robert-feldberg.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: same review as northjerseycom--robert-feldberg.json; evidence https://www.show-score.com/shows/cats/paginate_critic_reviews?page=4",
+        "description": "Reason for the pointer above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "700-sundays-2013/variety--marilyn-stasio.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; Variety's Nov-Dec 2013 sitemaps list no 700 Sundays review (only box-office news); the only Variety review is the 2004 original-run review bylined David Rooney (JSON-LD author), so no Stasio review of the 2013 revival exists. Evidence: https://variety.com/2004/legit/markets-festivals/700-sundays-2-1200529199/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "700-sundays-2013/variety--marilyn-stasio.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://variety.com/2004/legit/markets-festivals/700-sundays-2-1200529199/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hair-2011/variety--david-rooney.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL is a Variety film review of The Burma Conspiracy; Variety Jul-Aug 2011 sitemaps have only Hair news (hair-comes-back-to-broadway), no review, and Rooney had left Variety for THR in 2010, so no Variety review by him of the 2011 return engagement exists. Evidence: https://variety.com/2011/film/reviews/the-burma-conspiracy-1117944760/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hair-2011/variety--david-rooney.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://variety.com/2011/film/reviews/the-burma-conspiracy-1117944760/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "life-of-pi-2023/variety--aramide-tinubu.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; Variety Mar-Apr 2023 sitemaps list no Life of Pi review (legit reviews that month are Dancin', Sweeney Todd, Shucked etc.), Playbill roundup has no Variety entry, and Tinubu is a Variety film critic. Evidence: https://playbill.com/article/reviews-what-do-critics-think-of-life-of-pi-on-broadway"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "life-of-pi-2023/variety--aramide-tinubu.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/reviews-what-do-critics-think-of-life-of-pi-on-broadway",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/hollywood-reporter--david-rooney.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; Playbill Broadway roundup lists no THR critic, and THR's Apr-May 2022 sitemaps contain only Strange Loop news/features, no review. Evidence: https://playbill.com/article/reviews-what-did-critics-think-of-a-strange-loops-broadway-debut"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-2022/hollywood-reporter--david-rooney.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/reviews-what-did-critics-think-of-a-strange-loops-broadway-debut",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flying-over-sunset-2021/hollywood-reporter--david-rooney.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; Playbill roundup has no THR entry and THR Dec 2021 sitemap theater reviews are only Mrs. Doubtfire, Company, Cabaret (London). Evidence: https://playbill.com/article/read-the-reviews-for-new-broadway-musical-flying-over-sunset"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flying-over-sunset-2021/hollywood-reporter--david-rooney.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/read-the-reviews-for-new-broadway-musical-flying-over-sunset",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shucked-2023/hollywood-reporter--david-rooney.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; Playbill roundup has no THR entry and THR Mar-Apr 2023 sitemaps contain no Shucked review (only a 2024 closing news item). Evidence: https://playbill.com/article/reviews-what-do-critics-think-of-shucked"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shucked-2023/hollywood-reporter--david-rooney.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/reviews-what-do-critics-think-of-shucked",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; Playbill roundup has no THR entry and THR Mar-Apr 2024 sitemaps contain no Tommy review (Angie Han is a THR TV critic). Evidence: https://playbill.com/article/reviews-what-do-critics-think-of-broadways-the-whos-tommy-revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/reviews-what-do-critics-think-of-broadways-the-whos-tommy-revival",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/hollywood-reporter--david-rooney.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL redirects to an unrelated Tokyo Vice image page; Playbill roundup has no THR entry and THR Mar-Apr 2024 sitemaps contain no Tommy review. Evidence: https://playbill.com/article/reviews-what-do-critics-think-of-broadways-the-whos-tommy-revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/hollywood-reporter--david-rooney.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/reviews-what-do-critics-think-of-broadways-the-whos-tommy-revival",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hangmen-2022/hollywood-reporter--david-rooney.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; the only THR Hangmen review by David Rooney (JSON-LD author) is dated 2018-02-05, the Atlantic Theater off-Broadway run; Playbill's 2022 Broadway roundup lists no THR review. Evidence: https://www.hollywoodreporter.com/movies/movie-reviews/hangmen-theater-1081505/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hangmen-2022/hollywood-reporter--david-rooney.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: text reviews a different production; evidence https://www.hollywoodreporter.com/movies/movie-reviews/hangmen-theater-1081505/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kpop-2022/hollywood-reporter--david-rooney.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL 404s; THR's only KPOP review is by Frank Scheck (JSON-LD author) dated 2017-09-22 of the off-Broadway Ars Nova/A.R.T. run, so Rooney never reviewed KPOP for THR; Nov-Dec 2022 sitemaps show only news. Evidence: https://www.hollywoodreporter.com/news/general-news/kpop-theater-1042236/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kpop-2022/hollywood-reporter--david-rooney.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://www.hollywoodreporter.com/news/general-news/kpop-theater-1042236/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sea-wall-a-life-2019/hollywood-reporter--david-rooney.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Stored URL redirects to an Equalizer TV news story; THR's only Sea Wall/A Life review is Frank Scheck's (JSON-LD author) 2019-02-14 review of the Public Theater run, not Rooney and not the Broadway transfer. Evidence: https://www.hollywoodreporter.com/news/general-news/sea-wall-a-life-1186357/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sea-wall-a-life-2019/hollywood-reporter--david-rooney.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://www.hollywoodreporter.com/news/general-news/sea-wall-a-life-1186357/",
+        "description": "Reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:14:15.651Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/nbcny--robert-feldberg.json duplicateOf: null -> \"northjerseycom--robert-feldberg.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/nbcny--robert-feldberg.json duplicateReason: null -> \"BRO-5232: same review as northjerseycom--robert-feldberg.json; evidence https://www.show-score.com/shows/cats/paginate_critic_reviews?page=4\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "700-sundays-2013/variety--marilyn-stasio.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "700-sundays-2013/variety--marilyn-stasio.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://variety.com/2004/legit/markets-festivals/700-sundays-2-1200529199/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hair-2011/variety--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hair-2011/variety--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://variety.com/2011/film/reviews/the-burma-conspiracy-1117944760/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "life-of-pi-2023/variety--aramide-tinubu.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "life-of-pi-2023/variety--aramide-tinubu.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/reviews-what-do-critics-think-of-life-of-pi-on-broadway\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/hollywood-reporter--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-2022/hollywood-reporter--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/reviews-what-did-critics-think-of-a-strange-loops-broadway-debut\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "flying-over-sunset-2021/hollywood-reporter--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "flying-over-sunset-2021/hollywood-reporter--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/read-the-reviews-for-new-broadway-musical-flying-over-sunset\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shucked-2023/hollywood-reporter--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shucked-2023/hollywood-reporter--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/reviews-what-do-critics-think-of-shucked\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/hollywood-reporter--angie-han.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/hollywood-reporter--angie-han.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/reviews-what-do-critics-think-of-broadways-the-whos-tommy-revival\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/hollywood-reporter--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/hollywood-reporter--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://playbill.com/article/reviews-what-do-critics-think-of-broadways-the-whos-tommy-revival\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hangmen-2022/hollywood-reporter--david-rooney.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hangmen-2022/hollywood-reporter--david-rooney.json wrongProductionReason: null -> \"BRO-5232: text reviews a different production; evidence https://www.hollywoodreporter.com/movies/movie-reviews/hangmen-theater-1081505/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kpop-2022/hollywood-reporter--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kpop-2022/hollywood-reporter--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.hollywoodreporter.com/news/general-news/kpop-theater-1042236/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sea-wall-a-life-2019/hollywood-reporter--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sea-wall-a-life-2019/hollywood-reporter--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.hollywoodreporter.com/news/general-news/sea-wall-a-life-1186357/\""
+    }
+  ]
+}

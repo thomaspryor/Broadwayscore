@@ -1,0 +1,5861 @@
+{
+  "outletId": "london-box-office",
+  "market": "london",
+  "generatedAt": "2026-10-29T06:34:24.377Z",
+  "since": "2012-09-01",
+  "source": {
+    "kind": "sitemap",
+    "notes": [],
+    "incomplete": false,
+    "enumerated": 1585,
+    "inWindow": 1585,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "review-texts",
+  "summary": {
+    "counts": {
+      "held": 475,
+      "catalog-gap": 176,
+      "not-review": 661,
+      "other-market-review": 14,
+      "held-unmatched": 160,
+      "misfile": 5,
+      "gap": 11,
+      "held-alt-url": 17,
+      "held-other-market": 6,
+      "out-of-window": 60
+    },
+    "viaTitleVariant": {
+      "held": 29,
+      "gap": 3,
+      "held-alt-url": 2
+    },
+    "recall": 0.969,
+    "recallWithCatalog": 0.719
+  },
+  "seasons": {
+    "2026-27": {
+      "held": 39,
+      "catalog-gap": 6,
+      "not-review": 4,
+      "other-market-review": 1,
+      "held-unmatched": 3,
+      "misfile": 1
+    },
+    "2025-26": {
+      "held": 176,
+      "catalog-gap": 51,
+      "not-review": 18,
+      "misfile": 2,
+      "gap": 2,
+      "held-alt-url": 8,
+      "held-unmatched": 15,
+      "held-other-market": 1,
+      "other-market-review": 2,
+      "out-of-window": 4
+    },
+    "2024-25": {
+      "not-review": 118,
+      "held-other-market": 2,
+      "catalog-gap": 44,
+      "out-of-window": 7,
+      "held-unmatched": 43,
+      "held": 42,
+      "held-alt-url": 2,
+      "gap": 1,
+      "other-market-review": 1
+    },
+    "2023-24": {
+      "catalog-gap": 10,
+      "held": 25,
+      "not-review": 57,
+      "out-of-window": 4,
+      "held-unmatched": 11
+    },
+    "2022-23": {
+      "catalog-gap": 20,
+      "not-review": 43,
+      "held": 27,
+      "gap": 2,
+      "out-of-window": 6,
+      "held-unmatched": 8
+    },
+    "2021-22": {
+      "not-review": 39,
+      "held": 19,
+      "held-unmatched": 9,
+      "catalog-gap": 3,
+      "out-of-window": 2,
+      "held-alt-url": 1,
+      "held-other-market": 1
+    },
+    "2020-21": {
+      "held": 2,
+      "gap": 2,
+      "not-review": 4
+    },
+    "2019-20": {
+      "not-review": 49,
+      "held": 26,
+      "catalog-gap": 9,
+      "out-of-window": 6,
+      "held-unmatched": 14
+    },
+    "2018-19": {
+      "held-unmatched": 16,
+      "not-review": 89,
+      "held": 26,
+      "catalog-gap": 12,
+      "out-of-window": 6,
+      "gap": 2,
+      "other-market-review": 3,
+      "held-other-market": 1,
+      "held-alt-url": 1
+    },
+    "2017-18": {
+      "not-review": 119,
+      "held-unmatched": 17,
+      "catalog-gap": 11,
+      "held": 24,
+      "gap": 1,
+      "out-of-window": 11,
+      "held-alt-url": 2,
+      "misfile": 1
+    },
+    "2016-17": {
+      "not-review": 62,
+      "held": 38,
+      "held-unmatched": 10,
+      "other-market-review": 4,
+      "catalog-gap": 8,
+      "out-of-window": 6,
+      "held-alt-url": 2
+    },
+    "2015-16": {
+      "not-review": 44,
+      "held-unmatched": 11,
+      "out-of-window": 6,
+      "held": 16,
+      "misfile": 1,
+      "catalog-gap": 2,
+      "held-alt-url": 1
+    },
+    "2014-15": {
+      "not-review": 15,
+      "held": 15,
+      "out-of-window": 2,
+      "held-unmatched": 3,
+      "other-market-review": 3,
+      "held-other-market": 1,
+      "gap": 1
+    }
+  },
+  "corpusSide": {
+    "rowsInWindow": 740,
+    "notEnumerated": 35,
+    "noUrl": 12,
+    "samples": [
+      {
+        "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+        "url": "https://www.londonboxoffice.co.uk/news/post/reiew-cat-on-a-hot-tin-roof",
+        "publishDate": "2017-08-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mean-girls-west-end-2024",
+        "url": "https://www.londonboxoffice.co.uk/news/post/six-reasons-to-see-mean-girls-the-musical",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-deep-blue-sea-west-end-2016",
+        "url": "https://www.londonboxoffice.co.uk/news/post/deep-blue-sea",
+        "publishDate": "2016-06-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "1536-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/1536-ambassadors-theatre-photos",
+        "publishDate": "2026-05-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "2-22-a-ghost-story-west-end-2021",
+        "url": "https://www.londonboxoffice.co.uk/news/post/stacey-dooley-222-a-ghost-story",
+        "publishDate": "2024-04-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "anansi-the-spider-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/anansi-the-spider-photos",
+        "publishDate": "2026-08-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bad-jews-west-end-2022",
+        "url": "https://www.londonboxoffice.co.uk/news/post/bad-jews-returns",
+        "publishDate": "2022-03-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "billy-elliot-the-musical-west-end-2027",
+        "url": "https://www.londonboxoffice.co.uk/news/post/billy-elliot-the-musical-returns-to-the-west-end-2027",
+        "publishDate": "2026-02-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "cinderella-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/alw-cinderella",
+        "publishDate": "2020-01-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cirque-berserk-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk",
+        "publishDate": "2026-10-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "clueless-west-end-2025",
+        "url": "https://www.londonboxoffice.co.uk/news/post/clueless-the-musical-or-the-devil-wears-prada-west-end",
+        "publishDate": "2025-06-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "daytona-west-end-2014",
+        "url": "https://www.londonboxoffice.co.uk/news/post/daytona-transfer",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "death-drop-west-end-2020",
+        "url": "https://www.londonboxoffice.co.uk/news/post/death-drop-garrick-theatre",
+        "publishDate": "2020-11-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "end-west-end-2025",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "fawlty-towers-west-end-2024",
+        "url": "https://www.londonboxoffice.co.uk/news/post/fawlty-towers-the-play-extends-2025",
+        "publishDate": "2024-06-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "franz-and-marie-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/new-musical-franz-and-marie-to-open-at-charing-cross-theatre",
+        "publishDate": "2026-07-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "hadestown-west-end-2024",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "hangmen-west-end-2015",
+        "url": "https://www.londonboxoffice.co.uk/news/post/hangmen-wyndhams",
+        "publishDate": "2015-10-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/harry-potter-and-the-cursed-child-vs-the-hunger-games-on-stage-which-should-you-watch",
+        "publishDate": "2026-05-29",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "into-the-woods-noel-coward-west-end-2026",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "into-the-woods-west-end-2025",
+        "url": "https://www.londonboxoffice.co.uk/news/post/into-the-woods-bridge-theatre-production-images",
+        "publishDate": "2025-12-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "into-the-woods-west-end-2025",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "ivanov-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/ivanov-starring-chris-pine-postponed-to-2027",
+        "publishDate": "2026-02-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "jerusalem-west-end-2022",
+        "url": "https://www.londonboxoffice.co.uk/news/post/jerusalem-2022",
+        "publishDate": "2021-07-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "leopoldstadt-west-end-2020",
+        "url": "https://www.londonboxoffice.co.uk/news/post/all-about-leopoldstadt",
+        "publishDate": "2021-01-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "love-letters-west-end-2021",
+        "url": "https://www.londonboxoffice.co.uk/news/post/all-about-love-letters",
+        "publishDate": "2021-03-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "man-to-man-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/production-photos-released-for-man-to-man",
+        "publishDate": "2026-09-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "matilda-the-musical-west-end-2021",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "mojo-west-end-2013",
+        "url": "https://www.londonboxoffice.co.uk/news/post/mojo-priority-access",
+        "publishDate": "2013-08-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "my-neighbour-totoro-west-end-2025",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "nine-night-off-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/nine-night-west-end-transfer",
+        "publishDate": "2018-06-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "oedipus-west-end-2024",
+        "url": "https://www.londonboxoffice.co.uk/news/post/oedipus-wyndhams-theatre-rehearsals",
+        "publishDate": "2024-09-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "one-day-the-musical-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/one-day-the-musical-to-transfer-to-west-end",
+        "publishDate": "2026-06-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "operation-mincemeat-west-end-2024",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "paddington-the-musical-west-end-2025",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "paranormal-activity-west-end-2025",
+        "url": "https://www.londonboxoffice.co.uk/news/post/Review-Round-Up%3A-PARANORMAL-ACTIVITY-at-the-Ambassadors-Theatre",
+        "publishDate": "2025-12-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "paranormal-activity-west-end-2025",
+        "url": "https://www.londonboxoffice.co.uk/news/post/Review-Round-Up:-PARANORMAL-ACTIVITY-at-the-Ambassadors-Theatre",
+        "publishDate": "2025-12-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "sinatra-the-musical-west-end-2026",
+        "url": "https://www.londonboxoffice.co.uk/news/post/sinatra-the-musical-photos",
+        "publishDate": "2026-06-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "six-the-musical-west-end-2021",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/hole-soho-theatre-review",
+      "headline": "hole soho theatre review",
+      "publishDate": "2026-07-18",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hole-off-west-end-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-name-white-bear",
+      "headline": "review the name white bear",
+      "publishDate": "2026-05-27",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "the-name-off-west-end-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/word-play-review",
+      "headline": "word play review",
+      "publishDate": "2023-07-27",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "word-play-west-end-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/we-will-rock-you-review-2023",
+      "headline": "we will rock you review 2023",
+      "publishDate": "2023-06-06",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "we-will-rock-you-west-end-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/pretty-woman-musical-review-2021",
+      "headline": "pretty woman musical review 2021",
+      "publishDate": "2021-08-04",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "pretty-woman-the-musical-west-end-2021"
+      ],
+      "outOfWindow": [
+        "pretty-woman-the-musical-west-end-2020"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/hairspray-review-2021",
+      "headline": "hairspray review 2021",
+      "publishDate": "2021-07-11",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "hairspray-the-musical-west-end-2021"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-9-to-5-musical",
+      "headline": "review 9 to 5 musical",
+      "publishDate": "2019-05-24",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "9-to-5-the-musical-west-end-2019"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/reviews-stories-nt",
+      "headline": "reviews stories nt",
+      "publishDate": "2018-10-18",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "stories-west-end-2018"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-pity-royal-court",
+      "headline": "review pity royal court",
+      "publishDate": "2018-07-25",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "pity-west-end-2018"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/phantom-review",
+      "headline": "phantom review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "the-phantom-of-the-opera-west-end-1986"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/once-musical-review",
+      "headline": "once musical review",
+      "publishDate": "2014-10-29",
+      "dateSoft": true,
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "once-west-end-2013"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-jesus-christ-superstar-london-palladium",
+      "headline": "review round up jesus christ superstar london palladium",
+      "publishDate": "2026-07-08",
+      "matched": [
+        "jesus-christ-superstar-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/jesus-christ-superstar-london-palladium-review"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/arcadia-duke-of-yorks-theatre-review",
+      "headline": "arcadia duke of yorks theatre review",
+      "publishDate": "2026-07-02",
+      "matched": [
+        "arcadia-duke-of-yorks-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/arcadia-old-vic-review"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-pride-national-theatre",
+      "headline": "review round up pride national theatre",
+      "publishDate": "2026-06-29",
+      "matched": [
+        "pride-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/pride-national-theatre-dorfman-review"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-beetlejuice-the-musical-prince-edward-theatre",
+      "headline": "review round up beetlejuice the musical prince edward theatre",
+      "publishDate": "2026-05-29",
+      "matched": [
+        "beetlejuice-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/beetlejuice-prince-edward-review"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review2",
+      "headline": "an ideal husband lyric hammersmith review2",
+      "publishDate": "2026-05-27",
+      "matched": [
+        "an-ideal-husband-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/an-ideal-husband-lyric-hammersmith-review"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-marie-and-rosetta-soho-place",
+      "headline": "review round up marie and rosetta soho place",
+      "publishDate": "2026-03-08",
+      "matched": [
+        "marie-and-rosetta-west-end-2026"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/marie-and-rosetta-sohoplace-review"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-woman-in-mind-duke-of-york-s-theatre",
+      "headline": "review round up woman in mind duke of york s theatre",
+      "publishDate": "2026-01-09",
+      "matched": [
+        "woman-in-mind-west-end-2025"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/woman-in-mind-duke-of-yorks-theatre-review"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-the-hunger-games-on-stage",
+      "headline": "review round up the hunger games on stage",
+      "publishDate": "2025-12-08",
+      "matched": [
+        "the-hunger-games-on-stage-west-end-2025"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/the-hunger-games-on-stage-troubadour-canary-wharf-review",
+        "https://www.londonboxoffice.co.uk/news/post/trailer-released-for-the-hunger-games-on-stage"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-customer-review-of-the-month",
+      "headline": "moulin rouge customer review of the month",
+      "publishDate": "2025-07-01",
+      "matched": [
+        "moulin-rouge-the-musical-west-end-2021"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/back-to-the-future-musical-review-west-end",
+      "headline": "back to the future musical review west end",
+      "publishDate": "2024-10-04",
+      "matched": [
+        "back-to-the-future-west-end-2021"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/review-back-to-the-future-musical"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/shark-is-broken-review-2",
+      "headline": "shark is broken review 2",
+      "publishDate": "2021-10-18",
+      "matched": [
+        "the-shark-is-broken-west-end-2021"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/shark-is-broken-review"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/preview-the-inheritance",
+      "headline": "preview the inheritance",
+      "publishDate": "2018-10-18",
+      "matched": [
+        "the-inheritance-west-end-2018"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/review-the-inheritance-noel-coward"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/imperium-preview",
+      "headline": "imperium preview",
+      "publishDate": "2018-06-25",
+      "matched": [
+        "imperium-the-cicero-plays-west-end-2018"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/review-imperium"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/wicked-review-monty",
+      "headline": "wicked review monty",
+      "publishDate": "2017-10-17",
+      "matched": [
+        "wicked-west-end-2021"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/wicked-review"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/matilda-review-new-cast",
+      "headline": "matilda review new cast",
+      "publishDate": "2017-06-05",
+      "matched": [
+        "matilda-the-musical-west-end-2021"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/matilda-musical-review",
+        "https://www.londonboxoffice.co.uk/news/post/matilda-double-review",
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-annie-get-your-gun-union-theatre",
+      "headline": "review annie get your gun union theatre",
+      "publishDate": "2017-05-31",
+      "matched": [
+        "annie-west-end-2017"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/review-annie"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/wicked-review-natazja",
+      "headline": "wicked review natazja",
+      "publishDate": "2015-10-05",
+      "matched": [
+        "wicked-west-end-2021"
+      ],
+      "heldUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/wicked-review"
+      ]
+    }
+  ],
+  "misfiles": [
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-bloodsport-after-helen-of-troy",
+      "headline": "review round up bloodsport after helen of troy",
+      "publishDate": "2026-09-15",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "east-is-east-west-end-2021"
+      ],
+      "matched": [
+        "bloodsport-after-helen-of-troy-off-west-end-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-im-every-woman-troubadour-wembley-park-theatre",
+      "headline": "review im every woman troubadour wembley park theatre",
+      "publishDate": "2026-08-07",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "im-every-woman-the-chaka-khan-musical-west-end-2026"
+      ],
+      "matched": [
+        "im-every-woman-off-west-end-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-roundup-one-flew-over-the-cuckoos-nest-old-vic",
+      "headline": "review roundup one flew over the cuckoos nest old vic",
+      "publishDate": "2026-05-13",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "cuckoo-west-end-2023"
+      ],
+      "matched": [
+        "one-flew-over-the-cuckoos-nest-west-end-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-translations-nt",
+      "headline": "review translations nt",
+      "publishDate": "2018-05-31",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "translations-west-end-2019"
+      ],
+      "matched": [
+        "translations-west-end-2018"
+      ],
+      "outOfWindow": [
+        "translations-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-how-the-other-half-loves",
+      "headline": "review how the other half loves",
+      "publishDate": "2016-07-19",
+      "dateSoft": true,
+      "via": "poller-matcher",
+      "held": [
+        "how-the-other-half-loves-west-end-2026"
+      ],
+      "matched": [
+        "how-the-other-half-loves-west-end-2016"
+      ],
+      "outOfWindow": [
+        "how-the-other-half-loves-west-end-2026"
+      ]
+    }
+  ],
+  "heldUnmatched": [
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-tru-menier-chocolate-factory",
+      "headline": "review tru menier chocolate factory",
+      "publishDate": "2026-10-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "tru-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/thelma-louise-young-vic-review",
+      "headline": "thelma louise young vic review",
+      "publishDate": "2026-09-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "thelma-and-louise-a-new-musical-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-guilty-donmar-warehouse-review",
+      "headline": "the guilty donmar warehouse review",
+      "publishDate": "2026-10-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-guilty-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-guilty-west-end-2026",
+        "the-guilty-west-end-2027"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
+      "headline": "much ado shakespeares globe review",
+      "publishDate": "2026-06-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "much-ado-about-nothing-globe-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-krapps-last-tape-royal-court-theatre",
+      "headline": "review krapps last tape royal court theatre",
+      "publishDate": "2026-05-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "krapps-last-tape-godots-todo-list-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/mother-courage-globe-review",
+      "headline": "mother courage globe review",
+      "publishDate": "2026-05-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "mother-courage-and-her-children-globe-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/tender-soho-theatre-review",
+      "headline": "tender soho theatre review",
+      "publishDate": "2026-04-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "tender-by-dave-harris-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "tender-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review",
+      "headline": "royal court john proctor review",
+      "publishDate": "2026-04-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "john-proctor-is-the-villain-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/return-on-investment-hampstead-review",
+      "headline": "return on investment hampstead review",
+      "publishDate": "2026-03-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "roi-return-on-investment-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-i-m-sorry-prime-minister-apollo-theatre",
+      "headline": "review round up i m sorry prime minister apollo theatre",
+      "publishDate": "2026-02-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "im-sorry-prime-minister-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/twelfth-night-barbican-review",
+      "headline": "twelfth night barbican review",
+      "publishDate": "2025-12-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "twelfth-night-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-jack-and-the-beanstalk-kings-head-theatre",
+      "headline": "review jack and the beanstalk kings head theatre",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "jack-and-the-beanstalk-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "jack-and-the-beanstalk-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/a-christmas-carol-a-ghost-story-alexandra-palace-review",
+      "headline": "a christmas carol a ghost story alexandra palace review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-christmas-carol-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-west-end-2026",
+        "the-story-west-end-2026",
+        "a-christmas-carol-west-end-2023",
+        "a-christmas-carol-west-end-2022",
+        "a-christmas-carol-west-end-2020",
+        "a-christmas-carol-west-end-2018",
+        "a-christmas-carol-west-end-2024",
+        "a-christmas-carol-west-end-2012",
+        "a-christmas-carol-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-a-christmas-carol-old-vic",
+      "headline": "review a christmas carol old vic",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-christmas-carol-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "a-christmas-carol-west-end-2026",
+        "a-christmas-carol-west-end-2023",
+        "a-christmas-carol-west-end-2022",
+        "a-christmas-carol-west-end-2020",
+        "a-christmas-carol-west-end-2018",
+        "a-christmas-carol-west-end-2024",
+        "a-christmas-carol-west-end-2012",
+        "a-christmas-carol-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/wendy-and-peter-pan-barbican-review",
+      "headline": "wendy and peter pan barbican review",
+      "publishDate": "2025-11-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "peter-pan-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-choir-of-man-arts-theatre",
+      "headline": "review choir of man arts theatre",
+      "publishDate": "2025-10-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-choir-of-man-marble-arch-off-west-end-2026",
+        "the-choir-of-man-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-choir-of-man-off-west-end-2026",
+        "the-choir-of-man-marble-arch-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/shit-faced-shakespeare-hamlet-review",
+      "headline": "shit faced shakespeare hamlet review",
+      "publishDate": "2025-08-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hamlet-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/romeo-juliet-stratford-east-review",
+      "headline": "romeo juliet stratford east review",
+      "publishDate": "2025-08-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "romeo-and-juliet-west-end-2026",
+        "romeo-and-juliet-west-end-2027"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/girl-from-the-north-country-old-vic-review",
+      "headline": "girl from the north country old vic review",
+      "publishDate": "2025-07-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "girl-from-the-north-country-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "girl-from-the-north-country-west-end-2019",
+        "girl-from-the-north-country-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/romeo-and-juliet-flabbergast-theatre-review",
+      "headline": "romeo and juliet flabbergast theatre review",
+      "publishDate": "2025-06-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "romeo-and-juliet-west-end-2026",
+        "romeo-and-juliet-west-end-2027"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-and-juliet-west-end-2026",
+        "romeo-and-juliet-west-end-2027",
+        "romeo-and-juliet-west-end-2024",
+        "romeo-and-juliet-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/just-for-one-day-review",
+      "headline": "just for one day review",
+      "publishDate": "2025-06-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "just-for-one-day-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "one-day-the-musical-west-end-2026",
+        "just-for-one-day-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/gang-of-three-review",
+      "headline": "gang of three review",
+      "publishDate": "2025-05-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "gang-of-three-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "gang-of-three-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/an-oak-tree-young-vic-review",
+      "headline": "an oak tree young vic review",
+      "publishDate": "2025-05-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "an-oak-tree-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "an-oak-tree-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/man-in-the-mirror-golders-green-hippodrome-review",
+      "headline": "man in the mirror golders green hippodrome review",
+      "publishDate": "2025-03-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-mirror-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-seagull-review",
+      "headline": "the seagull review",
+      "publishDate": "2025-03-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-seagull-globe-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-globe-off-west-end-2026",
+        "the-seagull-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/one-day-when-we-were-young-review",
+      "headline": "one day when we were young review",
+      "publishDate": "2025-03-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "one-day-the-musical-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "one-day-the-musical-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/under-the-table-barons-court-review",
+      "headline": "under the table barons court review",
+      "publishDate": "2025-01-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "table-17-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/tina-tina-turner-the-musical-aldwych-theatre-review",
+      "headline": "tina tina turner the musical aldwych theatre review",
+      "publishDate": "2025-01-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "tina-the-tina-turner-musical-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/firebird-kings-head-review",
+      "headline": "firebird kings head review",
+      "publishDate": "2025-01-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "firebird-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "firebird-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/nutcracker-coliseum-review",
+      "headline": "nutcracker coliseum review",
+      "publishDate": "2024-12-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "nutcracker-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "nutcracker-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/curious-case-benjamin-button-review",
+      "headline": "curious case benjamin button review",
+      "publishDate": "2024-11-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-curious-case-of-benjamin-button-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/stories-tap-dance-sensation-review",
+      "headline": "stories tap dance sensation review",
+      "publishDate": "2024-10-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "stories-the-tap-dance-sensation-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "stories-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/abigails-party-review",
+      "headline": "abigails party review",
+      "publishDate": "2024-09-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "abigails-party-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "abigails-party-west-end-2026",
+        "abigails-party-richmond-theatre-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/bitter-lemons-review",
+      "headline": "bitter lemons review",
+      "publishDate": "2024-09-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "lemons-lemons-lemons-lemons-lemons-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/boys-from-the-blackstuff-review",
+      "headline": "boys from the blackstuff review",
+      "publishDate": "2024-08-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "boys-from-the-blackstuff-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "boys-from-the-blackstuff-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/people-places-things-review",
+      "headline": "people places things review",
+      "publishDate": "2024-05-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "people-places-and-things-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/two-strangers-review",
+      "headline": "two strangers review",
+      "publishDate": "2024-04-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "two-strangers-carry-a-cake-across-new-york-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "two-strangers-carry-a-cake-across-new-york-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-other-other-bronte-review",
+      "headline": "the other other bronte review",
+      "publishDate": "2024-04-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "underdog-the-other-other-bronte-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/till-the-stars-come-down-review",
+      "headline": "till the stars come down review",
+      "publishDate": "2025-03-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "till-the-stars-come-down-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "till-the-stars-come-down-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/motive-and-cue-review",
+      "headline": "motive and cue review",
+      "publishDate": "2023-12-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-motive-and-the-cue-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/noises-off-felicity-kendal-review",
+      "headline": "noises off felicity kendal review",
+      "publishDate": "2023-10-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "noises-off-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "noises-off-west-end-2023",
+        "noises-off-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/father-assassin-review",
+      "headline": "father assassin review",
+      "publishDate": "2023-09-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-father-and-the-assassin-west-end-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/red-pitch-review",
+      "headline": "red pitch review",
+      "publishDate": "2023-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "red-pitch-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "red-pitch-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/death-note-review",
+      "headline": "death note review",
+      "publishDate": "2023-09-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "death-note-the-musical-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "death-note-the-musical-west-end-2026",
+        "death-note-the-musical-off-west-end-2027"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/august-in-england-review",
+      "headline": "august in england review",
+      "publishDate": "2023-05-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "august-osage-county-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-way-old-friends-do-review",
+      "headline": "the way old friends do review",
+      "publishDate": "2023-03-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-way-old-friends-do-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "old-friends-west-end-2023",
+        "the-way-old-friends-do-west-end-2023"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-after-the-act",
+      "headline": "review after the act",
+      "publishDate": "2023-03-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "after-the-act-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "after-the-act-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-oklahoma",
+      "headline": "review oklahoma",
+      "publishDate": "2024-08-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "oklahoma-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "oklahoma-west-end-2023"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-six-at-vaudeville-theatre",
+      "headline": "review six at vaudeville theatre",
+      "publishDate": "2023-01-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "six-the-musical-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/my-neighbour-totoro-review",
+      "headline": "my neighbour totoro review",
+      "publishDate": "2022-10-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "my-neighbour-totoro-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "my-neighbour-totoro-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-my-neighbour-totoro",
+      "headline": "review my neighbour totoro",
+      "publishDate": "2022-10-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "my-neighbour-totoro-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "my-neighbour-totoro-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-rose-park-theatre",
+      "headline": "review rose park theatre",
+      "publishDate": "2022-09-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "rose-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-review",
+      "headline": "much ado review",
+      "publishDate": "2022-07-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "much-ado-about-nothing-west-end-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-jack-absolute-nt",
+      "headline": "review jack absolute nt",
+      "publishDate": "2022-07-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "jack-absolute-flies-again-west-end-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-bonnie-clyde",
+      "headline": "review bonnie clyde",
+      "publishDate": "2022-05-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "bonnie-and-clyde-west-end-2022",
+        "bonnie-and-clyde-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-wftp",
+      "headline": "review wftp",
+      "publishDate": "2022-05-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "witness-for-the-prosecution-west-end-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/and-juliet-review",
+      "headline": "and juliet review",
+      "publishDate": "2022-04-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "and-juliet-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "and-juliet-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-cabaret-kit-kat-club",
+      "headline": "review cabaret kit kat club",
+      "publishDate": "2022-03-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "cabaret-at-the-kit-kat-club-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-west-end-2012"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-vanya-sonia-masha-spike",
+      "headline": "review vanya sonia masha spike",
+      "publishDate": "2021-11-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "vanya-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "vanya-west-end-2023"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/six-musical-review",
+      "headline": "six musical review",
+      "publishDate": "2021-11-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "six-the-musical-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-mirror-light",
+      "headline": "review mirror light",
+      "publishDate": "2021-10-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-mirror-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-death-of-england-nt",
+      "headline": "review death of england nt",
+      "publishDate": "2020-02-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "death-of-england-closing-time-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-amelie-other-palace",
+      "headline": "review amelie other palace",
+      "publishDate": "2019-12-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "amelie-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "amelie-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-dick-whittington-stratford-east",
+      "headline": "review dick whittington stratford east",
+      "publishDate": "2019-12-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "dick-whittington-adults-only-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-an-act-of-god-vaults",
+      "headline": "review an act of god vaults",
+      "publishDate": "2019-12-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "act-of-god-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "act-of-god-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-juliet",
+      "headline": "review juliet",
+      "publishDate": "2019-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "and-juliet-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-measure-for-measure-rsc",
+      "headline": "review measure for measure rsc",
+      "publishDate": "2019-11-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "measure-for-measure-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "measure-for-measure-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-great-gatsby-immersive-ldn",
+      "headline": "review great gatsby immersive ldn",
+      "publishDate": "2019-11-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-great-gatsby-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-great-gatsby-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-gentlemen-prefer-blondes",
+      "headline": "review gentlemen prefer blondes",
+      "publishDate": "2019-10-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "gentlemen-prefer-blondes-west-end-2027"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "gentlemen-prefer-blondes-west-end-2027"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-glass-kill-bluebeard-imp",
+      "headline": "review glass kill bluebeard imp",
+      "publishDate": "2019-09-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "glass-kill-bluebeard-and-imp-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-hello-again-union-theatre",
+      "headline": "review hello again union theatre",
+      "publishDate": "2019-09-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hello-dolly-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-steampunk-great-expectations",
+      "headline": "review steampunk great expectations",
+      "publishDate": "2019-08-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "great-expectations-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "great-expectations-west-end-2023"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-horrible-histories-4",
+      "headline": "review horrible histories 4",
+      "publishDate": "2019-08-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "horrible-histories-barmy-britain-the-best-bits-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-peter-pan-troubadour",
+      "headline": "review peter pan troubadour",
+      "publishDate": "2020-02-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "peter-pan-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-open-air",
+      "headline": "review midsummer nights dream open air",
+      "publishDate": "2019-07-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-midsummer-nights-dream-globe-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-amelie-musical",
+      "headline": "review amelie musical",
+      "publishDate": "2019-05-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "amelie-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "amelie-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-death-of-a-salesman",
+      "headline": "review death of a salesman",
+      "publishDate": "2019-05-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "death-of-a-salesman-west-end-2019",
+        "death-of-a-salesman-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "death-of-a-salesman-west-end-2026",
+        "death-of-a-salesman-west-end-2019",
+        "death-of-a-salesman-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-six-musical",
+      "headline": "review six musical",
+      "publishDate": "2019-03-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "six-the-musical-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-tina",
+      "headline": "review tina",
+      "publishDate": "2019-01-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "tina-the-tina-turner-musical-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-tragedy-richard-the-second",
+      "headline": "review tragedy richard the second",
+      "publishDate": "2018-12-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "richard-ii-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-bernhardt-hamlet",
+      "headline": "review bernhardt hamlet",
+      "publishDate": "2018-10-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hamlet-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-4.48-psychosis",
+      "headline": "review 4.48 psychosis",
+      "publishDate": "2018-09-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "4-48-psychosis-west-end-2025",
+        "448-psychosis-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "4-48-psychosis-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-human-voice",
+      "headline": "review the human voice",
+      "publishDate": "2018-09-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-human-voice-west-end-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-human-voice-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-distance-park-theatre",
+      "headline": "review distance park theatre",
+      "publishDate": "2018-09-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "la-distance-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-loves-labours-lost",
+      "headline": "review loves labours lost",
+      "publishDate": "2018-09-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "loves-labours-lost-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "loves-labours-lost-globe-west-end-2026",
+        "loves-labours-lost-off-west-end-2026",
+        "loves-labours-lost-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-emilia",
+      "headline": "review emilia",
+      "publishDate": "2018-08-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "emilia-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "emilia-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-horrible-histories-barmy-4",
+      "headline": "review horrible histories barmy 4",
+      "publishDate": "2018-08-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "horrible-histories-barmy-britain-the-best-bits-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-othello-shakespeare-globe",
+      "headline": "review othello shakespeare globe",
+      "publishDate": "2018-08-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "othello-west-end-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "othello-west-end-2025",
+        "othello-west-end-2022",
+        "othello-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-home-im-darling",
+      "headline": "review home im darling",
+      "publishDate": "2018-11-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "home-im-darling-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "home-im-darling-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-machinal-almeida",
+      "headline": "review machinal almeida",
+      "publishDate": "2018-07-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "machinal-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "machinal-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-tartuffe-trh",
+      "headline": "review tartuffe trh",
+      "publishDate": "2018-05-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "tartuffe-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "tartuffe-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-hamlet-shakespeares-globe",
+      "headline": "review hamlet shakespeares globe",
+      "publishDate": "2018-05-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hamlet-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-uncle-vanya-maly-theatre",
+      "headline": "review uncle vanya maly theatre",
+      "publishDate": "2018-05-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "vanya-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "vanya-west-end-2023",
+        "uncle-vanya-west-end-2020",
+        "uncle-vanya-west-end-2012"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-frozen-broadway",
+      "headline": "review frozen broadway",
+      "publishDate": "2019-03-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "frozen-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "frozen-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-caroline-or-change",
+      "headline": "review caroline or change",
+      "publishDate": "2018-04-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "caroline-or-change-west-end-2018"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "caroline-or-change-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-hamlet-hackney-empire",
+      "headline": "review hamlet hackney empire",
+      "publishDate": "2018-03-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hamlet-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-curtains",
+      "headline": "review curtains",
+      "publishDate": "2018-03-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "curtains-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "curtains-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-girls-boys",
+      "headline": "review girls boys",
+      "publishDate": "2018-02-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "girls-and-boys-west-end-2018",
+        "girls-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "girls-off-west-end-2026",
+        "the-girls-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-twilight-zone",
+      "headline": "review twilight zone",
+      "publishDate": "2018-01-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-twilight-zone-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-twilight-zone-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-amadeus-nt",
+      "headline": "review amadeus nt",
+      "publishDate": "2026-04-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "amadeus-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "amadeus-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/jack-beanstalk-review",
+      "headline": "jack beanstalk review",
+      "publishDate": "2017-12-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "jack-and-the-beanstalk-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-hound-baskervilles",
+      "headline": "review hound baskervilles",
+      "publishDate": "2020-02-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hound-of-the-baskervilles-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-little-match-girl",
+      "headline": "review the little match girl",
+      "publishDate": "2017-12-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-little-match-girl-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-little-match-girl-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-cinderella",
+      "headline": "review cinderella",
+      "publishDate": "2017-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "cinderella-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cinderella-west-end-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "cinderella-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-everybodys-talking-about-jamie",
+      "headline": "review everybodys talking about jamie",
+      "publishDate": "2017-11-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "everybodys-talking-about-jamie-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "everybodys-talking-about-jamie-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-revlon-girl",
+      "headline": "review revlon girl",
+      "publishDate": "2020-02-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-revlon-girl-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-revlon-girl-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-king-lear-shakespeare-globe",
+      "headline": "review king lear shakespeare globe",
+      "publishDate": "2017-08-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "king-lear-2-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "king-lear-2-off-west-end-2026",
+        "king-lear-west-end-2023",
+        "king-lear-west-end-2018",
+        "king-lear-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/coming-clean-review",
+      "headline": "coming clean review",
+      "publishDate": "2017-07-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "coming-clean-west-end-2020"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "coming-clean-west-end-2020"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-danny-deep-blue-sea",
+      "headline": "review danny deep blue sea",
+      "publishDate": "2017-06-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-deep-blue-sea-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-deep-blue-sea-west-end-2025",
+        "the-deep-blue-sea-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-richard-iii-arcola",
+      "headline": "review richard iii arcola",
+      "publishDate": "2017-05-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "richard-ii-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/romeo-juliet-union-theatre-review",
+      "headline": "romeo juliet union theatre review",
+      "publishDate": "2017-05-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "romeo-and-juliet-west-end-2027"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/romeo-juliet-globe-review",
+      "headline": "romeo juliet globe review",
+      "publishDate": "2017-04-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "romeo-and-juliet-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/murder-for-two-review",
+      "headline": "murder for two review",
+      "publishDate": "2017-03-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "murder-she-didnt-write-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/glitter-punch-review",
+      "headline": "glitter punch review",
+      "publishDate": "2017-02-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "punch-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "punch-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-eno-nutcracker",
+      "headline": "review eno nutcracker",
+      "publishDate": "2016-12-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "nutcracker-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "nutcracker-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-amadeus",
+      "headline": "review amadeus",
+      "publishDate": "2026-04-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "amadeus-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "amadeus-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-hamilton",
+      "headline": "review hamilton",
+      "publishDate": "2016-09-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hamilton-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "hamilton-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-946-amazing-story",
+      "headline": "review 946 amazing story",
+      "publishDate": "2016-08-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-story-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-story-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/into-the-woods-review",
+      "headline": "into the woods review",
+      "publishDate": "2016-07-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "into-the-woods-noel-coward-west-end-2026",
+        "into-the-woods-west-end-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "into-the-woods-west-end-2025",
+        "into-the-woods-noel-coward-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-funny-girl-grenville",
+      "headline": "review funny girl grenville",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "funny-girl-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "funny-girl-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/aladdin-review",
+      "headline": "aladdin review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "aladdin-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "aladdin-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/hobsons-choice-review",
+      "headline": "hobsons choice review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hobsons-choice-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "hobsons-choice-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/go-between-review",
+      "headline": "go between review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-go-between-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-go-between-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/view-from-islington-north-review",
+      "headline": "view from islington north review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-view-from-islington-north-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-motown",
+      "headline": "review motown",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "motown-the-musical-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "motown-the-musical-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-flick-review",
+      "headline": "the flick review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-flick-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-flick-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/sunset-boulevard-review",
+      "headline": "sunset boulevard review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "sunset-boulevard-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "sunset-boulevard-west-end-2023"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/jersey-boys-review",
+      "headline": "jersey boys review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "jersey-boys-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "jersey-boys-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/fiddler-on-the-roof-review",
+      "headline": "fiddler on the roof review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "fiddler-on-the-roof-west-end-2019"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "fiddler-on-the-roof-west-end-2019"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/painkiller-review",
+      "headline": "painkiller review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-painkiller-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-painkiller-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/war-of-worlds-review",
+      "headline": "war of worlds review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-war-of-the-worlds-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/motown-review",
+      "headline": "motown review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "motown-the-musical-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "motown-the-musical-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/hand-to-god-review",
+      "headline": "hand to god review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "hand-to-god-west-end-2016"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "hand-to-god-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/uncle-vanya-review",
+      "headline": "uncle vanya review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "uncle-vanya-west-end-2020"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "vanya-west-end-2023",
+        "uncle-vanya-west-end-2020",
+        "uncle-vanya-west-end-2012"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-pianist-willesden-lane",
+      "headline": "review pianist willesden lane",
+      "publishDate": "2016-02-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-pianist-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-pianist-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-wonderland",
+      "headline": "review wonderland",
+      "publishDate": "2016-01-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "wonder-land-west-end-2015"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/liaisons-dangereuses-review",
+      "headline": "liaisons dangereuses review",
+      "publishDate": "2016-01-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "les-liaisons-dangereuses-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-bull-young-vic",
+      "headline": "review bull young vic",
+      "publishDate": "2015-12-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "bull-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-review",
+      "headline": "christmas carol review",
+      "publishDate": "2015-12-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-christmas-carol-west-end-2015",
+        "a-christmas-carol-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/mirror-mirror-review",
+      "headline": "mirror mirror review",
+      "publishDate": "2015-12-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "a-mirror-west-end-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/peter-pan-wrong-review",
+      "headline": "peter pan wrong review",
+      "publishDate": "2015-12-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "peter-pan-goes-wrong-west-end-2015",
+        "peter-pan-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/as-you-like-it-review",
+      "headline": "as you like it review",
+      "publishDate": "2015-11-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "as-you-like-it-globe-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-globe-west-end-2026",
+        "as-you-like-it-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/harlequinade-review",
+      "headline": "harlequinade review",
+      "publishDate": "2018-10-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "harlequinade-west-end-2015"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "harlequinade-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-husbands-sons",
+      "headline": "review husbands sons",
+      "publishDate": "2015-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "husbands-and-sons-west-end-2015"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-review",
+      "headline": "jane eyre review",
+      "publishDate": "2017-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "jane-eyre-west-end-2015"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "jane-eyre-off-west-end-2026",
+        "jane-eyre-rose-kingston-off-west-end-2026",
+        "jane-eyre-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/dear-lupin-review",
+      "headline": "dear lupin review",
+      "publishDate": "2023-09-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "dear-lupin-west-end-2015"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "dear-lupin-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/railway-children-review",
+      "headline": "railway children review",
+      "publishDate": "2015-07-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-railway-children-off-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-children-off-west-end-2026",
+        "the-railway-children-off-west-end-2026",
+        "the-children-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/constellations-review",
+      "headline": "constellations review",
+      "publishDate": "2015-07-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "constellations-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "constellations-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/treasure-island-review",
+      "headline": "treasure island review",
+      "publishDate": "2020-02-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "treasure-island-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "treasure-island-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/assassins-review",
+      "headline": "assassins review",
+      "publishDate": "2022-09-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "assassins-off-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "assassins-off-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/east-is-east-review",
+      "headline": "east is east review",
+      "publishDate": "2014-10-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "east-is-east-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "east-is-east-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/dirty-rotten-scoundrels-review",
+      "headline": "dirty rotten scoundrels review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "dirty-rotten-scoundrels-the-musical-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "dirty-rotten-scoundrels-the-musical-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/crucible-review",
+      "headline": "crucible review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "the-crucible-west-end-2014",
+        "the-crucible-west-end-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-crucible-west-end-2022",
+        "the-crucible-west-end-2023",
+        "the-crucible-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/medea-review",
+      "headline": "medea review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "medea-west-end-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "medea-west-end-2023",
+        "medea-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/shakespeare-in-love-review",
+      "headline": "shakespeare in love review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "shakespeare-in-love-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "shakespeare-in-love-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/let-it-be-review",
+      "headline": "let it be review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "let-it-be-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "let-it-be-west-end-2012",
+        "let-it-be-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/skylight-review",
+      "headline": "skylight review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "skylight-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "skylight-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/bakersfield-mist-review",
+      "headline": "bakersfield mist review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "bakersfield-mist-west-end-2014"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "bakersfield-mist-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/miss-saigon-review",
+      "headline": "miss saigon review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "miss-saigon-west-end-2014",
+        "miss-saigon-west-end-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "miss-saigon-west-end-2026",
+        "miss-saigon-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/blithe-spirit-review",
+      "headline": "blithe spirit review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [
+        "blithe-spirit-west-end-2021"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "blithe-spirit-west-end-2021",
+        "blithe-spirit-west-end-2014"
+      ]
+    }
+  ],
+  "ambiguous": [],
+  "catalogGaps": [
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/roleplay-soho-theatre-review",
+      "headline": "roleplay soho theatre review",
+      "publishDate": "2026-10-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/him-union-theatre-review",
+      "headline": "him union theatre review",
+      "publishDate": "2026-10-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/ballet-black-at-25-sadlers-wells-review",
+      "headline": "ballet black at 25 sadlers wells review",
+      "publishDate": "2026-10-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-what-would-jarvis-do-omnibus-theatre",
+      "headline": "review what would jarvis do omnibus theatre",
+      "publishDate": "2026-10-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-toy-soldier-union-theatre",
+      "headline": "review toy soldier union theatre",
+      "publishDate": "2026-10-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/mere-mortals-sadlers-wells-review",
+      "headline": "mere mortals sadlers wells review",
+      "publishDate": "2026-09-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/abigail-s-party-harold-pinter-theatre-review",
+      "headline": "abigail s party harold pinter theatre review",
+      "publishDate": "2026-08-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-fcking-future-sadlers-wells-east",
+      "headline": "review fcking future sadlers wells east",
+      "publishDate": "2026-06-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-still-pointless-balletboyz-sadlers-wells",
+      "headline": "review still pointless balletboyz sadlers wells",
+      "publishDate": "2026-05-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/ballet-trockadero-sadlers-wells-review",
+      "headline": "ballet trockadero sadlers wells review",
+      "publishDate": "2026-05-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-body-soul-sadlers-wells",
+      "headline": "review body soul sadlers wells",
+      "publishDate": "2026-03-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-landscapes-sadlers-wells-east",
+      "headline": "review landscapes sadlers wells east",
+      "publishDate": "2026-03-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/sea-witch-review-drury-lane-review",
+      "headline": "sea witch review drury lane review",
+      "publishDate": "2026-03-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-opera-locos-sadlers-wells-review",
+      "headline": "the opera locos sadlers wells review",
+      "publishDate": "2026-02-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/to-maury-with-love-concert-theatre-royal-drury-lane-review",
+      "headline": "to maury with love concert theatre royal drury lane review",
+      "publishDate": "2026-02-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/tutu-at-sadlers-wells-east-review",
+      "headline": "tutu at sadlers wells east review",
+      "publishDate": "2026-02-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/jo-the-little-women-musical-theatre-royal-drury-lane-review",
+      "headline": "jo the little women musical theatre royal drury lane review",
+      "publishDate": "2026-01-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/giselle-london-coliseum-review",
+      "headline": "giselle london coliseum review",
+      "publishDate": "2026-01-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/london-theatre-2025-a-year-in-review",
+      "headline": "london theatre 2025 a year in review",
+      "publishDate": "2025-12-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/christmas-day-almeida-review",
+      "headline": "christmas day almeida review",
+      "publishDate": "2025-12-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/gawain-green-knight-park-theatre-review",
+      "headline": "gawain green knight park theatre review",
+      "publishDate": "2025-12-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/matthew-bournes-the-red-shoes-sadlers-wells-review",
+      "headline": "matthew bournes the red shoes sadlers wells review",
+      "publishDate": "2026-01-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/fallen-angels-menier-choc-factory-review",
+      "headline": "fallen angels menier choc factory review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/hms-pinafore-london-coliseum-review",
+      "headline": "hms pinafore london coliseum review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/after-sunday-bush-theatre-review",
+      "headline": "after sunday bush theatre review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/ms-holmes-and-ms-watson-apt-2b-arcola-theatre-review",
+      "headline": "ms holmes and ms watson apt 2b arcola theatre review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/emerald-storm-emerald-theatre-review",
+      "headline": "emerald storm emerald theatre review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/camille-osullivan-loveletter-soho-theatre-review",
+      "headline": "camille osullivan loveletter soho theatre review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-enigmatist-wiltons-music-hall-review",
+      "headline": "the enigmatist wiltons music hall review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/jobsworth-park-theatre-review",
+      "headline": "jobsworth park theatre review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/eno-partenope-coliseum-2025-review",
+      "headline": "eno partenope coliseum 2025 review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/drifting-southwark-playhouse-borough-review",
+      "headline": "drifting southwark playhouse borough review",
+      "publishDate": "2025-12-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/figures-in-extinction-sadlers-wells-review",
+      "headline": "figures in extinction sadlers wells review",
+      "publishDate": "2025-11-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-line-of-beauty-almeida-theatre-review",
+      "headline": "the line of beauty almeida theatre review",
+      "publishDate": "2025-11-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/bloody-mary-union-theatre-review",
+      "headline": "bloody mary union theatre review",
+      "publishDate": "2025-10-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-wanderers-marylebone-theatre-review",
+      "headline": "the wanderers marylebone theatre review",
+      "publishDate": "2025-11-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/assembled-parties-hampstead-theatre-review",
+      "headline": "assembled parties hampstead theatre review",
+      "publishDate": "2025-11-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-crocodile-fever-arcola-theatre",
+      "headline": "review crocodile fever arcola theatre",
+      "publishDate": "2025-10-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-maids-donmar-warehouse-review",
+      "headline": "the maids donmar warehouse review",
+      "publishDate": "2025-11-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/musik-wiltons-music-hall-review",
+      "headline": "musik wiltons music hall review",
+      "publishDate": "2025-11-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/fanny-kings-head-theatre-review",
+      "headline": "fanny kings head theatre review",
+      "publishDate": "2025-10-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/384-days-pleasance-london-review",
+      "headline": "384 days pleasance london review",
+      "publishDate": "2025-11-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/albert-herring-london-coliseum-review",
+      "headline": "albert herring london coliseum review",
+      "publishDate": "2025-10-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-troilus-and-cressida-shakespeares-globe",
+      "headline": "review troilus and cressida shakespeares globe",
+      "publishDate": "2025-10-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/da-vincis-laundry-riverside-studios-review",
+      "headline": "da vincis laundry riverside studios review",
+      "publishDate": "2025-10-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/revolution-sadlers-wells-review",
+      "headline": "revolution sadlers wells review",
+      "publishDate": "2025-10-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-lee-park-theatre",
+      "headline": "review lee park theatre",
+      "publishDate": "2025-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-billionaire-inside-your-head-hampstead-theatre-review",
+      "headline": "the billionaire inside your head hampstead theatre review",
+      "publishDate": "2025-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-woman-park-theatre-review",
+      "headline": "the woman park theatre review",
+      "publishDate": "2025-09-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/50-first-dates-musical-the-other-palace-review",
+      "headline": "50 first dates musical the other palace review",
+      "publishDate": "2025-09-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-poltergeist-arcola-theatre",
+      "headline": "review the poltergeist arcola theatre",
+      "publishDate": "2025-09-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/entertaining-mr-sloane-young-vic-review",
+      "headline": "entertaining mr sloane young vic review",
+      "publishDate": "2025-09-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-code-southwark-playhouse-elephant-review",
+      "headline": "the code southwark playhouse elephant review",
+      "publishDate": "2025-09-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/romans-a-novel-almeida-theatre-review",
+      "headline": "romans a novel almeida theatre review",
+      "publishDate": "2025-09-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/not-your-superwoman-bush-theatre-review",
+      "headline": "not your superwoman bush theatre review",
+      "publishDate": "2025-09-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/murmuration-level-2-peacock-theatre-review",
+      "headline": "murmuration level 2 peacock theatre review",
+      "publishDate": "2025-09-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/invasive-species-kings-head-review",
+      "headline": "invasive species kings head review",
+      "publishDate": "2025-09-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/make-me-feel-bush-theatre-review",
+      "headline": "make me feel bush theatre review",
+      "publishDate": "2025-08-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-gathered-leaves-park-theatre-review",
+      "headline": "the gathered leaves park theatre review",
+      "publishDate": "2025-08-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/brigadoon-regents-park-open-air-review",
+      "headline": "brigadoon regents park open air review",
+      "publishDate": "2025-08-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/saving-mozart-the-other-palace-review",
+      "headline": "saving mozart the other palace review",
+      "publishDate": "2025-08-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-clive-arcola",
+      "headline": "review clive arcola",
+      "publishDate": "2025-08-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/a-role-to-die-for-marylebone-theatre-review",
+      "headline": "a role to die for marylebone theatre review",
+      "publishDate": "2025-08-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/extraordinary-women-jermyn-street-theatre-review",
+      "headline": "extraordinary women jermyn street theatre review",
+      "publishDate": "2025-07-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/sing-street-lyric-hammersmith-review",
+      "headline": "sing street lyric hammersmith review",
+      "publishDate": "2025-07-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/that-bastard-puccini-park-theatre-review",
+      "headline": "that bastard puccini park theatre review",
+      "publishDate": "2025-07-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/nye-national-theatre-olivier-review",
+      "headline": "nye national theatre olivier review",
+      "publishDate": "2025-07-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/moon-for-the-misbegotten-almeida-review",
+      "headline": "moon for the misbegotten almeida review",
+      "publishDate": "2025-06-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/quadrophenia-sadlers-wells-review",
+      "headline": "quadrophenia sadlers wells review",
+      "publishDate": "2025-06-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/oscar-at-the-crown-london-review",
+      "headline": "oscar at the crown london review",
+      "publishDate": "2025-06-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/dick-riverside-studios-review",
+      "headline": "dick riverside studios review",
+      "publishDate": "2025-06-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/lovestuck-stratford-east-theatre-review",
+      "headline": "lovestuck stratford east theatre review",
+      "publishDate": "2025-06-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/head-first-acrobats-godz-peacock-theatre-review",
+      "headline": "head first acrobats godz peacock theatre review",
+      "publishDate": "2025-06-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/king-of-pangea-kings-head-review",
+      "headline": "king of pangea kings head review",
+      "publishDate": "2025-06-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/our-cosmic-dust-park-theatre-review",
+      "headline": "our cosmic dust park theatre review",
+      "publishDate": "2025-06-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-frogs-southwark-playhouse",
+      "headline": "review the frogs southwark playhouse",
+      "publishDate": "2025-05-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/diagnosis-finborough-review",
+      "headline": "diagnosis finborough review",
+      "publishDate": "2025-05-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/house-of-games-hampstead-theatre-review",
+      "headline": "house of games hampstead theatre review",
+      "publishDate": "2025-05-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/snap-kings-head-review",
+      "headline": "snap kings head review",
+      "publishDate": "2025-05-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/cockfosters-southwark-playhouse-borough-review",
+      "headline": "cockfosters southwark playhouse borough review",
+      "publishDate": "2025-05-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/conversations-after-sex-park-theatre-review",
+      "headline": "conversations after sex park theatre review",
+      "publishDate": "2025-05-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/heisenberg-arcola-review",
+      "headline": "heisenberg arcola review",
+      "publishDate": "2025-04-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/forsythe-programme-sadlers-wells-review",
+      "headline": "forsythe programme sadlers wells review",
+      "publishDate": "2025-04-11",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/jab-park-theatre-review",
+      "headline": "jab park theatre review",
+      "publishDate": "2025-04-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/stiletto-charing-cross-theatre-review",
+      "headline": "stiletto charing cross theatre review",
+      "publishDate": "2025-04-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/double-act-southwark-playhouse-review",
+      "headline": "double act southwark playhouse review",
+      "publishDate": "2025-03-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/otherland-almeida-review",
+      "headline": "otherland almeida review",
+      "publishDate": "2025-02-26",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/trash-peacock-theatre-review",
+      "headline": "trash peacock theatre review",
+      "publishDate": "2025-02-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/east-is-south-hampstead-review",
+      "headline": "east is south hampstead review",
+      "publishDate": "2025-02-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/stalled-kings-head-review",
+      "headline": "stalled kings head review",
+      "publishDate": "2025-02-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-gift-park-theatre-review",
+      "headline": "the gift park theatre review",
+      "publishDate": "2025-01-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/an-interrogation-hampstead-review",
+      "headline": "an interrogation hampstead review",
+      "publishDate": "2025-01-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-unseen-riverside-studios-review",
+      "headline": "the unseen riverside studios review",
+      "publishDate": "2024-11-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/elixir-of-love-london-coliseum-review",
+      "headline": "elixir of love london coliseum review",
+      "publishDate": "2024-11-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/statues-bush-theatre-review",
+      "headline": "statues bush theatre review",
+      "publishDate": "2024-10-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/eurydice-review-jermyn-street",
+      "headline": "eurydice review jermyn street",
+      "publishDate": "2024-10-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-la-boheme-london-coliseum",
+      "headline": "review la boheme london coliseum",
+      "publishDate": "2024-10-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/roots-almeida-review",
+      "headline": "roots almeida review",
+      "publishDate": "2024-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/face-in-the-crowd-young-vic-review",
+      "headline": "face in the crowd young vic review",
+      "publishDate": "2024-09-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/our-countrys-good-hammersmith-review",
+      "headline": "our countrys good hammersmith review",
+      "publishDate": "2024-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/comedy-of-errors-globe-theatre-review",
+      "headline": "comedy of errors globe theatre review",
+      "publishDate": "2024-08-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-much-ado-globe-theatre",
+      "headline": "review much ado globe theatre",
+      "publishDate": "2024-08-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/chrous-line-review-sadlers-wells",
+      "headline": "chrous line review sadlers wells",
+      "publishDate": "2024-08-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-echo-royal-court",
+      "headline": "review echo royal court",
+      "publishDate": "2024-07-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/algorithms-park-theatre-review",
+      "headline": "algorithms park theatre review",
+      "publishDate": "2024-04-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/life-with-oscar-arcola-review",
+      "headline": "life with oscar arcola review",
+      "publishDate": "2024-04-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-hir-park-theatre",
+      "headline": "review hir park theatre",
+      "publishDate": "2024-02-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/rock-n-roll-hampstead-theatre-review",
+      "headline": "rock n roll hampstead theatre review",
+      "publishDate": "2023-12-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/sputnik-sweetheart-arcola-review",
+      "headline": "sputnik sweetheart arcola review",
+      "publishDate": "2023-10-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/gentlemen-arcola-review",
+      "headline": "gentlemen arcola review",
+      "publishDate": "2023-10-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/candy-review-park-theatre",
+      "headline": "candy review park theatre",
+      "publishDate": "2023-08-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/ride-southwark-playhouse-review",
+      "headline": "ride southwark playhouse review",
+      "publishDate": "2023-07-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/then-now-next-southwark-playhouse-review",
+      "headline": "then now next southwark playhouse review",
+      "publishDate": "2023-06-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/possession-arcola-review",
+      "headline": "possession arcola review",
+      "publishDate": "2023-06-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/es-flo-review-kiln-theatre",
+      "headline": "es flo review kiln theatre",
+      "publishDate": "2023-06-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/paper-cut-review-park-theatre",
+      "headline": "paper cut review park theatre",
+      "publishDate": "2023-06-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-shape-of-things-park-theatre-review",
+      "headline": "the shape of things park theatre review",
+      "publishDate": "2023-06-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/invisible-bush-theatre-review",
+      "headline": "invisible bush theatre review",
+      "publishDate": "2023-05-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/animal-park-theatre-review",
+      "headline": "animal park theatre review",
+      "publishDate": "2023-04-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/sadlers-wells-NDT1-review",
+      "headline": "sadlers wells NDT1 review",
+      "publishDate": "2023-04-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/women-beware-the-devil-review-almeida",
+      "headline": "women beware the devil review almeida",
+      "publishDate": "2023-02-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-beach-house-at-park-theatre-review",
+      "headline": "the beach house at park theatre review",
+      "publishDate": "2023-02-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/windfall-at-southwark-playhouse-review",
+      "headline": "windfall at southwark playhouse review",
+      "publishDate": "2023-02-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/winners-curse-park-theatre-review",
+      "headline": "winners curse park theatre review",
+      "publishDate": "2023-02-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-allegiance-at-charing-cross-theatre",
+      "headline": "review allegiance at charing cross theatre",
+      "publishDate": "2023-01-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/sons-of-the-prophet-hampstead-theatre-review",
+      "headline": "sons of the prophet hampstead theatre review",
+      "publishDate": "2022-12-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/mandela-young-vic-review",
+      "headline": "mandela young vic review",
+      "publishDate": "2022-12-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-mary-hampstead-theatre",
+      "headline": "review mary hampstead theatre",
+      "publishDate": "2022-11-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/tammy-faye-almeida-review",
+      "headline": "tammy faye almeida review",
+      "publishDate": "2022-10-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-clinic-almeida",
+      "headline": "review the clinic almeida",
+      "publishDate": "2022-09-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/tony-review-park-theatre",
+      "headline": "tony review park theatre",
+      "publishDate": "2022-06-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/rite-of-spring-sadlers-wells-review",
+      "headline": "rite of spring sadlers wells review",
+      "publishDate": "2022-06-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/conundrum-young-vic-review",
+      "headline": "conundrum young vic review",
+      "publishDate": "2022-01-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-corpse-park-theatre",
+      "headline": "review corpse park theatre",
+      "publishDate": "2020-03-08",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-arcola-the-cutting-edge",
+      "headline": "review arcola the cutting edge",
+      "publishDate": "2020-02-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-persona-riverside-studios",
+      "headline": "review persona riverside studios",
+      "publishDate": "2020-01-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-arcola-canary-crow",
+      "headline": "review arcola canary crow",
+      "publishDate": "2020-01-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-chinese-elvis-park-theatre",
+      "headline": "review chinese elvis park theatre",
+      "publishDate": "2019-12-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-hunger-arcola",
+      "headline": "review hunger arcola",
+      "publishDate": "2019-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-shook-southwark-playhouse",
+      "headline": "review shook southwark playhouse",
+      "publishDate": "2020-01-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-soho-cinders-charing-cross-theatre",
+      "headline": "review soho cinders charing cross theatre",
+      "publishDate": "2019-10-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-beryl-arcola",
+      "headline": "review beryl arcola",
+      "publishDate": "2019-10-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-europe-donmar",
+      "headline": "review europe donmar",
+      "publishDate": "2019-06-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-damned-barbican",
+      "headline": "review the damned barbican",
+      "publishDate": "2019-06-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-after-dark-finborough",
+      "headline": "review after dark finborough",
+      "publishDate": "2019-06-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-vincent-river-trafalgar-studios",
+      "headline": "review vincent river trafalgar studios",
+      "publishDate": "2019-05-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-hoard-arcola",
+      "headline": "review hoard arcola",
+      "publishDate": "2019-05-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-avalanche-barbican",
+      "headline": "review avalanche barbican",
+      "publishDate": "2019-05-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-market-boy-union-theatre",
+      "headline": "review market boy union theatre",
+      "publishDate": "2019-04-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-stitting-arcola",
+      "headline": "review stitting arcola",
+      "publishDate": "2019-04-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-marys-babies-jermyn-street-theatre",
+      "headline": "review marys babies jermyn street theatre",
+      "publishDate": "2019-03-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-boomerang-white-bear-theatre",
+      "headline": "review boomerang white bear theatre",
+      "publishDate": "2019-03-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-daughter-in-law-arcola",
+      "headline": "review the daughter in law arcola",
+      "publishDate": "2019-01-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-fabric-soho-theatre",
+      "headline": "review fabric soho theatre",
+      "publishDate": "2018-09-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-aristocrats-donmar-warehouse",
+      "headline": "review aristocrats donmar warehouse",
+      "publishDate": "2018-08-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-spira-park-theatre",
+      "headline": "review spira park theatre",
+      "publishDate": "2018-08-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-chess-coliseum",
+      "headline": "review chess coliseum",
+      "publishDate": "2018-05-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-west-end-eurovision-2018",
+      "headline": "review west end eurovision 2018",
+      "publishDate": "2018-04-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-faceless-park-theatre",
+      "headline": "review faceless park theatre",
+      "publishDate": "2018-04-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-pericles-barbican",
+      "headline": "review pericles barbican",
+      "publishDate": "2018-04-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-coraline-barbican-roh",
+      "headline": "review coraline barbican roh",
+      "publishDate": "2018-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-beginning-ambassadors",
+      "headline": "review beginning ambassadors",
+      "publishDate": "2018-01-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/roller-review-barbican",
+      "headline": "roller review barbican",
+      "publishDate": "2017-12-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-rodelinda-eno-coliseum",
+      "headline": "review rodelinda eno coliseum",
+      "publishDate": "2017-10-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-b-royal-court",
+      "headline": "review b royal court",
+      "publishDate": "2017-10-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-elders-theatro-technis",
+      "headline": "review the elders theatro technis",
+      "publishDate": "2017-07-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "unknown"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-groomed-soho-theatre",
+      "headline": "review groomed soho theatre",
+      "publishDate": "2017-06-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/tommy-stratford-east-review",
+      "headline": "tommy stratford east review",
+      "publishDate": "2017-06-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/obsession-barbican-review",
+      "headline": "obsession barbican review",
+      "publishDate": "2017-05-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-treatment-almeida",
+      "headline": "review treatment almeida",
+      "publishDate": "2017-05-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-honk-union-theatre",
+      "headline": "review honk union theatre",
+      "publishDate": "2017-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-young-vic-midsummer",
+      "headline": "review young vic midsummer",
+      "publishDate": "2017-03-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-love-national-theatre",
+      "headline": "review love national theatre",
+      "publishDate": "2016-12-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/x-review-royal-court",
+      "headline": "x review royal court",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-rapunzel-park-theatre",
+      "headline": "review rapunzel park theatre",
+      "publishDate": "2015-12-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-teddy-ferrara-donmar",
+      "headline": "review teddy ferrara donmar",
+      "publishDate": "2015-10-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    }
+  ],
+  "otherMarketReviews": [
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-how-to-keep-warm-in-winter-broadway-theatre",
+      "headline": "review how to keep warm in winter broadway theatre",
+      "publishDate": "2026-10-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "nyc"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-meat-kings-inc-of-brooklyn-heights-park-theatre-review",
+      "headline": "the meat kings inc of brooklyn heights park theatre review",
+      "publishDate": "2025-11-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "off-west-end"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/merry-wives-of-windsor-review-shakespeare-s-globe",
+      "headline": "merry wives of windsor review shakespeare s globe",
+      "publishDate": "2025-09-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-notre-dame-de-paris",
+      "headline": "review notre dame de paris",
+      "publishDate": "2019-01-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "international"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/preview-notre-dame-de-paris",
+      "headline": "preview notre dame de paris",
+      "publishDate": "2019-01-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "international"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/king-kong-broadway-preview",
+      "headline": "king kong broadway preview",
+      "publishDate": "2018-10-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "nyc"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-spoonful-sherman",
+      "headline": "review spoonful sherman",
+      "publishDate": "2017-08-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/hello-dolly-review-broadway",
+      "headline": "hello dolly review broadway",
+      "publishDate": "2017-04-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hello-dolly-west-end-2024"
+      ],
+      "itemMarket": "nyc"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/american-in-paris-review2",
+      "headline": "american in paris review2",
+      "publishDate": "2017-03-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "international"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-britten-in-brooklyn",
+      "headline": "review britten in brooklyn",
+      "publishDate": "2016-09-09",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "regional-uk"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/american-in-paris-review",
+      "headline": "american in paris review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "international"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/edinburgh-festival-preview",
+      "headline": "edinburgh festival preview",
+      "publishDate": "2015-07-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "edinburgh"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-forbidden-broadway",
+      "headline": "review forbidden broadway",
+      "publishDate": "2014-09-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "nyc"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/forbidden-broadway-review",
+      "headline": "forbidden broadway review",
+      "publishDate": "2014-09-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [],
+      "itemMarket": "nyc"
+    }
+  ],
+  "outOfWindow": [
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/wendy-and-peter-pan-barbican-review-round-up",
+      "headline": "wendy and peter pan barbican review round up",
+      "publishDate": "2025-10-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/cinderella-la-cenerentola-eno-review",
+      "headline": "cinderella la cenerentola eno review",
+      "publishDate": "2026-03-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cinderella-west-end-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "cinderella-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-lady-from-the-sea-bridge-theatre-review",
+      "headline": "the lady from the sea bridge theatre review",
+      "publishDate": "2025-09-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bridge-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-dracula-lyric-hammersmith",
+      "headline": "review dracula lyric hammersmith",
+      "publishDate": "2025-09-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dracula-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/twelfth-night-or-what-you-will-shakespeares-globe-review",
+      "headline": "twelfth night or what you will shakespeares globe review",
+      "publishDate": "2025-08-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "twelfth-night-off-west-end-2026",
+        "what-you-will-west-end-2012",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/a-midsummer-nights-dream-bridge-review",
+      "headline": "a midsummer nights dream bridge review",
+      "publishDate": "2025-06-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-midsummer-nights-dream-globe-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2026",
+        "the-bridge-off-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/ghosts-review",
+      "headline": "ghosts review",
+      "publishDate": "2025-04-18",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghosts-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/cat-on-a-hot-tin-roof-review",
+      "headline": "cat on a hot tin roof review",
+      "publishDate": "2024-12-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cat-on-a-hot-tin-roof-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-years-almeida-review",
+      "headline": "the years almeida review",
+      "publishDate": "2024-08-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-years-west-end-2025"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/guys-and-dolls-immersive-review",
+      "headline": "guys and dolls immersive review",
+      "publishDate": "2024-03-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/beautiful-thing-review",
+      "headline": "beautiful thing review",
+      "publishDate": "2023-09-25",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "beautiful-thing-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/a-mirror-almeida-review",
+      "headline": "a mirror almeida review",
+      "publishDate": "2023-11-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-mirror-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/guys-and-dolls-bridge-review",
+      "headline": "guys and dolls bridge review",
+      "publishDate": "2023-07-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bridge-off-west-end-2026",
+        "guys-and-dolls-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/dear-england-review",
+      "headline": "dear england review",
+      "publishDate": "2023-06-21",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dear-england-new-wimbledon-theatre-west-end-2026",
+        "dear-england-west-end-2025",
+        "dear-england-west-end-2023"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/a-ghost-story-apollo-review",
+      "headline": "a ghost story apollo review",
+      "publishDate": "2023-05-31",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-story-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-motive-and-the-cue-review",
+      "headline": "the motive and the cue review",
+      "publishDate": "2023-05-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-motive-and-the-cue-west-end-2023"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-from-here-to-eternity",
+      "headline": "review from here to eternity",
+      "publishDate": "2022-11-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "from-here-to-eternity-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-walking-with-ghosts",
+      "headline": "review walking with ghosts",
+      "publishDate": "2022-09-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "ghosts-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/cabaret-playhouse-review",
+      "headline": "cabaret playhouse review",
+      "publishDate": "2022-01-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-west-end-2012"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/war-of-the-worlds-review",
+      "headline": "war of the worlds review",
+      "publishDate": "2021-10-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-war-of-the-worlds-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-a-number-bridge-theatre",
+      "headline": "review a number bridge theatre",
+      "publishDate": "2020-03-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bridge-off-west-end-2026",
+        "a-number-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-wedding-singer",
+      "headline": "review the wedding singer",
+      "publishDate": "2020-02-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-weddings-off-west-end-2027"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-cinderella-vaults",
+      "headline": "review cinderella vaults",
+      "publishDate": "2019-12-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cinderella-west-end-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "cinderella-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-lion-witch-wardrobe-bridge-theatre",
+      "headline": "review lion witch wardrobe bridge theatre",
+      "publishDate": "2019-11-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bridge-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-taming-of-the-shrew-rsc",
+      "headline": "review taming of the shrew rsc",
+      "publishDate": "2019-11-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-taming-of-the-shrew-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-richard-shelton-sinatra-raw",
+      "headline": "review richard shelton sinatra raw",
+      "publishDate": "2019-10-29",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sinatra-the-musical-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-midsummer-nights-dream-bridge-theatre",
+      "headline": "review midsummer nights dream bridge theatre",
+      "publishDate": "2019-06-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-bridge-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-war-of-the-worlds-immersive-experience",
+      "headline": "review war of the worlds immersive experience",
+      "publishDate": "2019-06-10",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-war-of-the-worlds-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-10-things-i-hate-about-taming-of-the-shrew",
+      "headline": "review 10 things i hate about taming of the shrew",
+      "publishDate": "2019-05-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-taming-of-the-shrew-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-winters-tale-nt",
+      "headline": "review the winters tale nt",
+      "publishDate": "2019-02-14",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-winters-tale-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/nine-night-review-trafalgar",
+      "headline": "nine night review trafalgar",
+      "publishDate": "2018-12-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "nine-night-off-west-end-2026",
+        "nine-night-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-urinetown-bridewell",
+      "headline": "review urinetown bridewell",
+      "publishDate": "2018-11-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "urinetown-the-musical-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/weimar-cabaret-review",
+      "headline": "weimar cabaret review",
+      "publishDate": "2018-07-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-west-end-2012"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-as-you-like-it-in-the-squares",
+      "headline": "review as you like it in the squares",
+      "publishDate": "2018-07-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-globe-west-end-2026",
+        "as-you-like-it-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-a-winters-tale",
+      "headline": "review a winters tale",
+      "publishDate": "2018-07-04",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-winters-tale-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-as-you-like-it-shakespeares-globe",
+      "headline": "review as you like it shakespeares globe",
+      "publishDate": "2018-05-22",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-globe-west-end-2026",
+        "as-you-like-it-west-end-2022"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/pressure-park-theatre-review",
+      "headline": "pressure park theatre review",
+      "publishDate": "2018-04-05",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "pressure-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-inheritance",
+      "headline": "review the inheritance",
+      "publishDate": "2018-05-16",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-inheritance-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-macbeth-nt",
+      "headline": "review macbeth nt",
+      "publishDate": "2018-03-12",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-frozen",
+      "headline": "review frozen",
+      "publishDate": "2018-03-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "frozen-west-end-2021"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-miss-julie",
+      "headline": "review miss julie",
+      "publishDate": "2017-11-20",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "julie-west-end-2018"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-macbeth-barbican",
+      "headline": "review macbeth barbican",
+      "publishDate": "2017-10-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-jane-eyre",
+      "headline": "review jane eyre",
+      "publishDate": "2017-10-01",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jane-eyre-off-west-end-2026",
+        "jane-eyre-rose-kingston-off-west-end-2026",
+        "jane-eyre-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/kite-runner-review-2",
+      "headline": "kite runner review 2",
+      "publishDate": "2017-06-27",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-kite-runner-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-hamlet-almeida",
+      "headline": "review hamlet almeida",
+      "publishDate": "2017-03-02",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/winters-tale-eno-review",
+      "headline": "winters tale eno review",
+      "publishDate": "2017-02-28",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-winters-tale-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-million-dollar-quartet",
+      "headline": "review million dollar quartet",
+      "publishDate": "2017-02-13",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "million-dollar-quartet-off-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-peter-pan-nt",
+      "headline": "review peter pan nt",
+      "publishDate": "2016-12-06",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "peter-pan-west-end-2026"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-tempest-review-brb",
+      "headline": "the tempest review brb",
+      "publishDate": "2016-10-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-tempest-globe-west-end-2026",
+        "the-tempest-west-end-2024"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-children-of-eden",
+      "headline": "review children of eden",
+      "publishDate": "2016-08-15",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-children-off-west-end-2026",
+        "the-children-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-impossible",
+      "headline": "review impossible",
+      "publishDate": "2016-07-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "impossible-west-end-2015"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-truth-review",
+      "headline": "the truth review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+        "the-truth-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/richard-iii-almeida-review",
+      "headline": "richard iii almeida review",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-west-end-2014"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/funny-girl-review-killick",
+      "headline": "funny girl review killick",
+      "publishDate": "2025-04-03",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "funny-girl-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-macbeth-young-vic",
+      "headline": "review macbeth young vic",
+      "publishDate": "2015-12-17",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/funny-girl-review",
+      "headline": "funny girl review",
+      "publishDate": "2015-12-07",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "funny-girl-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/henry-v-review",
+      "headline": "henry v review",
+      "publishDate": "2015-11-19",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "henry-v-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-lady-macbeth",
+      "headline": "review lady macbeth",
+      "publishDate": "2015-09-30",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-west-end-2013"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/american-idiot-review",
+      "headline": "american idiot review",
+      "publishDate": "2015-07-24",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "american-idiot-west-end-2016"
+      ]
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/sinatra-review",
+      "headline": "sinatra review",
+      "publishDate": "2015-07-23",
+      "dateSoft": true,
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sinatra-the-musical-west-end-2026"
+      ]
+    }
+  ]
+}

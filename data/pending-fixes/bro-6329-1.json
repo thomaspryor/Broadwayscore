@@ -1,0 +1,484 @@
+{
+  "issueNumber": "bro-6329-1",
+  "planId": "30a93bd4-e2b7-4d7c-b3fd-c31d3f558fc9",
+  "status": "applied",
+  "createdAt": "2026-10-26T22:35:36.911Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6329 part 1: null art that is plainly another work on live shows and mark noReliableArt; files removed in the same land.",
+    "steps": [
+      "a-hard-days-night-off-west-end-2026: photo of a 1964 cinema marquee, not the production; null so the placeholder shows (BRO-6329)",
+      "a-hard-days-night-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "a-hunger-artist-off-west-end-2027: Kafka book cover, not production art; null so the placeholder shows (BRO-6329)",
+      "a-hunger-artist-off-west-end-2027: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "are-you-a-robot-off-west-end-2026: photo of a captcha prompt; null so the placeholder shows (BRO-6329)",
+      "are-you-a-robot-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "audience-plant-2027-off-broadway-2027: headshot of an actor, not show art; null so the placeholder shows (BRO-6329)",
+      "audience-plant-2027-off-broadway-2027: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "babylon-off-west-end-2026: poster for East End Babylon, a different work; null so the placeholder shows (BRO-6329)",
+      "babylon-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "babymother-3-off-west-end-2026: poster for the Babymother film screening; null so the placeholder shows (BRO-6329)",
+      "babymother-3-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "brink-off-west-end-2026: street photo comparison, not show art; null so the placeholder shows (BRO-6329)",
+      "brink-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "bury-the-hatchet-off-west-end-2026: photo of a different venue's signage; null so the placeholder shows (BRO-6329)",
+      "bury-the-hatchet-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "constanze-off-west-end-2026: Frinton Summer Theatre promo photo, a different company; null so the placeholder shows (BRO-6329)",
+      "constanze-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "dickens-christmas-off-west-end-2026: restaurant photo; null so the placeholder shows (BRO-6329)",
+      "dickens-christmas-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)",
+      "foal-off-west-end-2026: stock photo of horses; null so the placeholder shows (BRO-6329)",
+      "foal-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-hard-days-night-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-hard-days-night-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/a-hard-days-night-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-hard-days-night-off-west-end-2026: photo of a 1964 cinema marquee, not the production; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-hard-days-night-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): photo of a 1964 cinema marquee, not the production",
+          "key": "a hard days night|kiln theatre|"
+        },
+        "description": "a-hard-days-night-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-hunger-artist-off-west-end-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-hunger-artist-off-west-end-2027/thumbnail.jpg",
+          "poster": "/images/shows/a-hunger-artist-off-west-end-2027/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-hunger-artist-off-west-end-2027: Kafka book cover, not production art; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-hunger-artist-off-west-end-2027",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): Kafka book cover, not production art",
+          "key": "a hunger artist|young vic|"
+        },
+        "description": "a-hunger-artist-off-west-end-2027: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "are-you-a-robot-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/are-you-a-robot-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "are-you-a-robot-off-west-end-2026: photo of a captcha prompt; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "are-you-a-robot-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): photo of a captcha prompt",
+          "key": "are you a robot|southwark playhouse|"
+        },
+        "description": "are-you-a-robot-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "audience-plant-2027-off-broadway-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/audience-plant-2027-off-broadway-2027/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "audience-plant-2027-off-broadway-2027: headshot of an actor, not show art; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "audience-plant-2027-off-broadway-2027",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): headshot of an actor, not show art",
+          "key": "audience plant 2027|park avenue armory|"
+        },
+        "description": "audience-plant-2027-off-broadway-2027: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "babylon-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/babylon-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/babylon-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "babylon-off-west-end-2026: poster for East End Babylon, a different work; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "babylon-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): poster for East End Babylon, a different work",
+          "key": "babylon|kiln theatre|"
+        },
+        "description": "babylon-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "babymother-3-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/babymother-3-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/babymother-3-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "babymother-3-off-west-end-2026: poster for the Babymother film screening; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "babymother-3-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): poster for the Babymother film screening",
+          "key": "babymother 3|kiln theatre|"
+        },
+        "description": "babymother-3-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brink-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/brink-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/brink-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "brink-off-west-end-2026: street photo comparison, not show art; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brink-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): street photo comparison, not show art",
+          "key": "brink|almeida theatre|"
+        },
+        "description": "brink-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bury-the-hatchet-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bury-the-hatchet-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/bury-the-hatchet-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "bury-the-hatchet-off-west-end-2026: photo of a different venue's signage; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bury-the-hatchet-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): photo of a different venue's signage",
+          "key": "bury the hatchet|southwark playhouse|"
+        },
+        "description": "bury-the-hatchet-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "constanze-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/constanze-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/constanze-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "constanze-off-west-end-2026: Frinton Summer Theatre promo photo, a different company; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "constanze-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): Frinton Summer Theatre promo photo, a different company",
+          "key": "constanze|orange tree theatre|"
+        },
+        "description": "constanze-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dickens-christmas-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dickens-christmas-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "dickens-christmas-off-west-end-2026: restaurant photo; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dickens-christmas-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): restaurant photo",
+          "key": "dickens' christmas|park theatre|"
+        },
+        "description": "dickens-christmas-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "foal-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/foal-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/foal-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "foal-off-west-end-2026: stock photo of horses; null so the placeholder shows (BRO-6329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "foal-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-26",
+          "reason": "the art found was another work (BRO-6329): stock photo of horses",
+          "key": "foal|finborough theatre|"
+        },
+        "description": "foal-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach wrong art (BRO-6329)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T22:45:17.086Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-hard-days-night-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for a-hard-days-night-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-hunger-artist-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for a-hunger-artist-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for are-you-a-robot-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for are-you-a-robot-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for audience-plant-2027-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for audience-plant-2027-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for babylon-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for babylon-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for babymother-3-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for babymother-3-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for brink-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for brink-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for bury-the-hatchet-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for bury-the-hatchet-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for constanze-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for constanze-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dickens-christmas-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for dickens-christmas-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for foal-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for foal-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

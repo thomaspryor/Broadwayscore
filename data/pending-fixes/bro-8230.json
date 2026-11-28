@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-8230",
+  "planId": "19b7be75-aafe-49cf-998a-c6dacea1ec76",
+  "status": "applied",
+  "createdAt": "2026-11-24T18:35:02.912Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Marie & Rosetta (Rose Kingston 2025) images from the ETT production page, BRO-8230",
+    "steps": [
+      "marie-and-rosetta-west-end-2025: key art from the production's own page (ETT production page, Rose Theatre Kingston 2-24 May 2025 listed; production gallery photo (Marc Brenner credit on gallery).), BRO-7265"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "marie-and-rosetta-west-end-2025",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/marie-and-rosetta-west-end-2025/poster.webp",
+          "thumbnail": "/images/shows/marie-and-rosetta-west-end-2025/thumbnail.webp",
+          "hero": "/images/shows/marie-and-rosetta-west-end-2025/hero.webp"
+        },
+        "description": "marie-and-rosetta-west-end-2025: key art from the production's own page (ETT production page, Rose Theatre Kingston 2-24 May 2025 listed; production gallery photo (Marc Brenner credit on gallery).), BRO-7265"
+      }
+    ]
+  },
+  "executedAt": "2026-11-24T20:34:45.656Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for marie-and-rosetta-west-end-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

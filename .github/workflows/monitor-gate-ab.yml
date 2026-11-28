@@ -1,0 +1,129 @@
+name: Weekly A/B Monitors
+
+# Weekly guardrail monitor for the email-gate funnel (card #240).
+#
+# Filename + concurrency group keep the historical `monitor-gate-ab` name
+# deliberately (Actions history continuity + check-cron-health.yml keys on
+# the filename). The mobile-gate-timing monitor that originally gave this
+# workflow its name was retired 2026-07-24: that PostHog flag was NEVER
+# created (2026-07-21 audit; scripts/lib/flag-registry.js marks it
+# exists:false), so its weekly step reported "0 impressions" forever. The
+# gate-cold-start A/B (card #247) that later occupied "Step 2" here concluded
+# 2026-09-15 (roll the 2-page minimum out to 100% of traffic, permanently —
+# see docs/experiments/gate-cold-start.md "Conclusion") and its monitor step
+# was removed the same way. The ticket-single-button A/B (card #392, "Step 2"
+# after that) concluded 2026-09-16 (owner kept the single-button design on
+# UX grounds after data found no measurable difference — see
+# docs/experiments/ticket-single-button.md "Conclusion") and its monitor step
+# was removed the same way, along with scripts/monitor-ticket-ab.js and
+# scripts/lib/ticket-ab-monitor-rules.js.
+#
+# Step 2 (BRO-6271): related-shows-position A/B result monitor
+# (scripts/monitor-related-shows-ab.js). Alerts on degenerate data and nudges once
+# when the pre-registered n per arm is reached; advisory, never judges a winner.
+#
+# Step 1 (overall funnel): tracks modal-only impressions/dismissal/captures
+# (trigger != '' — excludes inline header/footer email_captured events) and
+# alerts (actionable-only) if absolute captures/week collapses below ~1,
+# regardless of conversion rate. Full context:
+# ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md
+#
+# Weekly summaries are log-only (no Discord). No step judges a primary metric
+# or touches gate/flag config — those stay owner decisions.
+
+on:
+  schedule:
+    - cron: '0 13 * * 1'  # Mondays 13:00 UTC (9 AM ET)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Compute decisions but send nothing / save nothing'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: monitor-gate-ab
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Run overall email-gate funnel monitor (card #240)
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-6372: sign-in joins are confirmed against Formspree auth-auto submissions
+          FORMSPREE_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_SUBSCRIBER_API_KEY }}
+          FORMSPREE_TOKEN: ${{ secrets.FORMSPREE_TOKEN }}
+          FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
+        run: node scripts/monitor-email-gate-funnel.js ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      - name: Run related-shows-position A/B result monitor (BRO-6271)
+        id: related_ab
+        if: ${{ !cancelled() }}
+        # Advisory first (CLAUDE.md section 19): a data or analyzer failure must
+        # not block the funnel monitor's state commit below. It only alerts
+        # (data problem, one-time ready-to-judge nudge); it never calls a winner
+        # or touches flag config.
+        # lint-allow-swallow: advisory weekly monitor; a crash is surfaced by the 'Notify on related-shows monitor failure' step below and the next weekly run recomputes cumulatively
+        continue-on-error: true
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/monitor-related-shows-ab.js ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      - name: Commit monitor state
+        # always() so a failure in ANY monitor step still commits whatever
+        # state the OTHER steps already earned this run (e.g. an alerted-at
+        # stamp) — without it, a later-step failure would skip this entirely
+        # and an earlier step's already-sent alert would resend next week.
+        if: ${{ always() && !inputs.dry_run }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Per-file guard: `git add existing missing` exits 128 and stages
+          # NEITHER file (verified) — under this step's default `bash -e`,
+          # that would crash the whole step and lose the OTHER monitors'
+          # earned state too. Matters on a monitor's first-ever run, before
+          # its state file exists in the repo tree.
+          for f in data/audit/email-gate-funnel-monitor-state.json data/audit/related-shows-ab-monitor-state.json; do
+            [ -f "$f" ] && git add "$f"
+          done
+          if git diff --cached --quiet; then
+            echo "No state change to commit"
+            exit 0
+          fi
+          git commit -m "data: A/B monitor state [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on related-shows monitor failure
+        # continue-on-error hides this step's crash from failure() below, and a
+        # missing key or PostHog outage throws before any alert is sent.
+        if: ${{ !cancelled() && steps.related_ab.outcome == 'failure' }}
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Related-shows A/B monitor crashed'
+          severity: 'warning'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly A/B Monitors Failed'
+          severity: 'warning'

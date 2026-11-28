@@ -1,0 +1,72 @@
+name: WE Dateless TR Resolve
+
+# BRO-5850: look up the closed West End rows that still have no openingDate on
+# Theatre Record and save each matched production header (press night, run
+# dates) to data/audit/we-dateless-tr-lookups.json. plan-we-dateless-openings.js
+# turns that file into a pending-fix plan. TR needs the subscriber login, which
+# only Actions holds (run-script.yml carries no outlet logins). Manual dispatch
+# only; writes only a public data/audit file, never review text.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: we-dateless-tr-resolve
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      # ref: main, as in we-historical-tr-resolve.yml: the push goes to main.
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Install PDF tools
+        run: sudo apt-get install -y poppler-utils
+
+      - name: Resolve dateless rows on Theatre Record
+        env:
+          TR_EMAIL: ${{ secrets.TR_EMAIL }}
+          TR_PASSWORD: ${{ secrets.TR_PASSWORD }}
+        run: node scripts/resolve-we-unlisted-tr.js --dateless
+
+      - name: Commit lookup file
+        if: always()
+        run: |
+          if [ -f data/audit/we-dateless-tr-lookups.json ]; then git add data/audit/we-dateless-tr-lookups.json; fi
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "audit: WE dateless TR lookups (BRO-5850) [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'WE Dateless TR Resolve Failed'
+          severity: 'warning'

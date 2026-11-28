@@ -1,0 +1,292 @@
+{
+  "issueNumber": "bro-8271-e",
+  "planId": "993bc00f-fcb9-4dc8-b02b-5fd88cd09eef",
+  "status": "applied",
+  "createdAt": "2026-11-24T23:47:38.506Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Fix TodayTix API-default runtimes (BRO-8271): correct 51 to the TodayTix page, clear 36 unconfirmable defaults, set Slanted Floors to 1h 25m (part 5 of 5)",
+    "steps": [
+      "shows.json: rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026.runtime cleared: TodayTix API default \"\" with no page value to confirm it",
+      "shows.json: joris-lacoste-nexus-de-ladoration-off-broadway-2026.runtime cleared: TodayTix API default \"\" with no page value to confirm it",
+      "shows.json: manual-cinema-the-4th-witch-off-broadway-2026.runtime cleared: TodayTix API default \"\" with no page value to confirm it",
+      "shows.json: minor-theater-pity-whore-off-broadway-2027.runtime cleared: TodayTix API default \"\" with no page value to confirm it",
+      "shows.json: anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027.runtime cleared: TodayTix API default \"\" with no page value to confirm it",
+      "shows.json: cullberg-faye-driscoll-flesh-chariot-chariot-of-flesh-off-broadway-2027.runtime cleared: TodayTix API default \"\" with no page value to confirm it",
+      "shows.json: the-gorgeous-nothings-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 15min (including intermission)\" with no page value to confirm it",
+      "shows.json: the-unsinkable-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 15min (including intermission)\" with no page value to confirm it",
+      "shows.json: slanted-floors-off-broadway-2026.runtime (owner report 2026-11-24: 85 min; was TodayTix default 3hr 15min)",
+      "shows.json: you-got-older-off-broadway-2026.runtime cleared: TodayTix API default \"1hr 20min\" with no page value to confirm it",
+      "shows.json: the-humans-west-end-2027.runtime cleared: TodayTix API default \"2hrs and 20mins (inc. interval)\" with no page value to confirm it",
+      "shows.json: allegra-west-end-2026.runtime cleared: TodayTix API default \"2hrs 30mins (inc. interval)\" with no page value to confirm it",
+      "shows.json: gentlemen-prefer-blondes-west-end-2027.runtime cleared: TodayTix API default \"2hrs (inc. interval)\" with no page value to confirm it",
+      "shows.json: henry-v-west-end-2027.runtime cleared: TodayTix API default \"2hrs 30mins (including interval)\" with no page value to confirm it",
+      "shows.json: lost-in-del-valle-off-broadway-2026.runtime cleared: TodayTix API default \"1hr 10min\" with no page value to confirm it",
+      "shows.json: the-hunger-games-on-stage-off-west-end-2025.runtime cleared: TodayTix API default \"2hrs 30mins (inc. interval)\" with no page value to confirm it",
+      "shows.json: jesus-christ-superstar-west-end-2026.runtime cleared: TodayTix API default \"2hrs (inc. interval)\" with no page value to confirm it",
+      "shows.json: arcadia-west-end-2026.runtime cleared: TodayTix API default \"2hrs 30mins (including interval)\" with no page value to confirm it"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": null,
+        "description": "shows.json: rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026.runtime cleared: TodayTix API default \"\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "joris-lacoste-nexus-de-ladoration-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": null,
+        "description": "shows.json: joris-lacoste-nexus-de-ladoration-off-broadway-2026.runtime cleared: TodayTix API default \"\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "manual-cinema-the-4th-witch-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": null,
+        "description": "shows.json: manual-cinema-the-4th-witch-off-broadway-2026.runtime cleared: TodayTix API default \"\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "minor-theater-pity-whore-off-broadway-2027",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": null,
+        "description": "shows.json: minor-theater-pity-whore-off-broadway-2027.runtime cleared: TodayTix API default \"\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": null,
+        "description": "shows.json: anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027.runtime cleared: TodayTix API default \"\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cullberg-faye-driscoll-flesh-chariot-chariot-of-flesh-off-broadway-2027",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": null,
+        "description": "shows.json: cullberg-faye-driscoll-flesh-chariot-chariot-of-flesh-off-broadway-2027.runtime cleared: TodayTix API default \"\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gorgeous-nothings-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 15m",
+        "newValue": null,
+        "description": "shows.json: the-gorgeous-nothings-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 15min (including intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-unsinkable-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 15m",
+        "newValue": null,
+        "description": "shows.json: the-unsinkable-off-broadway-2026.runtime cleared: TodayTix API default \"2hr 15min (including intermission)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "slanted-floors-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 15m",
+        "newValue": "1h 25m",
+        "description": "shows.json: slanted-floors-off-broadway-2026.runtime (owner report 2026-11-24: 85 min; was TodayTix default 3hr 15min)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "you-got-older-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 20m",
+        "newValue": null,
+        "description": "shows.json: you-got-older-off-broadway-2026.runtime cleared: TodayTix API default \"1hr 20min\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-humans-west-end-2027",
+        "field": "runtime",
+        "oldValue": "2h 20m",
+        "newValue": null,
+        "description": "shows.json: the-humans-west-end-2027.runtime cleared: TodayTix API default \"2hrs and 20mins (inc. interval)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "allegra-west-end-2026",
+        "field": "runtime",
+        "oldValue": "2h 30m",
+        "newValue": null,
+        "description": "shows.json: allegra-west-end-2026.runtime cleared: TodayTix API default \"2hrs 30mins (inc. interval)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gentlemen-prefer-blondes-west-end-2027",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: gentlemen-prefer-blondes-west-end-2027.runtime cleared: TodayTix API default \"2hrs (inc. interval)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "henry-v-west-end-2027",
+        "field": "runtime",
+        "oldValue": "2h 30m",
+        "newValue": null,
+        "description": "shows.json: henry-v-west-end-2027.runtime cleared: TodayTix API default \"2hrs 30mins (including interval)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lost-in-del-valle-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": null,
+        "description": "shows.json: lost-in-del-valle-off-broadway-2026.runtime cleared: TodayTix API default \"1hr 10min\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-hunger-games-on-stage-off-west-end-2025",
+        "field": "runtime",
+        "oldValue": "2h 30m",
+        "newValue": null,
+        "description": "shows.json: the-hunger-games-on-stage-off-west-end-2025.runtime cleared: TodayTix API default \"2hrs 30mins (inc. interval)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jesus-christ-superstar-west-end-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": null,
+        "description": "shows.json: jesus-christ-superstar-west-end-2026.runtime cleared: TodayTix API default \"2hrs (inc. interval)\" with no page value to confirm it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arcadia-west-end-2026",
+        "field": "runtime",
+        "oldValue": "2h 30m",
+        "newValue": null,
+        "description": "shows.json: arcadia-west-end-2026.runtime cleared: TodayTix API default \"2hrs 30mins (including interval)\" with no page value to confirm it"
+      }
+    ]
+  },
+  "executedAt": "2026-11-25T01:23:29.381Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for joris-lacoste-nexus-de-ladoration-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for manual-cinema-the-4th-witch-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for minor-theater-pity-whore-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for cullberg-faye-driscoll-flesh-chariot-chariot-of-flesh-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-gorgeous-nothings-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-unsinkable-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for slanted-floors-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for you-got-older-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-humans-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for allegra-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for gentlemen-prefer-blondes-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for henry-v-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for lost-in-del-valle-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-hunger-games-on-stage-off-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for jesus-christ-superstar-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for arcadia-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

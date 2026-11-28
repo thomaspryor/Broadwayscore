@@ -1,0 +1,159 @@
+{
+  "issueNumber": "bro-7683-d261117-r9",
+  "planId": "2d4ffd86-784e-4e0e-b618-b1b342f0a619",
+  "status": "applied",
+  "createdAt": "2026-11-17T21:33:29.663Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7683: 4 hub productions reviewed on BroadwayWorld",
+    "steps": [
+      "add the-winters-tale-mrs-regional-2026 (BroadwayWorld review 2026-11-15)",
+      "add come-from-away-noise-regional-2026 (BroadwayWorld review 2026-10-16)",
+      "add carmen-regional-2026 (BroadwayWorld review 2026-10-28)",
+      "add the-urmetazoan-regional-2026 (BroadwayWorld review 2026-10-07)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add the-winters-tale-mrs-regional-2026 (BroadwayWorld review 2026-11-15)",
+        "show": {
+          "id": "the-winters-tale-mrs-regional-2026",
+          "title": "The Winter's Tale",
+          "slug": "the-winters-tale-mrs-regional-2026",
+          "venue": "Mrs. Murphy and Sons Irish Bistro, Chicago, IL",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-15",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2026-11-29",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "chicago-il",
+          "discoveredAt": "2026-11-17",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/chicago/article/Review-THE-WINTERS-TALE-at-Modern-Archaic-Theatre-Company-20261115"
+          ],
+          "images": {
+            "poster": "/images/shows/the-winters-tale-mrs-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/the-winters-tale-mrs-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add come-from-away-noise-regional-2026 (BroadwayWorld review 2026-10-16)",
+        "show": {
+          "id": "come-from-away-noise-regional-2026",
+          "title": "Come From Away",
+          "slug": "come-from-away-noise-regional-2026",
+          "venue": "A Noise Within, Pasadena, CA",
+          "status": "closed",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-16",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2026-11-08",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "los-angeles-ca",
+          "discoveredAt": "2026-11-17",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/los-angeles/article/Review-COME-FROM-AWAY-at-A-Noise-Within-20261016"
+          ],
+          "images": {
+            "poster": "/images/shows/come-from-away-noise-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/come-from-away-noise-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add carmen-regional-2026 (BroadwayWorld review 2026-10-28)",
+        "show": {
+          "id": "carmen-regional-2026",
+          "title": "Carmen",
+          "slug": "carmen-regional-2026",
+          "venue": "LA Opera, Los Angeles, CA",
+          "status": "open",
+          "type": "opera",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-28",
+          "openingDateSource": "bww-first-review",
+          "discoverySource": "bww-local-reviews",
+          "localOnly": true,
+          "city": "los-angeles-ca",
+          "discoveredAt": "2026-11-17",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/los-angeles/article/Review-CARMEN-at-LA-Opera-20261028"
+          ],
+          "images": {
+            "poster": "/images/shows/carmen-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/carmen-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add the-urmetazoan-regional-2026 (BroadwayWorld review 2026-10-07)",
+        "show": {
+          "id": "the-urmetazoan-regional-2026",
+          "title": "The Urmetazoan",
+          "slug": "the-urmetazoan-regional-2026",
+          "venue": "St. Germain Stage, Pittsfield, MA",
+          "status": "closed",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-07",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2026-10-25",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "city": "pittsfield-ma",
+          "discoveredAt": "2026-11-17",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/boston/article/Review-THE-URMETAZOAN-at-Barrington-Stage-Company-20261007"
+          ],
+          "images": {
+            "poster": "/images/shows/the-urmetazoan-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/the-urmetazoan-regional-2026/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-17T21:39:40.645Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-winters-tale-mrs-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added come-from-away-noise-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added carmen-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-urmetazoan-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

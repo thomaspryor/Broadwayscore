@@ -1,0 +1,101 @@
+{
+  "issueNumber": "bro-4486-b",
+  "planId": "3d6944e7-292f-4d81-8dd8-10d45213fcc8",
+  "status": "applied",
+  "createdAt": "2026-10-01T21:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Two published reviews were anchored to a star count the LLM rating extractor misread. Each review text carries exactly one star run, the critic's verdict at the end: Care (FT, Tim Bano) ends '★★★☆☆' but originalScore is '4/5 stars' (llm-openai), shipped 73; What We Did Before Our Moth Days (Culture Sauce, Thom Geier) ends '★★☆☆☆' but originalScore is '3/5 stars' (llm-gemini), shipped 56. originalScore is not plan-editable, so cap each at its true star band ceiling (3 stars: 70, 2 stars: 50). Found by the BRO-4486 /what-else pass.",
+    "steps": [
+      "Care FT: humanReviewScore 70 with note",
+      "What We Did Before Our Moth Days Culture Sauce: humanReviewScore 50 with note"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "care-west-end-2026/financialtimes--tim-bano.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Review text ends with the critic's rating ★★★☆☆ (3/5); the stored 4/5 came from an LLM misread. Anchored 73 capped at the 3-star band ceiling 70 (BRO-4486).",
+        "description": "Record why the score is overridden"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "care-west-end-2026/financialtimes--tim-bano.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": false,
+        "description": "Make the override final"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "care-west-end-2026/financialtimes--tim-bano.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 70,
+        "description": "3-star review anchored to a misread 4-star band"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Review text ends with the critic's rating ★★☆☆☆ (2/5); the stored 3/5 came from an LLM misread. Anchored 56 capped at the 2-star band ceiling 50 (BRO-4486).",
+        "description": "Record why the score is overridden"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": false,
+        "description": "Make the override final"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 50,
+        "description": "2-star review anchored to a misread 3-star band"
+      }
+    ]
+  },
+  "executedAt": "2026-10-01T21:58:32.236Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "care-west-end-2026/financialtimes--tim-bano.json humanReviewNote: null -> \"Review text ends with the critic's rating ★★★☆☆ (3/5); the stored 4/5 came from an LLM misread. Anchored 73 capped at the 3-star band ceiling 70 (BRO-4486).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "care-west-end-2026/financialtimes--tim-bano.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "care-west-end-2026/financialtimes--tim-bano.json humanReviewScore: null -> 70"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json humanReviewNote: null -> \"Review text ends with the critic's rating ★★☆☆☆ (2/5); the stored 3/5 came from an LLM misread. Anchored 56 capped at the 2-star band ceiling 50 (BRO-4486).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json humanReviewScore: null -> 50"
+    }
+  ]
+}

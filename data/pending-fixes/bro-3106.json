@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-3106",
+  "planId": "c2e0a4d7-9bfa-472c-bc7c-4e0136ad0732",
+  "status": "applied",
+  "createdAt": "2026-10-13T10:32:54.809Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3106: mark both the-story-west-end-2026 Spectator /submit/ contact-page files as not-a-review (they are only excluded today by a mislabeled wrongProduction).",
+    "steps": [
+      "Set isNonReview=true with a manual reason on both files"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/the-spectator-uk--the-spectator.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Contact page, not a review: set the not-a-review verdict (now write-guard protected)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/the-spectator-uk--the-spectator.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): The Spectator /submit/ editorial contact page (staff email list), not a review of The Story (BRO-3106)",
+        "description": "Human reason; the manual prefix stops fresh-CV demotion (BRO-3415)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/the-spectator-uk--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Contact page, not a review: set the not-a-review verdict (now write-guard protected)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/the-spectator-uk--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): The Spectator /submit/ editorial contact page (staff email list), not a review of The Story (BRO-3106)",
+        "description": "Human reason; the manual prefix stops fresh-CV demotion (BRO-3415)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:27:27.511Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/the-spectator-uk--the-spectator.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/the-spectator-uk--the-spectator.json isNonReviewReason: null -> \"manual (not a review): The Spectator /submit/ editorial contact page (staff email list), not a review of The Story (BRO-3106)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/the-spectator-uk--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/the-spectator-uk--unknown.json isNonReviewReason: null -> \"manual (not a review): The Spectator /submit/ editorial contact page (staff email list), not a review of The Story (BRO-3106)\""
+    }
+  ]
+}

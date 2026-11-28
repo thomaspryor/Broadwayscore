@@ -1,0 +1,245 @@
+{
+  "issueNumber": "bro-4849-f2",
+  "planId": "c7c4b651-96db-4821-8a9a-362864f4d9e9",
+  "status": "applied",
+  "createdAt": "2026-10-12T10:30:20.336Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4849 class F (2 of 2): band clamps, four stored ratings corrected or cleared after checking the outlet page (new review-field-edit originalScore support), and one regional-tour review excluded.",
+    "steps": [
+      "Clamp 3 reviews into their band, mark one double-counted review as a duplicate",
+      "Correct 3 stored ratings, clear 1",
+      "Exclude a UK tour review filed under the West End production"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "kimberly-akimbo-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 70,
+        "description": "Set the score from the critic's own rating: three stars confirmed on the page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kimberly-akimbo-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): three stars confirmed on the page. Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-comes-j-edgar-off-west-end-2026/a-youngish-perspective--mark-lloyd.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 70,
+        "description": "Set the score from the critic's own rating: 3 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-comes-j-edgar-off-west-end-2026/a-youngish-perspective--mark-lloyd.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): 3 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 71,
+        "description": "Set the score from the critic's own rating: outlet structured rating 3 of 4 confirmed on the page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): outlet structured rating 3 of 4 confirmed on the page. Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "iceboy-regional-2026/chicago-sun-times--steven-oxman.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "chicago-sun-times--mike-davis-wbez.json",
+        "description": "Count the review once: same Sun-Times article and text as chicago-sun-times--mike-davis-wbez.json (the write guard stamps the url-collision reason)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-west-end-2026/shinylife--unknown.json",
+        "field": "originalScore",
+        "oldValue": "5/5",
+        "newValue": "4/5",
+        "description": "Correct the stored rating: the outlet page shows 4.0 out of 5, not 5/5"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sinatra-the-musical-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": "3/5 stars",
+        "description": "Correct the stored rating: the outlet page gives three out of five, not five"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": "2/5 stars",
+        "description": "Correct the stored rating: the outlet page gives two out of five, not five"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 50,
+        "description": "Set the score from the critic's own rating: two out of five confirmed on the page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): two out of five confirmed on the page. Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/i-paper--unknown.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": null,
+        "description": "Correct the stored rating: no rating appears on the outlet page and the stored 5/5 contradicts the text; cleared"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/i-paper--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 66,
+        "description": "Set the score from the critic's own rating: keep the pre-anchor ensemble score: the 92 rescore was anchored on the wrong 5/5, and the text reads mixed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/i-paper--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): keep the pre-anchor ensemble score: the 92 rescore was anchored on the wrong 5/5, and the text reads mixed. Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-the-musical-west-end-2021/thereviewshub--richard-maguire.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4849: the article reviews the UK touring production at the Sunderland Empire, not the West End run",
+        "description": "Why: a regional tour review filed under the West End production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-the-musical-west-end-2021/thereviewshub--richard-maguire.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Exclude: UK tour review, not this production"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T13:14:59.556Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-off-west-end-2026/the-spy-in-the-stalls--unknown.json humanReviewScore: null -> 70"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-off-west-end-2026/the-spy-in-the-stalls--unknown.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): three stars confirmed on the page. Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-comes-j-edgar-off-west-end-2026/a-youngish-perspective--mark-lloyd.json humanReviewScore: null -> 70"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-comes-j-edgar-off-west-end-2026/a-youngish-perspective--mark-lloyd.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): 3 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json humanReviewScore: null -> 71"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "iceboy-regional-2026/chicago-sun-times--mike-davis-wbez.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): outlet structured rating 3 of 4 confirmed on the page. Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "iceboy-regional-2026/chicago-sun-times--steven-oxman.json duplicateOf: null -> \"chicago-sun-times--mike-davis-wbez.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beetlejuice-west-end-2026/shinylife--unknown.json originalScore: \"5/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sinatra-the-musical-west-end-2026/daily-mail--patrick-marmion.json originalScore: \"5/5 stars\" -> \"3/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "electra-persona-west-end-2026/daily-mail--patrick-marmion.json originalScore: \"5/5 stars\" -> \"2/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "electra-persona-west-end-2026/daily-mail--patrick-marmion.json humanReviewScore: null -> 50"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "electra-persona-west-end-2026/daily-mail--patrick-marmion.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): two out of five confirmed on the page. Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/i-paper--unknown.json originalScore: \"5/5 stars\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/i-paper--unknown.json humanReviewScore: null -> 66"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/i-paper--unknown.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): keep the pre-anchor ensemble score: the 92 rescore was anchored on the wrong 5/5, and the text reads mixed. Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "moulin-rouge-the-musical-west-end-2021/thereviewshub--richard-maguire.json wrongProductionReason: null -> \"BRO-4849: the article reviews the UK touring production at the Sunderland Empire, not the West End run\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "moulin-rouge-the-musical-west-end-2021/thereviewshub--richard-maguire.json wrongProduction: null -> true"
+    }
+  ]
+}

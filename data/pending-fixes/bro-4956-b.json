@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-4956-b",
+  "planId": "9c62f9fb-6097-434f-92f2-c489dcf69f0b",
+  "status": "applied",
+  "createdAt": "2026-10-10T03:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4956 follow-up 1 of 2. The first plan wrote London Box Office's 2026 Blood of my Blood review clean, but the push restore and the newer-scoring carry copied the retired 2025 Juniper Blood file's wrongProduction flag, score and verdicts onto it (same file name; both fixed in review-write-guard.js and scoring-recency.js with this plan). Move the contaminated file to the graveyard so the committed copy is gone; bro-4956-c then re-ingests the review clean. Also name the critic on The Stage's An Oak Tree review, whose ingest filled the 4/5 rating but stopped on the Unknown byline.",
+    "steps": [
+      "Move the contaminated London Box Office Blood of my Blood file to the graveyard",
+      "The Stage, An Oak Tree: set the byline to Dave Fargnoli"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "blood-of-my-blood-west-end-2026/london-box-office--stuart-king.json",
+        "destPath": "_superseded-misattributed/blood-of-my-blood-west-end-2026--london-box-office--stuart-king--contaminated-2026-10-10.json",
+        "description": "Carries the retired Juniper Blood file's flag, llmScore 76 and verdicts; bro-4956-c re-ingests the real review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/thestage--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Dave Fargnoli",
+        "description": "Byline on The Stage page and in the Best of Theatre round-up"
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T03:44:15.040Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved blood-of-my-blood-west-end-2026/london-box-office--stuart-king.json → _superseded-misattributed/blood-of-my-blood-west-end-2026--london-box-office--stuart-king--contaminated-2026-10-10.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/thestage--unknown.json criticName: \"Unknown\" -> \"Dave Fargnoli\""
+    }
+  ]
+}

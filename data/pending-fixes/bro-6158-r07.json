@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-6158-r07",
+  "planId": "9b2a2af5-b891-4f1d-abbe-387e54710ea5",
+  "status": "applied",
+  "createdAt": "2026-10-24T21:57:05.547Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Did Not Recoup shows get our estimate, Flop or Fizzle (owner 2026-10-24)",
+    "steps": [
+      "commercial.json: blackbird-2016.designation",
+      "commercial.json: blackbird-2016.designationBasis",
+      "commercial.json: disaster-2016.designation",
+      "commercial.json: disaster-2016.designationBasis",
+      "commercial.json: eclipsed-2016.designation",
+      "commercial.json: eclipsed-2016.designationBasis",
+      "commercial.json: hughie-2016.designation",
+      "commercial.json: hughie-2016.designationBasis",
+      "commercial.json: fiddler-on-the-roof-2015.designation",
+      "commercial.json: fiddler-on-the-roof-2015.designationBasis",
+      "commercial.json: the-color-purple-2015.designation",
+      "commercial.json: the-color-purple-2015.designationBasis",
+      "commercial.json: misery-2015.designation",
+      "commercial.json: misery-2015.designationBasis",
+      "commercial.json: a-view-from-the-bridge-2015.designation",
+      "commercial.json: a-view-from-the-bridge-2015.designationBasis",
+      "commercial.json: on-your-feet-2015.designation",
+      "commercial.json: on-your-feet-2015.designationBasis",
+      "commercial.json: king-charles-iii-2015.designation",
+      "commercial.json: king-charles-iii-2015.designationBasis",
+      "commercial.json: sylvia-2015.designation",
+      "commercial.json: sylvia-2015.designationBasis",
+      "commercial.json: dames-at-sea-2015.designation",
+      "commercial.json: dames-at-sea-2015.designationBasis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "blackbird-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: blackbird-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "blackbird-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: blackbird-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "disaster-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: disaster-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "disaster-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: disaster-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "eclipsed-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: eclipsed-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "eclipsed-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: eclipsed-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hughie-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: hughie-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hughie-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: hughie-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fiddler-on-the-roof-2015",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: fiddler-on-the-roof-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fiddler-on-the-roof-2015",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: fiddler-on-the-roof-2015.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-color-purple-2015",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Fizzle",
+        "description": "commercial.json: the-color-purple-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-color-purple-2015",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-color-purple-2015.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "misery-2015",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Fizzle",
+        "description": "commercial.json: misery-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "misery-2015",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: misery-2015.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-view-from-the-bridge-2015",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: a-view-from-the-bridge-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-view-from-the-bridge-2015",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: a-view-from-the-bridge-2015.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-your-feet-2015",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: on-your-feet-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "on-your-feet-2015",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: on-your-feet-2015.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-charles-iii-2015",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: king-charles-iii-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-charles-iii-2015",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: king-charles-iii-2015.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sylvia-2015",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: sylvia-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sylvia-2015",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: sylvia-2015.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dames-at-sea-2015",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: dames-at-sea-2015.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dames-at-sea-2015",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: dames-at-sea-2015.designationBasis"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T23:28:14.115Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for blackbird-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for blackbird-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for disaster-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for disaster-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for eclipsed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for eclipsed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for hughie-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for hughie-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for fiddler-on-the-roof-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for fiddler-on-the-roof-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-color-purple-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-color-purple-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for misery-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for misery-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-view-from-the-bridge-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for a-view-from-the-bridge-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for on-your-feet-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for on-your-feet-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for king-charles-iii-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for king-charles-iii-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for sylvia-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for sylvia-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for dames-at-sea-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for dames-at-sea-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

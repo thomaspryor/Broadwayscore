@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5420-h",
+  "planId": "495e77c7-f748-415c-a63a-baa4cd973aad",
+  "status": "applied",
+  "createdAt": "2026-10-16T05:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (h): flag the Broadway copy of the Mail on Sunday Great Gatsby review (London Coliseum 2025), the one live row plan g1's move could not take because the London show already has it.",
+    "steps": [
+      "flag"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-great-gatsby-2024/mail-on-sunday--mark-cook.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: Mail on Sunday 2025-04-27 review (Theatre Record 2025/4) of the London Coliseum production; the London show the-great-gatsby-west-end-2025 already holds its own copy, so this Broadway copy is flagged rather than moved.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-gatsby-2024/mail-on-sunday--mark-cook.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on the Broadway Great Gatsby; move refused because the destination exists."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T06:13:55.672Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-gatsby-2024/mail-on-sunday--mark-cook.json wrongProductionReason: null -> \"BRO-5420: Mail on Sunday 2025-04-27 review (Theatre Record 2025/4) of the London Coliseum production; the London show the-great-gatsby-west-end-2025 already holds its own copy, so this Broadway copy is flagged rather than moved.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-gatsby-2024/mail-on-sunday--mark-cook.json wrongProduction: null -> true"
+    }
+  ]
+}

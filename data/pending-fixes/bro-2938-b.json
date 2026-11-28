@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-2938-b",
+  "planId": "672230ca-4aef-45a7-bc25-509772f1ede9",
+  "status": "applied",
+  "createdAt": "2026-10-26T18:17:45.008Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2938: rename 27 review-text files whose filename carries a URL where the critic slug belongs to outlet--stored-critic-slug (content unchanged; collisions and Unknown bylines handled separately) (part 2 of 2)",
+    "steps": [
+      "review-file-op",
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-outsiders-2024/latimes--httpswwwlatimescompeoplecharles-mcnulty.json",
+        "destPath": "the-outsiders-2024/latimes--charles-mcnulty.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tristan-und-isolde-off-broadway-2026/broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json",
+        "destPath": "tristan-und-isolde-off-broadway-2026/broadwayworld--richard-sasanow.json"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T18:30:24.759Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-outsiders-2024/latimes--httpswwwlatimescompeoplecharles-mcnulty.json → the-outsiders-2024/latimes--charles-mcnulty.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tristan-und-isolde-off-broadway-2026/broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json → tristan-und-isolde-off-broadway-2026/broadwayworld--richard-sasanow.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

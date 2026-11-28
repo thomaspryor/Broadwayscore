@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-7594-b",
+  "planId": "7eec73c9-8e97-4426-88f3-56e5b9c56c4b",
+  "status": "applied",
+  "createdAt": "2026-11-16T14:02:10.622Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear or correct 78 runtimes copied from TodayTix filler runningTime values (4hrs inc two intervals, 1hr 35mins inc. interval, 1hr 35min no intermission); values from each show's TodayTix page, cleared where the page has none (part 2 of 5)",
+    "steps": [
+      "shows.json: between-the-river-and-the-sea-west-end-2026.runtime",
+      "shows.json: between-the-river-and-the-sea-west-end-2026.intermissions",
+      "shows.json: man-and-boy-west-end-2026.runtime",
+      "shows.json: man-and-boy-west-end-2026.intermissions",
+      "shows.json: copenhagen-off-west-end-2026.runtime",
+      "shows.json: copenhagen-off-west-end-2026.intermissions",
+      "shows.json: im-every-woman-the-chaka-khan-musical-off-west-end-2026.runtime",
+      "shows.json: im-every-woman-the-chaka-khan-musical-off-west-end-2026.intermissions",
+      "shows.json: summerfolk-west-end-2026.runtime",
+      "shows.json: summerfolk-west-end-2026.intermissions",
+      "shows.json: midnight-a-new-original-musical-by-todrick-hall-off-west-end-2026.runtime",
+      "shows.json: midnight-a-new-original-musical-by-todrick-hall-off-west-end-2026.intermissions",
+      "shows.json: a-mirrored-monet-off-west-end-2026.runtime",
+      "shows.json: a-mirrored-monet-off-west-end-2026.intermissions",
+      "shows.json: john-proctor-is-the-villain-west-end-2026.runtime",
+      "shows.json: john-proctor-is-the-villain-west-end-2026.intermissions",
+      "shows.json: krapps-last-tape-godots-todo-list-west-end-2026.runtime",
+      "shows.json: krapps-last-tape-godots-todo-list-west-end-2026.intermissions",
+      "shows.json: a-life-in-four-seasons-off-west-end-2026.runtime",
+      "shows.json: a-life-in-four-seasons-off-west-end-2026.intermissions",
+      "shows.json: broken-glass-off-west-end-2026.runtime",
+      "shows.json: broken-glass-off-west-end-2026.intermissions",
+      "shows.json: inter-alia-west-end-2026.runtime",
+      "shows.json: inter-alia-west-end-2026.intermissions"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "between-the-river-and-the-sea-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 5m",
+        "description": "shows.json: between-the-river-and-the-sea-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "between-the-river-and-the-sea-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: between-the-river-and-the-sea-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-and-boy-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 25m",
+        "description": "shows.json: man-and-boy-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-and-boy-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: man-and-boy-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "copenhagen-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 45m",
+        "description": "shows.json: copenhagen-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "copenhagen-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: copenhagen-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "im-every-woman-the-chaka-khan-musical-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 30m",
+        "description": "shows.json: im-every-woman-the-chaka-khan-musical-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "im-every-woman-the-chaka-khan-musical-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: im-every-woman-the-chaka-khan-musical-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "summerfolk-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "3h",
+        "description": "shows.json: summerfolk-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "summerfolk-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: summerfolk-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-a-new-original-musical-by-todrick-hall-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 35m",
+        "description": "shows.json: midnight-a-new-original-musical-by-todrick-hall-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-a-new-original-musical-by-todrick-hall-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: midnight-a-new-original-musical-by-todrick-hall-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-mirrored-monet-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 30m",
+        "description": "shows.json: a-mirrored-monet-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-mirrored-monet-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: a-mirrored-monet-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "john-proctor-is-the-villain-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 45m",
+        "description": "shows.json: john-proctor-is-the-villain-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "john-proctor-is-the-villain-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: john-proctor-is-the-villain-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 15m",
+        "description": "shows.json: krapps-last-tape-godots-todo-list-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: krapps-last-tape-godots-todo-list-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-life-in-four-seasons-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 50m",
+        "description": "shows.json: a-life-in-four-seasons-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-life-in-four-seasons-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: a-life-in-four-seasons-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "broken-glass-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h",
+        "description": "shows.json: broken-glass-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "broken-glass-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: broken-glass-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inter-alia-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 40m",
+        "description": "shows.json: inter-alia-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inter-alia-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: inter-alia-west-end-2026.intermissions"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T15:50:45.898Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for between-the-river-and-the-sea-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for between-the-river-and-the-sea-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for man-and-boy-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for man-and-boy-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for copenhagen-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for copenhagen-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for im-every-woman-the-chaka-khan-musical-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for im-every-woman-the-chaka-khan-musical-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for summerfolk-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for summerfolk-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for midnight-a-new-original-musical-by-todrick-hall-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for midnight-a-new-original-musical-by-todrick-hall-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for a-mirrored-monet-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for a-mirrored-monet-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for john-proctor-is-the-villain-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for john-proctor-is-the-villain-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for krapps-last-tape-godots-todo-list-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for krapps-last-tape-godots-todo-list-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for a-life-in-four-seasons-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for a-life-in-four-seasons-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for broken-glass-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for broken-glass-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for inter-alia-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for inter-alia-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-6741",
+  "planId": "c9257224-f097-4fed-a0a9-a25c7d8ed915",
+  "status": "partial",
+  "createdAt": "2026-10-31T22:44:46.363Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "UK regional: move reviews of 2 duplicate regional rows (High Life Dundee Rep, Studio3 Tron) onto the kept rows",
+    "steps": [
+      "Move The List review onto the kept High Life row (same Dundee Rep run, retitled Still Living It!)",
+      "Move The Stage review onto the kept High Life row",
+      "Move WhatsOnStage review onto the kept High Life row",
+      "Move The Stage review onto the kept Studio3 row (Tron, May 2025, one run)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-high-life-the-musical-dundee-rep-regional-2026/the-list--unknown.json",
+        "destPath": "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026/the-list--unknown.json",
+        "description": "Move The List review onto the kept High Life row (same Dundee Rep run, retitled Still Living It!)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-high-life-the-musical-dundee-rep-regional-2026/thestage--arusa-qureshi.json",
+        "destPath": "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026/thestage--arusa-qureshi.json",
+        "description": "Move The Stage review onto the kept High Life row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-high-life-the-musical-dundee-rep-regional-2026/whatsonstage--scott-purvis-armour.json",
+        "destPath": "the-high-life-the-musical-still-living-it-dundee-rep-regional-2026/whatsonstage--scott-purvis-armour.json",
+        "description": "Move WhatsOnStage review onto the kept High Life row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025/thestage--david-pollock.json",
+        "destPath": "studio3-tron-regional-2025/thestage--david-pollock.json",
+        "description": "Move The Stage review onto the kept Studio3 row (Tron, May 2025, one run)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T23:03:10.820Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-high-life-the-musical-dundee-rep-regional-2026/the-list--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-high-life-the-musical-dundee-rep-regional-2026/thestage--arusa-qureshi.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-high-life-the-musical-dundee-rep-regional-2026/whatsonstage--scott-purvis-armour.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025/thestage--david-pollock.json"
+    }
+  ],
+  "executedIn": "ci"
+}

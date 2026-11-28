@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5395-n",
+  "planId": "ab98283c-313b-4bf6-8962-ce6080e3bb2a",
+  "status": "applied",
+  "createdAt": "2026-10-15T23:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5395 (n): the Lou Reviews Just for One Day review moved by plan l kept the June ensemble rejection timestamp from when it sat under the wrong show; plan l cleared its wrongShow, rejectionReason and rejectedBy but not rejectedAt, which still excludes it.",
+    "steps": [
+      "clear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-06-29T09:05:10.093Z",
+        "newValue": null,
+        "description": "BRO-5395: clear the stale wrong-show rejection stamp; the review was misfiled under One Day and is this show's review (url names Just for One Day at the Shaftesbury, 2025-06-12)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T00:19:16.669Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json rejectedAt: \"2026-06-29T09:05:10.093Z\" -> null"
+    }
+  ]
+}

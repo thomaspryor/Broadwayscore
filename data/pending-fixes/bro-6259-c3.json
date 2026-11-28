@@ -1,0 +1,797 @@
+{
+  "issueNumber": "bro-6259-c3",
+  "planId": "d0727deb-d30a-46cf-a3d2-458734a44d14",
+  "status": "applied",
+  "createdAt": "2026-10-28T02:37:41.087Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6259 cohort 3: add 34 Off-Broadway shows that opened 2022-06 to 2023-05 (TheaterMania listings, Playbill-validated) (part 1 of 2)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "candida-off-broadway-2022",
+          "title": "Candida",
+          "slug": "candida-off-broadway-2022",
+          "venue": "Theatre Row Theatre",
+          "previewsStartDate": "2022-10-05",
+          "openingDate": "2022-10-25",
+          "closingDate": "2022-11-19",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/candida-off-broadway-theatre-row-theatre-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/candida_398137/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "everythings-fine-off-broadway-2022",
+          "title": "Everything's Fine",
+          "slug": "everythings-fine-off-broadway-2022",
+          "venue": "DR2 Theatre",
+          "previewsStartDate": "2022-09-28",
+          "openingDate": "2022-10-13",
+          "closingDate": "2022-11-01",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/everythings-fine-off-broadway-dr2-theatre-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/everythings-fine_397220/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "merrily-we-roll-along-off-broadway-2022",
+          "title": "Merrily We Roll Along",
+          "slug": "merrily-we-roll-along-off-broadway-2022",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": "2022-11-21",
+          "openingDate": "2022-12-12",
+          "closingDate": "2023-01-22",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/merrily-we-roll-along-off-broadway-new-york-theatre-workshop-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/merrily-we-roll-along_396448/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "david-blaine-presents-asi-winds-inner-circle-off-broadway-2022",
+          "title": "David Blaine Presents: Asi Wind's Inner Circle",
+          "slug": "david-blaine-presents-asi-winds-inner-circle-off-broadway-2022",
+          "venue": "The Judson Theatre",
+          "previewsStartDate": "2022-09-15",
+          "openingDate": "2022-09-15",
+          "closingDate": "2024-01-14",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/david-blaine-presents-asi-winds-inner-circle-off-broadway-the-gym-at-judson-2022",
+            "https://www.theatermania.com/shows/new-york-theater/david-blaine-presents-asi-winds-inner-circle_396419/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "remember-this-the-lesson-of-jan-karski-off-broadway-2022",
+          "title": "Remember This: The Lesson of Jan Karski",
+          "slug": "remember-this-the-lesson-of-jan-karski-off-broadway-2022",
+          "venue": "Theatre for a New Audience @ Polonsky Shakespeare Center",
+          "previewsStartDate": "2022-09-10",
+          "openingDate": "2022-09-10",
+          "closingDate": "2022-10-16",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/remember-this-the-lesson-of-jan-karski-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/remember-this-the-lesson-of-jan-karski_396278/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "chester-bailey-off-broadway-2022",
+          "title": "Chester Bailey",
+          "slug": "chester-bailey-off-broadway-2022",
+          "venue": "Irish Repertory Theatre",
+          "previewsStartDate": "2022-10-12",
+          "openingDate": "2022-10-19",
+          "closingDate": "2022-11-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/chester-bailey-off-broadway-irish-repertory-theatre-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/chester-bailey_396255/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hyprov-improv-under-hypnosis-off-broadway-2022",
+          "title": "Hyprov: Improv Under Hypnosis",
+          "slug": "hyprov-improv-under-hypnosis-off-broadway-2022",
+          "venue": "Daryl Roth Theatre",
+          "previewsStartDate": "2022-08-12",
+          "openingDate": "2022-08-22",
+          "closingDate": "2022-10-30",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/hyprov-off-broadway-daryl-roth-theatre-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/hyprov-improv-under-hypnosis_387564/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "circle-jerk-off-broadway-2022",
+          "title": "Circle Jerk",
+          "slug": "circle-jerk-off-broadway-2022",
+          "venue": "Connelly Theatre",
+          "previewsStartDate": "2022-06-08",
+          "openingDate": "2022-06-14",
+          "closingDate": "2022-06-25",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/circle-jerk-off-broadway-connelly-theatre-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/circle-jerk_386041/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "evanston-salt-costs-climbing-off-broadway-2022",
+          "title": "Evanston Salt Costs Climbing",
+          "slug": "evanston-salt-costs-climbing-off-broadway-2022",
+          "venue": "The Pershing Square Signature Theatre Center",
+          "previewsStartDate": "2022-10-25",
+          "openingDate": "2022-11-13",
+          "closingDate": "2022-12-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/evanston-salt-costs-climbing-off-broadway-the-pershing-square-signature-theatre-center-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/evanston-salt-costs-climbing_406429/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sandra-off-broadway-2022",
+          "title": "Sandra",
+          "slug": "sandra-off-broadway-2022",
+          "venue": "Vineyard Theatre",
+          "previewsStartDate": "2022-11-03",
+          "openingDate": "2022-11-20",
+          "closingDate": "2022-12-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/sandra-off-broadway-vineyard-theatre-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sandra_402312/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "jack-was-kind-off-broadway-2022",
+          "title": "Jack Was Kind",
+          "slug": "jack-was-kind-off-broadway-2022",
+          "venue": "Irish Repertory Theatre",
+          "previewsStartDate": "2022-11-09",
+          "openingDate": "2022-11-17",
+          "closingDate": "2022-12-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/jack-was-kind-off-broadway-irish-repertory-theatre-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/jack-was-kind_402085/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "your-own-personal-exegesis-off-broadway-2022",
+          "title": "Your Own Personal Exegesis",
+          "slug": "your-own-personal-exegesis-off-broadway-2022",
+          "venue": "Claire Tow Theater",
+          "previewsStartDate": "2022-11-19",
+          "openingDate": "2022-12-05",
+          "closingDate": "2022-12-31",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/your-own-personal-exegesis-off-broadway-claire-tow-theater-2022",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/your-own-personal-exegesis_400868/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "bernardas-daughters-off-broadway-2023",
+          "title": "Bernarda's Daughters",
+          "slug": "bernardas-daughters-off-broadway-2023",
+          "venue": "The Pershing Square Signature Center/Romulus Linney Courtyard Theatre",
+          "previewsStartDate": "2023-05-02",
+          "openingDate": "2023-05-23",
+          "closingDate": "2023-06-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/bernardas-daughters-off-broadway-the-chelsea-factory-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/bernardas-daughters_1702839/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-fears-off-broadway-2023",
+          "title": "The Fears",
+          "slug": "the-fears-off-broadway-2023",
+          "venue": "The Pershing Square Signature Center/Irene Diamond Stage",
+          "previewsStartDate": "2023-04-26",
+          "openingDate": "2023-05-18",
+          "closingDate": "2023-06-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-fears-off-broadway-the-pershing-square-signature-center-irene-diamond-stage-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-fears_1702791/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-simulacrum-off-broadway-2023",
+          "title": "A Simulacrum",
+          "slug": "a-simulacrum-off-broadway-2023",
+          "venue": "Atlantic Theater Company/Stage 2",
+          "previewsStartDate": "2023-05-25",
+          "openingDate": "2023-06-14",
+          "closingDate": "2023-07-09",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/a-simulacrum-off-broadway-atlantic-theater-company-stage-2-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/a-simulacrum_1702207/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "sorry-for-your-loss-off-broadway-2023",
+          "title": "Sorry for Your Loss",
+          "slug": "sorry-for-your-loss-off-broadway-2023",
+          "venue": "Minetta Lane Theatre",
+          "previewsStartDate": "2023-04-28",
+          "openingDate": "2023-05-08",
+          "closingDate": "2023-06-10",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/sorry-for-your-loss-off-broadway-minetta-lane-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/sorry-for-your-loss_1701483/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "millennials-are-killing-musicals-off-broadway-2023",
+          "title": "Millennials Are Killing Musicals",
+          "slug": "millennials-are-killing-musicals-off-broadway-2023",
+          "venue": "Theatre 71",
+          "previewsStartDate": "2023-05-07",
+          "openingDate": "2023-05-15",
+          "closingDate": "2023-05-28",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/millennials-are-killing-musicals-off-broadway-theatre-71-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/millennials-are-killing-musicals_1701059/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-goodbye-girl-off-broadway-2023",
+          "title": "The Goodbye Girl",
+          "slug": "the-goodbye-girl-off-broadway-2023",
+          "venue": "Theatre Row Theatre",
+          "previewsStartDate": "2023-05-07",
+          "openingDate": "2023-05-07",
+          "closingDate": "2023-05-21",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-goodbye-girl-off-broadway-theatre-row-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-theater/the-goodbye-girl_1698916/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "days-of-wine-and-roses-off-broadway-2023",
+          "title": "Days of Wine and Roses",
+          "slug": "days-of-wine-and-roses-off-broadway-2023",
+          "venue": "Atlantic Theater Company/Linda Gross Theater",
+          "previewsStartDate": "2023-05-05",
+          "openingDate": "2023-06-05",
+          "closingDate": "2023-07-16",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/days-of-wine-and-roses-off-broadway-atlantic-theater-company-linda-gross-theater-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/days-of-wine-and-roses_1697595/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "god-of-carnage-off-broadway-2023",
+          "title": "God of Carnage",
+          "slug": "god-of-carnage-off-broadway-2023",
+          "venue": "Theatre Five @ Theatre Row",
+          "previewsStartDate": "2023-04-18",
+          "openingDate": "2023-04-27",
+          "closingDate": "2023-05-20",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/god-of-carnage-off-broadway-theatre-five-theatre-row-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/god-of-carnage_1695146/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "elyria-off-broadway-2023",
+          "title": "ELYRIA",
+          "slug": "elyria-off-broadway-2023",
+          "venue": "Atlantic Theater Company/Linda Gross Theater",
+          "previewsStartDate": "2023-02-09",
+          "openingDate": "2023-02-27",
+          "closingDate": "2023-03-19",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/elyria-off-broadway-atlantic-theater-company-linda-gross-theater-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/elyria_407691/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-knight-of-the-burning-pestle-off-broadway-2023",
+          "title": "The Knight of the Burning Pestle",
+          "slug": "the-knight-of-the-burning-pestle-off-broadway-2023",
+          "venue": "Lucille Lortel Theatre",
+          "previewsStartDate": "2023-04-17",
+          "openingDate": "2023-04-17",
+          "closingDate": "2023-05-13",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-knight-of-the-burning-pestle-off-broadway-lucille-lortel-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-knight-of-the-burning-pestle_423318/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-bright-new-boise-off-broadway-2023",
+          "title": "A Bright New Boise",
+          "slug": "a-bright-new-boise-off-broadway-2023",
+          "venue": "The Pershing Square Signature Center/Irene Diamond Stage",
+          "previewsStartDate": "2023-01-31",
+          "openingDate": "2023-02-21",
+          "closingDate": "2023-03-12",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/a-bright-new-boise-off-broadway-the-pershing-square-signature-center-irene-diamond-stage-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/a-bright-new-boise_397717/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "love-off-broadway-2023",
+          "title": "Love",
+          "slug": "love-off-broadway-2023",
+          "venue": "Park Avenue Armory",
+          "previewsStartDate": "2023-02-25",
+          "openingDate": "2023-02-28",
+          "closingDate": "2023-03-25",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/love-off-broadway-park-avenue-armory-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/love_418611/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-good-john-proctor-off-broadway-2023",
+          "title": "The Good John Proctor",
+          "slug": "the-good-john-proctor-off-broadway-2023",
+          "venue": "Connelly Theatre",
+          "previewsStartDate": "2023-03-11",
+          "openingDate": "2023-03-19",
+          "closingDate": "2023-04-01",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-28T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-good-john-proctor-off-broadway-connelly-theatre-2023",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-good-john-proctor_418350/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T02:47:59.140Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added candida-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added everythings-fine-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added merrily-we-roll-along-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added david-blaine-presents-asi-winds-inner-circle-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added remember-this-the-lesson-of-jan-karski-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added chester-bailey-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hyprov-improv-under-hypnosis-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added circle-jerk-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added evanston-salt-costs-climbing-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sandra-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added jack-was-kind-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added your-own-personal-exegesis-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added bernardas-daughters-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-fears-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-simulacrum-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sorry-for-your-loss-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added millennials-are-killing-musicals-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-goodbye-girl-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added days-of-wine-and-roses-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added god-of-carnage-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added elyria-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-knight-of-the-burning-pestle-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-bright-new-boise-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added love-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-good-john-proctor-off-broadway-2023"
+    }
+  ],
+  "executedIn": "ci"
+}

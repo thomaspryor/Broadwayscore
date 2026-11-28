@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-7579-pp",
+  "planId": "96e4cf99-395e-4305-9a8b-fb7cd0f247c6",
+  "status": "partial",
+  "createdAt": "2026-11-16T01:40:01.730Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Flag a 2022 Vancouver (Arts Club) review shipped under the 2026 Boston Peter Pan Goes Wrong run as wrongProduction and record its printed dateline (BRO-5750 recheck)",
+    "steps": [
+      "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json: wrongProduction",
+      "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json: wrongProductionReason",
+      "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json: publishDate",
+      "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json: dateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Printed dateline Sep 17, 2022 and Arts Club Theatre Company (Vancouver) credit: a different production than the 2026 Lyric Stage Boston run",
+        "description": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2022-09-17",
+        "description": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json: publishDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "page-text",
+        "description": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json: dateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T02:46:50.566Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json wrongProductionReason: null -> \"Printed dateline Sep 17, 2022 and Arts Club Theatre Company (Vancouver) credit: a different production than the 2026 Lyric Stage Boston run\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json publishDate: null -> \"2022-09-17\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peter-pan-goes-wrong-regional-2026/colin-thomas--colin-thomas.json dateSource: null -> \"page-text\""
+    }
+  ],
+  "executedIn": "ci"
+}

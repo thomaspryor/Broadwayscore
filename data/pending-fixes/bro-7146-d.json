@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-7146-d",
+  "planId": "d4de6585-6351-4fda-8d6e-f86ef9583766",
+  "status": "applied",
+  "createdAt": "2026-11-08T21:12:26.919Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7146: Constanze is a play (Tim Coates, Orange Tree 2026/27 season), not special",
+    "steps": [
+      "shows.json: constanze-off-west-end-2026.type"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "constanze-off-west-end-2026",
+        "field": "type",
+        "oldValue": "special",
+        "newValue": "play",
+        "description": "shows.json: constanze-off-west-end-2026.type"
+      }
+    ]
+  },
+  "executedAt": "2026-11-08T21:30:06.794Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for constanze-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}
