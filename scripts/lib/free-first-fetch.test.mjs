@@ -249,3 +249,19 @@ test('Stage West: verifyFetchedUrl accepts the /2/post/ blog alias of the same s
     assert.equal(stageWestArticleHtml('<html>plain</html>'), '<html>plain</html>');
   });
 }
+
+// BRO-8455: a file holding the pre-fix archive sidebar must be recognised so ingest-urls replaces it
+// (the merge only fills blank fields, so the sidebar text otherwise blocks every re-ingest).
+{
+  const { isStageWestSidebarText } = _cr(import.meta.url)('./free-first-fetch.js');
+  test('Stage West: sidebar text is detected, a real review is not', () => {
+    const sidebar = 'David L. Coddon is a Southern California theater critic.\n\nAugust 2026 July 2026 June 2026 May 2026 April 2026';
+    assert.equal(isStageWestSidebarText(sidebar), true);
+    assert.equal(isStageWestSidebarText('The production opens with a confident, funny first act. '.repeat(40)), false);
+    assert.equal(isStageWestSidebarText(''), false);
+    assert.equal(isStageWestSidebarText(null), false);
+  });
+  test('class guard: ingest-urls clears sidebar text before the merge', () => {
+    assert.match(_rf(new URL('../ingest-urls.js', import.meta.url), 'utf8'), /isStageWestSidebarText\(preExisting\.data\.fullText\)/);
+  });
+}

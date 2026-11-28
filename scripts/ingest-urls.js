@@ -398,6 +398,15 @@ async function main() {
     let preExisting = null;
     if (!dryRun) {
       try { preExisting = findExistingReviewFile(path.join(reviewTextsDir, showId), outletId, byline.criticName, originalUrl || url); } catch { preExisting = null; }
+      // A pre-fix Stage West ingest stored the archive sidebar as the review text. The merge only
+      // fills blank fields, so blank that text first and the re-fetch replaces it (BRO-8455).
+      try {
+        if (preExisting && preExisting.data && require('./lib/free-first-fetch').isStageWestSidebarText(preExisting.data.fullText)) {
+          for (const k of ['fullText', 'wordCount', 'contentTier', 'contentTierReason', 'textFetchedAt', 'fetchMethod']) delete preExisting.data[k];
+          fs.writeFileSync(preExisting.path, JSON.stringify(preExisting.data, null, 2) + '\n');
+          console.log('    ↻ Cleared Stage West sidebar text; re-fetching the review body');
+        }
+      } catch { /* leave the file as is */ }
     }
     const writeResult = createOrMergeReviewFile(showId, input, {
       dryRun, reviewTextsDir, knownShowIds: showsData.shows.map((s) => s.id),

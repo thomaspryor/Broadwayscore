@@ -318,8 +318,18 @@ function stageWestArticleHtml(html) {
   return head + '<body><article>' + body + '</div></article></body></html>';
 }
 
+const MONTH_YEAR = '(?:January|February|March|April|May|June|July|August|September|October|November|December) \\d{4}';
+const SIDEBAR_RE = new RegExp(MONTH_YEAR + ' ' + MONTH_YEAR);
+// Text a pre-fix fetch stored for a Stage West page: the site archive sidebar
+// (consecutive "August 2026 July 2026 ..." month links), not the review.
+function isStageWestSidebarText(text) {
+  if (typeof text !== 'string' || text.length === 0 || text.length > 4000) return false;
+  return SIDEBAR_RE.test(text) && /Southern California theater critic/i.test(text);
+}
+
 module.exports = {
   isStageWestHost,
+  isStageWestSidebarText,
   stageWestArticleHtml,
   stageWestDirectAcceptable,
   buildWpSearchUrl,
