@@ -99,12 +99,23 @@ test('no record for a Broadway show that opened: reviews not graded, never a pas
   assert.equal(ok.entries[0].line, 'X: not graded, the overnight check did not run; emails ready.');
   assert.equal(ok.entries[0].verdict, 'UNKNOWN');
   // A stopped probe must not hide a missing draft.
-  const miss = D.buildSection({ night: '2026-10-29', records: [], shows: [show], readNumbers: () => ({ score: 70, reviewCount: 14 }), nowMs: AFTER_DEADLINE });
+  const miss = D.buildSection({ night: '2026-10-29', records: [], shows: [show], readNumbers: () => ({ score: 70, reviewCount: 15 }), nowMs: AFTER_DEADLINE });
   assert.equal(miss.entries[0].line, 'X: reviews not graded, the overnight check did not run; no opening-night email draft; no Reddit draft emailed. Failed.');
   assert.deepEqual(miss.entries[0].misses.map((m) => m.key), ['email:broadcast:missing', 'email:reddit:missing']);
   // Below the broadcast's review floor no draft is owed yet: said, not failed.
   const early = D.buildSection({ night: '2026-10-29', records: [], shows: [show], readNumbers: () => ({ score: null, reviewCount: 5 }), nowMs: AFTER_DEADLINE });
-  assert.equal(early.entries[0].line, 'X: not graded, the overnight check did not run; no opening-night email draft yet (the site has 5 of the 12 reviews a draft needs).');
+  assert.equal(early.entries[0].line, 'X: not graded, the overnight check did not run; no opening-night email draft yet (the site has 5 of the 15 reviews a draft needs).');
+});
+
+test('BRO-8329: the draft is owed at the workflow readiness gate (West End 12, Broadway 15), not the finer score-confidence floor', () => {
+  const we = { id: 'w-west-end-2026', title: 'W', category: 'west-end', openingDate: '2026-11-24' };
+  const grade = (category, reviewCount) => D.gradeEmails({ show: { ...we, category }, sentShows: {}, redditDraft: null, readNumbers: () => ({ score: 70, reviewCount }), nowMs: Date.parse('2026-11-25T16:00:00Z') }).filter((x) => x.kind === 'broadcast')[0];
+  // 10 of 12: the workflow held it (A Christmas Carol, 2026-11-25), so no miss.
+  assert.equal(grade('west-end', 10).status, 'pending');
+  assert.match(grade('west-end', 10).text, /10 of the 12 reviews/);
+  assert.equal(grade('west-end', 12).status, 'miss');
+  assert.equal(grade('broadway', 14).status, 'pending');
+  assert.equal(grade('broadway', 15).status, 'miss');
 });
 
 test('emails: unreadable site numbers are "could not check", never "ready"; a stale draft is not a miss before 10am', () => {

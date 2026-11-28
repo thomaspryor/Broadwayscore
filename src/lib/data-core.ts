@@ -21,7 +21,7 @@ import type { Director, Theater, TheaterStructuredTips, TheaterVenueScores, Thea
 import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
-import { isUkRegionalShow, isAuRegionalShow, isUsRegionalShow } from './market-utils';
+import { isUkRegionalShow, isAuRegionalShow, isUsRegionalShow, getRegionalTitleCity } from './market-utils';
 import { categoryToCityBucket } from './city-bucket';
 import { belongsOnWestEndListing, belongsOnOffWestEndHub } from './genre';
 import { isCategoryEnabled } from './markets';
@@ -662,6 +662,35 @@ export function getSharedTitleYear(show: { title: string; category?: string; ope
   if (fromId) return parseInt(fromId[1], 10);
   const fromDate = show.openingDate ? parseInt(show.openingDate.slice(0, 4), 10) : NaN;
   return fromDate >= 1700 ? fromDate : undefined;
+}
+
+/**
+ * The house name to add to a regional show's <title> when its title, city and production year
+ * are still shared with another regional production after the city is in the title (two
+ * "Richard III Chicago (2022)" at different fringe houses; BRO-8439). Undefined when the
+ * title is already unique, so almost every page keeps the short form.
+ */
+let regionalCityTitleCounts: Map<string, number> | null = null;
+function regionalCityTitleKey(s: any): string | null {
+  if (s.category !== 'regional') return null;
+  const city = getRegionalTitleCity(s);
+  if (!city) return null;
+  const year = String(s.id || '').match(/-(\d{4})$/)?.[1] || String(s.openingDate || '').slice(0, 4);
+  return `${sharedTitleKey(s)}|${city.toLowerCase()}|${year}`;
+}
+export function getRegionalHouseForTitle(show: { title: string; category?: string; venue?: string; openingDate?: string; id?: string; slug?: string }): string | undefined {
+  const key = regionalCityTitleKey(show);
+  if (!key) return undefined;
+  if (!regionalCityTitleCounts) {
+    regionalCityTitleCounts = new Map();
+    for (const s of shows as any[]) {
+      if (s._devOnly) continue;
+      const k = regionalCityTitleKey(s);
+      if (k) regionalCityTitleCounts.set(k, (regionalCityTitleCounts.get(k) || 0) + 1);
+    }
+  }
+  if ((regionalCityTitleCounts.get(key) || 0) < 2) return undefined;
+  return String(show.venue || '').split(',')[0].trim() || undefined;
 }
 
 /**

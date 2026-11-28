@@ -22841,7 +22841,7 @@
       "resolvedAt": "2026-10-20T22:22:57.440Z"
     },
     "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
@@ -22854,7 +22854,9 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 13,
-      "sweptTracker": "BRO-7012"
+      "sweptTracker": "BRO-7012",
+      "resolvedAt": "2026-11-28T18:11:10.398Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "resolved",
@@ -38102,13 +38104,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-26T04:15:04.277Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-28T17:32:45.549Z",
+      "lastSeen": "2026-11-28T18:11:10.209Z",
       "lastNotifiedAt": "2026-11-28T15:45:57.237Z",
       "lastSurfacedAt": "2026-11-27T14:27:19.135Z",
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-7855",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -40472,13 +40474,13 @@
       "firstSeen": "2026-11-09T13:43:08.396Z",
       "incidentOpenedAt": "2026-11-27T14:27:19.775Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-28T17:32:45.570Z",
+      "lastSeen": "2026-11-28T18:11:10.230Z",
       "lastNotifiedAt": "2026-11-28T15:45:57.258Z",
       "lastSurfacedAt": "2026-11-28T15:45:57.258Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-t1-missing:msblackforpresident-off-broadway-2026": {
       "status": "resolved",
@@ -45777,12 +45779,13 @@
       "firstSeen": "2026-11-18T13:11:44.559Z",
       "incidentOpenedAt": "2026-11-27T16:45:18.814Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-28T17:32:44.678Z",
+      "lastSeen": "2026-11-28T18:11:09.633Z",
       "lastNotifiedAt": "2026-11-28T17:32:44.678Z",
       "lastSurfacedAt": "2026-11-28T17:32:44.678Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:the-good-thief-off-broadway-2026": {
       "status": "resolved",
@@ -46426,7 +46429,7 @@
       "title": "Bundle Size Check is red on main",
       "firstSeen": "2026-11-19T11:59:56.789Z",
       "incidentOpenedAt": "2026-11-27T23:12:12.948Z",
-      "lastSeen": "2026-11-28T16:30:59.143Z",
+      "lastSeen": "2026-11-28T18:23:08.793Z",
       "lastNotifiedAt": "2026-11-27T23:12:12.948Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -46438,7 +46441,7 @@
         "runId": "46080622313",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46080622313"
       },
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-empty-cast:the-snowman-off-west-end-2026": {
       "status": "open",
@@ -49373,13 +49376,13 @@
       "firstSeen": "2026-11-23T14:53:31.566Z",
       "incidentOpenedAt": "2026-11-23T14:53:31.566Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-28T17:32:45.635Z",
+      "lastSeen": "2026-11-28T18:11:10.272Z",
       "lastNotifiedAt": "2026-11-28T15:45:57.302Z",
       "lastSurfacedAt": "2026-11-28T15:45:57.302Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-8344",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-8150-fn-size-guard": {
       "status": "resolved",
@@ -49625,13 +49628,13 @@
       "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.296Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.296Z",
-      "lastSeen": "2026-11-28T17:40:27.936Z",
+      "lastSeen": "2026-11-28T18:23:30.670Z",
       "lastNotifiedAt": "2026-11-27T20:24:01.221Z",
       "lastSurfacedAt": "2026-11-27T20:24:01.221Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 40
+      "silentRefires": 44
     },
     "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c": {
       "status": "open",
@@ -49639,13 +49642,13 @@
       "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.324Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.324Z",
-      "lastSeen": "2026-11-28T17:40:27.965Z",
+      "lastSeen": "2026-11-28T18:23:30.702Z",
       "lastNotifiedAt": "2026-11-27T20:24:01.250Z",
       "lastSurfacedAt": "2026-11-27T20:24:01.250Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 40
+      "silentRefires": 44
     },
     "land:land/job/linear-BRO-8167-mwtgpag4": {
       "status": "resolved",
@@ -49724,13 +49727,13 @@
       "firstSeen": "2026-11-23T18:37:33.367Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.367Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-28T17:32:44.736Z",
+      "lastSeen": "2026-11-28T18:11:09.684Z",
       "lastNotifiedAt": "2026-11-28T15:45:56.752Z",
       "lastSurfacedAt": "2026-11-26T14:22:56.858Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-8379",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-formd": {
       "status": "open",
@@ -49739,13 +49742,13 @@
       "firstSeen": "2026-11-23T18:37:33.463Z",
       "incidentOpenedAt": "2026-11-23T18:37:33.463Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-28T17:32:45.412Z",
+      "lastSeen": "2026-11-28T18:11:09.915Z",
       "lastNotifiedAt": "2026-11-28T15:45:57.080Z",
       "lastSurfacedAt": "2026-11-26T14:23:04.118Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-8380",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-8163-score-gate": {
       "status": "open",
@@ -51200,13 +51203,13 @@
       "title": "Test red on main: real data loads and gives the expected answers for the four JS outlets [testCodeFailure]",
       "firstSeen": "2026-11-25T21:15:32.320Z",
       "incidentOpenedAt": "2026-11-25T21:15:32.320Z",
-      "lastSeen": "2026-11-28T17:40:27.993Z",
+      "lastSeen": "2026-11-28T18:23:30.730Z",
       "lastNotifiedAt": "2026-11-27T22:10:41.140Z",
       "lastSurfacedAt": "2026-11-27T22:10:41.140Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 37
+      "silentRefires": 41
     },
     "live-data-test:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets": {
       "status": "open",
@@ -51215,13 +51218,13 @@
       "firstSeen": "2026-11-25T22:02:00.291Z",
       "incidentOpenedAt": "2026-11-25T22:02:00.291Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-28T17:32:45.614Z",
+      "lastSeen": "2026-11-28T18:11:10.251Z",
       "lastNotifiedAt": "2026-11-28T13:33:44.106Z",
       "lastSurfacedAt": "2026-11-28T13:33:44.106Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-8437",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-8116-session-spend": {
       "status": "resolved",
@@ -51649,13 +51652,13 @@
       "title": "Test red on main: real shows.json: zero un-reviewed hits [testCodeFailure]",
       "firstSeen": "2026-11-27T12:14:42.889Z",
       "incidentOpenedAt": "2026-11-27T12:14:42.889Z",
-      "lastSeen": "2026-11-28T17:40:27.831Z",
+      "lastSeen": "2026-11-28T18:23:30.580Z",
       "lastNotifiedAt": "2026-11-28T12:16:10.919Z",
       "lastSurfacedAt": "2026-11-28T12:16:10.919Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 19
+      "silentRefires": 23
     },
     "land-preexisting:tests/unit/id-year-drift.test.mjs::ingestion-year stamp (BRO-2829)": {
       "status": "open",
@@ -51663,13 +51666,13 @@
       "title": "Test red on main: ingestion-year stamp (BRO-2829)",
       "firstSeen": "2026-11-27T12:14:42.921Z",
       "incidentOpenedAt": "2026-11-27T12:14:42.921Z",
-      "lastSeen": "2026-11-28T17:40:27.872Z",
+      "lastSeen": "2026-11-28T18:23:30.613Z",
       "lastNotifiedAt": "2026-11-28T12:16:10.952Z",
       "lastSurfacedAt": "2026-11-28T12:16:10.952Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 19
+      "silentRefires": 23
     },
     "broadcast:never-sent:a-christmas-carol-west-end-2026": {
       "status": "open",
@@ -52184,12 +52187,13 @@
       "firstSeen": "2026-11-28T17:32:44.707Z",
       "incidentOpenedAt": "2026-11-28T17:32:44.707Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-28T17:32:44.707Z",
+      "lastSeen": "2026-11-28T18:11:09.659Z",
       "lastNotifiedAt": "2026-11-28T17:32:44.707Z",
       "lastSurfacedAt": "2026-11-28T17:32:44.707Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land-preexisting:scripts/newsletter/editorial-overrides.generate.test.mjs::West End 2026-11-09 features Pride under i#b49374cb83": {
       "status": "open",
@@ -52197,13 +52201,13 @@
       "title": "Test red on main: West End 2026-11-09 features Pride under its plain title with a \"moved\" editorial note [testCodeFailure]",
       "firstSeen": "2026-11-28T17:23:41.458Z",
       "incidentOpenedAt": "2026-11-28T17:23:41.458Z",
-      "lastSeen": "2026-11-28T17:40:27.909Z",
+      "lastSeen": "2026-11-28T18:23:30.643Z",
       "lastNotifiedAt": "2026-11-28T17:23:41.458Z",
       "lastSurfacedAt": "2026-11-28T17:23:41.458Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 6
     }
   }
 }
