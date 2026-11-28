@@ -37,6 +37,11 @@
 const MARKET_GOLD_THRESHOLD = {
   'west-end': 85,
   'off-west-end': 85,
+  // Australian regional shows (BRO-8433): their review pool is blog-heavy and
+  // scores cluster high, so Gold needs 85. Not a show category: it is the
+  // score-market key getScoreMarketKey (src/lib/market-utils.ts) returns for a
+  // `regional` show at an Australian venue.
+  'regional-au': 85,
 };
 const DEFAULT_GOLD_THRESHOLD = 83;
 

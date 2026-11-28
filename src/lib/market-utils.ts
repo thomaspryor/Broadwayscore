@@ -77,6 +77,7 @@ export function getMarketMinReviews(category?: string): number {
     case 'off-broadway':
     case 'off-off-broadway':
     case 'regional':
+    case 'regional-au': // score-market key for AU regional shows (BRO-8433): same minimum as regional
     case 'tour':
       return MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY;
     case 'off-west-end':
@@ -147,6 +148,21 @@ export function isUkRegionalShow(show: { category?: string; venue?: string }): b
 /** A `regional` show at an Australian house (Sydney/Melbourne/Brisbane...). Not a Broadway tryout (BRO-8389). */
 export function isAuRegionalShow(show: { category?: string; venue?: string }): boolean {
   return getRegionalCountry(show) === 'AU';
+}
+
+/**
+ * The key score tiers are looked up by (getGoldThreshold and friends). It is the
+ * show's category, except an Australian `regional` show, which scores on its own
+ * Gold bar ('regional-au', BRO-8433). Pass THIS, not `show.category`, to every
+ * score-tier call that has the whole show; keep `show.category` for labels,
+ * filters and review minimums.
+ */
+export function getScoreMarketKey(show: { category?: string | null; venue?: string | null }): string | undefined {
+  const category = show.category ?? undefined;
+  if (category === 'regional' && getRegionalCountry({ category, venue: show.venue ?? undefined }) === 'AU') {
+    return 'regional-au';
+  }
+  return category;
 }
 
 /** A `regional` show that is a US tryout/feeder: neither UK nor AU. */

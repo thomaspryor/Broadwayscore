@@ -29,6 +29,7 @@ function getMarketMinReviews(category) {
     case 'off-broadway':
     case 'off-off-broadway':
     case 'regional':
+    case 'regional-au': // score-market key for AU regional shows (BRO-8433): same minimum as regional
     case 'tour':
       return MIN_REVIEWS_OFF_BROADWAY;
     case 'off-west-end':

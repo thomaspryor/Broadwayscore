@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const { getScoreTierId } = require('../lib/score-tiers');
+const { getScoreMarketKey } = require('../lib/market-label');
 const { LIMITS } = require('./captions');
 
 const HANDLES_FILE = path.join(__dirname, '..', '..', 'data', 'social-handles.json');
@@ -44,7 +45,7 @@ const countLen = (net, text) => [...(net === 'twitter' ? text.replace(/https?:\/
  * push a caption over its network limit is left off that network.
  */
 function withShowTags(captions, show, score, { handles = loadHandles() } = {}) {
-  if (!Number.isFinite(score) || !TAG_TIERS.has(getScoreTierId(Math.round(score), show.category))) return captions;
+  if (!Number.isFinite(score) || !TAG_TIERS.has(getScoreTierId(Math.round(score), getScoreMarketKey(show)))) return captions;
   const out = { ...captions };
   for (const net of NETWORKS) {
     const handle = handleFor(handles, show.id, net);

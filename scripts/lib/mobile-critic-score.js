@@ -31,6 +31,7 @@ const { computeCriticScore } = require('./compute-critic-score');
 const { scoreGateArg } = require('./should-hide-reviews');
 const { hasEnoughReviews } = require('./min-reviews');
 const { getScoreTierLabel } = require('./score-tiers');
+const { getScoreMarketKey } = require('./market-label');
 const { applyCoverageFloor } = require('./coverage-floor');
 const { effectiveShowStatus, getMarketDate } = require('./effective-status');
 
@@ -60,7 +61,7 @@ function buildMobileCriticScore(show, showReviews, outletRegistry, floorOpts = {
   );
   return {
     ...result,
-    l: getScoreTierLabel(result.s, show.category),
+    l: getScoreTierLabel(result.s, getScoreMarketKey(show)),
     q: enough ? 1 : 0,
     pq: pageTBD ? 0 : 1,
   };

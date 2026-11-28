@@ -1,0 +1,232 @@
+diff --git a/src/app/show/[slug]/page.tsx b/src/app/show/[slug]/page.tsx
+index 8cb047ea6..bcc3e7696 100644
+--- a/src/app/show/[slug]/page.tsx
++++ b/src/app/show/[slug]/page.tsx
+@@ -36,7 +36,7 @@ import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
+ import { featureFlags } from '@/config/feature-flags';
+ import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
+ import { isLondonMarket } from '@/lib/venue-classification';
+-import { getCurrencySymbol, isAuRegionalShow, isUkRegionalShow, londonTitleNeedsSuffix } from '@/lib/market-utils';
++import { getCurrencySymbol, getScoreMarketKey, isAuRegionalShow, isUkRegionalShow, londonTitleNeedsSuffix } from '@/lib/market-utils';
+ import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
+ import { liveInHdLine, liveInHdDescription } from '@/lib/met-live-in-hd';
+ import { getOptimizedImageUrl } from '@/lib/images';
+@@ -316,6 +316,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
+   const isRegional = show.category === 'regional';
+   const isTour = show.category === 'tour';
+   const isOpera = isOperaShow(show);
++  const scoreKey = getScoreMarketKey(show); // tier thresholds: AU regional has its own Gold bar (BRO-8433)
+   const hd = await getLiveInHdForRender(params.slug);
+ 
+   // Theater scorecard lookup (Broadway only) — regional/off-broadway/tour venues aren't Broadway houses
+@@ -582,7 +583,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
+       />
+ 
+       {/* Sticky Score Header */}
+-      <LiveStickyScoreHeader title={show.title} score={score} category={show.category} backHref={homeHref} />
++      <LiveStickyScoreHeader title={show.title} score={score} category={scoreKey} backHref={homeHref} />
+ 
+       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
+         <Breadcrumb items={isOpera ? [
+@@ -717,7 +718,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
+                   <ScoreBadge
+                     score={score}
+                     size="lg"
+-                    category={show.category}
++                    category={scoreKey}
+                     reviewCount={showTBD ? 0 : undefined}
+                   />
+                 );
+@@ -792,7 +793,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
+                     {!showTBD && show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
+                       <ScoreBreakdownBar
+                         reviews={show.criticScore.reviews}
+-                        category={show.category}
++                        category={scoreKey}
+                         className="hidden sm:block"
+                       />
+                     )}
+@@ -866,7 +867,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
+             return (
+               <ScoreBreakdownBar
+                 reviews={show.criticScore.reviews}
+-                category={show.category}
++                category={scoreKey}
+                 className="sm:hidden mt-3"
+                 ariaHidden
+               />
+@@ -1025,7 +1026,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
+                 <LiveBreakdownBar
+                   staticTBD={showTBD}
+                   reviews={show.criticScore.reviews}
+-                  category={show.category}
++                  category={scoreKey}
+                   className="sm:hidden mb-4"
+                 />
+               </RedesignOn>
+@@ -1042,7 +1043,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
+                 hasStops: reviewItems.some(r => r.stopLabel),
+               } : undefined}
+               initialCount={REVIEWS_INLINE_COUNT}
+-              category={show.category}
++              category={scoreKey}
+               showTiers={!isOpera}
+             />
+ 
+diff --git a/src/components/FeaturedRowServer.tsx b/src/components/FeaturedRowServer.tsx
+index 0858ae887..5d37e714a 100644
+--- a/src/components/FeaturedRowServer.tsx
++++ b/src/components/FeaturedRowServer.tsx
+@@ -9,6 +9,7 @@ import Link from 'next/link';
+ import { getOptimizedImageUrl } from '@/lib/images';
+ import { getServerImageSrcSet } from '@/lib/show-image-srcset.server';
+ import { getMarketLabel } from '@/lib/venue-classification';
++import { getScoreMarketKey } from '@/lib/market-utils';
+ import { MustSeeCrown, getScoreColorClass } from '@/components/show-cards/ScoreBadge';
+ import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
+ import { scoreGateArg } from '@/config/scoring';
+@@ -40,7 +41,7 @@ function ServerMiniShowCard({ show, priority, eager, caption }: { show: ServerSh
+   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
+   const rawScore = show.criticScore?.score;
+   const score = rawScore != null && hasEnoughReviews(reviewCount, show.category, t1t2, scoreGateArg(show)) ? rawScore : null;
+-  const category = show.category ?? 'broadway';
++  const category = getScoreMarketKey(show) ?? 'broadway';
+   const imgSrc = show.images?.poster
+     ? getOptimizedImageUrl(show.images.poster, 'card')
+     : show.images?.thumbnail
+diff --git a/src/components/show-cards/MiniShowCard.tsx b/src/components/show-cards/MiniShowCard.tsx
+index e74cfc1f1..0eb4111f1 100644
+--- a/src/components/show-cards/MiniShowCard.tsx
++++ b/src/components/show-cards/MiniShowCard.tsx
+@@ -7,7 +7,7 @@ import ShowImage from '@/components/ShowImage';
+ import { getScoreColorClass, MustSeeCrown } from '@/components/show-cards';
+ import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
+ import { scoreGateArg } from '@/config/scoring';
+-import { getMarketLabel } from '@/lib/market-utils';
++import { getMarketLabel, getScoreMarketKey } from '@/lib/market-utils';
+ import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+ import HoverRateStars from '@/components/user/HoverRateStars';
+ import type { ShowCardShow } from './types';
+@@ -25,6 +25,7 @@ export interface MiniShowCardProps {
+ // Never use a landscape/hero image as a poster — source proper portrait images instead
+ const MiniShowCard = memo(function MiniShowCard({ show, priority = false, eager = false }: MiniShowCardProps) {
+   const category = show.category ?? 'broadway';
++  const scoreKey = getScoreMarketKey(show) ?? 'broadway';
+   const reviewCount = show.criticScore?.reviewCount ?? 0;
+   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
+   const rawScore = show.criticScore?.score;
+@@ -90,7 +91,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false, eager
+         {/* Score / date overlay — outside overflow-hidden so crown can escape */}
+         <div className="absolute bottom-1.5 right-1.5">
+           <div className="relative overflow-visible">
+-            {isCriticalGold(score, category) && (
++            {isCriticalGold(score, scoreKey) && (
+               <MustSeeCrown size="mini" />
+             )}
+             {dateBadge ? (
+@@ -111,7 +112,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false, eager
+               </div>
+             ) : (
+               <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
+-                score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, category)
++                score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, scoreKey)
+               }`}>
+                 {score !== undefined && score !== null ? Math.round(score) : '–'}
+               </div>
+diff --git a/src/components/show-cards/ShowListCard.tsx b/src/components/show-cards/ShowListCard.tsx
+index b75099eae..7701316a4 100644
+--- a/src/components/show-cards/ShowListCard.tsx
++++ b/src/components/show-cards/ShowListCard.tsx
+@@ -14,7 +14,7 @@ import { scoreGateArg } from '@/config/scoring';
+ import { getRunAgeLabel, getRunLength, formatOpeningDate, getDurationSuffix, formatShowDate } from '@/lib/date-utils';
+ import { formatClosingLabel } from '@/lib/closing-label';
+ import { shortCity } from '@/lib/tour-schedule';
+-import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
++import { getMarketLabel, isLondonMarket, getScoreMarketKey } from '@/lib/market-utils';
+ import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
+ import { showsMarketBadge } from '../../../scripts/lib/market-badge';
+ import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+@@ -92,6 +92,7 @@ const ShowListCard = memo(function ShowListCard({
+ }: ShowListCardProps) {
+   const isRevival = show.isRevival === true;
+   const category = show.category ?? 'broadway';
++  const scoreKey = getScoreMarketKey(show) ?? 'broadway'; // tier thresholds (AU regional has its own Gold bar)
+   const isCompact = variant === 'compact';
+ 
+   // Ticket link for CTA (sorted, first link = highest priority affiliate)
+@@ -109,7 +110,7 @@ const ShowListCard = memo(function ShowListCard({
+   let audienceGrade = show.audienceGrade;
+ 
+   const criticScore = show.criticScore?.score;
+-  const criticTier = getScoreTier(criticScore, category);
++  const criticTier = getScoreTier(criticScore, scoreKey);
+   const reviewCount = show.criticScore?.reviewCount ?? 0;
+   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
+ 
+@@ -123,7 +124,7 @@ const ShowListCard = memo(function ShowListCard({
+     }
+   } else {
+     score = criticScore;
+-    tier = hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show)) ? getScoreTier(score, category) : null;
++    tier = hasEnoughReviews(reviewCount, category, t1t2, scoreGateArg(show)) ? getScoreTier(score, scoreKey) : null;
+     audienceGrade = show.audienceGrade;
+   }
+ 
+@@ -421,7 +422,7 @@ const ShowListCard = memo(function ShowListCard({
+             reviewCount={reviewCount}
+             status={show.status}
+             showCrown
+-            category={category}
++            category={scoreKey}
+             tier1And2Count={t1t2}
+             isCuratedHistorical={scoreGateArg(show)}
+           />
+diff --git a/src/components/show-page/ShowHeroRedesign.tsx b/src/components/show-page/ShowHeroRedesign.tsx
+index 3a2e40678..276323936 100644
+--- a/src/components/show-page/ShowHeroRedesign.tsx
++++ b/src/components/show-page/ShowHeroRedesign.tsx
+@@ -80,7 +80,7 @@ import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
+ import { newPhotoId } from '@/lib/review-photo-model';
+ import { featureFlags } from '@/config/feature-flags';
+ import { getOptimizedImageUrl } from '@/lib/images';
+-import { getCurrencySymbol, getRegionalLabel } from '@/lib/market-utils';
++import { getCurrencySymbol, getRegionalLabel, getScoreMarketKey } from '@/lib/market-utils';
+ import { isOperaShow, getOperaMarketLabel } from '@/lib/show-market';
+ import { getBroadwayDuration } from '@/lib/date-utils';
+ import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
+@@ -292,7 +292,7 @@ function Inner({
+   const arrivalLineCentered = reviewArrival && arrivalActive ? <ReviewArrivalLine arrival={reviewArrival} className="items-center" /> : null;
+   const tier1And2Count = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
+   const criticReviewsForBar = show.criticScore?.reviews ?? [];
+-  const tier = score !== null ? getScoreTier(score, show.category) : null;
++  const tier = score !== null ? getScoreTier(score, getScoreMarketKey(show)) : null;
+   const isClosed = show.status === 'closed';
+   const isPreviews = show.status === 'previews' || show.status === 'upcoming';
+   // Not opened yet and no reviews (BRO-7426). The hero puts a one-line review
+@@ -703,7 +703,7 @@ function Inner({
+           {hasEnoughCriticReviews && (
+             <div className="hidden lg:flex items-center flex-wrap gap-4 pt-3">
+               <a href="#critic-reviews" className="flex items-center gap-4 hover:opacity-90 transition-opacity">
+-                <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} tier1And2Count={tier1And2Count} isCuratedHistorical={scoreGateArg(show)} size="lg" showCrown />
++                <ScoreBadge score={score} reviewCount={reviewCount} category={getScoreMarketKey(show)} tier1And2Count={tier1And2Count} isCuratedHistorical={scoreGateArg(show)} size="lg" showCrown />
+                 <div>
+                   {tier && (
+                     <p className="text-2xl font-extrabold leading-tight tracking-tight" style={{ color: tier.color }}>
+@@ -744,7 +744,7 @@ function Inner({
+       ) : (
+         <div className={`lg:hidden grid gap-2.5 ${dualScoreCards ? 'grid-cols-2' : 'grid-cols-1'}`}>
+           <a href="#critic-reviews" className={`card p-3 sm:p-4 flex ${scoreCardLayout} hover:bg-surface-overlay transition-colors`}>
+-            <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} tier1And2Count={tier1And2Count} isCuratedHistorical={scoreGateArg(show)} size="lg" showCrown />
++            <ScoreBadge score={score} reviewCount={reviewCount} category={getScoreMarketKey(show)} tier1And2Count={tier1And2Count} isCuratedHistorical={scoreGateArg(show)} size="lg" showCrown />
+             <div className={scoreCardTextClass}>
+               {tier && (
+                 <p className="text-xs sm:text-sm font-bold leading-tight break-normal" style={{ color: tier.color }}>
+@@ -802,7 +802,7 @@ function Inner({
+ 
+       {/* Distribution bar — both modes; spans full width under the header. */}
+       {hasEnoughCriticReviews && criticReviewsForBar.length > 0 && (
+-        <ScoreBreakdownBar reviews={criticReviewsForBar} category={show.category} />
++        <ScoreBreakdownBar reviews={criticReviewsForBar} category={getScoreMarketKey(show)} />
+       )}
+ 
+       {/* Critics' Take — inline directly below the breakdown bar with NO

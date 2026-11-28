@@ -40,6 +40,7 @@ const { limitDailyNetworks } = require('../lib/social-network-daily-limit');
 const { MAX_PER_NETWORK_PER_DAY } = require('./config');
 const briefs = require('./briefs');
 const { withShowTags } = require('./tags');
+const { getScoreMarketKey } = require('../lib/market-label');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const LEDGER_FILE = path.join(ROOT, 'data', 'social-autopost-ledger.json');
@@ -121,11 +122,11 @@ function describe(show, ctx) {
   if (!Number.isFinite(pub.cs)) throw new Error(`${show.id}: no Critic Score in public/data/shows`);
   // Rounded the way the site badge shows it (scripts/lib/canonical-critic-scores.ts).
   const score = Math.round(pub.cs);
-  const breakdown = breakdownFor(pub.rv || [], show.category);
+  const breakdown = breakdownFor(pub.rv || [], getScoreMarketKey(show));
   const counted = breakdown.rave + breakdown.positive + breakdown.mixed + breakdown.negative;
   // The caption says "from N critics' reviews" next to the tally: they must agree.
   if (counted !== pub.rc) throw new Error(`${show.id}: breakdown counts ${counted} reviews, the site says ${pub.rc}`);
-  return { show, score, tierId: getScoreTierId(score, show.category), tierLabel: getScoreTierLabel(score, show.category), reviewCount: pub.rc, breakdown };
+  return { show, score, tierId: getScoreTierId(score, getScoreMarketKey(show)), tierLabel: getScoreTierLabel(score, getScoreMarketKey(show)), reviewCount: pub.rc, breakdown };
 }
 
 // venue-write-guard-ok: show.venue is only read here (card text / vision-check context), never written back

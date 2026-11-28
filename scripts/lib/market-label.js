@@ -108,6 +108,21 @@ function getRegionalCountry(venue) {
 }
 
 /**
+ * Score-market key for tier thresholds: the show's category, except an Australian
+ * `regional` show, which scores on its own Gold bar ('regional-au', BRO-8433). JS
+ * twin of getScoreMarketKey in src/lib/market-utils.ts; pass this, not
+ * `show.category`, to getScoreTierId/getScoreTierLabel/getGoldThreshold.
+ *
+ * @param {{category?: string|null, venue?: string|null}} show
+ * @returns {string|undefined}
+ */
+function getScoreMarketKey(show) {
+  const category = (show && show.category) || undefined;
+  if (category === 'regional' && getRegionalCountry(show.venue) === 'AU') return 'regional-au';
+  return category;
+}
+
+/**
  * Venue substrings that make a `regional` show a UK production. Same table
  * scripts/lib/aggregator-candidate-extract.js and src/lib/market-utils.ts read,
  * so a venue added there is picked up here with no second edit.
@@ -305,6 +320,7 @@ module.exports = {
   MARKET_LABEL_REGIONAL_AU,
   isAuRegionalVenue,
   getRegionalCountry,
+  getScoreMarketKey,
   MARKET_SEARCH_KEYWORDS,
   NON_METRO_MARKETS,
   isUkRegionalVenue,
