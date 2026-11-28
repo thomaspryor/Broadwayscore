@@ -1,0 +1,28 @@
+{
+  "issueNumber": "bro-8426",
+  "planId": "1116e999-25f0-4d5e-b531-00045e8f386d",
+  "status": "pending",
+  "createdAt": "2026-11-28T11:25:59.072Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Candide at LA Opera (2026) is a revival of the 1956 Bernstein operetta; set isRevival (cousin of BRO-7669, found by the replayed revival-unverified check)",
+    "steps": [
+      "shows.json: candide-regional-2026.isRevival"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "candide-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: candide-regional-2026.isRevival"
+      }
+    ]
+  }
+}

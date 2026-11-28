@@ -55,6 +55,82 @@ const QUIET_WINDOW_H = 168;
 // the router (or this checkout) is stale and "quiet" cannot be trusted.
 const LEDGER_MAX_AGE_H = 48;
 
+// BRO-8426: an opening-night check's kind:'alert' remediation routes
+// `opening-night-<check>-<showId>` when the check fails, but nothing resolves
+// that row when the check later passes: only the router's 168h absence sweep
+// does. So a fix that landed a day after the alert read "still firing" for a
+// week (BRO-7669: isRevival set on The Ugly One, check green, ledger open).
+// For these keys the condition IS the check, so re-run the real check on
+// today's data. Only checks whose context is shows / reviewsDoc / review texts
+// (no drift state, no score history) and whose conditionKey is exactly
+// `opening-night-<name>-<show.id>` are listed. A replay that cannot decide
+// (show missing, data unreadable, corpus absent) falls back to the ledger.
+const REPLAYABLE_OPENING_NIGHT_CHECKS = [
+  { name: 'revival-unverified', needsReviewTexts: true },
+  { name: 'placeholder-synopsis' },
+  { name: 'stale-upcoming-tag' },
+  { name: 'assigned-score-schema' },
+  { name: 'review-cards-complete' },
+  { name: 'orphan-scoresource' },
+  { name: 'wrong-production-bww' },
+];
+
+function replayTarget(key) {
+  for (const c of REPLAYABLE_OPENING_NIGHT_CHECKS) {
+    const prefix = `opening-night-${c.name}-`;
+    if (key.startsWith(prefix) && key.length > prefix.length) return { ...c, showId: key.slice(prefix.length) };
+  }
+  return null;
+}
+
+function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
+
+/**
+ * Re-run the opening-night check that owns `key` against current data.
+ * Paths come from ALERT_REPLAY_* env overrides (tests) or the repo defaults.
+ * @returns {null | { code: 0|1, message: string }} null = cannot decide here
+ */
+function replayOpeningNightCheck(key, env = process.env) {
+  const target = replayTarget(key);
+  if (!target) return null;
+  const dataDir = path.join(__dirname, '..', 'data');
+  let shows;
+  let reviewsDoc;
+  try {
+    const doc = readJson(env.ALERT_REPLAY_SHOWS_PATH || path.join(dataDir, 'shows.json'));
+    shows = Array.isArray(doc) ? doc : doc.shows;
+    reviewsDoc = readJson(env.ALERT_REPLAY_REVIEWS_PATH || path.join(dataDir, 'reviews.json'));
+  } catch {
+    return null;
+  }
+  if (!Array.isArray(shows)) return null;
+  const show = shows.find(s => s && s.id === target.showId);
+  if (!show) return null;
+  let reviewTextsRoot = env.ALERT_REPLAY_REVIEW_TEXTS_DIR || null;
+  if (!reviewTextsRoot) {
+    try { reviewTextsRoot = require('./lib/review-texts-dir').resolveReviewTextsDir(); } catch { reviewTextsRoot = null; }
+  }
+  // A check that reads review texts would pass vacuously on an absent corpus.
+  if (target.needsReviewTexts) {
+    let entries = [];
+    try { entries = reviewTextsRoot ? fs.readdirSync(reviewTextsRoot) : []; } catch { entries = []; }
+    if (!entries.some(e => !e.startsWith('.'))) return null;
+  }
+  let result;
+  try {
+    const mod = require(`./lib/opening-night-checks/${target.name}.check.js`);
+    result = mod.run(show, { shows, reviewsDoc, reviewTextsRoot, now: new Date() });
+  } catch {
+    return null;
+  }
+  if (!result || typeof result.then === 'function' || typeof result.ok !== 'boolean') return null;
+  const emitted = result.details && result.details.remediation && result.details.remediation.conditionKey;
+  if (!result.ok && (!emitted || emitted === key)) {
+    return { code: 1, message: `FAIL: "${key}" still firing — re-ran the ${target.name} check on ${show.id}: ${result.message}` };
+  }
+  return { code: 0, message: `PASS: "${key}" not firing — re-ran the ${target.name} check on ${show.id} against current data: ${result.message} (the alert-ledger row, if still open, closes on the router's quiet sweep)` };
+}
+
 // owner-alert-router.js decorates a condition's digest line title when it
 // resurfaces or escalates, and send-morning-digest.js used to build the
 // `digest-needs-you:<title>` dispatch key from that decorated title (BRO-7685).
@@ -160,13 +236,16 @@ function classifyEntry(entry, nowMs) {
  * Pure decision over already-loaded ledgers. Exported for tests.
  * @returns {{ code: 0|1|3, message: string }}
  */
-function decide(ledgers, key, nowMs = Date.now()) {
+function decide(ledgers, key, nowMs = Date.now(), { replay = replayOpeningNightCheck } = {}) {
   // BRO-7919: the proposal email's root-cause button keys its card
   // `reader-feedback-rootcause-<issue>`, which no router writes to the ledger.
   // Its condition is "the intake router still leaves that ask open": replay the
   // ask's recorded case through the real router instead (no case: CANNOT TELL).
   const rootCauseIssue = rootCauseIssueNumber(key);
   if (rootCauseIssue != null) return replayRootCauseCase(rootCauseIssue);
+  // BRO-8426: an opening-night check's own key is answered by the check itself.
+  const replayed = replay ? replay(key) : null;
+  if (replayed) return replayed;
   const newest = Math.max(0, ...ledgers.flatMap(l => Object.values(l.conditions).map(activityOf)));
   const newestAgeH = (nowMs - newest) / 36e5;
   if (!newest || newestAgeH > LEDGER_MAX_AGE_H) {
@@ -241,4 +320,4 @@ if (require.main === module) {
     process.exit(3);
   }
 }
-module.exports = { main, decide, classifyEntry, undecoratedDigestTitle, digestKeyMatchesTitle, QUIET_WINDOW_H, LEDGER_MAX_AGE_H };
+module.exports = { main, decide, classifyEntry, replayOpeningNightCheck, replayTarget, REPLAYABLE_OPENING_NIGHT_CHECKS, undecoratedDigestTitle, digestKeyMatchesTitle, QUIET_WINDOW_H, LEDGER_MAX_AGE_H };

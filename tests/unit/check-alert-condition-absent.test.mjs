@@ -168,3 +168,65 @@ test('send-morning-digest builds digest-needs-you keys from the undecorated titl
   assert.equal(u.searchParams.get('conditionKey'), 'digest-needs-you:LLM scoring daily spend over budget');
   assert.match(u.searchParams.get('title'), /still open — BRO-6732/, 'card title keeps the decoration');
 });
+
+// BRO-8426: an opening-night check's own conditionKey is answered by re-running
+// the check on current data, not by waiting out the 168h ledger window. BRO-7669
+// set isRevival on The Ugly One a day after the alert; the ledger row stayed open
+// and the nightly recheck read the landed fix as "still firing".
+function runReplay(ledgerPath, conditionKey, shows, { texts = true } = {}) {
+  const showsPath = path.join(dir, `shows-${Math.random().toString(36).slice(2)}.json`);
+  fs.writeFileSync(showsPath, JSON.stringify({ shows }));
+  const reviewsPath = path.join(dir, 'reviews-empty.json');
+  fs.writeFileSync(reviewsPath, JSON.stringify({ reviews: [] }));
+  const textsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-absent-texts-'));
+  if (texts) fs.mkdirSync(path.join(textsDir, 'some-show'));
+  const argv = alertAbsentCheckCmd(conditionKey).split(' ').slice(2);
+  return spawnSync(process.execPath, [SCRIPT, ...argv], {
+    env: { ...process.env, ALERT_LEDGER_PATH: ledgerPath, ALERT_REPLAY_SHOWS_PATH: showsPath, ALERT_REPLAY_REVIEWS_PATH: reviewsPath, ALERT_REPLAY_REVIEW_TEXTS_DIR: textsDir },
+    encoding: 'utf8',
+  });
+}
+
+const REVIVAL_KEY = 'opening-night-revival-unverified-ugly-2026';
+const replayLedger = writeLedger('replay-ledger.json', {
+  ...FRESH,
+  // Fired 6h ago and never resolved: the ledger alone says "firing".
+  [REVIVAL_KEY]: { status: 'open', lastSeen: iso(6) },
+});
+const ugly = (extra = {}) => ({ id: 'ugly-2026', title: 'The Ugly One', status: 'open', openingDate: '2026-11-20', market: 'west-end', category: 'off-west-end', ...extra });
+
+test('replay: exit 0 when the owning check passes now, although the ledger row is still open', () => {
+  const r = runReplay(replayLedger, REVIVAL_KEY, [ugly({ isRevival: true })]);
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /re-ran the revival-unverified check/);
+});
+
+test('replay: exit 1 when the owning check still fails on current data', () => {
+  const r = runReplay(replayLedger, REVIVAL_KEY, [ugly(), { id: 'ugly-1999', title: 'The Ugly One', status: 'closed', market: 'west-end', category: 'off-west-end', openingDate: '1999-01-01' }]);
+  assert.equal(r.status, 1, r.stderr);
+  assert.match(r.stderr, /re-ran the revival-unverified check.*isRevival is not true/);
+});
+
+test('replay: falls back to the ledger when it cannot decide (show gone, or review corpus absent)', () => {
+  assert.equal(runReplay(replayLedger, REVIVAL_KEY, [ugly({ id: 'other-show' })]).status, 1, 'show missing -> ledger says firing');
+  assert.equal(runReplay(replayLedger, REVIVAL_KEY, [ugly()], { texts: false }).status, 1, 'no corpus -> no vacuous pass, ledger says firing');
+});
+
+test('replay: only exact opening-night-<check>-<show> keys of listed checks are replayed', () => {
+  const { replayTarget } = require('../../scripts/check-alert-condition-absent.js');
+  assert.deepEqual(replayTarget(REVIVAL_KEY) && replayTarget(REVIVAL_KEY).showId, 'ugly-2026');
+  assert.equal(replayTarget('opening-night-fulltext-mentions-show:ugly-2026'), null);
+  assert.equal(replayTarget('opening-night-remediation-exhausted-empty-cast:ugly-2026'), null);
+  assert.equal(replayTarget('opening-night-revival-unverified-'), null);
+});
+
+test('replay: every listed check exists and emits exactly opening-night-<name>-<show.id>', () => {
+  const { REPLAYABLE_OPENING_NIGHT_CHECKS } = require('../../scripts/check-alert-condition-absent.js');
+  const checksDir = path.join(path.dirname(SCRIPT), 'lib', 'opening-night-checks');
+  for (const { name } of REPLAYABLE_OPENING_NIGHT_CHECKS) {
+    const src = fs.readFileSync(path.join(checksDir, `${name}.check.js`), 'utf8');
+    const keys = [...src.matchAll(/conditionKey:\s*`([^`]*)`/g)].map(m => m[1]);
+    assert.ok(keys.length > 0, `${name} emits a conditionKey`);
+    for (const k of keys) assert.ok(k.startsWith(`opening-night-${name}-$`), `${name} key "${k}" must be opening-night-${name}-\${show.id}`);
+  }
+});
