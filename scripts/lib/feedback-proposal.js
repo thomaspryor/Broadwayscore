@@ -111,6 +111,11 @@ function hasAlreadyFixedComment(comments) {
  * already-fixed) whose close never happened. Skips PRs and issues someone
  * reopened on purpose (state_reason 'reopened').
  */
+/** Fresh re-read gate: only close an issue that is still open and was never reopened by a person. */
+function isStillClosable(fresh) {
+  return !!fresh && fresh.state === 'open' && fresh.state_reason !== 'reopened';
+}
+
 function selectStrandedAlreadyFixed(issues, ledger) {
   const entries = (ledger && ledger.entries) || {};
   return (issues || []).filter((i) => {
@@ -412,5 +417,5 @@ module.exports = {
   findCatalogMatches, selectAutoCloseMatch, routerAlreadyInCatalog, checkPlanAlreadyApplied, scanSimilar,
   buildRootCauseUrl, buildReaderReplyDraft, buildProposalEmail,
   isContentAdditionBody, buildNeedsReviewDiagnosis,
-  ALREADY_FIXED_HEADING, buildAlreadyFixedComment, hasAlreadyFixedComment, selectStrandedAlreadyFixed,
+  ALREADY_FIXED_HEADING, buildAlreadyFixedComment, hasAlreadyFixedComment, selectStrandedAlreadyFixed, isStillClosable,
 };

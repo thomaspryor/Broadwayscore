@@ -63,3 +63,10 @@ test('sweep comment dedupe recognises the workflow close comment', () => {
   const wf = readFileSync('.github/workflows/auto-fix-feedback-bug.yml', 'utf8');
   assert.ok(wf.includes(`'${proposal.ALREADY_FIXED_HEADING}'`), 'auto-fix close step comment heading drifted from ALREADY_FIXED_HEADING');
 });
+
+test('isStillClosable skips issues closed or reopened since the list snapshot', () => {
+  assert.equal(proposal.isStillClosable({ state: 'open', state_reason: null }), true);
+  assert.equal(proposal.isStillClosable({ state: 'closed', state_reason: 'completed' }), false);
+  assert.equal(proposal.isStillClosable({ state: 'open', state_reason: 'reopened' }), false);
+  assert.equal(proposal.isStillClosable(null), false);
+});

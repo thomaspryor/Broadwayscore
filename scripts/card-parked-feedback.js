@@ -47,6 +47,10 @@ async function main() {
   for (const issue of stranded) {
     if (dryRun) { console.log(`  would close #${issue.number}`); continue; }
     try {
+      // Re-read right before acting: the list above is a snapshot, and a person
+      // may have reopened or closed the issue since (ship-check Codex finding).
+      const fresh = await gh('GET', `/repos/${REPO}/issues/${issue.number}`);
+      if (!Proposal.isStillClosable(fresh)) { console.log(`  skip #${issue.number}: no longer open or was reopened`); continue; }
       const comments = await gh('GET', `/repos/${REPO}/issues/${issue.number}/comments?per_page=100`);
       if (!Proposal.hasAlreadyFixedComment(comments)) {
         await gh('POST', `/repos/${REPO}/issues/${issue.number}/comments`, { body: Proposal.buildAlreadyFixedComment() });
