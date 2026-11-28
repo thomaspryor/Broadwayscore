@@ -6060,7 +6060,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     if (trim) data.fullTextTrimmed = trim;
   }
   // Raw HTML still carries the Jetpack wall after the body has been cleaned.
-  require('./lib/paywall-detector').stampSubscriberPaywall(data, html, review.url, cleanedText);
+  require('./lib/paywall-detector').stampSubscriberPaywall(data, html, data.url, cleanedText);
   persistReviewSnapshot({ filePath: review.filePath, data: data });
 
   // BRO-4431: a multi-show article (photo-caption sections, capsule round-ups

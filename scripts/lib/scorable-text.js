@@ -51,11 +51,12 @@ const DEFAULT_MIN_TEXT_LENGTH = 50;
  */
 function selectScorableText(data, options) {
   // BRO-8264: do not pay the ensemble to reject an explicitly locked teaser.
-  if (require('./paywall-detector').isPaywalledText(data)) return null;
+  // The locked body is skipped, but independent excerpts can still be scored.
+  const walled = require('./paywall-detector').isPaywalledText(data);
   const opts = options || {};
   const minTextLength = opts.minTextLength != null ? opts.minTextLength : DEFAULT_MIN_TEXT_LENGTH;
 
-  if (data && data.fullText && data.fullText.length >= 100) {
+  if (!walled && data && data.fullText && data.fullText.length >= 100) {
     const quality = assessTextQuality(data.fullText, data.showId, opts.showTitle, qualityOptsFor(data));
     const rejected =
       quality.quality === 'garbage' ||

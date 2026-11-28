@@ -133,3 +133,12 @@ test('furniture cleanup does not release a stamped teaser', () => {
   data.fullText = cleanText(text);
   assert.equal(paywall.isPaywalledText(data), true);
 });
+
+test('BRO-8264: walled body is skipped but independent excerpts still score', async () => {
+  const { createRequire } = await import('node:module');
+  const { selectScorableText } = createRequire(import.meta.url)('../../scripts/lib/scorable-text');
+  const text = 'Log in or pay to keep reading.';
+  const base = { url: 'https://pagesonstages.com/x/', fullText: 'A teaser. '.repeat(30) + text, dtliExcerpt: 'An excerpt. '.repeat(15) };
+  const sel = selectScorableText(base);
+  assert.equal(sel && sel.isExcerpt, true, 'falls back to the excerpt, never the walled fullText');
+});
