@@ -1,23 +1,99 @@
 {
   "processed": [
-    "fly-you-fools-off-west-end-2026/british-theatre--unknown.json"
+    "fly-you-fools-off-west-end-2026/british-theatre--unknown.json",
+    "ebony-scrooge-off-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
+    "ebony-scrooge-off-west-end-2026/whatsonstage--unknown.json",
+    "pride-bridge-theatre-off-west-end-2026/bestoftheatre--milo-garth.json",
+    "its-a-wonderful-life-off-west-end-2026/nytimes--unknown.json",
+    "its-a-wonderful-life-off-west-end-2026/bestoftheatre--erica-bond.json",
+    "the-afronauts-west-end-2026/theupcoming--sophia-moss.json",
+    "the-snowman-off-west-end-2026/a-youngish-perspective--unknown.json",
+    "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
+    "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json",
+    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--happy-customer.json",
+    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/west-end-wilma--westendwilma.json",
+    "desire-under-the-elms-off-west-end-2026/islingtontribune--lucy-popescu.json",
+    "desire-under-the-elms-off-west-end-2026/islingtontribune--unknown.json",
+    "desire-under-the-elms-off-west-end-2026/lovelondonloveculture--emma-clarendon.json",
+    "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
+    "desire-under-the-elms-off-west-end-2026/westminsterextra--unknown.json",
+    "club-nvrlnd-off-west-end-2026/whatsonstage--unknown.json",
+    "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--roviews.json",
+    "hamlet-hail-to-the-thief-off-west-end-2026/shinylife--unknown.json",
+    "nine-night-off-west-end-2026/islingtontribune--lucy-popescu.json",
+    "nine-night-off-west-end-2026/islingtontribune--unknown.json",
+    "relative-motion-off-west-end-2026/theatre-news--unknown.json",
+    "cloud-9-west-end-2026/standard--marianne-calnan-holland.json",
+    "cloud-9-west-end-2026/standard--unknown.json",
+    "dogstar-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "dogstar-off-west-end-2026/islingtontribune--lucy-popescu.json"
   ],
-  "failed": [],
+  "failed": [
+    "its-a-wonderful-life-off-west-end-2026/nytimes--laura-collins-hughes.json",
+    "feeling-afraid-as-if-something-terrible-is-going-to-happen-off-west-end-2026/telegraph--claire-allfree.json",
+    "peter-pan-off-west-end-2026/timeandleisure--lucy-kane.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "fly-you-fools-off-west-end-2026/british-theatre--unknown.json"
+      "fly-you-fools-off-west-end-2026/british-theatre--unknown.json",
+      "ebony-scrooge-off-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
+      "ebony-scrooge-off-west-end-2026/whatsonstage--unknown.json",
+      "pride-bridge-theatre-off-west-end-2026/bestoftheatre--milo-garth.json",
+      "its-a-wonderful-life-off-west-end-2026/bestoftheatre--erica-bond.json",
+      "the-afronauts-west-end-2026/theupcoming--sophia-moss.json",
+      "the-snowman-off-west-end-2026/a-youngish-perspective--unknown.json",
+      "eurotrash-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
+      "eurotrash-off-west-end-2026/west-end-wilma--westendwilma.json",
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/londontheatredirect--happy-customer.json",
+      "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026/west-end-wilma--westendwilma.json",
+      "desire-under-the-elms-off-west-end-2026/islingtontribune--lucy-popescu.json",
+      "desire-under-the-elms-off-west-end-2026/islingtontribune--unknown.json",
+      "desire-under-the-elms-off-west-end-2026/lovelondonloveculture--emma-clarendon.json",
+      "desire-under-the-elms-off-west-end-2026/revstanstheatreblog--rightrevstan.json",
+      "desire-under-the-elms-off-west-end-2026/westminsterextra--unknown.json",
+      "club-nvrlnd-off-west-end-2026/whatsonstage--unknown.json",
+      "hamlet-hail-to-the-thief-off-west-end-2026/shinylife--unknown.json",
+      "nine-night-off-west-end-2026/islingtontribune--lucy-popescu.json",
+      "nine-night-off-west-end-2026/islingtontribune--unknown.json",
+      "relative-motion-off-west-end-2026/theatre-news--unknown.json",
+      "cloud-9-west-end-2026/standard--marianne-calnan-holland.json",
+      "cloud-9-west-end-2026/standard--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/its-a-wonderful-life-off-west-end-2026/nytimes--unknown.json",
+      "its-a-wonderful-life-off-west-end-2026/nytimes--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "santas-first-christmas-off-west-end-2026/primarytimes--unknown.json",
+      "hamlet-hail-to-the-thief-off-west-end-2026/rolandcat--roviews.json",
+      "dogstar-off-west-end-2026/cherylmarkosky--cherylmarkosky.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/peter-pan-off-west-end-2026/timeandleisure--lucy-kane.json"
+    ],
+    "archive": [
+      "dogstar-off-west-end-2026/islingtontribune--lucy-popescu.json"
+    ]
   },
   "startTime": "2026-11-28T22:24:49.293Z",
-  "lastProcessed": "fly-you-fools-off-west-end-2026/british-theatre--unknown.json",
-  "log": []
+  "lastProcessed": "dogstar-off-west-end-2026/islingtontribune--lucy-popescu.json",
+  "log": [
+    {
+      "t": "2026-11-28T22:29:43.808Z",
+      "event": "bb-session",
+      "session": "d0bc0170",
+      "url": "https://www.nytimes.com/2026/11/23/theater/its-a-wonderful-life-blue-man-group-n"
+    },
+    {
+      "t": "2026-11-28T22:29:44.692Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
