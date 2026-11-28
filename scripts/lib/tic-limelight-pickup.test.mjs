@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: runDaily -> applyAddShow reads data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-8454 class guards for the Theatre Limelight pickup: type filter, top-ups, remounts, ingest queue.
 // Pure logic only (no live data), so it runs in test.yml.
 import test from 'node:test';
