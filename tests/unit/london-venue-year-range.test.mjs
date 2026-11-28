@@ -20,4 +20,9 @@ describe('parseLondonEvidence date ranges', () => {
   it('Jermyn Street Theatre is a validation source', () => {
     assert.ok(londonSources(show).includes('jermynstreettheatre.co.uk'));
   });
+  it('houses with many open shows have a venue source (BRO-8447)', () => {
+    for (const venue of ['Soho Theatre', 'Marylebone Theatre', 'The Other Palace', 'Barbican Centre']) {
+      assert.ok(londonSources({ venue }).length > 2, venue);
+    }
+  });
 });

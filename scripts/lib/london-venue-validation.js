@@ -19,6 +19,11 @@ const EXTRA_VENUES = [
   { name: 'Coronet Theatre', url: 'https://www.thecoronettheatre.com/whats-on/' },
   // No ticketing feed (ob-venue-reader-coverage.js), but each /show/<slug>/ page prints the run range (BRO-8447).
   { name: 'Jermyn Street Theatre', url: 'https://www.jermynstreettheatre.co.uk/whats-on/' },
+  // Houses with the most open off-West-End shows and no venue source (BRO-8447 cousin sweep).
+  { name: 'Soho Theatre', url: 'https://sohotheatre.com/whats-on/' },
+  { name: 'Marylebone Theatre', url: 'https://www.marylebonetheatre.com/whats-on/' },
+  { name: 'The Other Palace', url: 'https://www.otherpalace.co.uk/whats-on/' },
+  { name: 'Barbican Centre', url: 'https://www.barbican.org.uk/whats-on/theatre-dance' },
 ];
 
 function isLondonShow(show) {
