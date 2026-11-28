@@ -1144,21 +1144,6 @@
     "queuedAt": "2026-11-27T01:31:30.124Z"
   },
   {
-    "conditionKey": "live-data-test:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
-    "title": "Live-data test failing: real data loads and gives the expected answers for the four JS outlets (tests/unit/site-search-market-history-live.test.mjs)",
-    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real data loads and gives the expected answers for the four JS outlets\" in tests/unit/site-search-market-history-live.test.mjs is red against the live corpus.\n\nExpected values to be strictly equal:\n+ actual - expected\n\n+ 'covered'\n- 'never-covered'\n",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "testId": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
-    "fields": [],
-    "queuedAt": "2026-11-27T04:11:30.701Z"
-  },
-  {
     "conditionKey": "land:land/bro-8389-au-plan",
     "title": "Landing blocked: rebase red on land/bro-8389-au-plan",
     "description": "land.yml did not land land/bro-8389-au-plan: the rebase gate went red at 4cf6ededdd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45940905138",
@@ -2314,5 +2299,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-28T03:58:50.149Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/outlet-registry-live-data.test.mjs::no census host is an unresolved probable move of a registered outlet",
+    "title": "Live-data test failing: no census host is an unresolved probable move of a registered outlet (tests/unit/outlet-registry-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no census host is an unresolved probable move of a registered outlet\" in tests/unit/outlet-registry-live-data.test.mjs is red against the live corpus.\n\nunresolved domain move(s): add the host to that outlet's domainAliases (moved) or notDomainMoves (different paper)\n+ actual - expected\n\n+ [\n+   'weekendnotes.co.uk -> weekend-notes'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/outlet-registry-live-data.test.mjs::no census host is an unresolved probable move of a registered outlet",
+    "fields": [],
+    "queuedAt": "2026-11-28T04:24:25.544Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
+    "title": "Live-data test failing: real data loads and gives the expected answers for the four JS outlets (tests/unit/site-search-market-history-live.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real data loads and gives the expected answers for the four JS outlets\" in tests/unit/site-search-market-history-live.test.mjs is red against the live corpus.\n\nExpected values to be strictly equal:\n+ actual - expected\n\n+ 'covered'\n- 'never-covered'\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
+    "fields": [],
+    "queuedAt": "2026-11-28T04:24:25.569Z"
   }
 ]
