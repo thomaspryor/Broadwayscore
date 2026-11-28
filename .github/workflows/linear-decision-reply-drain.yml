@@ -47,6 +47,9 @@ jobs:
       - name: Act on owner replies to decision cards
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          # BRO-7876: the gray-reply judge ("sounds good"). Without a key it asks the owner again (fail closed).
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           LINEAR_DECISION_REPLY_DRAIN_DISABLED: ${{ vars.LINEAR_DECISION_REPLY_DRAIN_DISABLED }}
           CAP: ${{ inputs.cap || '5' }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}

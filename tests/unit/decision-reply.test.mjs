@@ -63,7 +63,7 @@ test('yes picks the recommended option only when the card names one', () => {
 
 test('machine and session comments are never the owner reply', () => {
   const card = parseDecisionDescription(B6111);
-  for (const body of ['Working on it', 'Done.', 'Session paused: waiting for owner', 'ok', 'sounds good', 'Claimed by https://claude.ai/code/session_x at 2026-10-24T19:15:53Z', 'Owner answered: Option A (x), by replying "A" on 2026-10-24.',
+  for (const body of ['Working on it', 'Done.', 'Session paused: waiting for owner', 'ok', 'Claimed by https://claude.ai/code/session_x at 2026-10-24T19:15:53Z', 'Owner answered: Option A (x), by replying "A" on 2026-10-24.',
     'Dispatched abc to cmux', '[auto-fix-attempted:fail] nope', 'Outcome: did A', 'A https://x.test', 'A\nand more', 'Waiting on your approval: ' + 'x'.repeat(250), '']) {
     assert.equal(reply.parseReply(body, card).kind, 'ignore', body);
   }
@@ -444,4 +444,106 @@ test('drain --issue touches only that card and wakes the worker once when it han
   assert.deepEqual(wakes, [{ reason: 'BRO-6120' }]);
   await main(['--issue', 'BRO-6120'], { linear, now: () => new Date('2026-10-24T20:00:00Z'), wake: async (x) => { wakes.push(x); } });
   assert.equal(wakes.length, 1, 'a dry run wakes nothing');
+});
+
+// BRO-7876: a yes in more words approves through the push gate's tiers; hard stops never reach the judge.
+const judgeSpy = (decision = 'approve') => {
+  const calls = [];
+  const fn = async (msg, opts) => { calls.push({ msg, opts }); return { decision, approved: decision === 'approve', mode: 'decide', verdict: {} }; };
+  return { fn, calls };
+};
+const judged = (i, judge, extra = {}) => reply.planReplyJudged(i, { date: DATE, verifyCommand, unfitReason: (x) => headlessUnfitReason(x), judge, ...extra });
+
+test('BRO-7876: hard-approve replies pick the recommended or the named option, no judge', async () => {
+  const card = parseDecisionDescription(B6111); // recommends A
+  assert.deepEqual(reply.parseReply('Yes, ship it', card), { kind: 'pick', key: 'A', via: 'yes' });
+  assert.deepEqual(reply.parseReply('yes, option A looks right', card), { kind: 'pick', key: 'A', via: 'yes' });
+  // The named option wins over the recommendation.
+  assert.deepEqual(reply.parseReply('yes, option B looks right', card), { kind: 'pick', key: 'B', via: 'yes' });
+  assert.equal(reply.parseReply('yes, option C looks right', card).kind, 'unclear');
+  for (const body of ['yes, A or B', 'yes, both', 'yes?', 'yes, A and B']) assert.equal(reply.parseReply(body, card).kind, 'unclear', body);
+  const spy = judgeSpy();
+  for (const body of ['Yes, ship it', 'yes, option A looks right']) {
+    const p = await judged(issue(B6110_OPEN, [c(body, '10:05')]), spy.fn);
+    assert.equal(p.action, 'dispatch', body);
+    assert.equal(p.key, 'A', body);
+  }
+  assert.equal(spy.calls.length, 0, 'hard-approve never calls the judge');
+});
+
+test('BRO-7876: sounds good is gray; only a judge approve picks, with the decision prompt', async () => {
+  const card = parseDecisionDescription(B6111);
+  assert.deepEqual(reply.parseReply('sounds good', card), { kind: 'unclear', why: 'gray', gray: true }, 'sync callers fail closed');
+  const spy = judgeSpy('approve');
+  const p = await judged(issue(B6110_OPEN, [c('sounds good', '10:05')]), spy.fn);
+  assert.equal(p.action, 'dispatch');
+  assert.equal(p.key, 'A');
+  assert.equal(spy.calls.length, 1);
+  assert.equal(spy.calls[0].msg.text, 'sounds good');
+  assert.equal(spy.calls[0].opts.variant, 'decision');
+  // Judge says ask: the owner is asked again, never approved.
+  const ask = await judged(issue(B6110_OPEN, [c('sounds good', '10:05')]), judgeSpy('ask').fn);
+  assert.equal(ask.action, 'clarify');
+  assert.equal(ask.why, 'judge-ask');
+  // Approval card: judge approve unblocks it.
+  const ap = await judged(approvalIssue([approvalRequest(), c('sounds good', '10:05')]), judgeSpy('approve').fn);
+  assert.equal(ap.action, 'approve');
+});
+
+test('BRO-7876: hard stops are never approved and never sent to the judge', async () => {
+  const spy = judgeSpy('approve');
+  for (const body of ['yes but hold off', 'no', 'wait']) {
+    const p = await judged(issue(B6110_OPEN, [c(body, '10:05')]), spy.fn);
+    assert.ok(!['dispatch', 'needs-session', 'owner-only', 'approve'].includes(p.action), `${body}: ${p.action}`);
+    const ap = await judged(approvalIssue([approvalRequest(), c(body, '10:05')]), spy.fn);
+    assert.notEqual(ap.action, 'approve', body);
+  }
+  // A qualified yes after an earlier plain yes does not fall back to the earlier one.
+  const later = await judged(issue(B6110_OPEN, [c('yes', '10:01'), c('yes but hold off', '10:05')]), spy.fn);
+  assert.equal(later.action, 'clarify');
+  assert.equal(spy.calls.length, 0, 'the judge never sees a hard stop');
+});
+
+test('BRO-7876: judge errors, a missing judge result and session notes fail closed', async () => {
+  const throws = async () => { throw new Error('network down'); };
+  const p = await judged(issue(B6110_OPEN, [c('sounds good', '10:05')]), throws);
+  assert.equal(p.action, 'clarify');
+  const odd = await judged(issue(B6110_OPEN, [c('sounds good', '10:05')]), async () => ({ decision: 'approve' }));
+  assert.equal(odd.action, 'clarify', 'approve without approved:true (shadow mode) is not a yes');
+  const ap = await judged(approvalIssue([approvalRequest(), c('sounds good', '10:05')]), throws);
+  assert.deepEqual(ap, { action: 'skip', why: 'unclear-approval-reply' });
+  // The real judge under node --test refuses the network (test-no-network) and answers ask; its audit row goes to a temp dir.
+  const { mkdtempSync } = require('node:fs');
+  const { tmpdir } = require('node:os');
+  const prevLogDir = process.env.CLAUDE_LOG_DIR;
+  process.env.CLAUDE_LOG_DIR = mkdtempSync(`${tmpdir()}/bro-7876-`);
+  const real = await judged(issue(B6110_OPEN, [c('sounds good', '10:05')]), undefined, { cache: new Map() });
+  if (prevLogDir === undefined) delete process.env.CLAUDE_LOG_DIR; else process.env.CLAUDE_LOG_DIR = prevLogDir;
+  assert.equal(real.action, 'clarify');
+  // Session notes that happen to contain a ship word never reach the tiers.
+  const card = parseDecisionDescription(B6111);
+  for (const body of ['Ship verified.', 'Deploy both shards', 'Merged and deployed']) assert.equal(reply.parseReply(body, card).kind, 'ignore', body);
+  assert.notEqual(reply.parseReply('Great news: the deploy passed', card).kind, 'pick');
+});
+
+test('BRO-7876: one judge call per comment per run (cache shared with the re-read)', async () => {
+  const spy = judgeSpy('approve');
+  const cache = new Map();
+  const card = issue(B6110_OPEN, [c('sounds good', '10:05')]);
+  const a = await judged(card, spy.fn, { cache });
+  const b = await judged(card, spy.fn, { cache });
+  assert.equal(a.action, b.action);
+  assert.equal(spy.calls.length, 1);
+});
+
+test('BRO-7876 drain: a gray yes approved by the judge is applied once, the re-read agrees', async () => {
+  const { main } = require('../../scripts/linear-decision-reply-drain.js');
+  const card = approvalIssue([approvalRequest(), c('sounds good, thanks', '10:05')]);
+  const { linear, calls } = approvalClient({ [card.identifier]: card });
+  const spy = judgeSpy('approve');
+  const live = await main(['--apply'], { linear, judge: spy.fn, now: () => new Date('2026-10-24T20:00:00Z') });
+  assert.deepEqual(live.approve, [card.identifier]);
+  assert.equal(spy.calls.length, 1, 'plan and fresh re-plan share one verdict');
+  assert.deepEqual(calls.map((x) => x[0]), ['update', 'comment']);
+  assert.match(calls[1][2], /^Owner answered: approved/);
 });

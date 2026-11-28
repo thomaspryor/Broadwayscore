@@ -17,12 +17,24 @@
  * BRO-6180: also handles yes/no replies to awaiting-owner approval cards.
  * Pure, no I/O (CLAUDE.md rule 15); scripts/linear-decision-reply-drain.js does
  * the reads and writes.
+ *
+ * BRO-7876: a yes in more words ("Yes, ship it", "sounds good", "yes, option A looks right")
+ * used to come back unclear, so the owner was asked again. A reply that OPENS like an owner's
+ * answer now goes through the push gate's tiers (owner-reply-classifier.mjs):
+ *   hard-approve  approve (the recommended option, or the one option it names)
+ *   hard-stop     never approves and is never sent to a model (unclear, or decline for a plain no)
+ *   gray          sync callers get unclear; planReplyJudged (the drain) asks the LLM judge with the
+ *                 decision-card prompt, and only a confident approve counts. Any error asks again.
+ * Replies that do not open like an answer keep the old strict grammar, so session notes
+ * ("Ship verified.") never reach the tiers.
  */
 
 const { HEADING_RE, MARKER_RE, SETTLED_RE, headingQuestionLine, cleanOwnerText, isPlaceholder, parseDecisionDescription, recommendedKey } = require('./decision-card-parse.js');
 const { isEmptyDecisionContent } = require('./needs-you-snapshot.js');
 const { AWAITING_OWNER_LABEL, isAwaitingOwner } = require('./owner-approval-channel.js');
 const { parseVisualApproval } = require('../../src/lib/owner-decision-link.js');
+// ESM without top-level await: require(esm) works on the engines floor (node >=22.12). Static literal for the dependency scanner.
+const { classifyOwnerReplyTier } = require('./owner-reply-classifier.mjs');
 
 const TAG_HANDLED = '[owner-reply-handled]';
 const TAG_UNCLEAR = '[owner-reply-unclear]';
@@ -57,11 +69,69 @@ const MAX_ATTEMPT_CHARS = 40;
 // answered by hand or belongs to an earlier question.
 const MAX_REPLY_AGE_MS = 7 * 24 * 3600 * 1000;
 
+// BRO-7876: how an owner's answer starts. Only a reply that opens like this is read by the tiers; a
+// session note ("Ship verified.", "Deploy both shards") does not, because every comment has the same author.
+const OWNER_YES_OPENER_RE = /^(?:yes|yep|yup|yeah|ya|approved?|agreed?|lgtm|go(?:\s+ahead|\s+for\s+it|\s+with)?|do\s+it|ship\s+it|sounds?\s+(?:good|great|right|fine)|looks?\s+(?:good|great|right|fine)|that\s+works|works\s+for\s+me|let'?s\s+(?:do|go)|perfect|great|love\s+it|all\s+good|good\s+to\s+go|option\s+[a-z0-9])\b/i;
+// Only these openers can make a reply a hard yes. A weak opener ("great", "ok", "sounds good") can at most
+// be gray: "Great news: the deploy passed" is a session note the rules would otherwise read as a yes.
+const STRONG_YES_OPENER_RE = /^(?:yes|yep|yup|yeah|approved?|lgtm|go\s+ahead|go\s+for\s+it|do\s+it|ship\s+it)\b/i;
+// A pick needs ONE option. "both", "either", "A or B" or a question is never a yes, whatever the tiers say.
+const AMBIGUOUS_ANSWER_RE = /\?|\b(?:both|neither|either|none|all\s+of\s+them|the\s+other|or)\b/i;
+
+function normalizeQuotes(text) {
+  return String(text).replace(/[\u2018\u2019\u02BC]/g, "'");
+}
+
+/** Option letters the reply names ("option a", "A", "go with B"): upper-case keys, de-duplicated. */
+function namedOptionKeys(text) {
+  const keys = new Set();
+  for (const m of String(text).matchAll(/\boption\s+([a-z0-9])\b/gi)) keys.add(m[1].toUpperCase());
+  // A bare capital letter (not "I", not the article "a") is a pick: "yes, B".
+  for (const m of String(text).matchAll(/(?:^|[^A-Za-z0-9'])([A-HJ-Z])(?![A-Za-z0-9'])/g)) keys.add(m[1]);
+  return [...keys];
+}
+
+/**
+ * BRO-7876: the tier of a reply that opens like an owner's answer, or null when the old grammar decides.
+ * Hard stops, ambiguous answers and the tier rules are all sync; only 'gray' may go to the judge.
+ * @returns {null | 'hard-approve' | 'hard-stop' | 'gray'}
+ */
+function answerTier(text) {
+  const t = normalizeQuotes(text).trim();
+  if (!OWNER_YES_OPENER_RE.test(t)) return null;
+  if (AMBIGUOUS_ANSWER_RE.test(t)) return 'hard-stop';
+  let tier;
+  try { tier = classifyOwnerReplyTier(t); } catch { return 'hard-stop'; }
+  if (tier === 'hard-approve' && !STRONG_YES_OPENER_RE.test(t)) return 'gray';
+  return tier === 'hard-approve' || tier === 'gray' ? tier : 'hard-stop';
+}
+
+/** The option a yes accepts: the one it names, else the recommended one. */
+function yesKey(text, card) {
+  const options = (card && card.options) || [];
+  const named = namedOptionKeys(text);
+  if (named.length > 1) return { kind: 'unclear', why: 'several-options' };
+  if (named.length === 1) {
+    return options.some((o) => o.key === named[0]) ? { kind: 'pick', key: named[0], via: 'yes' }
+      : { kind: 'unclear', why: options.length ? 'no-such-option' : 'no-options' };
+  }
+  const key = recommendedKey(card && card.recommendation, options);
+  return key ? { kind: 'pick', key, via: 'yes' } : { kind: 'unclear', why: 'yes-without-recommendation' };
+}
+
+/** The judge's answer for this exact reply text, or undefined. Never throws. */
+function grayDecision(grayVerdict, text) {
+  if (typeof grayVerdict !== 'function') return undefined;
+  try { return grayVerdict(text); } catch { return undefined; }
+}
+
 /**
  * What a reply means for this card.
- * @returns {{kind: 'pick', key: string, via: 'letter'|'yes'} | {kind: 'unclear', why: string} | {kind: 'ignore'}}
+ * opts.grayVerdict(text) => 'approve'|'ask'|undefined supplies the judge's answer for a gray reply
+ * (planReplyJudged sets it); without it a gray reply is unclear.
+ * @returns {{kind: 'pick', key: string, via: 'letter'|'yes'} | {kind: 'unclear', why: string, gray?: true} | {kind: 'ignore'}}
  */
-function parseReply(body, card) {
+function parseReply(body, card, { grayVerdict } = {}) {
   if (!looksHuman(body)) return { kind: 'ignore' };
   const text = plainBody(body);
   if (!text || text.length > MAX_UNCLEAR_CHARS || URL_RE.test(String(body).trim())) return { kind: 'ignore' };
@@ -78,17 +148,33 @@ function parseReply(body, card) {
       return key ? { kind: 'pick', key, via: 'yes' } : { kind: 'unclear', why: 'yes-without-recommendation' };
     }
   }
+  const tier = answerTier(text);
+  if (tier === 'hard-approve') return yesKey(text, card);
+  if (tier === 'hard-stop') return { kind: 'unclear', why: 'qualified-answer' };
+  if (tier === 'gray') {
+    const verdict = grayDecision(grayVerdict, text);
+    if (verdict === 'approve') return yesKey(text, card);
+    return { kind: 'unclear', why: verdict === 'ask' ? 'judge-ask' : 'gray', gray: verdict === undefined };
+  }
   if (text.length <= MAX_ATTEMPT_CHARS && ANSWER_ATTEMPT_RE.test(text)) return { kind: 'unclear', why: 'not-a-pick' };
   return { kind: 'ignore' };
 }
 
-function parseApprovalReply(body) {
+function parseApprovalReply(body, { grayVerdict } = {}) {
   if (!looksHuman(body)) return { kind: 'ignore' };
   const text = plainBody(body);
   const no = /^(?:no|nope|nah|declined?|reject(?:ed)?|not (?:approved|yet)|(?:i )?(?:do not|don['’]t) (?:approve|proceed|ship|go ahead)|hold off|wait|stop)\b/i.exec(text);
-  const unclear = { kind: no || /^(?:yes|yep|yeah|approve[ds]?|go ahead|do it|not sure|maybe)\b/i.test(text) ? 'unclear' : 'ignore' };
+  const tier = no ? 'hard-stop' : answerTier(text);
+  const unclear = { kind: no || tier || /^(?:yes|yep|yeah|approve[ds]?|go ahead|do it|not sure|maybe)\b/i.test(text) ? 'unclear' : 'ignore' };
   if (!text || text.length > MAX_UNCLEAR_CHARS || URL_RE.test(String(body).trim())) return unclear;
   if (YES_RE.test(text)) return { kind: 'approve' };
+  // BRO-7876: an approval card has no options, so a reply that names one or more is not a plain yes.
+  if (tier === 'hard-approve') return namedOptionKeys(text).length ? unclear : { kind: 'approve' };
+  if (tier === 'gray') {
+    const verdict = grayDecision(grayVerdict, text);
+    if (verdict === 'approve' && !namedOptionKeys(text).length) return { kind: 'approve' };
+    return { kind: 'unclear', why: verdict === 'ask' ? 'judge-ask' : 'gray', gray: verdict === undefined };
+  }
   // A reason after an explicit no is safe to record. Conditional yes replies
   // and session notes such as "No issues found" never grant approval.
   if (no && /^(?:\s*[.!]*|\s*[:,]\s*\S.*)$/.test(text.slice(no[0].length))) return { kind: 'decline' };
@@ -114,7 +200,7 @@ function byCreatedAt(a, b) {
  * Settled markers: an "Owner answered" note, our handled/unclear tags.
  * @returns {{comment: object, reply: object} | null}
  */
-function findReplyComment(comments, card, { approval = false } = {}) {
+function findReplyComment(comments, card, { approval = false, grayVerdict } = {}) {
   const sorted = (comments || []).filter((c) => c && c.body != null).slice().sort(byCreatedAt);
   let lastStop = -1;
   sorted.forEach((c, i) => {
@@ -123,7 +209,7 @@ function findReplyComment(comments, card, { approval = false } = {}) {
     if (/^owner (?:answered|declined|picked|chose)\b/i.test(t) || t.startsWith(TAG_HANDLED) || String(c.body).trim().startsWith(TAG_UNCLEAR)) lastStop = i;
   });
   for (let i = sorted.length - 1; i > lastStop; i--) {
-    const reply = approval ? parseApprovalReply(sorted[i].body) : parseReply(sorted[i].body, card);
+    const reply = approval ? parseApprovalReply(sorted[i].body, { grayVerdict }) : parseReply(sorted[i].body, card, { grayVerdict });
     if (reply.kind !== 'ignore') return { comment: sorted[i], reply };
   }
   return null;
@@ -241,7 +327,7 @@ function clarifyComment({ options }) {
  * labels, state, priority). Returns {action, ...} where action is one of
  * 'skip' | 'clarify' | 'dispatch' | 'needs-session' | 'owner-only' | 'approve' | 'decline'.
  */
-function planReply(issue, { date, verifyCommand, unfitReason, nowMs } = {}) {
+function planReply(issue, { date, verifyCommand, unfitReason, nowMs, grayVerdict } = {}) {
   if (['completed', 'canceled'].includes(issue.state && issue.state.type)) return { action: 'skip', why: 'closed' };
   const card = parseDecisionDescription(issue.description);
   const approval = !card && isAwaitingOwner(issue);
@@ -250,7 +336,7 @@ function planReply(issue, { date, verifyCommand, unfitReason, nowMs } = {}) {
   // must not stand in for their VQA authorization.
   if (approval && parseVisualApproval(issue.description)) return { action: 'skip', why: 'signed-visual-approval' };
   const comments = (issue.comments && issue.comments.nodes) || [];
-  const found = findReplyComment(comments, card, { approval });
+  const found = findReplyComment(comments, card, { approval, grayVerdict });
   if (!found) return { action: 'skip', why: 'no-reply' };
   const { comment, reply } = found;
   const at = Date.parse(comment.createdAt);
@@ -272,8 +358,42 @@ function planReply(issue, { date, verifyCommand, unfitReason, nowMs } = {}) {
   return { action: 'needs-session', why: !cmd ? 'there is no safe check command on the card yet' : `the card is not worker-ready (${unfit})`, description, title: next.title, ...base };
 }
 
+/**
+ * BRO-7876: planReply, with the LLM judge reading a gray reply. Only the drain calls this.
+ * The sync plan runs first, so a closed card, an old reply or a hard tier never reaches the model;
+ * only the newest live reply that opens like an answer and the rules leave gray is judged.
+ * Fails closed: any error, missing key or low-confidence answer leaves the plan as the sync one
+ * (clarify, or skip for an approval card), never an approval.
+ * opts.judge(msg, {variant}) defaults to judgeGrayReply in owner-reply-judge.mjs.
+ * opts.cache (a Map) keeps one verdict per comment so the drain's re-read before writing agrees.
+ */
+async function planReplyJudged(issue, opts = {}) {
+  const first = planReply(issue, opts);
+  const unjudged = (first.action === 'clarify' && first.why === 'gray') || (first.action === 'skip' && first.why === 'unclear-approval-reply');
+  if (!unjudged) return first;
+  // Same card reading as planReply: the reply it acted on, if that reply was left gray.
+  const card = parseDecisionDescription(issue.description);
+  const found = findReplyComment((issue.comments && issue.comments.nodes) || [], card, { approval: !card && isAwaitingOwner(issue) });
+  if (!found || !found.reply.gray) return first;
+  const { comment } = found;
+  const text = plainBody(comment.body);
+  const cacheKey = `${issue.identifier || issue.id || ''}\n${comment.id || ''}\n${comment.createdAt || ''}\n${text}`;
+  const cache = opts.cache instanceof Map ? opts.cache : null;
+  let decision = cache && cache.get(cacheKey);
+  if (decision !== 'approve' && decision !== 'ask') {
+    decision = 'ask';
+    try {
+      const judge = typeof opts.judge === 'function' ? opts.judge : require('./owner-reply-judge.mjs').judgeGrayReply;
+      const res = await judge({ text, ts: comment.createdAt, verdictHash: `linear-decision:${issue.identifier || issue.id || ''}:${comment.id || ''}` }, { variant: 'decision' });
+      if (res && res.approved === true && res.decision === 'approve') decision = 'approve';
+    } catch { decision = 'ask'; }
+    if (cache) cache.set(cacheKey, decision);
+  }
+  return planReply(issue, { ...opts, grayVerdict: (t) => (t === text ? decision : undefined) });
+}
+
 module.exports = {
   AWAITING_OWNER_LABEL, TAG_HANDLED, TAG_UNCLEAR,
   answeredComment, approvalComment, clarifyComment, dispatchedNote, dropMarkerFromTitle, findReplyComment, looksHuman,
-  needsSessionNote, ownerOnlyComment, ownerOnlyReason, parseReply, planReply, rewriteDescription,
+  needsSessionNote, ownerOnlyComment, ownerOnlyReason, parseApprovalReply, parseReply, planReply, planReplyJudged, rewriteDescription,
 };

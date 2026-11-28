@@ -13,6 +13,8 @@
  *   - clear pick, card not worker-ready (no safe check yet): records the answer and leaves it
  *     on the board for a session;
  *   - short reply that is not a pick: one plain follow-up question.
+ *   - a yes in more words (BRO-7876): the push gate's rule tiers decide; a gray reply ("sounds good")
+ *     is read by the LLM judge (decision-card prompt); any judge failure asks again.
  *   - awaiting-owner without a decision line (BRO-6180): yes records approval and removes
  *     that label; no records the owner's words and leaves the card parked.
  * Order of writes: the card first (a failed write is retried next run), then the "Owner answered" comment.
@@ -58,7 +60,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const { headlessUnfitReason } = require('./lib/cloud-worker-pick.js');
   const now = deps.now ? deps.now() : new Date();
   const date = now.toISOString().slice(0, 10);
-  const planOptions = { date, verifyCommand: drain.verifyCommand, unfitReason: (i) => headlessUnfitReason(i), nowMs: now.getTime() };
+  // BRO-7876: a gray reply ("sounds good") is read by the LLM judge; one verdict per comment per run (cache),
+  // so the re-read before writing gets the same plan. deps.judge lets tests stand in for the model.
+  const planOptions = { date, verifyCommand: drain.verifyCommand, unfitReason: (i) => headlessUnfitReason(i), nowMs: now.getTime(), cache: new Map(), judge: deps.judge };
 
   const open = await linear.listOpenIssuesWithDescriptions();
   // BRO-6715: --issue BRO-N (or the Linear id) acts on one card; the Linear webhook sends it the moment a comment lands.
@@ -74,7 +78,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       if (apply) { await linear.updateIssue(full.id, { description: canon }); full.description = canon; console.log(`normalized decision heading: ${full.identifier}`); }
       else console.log(`would normalize decision heading: ${full.identifier}`);
     }
-    const plan = reply.planReply(full, planOptions);
+    const plan = await reply.planReplyJudged(full, planOptions);
     if (plan.action === 'skip') { skipped[plan.why] = (skipped[plan.why] || 0) + 1; continue; }
     plans.push({ issue: full, plan });
   }
@@ -97,7 +101,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     if (!apply) { console.log(`would act: ${line}`); done[plan.action].push(id); continue; }
     try {
       const fresh = await linear.getIssue(id);
-      const freshPlan = fresh && reply.planReply(fresh, planOptions);
+      const freshPlan = fresh && await reply.planReplyJudged(fresh, planOptions);
       if (!fresh || fresh.description !== issue.description || freshPlan.action !== plan.action ||
           !freshPlan.comment || freshPlan.comment.id !== plan.comment.id || freshPlan.comment.body !== plan.comment.body) {
         console.log(`changed since read, left alone: ${id}`);
