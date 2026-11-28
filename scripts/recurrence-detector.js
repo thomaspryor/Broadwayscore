@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// secret-optional: OPENAI_API_KEY only the weekly grading sample uses it and skips the sample without it; --check-class and earliestPassForArgv never read it (BRO-8426).
 /**
  * Recurrence detector (BRO-7103): notices when we keep spot-fixing the same
  * problem and turns the problem CLASS into one root-cause card.

@@ -1,3 +1,4 @@
+// secret-optional: OPENAI_API_KEY getProviderChain adds the OpenAI provider only when the key is set; without it the chain uses the other providers or the heuristic fallback (BRO-8426).
 /**
  * LLM-Based Content Verification
  *
