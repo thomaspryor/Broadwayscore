@@ -208,6 +208,40 @@ function isolatedSectionByline(url, sectionText) {
 }
 
 /**
+ * The critic to credit for a text a collector just ran through the section
+ * gate. A host that credits each section (a Nine wrap) gives the section's own
+ * byline, or null (Unknown) when the section names nobody, never the page
+ * byline (that is the first item's critic). Anything else keeps fallbackCritic.
+ * @param {string} url
+ * @param {{action:string, text:string|null}} iso  result of isolateMultiShowSection*
+ * @param {string|null} fallbackCritic
+ * @returns {{ creditsSection: boolean, criticName: string|null }}
+ */
+function sectionCriticFor(url, iso, fallbackCritic) {
+  if (iso && iso.action === 'isolated' && sectionCreditsCritic(url)) {
+    return { creditsSection: true, criticName: isolatedSectionByline(url, iso.text) || null };
+  }
+  return { creditsSection: false, criticName: fallbackCritic == null ? null : fallbackCritic };
+}
+
+/**
+ * Collector write step (collect-review-texts): credit an isolated Nine item to
+ * its own section byline on `data`. A manual or locked credit stays. Returns
+ * creditsSection so the caller skips every later page-author overwrite (the
+ * page author is the first item's critic, a section byline never matches it).
+ * @returns {{ creditsSection: boolean, changed: boolean, criticName: string|null }}
+ */
+function applySectionCritic(data, url, iso) {
+  const sc = sectionCriticFor(url, iso, data.criticName || null);
+  if (!sc.creditsSection) return { creditsSection: false, changed: false, criticName: null };
+  if (data.criticNameManual || data._locked) return { creditsSection: true, changed: false, criticName: data.criticName || null };
+  const next = sc.criticName || 'Unknown';
+  const changed = data.criticName !== next;
+  if (changed) { data._priorCriticName = data.criticName; data.criticName = next; data.criticEnrichedFrom = 'section-byline'; }
+  return { creditsSection: true, changed, criticName: next };
+}
+
+/**
  * ingest-urls / ingest-review-from-url step: cut a multi-show post down to
  * this show's section before anything is written.
  * @param {{url:string, text:string|null, showTitle:string, criticName:string|null, ownerShowIds:()=>string[]}} a
@@ -224,7 +258,7 @@ function isolateForIngest({ url, text, showTitle, criticName, ownerShowIds }) {
     text: iso.text,
     // A host that credits each section: no section byline means Unknown, never the
     // page byline (that is the first item's critic).
-    criticName: sectionCreditsCritic(url) ? isolatedSectionByline(url, iso.text) : criticName,
+    criticName: sectionCriticFor(url, iso, criticName).criticName,
     writeFields: isolatedSectionWriteFields(iso, showTitle, ownerShowIds()),
   };
 }
@@ -297,6 +331,9 @@ function showTitleFor(showId) {
   return _titles.get(showId) || '';
 }
 
+/** Test seam: seed showId -> title so tests need no data/shows.json (untracked core data). */
+function seedShowTitlesForTest(obj) { _titles = new Map(Object.entries(obj || {})); }
+
 /** Same gate, for writers that only know the showId (recovery scripts). */
 function isolateMultiShowSectionForShowId(url, text, showId) {
   if (!isMultiShowPostUrl(url)) return { action: 'not-multi-show', text };
@@ -309,6 +346,6 @@ const MULTI_SHOW_NOT_FOUND_REASON = 'multi_show_section_not_found';
 
 module.exports = {
   extractShowSection, findSectionHeadings, findNineWrapHeadings, nineWrapSectionByline, findHeadingsForUrl,
-  multiShowStrategyFor, MULTI_SHOW_POST_STRATEGIES, isolatedSectionByline, isolateForIngest, headingShowName, normSectionText: norm, sectionTitleVariants, isMultiShowPostUrl, isolateMultiShowSection,
-  isolateMultiShowSectionForShowId, isolatedSectionWriteFields, MULTI_SHOW_NOT_FOUND_REASON, allShowTitles,
+  multiShowStrategyFor, MULTI_SHOW_POST_STRATEGIES, isolatedSectionByline, sectionCriticFor, applySectionCritic, isolateForIngest, headingShowName, normSectionText: norm, sectionTitleVariants, isMultiShowPostUrl, isolateMultiShowSection,
+  isolateMultiShowSectionForShowId, seedShowTitlesForTest, isolatedSectionWriteFields, MULTI_SHOW_NOT_FOUND_REASON, allShowTitles,
 };

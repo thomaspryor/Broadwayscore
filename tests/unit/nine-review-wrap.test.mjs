@@ -116,3 +116,77 @@ test('isolation plan: a Nine wrap verdict naming another item is judged with the
   assert.equal(plan.verdictCitesOtherSection(reason, WRAP, own, { url: WRAP_URL }), true);
   assert.equal(plan.needsRefetch({ url: WRAP_URL, wrongShow: true, fullText: own }), true);
 });
+
+// BRO-8453: the collector paths must take the section byline too. Each test
+// requires the path's real decision function and asserts the SECOND item's critic.
+const paths = {
+  gap: () => require('../../scripts/lib/gap-acceptance.js'),
+  prefetch: () => require('../../scripts/lib/discovery-prefetch.js'),
+};
+const TWO_ITEM = [
+  'A A A Melbourne review wrap Share',
+  item('MUSIC', 'Band Name', '★★★★', 'Alex Example', 'First item body with plenty of synthetic words in it to keep it long enough to stand.'),
+  item('THEATRE', 'A Room with a View', '★★★½', 'Sam Sample', 'Second item body with plenty of synthetic words in it to keep it long enough to stand.'),
+].join(' ');
+m.seedShowTitlesForTest({ 'room-view-2026': 'A Room with a View', 'band-name-2026': 'Band Name' });
+
+test('sectionCriticFor: section byline, null for an unsigned item, fallback off-host', () => {
+  const iso = m.isolateMultiShowSection(WRAP_URL, TWO_ITEM, 'A Room with a View');
+  assert.deepEqual(m.sectionCriticFor(WRAP_URL, iso, 'Alex Example'), { creditsSection: true, criticName: 'Sam Sample' });
+  const unsigned = { action: 'isolated', text: 'THEATRE Some Play ★★★ no credit line here' };
+  assert.deepEqual(m.sectionCriticFor(WRAP_URL, unsigned, 'Alex Example'), { creditsSection: true, criticName: null });
+  assert.deepEqual(m.sectionCriticFor('https://example.com/x', iso, 'Z Z'), { creditsSection: false, criticName: 'Z Z' });
+  assert.deepEqual(m.sectionCriticFor(WRAP_URL, { action: 'single-section', text: 'x' }, 'Alex Example'), { creditsSection: false, criticName: 'Alex Example' });
+});
+
+test('gap-acceptance cleanCandidateText: second item carries its own critic; identity proof sees it', () => {
+  const g = paths.gap();
+  const c = g.cleanCandidateText(TWO_ITEM, { url: WRAP_URL, showId: 'room-view-2026' });
+  assert.equal(c.refused, false);
+  assert.equal(c.creditsSection, true);
+  assert.equal(c.criticName, 'Sam Sample');
+  assert.equal(g.bylineForCleaned(c, 'Alex Example'), 'Sam Sample');
+  const unsigned = { creditsSection: true, criticName: null };
+  assert.equal(g.bylineForCleaned(unsigned, 'Alex Example'), null);
+  assert.equal(g.bylineForCleaned({ creditsSection: false }, 'Alex Example'), 'Alex Example');
+});
+
+test('discovery-prefetch: isolated second item is credited to its section byline, never the page byline', async () => {
+  const { prefetchDiscoveredArticle, applyPrefetch } = paths.prefetch();
+  const body = TWO_ITEM.replace(/ Reviewed by /g, '. Reviewed by ');
+  const html = `<html><head><title>Review wrap</title><script type="application/ld+json">{"@type":"NewsArticle","author":{"@type":"Person","name":"Alex Example"}}</script></head><body><article><p>${body}</p></article>${' '.repeat(600)}</body></html>`;
+  const pre = await prefetchDiscoveredArticle(WRAP_URL, { criticName: 'Alex Example', showId: 'room-view-2026', fetchPageFn: async () => ({ content: html }) });
+  assert.equal(pre.criticOverride, true);
+  assert.equal(pre.criticName, 'Sam Sample');
+  assert.equal(applyPrefetch({ criticName: 'Alex Example', fields: {} }, pre).criticName, 'Sam Sample');
+  // an unsigned section is Unknown even though the SERP and the page both name the first critic
+  assert.equal(applyPrefetch({ criticName: 'Alex Example', fields: {} }, { criticOverride: true, criticName: null }).criticName, 'Unknown');
+  assert.equal(applyPrefetch({ criticName: 'Alex Example', fields: {} }, { criticName: null }).criticName, 'Alex Example');
+});
+
+test('collector write step: applySectionCritic credits the item, keeps manual/locked credits', () => {
+  const iso = m.isolateMultiShowSection(WRAP_URL, TWO_ITEM, 'A Room with a View');
+  const d = { criticName: 'Alex Example' };
+  const r = m.applySectionCritic(d, WRAP_URL, iso);
+  assert.deepEqual([r.creditsSection, r.changed, d.criticName, d._priorCriticName], [true, true, 'Sam Sample', 'Alex Example']);
+  const manual = { criticName: 'Alex Example', criticNameManual: true };
+  assert.deepEqual(m.applySectionCritic(manual, WRAP_URL, iso), { creditsSection: true, changed: false, criticName: 'Alex Example' });
+  assert.equal(manual.criticName, 'Alex Example');
+  const unsigned = { criticName: 'Alex Example' };
+  m.applySectionCritic(unsigned, WRAP_URL, { action: 'isolated', text: 'THEATRE Play ★★★ nothing' });
+  assert.equal(unsigned.criticName, 'Unknown');
+  const other = { criticName: 'Alex Example' };
+  assert.equal(m.applySectionCritic(other, 'https://example.com/x', iso).creditsSection, false);
+  assert.equal(other.criticName, 'Alex Example');
+});
+
+test('class guard: every page-author overwrite in collect-review-texts is gated on sectionCredited', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../../scripts/collect-review-texts.js', import.meta.url), 'utf8');
+  for (const needle of [
+    'if (html && !data.criticNameManual && !sectionCredited) {',
+    "hcConfirmsByline && !data.criticNameManual && !sectionCredited",
+    "html && !data.criticNameManual && !sectionCredited) {",
+  ]) assert.ok(src.includes(needle), `missing gate: ${needle}`);
+  assert.match(src, /applySectionCritic\(data, data\.url \|\| review\.url, iso\)/);
+});
