@@ -16,6 +16,7 @@ import {
   MIN_AGREEMENT,
   DUPE_SIMILARITY,
   MAX_FILINGS_PER_RUN,
+  countRecentModelCards,
   normalizeWords,
   similarity,
   titleFor,
@@ -283,4 +284,35 @@ test('the walkthrough does not carry its own copy of titleFor', () => {
   // A byte-identical twin left in the caller is the definition a future "fix
   // the title format" edit lands on, with CI staying green.
   assert.ok(!/function titleFor/.test(walkthroughCode()), 'titleFor is defined in this lib; a second copy in ux-walkthrough.mjs will drift');
+});
+
+// Codex + Claude ship-check findings (BRO-8435): the cooldown must fail closed and ignore deterministic cards.
+test('countRecentModelCards counts only recent model-opinion cards', () => {
+  const now = Date.parse('2026-11-28T12:00:00Z');
+  const day = 86400000;
+  const model = 'Flagged by 3 of 3 responding review models (a, b, c)';
+  const det = 'Flagged by the automated dead-control detector';
+  const issues = { nodes: [
+    { createdAt: new Date(now - 1 * day).toISOString(), description: model },
+    { createdAt: new Date(now - 2 * day).toISOString(), description: det },
+    { createdAt: new Date(now - 20 * day).toISOString(), description: model },
+  ], pageInfo: { hasNextPage: false } };
+  assert.equal(countRecentModelCards(issues, now), 1);
+});
+
+test('countRecentModelCards returns null (fail closed) on a malformed or incomplete read', () => {
+  const now = Date.parse('2026-11-28T12:00:00Z');
+  assert.equal(countRecentModelCards(undefined, now), null);
+  assert.equal(countRecentModelCards({}, now), null);
+  assert.equal(countRecentModelCards({ nodes: [{ createdAt: 'nope', description: '' }] }, now), null);
+  const recent = { createdAt: new Date(now - 86400000).toISOString(), description: '' };
+  assert.equal(countRecentModelCards({ nodes: [recent], pageInfo: { hasNextPage: true } }, now), null);
+});
+
+test('a deterministic finding takes the one nightly slot before a model opinion', () => {
+  const plan = planFilings({
+    findings: [model('Unanimous opinion about spacing'), model('Dead control on watchlist', { deterministic: true })],
+    existing: okBoard([]),
+  });
+  assert.deepEqual(plan.toFile.map((t) => t.title), ['UX audit: Dead control on watchlist']);
 });

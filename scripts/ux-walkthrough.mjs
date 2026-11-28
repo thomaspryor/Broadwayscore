@@ -62,7 +62,7 @@ import { launchExtras } from './lib/playwright-exe.js';
 // three-model bar and filing a finding no two models ever agreed on.
 // tests/unit/sibling-matchers-diacritics.test.mjs globs .js only, so CI is
 // structurally unable to catch a copy living in a .mjs file.
-const { normalizeWords: _normalizeWords, similarity: _similarity, MODEL_COOLDOWN_DAYS } =
+const { normalizeWords: _normalizeWords, similarity: _similarity, countRecentModelCards } =
   _createRequire(import.meta.url)('./lib/ux-walkthrough-filing.js');
 
 function loadDotenv(path = '.env') {
@@ -1210,19 +1210,18 @@ async function existingCardTitles() {
       const closed = await linear.graphql(
         `query($after: String) {
           issues(filter: { team: { key: { eq: "BRO" } }, title: { startsWith: "UX audit:" } },
-                 first: 250, after: $after, includeArchived: true) {
+                 first: 250, after: $after, includeArchived: true, orderBy: createdAt) {
             pageInfo { hasNextPage endCursor }
-            nodes { title createdAt }
+            nodes { title createdAt description }
           }
         }`,
         { after: null }
       );
-      recentCount = 0;
-      const cutoff = Date.now() - MODEL_COOLDOWN_DAYS * 86400000;
-      for (const n of closed?.issues?.nodes || []) {
-        if (n.title) titles.push(n.title);
-        if (Date.parse(n.createdAt) >= cutoff) recentCount++;
-      }
+      for (const n of closed?.issues?.nodes || []) if (n.title) titles.push(n.title);
+      // null (malformed response, bad date, window not fully covered) leaves recentCount undefined: fail closed.
+      const recent = countRecentModelCards(closed?.issues);
+      if (recent !== null) recentCount = recent;
+      else console.error('[ux-walkthrough] WARN could not read UX card history reliably: model opinions are held tonight');
     } catch (err) {
       // Non-fatal: dedup against the open board still works, we just lose the
       // closed-findings half. Say so rather than silently narrowing.

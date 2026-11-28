@@ -130,6 +130,28 @@ function priorityFor(_finding) {
 }
 
 /**
+ * PURE. How many MODEL-opinion UX cards were created in the last `days` days, for the model-opinion cooldown.
+ * Returns null (callers fail CLOSED) when the answer cannot be trusted: no node list, an unparsable createdAt,
+ * or a first page (newest first) that ends inside the window while more pages exist.
+ * Deterministic cards do not count: they are exempt from the cooldown, so they must not trigger it either.
+ */
+function countRecentModelCards(issues, now = Date.now(), days = MODEL_COOLDOWN_DAYS) {
+  const nodes = issues && issues.nodes;
+  if (!Array.isArray(nodes)) return null;
+  const cutoff = now - days * 86400000;
+  let count = 0;
+  let oldest = Infinity;
+  for (const n of nodes) {
+    const t = Date.parse(n && n.createdAt);
+    if (!Number.isFinite(t)) return null;
+    oldest = Math.min(oldest, t);
+    if (t >= cutoff && /responding review models/.test(String(n.description || ''))) count++;
+  }
+  if (issues.pageInfo && issues.pageInfo.hasNextPage && oldest >= cutoff) return null;
+  return count;
+}
+
+/**
  * Decide what to file.
  *
  * @param {object}   args
@@ -164,8 +186,11 @@ function planFilings({ findings = [], existing = null } = {}) {
   const recentFiled = Number.isFinite(existing.recentCount) ? existing.recentCount : Infinity;
   let modelFiledThisRun = 0;
 
-  for (const f of findings || []) {
-    if (!f) continue;
+  // Measurements (dead control, probe) take the one nightly slot before opinions do; stable within each group.
+  const ordered = (findings || []).filter(Boolean);
+  ordered.sort((a, b) => (b.deterministic ? 1 : 0) - (a.deterministic ? 1 : 0));
+
+  for (const f of ordered) {
     if (!f.deterministic && !(f.agreementCount >= MIN_AGREEMENT)) {
       skippedLowAgreement.push(titleFor(f));
       continue;
@@ -208,4 +233,5 @@ module.exports = {
   titleFor,
   priorityFor,
   planFilings,
+  countRecentModelCards,
 };
