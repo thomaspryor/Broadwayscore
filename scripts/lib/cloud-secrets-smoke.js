@@ -13,7 +13,7 @@
  * Pure parts (judge*, summarize, selectChecks) are unit-tested; run* do I/O.
  */
 const https = require('https');
-require('./cloud-proxy');
+const { proxyStatus } = require('./cloud-proxy');
 
 const GROUPS = {
   scrapingdog: ['SCRAPINGDOG_API_KEY'],
@@ -105,9 +105,11 @@ async function runGroup(group, env) {
     const { fetchPage } = require('./scraper');
     try {
       const r = await fetchPage('https://example.com/', { tiers: [group], skipVerify: true });
-      return judgeScrape(r);
+      const result = judgeScrape(r);
+      if (!result.ok && group === 'scrapingbee') result.detail += proxyDiagnostic();
+      return result;
     } catch (e) {
-      return { ok: false, detail: `fetchPage(${group}) failed: ${String(e.message).slice(0, 120)}` };
+      return { ok: false, detail: `fetchPage(${group}) failed: ${String(e.message).slice(0, 120)}${group === 'scrapingbee' ? proxyDiagnostic() : ''}` };
     }
   }
   if (group === 'playwright') {
@@ -136,6 +138,11 @@ async function runGroup(group, env) {
     res = await httpsJson(`https://formspree.io/api/0/forms/${env.FORMSPREE_SUBSCRIBER_FORM_ID}/submissions?limit=1`, { Authorization: `Bearer ${env.FORMSPREE_SUBSCRIBER_API_KEY}` });
   }
   return judgeApi(group, res.status, res.data);
+}
+
+function proxyDiagnostic() {
+  const { reason } = proxyStatus('app.scrapingbee.com');
+  return reason ? `; ScrapingBee proxy off: ${reason}` : '; ScrapingBee proxy configured';
 }
 
 /** Runs every selected group; never throws. */

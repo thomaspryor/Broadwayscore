@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 const { shouldProxy, withProxyAgent } = require('../../scripts/lib/cloud-proxy.js');
 
@@ -56,4 +57,32 @@ test('install: wraps an existing https.get instead of rebuilding it on https.req
   } finally {
     https.request = saved.request; https.get = saved.get;
   }
+});
+
+test('reports why ScrapingBee is not proxied, including a missing agent', () => {
+  const { proxyStatus } = require('../../scripts/lib/cloud-proxy.js');
+  assert.match(proxyStatus('app.scrapingbee.com', {}).reason, /CLAUDE_CODE_REMOTE/);
+  assert.match(proxyStatus('app.scrapingbee.com', { CLAUDE_CODE_REMOTE: 'true' }).reason, /HTTPS_PROXY/);
+  assert.match(proxyStatus('app.scrapingbee.com', cloud, () => null).reason, /https-proxy-agent/);
+  assert.equal(proxyStatus('app.scrapingbee.com', cloud, () => ({})).reason, null);
+  assert.equal(shouldProxy('app.scrapingbee.com', cloud), true);
+  assert.deepEqual(withProxyAgent(['https://app.scrapingbee.com/'], cloud, () => null), ['https://app.scrapingbee.com/']);
+});
+
+test('missing package is diagnosed by the real agent loader', () => {
+  const script = `
+    const Module = require('module');
+    const load = Module._load;
+    Module._load = function(name, ...rest) {
+      if (name === 'https-proxy-agent') throw new Error('module unavailable');
+      return load.call(this, name, ...rest);
+    };
+    const { proxyStatus, withProxyAgent } = require('./scripts/lib/cloud-proxy');
+    const env = { CLAUDE_CODE_REMOTE: 'true', HTTPS_PROXY: 'http://127.0.0.1:1' };
+    const args = ['https://app.scrapingbee.com/'];
+    if (!/https-proxy-agent/.test(proxyStatus('app.scrapingbee.com', env).reason)) process.exit(1);
+    if (withProxyAgent(args, env) !== args) process.exit(2);
+  `;
+  const result = spawnSync(process.execPath, ['-e', script], { encoding: 'utf8', env: { ...process.env, CLAUDE_CODE_REMOTE: 'false' } });
+  assert.equal(result.status, 0, result.stderr);
 });

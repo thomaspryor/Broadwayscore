@@ -8,7 +8,7 @@
  * only ScrapingBee broke). Requiring this module patches https.request/get so
  * a request to a ScrapingBee host with no explicit agent uses the proxy. It is
  * a no-op everywhere else (Mac, GitHub Actions), and when https-proxy-agent
- * is not installed.
+ * is not installed. proxyStatus explains a direct ScrapingBee connection.
  *
  * Covers https.get/https.request callers and global fetch. axios already
  * honors HTTPS_PROXY on its own, so it needs no patch.
@@ -51,12 +51,21 @@ function proxyAgent(env = process.env) {
 }
 
 /** Pure-ish: add `agent` to the (url|options, options?, cb?) args when needed. */
-function withProxyAgent(args, env = process.env) {
+function proxyStatus(host, env = process.env, getAgent = proxyAgent) {
+  if (!PROXIED_HOST_RE.test(String(host || ''))) return { reason: null };
+  const reasons = [];
+  if (env.CLAUDE_CODE_REMOTE !== 'true') reasons.push("CLAUDE_CODE_REMOTE is not 'true'");
+  if (!(env.HTTPS_PROXY || env.https_proxy)) reasons.push('HTTPS_PROXY/https_proxy is unset');
+  if (!reasons.length && !getAgent(env)) reasons.push('https-proxy-agent could not be loaded or initialized');
+  return { reason: reasons.length ? reasons.join('; ') : null };
+}
+
+function withProxyAgent(args, env = process.env, getAgent = proxyAgent) {
   const urlish = typeof args[0] === 'string' || args[0] instanceof URL;
   const optIdx = urlish ? (typeof args[1] === 'object' && args[1] !== null ? 1 : -1) : 0;
   const host = hostOf(args[0]);
   if (!shouldProxy(host, env)) return args;
-  const agent = proxyAgent(env);
+  const agent = getAgent(env);
   if (!agent) return args;
   const out = args.slice();
   if (optIdx === -1) out.splice(1, 0, { agent });
@@ -98,4 +107,4 @@ function installFetch(env = process.env) {
 
 if (process.env.CLAUDE_CODE_REMOTE === 'true') install();
 
-module.exports = { shouldProxy, withProxyAgent, install, PROXIED_HOST_RE };
+module.exports = { shouldProxy, withProxyAgent, proxyStatus, install, PROXIED_HOST_RE };

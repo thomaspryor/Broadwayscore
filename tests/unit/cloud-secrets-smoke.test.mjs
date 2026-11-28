@@ -38,3 +38,20 @@ test('summarize: counts failures', () => {
   assert.equal(s.failed, 1);
   assert.match(s.lines[1], /✗ b/);
 });
+
+test('ScrapingBee failure reports the transport proxy status', async () => {
+  const scraperPath = require.resolve('../../scripts/lib/scraper.js');
+  const original = require.cache[scraperPath];
+  require.cache[scraperPath] = { id: scraperPath, filename: scraperPath, loaded: true, exports: { fetchPage: async () => { throw new Error('HTTP 403'); } } };
+  const previous = process.env.CLAUDE_CODE_REMOTE;
+  delete process.env.CLAUDE_CODE_REMOTE;
+  try {
+    const { runSmoke } = require('../../scripts/lib/cloud-secrets-smoke.js');
+    const [result] = await runSmoke({ SCRAPINGBEE_API_KEY: 'test' }, { only: ['scrapingbee'] });
+    assert.match(result.detail, /HTTP 403/);
+    assert.match(result.detail, /CLAUDE_CODE_REMOTE/);
+  } finally {
+    if (previous === undefined) delete process.env.CLAUDE_CODE_REMOTE; else process.env.CLAUDE_CODE_REMOTE = previous;
+    if (original) require.cache[scraperPath] = original; else delete require.cache[scraperPath];
+  }
+});
