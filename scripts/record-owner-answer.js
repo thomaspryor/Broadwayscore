@@ -107,7 +107,7 @@ async function voidFacts(issue, text, { git = require('./lib/visual-approval.js'
   // and the job's limit is 5). Never make a full clone shallow. A hold forked earlier has no merge-base here, the
   // diff below throws, and the Void is refused with that reason (fails closed).
   let deepen = [];
-  try { if (git(['rev-parse', '--is-shallow-repository']) === 'true') deepen = ['--no-tags', `--shallow-since=${since - 6 * 3600}`]; } catch { /* not a repo: the fetch below fails closed */ }
+  try { if (git(['rev-parse', '--is-shallow-repository']) === 'true') deepen = ['--no-tags', `--shallow-since=${new Date((since - 6 * 3600) * 1000).toISOString()}`]; } catch { /* not a repo: the fetch below fails closed */ }
   try {
     // Gone from origin = nothing left to ship (the lander's holdSettled reads it the same way). But after an owner
     // yes (BRO-8451: the hold was deleted by a wrong cleanup) a Void would hide that the yes went nowhere: then
