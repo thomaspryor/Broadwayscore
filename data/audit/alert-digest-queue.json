@@ -1,1 +1,33 @@
-[]
+[
+  {
+    "conditionKey": "land:land/bro-8274-afronauts-v2",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8274-afronauts-v2",
+    "description": "land.yml did not land land/bro-8274-afronauts-v2: the scripts-lib-tests gate went red at aebf9c0bff. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46134134598",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8274-afronauts-v2"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "aebf9c0bffae717736e1529b7ffac9655b57e7a8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46134134598"
+      }
+    ],
+    "queuedAt": "2026-11-28T10:34:45.798Z"
+  }
+]
