@@ -1,17 +1,41 @@
 {
-  "generatedAt": "2026-11-28T03:59:13.209Z",
-  "night": "2026-11-26",
+  "generatedAt": "2026-11-28T07:21:01.173Z",
+  "night": "2026-11-27",
   "counts": {
-    "total": 0,
+    "total": 5,
     "passed": 0,
-    "failed": 0,
-    "notGraded": 0
+    "failed": 1,
+    "notGraded": 4
   },
-  "lines": [],
+  "lines": [
+    {
+      "verdict": "FAIL",
+      "line": "Jack and The Beanstalk: published by the regular pipeline; british-theatre fixed by hand at 12:44pm; west-end-best-friend fixed by hand at 12:45pm; thereviewshub fixed by hand at 2:37pm; thestage fixed by hand at 3:08pm; londontheatre1 fixed by hand at 9:48pm; 2 of 4 reviews live by 6:00pm; The Telegraph not live by 9:56pm; The Times (UK) not live by 9:56pm. Failed."
+    },
+    {
+      "verdict": "UNKNOWN",
+      "line": "Dick Whittington: Adults Only: not graded, no reviews were published overnight."
+    },
+    {
+      "verdict": "UNKNOWN",
+      "line": "Ebony Scrooge: published by the regular pipeline; all-that-dazzles-uk fixed by hand at 12:24pm; londontheatre1 fixed by hand at 12:24pm; thereviewshub fixed by hand at 12:24pm; 5 of 5 reviews live by 6:00pm. Not graded: could not check the critics list at the 2-hour mark or which reviews came in that night."
+    },
+    {
+      "verdict": "PENDING",
+      "line": "Samson et Dalila: not graded yet, still being checked."
+    },
+    {
+      "verdict": "PENDING",
+      "line": "Trilogies: Triathlon: not graded yet, still being checked."
+    }
+  ],
   "scoreboard": {
     "graded": 28,
     "passed": 4,
     "passedOnOwn": 3
   },
-  "missFirstSeen": {}
+  "missFirstSeen": {
+    "jack-and-the-beanstalk-off-west-end-2026|2026-11-27|review:telegraph:": "2026-11-28T07:21:01.173Z",
+    "jack-and-the-beanstalk-off-west-end-2026|2026-11-27|review:times-uk:": "2026-11-28T07:21:01.173Z"
+  }
 }
