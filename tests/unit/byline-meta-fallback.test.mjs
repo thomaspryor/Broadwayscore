@@ -38,3 +38,12 @@ test('stripTrailingDot: strips a period after a name word, keeps initials and Jr
   const res = readPageBylineForShow({ html: page('<meta name="author" content="Michela Smith.">'), url: 'https://example.com/x', outletId: 'artsfuse' });
   if (res.criticName) assert.doesNotMatch(res.criticName, /[a-z]\.$/);
 });
+
+// BRO-8255 class guard: the lowest reader strips too, so direct callers (ingest-urls, sweep-stored-bylines) cannot store "Name."
+test('readPageByline itself strips a trailing period (direct callers bypass the show-aware wrapper)', () => {
+  const { readPageByline, stripTrailingDot } = require('../../scripts/lib/page-byline.js');
+  assert.equal(stripTrailingDot('Michela Smith.'), 'Michela Smith');
+  assert.equal(stripTrailingDot('Robert Downey Jr.'), 'Robert Downey Jr.');
+  const res = readPageByline({ html: page('<meta name="author" content="Michela Smith.">'), url: 'https://example.com/x', outletId: 'artsfuse' });
+  if (res.criticName) assert.doesNotMatch(res.criticName, /[a-z]\.$/);
+});

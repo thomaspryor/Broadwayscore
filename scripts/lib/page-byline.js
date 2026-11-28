@@ -25,6 +25,14 @@
  */
 'use strict';
 
+// BRO-8255: a sentence-final period rides along with a name taken from prose ("Michela Smith.").
+// Strip it after a 2+ letter word; an initial ("J.") and Jr./Sr. keep theirs. Lives here, the lowest
+// reader, so ingest-urls, sweep-stored-bylines and the show-aware wrapper all get it.
+function stripTrailingDot(name) {
+  if (typeof name !== 'string') return name;
+  return name.replace(/\s+$/, '').replace(/([A-Za-z\u00C0-\u024F'\u2019-]{2,})\.$/, (m, w) => (/^(?:Jr|Sr)$/i.test(w) ? m : w));
+}
+
 function readPageByline({ html, text = '', url, outletId } = {}) {
   if (!html) return { criticName: null, bylineConflict: null, source: null };
   const bx = require('./byline-extraction');
@@ -53,7 +61,7 @@ function readPageByline({ html, text = '', url, outletId } = {}) {
   }
   let bylineConflict = null;
   try { bylineConflict = bx.detectBylineConflict({ html, text, url, outletId, chosen: criticName }); } catch { bylineConflict = null; }
-  return { criticName, bylineConflict, source };
+  return { criticName: stripTrailingDot(criticName), bylineConflict, source };
 }
 
 /**
@@ -84,4 +92,4 @@ function articleWasRead(textLength) {
   return textLength == null || textLength >= MIN_ARTICLE_CHARS;
 }
 
-module.exports = { readPageByline, bylineConflictStands, articleWasRead, MIN_ARTICLE_CHARS };
+module.exports = { readPageByline, stripTrailingDot, bylineConflictStands, articleWasRead, MIN_ARTICLE_CHARS };

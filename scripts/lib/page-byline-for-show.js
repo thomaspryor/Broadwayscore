@@ -9,7 +9,7 @@
  */
 'use strict';
 
-const { readPageByline } = require('./page-byline');
+const { readPageByline, stripTrailingDot } = require('./page-byline');
 
 const norm = (n) => String(n || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
@@ -48,13 +48,6 @@ function readPageBylineForShow({ html, text = '', url, outletId, excludeNames, p
 function properCase(name) {
   if (!name || name !== name.toUpperCase() || name === name.toLowerCase()) return name;
   return name.toLowerCase().replace(/(^|[\s'\u2019-])([a-z])/g, (m, a, b) => a + b.toUpperCase());
-}
-
-// BRO-8255: a sentence-final period rides along with a name taken from prose ("Michela Smith.").
-// Strip it after a 2+ letter word; an initial ("J.") and Jr./Sr. keep theirs.
-function stripTrailingDot(name) {
-  if (typeof name !== 'string') return name;
-  return name.replace(/\s+$/, '').replace(/([A-Za-z\u00C0-\u024F'\u2019-]{2,})\.$/, (m, w) => (/^(?:Jr|Sr)$/i.test(w) ? m : w));
 }
 
 function readPageBylineForShowCased(args) {
