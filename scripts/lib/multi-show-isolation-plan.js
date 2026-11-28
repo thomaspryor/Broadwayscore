@@ -7,7 +7,7 @@
  */
 
 const {
-  isMultiShowPostUrl, isolateMultiShowSectionForShowId, findSectionHeadings, findHeadingsForUrl, headingShowName, normSectionText,
+  isMultiShowPostUrl, isolateMultiShowSectionForShowId, isolatedSectionByline, multiShowStrategyFor, findSectionHeadings, findHeadingsForUrl, headingShowName, normSectionText,
 } = require('./multi-show-section-extract');
 const { markRescoreNeeded } = require('./rescore-flagging');
 
@@ -195,4 +195,29 @@ function needsRefetch(data) {
   return findHeadingsForUrl(data.url, String(data.fullText || '')).length < 2;
 }
 
-module.exports = { planIsolation, planStaleWholePostRejection, verdictCitesOtherSection, verdictReason, quotedTitles, planRefetchedIsolation, needsRefetch };
+/**
+ * BRO-8457: a stored row on a host that prints one byline per item (Nine live-reviews
+ * wraps) whose criticName is not the byline of this show's item (rows written before
+ * BRO-8453 kept the page byline = the first item's critic). Reads the byline off the
+ * ISOLATED item (stored text may still be the whole wrap).
+ * @returns {{ok:true}|{ok:false, skip:string}|{ok:false, mismatch:true, from:string, to:string|null, manual:boolean}}
+ */
+function planSectionBylineFix(data, showId) {
+  if (!data || !data.url || !data.fullText) return { ok: false, skip: 'no-text' };
+  const st = multiShowStrategyFor(data.url);
+  if (!st || !st.sectionByline) return { ok: false, skip: 'host-has-no-section-byline' };
+  const iso = isolateMultiShowSectionForShowId(data.url, data.fullText, showId);
+  // refuse: no item for this show, nothing to verify against.
+  if (iso.action === 'refuse') return { ok: false, skip: 'refuse' };
+  // single-section: the stored text is already one item (isolated earlier, or a standalone
+  // review). Its own byline is the item's critic, so verify against the stored text itself.
+  const want = isolatedSectionByline(data.url, iso.action === 'isolated' ? iso.text : data.fullText);
+  const have = String(data.criticName || '').trim();
+  // the byline regex can run one word past the name ("Harriet Cunningham It"): the stored name as a whole-word prefix is a match
+  if (want && (want.toLowerCase() === have.toLowerCase() || want.toLowerCase().startsWith(have.toLowerCase() + ' ') && have.split(' ').length >= 2)) return { ok: true, verifiedFrom: iso.action };
+  if (!want && /^unknown$/i.test(have)) return { ok: true, verifiedFrom: iso.action };
+  if (!want && iso.action !== 'isolated') return { ok: false, skip: 'cannot-verify-no-byline-in-text' };
+  return { ok: false, mismatch: true, from: have, to: want, manual: !!(data.criticNameManual || data._locked === true) };
+}
+
+module.exports = { planSectionBylineFix, planIsolation, planStaleWholePostRejection, verdictCitesOtherSection, verdictReason, quotedTitles, planRefetchedIsolation, needsRefetch };

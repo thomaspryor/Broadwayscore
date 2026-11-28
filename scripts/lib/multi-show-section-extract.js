@@ -324,8 +324,7 @@ function showTitleFor(showId) {
   if (!_titles) {
     _titles = new Map();
     try {
-      const raw = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
-      for (const s of (raw.shows || raw)) if (s && s.id) _titles.set(s.id, s.title || '');
+      for (const s of require('./shows-json-path').readShowsList()) if (s && s.id) _titles.set(s.id, s.title || '');
     } catch { /* shows.json unavailable: empty title => a multi-section post refuses (safe) */ }
   }
   return _titles.get(showId) || '';

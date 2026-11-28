@@ -6,6 +6,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const m = require('../../scripts/lib/multi-show-section-extract.js');
+m.seedShowTitlesForTest({ 'room-view-2026': 'A Room with a View', 'band-name-2026': 'Band Name' });
 
 const WRAP_URL = 'https://www.theage.com.au/culture/live-reviews/melbourne-review-wrap-example-20261115-p61zzz.html';
 
@@ -117,6 +118,24 @@ test('isolation plan: a Nine wrap verdict naming another item is judged with the
   assert.equal(plan.needsRefetch({ url: WRAP_URL, wrongShow: true, fullText: own }), true);
 });
 
+// BRO-8457: stored rows written before BRO-8453 credit every item to the first item's critic.
+test('planSectionBylineFix flags a stored non-first item credited to the page byline', () => {
+  const plan = require('../../scripts/lib/multi-show-isolation-plan.js');
+  const row = { url: WRAP_URL, fullText: WRAP, criticName: 'Alex Example' };
+  const iso = m.isolateMultiShowSection(WRAP_URL, WRAP, 'A Room with a View');
+  assert.equal(m.isolatedSectionByline(WRAP_URL, iso.text), 'Sam Sample');
+  const hit = plan.planSectionBylineFix(row, 'room-view-2026');
+  assert.deepEqual(hit, { ok: false, mismatch: true, from: 'Alex Example', to: 'Sam Sample', manual: false });
+  assert.equal(plan.planSectionBylineFix({ ...row, criticName: 'Sam Sample' }, 'room-view-2026').ok, true);
+  assert.equal(plan.planSectionBylineFix({ ...row, criticNameManual: true }, 'room-view-2026').manual, true);
+  assert.deepEqual(plan.planSectionBylineFix({ ...row, url: 'https://example.com/x' }, 'room-view-2026'), { ok: false, skip: 'host-has-no-section-byline' });
+  assert.deepEqual(plan.planSectionBylineFix({ url: WRAP_URL }, 'x'), { ok: false, skip: 'no-text' });
+  // already-isolated stored text (single item) is verified against its own byline
+  const one = m.isolateMultiShowSection(WRAP_URL, WRAP, 'A Room with a View').text;
+  assert.equal(plan.planSectionBylineFix({ url: WRAP_URL, fullText: one, criticName: 'Alex Example' }, 'room-view-2026').mismatch, true);
+  assert.equal(plan.planSectionBylineFix({ url: WRAP_URL, fullText: one, criticName: 'Sam Sample' }, 'room-view-2026').ok, true);
+});
+
 // BRO-8453: the collector paths must take the section byline too. Each test
 // requires the path's real decision function and asserts the SECOND item's critic.
 const paths = {
@@ -128,7 +147,6 @@ const TWO_ITEM = [
   item('MUSIC', 'Band Name', '★★★★', 'Alex Example', 'First item body with plenty of synthetic words in it to keep it long enough to stand.'),
   item('THEATRE', 'A Room with a View', '★★★½', 'Sam Sample', 'Second item body with plenty of synthetic words in it to keep it long enough to stand.'),
 ].join(' ');
-m.seedShowTitlesForTest({ 'room-view-2026': 'A Room with a View', 'band-name-2026': 'Band Name' });
 after(() => m.seedShowTitlesForTest(null));
 
 test('sectionCriticFor: section byline, null for an unsigned item, fallback off-host', () => {
