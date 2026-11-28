@@ -244,6 +244,17 @@ function traceRun(files, runner, log, root = ROOT) {
   return !(r.error || r.signal || r.status === null);
 }
 
+/**
+ * BRO-8420: with --refuse-undeclared (the local pre-flight) every path that
+ * gives no verdict still exits 0, because merge-worktree-to-main.sh reads a
+ * non-zero exit as a refusal. land-preflight.mjs tells "clean" from "not
+ * checked" by this exact line, so every such path must print it.
+ */
+const NOT_VERIFIED = 'NOT VERIFIED locally';
+function notVerifiedLine(reason) {
+  return `live-data-lane: ${NOT_VERIFIED} (reason: ${String(reason).split('\n')[0]}); land.yml will judge it.`;
+}
+
 // Advisory mode must never fail a land: any unexpected throw (an unreadable
 // manifest, a full tmp dir) is a warning and exit 0. Once blocking, the same
 // throw fails the gate, since a check that cannot run proves nothing.
@@ -252,7 +263,9 @@ function verifyChanged(args) {
   try {
     return verifyChangedInner(args);
   } catch (e) {
-    console.log(`::${blocking ? 'error' : 'warning'}::live-data-lane: --verify-changed crashed (${String(e && e.message).split('\n')[0]}).`);
+    const why = `--verify-changed crashed (${String(e && e.message).split('\n')[0]})`;
+    console.log(`::${blocking ? 'error' : 'warning'}::live-data-lane: ${why}.`);
+    if (args.includes('--refuse-undeclared')) console.log(notVerifiedLine(why));
     return blocking ? 1 : 0;
   }
 }
@@ -274,6 +287,7 @@ function verifyChangedInner(args) {
   } catch (e) {
     const level = blocking ? 'error' : 'warning';
     console.log(`::${level}::live-data-lane: cannot diff against ${base} (${String(e.message).split('\n')[0]}); skipped.`);
+    if (refuseUndeclared) console.log(notVerifiedLine(`cannot diff against ${base}`));
     return blocking ? 1 : 0;
   }
   const { node, tsx } = changedUnitTests(changed, unitBatches());
@@ -296,6 +310,7 @@ function judgeTraced({ node, tsx, blocking, refuseUndeclared, label }) {
   const max = Number(process.env.LIVE_DATA_LANE_VERIFY_MAX || 80);
   if (node.length + tsx.length > max) {
     console.log(`::notice::live-data-lane: ${node.length + tsx.length} changed test files > ${max}; skipped (bulk change). Trace them by hand: see the header of scripts/live-data-lane.js.`);
+    if (refuseUndeclared) console.log(notVerifiedLine(`${node.length + tsx.length} changed test files > ${max}, bulk change not traced`));
     return 0;
   }
   const log = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'live-lane-')), 'reads.jsonl');
@@ -315,7 +330,8 @@ function judgeTraced({ node, tsx, blocking, refuseUndeclared, label }) {
     }
   }
   if (!complete) {
-    console.log(`::${blocking ? 'error' : 'warning'}::live-data-lane: a trace run timed out or was killed, so its reads are incomplete; a clean result below proves nothing.${refuseUndeclared ? ' NOT VERIFIED locally: land.yml will judge it.' : ''}`);
+    console.log(`::${blocking ? 'error' : 'warning'}::live-data-lane: a trace run timed out or was killed, so its reads are incomplete; a clean result below proves nothing.`);
+    if (refuseUndeclared) console.log(notVerifiedLine('a trace run timed out or was killed'));
   }
   const scope = [...node, ...tsx];
   const { undeclared, stale } = check(classify(readTrace([log]), gitIndex()), (t) => declaredFile(t), scope);
@@ -329,7 +345,7 @@ function judgeTraced({ node, tsx, blocking, refuseUndeclared, label }) {
   return (undeclared.length || !complete) && blocking ? 1 : 0;
 }
 
-module.exports = { traceEnv, traceWritesToRestore, fixtureHint, changedUnitTests, isBaseline, isHotPath, liveReason, classify, check, withMarker, filterLane, gitIndex, readTrace };
+module.exports = { NOT_VERIFIED, notVerifiedLine, traceEnv, traceWritesToRestore, fixtureHint, changedUnitTests, isBaseline, isHotPath, liveReason, classify, check, withMarker, filterLane, gitIndex, readTrace };
 
 const USAGE = 'Usage: live-data-lane.js --filter=blocking|live [files] | --classify|--check|--mark <trace.jsonl>... | --verify-changed [--base=<sha>]';
 

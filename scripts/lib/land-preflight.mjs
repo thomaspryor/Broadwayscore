@@ -1130,8 +1130,13 @@ export function liveDataLaneCheck({ root, base = 'origin/main', env = process.en
       // Per runner (node, then tsx): half each, so the pair stays inside the budget.
       env: { ...env, LIVE_DATA_LANE_TRACE_TIMEOUT_MS: String(Math.floor(budgetMs / 2)) },
     });
-    // An incomplete trace (a runner timed out) exits 0 with this line: it proves nothing.
-    if (r.status === 0 && /NOT VERIFIED locally/.test(String(r.stdout || ''))) return { status: 'skip', reason: 'trace incomplete', warning: 'live-data-lane preflight: a trace run timed out, so this push was not checked for undeclared live-data tests; land.yml will judge it.' };
+    // BRO-8420: every no-verdict path (trace timeout, crash, failed base diff, bulk change over the
+    // limit) exits 0 with this line: it proves nothing, so it is a skip with the script's reason.
+    const nv = r.status === 0 ? String(r.stdout || '').match(/NOT VERIFIED locally(?: \(reason: (.*)\); land\.yml)?/) : null;
+    if (nv) {
+      const why = (nv[1] || 'a trace run timed out').slice(0, 160);
+      return { status: 'skip', reason: `trace incomplete: ${why}`, warning: `live-data-lane preflight: not verified (${why}), so this push was not checked for undeclared live-data tests; land.yml will judge it. Re-run: node scripts/live-data-lane.js --verify-changed --refuse-undeclared --base=${base}` };
+    }
     if (r.status === 0) return { status: 'clean' };
     if (r.status !== 1) return { status: 'skip', reason: `live-data-lane gave no verdict (exit ${r.status ?? r.signal ?? 'n/a'})` };
     const errors = String(r.stdout || '').split('\n').filter((l) => l.startsWith('::error::')).map((l) => `  - ${l.slice(9)}`);
