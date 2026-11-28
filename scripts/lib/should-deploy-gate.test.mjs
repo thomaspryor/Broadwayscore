@@ -656,3 +656,11 @@ test('BRO-8236 wiring: code_changed flows from the gate to the coalesce step', a
     assert.ok(y.includes('GATE_SHOW_REFRESH_SKIP_DISABLED: ${{ vars.DEPLOY_SHOW_REFRESH_SKIP_DISABLED }}'));
   });
 }
+
+test('BRO-8397: the gate pins the same Vercel project id as sync-vercel-env.js', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('./should-deploy-gate.js', import.meta.url), 'utf8');
+  const { PROJECT_ID } = require('./sync-vercel-env.js');
+  assert.ok(src.includes(`const PROJECT_ID = '${PROJECT_ID}'`));
+  assert.ok(!/require\('\.\/sync-vercel-env/.test(src), 'requiring it adds a VERCEL_TOKEN secret gap to every workflow that loads the gate');
+});

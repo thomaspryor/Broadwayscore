@@ -557,12 +557,15 @@ async function vercelJson(token, url, fetchImpl) {
   return res.json();
 }
 
+// Same id as sync-vercel-env.js PROJECT_ID (a test pins them equal). Not required from there: that module reads
+// VERCEL_TOKEN, which would add a secret gap to every workflow that loads this gate.
+const PROJECT_ID = 'prj_wmBnDUrCQCwabIAYPbnMiIP3wg15';
+
 /** Reader state of the LIVE production deployment from the Vercel project env; unknown on any failure. */
 async function fetchReaderOn({ token, deployCreatedMs, fetchImpl = fetch }) {
   const cov = require('./show-refresh/coverage.js');
   if (!token) return { on: null, why: 'no VERCEL_TOKEN' };
   try {
-    const { PROJECT_ID } = require('./sync-vercel-env.js');
     const list = await vercelJson(token, `/v9/projects/${PROJECT_ID}/env`, fetchImpl);
     const entries = list && list.envs;
     const prod = cov.readerEnvEntries(entries);
