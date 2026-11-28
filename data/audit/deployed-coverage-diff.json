@@ -1,13 +1,80 @@
 {
-  "generatedAt": "2026-11-28T19:08:42.707Z",
+  "generatedAt": "2026-11-28T19:40:53.709Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 390,
-  "clean": 390,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 391,
+  "clean": 387,
+  "defective": 4,
+  "byType": {
+    "score-drift": 4
+  },
+  "shows": [
+    {
+      "showId": "fly-you-fools-off-west-end-2026",
+      "title": "Fly You Fools",
+      "openingDate": "2026-11-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.05 vs local 92.68 (Δ7.63)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-28T19:40:44.731Z"
+    },
+    {
+      "showId": "home-im-darling-regional-2026",
+      "title": "Home, I'm Darling",
+      "openingDate": "2026-11-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.14 vs local 82.22 (Δ3.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-28T19:40:44.731Z"
+    },
+    {
+      "showId": "my-fair-lady-regional-2026",
+      "title": "My Fair Lady",
+      "openingDate": "2026-11-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 91.31 vs local 88.89 (Δ2.42)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-28T19:40:44.731Z"
+    },
+    {
+      "showId": "are-you-even-indian-off-west-end-2026",
+      "title": "Are You Even Indian?",
+      "openingDate": "2026-11-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.75 vs local 80.99 (Δ0.24)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-28T19:40:44.731Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
