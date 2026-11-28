@@ -500,6 +500,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-10-17 (BRO-4840): sole writer scripts/audit-star-band-drift.js --counts, invoked only by data-health-check.yml\'s "Published score star-band audit" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Counts only (no file names or text), regenerated each run — nothing to union.',
   },
   {
+    file: 'audit/url-place-included.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-28 (BRO-8449): sole writer scripts/audit-url-place-included.js --counts, invoked only by data-health-check.yml\'s "Included reviews whose url names another place" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Counts only (no file names or text), regenerated each run: nothing to union.',
+  },
+  {
     file: 'audit/byline-fixture-drift.json',
     surface: 'public-repo',
     status: 'single-writer',

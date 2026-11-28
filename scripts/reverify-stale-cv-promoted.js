@@ -45,6 +45,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { assessClearSafety, CLEAR_GUARD_VERSION } = require('./lib/reverify-clear-guards');
 const { selectCvPromotedNonReview, planClear } = require('./lib/cv-promoted-nonreview-selector');
 const { parseFileSpecs, fileModeHoldReason } = require('./lib/reverify-file-mode');
+const { selectUrlPlaceUnjudged, loadAcks, urlPlaceMayStoreExclusion } = require('./lib/url-place-included');
 
 const USAGE = `reverify-stale-cv-promoted.js — re-verify reviews excluded by a CV-promoted
 flag (wrongShow / wrongProduction / isNonReview) whose stored contentHash no longer
@@ -59,6 +60,7 @@ Usage:
   node scripts/reverify-stale-cv-promoted.js --cv-promoted-nonreview --opened-since=2026-07-01
                                                          select CV-promoted isNonReview files (any hash state)
                                                          on shows opened since the date instead of stale-hash findings
+  node scripts/reverify-stale-cv-promoted.js --url-place [--limit=N] [--dry-run]   (BRO-8449: included reviews whose url names another place, no fresh verdict)
   node scripts/reverify-stale-cv-promoted.js --file=<show-id>/<file>.json[,...] --dry-run
                                                          re-verify just these unflagged files' stored text;
                                                          a flagged row, or a verdict that would exclude,
@@ -131,6 +133,12 @@ async function main() {
       console.error(e.message);
       process.exit(1);
     }
+  } else if (args.includes('--url-place')) {
+    // BRO-8449: included reviews whose url names another place and that no fresh verdict has judged.
+    // Same hold rules as --file (a verdict that would newly exclude a live row is held unless
+    // --allow-new-exclusion): the rebuild's url-place-verified signal does the excluding.
+    const reviewsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'reviews.json'), 'utf8'));
+    findings = selectUrlPlaceUnjudged({ reviews: reviewsData.reviews || reviewsData, shows: showsData.shows, reviewTextsDir: REVIEW_TEXTS_DIR, acks: loadAcks() });
   } else if (args.includes('--cv-promoted-nonreview')) {
     const sinceArg = args.find(a => a.startsWith('--opened-since='));
     const openedSince = sinceArg ? sinceArg.split('=')[1] : undefined;
@@ -220,7 +228,12 @@ async function main() {
       // --file rows are picked by hand: a flagged row is left to the selector
       // sweeps, and a verdict that would newly exclude a live row is printed,
       // not written, unless --allow-new-exclusion (lib/reverify-file-mode.js).
-      const holdReason = fileModeHoldReason({ fileMode: !!fileArg, data, result, allowNewExclusion: args.includes('--allow-new-exclusion') });
+      const holdReason = fileModeHoldReason({ fileMode: !!fileArg || args.includes('--url-place'), data, result,
+        // --url-place exists to store a wrongProduction verdict (the rebuild's url-place-verified signal then
+        // excludes the tour/regional review) and only at high confidence; anything else stays held (printed, not
+        // written), so the daily audit keeps listing it until a person decides.
+        allowNewExclusion: args.includes('--allow-new-exclusion')
+          || (args.includes('--url-place') && urlPlaceMayStoreExclusion(result)) });
       if (holdReason) {
         console.log(`  Not written: ${holdReason}`);
         if (safety.safe) stats.refused++; // a safety refusal was already counted above
@@ -320,7 +333,7 @@ async function main() {
       }
 
       if (didClear) { console.log('  >>> CLEARED'); stats.cleared++; }
-      else { console.log(fileArg ? `  Verdict ${dryRun ? 'would be stored' : 'stored'} (row was not flagged)` : '  Confirmed still excluded (hash corrected)'); stats.confirmed++; }
+      else { console.log((fileArg || args.includes('--url-place')) ? `  Verdict ${dryRun ? 'would be stored' : 'stored'} (row was not flagged)` : '  Confirmed still excluded (hash corrected)'); stats.confirmed++; }
       console.log('');
 
       await new Promise(r => setTimeout(r, 300));

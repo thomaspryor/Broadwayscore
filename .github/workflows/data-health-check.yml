@@ -314,7 +314,8 @@ jobs:
     # BRO-7342: 368->374 for the two 3-min Anthropic and Gemini shutdown audit steps (job-timeout-margin gate).
     # BRO-7117: 374->379 for the 5-min opening-night timeout headroom audit step (job-timeout-margin gate).
     # BRO-8057: 379->382 for the 3-min seat-note value-expiry audit step (job-timeout-margin gate).
-    timeout-minutes: 382
+    # BRO-8449: 382->385 for the 3-min url-place included-review audit step (job-timeout-margin gate).
+    timeout-minutes: 385
     permissions:
       contents: write
       issues: write
@@ -637,6 +638,21 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/audit-star-band-drift.js --strict --alert --counts=data/audit/star-band-drift.json
 
+      # BRO-8449: included reviews whose url names another place (tour or regional) with no fresh
+      # "another production" verdict. Advisory first (CLAUDE.md rule 19): --strict is red on any unjudged
+      # file, continue-on-error keeps the job green until the weekly re-verify has cleared the backlog.
+      # --alert files one worker card per condition (scripts/lib/audit-alert.js, disposition auto,
+      # warning, 20h cooldown) and clears it when clean; missing input never clears. Hygiene rule (ad) keeps it so.
+      - name: Included reviews whose url names another place
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-url-place-included.js --strict --alert --counts=data/audit/url-place-included.json
+
       # BRO-6046: one critic's review of a show shipped at an outlet AND its syndication primary
       # (e.g. an Observer column also filed as "guardian"), plus BRO-6054: one critic at two outlets
       # that syndication-pairs.js and scripts/config/same-critic-pairs-allowlist.json do not explain. Advisory first (CLAUDE.md rule 19).
@@ -955,6 +971,7 @@ jobs:
           git add data/audit/abandoned-review-rescue.json 2>/dev/null || true
           # BRO-4840: counts-only published-score audit written by the step above.
           git add data/audit/star-band-drift.json 2>/dev/null || true
+          git add data/audit/url-place-included.json 2>/dev/null || true
           # BRO-5769: counts-only early-publish-date audit written by the step above.
           git add data/audit/early-publish-dates.json 2>/dev/null || true
           # BRO-3011: the spend-guard audit snapshot written just above.
