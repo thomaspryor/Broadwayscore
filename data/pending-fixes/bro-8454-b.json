@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8454-b",
   "planId": "96d03656-f450-4b98-a521-17f92d693584",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T20:57:13.215Z",
   "submitter": {
     "name": null,
@@ -120,5 +120,90 @@
         "description": "Retire the long-titled Iceboy duplicate row"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T22:00:09.927Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/chicagotribune--chris-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/buzznews--ken-payne.json → iceboy-regional-2026/buzznews--ken-payne.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/chicago-theatre-review--colin-douglas.json → iceboy-regional-2026/chicago-theatre-review--colin-douglas.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/curtaincallchicago--paul-lisnek.json → iceboy-regional-2026/curtaincallchicago--paul-lisnek.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/daily-herald--barbara-vitello.json → iceboy-regional-2026/daily-herald--barbara-vitello.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/entertainingchicago--alli-doubek.json → iceboy-regional-2026/entertainingchicago--alli-doubek.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/letsplaytheatricalreview--rick-mccain.json → iceboy-regional-2026/letsplaytheatricalreview--rick-mccain.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/new-city-stage--christine-trevino.json → iceboy-regional-2026/new-city-stage--christine-trevino.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/picksinsix--ed-tracy.json → iceboy-regional-2026/picksinsix--ed-tracy.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/talkinbroadway--christine-malcom.json → iceboy-regional-2026/talkinbroadway--christine-malcom.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/thefourthwalsh--katy-walsh.json → iceboy-regional-2026/thefourthwalsh--katy-walsh.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/third-coast-review--karin-mckie.json → iceboy-regional-2026/third-coast-review--karin-mckie.json",
+      "cleared": []
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: evidenceUrls updated for iceboy-regional-2026"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026 (\"Iceboy! or or The Completely Untrue Story of How Eugene O'Neill Came to Write The Iceman Cometh\" @ Goodman Theatre, Chicago, IL)"
+    }
+  ],
+  "executedIn": "ci"
 }
