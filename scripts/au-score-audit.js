@@ -6,6 +6,7 @@
  * (file name, outlet, tier, score, flags). No review text is printed, so it is safe
  * to run through cloud-run-script.js --review-texts and read the output.
  *
+// venue-write-guard-ok: read-only report, venue is printed to stdout and never written to data
  * Usage: node scripts/au-score-audit.js [--show=<id>] [--json]
  */
 const fs = require('fs');
