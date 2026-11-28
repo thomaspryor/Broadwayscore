@@ -401,11 +401,7 @@ async function main() {
       // A pre-fix Stage West ingest stored the archive sidebar as the review text. The merge only
       // fills blank fields, so blank that text first and the re-fetch replaces it (BRO-8455).
       try {
-        if (preExisting && preExisting.data && require('./lib/free-first-fetch').isStageWestSidebarText(preExisting.data.fullText)) {
-          for (const k of ['fullText', 'wordCount', 'contentTier', 'contentTierReason', 'textFetchedAt', 'fetchMethod']) delete preExisting.data[k];
-          require('./lib/review-write-guard').safeWriteReview(preExisting.path, preExisting.data, { merge: false, force: true });
-          console.log('    ↻ Cleared Stage West sidebar text; re-fetching the review body');
-        }
+        if (require('./lib/free-first-fetch').clearStageWestSidebarText(preExisting)) console.log('    ↻ Cleared Stage West sidebar text; re-fetching the review body');
       } catch { /* leave the file as is */ }
     }
     const writeResult = createOrMergeReviewFile(showId, input, {

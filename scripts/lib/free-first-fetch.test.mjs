@@ -262,6 +262,6 @@ test('Stage West: verifyFetchedUrl accepts the /2/post/ blog alias of the same s
     assert.equal(isStageWestSidebarText(null), false);
   });
   test('class guard: ingest-urls clears sidebar text before the merge', () => {
-    assert.match(_rf(new URL('../ingest-urls.js', import.meta.url), 'utf8'), /isStageWestSidebarText\(preExisting\.data\.fullText\)/);
+    assert.match(_rf(new URL('../ingest-urls.js', import.meta.url), 'utf8'), /clearStageWestSidebarText\(preExisting\)/);
   });
 }

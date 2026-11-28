@@ -327,9 +327,18 @@ function isStageWestSidebarText(text) {
   return SIDEBAR_RE.test(text) && /Southern California theater critic/i.test(text);
 }
 
+// Blank the sidebar text in a stored review file (through the sanctioned writer) so a merge can refill it.
+function clearStageWestSidebarText(existing) {
+  if (!existing || !existing.data || !isStageWestSidebarText(existing.data.fullText)) return false;
+  for (const k of ['fullText', 'wordCount', 'contentTier', 'contentTierReason', 'textFetchedAt', 'fetchMethod']) delete existing.data[k];
+  require('./review-write-guard').safeWriteReview(existing.path, existing.data, { merge: false, force: true });
+  return true;
+}
+
 module.exports = {
   isStageWestHost,
   isStageWestSidebarText,
+  clearStageWestSidebarText,
   stageWestArticleHtml,
   stageWestDirectAcceptable,
   buildWpSearchUrl,
