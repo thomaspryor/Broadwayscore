@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-28T22:26:28.287Z",
-  "moved": 0,
+  "generatedAt": "2026-11-28T22:42:52.421Z",
+  "moved": 1,
   "held": [],
   "repaired": 0,
   "integrity": {
@@ -656,6 +656,25 @@
       "tourId": "mexodus-tour-2026",
       "fromIds": [
         "mexodus-off-broadway-2026"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "funny-girl-tour-2023",
+      "fromIds": [
+        "funny-girl-2002",
+        "funny-girl-2022"
+      ],
+      "held": false,
+      "counts": {
+        "tour-review": 1
+      }
+    },
+    {
+      "tourId": "kimberly-akimbo-tour-2024",
+      "fromIds": [
+        "kimberly-akimbo-2022"
       ],
       "held": false,
       "counts": {}
