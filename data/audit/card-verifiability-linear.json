@@ -1,12 +1,20 @@
 {
-  "generatedAt": "2026-11-27T15:31:53.596Z",
-  "total": 491,
-  "armedCount": 485,
-  "refusedCount": 6,
+  "generatedAt": "2026-11-28T14:39:44.733Z",
+  "total": 500,
+  "armedCount": 493,
+  "refusedCount": 7,
   "byKind": {
-    "shape": 6
+    "shape": 7
   },
   "refused": [
+    {
+      "id": "BRO-8439",
+      "name": "SEO: put the city in regional/AU show titles (duplicate titles) + Australian page polish",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8439/seo-put-the-city-in-regionalau-show-titles-duplicate-titles-australian",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: curl -s [https://broadwayscorecard.com/show/my-fair-lady-regional-2026](<https://broadwayscorecard.com/show/my-fair-lady)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-7385",
       "name": "Migrate pinned models before shutdown: claude-sonnet-4-5 (2026-11-30), gemini-2.5-flash/pro (2026-12-01), retired claude-3-5-sonnet/haiku fallbacks",
@@ -57,12 +65,30 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 341,
-    "checked": 341,
+    "total": 338,
+    "checked": 338,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-8413",
+      "name": "Sentry error: UgcError: UGC auth otp failed (unexpected_failure)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8413/sentry-error-ugcerror-ugc-auth-otp-failed-unexpected-failure",
+      "cmd": "npx tsx --test tests/unit/sentry-7870466412.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7870466412.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-8412",
+      "name": "Sentry error: UgcError: UGC auth.email_send_code failed (otp_send)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8412/sentry-error-ugcerror-ugc-authemail-send-code-failed-otp-send",
+      "cmd": "npx tsx --test tests/unit/sentry-7870466408.test.mjs",
+      "missingPaths": [
+        "tests/unit/sentry-7870466408.test.mjs"
+      ]
+    },
     {
       "id": "BRO-8391",
       "name": "AU pilot follow-ups: confirm iOS app handles AU regional shows; check justin-clarke byline on two outlets",
@@ -79,15 +105,6 @@
       "cmd": "test -f scripts/lib/resolved-rescued-reviews-45825661136.json",
       "missingPaths": [
         "scripts/lib/resolved-rescued-reviews-45825661136.json"
-      ]
-    },
-    {
-      "id": "BRO-8293",
-      "name": "Land preflight should run live-data-lane --verify-changed before a land push",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-8293/land-preflight-should-run-live-data-lane-verify-changed-before-a-land",
-      "cmd": "node --test scripts/lib/land-preflight-live-data-lane.test.mjs",
-      "missingPaths": [
-        "scripts/lib/land-preflight-live-data-lane.test.mjs"
       ]
     },
     {
