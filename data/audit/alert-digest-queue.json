@@ -40,5 +40,32 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-28T17:15:41.847Z"
+  },
+  {
+    "conditionKey": "land-preexisting:scripts/newsletter/editorial-overrides.generate.test.mjs::West End 2026-11-09 features Pride under i#b49374cb83",
+    "title": "Test red on main: West End 2026-11-09 features Pride under its plain title with a \"moved\" editorial note [testCodeFailure]",
+    "description": "scripts/newsletter/editorial-overrides.generate.test.mjs::West End 2026-11-09 features Pride under its plain title with a \"moved\" editorial note [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-7434-showscore-count-tolerance. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46168084369",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "scripts/newsletter/editorial-overrides.generate.test.mjs::West End 2026-11-09 features Pride under its plain title with a \"moved\" editorial note [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46168084369"
+      }
+    ],
+    "queuedAt": "2026-11-28T17:23:41.459Z"
   }
 ]
