@@ -332,7 +332,7 @@ function showTitleFor(showId) {
 }
 
 /** Test seam: seed showId -> title so tests need no data/shows.json (untracked core data). */
-function seedShowTitlesForTest(obj) { _titles = new Map(Object.entries(obj || {})); }
+function seedShowTitlesForTest(obj) { _titles = obj ? new Map(Object.entries(obj)) : null; } // null resets to the lazy shows.json load
 
 /** Same gate, for writers that only know the showId (recovery scripts). */
 function isolateMultiShowSectionForShowId(url, text, showId) {
