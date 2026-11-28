@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8446",
   "planId": "95bd1ba6-3c23-47bf-8c56-e1cb5d7687a8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T15:13:46.688Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,39 @@
         "description": "BRO-8446: press night 3 Dec has not happened."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T16:02:10.204Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-jungle-book-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-jungle-book-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for fourteen-again-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for fourteen-again-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for jack-and-the-beanstalk-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for jack-and-the-beanstalk-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
