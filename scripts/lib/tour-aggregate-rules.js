@@ -71,6 +71,12 @@ function aggregateProblems(aggregate, legs) {
       problems.push(`Tour aggregate "${id}": its legs open ${span} days apart (limit ${MAX_LEG_SPAN_DAYS}); separate productions years apart are not one tour, so each keeps its own page and score (${legs.map((l) => l.id).join(', ')})`);
     }
   }
+  // A roll-up spans its legs' run: it opens when the first leg opens (BRO-8456: Paranormal
+  // Activity's aggregate carried no openingDate, so it sorted and baselined as undated).
+  if (opens.length >= 1 && aggregate && isoDay(aggregate.openingDate) === null) {
+    const first = new Date(Math.min(...opens)).toISOString().slice(0, 10);
+    problems.push(`Tour aggregate "${id}" has no openingDate: its first leg opens ${first}`);
+  }
   const named = legs.map((l) => ({ id: l.id, dirs: directorsOf(l) })).filter((l) => l.dirs.length > 0);
   if (named.length >= 2) {
     const first = named[0].dirs.join('|');
