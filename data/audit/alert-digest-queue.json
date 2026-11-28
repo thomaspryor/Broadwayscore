@@ -1644,20 +1644,6 @@
     "queuedAt": "2026-11-27T18:53:27.581Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-27.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-27T19:23:27.076Z"
-  },
-  {
     "conditionKey": "land:land/codex-bro-8264",
     "title": "Landing blocked: lint-workflows red on land/codex-bro-8264",
     "description": "land.yml did not land land/codex-bro-8264: the lint-workflows gate went red at f979ae34e6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46053562924",
@@ -2300,6 +2286,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-28T03:06:49.781Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 25 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +19 more). Checked 2026-11-28.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T04:04:53.008Z"
   },
   {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:jack-and-the-beanstalk-off-west-end-2026",
