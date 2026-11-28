@@ -205,5 +205,47 @@
       }
     ],
     "queuedAt": "2026-11-28T18:59:02.279Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-fly-you-fools-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Fly You Fools",
+    "description": "the-spy-in-the-stalls/Hannah Bothelton (the-spy-in-the-stalls--hannah-bothelton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: The scraped review clearly evaluates Recent Cutbacks' Edinburgh Fringe production of 'Fly, You Fools!' — the opening exp — https://thespyinthestalls.com/2026/11/fly-you-fools/\nthereviewshub/Jane Darcy (thereviewshub--jane-darcy.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid theater review with strong critical assessment of 'Fly You Fools!' However, the scraped content does not — https://www.thereviewshub.com/fly-you-fools-southwark-playhouse-borough-london/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T19:47:16.107Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-fly-you-fools-off-west-end-2026",
+    "title": "Placeholder synopsis on Fly You Fools",
+    "description": "synopsis for fly-you-fools-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T19:47:17.331Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-a-christmas-story-regional-2026",
+    "title": "Placeholder synopsis on A Christmas Story",
+    "description": "synopsis for a-christmas-story-regional-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T19:47:19.191Z"
   }
 ]
