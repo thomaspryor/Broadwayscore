@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T20:49:35.237Z",
+  "generatedAt": "2026-11-28T21:45:14.371Z",
   "windowDays": 45,
   "showsScanned": 300,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 469.78476805555556,
+      "fileAgeHours": 470.71776305555557,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 447.24192694444446,
+      "nonTerminalAgeHours": 448.1694638888889,
       "needsManualRecovery": true
     },
     {
@@ -38,34 +38,10 @@
       "forumLinkRecoveryCount": 10,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 439.01661055555553,
+      "fileAgeHours": 439.94969638888887,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 437.87748194444447,
+      "nonTerminalAgeHours": 438.80501888888887,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "its-a-wonderful-life-off-west-end-2026",
-      "title": "It’s a Wonderful Life",
-      "openingDate": "2026-11-24",
-      "file": "times-uk--dominic-maxwell.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/its-a-wonderful-life-review-jermyn-street-theatre-7qxhvnlhk",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-      },
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=its-a-wonderful-life-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/its-a-wonderful-life-review-jermyn-street-theatre-7qxhvnlhk --outlet=times-uk --critic=\"Dominic Maxwell\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-28T17:05:48.906Z",
-      "fileAgeHours": 3.729536111111111,
-      "gapSeenAt": "2026-11-28T20:49:35.237Z",
-      "nonTerminalAgeHours": 0,
-      "needsManualRecovery": false
     }
   ],
   "contradictions": []

@@ -378,20 +378,6 @@
     "queuedAt": "2026-11-28T20:46:36.992Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-28.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-28T20:49:35.238Z"
-  },
-  {
     "conditionKey": "star-band:regressions",
     "title": "Star-band detector: 2 review(s) flagged for anchored re-score",
     "description": "{\"unanchored\":2} across the whole corpus, by market {\"broadway\":178,\"west-end\":334,\"regional\":44,\"tour\":8}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] the-thanksgiving-play-2023/nyt-theater--jonathan-mandell.json A band 89-94\n- [unanchored] dark-of-the-moon-off-west-end-2026/whatsonstage--maygan-forbes.json 2/5 stars band 31-50",
@@ -489,6 +475,34 @@
       }
     ],
     "queuedAt": "2026-11-28T20:58:51.387Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:now-you-see-me-live-2026",
+    "title": "Review gap — \"Now You See Me Live\" missing 1 cited review(s)",
+    "description": "Now You See Me Live (now-you-see-me-live-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=now-you-see-me-live-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T21:44:56.774Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-28.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T21:45:14.372Z"
   },
   {
     "conditionKey": "land-preexisting:tests/unit/hub-closing-dates-live-data.test.mjs::hub shows with a closingDate carry a closingDateSou#ad3822e302",

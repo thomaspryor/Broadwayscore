@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T20:52:27.750Z",
+  "generatedAt": "2026-11-28T21:45:45.301Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -94,11 +94,6 @@
       "openingDate": "2026-11-24"
     },
     {
-      "id": "frozen-regional-2026",
-      "title": "Frozen",
-      "openingDate": "2026-11-27"
-    },
-    {
       "id": "a-clockwork-orange-a-play-with-music-regional-2026",
       "title": "A Clockwork Orange: A Play with Music",
       "openingDate": "2026-11-23"
@@ -155,6 +150,10 @@
     }
   ],
   "skipped": [
+    {
+      "showId": "frozen-regional-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
     {
       "showId": "trilogies-triathlon-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
