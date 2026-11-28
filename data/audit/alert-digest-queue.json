@@ -247,5 +247,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-28T19:47:19.191Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8451-au-gold",
+    "title": "Landing blocked: rebase red on land/bro-8451-au-gold",
+    "description": "land.yml did not land land/bro-8451-au-gold: the rebase gate went red at b3b640f05b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46183708125",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8451-au-gold"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b3b640f05ba6933be8758bf3730c2001471cf9cd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46183708125"
+      }
+    ],
+    "queuedAt": "2026-11-28T20:02:23.010Z"
   }
 ]
