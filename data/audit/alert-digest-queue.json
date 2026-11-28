@@ -1159,20 +1159,6 @@
     "queuedAt": "2026-11-27T04:11:30.701Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:now-you-see-me-live-2026",
-    "title": "Review gap — \"Now You See Me Live\" missing 1 cited review(s)",
-    "description": "Now You See Me Live (now-you-see-me-live-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=now-you-see-me-live-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-27T05:00:19.912Z"
-  },
-  {
     "conditionKey": "land:land/bro-8389-au-plan",
     "title": "Landing blocked: rebase red on land/bro-8389-au-plan",
     "description": "land.yml did not land land/bro-8389-au-plan: the rebase gate went red at 4cf6ededdd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/45940905138",
@@ -2229,20 +2215,6 @@
     "queuedAt": "2026-11-27T22:43:04.325Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-28.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-28T00:01:10.587Z"
-  },
-  {
     "conditionKey": "job-memory-cap:linear:BRO-8416",
     "title": "Killed runaway worker linear:BRO-8416 (memory cap)",
     "description": "Watchdog killed the headless worker for linear:BRO-8416: memory-cap 8GB (tree memory 18.4GB over 2 consecutive passes). It is recorded as a failed job; re-dispatch once the cause is understood.",
@@ -2255,6 +2227,34 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-27T23:16:59.911Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:now-you-see-me-live-2026",
+    "title": "Review gap — \"Now You See Me Live\" missing 1 cited review(s)",
+    "description": "Now You See Me Live (now-you-see-me-live-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=now-you-see-me-live-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T01:04:45.213Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-28.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T01:05:10.654Z"
   },
   {
     "conditionKey": "watchdog-park:linear:BRO-8416",
