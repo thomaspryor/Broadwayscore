@@ -240,5 +240,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-28T13:08:03.805Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets",
+    "title": "Live-data test failing: real data loads and gives the expected answers for the four JS outlets (tests/unit/site-search-market-history-live.test.mjs) — still happening after 3 days",
+    "description": "Filed BRO-8437: this has been happening for 3+ days without clearing.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"real data loads and gives the expected answers for the four JS outlets\" in tests/unit/site-search-market-history-live.test.mjs is red against the live corpus.\n\nExpected values to be strictly equal:\n+ actual - expected\n\n+ 'covered'\n- 'never-covered'\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8437",
+    "fields": [],
+    "queuedAt": "2026-11-28T13:33:48.286Z"
   }
 ]
