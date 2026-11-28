@@ -1,29 +1,41 @@
 {
-  "updatedAt": "2026-11-28T17:44:28.216Z",
-  "processed": 11,
-  "failed": 1,
-  "successRate": "91.7%",
+  "updatedAt": "2026-11-28T17:50:57.742Z",
+  "processed": 64,
+  "failed": 46,
+  "successRate": "58.2%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 45,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 7,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 6,
+    "archive": 11
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-28T17:42:07.702Z",
+      "t": "2026-11-28T17:41:35.268Z",
       "event": "bb-session",
-      "session": "a51b6874",
-      "url": "https://www.nytimes.com/2026/11/23/theater/its-a-wonderful-life-blue-man-group-n"
+      "session": "f5dc3b83",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29318"
     },
     {
-      "t": "2026-11-28T17:42:07.847Z",
+      "t": "2026-11-28T17:42:54.401Z",
+      "event": "bb-session",
+      "session": "afbea85f",
+      "url": "https://littlelondonwhispers.substack.com/p/london-theatre-review-hay-fever"
+    },
+    {
+      "t": "2026-11-28T17:45:59.009Z",
+      "event": "bb-session",
+      "session": "43b46607",
+      "url": "https://www.nytimes.com/2026/06/27/arts/sinatra-the-musical-aldwych-theatre-lond"
+    },
+    {
+      "t": "2026-11-28T17:45:59.484Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
