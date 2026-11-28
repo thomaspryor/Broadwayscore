@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T15:45:52.344Z",
+  "generatedAt": "2026-11-28T17:00:31.853Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "west-end",
       "type": "opera",
       "openingDate": "2026-11-28",
-      "status": "upcoming",
+      "status": "open",
       "slug": "adriana-mater-english-national-opera-west-end",
       "thumbnail": "/images/shows/adriana-mater-english-national-opera-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -151,6 +151,168 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ]
+    },
+    {
+      "id": "fly-you-fools-off-west-end-2026",
+      "title": "Fly You Fools",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-11-28",
+      "status": "open",
+      "slug": "fly-you-fools-off-west-end",
+      "thumbnail": "/images/shows/fly-you-fools-off-west-end-2026/thumbnail.jpg",
+      "siteScore": 94.3,
+      "liveScore": 94,
+      "scoreDrift": -0.29999999999999716,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 3,
+      "t1": 0,
+      "t2": 1,
+      "t3": 2,
+      "positive": 3,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "3/8 total",
+          "T1:0/3",
+          "T2:1/2",
+          "hi-conf:3/6"
+        ],
+        "highConfidence": 3,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-28T17:00:31.853Z",
+          "rc": 3,
+          "s": 94.3,
+          "t1": 0,
+          "t2": 1,
+          "t3": 2,
+          "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -473,6 +635,14 @@
           "isDualMarket": false
         },
         {
+          "name": "The Age",
+          "isDualMarket": false
+        },
+        {
+          "name": "Herald Sun",
+          "isDualMarket": false
+        },
+        {
           "name": "Sydney Morning Herald",
           "isDualMarket": false
         },
@@ -537,194 +707,12 @@
           "isDualMarket": false
         },
         {
+          "name": "The Daily Telegraph (Sydney)",
+          "isDualMarket": false
+        },
+        {
           "name": "Time Out Sydney",
           "isDualMarket": false
-        }
-      ]
-    },
-    {
-      "id": "jack-and-the-beanstalk-off-west-end-2026",
-      "title": "Jack and The Beanstalk",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "musical",
-      "openingDate": "2026-11-27",
-      "status": "open",
-      "slug": "jack-and-the-beanstalk-off-west-end",
-      "thumbnail": "/images/shows/jack-and-the-beanstalk-off-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
-      "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
-        ],
-        "highConfidence": 0,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Sunday Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
-          "isDualMarket": false
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Mail on Sunday",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Arts Desk",
-          "isDualMarket": false
-        },
-        {
-          "name": "British Theatre Guide",
-          "isDualMarket": false
-        },
-        {
-          "name": "BritishTheatre.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Spectator (UK)",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Reviews Hub",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
-          "name": "LondonTheatre1",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Box Office",
-          "isDualMarket": false
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-11-27T18:52:00.483Z",
-          "rc": 1,
-          "s": 76,
-          "t1": 1,
-          "t2": 0,
-          "t3": 0,
-          "p": 1,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-11-27T21:46:14.597Z",
-          "rc": 2,
-          "s": 78,
-          "t1": 2,
-          "t2": 0,
-          "t3": 0,
-          "p": 2,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-11-27T22:24:04.243Z",
-          "rc": 1,
-          "s": 76,
-          "t1": 1,
-          "t2": 0,
-          "t3": 0,
-          "p": 1,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
         }
       ]
     },
@@ -739,27 +727,27 @@
       "slug": "dick-whittington-adults-only-off-west-end",
       "thumbnail": "/images/shows/dick-whittington-adults-only-off-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 96,
+      "liveScore": 65,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 1,
       "positive": 1,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:1/6"
+          "T2:1/2",
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -897,6 +885,18 @@
           "t3": 1,
           "p": 1,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-28T17:00:31.853Z",
+          "rc": 2,
+          "s": 65,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
@@ -1377,6 +1377,14 @@
           "isDualMarket": false
         },
         {
+          "name": "The Age",
+          "isDualMarket": false
+        },
+        {
+          "name": "Herald Sun",
+          "isDualMarket": false
+        },
+        {
           "name": "Sydney Morning Herald",
           "isDualMarket": false
         },
@@ -1438,6 +1446,10 @@
         },
         {
           "name": "The Tennessean",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Telegraph (Sydney)",
           "isDualMarket": false
         },
         {
@@ -1779,6 +1791,14 @@
           "isDualMarket": false
         },
         {
+          "name": "The Age",
+          "isDualMarket": false
+        },
+        {
+          "name": "Herald Sun",
+          "isDualMarket": false
+        },
+        {
           "name": "Sydney Morning Herald",
           "isDualMarket": false
         },
@@ -1843,8 +1863,171 @@
           "isDualMarket": false
         },
         {
+          "name": "The Daily Telegraph (Sydney)",
+          "isDualMarket": false
+        },
+        {
           "name": "Time Out Sydney",
           "isDualMarket": false
+        }
+      ]
+    },
+    {
+      "id": "pride-bridge-theatre-off-west-end-2026",
+      "title": "Pride - Bridge Theatre",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-11-25",
+      "status": "open",
+      "slug": "pride-bridge-theatre-off-west-end",
+      "thumbnail": "/images/shows/pride-bridge-theatre-off-west-end-2026/thumbnail.webp",
+      "siteScore": 85.95,
+      "liveScore": 86,
+      "scoreDrift": 0.04999999999999716,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 20,
+      "t1": 2,
+      "t2": 5,
+      "t3": 13,
+      "positive": 20,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "T1:2/3"
+        ],
+        "highConfidence": 20,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-15T15:46:24.317Z",
+          "rc": 25,
+          "s": 85.61,
+          "t1": 10,
+          "t2": 7,
+          "t3": 8,
+          "p": 24,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-16T13:49:52.185Z",
+          "rc": 25,
+          "s": 85.67,
+          "t1": 10,
+          "t2": 7,
+          "t3": 8,
+          "p": 24,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-28T17:00:31.853Z",
+          "rc": 20,
+          "s": 85.95,
+          "t1": 2,
+          "t2": 5,
+          "t3": 13,
+          "p": 20,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -2167,6 +2350,14 @@
           "isDualMarket": false
         },
         {
+          "name": "The Age",
+          "isDualMarket": false
+        },
+        {
+          "name": "Herald Sun",
+          "isDualMarket": false
+        },
+        {
           "name": "Sydney Morning Herald",
           "isDualMarket": false
         },
@@ -2228,6 +2419,10 @@
         },
         {
           "name": "The Tennessean",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Telegraph (Sydney)",
           "isDualMarket": false
         },
         {
@@ -2565,6 +2760,14 @@
           "isDualMarket": false
         },
         {
+          "name": "The Age",
+          "isDualMarket": false
+        },
+        {
+          "name": "Herald Sun",
+          "isDualMarket": false
+        },
+        {
           "name": "Sydney Morning Herald",
           "isDualMarket": false
         },
@@ -2629,6 +2832,10 @@
           "isDualMarket": false
         },
         {
+          "name": "The Daily Telegraph (Sydney)",
+          "isDualMarket": false
+        },
+        {
           "name": "Time Out Sydney",
           "isDualMarket": false
         }
@@ -2658,26 +2865,26 @@
       "status": "open",
       "slug": "whispering-jack-regional-2026",
       "thumbnail": "/images/shows/whispering-jack-regional-2026/thumbnail.jpg",
-      "siteScore": 86.59,
-      "liveScore": 87,
-      "scoreDrift": 0.4099999999999966,
+      "siteScore": 88.21,
+      "liveScore": 88,
+      "scoreDrift": -0.20999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 9,
       "t1": 1,
       "t2": 3,
-      "t3": 4,
-      "positive": 8,
+      "t3": 5,
+      "positive": 9,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "8/12 total",
+          "9/12 total",
           "T1:1/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2953,6 +3160,14 @@
           "isDualMarket": false
         },
         {
+          "name": "The Age",
+          "isDualMarket": false
+        },
+        {
+          "name": "Herald Sun",
+          "isDualMarket": false
+        },
+        {
           "name": "The Spectator (UK)",
           "isDualMarket": false
         },
@@ -3010,6 +3225,10 @@
         },
         {
           "name": "The Tennessean",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Telegraph (Sydney)",
           "isDualMarket": false
         }
       ],
@@ -3082,6 +3301,18 @@
           "t2": 3,
           "t3": 4,
           "p": 8,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-28T17:00:31.853Z",
+          "rc": 9,
+          "s": 88.21,
+          "t1": 1,
+          "t2": 3,
+          "t3": 5,
+          "p": 9,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -3407,6 +3638,14 @@
           "isDualMarket": false
         },
         {
+          "name": "The Age",
+          "isDualMarket": false
+        },
+        {
+          "name": "Herald Sun",
+          "isDualMarket": false
+        },
+        {
           "name": "Sydney Morning Herald",
           "isDualMarket": false
         },
@@ -3471,6 +3710,10 @@
           "isDualMarket": false
         },
         {
+          "name": "The Daily Telegraph (Sydney)",
+          "isDualMarket": false
+        },
+        {
           "name": "Time Out Sydney",
           "isDualMarket": false
         }
@@ -3478,6 +3721,31 @@
     }
   ],
   "upcoming": [
+    {
+      "id": "the-jungle-book-west-end-2026",
+      "title": "The Jungle Book",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-11-30",
+      "status": "previews",
+      "slug": "the-jungle-book-west-end",
+      "thumbnail": "/images/shows/the-jungle-book-west-end-2026/thumbnail.webp",
+      "daysUntil": 2,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
     {
       "id": "a-kidman-carol-off-broadway-2026",
       "title": "A Kidman Carol",
@@ -3646,6 +3914,31 @@
       "preflight": false
     },
     {
+      "id": "fourteen-again-off-west-end-2026",
+      "title": "Fourteen Again",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-12-02",
+      "status": "previews",
+      "slug": "fourteen-again-off-west-end",
+      "thumbnail": "/images/shows/fourteen-again-off-west-end-2026/thumbnail.webp",
+      "daysUntil": 4,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
+      },
+      "preflight": false
+    },
+    {
       "id": "diana-the-untold-and-untrue-story-off-broadway-2026",
       "title": "Diana: The Untold and Untrue Story",
       "market": "broadway",
@@ -3759,6 +4052,31 @@
         "warnings": 2,
         "unknowns": 4,
         "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "jack-and-the-beanstalk-off-west-end-2026",
+      "title": "Jack and The Beanstalk",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "musical",
+      "openingDate": "2026-12-03",
+      "status": "previews",
+      "slug": "jack-and-the-beanstalk-off-west-end",
+      "thumbnail": "/images/shows/jack-and-the-beanstalk-off-west-end-2026/thumbnail.webp",
+      "daysUntil": 5,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
       },
       "preflight": false
     },
