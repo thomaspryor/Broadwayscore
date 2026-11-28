@@ -249,3 +249,19 @@ test('refuses a local image pointer whose file is not on disk (BRO-6881)', () =>
   const ok = applyAddShow([], { show: { ...base(), images: { poster: null } } }, { root: process.cwd() });
   assert.equal(ok.ok, true);
 });
+
+// BRO-8454: the add-show write gate refuses the same run under a long-subtitle title.
+{
+  const { newRowDuplicate } = require('./add-show-action.js');
+  const kept = { id: 'iceboy-regional-2026', title: 'Iceboy!', venue: 'Goodman Theatre, Chicago, IL', category: 'regional', previewsStartDate: '2026-06-20', openingDate: '2026-06-29', closingDate: '2026-08-16' };
+  const long = { id: 'iceboy-or-or-x-regional-2026', title: "Iceboy! or or The Completely Untrue Story of How Eugene O'Neill Came to Write The Iceman Cometh", venue: 'Goodman Theatre, Chicago, IL', category: 'regional', openingDate: '2026-06-30', closingDate: '2026-08-16' };
+  test('newRowDuplicate: same house, same close, openings a day apart, leading title is a duplicate', () => {
+    const r = newRowDuplicate([kept], long, []);
+    assert.equal(r && r.other, kept.id);
+    assert.equal(r.reason, 'same-run-leading-title');
+  });
+  test('newRowDuplicate: declared distinctFrom and a different closing date both pass', () => {
+    assert.equal(newRowDuplicate([kept], long, [kept.id]), null);
+    assert.equal(newRowDuplicate([kept], { ...long, closingDate: '2026-09-20' }, []), null);
+  });
+}

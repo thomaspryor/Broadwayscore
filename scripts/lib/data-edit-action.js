@@ -32,6 +32,9 @@ EDITABLE_DATA_FIELDS['commercial.json'].push('returnSnapshotAsOf');
 EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'noPlaybillProductionPage', 'statusBackfillSource', 'ibdbRevivalChecked', 'ibdbUrl',
   // BRO-6515: metro slug for regional/tour city hubs (scripts/lib/venue-metro.js)
   'city',
+  // BRO-8454: a duplicate merge carries the retired row's listing link (Theatre in Chicago
+  // and other city feeds key review top-ups on it) onto the row that stays.
+  'evidenceUrls',
   // BRO-6400: transfer links (a regional tryout, or a Broadway <-> West End
   // transfer). A plan sets both ends; validate-data checks they reciprocate.
   'transferOf', 'transferredTo',

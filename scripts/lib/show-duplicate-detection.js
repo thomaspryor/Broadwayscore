@@ -99,10 +99,13 @@ function orderedTitleWords(t) {
 // same run. A 2026-11-28 dry run over shows.json: 8 same-house same-close pairs with a
 // different start and openings within 3 days, 1 new hit, a real duplicate.
 const OPENING_DRIFT_DAYS = 3;
+// The drift match needs the exact same house: two rooms of one venue ("Steppenwolf Theatre" /
+// "... Upstairs") can run related titles on the same dates, so a room match is not enough there.
 function sameRunAnchor(a, b) {
   const start = runStart(a);
   if (start && start === runStart(b)) return true;
   if (!a.closingDate || a.closingDate !== b.closingDate || !a.openingDate || !b.openingDate) return false;
+  if (canonicalVenue(a) !== canonicalVenue(b)) return false;
   const gapDays = Math.abs(Date.parse(a.openingDate) - Date.parse(b.openingDate)) / 86400000;
   return Number.isFinite(gapDays) && gapDays <= OPENING_DRIFT_DAYS;
 }

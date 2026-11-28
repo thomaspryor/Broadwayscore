@@ -88,7 +88,7 @@ function marketShapeProblem(shows, show) {
   return null;
 }
 
-const { findTitleFragmentDupes, findSharedTicketIdentityDupes } = require('./show-duplicate-detection');
+const { findTitleFragmentDupes, findSharedTicketIdentityDupes, findSameRunLeadingTitleDupes } = require('./show-duplicate-detection');
 const { findDuplicateShows, rowsSharingKey } = require('./shows-duplicate-rule');
 
 const titleWords = t => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3);
@@ -100,7 +100,10 @@ function newRowDuplicate(shows, show, distinctFrom, { ticketOnly = false } = {})
   const words = new Set(titleWords(show.title));
   const near = shows.filter(s => titleWords(s.title).some(w => words.has(w)));
   const pool = [{ ...show }, ...near];
-  const hits = [...(ticketOnly ? [] : findTitleFragmentDupes(pool)), ...findSharedTicketIdentityDupes(pool)];
+  // BRO-8454: the same run under a short and a long-subtitle title ("Iceboy!" / "Iceboy! or ..."),
+  // which the fragment detector's length rule misses.
+  const leading = ticketOnly ? [] : findSameRunLeadingTitleDupes(pool).map((h) => ({ ...h, reason: 'same-run-leading-title' }));
+  const hits = [...(ticketOnly ? [] : findTitleFragmentDupes(pool)), ...leading, ...findSharedTicketIdentityDupes(pool)];
   for (const h of hits) {
     const other = h.a === show.id ? h.b : h.b === show.id ? h.a : null;
     if (other && !ok.has(other)) return { other, reason: h.reason || 'title-fragment' };

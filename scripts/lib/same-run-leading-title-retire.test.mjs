@@ -85,6 +85,11 @@ test('isSameRunLeadingTitle: opening drift needs the same closing date and at mo
   assert.equal(isSameRunLeadingTitle(iceboy, { ...iceboyLong, openingDate: '2026-07-03' }), false, '4 days');
   assert.equal(isSameRunLeadingTitle(iceboy, { ...iceboyLong, openingDate: '2026-07-02' }), true, '3 days');
   assert.equal(isSameRunLeadingTitle(iceboy, { ...iceboyLong, venue: 'Steppenwolf Theatre, Chicago, IL' }), false, 'other house');
+  // Two rooms of one venue can run related titles on the same dates: a room match is not enough for drift.
+  const mainStage = { ...iceboy, title: 'Hamlet', venue: 'New World Stages', previewsStartDate: null, openingDate: '2026-06-29' };
+  const upstairs = { ...iceboyLong, title: 'Hamlet The Musical', venue: 'New World Stages Stage 3', openingDate: '2026-06-30' };
+  assert.equal(isSameRunLeadingTitle(mainStage, upstairs), false, 'other room, drifting opening');
+  assert.equal(isSameRunLeadingTitle(mainStage, { ...upstairs, venue: mainStage.venue }), true, 'same room, drifting opening');
 });
 
 test('retire-show accepts the Iceboy long-subtitle duplicate once its reviews are gone (BRO-8454)', () => {
