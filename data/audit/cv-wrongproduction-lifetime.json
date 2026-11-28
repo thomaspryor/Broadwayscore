@@ -1,22 +1,21 @@
 {
-  "updatedAt": "2026-11-28T11:21:44.017Z",
+  "updatedAt": "2026-11-28T16:43:17.474Z",
   "scanned": 4989,
-  "showsWithViolations": 123,
-  "totalViolations": 151,
-  "newSinceLastRun": 3,
+  "showsWithViolations": 122,
+  "totalViolations": 150,
+  "newSinceLastRun": 2,
   "handled": {
     "not-shipped": 65,
-    "temporal-override-low-confidence": 1010,
-    "duplicate-not-shipped": 56,
+    "temporal-override-low-confidence": 1006,
+    "duplicate-not-shipped": 55,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
     "self-healed": 76,
     "prior-run-or-tour-leg": 48
   },
   "newViolationKeys": [
-    "titanique-2026::pages-on-stages--mason-pilevsky.json",
-    "swept-away-2024::pages-on-stages--mason-pilevsky.json",
-    "jack-and-the-beanstalk-off-west-end-2026::thestage--tracey-sinclair.json"
+    "fly-you-fools-off-west-end-2026::the-spy-in-the-stalls--hannah-bothelton.json",
+    "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json"
   ],
   "violationKeys": [
     "titanique-2026::pages-on-stages--mason-pilevsky.json",
@@ -94,21 +93,19 @@
     "the-first-year-off-west-end-2026::a-youngish-perspective--unknown.json",
     "the-first-year-off-west-end-2026::liamodell--liam-odell.json",
     "the-first-year-off-west-end-2026::thereviewshub--maryam-philpott.json",
-    "jack-and-the-beanstalk-off-west-end-2026::thestage--tracey-sinclair.json",
     "iceboy-regional-2026::around-the-town-chicago--alan-bresloff.json",
     "vanya-off-broadway-2025::theater-scene--joel-benjamin.json",
     "vanya-off-broadway-2025::thewrap--robert-hofler.json",
     "vanya-off-broadway-2025::vulture--sara-holdren.json",
     "primary-trust-off-broadway-2023::cititour--brian-scott-lipton.json",
-    "julius-caesar-globe-off-west-end-2026::thestage--holly-omahony.json",
     "nero-off-west-end-2026::theatre-weekly--greg-stewart.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::cititour--brian-scott-lipton.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::nydailynews--chris-jones.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::nypost--johnny-oleksinski.json",
     "a-small-and-quiet-light-off-west-end-2026::artsdesk--aleks-sierz.json",
     "a-small-and-quiet-light-off-west-end-2026::plays-international--maryam-philpott.json",
-    "cinderella-lyric-hammersmith-off-west-end-2026::guardian--lyndsey-winship.json",
     "sylvia-west-end-2023::standard--nick-curtis.json",
+    "fly-you-fools-off-west-end-2026::the-spy-in-the-stalls--hannah-bothelton.json",
     "crybabies-the-scaring-off-west-end-2026::london-box-office--stuart-king.json",
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
     "spamalot-tour-2025::the-moderate-voice--dough-bursch.json",
@@ -165,6 +162,7 @@
     "the-importance-of-being-earnest-west-end-2024::broadwayworld--unknown.json",
     "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json",
     "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json",
+    "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json",
     "the-blood-quilt-off-broadway-2024::theater-scene--deirdre-donovan.json",
     "sunny-afternoon-west-end-2014::standard--fiona-mountford.json",
     "oppenheimer-west-end-2015::standard--fiona-mountford.json",
@@ -1626,27 +1624,6 @@
       ]
     },
     {
-      "showId": "jack-and-the-beanstalk-off-west-end-2026",
-      "title": "Jack and The Beanstalk",
-      "openingDate": "2026-11-27",
-      "message": "thestage/Tracey Sinclair (thestage--tracey-sinclair.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid theater review with critical assessment of the production's quality, cast, and direction. However, the r — https://thestage.co.uk/reviews/jack-and-the-beanstalk-review-newcastle-theatre-royal-newcastle-upon-tyne",
-      "violations": [
-        {
-          "filename": "thestage--tracey-sinclair.json",
-          "url": "https://thestage.co.uk/reviews/jack-and-the-beanstalk-review-newcastle-theatre-royal-newcastle-upon-tyne",
-          "outletId": "thestage",
-          "criticName": "Tracey Sinclair",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "This is a valid theater review with critical assessment of the production's quality, cast, and direction. However, the r",
-          "cvIssues": [
-            "Review is of a production at The Theatre Royal (a regional UK venue, not an Off-West End London theater), not at Hackney Empire",
-            "Expected venue is Hackney Empire; the reviewed production is at The Theatre Royal (panto venue described as a 'local institution'), which is a different theater entirely"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "iceboy-regional-2026",
       "title": "Iceboy!",
       "openingDate": "2026-06-29",
@@ -1723,27 +1700,6 @@
           "cvIssues": [
             "Review publish date (2026-07-13) is ~3 years after Off-Broadway opening date (2023-05-25), indicating this may be a review of a different production run",
             "The scraped text is truncated mid-word ('played br') before reaching conclusion and critical assessment"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "julius-caesar-globe-off-west-end-2026",
-      "title": "Julius Caesar",
-      "openingDate": "2026-11-06",
-      "message": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: While this is a valid review of Phyllida Lloyd's Julius Caesar revival, it evaluates the RSC First Encounters touring pr — https://thestage.co.uk/reviews/first-encounters-julius-caesar-review-other-place-stratford-upon-avon-royal-shakespeare-company-harriet-walter",
-      "violations": [
-        {
-          "filename": "thestage--holly-omahony.json",
-          "url": "https://thestage.co.uk/reviews/first-encounters-julius-caesar-review-other-place-stratford-upon-avon-royal-shakespeare-company-harriet-walter",
-          "outletId": "thestage",
-          "criticName": "Holly O'Mahony",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "While this is a valid review of Phyllida Lloyd's Julius Caesar revival, it evaluates the RSC First Encounters touring pr",
-          "cvIssues": [
-            "Review describes a production at Shakespeare's Globe Theatre, not Sam Wanamaker Playhouse (the expected Off-West End venue)",
-            "Review discusses RSC First Encounters initiative (RSC touring schools production), not an Off-West End stage production"
           ]
         }
       ]
@@ -1844,23 +1800,6 @@
       ]
     },
     {
-      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
-      "title": "Cinderella",
-      "openingDate": "2026-11-21",
-      "message": "guardian/Lyndsey Winship (guardian--lyndsey-winship.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/nov/20/northern-ballet-cinderella-review-norwich-theatre",
-      "violations": [
-        {
-          "filename": "guardian--lyndsey-winship.json",
-          "url": "https://www.theguardian.com/stage/2026/nov/20/northern-ballet-cinderella-review-norwich-theatre",
-          "outletId": "guardian",
-          "criticName": "Lyndsey Winship",
-          "matchedBy": "url",
-          "cvReasoning": null,
-          "cvIssues": null
-        }
-      ]
-    },
-    {
       "showId": "sylvia-west-end-2023",
       "title": "Sylvia",
       "openingDate": "2023-02-15",
@@ -1877,6 +1816,27 @@
           "cvIssues": [
             "Venue mismatch: Review describes Royal Albert Hall, which is NOT an Off-West End theater (it is a major concert hall/arena)",
             "Text is truncated mid-sentence ('Alex Gaumond's Hardie is a waffly, ageing hipster, Jay')"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "fly-you-fools-off-west-end-2026",
+      "title": "Fly You Fools",
+      "openingDate": null,
+      "message": "the-spy-in-the-stalls/Hannah Bothelton (the-spy-in-the-stalls--hannah-bothelton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: The scraped review clearly evaluates Recent Cutbacks' Edinburgh Fringe production of 'Fly, You Fools!' — the opening exp — https://thespyinthestalls.com/2026/11/fly-you-fools/",
+      "violations": [
+        {
+          "filename": "the-spy-in-the-stalls--hannah-bothelton.json",
+          "url": "https://thespyinthestalls.com/2026/11/fly-you-fools/",
+          "outletId": "the-spy-in-the-stalls",
+          "criticName": "Hannah Bothelton",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "The scraped review clearly evaluates Recent Cutbacks' Edinburgh Fringe production of 'Fly, You Fools!' — the opening exp",
+          "cvIssues": [
+            "Review evaluates Edinburgh Fringe production, not Off-West End run",
+            "Opening sentence states 'Following a critically acclaimed Edinburgh Fringe run, Recent Cutbacks returns with its latest screen to stage spoof' — indicates this review is of the Fringe staging"
           ]
         }
       ]
@@ -2957,6 +2917,27 @@
           "cvIssues": [
             "Venue mismatch: Review describes performance at Irene Diamond Stage, but expected venue is Signature Center",
             "No critic byline found in scraped content (expected: David Roberts from Theatre Reviews Limited)"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "angry-alan-off-broadway-2025",
+      "title": "Angry Alan",
+      "openingDate": "2025-06-11",
+      "message": "pages-on-stages/Mason Pilevsky (pages-on-stages--mason-pilevsky.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 37d of opening, likely correct production] The scraped review describes a one-man show starring — https://pagesonstages.com/2025/07/18/angry-alan/",
+      "violations": [
+        {
+          "filename": "pages-on-stages--mason-pilevsky.json",
+          "url": "https://pagesonstages.com/2025/07/18/angry-alan/",
+          "outletId": "pages-on-stages",
+          "criticName": "Mason Pilevsky",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 37d of opening, likely correct production] The scraped review describes a one-man show starring",
+          "cvIssues": [
+            "Review stars John Krasinski as Roger; expected Off-Broadway production does not name Krasinski in cast",
+            "Review published 2025-07-17 (one day before expected review date), but describes a one-man show by Krasinski, not the expected production details"
           ]
         }
       ]
