@@ -4,6 +4,9 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+// BRO-8455: scraper.js (loaded by the verifyFetchedUrl test) reads shows.json; pin it to a fixture so a bot data commit cannot turn main red.
+const { useShowsFixture } = require('./shows-json-fixture.js');
+process.on('exit', useShowsFixture([]));
 const f = require('./free-first-fetch.js');
 const { SITE_SEARCH_ENDPOINTS } = require('./site-search-discovery.js');
 const { urlLooksLikeReview } = require('./review-guards');
