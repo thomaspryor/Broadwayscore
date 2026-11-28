@@ -21,8 +21,9 @@ const WEST_END_CORE_T1 = ['guardian', 'telegraph', 'times-uk'];
  * a mainstream West End or Broadway-market show has no core T1 expectation.
  */
 function coreT1ForShow(show) {
-  if (show.category === 'off-west-end' || show.category === 'regional') return [];
   const market = show.market || (show.category === 'west-end' ? 'west-end' : 'broadway');
+  // UK fringe/regional runs are not covered by the nationals; a regional show tagged to the broadway market keeps its list.
+  if (show.category === 'off-west-end' || (show.category === 'regional' && market !== 'broadway')) return [];
   return market === 'west-end' ? WEST_END_CORE_T1 : BROADWAY_CORE_T1;
 }
 
@@ -63,21 +64,22 @@ function run(show, context) {
 
   const reviews = context.reviewsDoc[show.id] || [];
   const coreT1 = coreT1ForShow(show);
-  if (coreT1.length === 0) {
-    return { ok: true, severity: 'ok', message: `No core T1 expectation for category ${show.category}` };
-  }
-
   // Find which core T1 outlets have reviews (any state — even unscored)
   const presentOutlets = new Set(reviews.map(r => coreSlot(r.outletId)));
   const missing = coreT1.filter(id => !presentOutlets.has(id));
+  // No expectation (off-west-end/regional UK) still flags T1 reviews that exist but are unscored.
+  const watchT1 = coreT1.length === 0 ? WEST_END_CORE_T1 : coreT1;
 
   // Find T1 reviews that exist but have no valid score
   const unscoredT1 = reviews.filter(r => {
-    if (!coreT1.includes(coreSlot(r.outletId))) return false;
+    if (!watchT1.includes(coreSlot(r.outletId))) return false;
     if (r.wrongProduction === true || r.wrongShow === true) return false;
     return r.compositeScore == null && r.assignedScore == null;
   });
 
+  if (coreT1.length === 0 && unscoredT1.length === 0) {
+    return { ok: true, severity: 'ok', message: `No core T1 expectation for category ${show.category}` };
+  }
   if (missing.length === 0 && unscoredT1.length === 0) {
     const scored = reviews.filter(r => coreT1.includes(coreSlot(r.outletId))).length;
     return {
@@ -115,7 +117,7 @@ function run(show, context) {
   }
 
   // Missing all 3 core T1s with a compositeScore is likely a pipeline failure — error
-  const severity = missing.length === coreT1.length ? 'error' : 'warning';
+  const severity = coreT1.length > 0 && missing.length === coreT1.length ? 'error' : 'warning';
 
   return {
     ok: false,

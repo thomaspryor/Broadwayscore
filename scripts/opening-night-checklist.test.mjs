@@ -1111,3 +1111,16 @@ describe('findAbandonedRemediations — drain pass for keys the window stopped c
     assert.equal(out[0].attempts, 1, 'the 4 pre-retirement attempts must not be recounted into the new cycle');
   });
 });
+
+// BRO-8447 catch 7c: no Telegraph/Times expectation for UK fringe, but an unscored T1 review still flags.
+describe('catch 7c: unscored T1 review on an off-west-end show', () => {
+  const show = { id: 'x-off-west-end-2026', title: 'X', category: 'off-west-end', market: 'west-end', compositeScore: 60, openingDate: '2026-04-10' };
+  it('is ok with no reviews', () => {
+    assert.equal(t1OutletsScored.run(show, makeContext({ reviewsDoc: {} })).ok, true);
+  });
+  it('flags an existing Guardian review with no score', () => {
+    const r = t1OutletsScored.run(show, makeContext({ reviewsDoc: { [show.id]: [{ outletId: 'guardian', compositeScore: null, assignedScore: null }] } }));
+    assert.equal(r.ok, false);
+    assert.deepEqual(r.details.missing, []);
+  });
+});
