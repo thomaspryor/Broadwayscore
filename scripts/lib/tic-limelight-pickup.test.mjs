@@ -149,3 +149,14 @@ test('wiring: the BRO-8454 gap towns are listed', () => {
   for (const c of ['Atwater Village', 'Venice', 'Topanga']) assert.ok(has('los-angeles-ca', c), c);
   for (const c of ['Tysons', 'Lorton']) assert.ok(has('washington-dc', c), c);
 });
+
+test('backfill ids join the listing once and never duplicate a live row', () => {
+  const out = daily.withBackfill([{ id: 1, reviewCount: 4 }], [1, 2, 2]);
+  assert.deepEqual(out.map((r) => r.id), [1, 2]);
+  assert.equal(out[1].backfill, true);
+});
+
+test('rules version: outside-metro rejections made before the metro towns were added are re-queued', () => {
+  const seen = { 7: { reason: 'outside-metro', retry: false }, 8: { reason: 'outside-metro', retry: false, rv: daily.RULES_VERSION } };
+  assert.deepEqual(daily.pickCandidates([{ id: 7, reviewCount: 5 }, { id: 8, reviewCount: 5 }], [], seen).map((r) => r.id), [7]);
+});

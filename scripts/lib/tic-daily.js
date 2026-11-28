@@ -24,7 +24,8 @@ const UNDER_N = /^under-\d+-outlets$/;
 // Bump when a filter rule loosens, so rejections made by the older rule are looked at once more (BRO-8454:
 // "Comedy"/"Performance Art" used to drop scripted plays). Only `type:` rejections are re-opened.
 const RULES_VERSION = 2;
-const reopened = (s) => /^type:/.test(String(s.reason)) && (s.rv || 1) < RULES_VERSION;
+// outside-metro: BRO-8454 added Atwater Village, Venice, Topanga, Tysons and Lorton, so those rejections are stale too.
+const reopened = (s) => /^(type:|outside-metro)/.test(String(s.reason)) && (s.rv || 1) < RULES_VERSION;
 
 function ticIdOf(show, city = getCity('chicago')) {
   const re = idRe(city);
@@ -33,6 +34,15 @@ function ticIdOf(show, city = getCity('chicago')) {
     if (m) return Number(m[1]);
   }
   return null;
+}
+
+/**
+ * Productions the live listing no longer shows but we still want evaluated (BRO-8454 backfill: past runs
+ * the pickup missed). Merged behind the live rows; a retry or final `seen` entry settles each as usual.
+ */
+function withBackfill(listing, ids) {
+  const have = new Set(listing.map((r) => r.id));
+  return [...listing, ...[...new Set(ids || [])].filter((id) => !have.has(id)).map((id) => ({ id, reviewCount: 99, backfill: true }))];
 }
 
 /** The newest show row (by openingDate) carrying each theatre listing id: a remount adds a second row with the same id. */
@@ -176,7 +186,7 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
       if (!df.ok) { next[row.id] = stamp; continue; }
       const show = stage.buildShowEntry({ page, detail, dates, discoveredAt: today, city, knownWriters });
       stage.dedupeId(show, page, new Set(shows.map((x) => x.id)));
-      const applied = applyAddShow(shows, { type: 'add-show', show });
+      const applied = applyAddShow(shows, { type: 'add-show', show, distinctFrom: [prior.id] });
       if (!applied.ok) { log(`id ${row.id}: remount add-show refused (${applied.error || applied.reason})`); next[row.id] = stamp; continue; }
       // The earlier season is over: its closing date was overwritten with this season's "Thru".
       if (!prior.closingDate || prior.closingDate >= show.openingDate) {
@@ -285,4 +295,4 @@ function saveAddedShows(doc, added, { save, nextSeen, today, log = () => {} }) {
   return landed;
 }
 
-module.exports = { saveAddedShows, ticIdOf, latestRowByTicId, pickCandidates, pickTopups, pickRemountChecks, isRemount, drainIngestQueue, RULES_VERSION, REMOUNT_GAP_DAYS, isRetry, evaluate, runDaily, RETRY_REASONS };
+module.exports = { withBackfill, saveAddedShows, ticIdOf, latestRowByTicId, pickCandidates, pickTopups, pickRemountChecks, isRemount, drainIngestQueue, RULES_VERSION, REMOUNT_GAP_DAYS, isRetry, evaluate, runDaily, RETRY_REASONS };

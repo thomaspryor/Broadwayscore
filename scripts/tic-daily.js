@@ -20,7 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const tic = require('./lib/theatreinchicago');
-const { runDaily, saveAddedShows, drainIngestQueue } = require('./lib/tic-daily');
+const { runDaily, saveAddedShows, drainIngestQueue, withBackfill } = require('./lib/tic-daily');
 const { getCity, assertRunnable } = require('./lib/tic-cities');
 const { openingDateFor } = require('./tic-stage-shows');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -54,7 +54,12 @@ async function stageAndAdd() {
   // `pending` = shows whose ingest dispatch was deferred by the ingest-urls cap on an earlier run.
   const pending = readJson(ADDED, {}).pending || [];
   if (!flag('dry-run')) { fs.mkdirSync(path.dirname(ADDED), { recursive: true }); fs.writeFileSync(ADDED, JSON.stringify({ on: today, added: [], pending }) + '\n'); }
-  const listing = tic.parseListing((await fetchPage(`${CITY.base}/reviewlistings.php`)).content);
+  // --ids=1,2: evaluate specific production ids that the live listing no longer shows (BRO-8454 backfill).
+  const only = arg('ids') ? arg('ids').split(',').map(Number).filter(Boolean) : null;
+  // data/audit/tic-backfill-ids.json {"dc":[...]}: past runs the pickup missed, drained under the daily cap.
+  const backfill = (readJson(path.join(ROOT, 'data', 'audit', 'tic-backfill-ids.json'), {})[CITY.key]) || [];
+  const live = only ? [] : tic.parseListing((await fetchPage(`${CITY.base}/reviewlistings.php`)).content);
+  const listing = withBackfill(live, only || backfill);
   console.log(`[tic-daily] ${listing.length} listed`);
   const io = {
     page: async (id) => tic.parseReviewsPage((await fetchPage(tic.reviewsUrl(id, 'show', CITY.base), { skipVerify: true })).content, id, CITY.base),
