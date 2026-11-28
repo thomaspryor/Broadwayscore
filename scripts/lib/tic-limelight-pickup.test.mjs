@@ -222,7 +222,9 @@ test('annual-return listing set aside as before-since is re-evaluated when the l
   assert.equal(daily.pickCandidates([{ id: 8297, reviewCount: 5 }], [], out.seen, la).length, 1);
   // The new season's reviews now date from this year: the row is added open with the printed closing date.
   const io2 = { ...io, page: async () => mk(5), dates: async () => ({ openingDate: '2026-11-20', samples: ['2026-11-20'] }) };
-  const again = await daily.runDaily({ today: '2026-11-29', listing: [{ id: 8297, reviewCount: 5 }], shows: [], seen: out.seen, io: io2, city: la });
+  const shows = [];
+  const again = await daily.runDaily({ today: '2026-11-29', listing: [{ id: 8297, reviewCount: 5 }], shows, seen: out.seen, io: io2, city: la });
   assert.equal(again.added.length, 1);
-  assert.equal(again.added[0].status, 'open');
+  assert.equal(shows[0].status, 'open');
+  assert.equal(shows[0].closingDate, '2026-12-24');
 });
