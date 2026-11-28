@@ -249,6 +249,37 @@
     "queuedAt": "2026-11-28T19:47:19.191Z"
   },
   {
+    "conditionKey": "land:land/bro-8454-limelight-followup",
+    "title": "Landing blocked: colocated-tests red on land/bro-8454-limelight-followup",
+    "description": "land.yml did not land land/bro-8454-limelight-followup: the colocated-tests gate went red at a70a1161e5. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-8454-limelight-followup @ a70a1161e5 (origin/land/bro-8454-limelight-followup) → origin/main @ 06744eb570 [land] attempt 1/3: rebased onto 06744eb570, 4 file(s) changed — running checks [land] verified-base: main moved a073796c61 → 06744eb570 across 130 file(s), substantive — re-checking on the merged tree (+8 test file(s) changed on main since the verified base); full re-check: br Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46180844087",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8454-limelight-followup"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "a70a1161e51cf5af6aef08298b5e9917ed133f84"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46180844087"
+      }
+    ],
+    "queuedAt": "2026-11-28T20:01:40.643Z"
+  },
+  {
     "conditionKey": "land:land/bro-8451",
     "title": "Landing blocked: rebase red on land/bro-8451",
     "description": "land.yml did not land land/bro-8451: the rebase gate went red at b3b640f05b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46183675033",
