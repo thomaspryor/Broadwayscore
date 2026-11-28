@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8456-tryouts",
   "planId": "82b1e589-40ea-4abd-8915-e183326532ee",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T18:19:00.678Z",
   "submitter": {
     "name": null,
@@ -188,5 +188,29 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T20:43:02.259Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added nikola-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added purple-rain-regional-2025 (priorRuns link on purple-rain-2026)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-princess-bride-regional-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added august-rush-regional-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
