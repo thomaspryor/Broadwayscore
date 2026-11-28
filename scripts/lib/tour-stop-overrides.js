@@ -42,6 +42,12 @@ function validateOverrides(doc) {
     if (!a || !Number.isInteger(a.maxLayoffDays) || a.maxLayoffDays < 366 || a.maxLayoffDays > 1500) errs.push(`${at}: maxLayoffDays must be an integer 366-1500`);
     if (!a || !a.reason) errs.push(`${at}: reason required`);
   });
+  // latestEraTours: an open tour older than its schedule page's window (BRO-8456).
+  (doc.latestEraTours || []).forEach((a, i) => {
+    const at = `latestEraTours[${i}]`;
+    if (!a || !a.tourId) errs.push(`${at}: tourId required`);
+    if (!a || !a.reason) errs.push(`${at}: reason required`);
+  });
   // No two overrides may target the same stop or chain (one's result = another's selector).
   const seen = new Map();
   doc.overrides.forEach((o, i) => {
