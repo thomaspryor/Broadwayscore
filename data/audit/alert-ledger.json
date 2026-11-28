@@ -19524,7 +19524,7 @@
       "title": "Roundup gaps: 1 listed review(s) not captured across 1 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-28T06:50:34.642Z",
+      "lastSeen": "2026-11-28T08:50:36.883Z",
       "lastNotifiedAt": "2026-11-27T21:28:23.598Z",
       "lastSurfacedAt": null,
       "notifyCount": 78,
@@ -19544,7 +19544,7 @@
         "seven-guitars-off-broadway-2026",
         "a-christmas-carol-west-end-2026"
       ],
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -50130,7 +50130,7 @@
       "linearIdentifier": null
     },
     "review-gap:opening-window:seven-guitars-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"Seven Guitars\" missing 1 cited review(s)",
       "firstSeen": "2026-11-24T05:16:15.582Z",
@@ -50141,7 +50141,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-28T08:50:36.613Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "opening-night-lane-auto-fallback:its-a-wonderful-life-a-live-radio-play-2026:2026-11-23": {
       "status": "open",
@@ -51130,13 +51132,13 @@
       "title": "Review gap — \"A Christmas Carol\" missing 1 cited review(s)",
       "firstSeen": "2026-11-25T20:52:54.894Z",
       "incidentOpenedAt": "2026-11-25T20:52:54.894Z",
-      "lastSeen": "2026-11-28T06:50:34.447Z",
+      "lastSeen": "2026-11-28T08:50:36.656Z",
       "lastNotifiedAt": "2026-11-27T15:04:37.375Z",
       "lastSurfacedAt": "2026-11-27T15:04:37.375Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "land-preexisting:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers #759a229310": {
       "status": "open",
@@ -51297,13 +51299,13 @@
       "title": "Review gap — \"Blue Man Group “A New Holiday Surprise”\" missing 1 cited review(s)",
       "firstSeen": "2026-11-26T01:14:23.038Z",
       "incidentOpenedAt": "2026-11-26T01:14:23.038Z",
-      "lastSeen": "2026-11-28T06:50:34.477Z",
+      "lastSeen": "2026-11-28T08:50:36.691Z",
       "lastNotifiedAt": "2026-11-27T18:53:27.580Z",
       "lastSurfacedAt": "2026-11-27T18:53:27.580Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "feedback-outcomes:2026-11-26T02:23:15.047524+00:00": {
       "status": "open",
@@ -51339,13 +51341,13 @@
       "title": "Review gap — \"Now You See Me Live\" missing 1 cited review(s)",
       "firstSeen": "2026-11-26T08:54:21.751Z",
       "incidentOpenedAt": "2026-11-26T08:54:21.751Z",
-      "lastSeen": "2026-11-28T06:50:34.539Z",
+      "lastSeen": "2026-11-28T08:50:36.757Z",
       "lastNotifiedAt": "2026-11-28T01:04:45.212Z",
       "lastSurfacedAt": "2026-11-28T01:04:45.212Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-remediation-exhausted-empty-cast:trilogies-triathlon-off-broadway-2026": {
       "status": "open",
