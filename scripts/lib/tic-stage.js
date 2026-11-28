@@ -1,0 +1,320 @@
+'use strict';
+
+/**
+ * Pure staging rules for theatreinchicago.com productions (BRO-6518):
+ * which crawled productions become shows.json entries, and what the entry
+ * looks like. No I/O; scripts/tic-stage-shows.js does the fetching.
+ */
+
+const { isExcludedType, mapShowType } = require('./theatreinchicago');
+const { foldDiacritics } = require('./title-match');
+const { getCity } = require('./tic-cities');
+const { resolveMetro } = require('./venue-metro');
+const { normalizeShowTitle } = require('./show-title-normalize');
+const { isFirstPartyVenueUrl } = require('./first-party-venue-url');
+const { isSameRunLeadingTitle } = require('./show-duplicate-detection');
+
+const MIN_REVIEWS = 3;
+const CHICAGO_METRO = 'chicago-il'; // data/venue-metros.json metro slug (BRO-6515)
+
+// Broadway In Chicago / touring houses: their productions are national tours
+// (tracked in data/tour-schedules.json), not local productions.
+const TOUR_HOUSES = [
+  /cibc theat/i, /cadillac palace/i, /nederlander/i, /broadway playhouse/i, /auditorium theat/i,
+  /oriental theat/i, /james m\.? nederlander/i, /lyric opera/i, /ford center/i,
+];
+
+const VIRTUAL_VENUE = /online stream|virtual|livestream|streaming|\bzoom\b|on demand|audio play/i;
+
+function normTitle(t) {
+  return foldDiacritics(String(t || ''))
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/\b(the|a|an)\b/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function slugify(t) {
+  return foldDiacritics(String(t || ''))
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/['’]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/** Distinct (outlet) reviews that carry a link to the full review. */
+function linkedReviews(page) {
+  const seen = new Set();
+  const out = [];
+  for (const r of page.reviews || []) {
+    if (!r.url) continue;
+    const key = `${r.outlet}|${r.url}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(r);
+  }
+  return out;
+}
+
+/**
+ * First-pass gate on the reviews page alone (no detail fetch yet).
+ * Returns { ok:true } or { ok:false, reason }.
+ */
+function prefilter(page, city = getCity('chicago')) {
+  if (!page || page.empty) return { ok: false, reason: 'empty' };
+  const venue = page.venue || '';
+  if (VIRTUAL_VENUE.test(venue)) return { ok: false, reason: 'virtual' };
+  if ((city.tourHouses || TOUR_HOUSES).some((re) => re.test(venue))) return { ok: false, reason: 'tour-house' };
+  // Short-history launch (BRO-6771): a run that closed before the cutoff cannot qualify,
+  // and rejecting it here saves the detail and publish-date fetches.
+  if (city.since && page.closingDate && page.closingDate < city.since) return { ok: false, reason: 'before-since' };
+  const outlets = new Set(linkedReviews(page).map((r) => r.outlet));
+  const min = city.minOutlets || MIN_REVIEWS;
+  if (outlets.size < min) return { ok: false, reason: `under-${min}-outlets` };
+  return { ok: true };
+}
+
+// Type labels that mean "not a play" on some sites and "a play" on others (BRO-8454).
+const AMBIGUOUS_TYPE = /^(comedy|performance art)$/i;
+// Evidence that an ambiguous-type listing really is a non-scripted act.
+const NON_PLAY_TEXT = /\b(stand[\s-]?up|improv(?:isation|ised|isational)?|sketch(?:es)?|revue|mainstage revue|magic(?:ian)?|illusion(?:ist)?|puppet(?:s|ry)?|variety (?:show|act)|burlesque|cabaret|drag (?:show|brunch)|open mic|comedian|clown(?:ing)?|late[\s-]night)\b/i;
+const COMEDY_HOUSES = /second city|\bio (?:chicago|theat)|zanies|comedysportz|laugh factory|improv olympic|annoyance|comedy (?:club|bar|store)|groundlings|upright citizens|\bucb\b|magic parlour/i;
+
+function looksLikeNonPlay(detail, page) {
+  const hay = [detail && detail.description, page && page.title, detail && detail.title].filter(Boolean).join(' ');
+  const venue = [page && page.venue, detail && detail.venue].filter(Boolean).join(' ');
+  return NON_PLAY_TEXT.test(hay) || COMEDY_HOUSES.test(venue);
+}
+
+/** Second gate once the detail page is known. */
+function detailFilter(detail, page = null, city = getCity('chicago')) {
+  if (!detail || detail.empty) return { ok: false, reason: 'no-detail' };
+  // Theatre In DC files scripted comedies (Much Ado, The Play That Goes Wrong) under "Comedy"; Chicago's "Comedy" is stand-up/improv.
+  const allowed = (city.allowTypes || []).some((re) => re.test(detail.showType || ''));
+  if (!allowed && isExcludedType(detail.showType)) {
+    // BRO-8454: "Comedy" and "Performance Art" are catch-all labels the sites also hang on scripted plays
+    // (Midsummer Night's Dream, Who's Holiday!, Oh, Buddy, The Old Man and The Old Moon). The label alone
+    // is not enough to drop a show: it goes only when the listing itself says the act is stand-up, improv,
+    // sketch, a revue, magic or puppetry, or the house is a comedy club.
+    if (!(AMBIGUOUS_TYPE.test(detail.showType || '') && !looksLikeNonPlay(detail, page))) return { ok: false, reason: `type:${detail.showType}` };
+  }
+  // theatreindc also lists Baltimore, Columbia, Annapolis and Frederick houses: keep only
+  // venues the shared venue-metro table maps to this city's metro (BRO-6771).
+  if (city.requireMetro) {
+    const line = venueLine(detail, page || {}, city);
+    if (!line) return { ok: false, reason: 'outside-metro' };
+    if (resolveMetro(line) !== city.metro) return { ok: false, reason: 'outside-metro' };
+  }
+  return { ok: true };
+}
+
+/** "<Theater>, <City>, IL" from the detail page (address ends with the city). */
+const IL_CITIES = ['Chicago Heights', 'Oak Park', 'Oak Brook', 'Oakbrook Terrace', 'Highland Park', 'Arlington Heights', 'Lake Forest', 'Lake Zurich', 'Des Plaines', 'Park Ridge', 'Glen Ellyn', 'Downers Grove', 'La Grange', 'Forest Park', 'Morton Grove', 'Crystal Lake', 'Western Springs', 'Evergreen Park', 'Blue Island', 'Park Forest', 'Richton Park', 'St. Charles', 'Chicago', 'Evanston', 'Skokie', 'Glencoe', 'Lincolnshire', 'Aurora', 'Naperville', 'Wilmette', 'Winnetka', 'Rosemont', 'Schaumburg', 'Woodstock', 'Joliet', 'Elgin', 'Batavia', 'Geneva', 'Wheaton', 'Lombard', 'Berwyn', 'Cicero', 'Northbrook', 'Glenview', 'Niles', 'Lincolnwood', 'Palatine', 'Waukegan', 'Libertyville', 'Mundelein', 'Lemont', 'Highwood', 'Barrington', 'Harvey', 'Steger', 'Palos Heights', 'Palos Park', 'Hinsdale', 'Elmhurst', 'Villa Park', 'Bolingbrook', 'Orland Park', 'Tinley Park', 'Mokena', 'Munster', 'Oak Lawn', 'Skokie'];
+const IN_CITIES = ['Hammond', 'Gary', 'Munster', 'Valparaiso', 'Michigan City'];
+
+/**
+ * Generic "<Theater>, <City>, <ST>": the address ends with the city ("1010 Chicago
+ * Ave Evanston" is Evanston), optionally followed by ", ST 12345". A listed name
+ * must be that trailing token: "1700 Washington Blvd Baltimore" is Baltimore, not DC
+ * (BRO-6771). Returns null when the trailing token is not a listed city, so the
+ * caller rejects a venue outside the metro.
+ */
+function venueLineFromCities(theater, addr, cities) {
+  addr = String(addr).replace(/[,\s]+(?:[A-Z]{2}|Virginia|Maryland|District of Columbia)?[,\s]*\d{5}(?:-\d{4})?\s*$/i, '')
+    .replace(/[,\s]+(?:DC|D\.C\.|VA|MD|Virginia|Maryland)\s*$/i, '').trim();
+  let best = null;
+  for (const [name, state] of cities) {
+    const re = new RegExp(`\\b${name.replace('.', '\\.')}\\b`, 'gi');
+    let m;
+    while ((m = re.exec(addr))) {
+      const end = m.index + m[0].length;
+      if (end !== addr.length) continue;
+      if (!best || end > best.end || (end === best.end && name.length > best.name.length)) best = { name, state, end };
+    }
+  }
+  if (!best) return null;
+  return best.state === 'DC' ? `${theater}, Washington, DC` : `${theater}, ${best.name}, ${best.state}`;
+}
+
+/** "<Theater>, <City>, <ST>" from the detail page (the address ends with the city). */
+function venueLine(detail, page, cfg = getCity('chicago')) {
+  const theater = (detail && detail.venue) || String(page.venue || '').split(/\s+at\s+/i).pop();
+  const addr = String((detail && detail.address) || '');
+  if (cfg.venueCities) return venueLineFromCities(theater, addr, cfg.venueCities);
+  // The address is "<street> <City>": the city is the last place name in it, so
+  // "1010 Chicago Ave Evanston" is Evanston and "Chicago Heights" is not Chicago.
+  let best = null;
+  for (const city of [...IL_CITIES, ...IN_CITIES]) {
+    const re = new RegExp(`\\b${city.replace('.', '\\.')}\\b`, 'gi');
+    let m;
+    while ((m = re.exec(addr))) {
+      const end = m.index + city.length;
+      if (!best || end > best.end || (end === best.end && city.length > best.city.length)) best = { city, end };
+    }
+  }
+  const city = best ? best.city : 'Chicago';
+  const state = IN_CITIES.includes(city) && !/\bIL\b/.test(addr) ? 'IN' : 'IL';
+  return `${theater}, ${city}, ${state}`;
+}
+
+function pickYear(openingDate) {
+  return openingDate ? openingDate.slice(0, 4) : null;
+}
+
+/**
+ * Build the add-show `show` object. `dates.openingDate` is the earliest
+ * publish date among the fetched reviews (proxy for press opening).
+ */
+/** True when `closing` sits about a whole number of years (1+) after `opening`: the listing's closing
+ *  date is a later season's, not the run the reviews cover. Long open-ended runs rarely land on the
+ *  anniversary, so a +/-45 day window keeps them out. */
+function isAnnualReturn(opening, closing) {
+  if (!opening || !closing) return false;
+  const gap = (Date.parse(closing) - Date.parse(opening)) / 86400000;
+  if (!(gap >= 240)) return false;
+  const years = Math.max(1, Math.round(gap / 365));
+  return Math.abs(gap - years * 365) <= 45;
+}
+
+function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chicago'), knownWriters }) {
+  const year = pickYear(dates.openingDate);
+  const venue = venueLine(detail, page, city) || String(page.venue || ''); // venue-write-guard-ok: staged entry only; add-show runs sanitizeVenueForWrite on apply
+  // The site's own title is a display string: theatres list "Title by Playwright"
+  // (BRO-8054, "... A Fantasia in Three Acts by Calamity West" made a 334px card).
+  // Repair it HERE, before the id is slugged from it, with the same function the
+  // validator asks. The site's own description is an independent credit for a
+  // playwright nobody in the corpus credits yet. A shouted title is left as listed
+  // (never guessed at, BRO-3920).
+  // Kill switch shared with the write guard heal (SHOWS_TITLE_HEAL_DISABLED=true), so one switch stops
+  // both automatic title writers. minRemainderWords 2: an automatic writer never leaves a one-word title.
+  const norm = process.env.SHOWS_TITLE_HEAL_DISABLED === 'true'
+    ? { changed: false }
+    : normalizeShowTitle({ title: page.title, venue }, { knownWriters, sourceText: detail && detail.description, minRemainderWords: 2 });
+  const title = norm.changed && !norm.manualReview ? norm.title : page.title;
+  const base = slugify(title);
+  const id = `${base}-regional-${year}`;
+  const listedClosing = detail && detail.closingDate ? detail.closingDate : page.closingDate;
+  // BRO-8454: a listing page reused every year prints the NEXT season's closing date while its reviews
+  // are last season's (A Noise Within "A Christmas Carol": reviews 2025-12, closing 2026-12-24).
+  // The reviews describe the earlier run, so that row closes with it; the remount check stages the
+  // new season once its own reviews arrive.
+  const closing = isAnnualReturn(dates.openingDate, listedClosing) ? null : listedClosing;
+  const today = discoveredAt.slice(0, 10);
+  // No "Thru" date: a run opened >120 days ago is treated as closed (open-ended listings are rare).
+  const daysOld = (Date.parse(today) - Date.parse(dates.openingDate)) / 86400000;
+  const status = closing ? (closing < today ? 'closed' : 'open') : (daysOld > 120 ? 'closed' : 'open');
+  const entry = {
+    id,
+    title,
+    slug: id,
+    venue, // venue-write-guard-ok: staged entry only; add-show runs sanitizeVenueForWrite on apply
+    status,
+    type: mapShowType(detail && detail.showType),
+    category: 'regional',
+    market: 'regional',
+    openingDate: dates.openingDate,
+    openingDateSource: 'tic-first-review',
+    discoverySource: city.discoverySource,
+    localOnly: true,
+    // One metro hub per site (Chicagoland incl. Hammond-area IN; the DC metro).
+    city: city.metro || CHICAGO_METRO,
+    discoveredAt,
+    evidenceUrls: [`${city.base}/${page.slug || 'show'}/${page.id}/`],
+  };
+  if (closing) entry.closingDate = closing;
+  // BRO-7668: keep the theatre's own website the listing printed, when it is the
+  // venue's site, so the show page has a "Visit Official Site" button from day one
+  // instead of a missing_tickets gap no ticket enricher could fill.
+  const website = detail && detail.website ? detail.website.replace(/^http:/i, 'https:') : null;
+  if (website && isFirstPartyVenueUrl(website, venue)) {
+    entry.officialUrl = website;
+  }
+  // Keep what the site printed: search matches title + akaTitles, and a later scrape
+  // of the same listing can see the flip.
+  if (title !== page.title) {
+    entry.titleNormalizedFrom = page.title;
+    // Same full-ISO shape applyNormalizedTitle() writes (discoveredAt is date-only).
+    entry.titleNormalizedAt = /^\d{4}-\d{2}-\d{2}$/.test(String(discoveredAt)) ? `${discoveredAt}T00:00:00.000Z` : discoveredAt;
+    entry.akaTitles = [page.title];
+  }
+  return entry;
+}
+
+let tourSchedules = null;
+function defaultTourStops(id) {
+  if (!tourSchedules) {
+    try { tourSchedules = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'data', 'tour-schedules.json'), 'utf8')).tours || {}; } catch { tourSchedules = {}; }
+  }
+  return (tourSchedules[id] || {}).stops || [];
+}
+
+/**
+ * Match a staged production against existing shows. Returns the existing show
+ * (a duplicate) or null. Titles compare normalised; a tour or earlier run of
+ * the same title only counts when its dates are within ~120 days of this one.
+ */
+function findDuplicate(entry, existingShows, city = getCity('chicago'), tourStopsFor = defaultTourStops) {
+  const nt = normTitle(entry.title);
+  const open = Date.parse(entry.openingDate);
+  // A row's stored metro slug wins (every US regional row has one); only a row without one is
+  // placed from its venue string, which is free text and can be formatted any way (BRO-8450).
+  const sameMetro = (row) => (row.city
+    ? row.city === city.metro
+    : city.requireMetro
+      ? resolveMetro(row.venue) === city.metro
+      : /, (chicago|[a-z. ]+), (il|in)\b/i.test(row.venue || ''));
+  for (const s of existingShows) {
+    if (normTitle(s.title) !== nt) {
+      // BRO-8454: the same run listed under its short title elsewhere ("Iceboy!" vs
+      // "Iceboy! or, The Completely Untrue Story of..."): same house, same closing date,
+      // opening nights within a few days, and in this metro.
+      if (isSameRunLeadingTitle(entry, s) && sameMetro(s)) return s;
+      continue;
+    }
+    const so = Date.parse(s.openingDate || '');
+    if (s.category === 'regional' && sameMetro(s) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
+    if (s.category === 'tour') {
+      // BRO-8454: a same-title tour is only this production when it plays this metro near the
+      // staged dates. The old any-market 400-day match dropped real local runs (a tour that never
+      // visits the city). No schedule on file means no proof, so it is not a duplicate.
+      const win = 120 * 86400000;
+      const stops = (tourStopsFor && tourStopsFor(s.id)) || [];
+      const visits = Number.isFinite(open) && stops.some((st) => {
+        if (!sameMetro({ venue: `${st.venue || 'Theatre'}, ${st.city}` })) return false;
+        const a = Date.parse(st.start), b = Date.parse(st.end || st.start);
+        return Number.isFinite(a) && open >= a - win && open <= (Number.isFinite(b) ? b : a) + win;
+      });
+      if (visits) return s;
+      continue;
+    }
+    // Any other row must be in this metro too (BRO-8450): a same-title West End, Off-Broadway,
+    // Manchester or other-city regional row is a different production, and a duplicate verdict
+    // is final, so the old any-market fallthrough silently dropped real local productions
+    // (Paramount A Christmas Carol vs the West End row, Citadel It's a Wonderful Life vs Broadway).
+    if (sameMetro(s) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
+  }
+  return null;
+}
+
+/**
+ * Two different companies can stage the same title in the same year, and the id
+ * is a live URL: on a collision (existing show or already staged) the venue
+ * slug is appended, then the theatreinchicago id as a last resort.
+ */
+function dedupeId(entry, page, taken) {
+  if (!taken.has(entry.id)) return entry;
+  const venueSlug = slugify(String(entry.venue).split(',')[0]);
+  for (const suffix of [venueSlug, `${venueSlug}-${page.id}`, String(page.id)]) {
+    const id = `${entry.id}-${suffix}`;
+    if (!taken.has(id)) { entry.id = id; entry.slug = id; return entry; }
+  }
+  return entry;
+}
+
+module.exports = {
+  dedupeId,
+  MIN_REVIEWS, TOUR_HOUSES, VIRTUAL_VENUE,
+  normTitle, slugify, linkedReviews, prefilter, detailFilter, venueLine, venueLineFromCities, buildShowEntry, findDuplicate, looksLikeNonPlay, isAnnualReturn,
+};

@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6541-i-g",
+  "planId": "34c8d65e-9e85-46f4-acc0-e91beb629d21",
+  "status": "applied",
+  "createdAt": "2026-10-29T20:34:32.412Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest UK hub reviews (Guardian seeding reviews + census matches) (part 7 of 9)",
+    "steps": [
+      "BRO-6541: ingest thestage review for shed-exploded-view-royal-exchange-regional-2024",
+      "BRO-6541: ingest thestage review for the-gap-hope-mill-regional-2024",
+      "BRO-6541: ingest thestage review for blue-beard-royal-bath-regional-2024",
+      "BRO-6541: ingest thestage review for nanny-bristol-old-vic-regional-2024",
+      "BRO-6541: ingest thestage review for wish-you-werent-here-sheffield-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for ill-be-seeing-you-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for a-midsummer-nights-dream-chichester-festival-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for east-is-east-octagon-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for a-small-and-quiet-light-chichester-festival-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for a-history-of-paper-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for my-fair-lady-chichester-festival-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for lear-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for once-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for even-these-things-royal-exchange-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for private-lives-royal-exchange-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for the-ladies-football-club-crucible-regional-2026",
+      "BRO-6541: ingest west-end-best-friend review for gallus-in-weegieland-tron-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for safe-space-chichester-festival-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for dancing-at-lughnasa-crucible-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for top-hat-chichester-festival-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for grace-pervades-royal-bath-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for the-government-inspector-chichester-festival-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for of-mice-and-men-octagon-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for escaped-alone-and-what-if-if-only-royal-exchange-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for little-shop-of-horrors-crucible-regional-2025"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=shed-exploded-view-royal-exchange-regional-2024 --url=https://www.thestage.co.uk/reviews/shed-exploded-view-review-at-the-royal-exchange-manchester-by-phoebe-eclair-powell --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for shed-exploded-view-royal-exchange-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-gap-hope-mill-regional-2024 --url=https://www.thestage.co.uk/reviews/the-gap-review-at-hope-mill-manchester-by-anthony-banks-starring-denise-welch-and-matthew-kelly --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-gap-hope-mill-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=blue-beard-royal-bath-regional-2024 --url=https://www.thestage.co.uk/reviews/blue-beard-review-at-theatre-royal-bath-from-director-emma-rice-of-wise-children --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for blue-beard-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=nanny-bristol-old-vic-regional-2024 --url=https://www.thestage.co.uk/reviews/nanny-review-at-bristol-old-vic-by-jenny-rainsford-alana-ramsey-lizzie-stables --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for nanny-bristol-old-vic-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=wish-you-werent-here-sheffield-regional-2024 --url=https://www.thestage.co.uk/reviews/wish-you-werent-here-review-tanya-moiseiwitsch-playhouse-sheffield-theatres-katie-redford --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for wish-you-werent-here-sheffield-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ill-be-seeing-you-pitlochry-festival-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-ill-be-seeing-you-pitlochry-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for ill-be-seeing-you-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-midsummer-nights-dream-chichester-festival-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-a-midsummer-nights-dream-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for a-midsummer-nights-dream-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=east-is-east-octagon-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-east-is-east-octagon-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for east-is-east-octagon-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-small-and-quiet-light-chichester-festival-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-a-small-and-quiet-light-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for a-small-and-quiet-light-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-history-of-paper-pitlochry-festival-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-a-history-of-paper-pitlochry-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for a-history-of-paper-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=my-fair-lady-chichester-festival-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-my-fair-lady-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for my-fair-lady-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lear-pitlochry-festival-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-lear-pitlochry-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for lear-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=once-pitlochry-festival-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-once-pitlochry-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for once-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=even-these-things-royal-exchange-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-even-these-things-royal-exchange-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for even-these-things-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=private-lives-royal-exchange-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-private-lives-royal-exchange-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for private-lives-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-ladies-football-club-crucible-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-the-ladies-football-club-sheffield-crucible --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for the-ladies-football-club-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=gallus-in-weegieland-tron-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-gallus-in-weegieland-tron-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for gallus-in-weegieland-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=safe-space-chichester-festival-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-safe-space-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for safe-space-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dancing-at-lughnasa-crucible-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-dancing-at-lughnasa-sheffield-crucible --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for dancing-at-lughnasa-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=top-hat-chichester-festival-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-top-hat-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for top-hat-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=grace-pervades-royal-bath-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-grace-pervades-theatre-royal-bath --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for grace-pervades-royal-bath-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-government-inspector-chichester-festival-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-the-government-inspector-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for the-government-inspector-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=of-mice-and-men-octagon-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-of-mice-and-men-octagon-theatre-bolton-tour --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for of-mice-and-men-octagon-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=escaped-alone-and-what-if-if-only-royal-exchange-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-escaped-alone-and-what-if-if-only-royal-exchange-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for escaped-alone-and-what-if-if-only-royal-exchange-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=little-shop-of-horrors-crucible-regional-2025 --url=https://www.westendbestfriend.co.uk/news/review-little-shop-of-horrors-sheffield-crucible --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for little-shop-of-horrors-crucible-regional-2025"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T23:32:25.567Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

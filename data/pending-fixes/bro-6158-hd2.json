@@ -1,0 +1,144 @@
+{
+  "issueNumber": "bro-6158-hd2",
+  "planId": "217a3ba0-7f06-4da7-9d7e-ed0132ebcc41",
+  "status": "applied",
+  "createdAt": "2026-10-25T00:20:46.302Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Hello, Dolly! recouped per Forbes (Aug 2018): record the press recoupment, capitalization 15.9M, Trickle stays (reported)",
+    "steps": [
+      "commercial.json: hello-dolly-2017.recoupedSource",
+      "commercial.json: hello-dolly-2017.recoupedDate",
+      "commercial.json: hello-dolly-2017.isEstimate",
+      "commercial.json: hello-dolly-2017.capitalization",
+      "commercial.json: hello-dolly-2017.capitalizationSource",
+      "commercial.json: hello-dolly-2017.capitalizationBasis",
+      "commercial.json: hello-dolly-2017.designationBasis",
+      "commercial.json: hello-dolly-2017.recouped"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hello-dolly-2017",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Forbes (Aug 27, 2018): the production \"recouped its $15.9 million investment last winter\"; a Broadway Journal report (Aug 23, 2018) said investors then earned about 5% on their money. The recoupment month is our estimate from \"last winter\". https://www.forbes.com/sites/leeseymour/2018/08/27/hello-dolly-closes-with-broken-records-trickling-roi/",
+        "description": "commercial.json: hello-dolly-2017.recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hello-dolly-2017",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2018-01",
+        "description": "commercial.json: hello-dolly-2017.recoupedDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hello-dolly-2017",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recoupedDate": true
+        },
+        "description": "commercial.json: hello-dolly-2017.isEstimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hello-dolly-2017",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 15900000,
+        "description": "commercial.json: hello-dolly-2017.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hello-dolly-2017",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Forbes (Aug 27, 2018): \"recouped its $15.9 million investment\". Bucknell University Broadway recoupment dataset, classification Yes - Press, capitalization $15.9M. https://www.forbes.com/sites/leeseymour/2018/08/27/hello-dolly-closes-with-broken-records-trickling-roi/",
+        "description": "commercial.json: hello-dolly-2017.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hello-dolly-2017",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "commercial.json: hello-dolly-2017.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hello-dolly-2017",
+        "field": "designationBasis",
+        "oldValue": "model-estimate",
+        "newValue": null,
+        "description": "commercial.json: hello-dolly-2017.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hello-dolly-2017",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: hello-dolly-2017.recouped"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T00:29:19.601Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for hello-dolly-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

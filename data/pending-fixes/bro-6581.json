@@ -1,0 +1,251 @@
+{
+  "issueNumber": "bro-6581",
+  "planId": "0f5bab0b-f3bf-43f9-bf52-70a5d7f73840",
+  "status": "applied",
+  "createdAt": "2026-10-31T18:57:52.036Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Preserve recorded rejected image sources on existing non-closed noReliableArt rows",
+    "steps": [
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt",
+      "Preserve rejected art sources when writing noReliableArt"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cherry-orchard-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/b5e679eb9dcdbd8cbf603e8576635c76_file.jpeg"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-public-house-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/10361/preview_1775503382-01_RHEOLOGY_TodayTix_480_x_720__Poster_.jpg"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-xl-bully-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://i0.wp.com/cardiffmummysays.com/wp-content/uploads/2026/05/Under-Milk-Wood-1.jpg"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "are-you-a-robot-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg",
+          "google-images:https://www.facebook.com/groups/555834986561992/posts/1018715096940643/"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rockers-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg",
+          "google-images:https://posteritati.com/film/6885/rockers?srsltid=AU7gw4X_XFcrOe--rcY7PxdnkVKK1DFCeLf1Khi_5Iuje6YYtM5Xejz0"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-odyssey-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3SnsV5zRYssHzKniuTB5iU/f1fe791bd6dfb8480a7572fa4513222d/TodayTix_480px_x_720px__1_.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3SnsV5zRYssHzKniuTB5iU/f1fe791bd6dfb8480a7572fa4513222d/TodayTix_480px_x_720px__1_.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3SnsV5zRYssHzKniuTB5iU/f1fe791bd6dfb8480a7572fa4513222d/TodayTix_480px_x_720px__1_.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/b7973d0b9688a760cd11e63f6a4b7105_peter%20pan%20phoenix%202024.jpg"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-pieces-2-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://theotherpalace.co.uk/in-pieces-2/"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "boys-who-dance-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://deadline.com/wp-content/uploads/2026/02/Billy-Elliot.jpg"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "three-and-a-bit-off-west-end-2027",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://eghcszbxego.exactdn.com/wp-content/uploads/2026/10/Dominic-Cookes-First-Almeida-Theatre-Season-Images-supplied-without-credit-by-publicist.jpg"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "audience-plant-2027-off-broadway-2027",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.newyorktheatreguide.com/theatre-news/news/daniel-kaluuya-and-more-featured-in-park-avenue-armorys-2027-season"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dickens-christmas-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.visitlondon.com/things-to-do/place/51021327-the-great-christmas-feast"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-ignacia-off-west-end-2027",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://media.licdn.com/dms/image/v2/D5616AQH2n6qpXRp7_A/profile-displaybackgroundimage-shrink_200_800/B56Z1MOnGfIIAU-/0/1775100392690?e=2147483647&v=beta&t=03izVaGpkaEpEP2YIKILwD8RcCSxgPTd1AwuLtTIAhw"
+        ],
+        "description": "Preserve rejected art sources when writing noReliableArt"
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T20:35:08.348Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-cherry-orchard-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for our-public-house-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for new-26-xl-bully-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for are-you-a-robot-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for rockers-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-odyssey-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for peter-pan-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for in-pieces-2-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for boys-who-dance-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for three-and-a-bit-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for audience-plant-2027-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for dickens-christmas-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for mother-ignacia-off-west-end-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

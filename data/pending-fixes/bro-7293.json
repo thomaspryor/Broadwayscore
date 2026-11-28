@@ -1,0 +1,64 @@
+{
+  "issueNumber": "bro-7293",
+  "planId": "c97fbeab-9de5-4373-bcec-6108619025f9",
+  "status": "applied",
+  "createdAt": "2026-11-10T14:06:58.195554Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7293: Cititour Here There Are Blueberries, flag the 2024 off-Broadway review again and attribute the Broadway (/1411) review to Brian Scott Lipton",
+    "steps": [
+      "Cititour /1232 is the 2024 New York Theatre Workshop review; re-flag after the roundup merge auto-cleared it",
+      "Cititour /1411 is the Broadway review by Brian Scott Lipton (byline per BRO-7293)",
+      "keep the Broadway review attributable under the Lipton key; the canonical name is held by the flagged 2024 file"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "Cititour /1232 is the 2024 New York Theatre Workshop review; re-flag after the roundup merge auto-cleared it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-there-are-blueberries-2026/cititour--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Brian Scott Lipton",
+        "description": "Cititour /1411 is the Broadway review by Brian Scott Lipton (byline per BRO-7293)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "here-there-are-blueberries-2026/cititour--unknown.json",
+        "destPath": "here-there-are-blueberries-2026/cititour--brian-scott-lipton-2.json",
+        "description": "keep the Broadway review attributable under the Lipton key; the canonical name is held by the flagged 2024 file"
+      }
+    ]
+  },
+  "executedAt": "2026-11-10T15:45:38.295Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json wrongProduction: false -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-there-are-blueberries-2026/cititour--unknown.json criticName: \"Unknown\" -> \"Brian Scott Lipton\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved here-there-are-blueberries-2026/cititour--unknown.json → here-there-are-blueberries-2026/cititour--brian-scott-lipton-2.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

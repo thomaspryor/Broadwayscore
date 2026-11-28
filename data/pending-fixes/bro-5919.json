@@ -1,0 +1,147 @@
+{
+  "issueNumber": "bro-5919",
+  "planId": "c01268b7-3181-4be7-b0b7-bb282bf11172",
+  "status": "applied",
+  "createdAt": "2026-10-22T12:00:17.758Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct the stale Queen of Hearts listing: Company XIV's latest confirmed season ended November 1, 2025, and its current program lists Petite Rouge and Nutcracker Rouge. The cited Playbill return article was published January 19, 2024, not in 2026. Preserve the existing id and leave openingDate null: February 14, 2025 is a sourced first performance, not a verified separate press opening.",
+    "steps": [
+      "Company XIV show page explicitly gives final performance November 1, 2025. Pin the verified closing date against automated enrichment.",
+      "Close the stale listing using the producer-confirmed final performance; no 2026 return is established.",
+      "TodayTix Group ticket listing for the February 14, 2025 season gives a two-hour runtime including one intermission.",
+      "TodayTix Group ticket listing specifies one intermission in the two-hour runtime.",
+      "Company XIV show page gives the Theatre XIV address as 383 Troutman St, Brooklyn, NY 11237."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "queen-of-hearts-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2025-11-01",
+        "description": "Company XIV show page explicitly gives final performance November 1, 2025. Pin the verified closing date against automated enrichment."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "queen-of-hearts-off-broadway-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "Close the stale listing using the producer-confirmed final performance; no 2026 return is established."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "queen-of-hearts-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h",
+        "description": "TodayTix Group ticket listing for the February 14, 2025 season gives a two-hour runtime including one intermission."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "queen-of-hearts-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "TodayTix Group ticket listing specifies one intermission in the two-hour runtime."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "queen-of-hearts-off-broadway-2026",
+        "field": "theaterAddress",
+        "oldValue": null,
+        "newValue": "383 Troutman Street, Brooklyn, NY 11237",
+        "description": "Company XIV show page gives the Theatre XIV address as 383 Troutman St, Brooklyn, NY 11237."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://companyxiv.com/about/shows/queen-of-hearts/",
+      "supports": [
+        "closingDate",
+        "status",
+        "theaterAddress"
+      ],
+      "checkedOn": "2026-10-22"
+    },
+    {
+      "url": "https://companyxiv.com/qoh25-return-teaser/",
+      "supports": [
+        "2025 season began on February 14; separate press opening unverified"
+      ],
+      "checkedOn": "2026-10-22"
+    },
+    {
+      "url": "https://www.todaytix.com/nyc/shows/12363-queen-of-hearts-by-company-xiv",
+      "supports": [
+        "Cached listing identifies the 2025 season; direct page subsequently returned 404"
+      ],
+      "checkedOn": "2026-10-22"
+    },
+    {
+      "url": "https://theatreinnewyork.tixculture.com/nyc/shows/12363-queen-of-hearts-by-company-xiv",
+      "supports": [
+        "runtime",
+        "intermissions",
+        "2025-02-14 first performance"
+      ],
+      "checkedOn": "2026-10-22",
+      "access": "Search-indexed TodayTix Group ticket listing; direct page unavailable"
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/venues/theatre-xiv",
+      "supports": [
+        "2026 venue program lists Petite Rouge and Nutcracker Rouge"
+      ],
+      "checkedOn": "2026-10-22"
+    },
+    {
+      "url": "https://playbill.com/article/company-xivs-queen-of-hearts-will-return-this-spring",
+      "supports": [
+        "Article publication date January 19, 2024; return begins March 1, 2024"
+      ],
+      "checkedOn": "2026-10-22",
+      "access": "Search-indexed article; direct fetch returned 403"
+    }
+  ],
+  "executedAt": "2026-10-25T20:57:10.513Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for queen-of-hearts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for queen-of-hearts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for queen-of-hearts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for queen-of-hearts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: theaterAddress updated for queen-of-hearts-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

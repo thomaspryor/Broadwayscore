@@ -1,0 +1,179 @@
+{
+  "issueNumber": "bro-5348-f",
+  "planId": "9b229754-32a3-4be3-84b2-b86aaaa54d0b",
+  "status": "applied",
+  "createdAt": "2026-10-14T15:23:09.248Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5348: 5 real reviews hidden as crossOutletDuplicate copies of a misfetched primary (the primary url does not carry the text, the flagged row url does). Clear the flag on the real owners; flag the one live-eligible misfetched copy wrongAttribution.",
+    "steps": [
+      "Clear crossOutletDuplicate with breadcrumb on 5 owners",
+      "Flag the-color-purple-2015 theater-scene copy"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "amazing-grace-2015/jks-theatre-scene--jeff-kyler.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5348: this row url (https://jkstheatrescene.blogspot.com/2015/07/review-amazing-grace.html) carries this text (overlap 0.96); the flagged primary huffpost--steven-suskin.json url (https://www.huffpost.com/steven-suskin/aisle-view-fall-from-grac_b_7815068.html) does not (overlap 0), so the primary is the misfetched copy",
+        "description": "Breadcrumb for the clear below"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amazing-grace-2015/jks-theatre-scene--jeff-kyler.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5348: real owner of the text was flagged as the copy; the primary holds it from a misfetch"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "head-over-heels-2018/stage-left--robert-russo.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5348: this row url (https://www.stageleft.nyc/blog/2018/7/26/review-a-refreshingly-queer-head-over-heels-brings-the-beat) carries this text (overlap 1); the flagged primary philadelphia-inquirer--toby-zinman.json url (https://www.philly.com/philly/blogs/the-arts/Broadway-Review-Head-Over-Heels-Sly-wacky-undoing-all-binaries----plus-music-by-the-Go-Gos.html) does not (overlap 0), so the primary is the misfetched copy",
+        "description": "Breadcrumb for the clear below"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "head-over-heels-2018/stage-left--robert-russo.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5348: real owner of the text was flagged as the copy; the primary holds it from a misfetch"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hello-dolly-2017/act-three-the-reviews--doug-marino.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5348: this row url (https://dougmarino.blogspot.com/2017/07/hello-dolly.html) carries this text (overlap 1); the flagged primary hollywood-reporter--frank-scheck.json url (https://www.hollywoodreporter.com/review/hello-dolly-1087158) does not (overlap 0), so the primary is the misfetched copy",
+        "description": "Breadcrumb for the clear below"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hello-dolly-2017/act-three-the-reviews--doug-marino.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5348: real owner of the text was flagged as the copy; the primary holds it from a misfetch"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "six-2021/theater-life--samuel-l-leiter.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5348: this row url (https://theaterlife.com/six-the-musical/) carries this text (overlap 0.96); the flagged primary lighting-and-sound-america--david-barbour.json url (http://www.lightingandsoundamerica.com/news/story.asp?ID=-WBRPD6) does not (overlap 0), so the primary is the misfetched copy",
+        "description": "Breadcrumb for the clear below"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "six-2021/theater-life--samuel-l-leiter.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5348: real owner of the text was flagged as the copy; the primary holds it from a misfetch"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2015/huffpost--steven-suskin.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5348: this row url (http://www.huffingtonpost.com/steven-suskin/aisle-view-the-color-purp_b_8779008.html) carries this text (overlap 1); the flagged primary theater-scene--darryl-reilly.json url (https://www.theaterscene.net/musicals/the-color-purple-2015/darryl-reilly/) does not (overlap 0), so the primary is the misfetched copy",
+        "description": "Breadcrumb for the clear below"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2015/huffpost--steven-suskin.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5348: real owner of the text was flagged as the copy; the primary holds it from a misfetch"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2015/theater-scene--darryl-reilly.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5348: holds Steven Suskin HuffPost text (page byline Steven Suskin, full text on the HuffPost url); its own url does not carry it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2015/theater-scene--darryl-reilly.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5348: stored text is Steven Suskin HuffPost review (huffpost--steven-suskin.json url carries it in full); this row url does not",
+        "description": "BRO-5348"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T16:19:32.542Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amazing-grace-2015/jks-theatre-scene--jeff-kyler.json crossOutletClearReason: null -> \"BRO-5348: this row url (https://jkstheatrescene.blogspot.com/2015/07/review-amazing-grace.html) carries this text (overlap 0.96); the flagged primary huffpost--steven-suskin.json url (https://www.huffpost.com/steven-suskin/aisle-view-fall-from-grac_b_7815068.html) does not (overlap 0), so the primary is the misfetched copy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amazing-grace-2015/jks-theatre-scene--jeff-kyler.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/stage-left--robert-russo.json crossOutletClearReason: null -> \"BRO-5348: this row url (https://www.stageleft.nyc/blog/2018/7/26/review-a-refreshingly-queer-head-over-heels-brings-the-beat) carries this text (overlap 1); the flagged primary philadelphia-inquirer--toby-zinman.json url (https://www.philly.com/philly/blogs/the-arts/Broadway-Review-Head-Over-Heels-Sly-wacky-undoing-all-binaries----plus-music-by-the-Go-Gos.html) does not (overlap 0), so the primary is the misfetched copy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/stage-left--robert-russo.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hello-dolly-2017/act-three-the-reviews--doug-marino.json crossOutletClearReason: null -> \"BRO-5348: this row url (https://dougmarino.blogspot.com/2017/07/hello-dolly.html) carries this text (overlap 1); the flagged primary hollywood-reporter--frank-scheck.json url (https://www.hollywoodreporter.com/review/hello-dolly-1087158) does not (overlap 0), so the primary is the misfetched copy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hello-dolly-2017/act-three-the-reviews--doug-marino.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-2021/theater-life--samuel-l-leiter.json crossOutletClearReason: null -> \"BRO-5348: this row url (https://theaterlife.com/six-the-musical/) carries this text (overlap 0.96); the flagged primary lighting-and-sound-america--david-barbour.json url (http://www.lightingandsoundamerica.com/news/story.asp?ID=-WBRPD6) does not (overlap 0), so the primary is the misfetched copy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-2021/theater-life--samuel-l-leiter.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2015/huffpost--steven-suskin.json crossOutletClearReason: null -> \"BRO-5348: this row url (http://www.huffingtonpost.com/steven-suskin/aisle-view-the-color-purp_b_8779008.html) carries this text (overlap 1); the flagged primary theater-scene--darryl-reilly.json url (https://www.theaterscene.net/musicals/the-color-purple-2015/darryl-reilly/) does not (overlap 0), so the primary is the misfetched copy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2015/huffpost--steven-suskin.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2015/theater-scene--darryl-reilly.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2015/theater-scene--darryl-reilly.json wrongAttributionReason: null -> \"BRO-5348: stored text is Steven Suskin HuffPost review (huffpost--steven-suskin.json url carries it in full); this row url does not\""
+    }
+  ]
+}

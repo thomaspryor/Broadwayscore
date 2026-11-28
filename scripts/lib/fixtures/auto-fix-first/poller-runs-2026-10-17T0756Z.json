@@ -1,0 +1,1593 @@
+{
+ "_about": "BRO-5541: the real opening-night-poller.yml run list the auto-fix-first sweep saw at 2026-10-17T07:56Z, when it sent a false \"automatic fix did not work\" email. Fetched from GET /repos/thomaspryor/Broadwayscore/actions/workflows/opening-night-poller.yml/runs?created=2026-10-16T19:00:00Z..2026-10-17T08:00:00Z on 2026-10-17. status/conclusion are as of asOf (runs that finished later are shown in_progress; final holds what they became). jobs: GET /actions/runs/{id}/jobs for each cancelled run (all five were Express takeovers: \"Notify on failure\" skipped).",
+ "asOf": "2026-10-17T07:56:00Z",
+ "repo": "thomaspryor/Broadwayscore",
+ "workflow": "opening-night-poller.yml",
+ "card": {
+  "identifier": "BRO-5494",
+  "createdAt": "2026-10-16T15:48:40.282Z",
+  "startedAt": "2026-10-16T19:02:29.884Z",
+  "completedAt": "2026-10-16T20:03:51.758Z",
+  "state": {
+   "type": "completed"
+  }
+ },
+ "runs": [
+  {
+   "id": 39011530137,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T06:52:39Z",
+   "run_started_at": "2026-10-17T06:52:39Z",
+   "status": "in_progress",
+   "conclusion": null,
+   "updated_at": "2026-10-17T07:56:00Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-17T08:00:07Z"
+   }
+  },
+  {
+   "id": 39011479389,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T06:51:53Z",
+   "run_started_at": "2026-10-17T06:51:53Z",
+   "status": "in_progress",
+   "conclusion": null,
+   "updated_at": "2026-10-17T07:56:00Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-17T08:15:28Z"
+   }
+  },
+  {
+   "id": 39008262549,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T05:59:55Z",
+   "run_started_at": "2026-10-17T05:59:55Z",
+   "status": "completed",
+   "conclusion": "cancelled",
+   "updated_at": "2026-10-17T06:19:47Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "cancelled",
+    "updated_at": "2026-10-17T06:19:47Z"
+   }
+  },
+  {
+   "id": 39008221217,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T05:59:12Z",
+   "run_started_at": "2026-10-17T05:59:12Z",
+   "status": "completed",
+   "conclusion": "cancelled",
+   "updated_at": "2026-10-17T06:19:00Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "cancelled",
+    "updated_at": "2026-10-17T06:19:00Z"
+   }
+  },
+  {
+   "id": 39007709933,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T05:50:13Z",
+   "run_started_at": "2026-10-17T05:50:13Z",
+   "status": "completed",
+   "conclusion": "cancelled",
+   "updated_at": "2026-10-17T05:53:02Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "cancelled",
+    "updated_at": "2026-10-17T05:53:02Z"
+   }
+  },
+  {
+   "id": 39007665970,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T05:49:31Z",
+   "run_started_at": "2026-10-17T05:49:31Z",
+   "status": "completed",
+   "conclusion": "cancelled",
+   "updated_at": "2026-10-17T05:54:15Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "cancelled",
+    "updated_at": "2026-10-17T05:54:15Z"
+   }
+  },
+  {
+   "id": 39004181522,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T04:52:20Z",
+   "run_started_at": "2026-10-17T04:52:20Z",
+   "status": "completed",
+   "conclusion": "cancelled",
+   "updated_at": "2026-10-17T05:18:17Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "cancelled",
+    "updated_at": "2026-10-17T05:18:17Z"
+   }
+  },
+  {
+   "id": 38999540948,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T03:38:09Z",
+   "run_started_at": "2026-10-17T03:38:09Z",
+   "status": "completed",
+   "conclusion": "success",
+   "updated_at": "2026-10-17T04:45:51Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-17T04:45:51Z"
+   }
+  },
+  {
+   "id": 38999263264,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T03:33:45Z",
+   "run_started_at": "2026-10-17T03:33:45Z",
+   "status": "completed",
+   "conclusion": "success",
+   "updated_at": "2026-10-17T04:36:09Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-17T04:36:09Z"
+   }
+  },
+  {
+   "id": 38994825501,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T02:24:56Z",
+   "run_started_at": "2026-10-17T02:24:56Z",
+   "status": "completed",
+   "conclusion": "success",
+   "updated_at": "2026-10-17T03:22:02Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-17T03:22:02Z"
+   }
+  },
+  {
+   "id": 38994008117,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T02:12:29Z",
+   "run_started_at": "2026-10-17T02:12:29Z",
+   "status": "completed",
+   "conclusion": "success",
+   "updated_at": "2026-10-17T03:17:36Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-17T03:17:36Z"
+   }
+  },
+  {
+   "id": 38988996984,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T01:00:53Z",
+   "run_started_at": "2026-10-17T01:00:53Z",
+   "status": "completed",
+   "conclusion": "success",
+   "updated_at": "2026-10-17T01:57:02Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-17T01:57:02Z"
+   }
+  },
+  {
+   "id": 38988912262,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-17T00:59:56Z",
+   "run_started_at": "2026-10-17T00:59:56Z",
+   "status": "completed",
+   "conclusion": "success",
+   "updated_at": "2026-10-17T02:09:37Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-17T02:09:37Z"
+   }
+  },
+  {
+   "id": 38982250185,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-16T23:35:36Z",
+   "run_started_at": "2026-10-16T23:35:36Z",
+   "status": "completed",
+   "conclusion": "success",
+   "updated_at": "2026-10-17T00:44:49Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-17T00:44:49Z"
+   }
+  },
+  {
+   "id": 38974858275,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-16T22:17:33Z",
+   "run_started_at": "2026-10-16T22:17:33Z",
+   "status": "completed",
+   "conclusion": "success",
+   "updated_at": "2026-10-16T23:20:13Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-16T23:20:13Z"
+   }
+  },
+  {
+   "id": 38964874850,
+   "event": "workflow_dispatch",
+   "created_at": "2026-10-16T20:48:21Z",
+   "run_started_at": "2026-10-16T20:48:21Z",
+   "status": "completed",
+   "conclusion": "success",
+   "updated_at": "2026-10-16T22:01:47Z",
+   "final": {
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-16T22:01:47Z"
+   }
+  }
+ ],
+ "jobs": {
+  "39008262549": [
+   {
+    "name": "poll",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "started_at": "2026-10-17T06:00:00Z",
+    "completed_at": "2026-10-17T06:19:46Z",
+    "steps": [
+     {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Set git low-speed abort for this job",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Log REVIEW_TEXTS_TOKEN rate-limit status (start)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout core data",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout review-texts (private repo)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Opening-night lease sync (BRO-4786)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Find shows to poll",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Early exit check",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Run actions/setup-node@v5",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Restore SERP + BWW anchor caches",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Install dependencies",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Setup Playwright",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Drain pending no-byline reviews (in-window shows)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Run poller for each show",
+      "status": "completed",
+      "conclusion": "cancelled"
+     },
+     {
+      "name": "Dispatch Guardian API refetch for shows with new Guardian URLs",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit poller backoff state",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Commit new review files",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Collect full text inline",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit collected texts",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Flag combined (joint) reviews",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit combined-review flags",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Score reviews inline",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit scores",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Refresh NYT Critic's Picks (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Cancel competing rebuilds (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Sync review-texts drift before rebuild",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Rebuild reviews.json (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Verify no scoreable review vanished during checkout drift",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Restore review-texts drift sync",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Update critic registry (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Regenerate mobile detail JSONs (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Generate Critics' Take (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Audit recovery state (non-blocking)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit and push rebuilt data (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Push core data to private repo (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Trigger deploy (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Wait for deploy to go live (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Trigger rebuild + deploy (legacy)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Rebuild reviews.json locally (for readiness check)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Check readiness and trigger broadcast",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Log REVIEW_TEXTS_TOKEN rate-limit status (end)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Commit stage-latency events",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Verify pipeline stages (fail-fast)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Classify failure audience",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Check for Express preemption",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Notify on failure",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Setup Playwright",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Post Restore SERP + BWW anchor caches",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Run actions/setup-node@v5",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Checkout",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success"
+     }
+    ]
+   }
+  ],
+  "39008221217": [
+   {
+    "name": "poll",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "started_at": "2026-10-17T05:59:15Z",
+    "completed_at": "2026-10-17T06:18:59Z",
+    "steps": [
+     {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Set git low-speed abort for this job",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Log REVIEW_TEXTS_TOKEN rate-limit status (start)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout core data",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout review-texts (private repo)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Opening-night lease sync (BRO-4786)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Find shows to poll",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Early exit check",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Run actions/setup-node@v5",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Restore SERP + BWW anchor caches",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Install dependencies",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Setup Playwright",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Drain pending no-byline reviews (in-window shows)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Run poller for each show",
+      "status": "completed",
+      "conclusion": "cancelled"
+     },
+     {
+      "name": "Dispatch Guardian API refetch for shows with new Guardian URLs",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit poller backoff state",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Commit new review files",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Collect full text inline",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit collected texts",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Flag combined (joint) reviews",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit combined-review flags",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Score reviews inline",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit scores",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Refresh NYT Critic's Picks (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Cancel competing rebuilds (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Sync review-texts drift before rebuild",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Rebuild reviews.json (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Verify no scoreable review vanished during checkout drift",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Restore review-texts drift sync",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Update critic registry (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Regenerate mobile detail JSONs (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Generate Critics' Take (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Audit recovery state (non-blocking)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit and push rebuilt data (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Push core data to private repo (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Trigger deploy (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Wait for deploy to go live (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Trigger rebuild + deploy (legacy)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Rebuild reviews.json locally (for readiness check)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Check readiness and trigger broadcast",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Log REVIEW_TEXTS_TOKEN rate-limit status (end)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Commit stage-latency events",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Verify pipeline stages (fail-fast)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Classify failure audience",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Check for Express preemption",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Notify on failure",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Setup Playwright",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Post Restore SERP + BWW anchor caches",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Run actions/setup-node@v5",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Checkout",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success"
+     }
+    ]
+   }
+  ],
+  "39007709933": [
+   {
+    "name": "poll",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "started_at": "2026-10-17T05:50:16Z",
+    "completed_at": "2026-10-17T05:53:02Z",
+    "steps": [
+     {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Set git low-speed abort for this job",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Log REVIEW_TEXTS_TOKEN rate-limit status (start)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout core data",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout review-texts (private repo)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Opening-night lease sync (BRO-4786)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Find shows to poll",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Early exit check",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Run actions/setup-node@v5",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Restore SERP + BWW anchor caches",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Install dependencies",
+      "status": "completed",
+      "conclusion": "cancelled"
+     },
+     {
+      "name": "Setup Playwright",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Drain pending no-byline reviews (in-window shows)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Run poller for each show",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Dispatch Guardian API refetch for shows with new Guardian URLs",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit poller backoff state",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Commit new review files",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Collect full text inline",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit collected texts",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Flag combined (joint) reviews",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit combined-review flags",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Score reviews inline",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit scores",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Refresh NYT Critic's Picks (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Cancel competing rebuilds (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Sync review-texts drift before rebuild",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Rebuild reviews.json (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Verify no scoreable review vanished during checkout drift",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Restore review-texts drift sync",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Update critic registry (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Regenerate mobile detail JSONs (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Generate Critics' Take (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Audit recovery state (non-blocking)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit and push rebuilt data (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Push core data to private repo (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Trigger deploy (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Wait for deploy to go live (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Trigger rebuild + deploy (legacy)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Rebuild reviews.json locally (for readiness check)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Check readiness and trigger broadcast",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Log REVIEW_TEXTS_TOKEN rate-limit status (end)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Commit stage-latency events",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Verify pipeline stages (fail-fast)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Classify failure audience",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Check for Express preemption",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Notify on failure",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Restore SERP + BWW anchor caches",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Run actions/setup-node@v5",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Checkout",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success"
+     }
+    ]
+   }
+  ],
+  "39007665970": [
+   {
+    "name": "poll",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "started_at": "2026-10-17T05:49:34Z",
+    "completed_at": "2026-10-17T05:54:14Z",
+    "steps": [
+     {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Set git low-speed abort for this job",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Log REVIEW_TEXTS_TOKEN rate-limit status (start)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout core data",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout review-texts (private repo)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Opening-night lease sync (BRO-4786)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Find shows to poll",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Early exit check",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Run actions/setup-node@v5",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Restore SERP + BWW anchor caches",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Install dependencies",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Setup Playwright",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Drain pending no-byline reviews (in-window shows)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Run poller for each show",
+      "status": "completed",
+      "conclusion": "cancelled"
+     },
+     {
+      "name": "Dispatch Guardian API refetch for shows with new Guardian URLs",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit poller backoff state",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Commit new review files",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Collect full text inline",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit collected texts",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Flag combined (joint) reviews",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit combined-review flags",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Score reviews inline",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit scores",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Refresh NYT Critic's Picks (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Cancel competing rebuilds (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Sync review-texts drift before rebuild",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Rebuild reviews.json (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Verify no scoreable review vanished during checkout drift",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Restore review-texts drift sync",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Update critic registry (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Regenerate mobile detail JSONs (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Generate Critics' Take (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Audit recovery state (non-blocking)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit and push rebuilt data (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Push core data to private repo (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Trigger deploy (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Wait for deploy to go live (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Trigger rebuild + deploy (legacy)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Rebuild reviews.json locally (for readiness check)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Check readiness and trigger broadcast",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Log REVIEW_TEXTS_TOKEN rate-limit status (end)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Commit stage-latency events",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Verify pipeline stages (fail-fast)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Classify failure audience",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Check for Express preemption",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Notify on failure",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Setup Playwright",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Post Restore SERP + BWW anchor caches",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Run actions/setup-node@v5",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Checkout",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success"
+     }
+    ]
+   }
+  ],
+  "39004181522": [
+   {
+    "name": "poll",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "started_at": "2026-10-17T04:52:23Z",
+    "completed_at": "2026-10-17T05:18:16Z",
+    "steps": [
+     {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Set git low-speed abort for this job",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Log REVIEW_TEXTS_TOKEN rate-limit status (start)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout core data",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Checkout review-texts (private repo)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Opening-night lease sync (BRO-4786)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Find shows to poll",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Early exit check",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Run actions/setup-node@v5",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Restore SERP + BWW anchor caches",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Install dependencies",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Setup Playwright",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Drain pending no-byline reviews (in-window shows)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Run poller for each show",
+      "status": "completed",
+      "conclusion": "cancelled"
+     },
+     {
+      "name": "Dispatch Guardian API refetch for shows with new Guardian URLs",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit poller backoff state",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Commit new review files",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Collect full text inline",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit collected texts",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Flag combined (joint) reviews",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit combined-review flags",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Score reviews inline",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit scores",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Refresh NYT Critic's Picks (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Cancel competing rebuilds (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Sync review-texts drift before rebuild",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Rebuild reviews.json (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Verify no scoreable review vanished during checkout drift",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Restore review-texts drift sync",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Update critic registry (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Regenerate mobile detail JSONs (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Generate Critics' Take (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Audit recovery state (non-blocking)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Commit and push rebuilt data (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Push core data to private repo (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Trigger deploy (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Wait for deploy to go live (fast_path)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Trigger rebuild + deploy (legacy)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Rebuild reviews.json locally (for readiness check)",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Check readiness and trigger broadcast",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Log REVIEW_TEXTS_TOKEN rate-limit status (end)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Commit stage-latency events",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Verify pipeline stages (fail-fast)",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Classify failure audience",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Check for Express preemption",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Notify on failure",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Setup Playwright",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Post Restore SERP + BWW anchor caches",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Run actions/setup-node@v5",
+      "status": "completed",
+      "conclusion": "skipped"
+     },
+     {
+      "name": "Post Checkout",
+      "status": "completed",
+      "conclusion": "success"
+     },
+     {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success"
+     }
+    ]
+   }
+  ]
+ }
+}

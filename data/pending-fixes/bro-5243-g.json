@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5243-g",
+  "planId": "c92b309c-4ebe-4632-abf8-febe3081fb2d",
+  "status": "applied",
+  "createdAt": "2026-10-14T10:20:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5243 (g): refresh stale content-verification verdicts on the 3 WSJ rows re-credited to Teachout in plan e.",
+    "steps": [
+      "reverify-stale-cv-promoted.js --file on 3 rows"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "reverify-stale-cv-promoted.js",
+        "args": "--file=a-christmas-carol-2019/wsj--charles-isherwood.json,is-this-a-room-2021/wsj--charles-isherwood.json,company-2021/wsj--charles-isherwood.json",
+        "description": "Re-verify the stored text of the 3 rows plan bro-5243-e re-credited to Terry Teachout. Their verdicts are stale: christmas-carol 'critic attribution mismatch' (judged against Isherwood), is-this-a-room 'PREVIEW, no byline' (2026-04-15, an earlier body), company 'truncated / future date' (2026-05-04, an earlier body). --file mode writes only a non-excluding verdict on an unflagged row."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T10:57:06.845Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reverify-stale-cv-promoted.js successfully"
+    }
+  ]
+}

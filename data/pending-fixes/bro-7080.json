@@ -1,0 +1,100 @@
+{
+  "issueNumber": "bro-7080",
+  "planId": "0aa747e2-dd2b-4379-ab68-2cd935346a42",
+  "status": "applied",
+  "createdAt": "2026-11-07T15:28:14.025Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7080: begin-again-old-regional-2026 duplicates begin-again-regional-2026 (same Old Globe run). Move its 5 reviews onto the kept row, then retire the duplicate.",
+    "steps": [
+      "Move begin-again-old-regional-2026/from-another-zero--alejandra-enciso.json to begin-again-regional-2026/from-another-zero--alejandra-enciso.json",
+      "Move begin-again-old-regional-2026/san-diego-jewish-world--unknown.json to begin-again-regional-2026/san-diego-jewish-world--unknown.json",
+      "Move begin-again-old-regional-2026/san-diego-story--david-dixon.json to begin-again-regional-2026/san-diego-story--david-dixon.json",
+      "Move begin-again-old-regional-2026/stageandcinema--milo-shapiro.json to begin-again-regional-2026/stageandcinema--milo-shapiro.json",
+      "Move begin-again-old-regional-2026/talk-theatre-to-me--unknown.json to begin-again-regional-2026/talk-theatre-to-me--unknown.json",
+      "Retire begin-again-old-regional-2026 as a duplicate of begin-again-regional-2026"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "begin-again-old-regional-2026/from-another-zero--alejandra-enciso.json",
+        "destPath": "begin-again-regional-2026/from-another-zero--alejandra-enciso.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "begin-again-old-regional-2026/san-diego-jewish-world--unknown.json",
+        "destPath": "begin-again-regional-2026/san-diego-jewish-world--unknown.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "begin-again-old-regional-2026/san-diego-story--david-dixon.json",
+        "destPath": "begin-again-regional-2026/san-diego-story--david-dixon.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "begin-again-old-regional-2026/stageandcinema--milo-shapiro.json",
+        "destPath": "begin-again-regional-2026/stageandcinema--milo-shapiro.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "begin-again-old-regional-2026/talk-theatre-to-me--unknown.json",
+        "destPath": "begin-again-regional-2026/talk-theatre-to-me--unknown.json"
+      },
+      {
+        "type": "retire-show",
+        "id": "begin-again-old-regional-2026",
+        "expectTitle": "Begin Again",
+        "duplicateOf": "begin-again-regional-2026",
+        "reason": "BRO-7080: duplicate of begin-again-regional-2026 (same Old Globe run, Donald and Darlene Shiley Stage); its 5 reviews moved onto the kept row by the actions above"
+      }
+    ]
+  },
+  "executedAt": "2026-11-07T19:14:45.786Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved begin-again-old-regional-2026/from-another-zero--alejandra-enciso.json → begin-again-regional-2026/from-another-zero--alejandra-enciso.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved begin-again-old-regional-2026/san-diego-jewish-world--unknown.json → begin-again-regional-2026/san-diego-jewish-world--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved begin-again-old-regional-2026/san-diego-story--david-dixon.json → begin-again-regional-2026/san-diego-story--david-dixon.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved begin-again-old-regional-2026/stageandcinema--milo-shapiro.json → begin-again-regional-2026/stageandcinema--milo-shapiro.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved begin-again-old-regional-2026/talk-theatre-to-me--unknown.json → begin-again-regional-2026/talk-theatre-to-me--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired begin-again-old-regional-2026 (\"Begin Again\" @ The Old Globe, San Diego, CA)"
+    }
+  ],
+  "executedIn": "ci"
+}

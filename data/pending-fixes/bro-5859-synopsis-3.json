@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-5859-synopsis-3",
+  "planId": "171dcb18-bb81-467e-92b5-1faf8ed2bfd2",
+  "status": "applied",
+  "createdAt": "2026-10-21T19:23:30.643Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5859: repair 2 shows.json synopses that ended mid-word with an ellipsis (part 3 of 3)",
+    "steps": [
+      "Replace each truncated synopsis with complete text from its source, cut at a sentence end"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "romeo-and-juliet-west-end-2027",
+        "field": "synopsis",
+        "oldValue": "Renaissance Italy, city of Verona. Tensions run high between the Montagues and the Capulets as the families stand on the brink of violence. Against the backdrop of simmering hatred, fate intervenes: love blooms across the divide. Romeo Montague and Juliet Capulet fall desperately in love. Can young…",
+        "newValue": "Renaissance Italy, city of Verona. Tensions run high between the Montagues and the Capulets as the families stand on the brink of violence. Against the backdrop of simmering hatred, fate intervenes: love blooms across the divide. Romeo Montague and Juliet Capulet fall desperately in love.",
+        "description": "BRO-5859: synopsis was a 300-char cut ending \"Can young…\"; cut back to the last full sentence"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-note-the-musical-off-west-end-2027",
+        "field": "synopsis",
+        "oldValue": "When brilliant student Light Yagami discovers a notebook with the power to determine who lives and who dies, his mission to reshape society quickly spirals out of control and attracts the attention of the elusive and ruthless detective L. What begins as justice descends into obsession and forces bo…",
+        "newValue": "When brilliant student Light Yagami discovers a notebook with the power to determine who lives and who dies, his mission to reshape society quickly spirals out of control and attracts the attention of the elusive and ruthless detective L.",
+        "description": "BRO-5859: synopsis was a 300-char cut ending \"forces bo…\"; cut back to the last full sentence"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T20:58:54.558Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for romeo-and-juliet-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for death-note-the-musical-off-west-end-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,143 @@
+{
+  "surfaces": {
+    "needsRescoreUnblocked": {
+      "label": "needsRescore queue (unblocked)",
+      "hint": "node scripts/audit-stuck-rescore-flags.js --json for a byReason breakdown; if this is pinned, confirm llm-ensemble-score.yml's \"Drain needsRescore backlog\" step actually ran (not just scheduled) and that markRescoreComplete/stampTerminalScoringFailure are being called on every scoring outcome.",
+      "cycles": 3,
+      "history": [
+        {
+          "value": 3337,
+          "ts": "2026-10-30T11:30:05.641Z"
+        },
+        {
+          "value": 3328,
+          "ts": "2026-10-31T11:06:35.768Z"
+        },
+        {
+          "value": 3574,
+          "ts": "2026-11-01T12:51:45.764Z"
+        },
+        {
+          "value": 20,
+          "ts": "2026-11-02T12:48:41.804Z"
+        },
+        {
+          "value": 3650,
+          "ts": "2026-11-03T12:43:02.252Z"
+        },
+        {
+          "value": 3781,
+          "ts": "2026-11-04T12:53:16.406Z"
+        },
+        {
+          "value": 3793,
+          "ts": "2026-11-05T13:22:33.642Z"
+        },
+        {
+          "value": 3780,
+          "ts": "2026-11-06T12:39:22.626Z"
+        },
+        {
+          "value": 3783,
+          "ts": "2026-11-07T11:36:17.745Z"
+        },
+        {
+          "value": 3777,
+          "ts": "2026-11-08T12:20:34.594Z"
+        },
+        {
+          "value": 4089,
+          "ts": "2026-11-09T13:42:09.700Z"
+        },
+        {
+          "value": 4118,
+          "ts": "2026-11-10T13:22:40.841Z"
+        },
+        {
+          "value": 4241,
+          "ts": "2026-11-11T12:30:49.818Z"
+        },
+        {
+          "value": 3201,
+          "ts": "2026-11-12T14:06:06.236Z"
+        },
+        {
+          "value": 31,
+          "ts": "2026-11-13T14:43:55.842Z"
+        },
+        {
+          "value": 33,
+          "ts": "2026-11-14T13:52:10.141Z"
+        },
+        {
+          "value": 31,
+          "ts": "2026-11-15T12:59:51.005Z"
+        },
+        {
+          "value": 32,
+          "ts": "2026-11-16T13:39:54.127Z"
+        },
+        {
+          "value": 117,
+          "ts": "2026-11-17T14:20:21.644Z"
+        },
+        {
+          "value": 32,
+          "ts": "2026-11-18T14:41:57.731Z"
+        },
+        {
+          "value": 32,
+          "ts": "2026-11-19T14:01:31.614Z"
+        },
+        {
+          "value": 31,
+          "ts": "2026-11-20T13:44:29.724Z"
+        },
+        {
+          "value": 162,
+          "ts": "2026-11-21T13:14:31.495Z"
+        },
+        {
+          "value": 164,
+          "ts": "2026-11-22T14:13:26.489Z"
+        },
+        {
+          "value": 190,
+          "ts": "2026-11-23T15:38:13.659Z"
+        },
+        {
+          "value": 47,
+          "ts": "2026-11-24T15:23:38.032Z"
+        },
+        {
+          "value": 386,
+          "ts": "2026-11-25T15:04:38.532Z"
+        },
+        {
+          "value": 531,
+          "ts": "2026-11-26T14:26:28.816Z"
+        },
+        {
+          "value": 611,
+          "ts": "2026-11-27T14:28:55.894Z"
+        },
+        {
+          "value": 532,
+          "ts": "2026-11-28T13:47:23.162Z"
+        }
+      ],
+      "stalled": false,
+      "reason": "moving",
+      "direction": "down",
+      "value": 532
+    }
+  },
+  "lastRunAt": "2026-11-28T13:47:23.162Z",
+  "lastSummary": {
+    "needsRescoreUnblocked": 532,
+    "needsRescoreRaw": 606,
+    "needsRescoreNotScoreable": 23,
+    "needsRescoreBlocked": 51
+  },
+  "priorLedgerAlert": null
+}

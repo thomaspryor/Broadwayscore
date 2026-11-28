@@ -1,0 +1,298 @@
+{
+  "issueNumber": "bro-5647-s",
+  "planId": "2c75688e-babf-4961-a9e0-05ccd9453813",
+  "status": "applied",
+  "createdAt": "2026-10-21T18:50:05.775Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From Dots' audit of the four Oct 21 Gemini reports and the owner's two single-show ChatGPT reports. Leopoldstadt: Broadway Journal's $580,000 weekly fixed costs (excluding royalties) and 'losses since mid-February' replace an unsourced $650,000 tagged sec-filing; SEC D/A link replaces a mirror and a Reddit thread. Death of a Salesman: its SEC Form D (Loman Broadway LLC, named on the production's site) added as a source. West Side Story 2020: the $10M SVOG was to be returned (Broadway News, Aug 9 2021). New budget-only entries from Forbes, read by Dots at the publisher (Forbes blocks this machine): Burn This 2019 ($4M, near recoupment) and Escape to Margaritaville ($15M, forecast total loss, not used as an outcome). Old values from the private core data.",
+    "steps": [
+      "Leopoldstadt cost, Salesman and West Side Story sources",
+      "Add Burn This and Escape to Margaritaville"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leopoldstadt-2022",
+        "showId": "leopoldstadt-2022",
+        "field": "weeklyRunningCost",
+        "oldValue": 650000,
+        "newValue": 580000,
+        "description": "leopoldstadt-2022: Broadway Journal's reported fixed costs replace an unsourced figure"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leopoldstadt-2022",
+        "showId": "leopoldstadt-2022",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Jun 12, 2023): \"Its weekly fixed costs are $580,000, excluding royalties, according to estimates filed a year ago with the state.\" https://www.broadwayjournal.com/p/kimberly-akimbo-leopoldstadt-david-stone-win-big-at-tonys",
+        "description": "leopoldstadt-2022: cost source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leopoldstadt-2022",
+        "showId": "leopoldstadt-2022",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "leopoldstadt-2022: fixed costs excluding royalties, not an all-in break-even"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leopoldstadt-2022",
+        "showId": "leopoldstadt-2022",
+        "field": "costMethodology",
+        "oldValue": "sec-filing",
+        "newValue": "trade-reported",
+        "description": "leopoldstadt-2022: trade-reported"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leopoldstadt-2022",
+        "showId": "leopoldstadt-2022",
+        "field": "notes",
+        "oldValue": "Tom Stoppard's play, winner of the 2023 Tony for Best Play; capitalized at $8M per its SEC filing. Closed Jul 2, 2023. No recoupment was announced; Broadway Journal (Aug 25, 2023) reported that, at that point, Prima Facie was the only 2022-23 show to have announced recoupment.",
+        "newValue": "Tom Stoppard's play, winner of the 2023 Tony for Best Play; capitalized at $8M per its SEC filing (maximum $8.75M). Closed Jul 2, 2023. Broadway Journal (Jun 12, 2023) reported it \"has suffered losses since mid-February\", with weekly fixed costs of $580,000 before royalties. No recoupment was announced; Broadway Journal (Aug 25, 2023) reported that, at that point, Prima Facie was the only 2022-23 show to have announced recoupment.",
+        "description": "leopoldstadt-2022: notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leopoldstadt-2022",
+        "showId": "leopoldstadt-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://assets.disclosurequest.com/Archives/edgar/data/1932438/000193243822000002/0001932438-22-000002.txt",
+            "date": "2022-01-01"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1g1zw44/which_shows_that_opened_in_2023_and_2024_recouped/",
+            "date": "2024-10-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1932438/000193243822000002/xslFormDX01/primary_doc.xml",
+            "date": "2022-10-03"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/kimberly-akimbo-leopoldstadt-david-stone-win-big-at-tonys",
+            "date": "2023-06-12"
+          }
+        ],
+        "description": "leopoldstadt-2022: SEC and Broadway Journal replace a mirror link and a Reddit thread"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "reddit",
+            "url": "https://forum.broadwayworld.com/thread/DEATH-OF-A-SALESMAN-2026-Reviews/4",
+            "date": "2026-06-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/death-of-a-salesman-joins-the-2-million-club-and-more-from-last-weeks-broadway-grosses",
+            "date": "2026-07-14"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-death-salesman-cats-the-jellicle-ball-1236671126/",
+            "date": "2026-08-11"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "reddit",
+            "url": "https://forum.broadwayworld.com/thread/DEATH-OF-A-SALESMAN-2026-Reviews/4",
+            "date": "2026-06-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/death-of-a-salesman-joins-the-2-million-club-and-more-from-last-weeks-broadway-grosses",
+            "date": "2026-07-14"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/business/business-news/broadway-box-office-death-salesman-cats-the-jellicle-ball-1236671126/",
+            "date": "2026-08-11"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2107826/000210782626000001/primary_doc.xml",
+            "date": "2026-02-03"
+          }
+        ],
+        "description": "death-of-a-salesman: add its SEC Form D (Loman Broadway LLC, the company named on the production's site; $8.9M offered)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "west-side-story-2020",
+        "showId": "west-side-story-2020",
+        "field": "notes",
+        "oldValue": "Ivo van Hove's revival at the Broadway Theatre (opened Feb 20, 2020), stopped by the Mar 2020 shutdown after 24 regular performances and never reopened. Capitalized for up to $16 million; it received a $10 million Shuttered Venue Operators Grant. No investor outcome has been reported.",
+        "newValue": "Ivo van Hove's revival at the Broadway Theatre (opened Feb 20, 2020), stopped by the Mar 2020 shutdown after 24 regular performances and never reopened. Capitalized for up to $16 million. It was awarded a $10 million Shuttered Venue Operators Grant in Jul 2021, but when the producers said on Aug 9, 2021 that it would not reopen, they said the full grant would be returned. No investor outcome has been reported.",
+        "description": "west-side-story-2020: the grant was returned"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "west-side-story-2020",
+        "showId": "west-side-story-2020",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/west-side-story-hangmen-receive-government-boost-for-reopening/",
+            "date": "2021-07-13"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.cbsnews.com/news/west-side-story-broadway-behind-scenes-60-minutes-2020-02-16/",
+            "date": "2020-02-16"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/west-side-story-hangmen-receive-government-boost-for-reopening/",
+            "date": "2021-07-13"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.cbsnews.com/news/west-side-story-broadway-behind-scenes-60-minutes-2020-02-16/",
+            "date": "2020-02-16"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/west-side-story-will-not-return-to-broadway/",
+            "date": "2021-08-09"
+          }
+        ],
+        "description": "west-side-story-2020: add the closing report"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "burn-this-2019",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 4000000,
+          "capitalizationBasis": "reported",
+          "capitalizationSource": "Forbes (Lee Seymour, Jul 15, 2019) reported a $4 million capitalization for the revival and that it was near recoupment as it closed; no recoupment was announced. https://www.forbes.com/sites/leeseymour/2019/07/15/dave-chappelle-is-worth-1-million-on-broadway-as-biz-recovers-from-blackout/",
+          "notes": "Lanford Wilson revival at the Hudson starring Adam Driver and Keri Russell (opened Apr 16, 2019; closed Jul 14, 2019). Capitalized at a reported $4 million; Forbes said it was close to recouping at closing, but no recoupment was announced.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/leeseymour/2019/07/15/dave-chappelle-is-worth-1-million-on-broadway-as-biz-recovers-from-blackout/",
+              "date": "2019-07-15"
+            }
+          ]
+        },
+        "description": "burn-this-2019: add (budget only)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "escape-to-margaritaville-2018",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 15000000,
+          "capitalizationBasis": "reported",
+          "capitalizationSource": "Forbes (Lee Seymour, May 31, 2018) reported a $15 million production investment and forecast that investors would lose all of it. https://www.forbes.com/sites/leeseymour/2018/05/31/jimmy-buffetts-broadway-venture-fizzles-will-close-this-summer/",
+          "notes": "Jimmy Buffett jukebox musical at the Marquis (opened Mar 15, 2018; closed Jul 1, 2018). Forbes put the investment at $15 million and, before closing, forecast a total loss; a July 2018 Forbes report described loans used to keep it running. No final investor result has been reported, so the forecast is not treated as an outcome.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/leeseymour/2018/05/31/jimmy-buffetts-broadway-venture-fizzles-will-close-this-summer/",
+              "date": "2018-05-31"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/leeseymour/2018/07/02/jimmy-buffet-robert-de-niros-broadway-shows-set-to-close-as-tony-buzz-fades/",
+              "date": "2018-07-02"
+            }
+          ]
+        },
+        "description": "escape-to-margaritaville-2018: add (budget only)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T18:57:08.016Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for leopoldstadt-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for leopoldstadt-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for leopoldstadt-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for leopoldstadt-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for leopoldstadt-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for leopoldstadt-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for west-side-story-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for west-side-story-2020"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added burn-this-2019 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added escape-to-margaritaville-2018 (TBD)"
+    }
+  ],
+  "executedIn": "ci"
+}

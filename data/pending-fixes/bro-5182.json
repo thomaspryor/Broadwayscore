@@ -1,0 +1,32 @@
+{
+  "issueNumber": "bro-5182",
+  "planId": "49dd41bb-76d4-4c86-b5b6-5915bef382fe",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5182: drop pending commercial-review entries that commercial.json now covers with a cited record (post BRO-5264/5268 sweep). No research, no commercial.json change; upcoming shows and every entry whose figures differ stay held.",
+    "steps": [
+      "Run reconcile-pending-commercial.js --apply: removes only entries whose show resolves to a cited commercial.json record carrying every pending claim."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "reconcile-pending-commercial.js",
+        "args": "--apply",
+        "description": "Prune pending entries already covered by cited commercial.json records."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T06:51:26.846Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reconcile-pending-commercial.js successfully"
+    }
+  ]
+}

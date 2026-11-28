@@ -1,0 +1,190 @@
+{
+  "issueNumber": "bro-7344-e",
+  "planId": "e2175959-2253-49f7-954a-a1a26c50bad0",
+  "status": "applied",
+  "createdAt": "2026-11-15T17:00:03.688Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7344: clear the last 4 stale CV-promoted isNonReview flags on genuine reviews (read full text); 3 are multi-show columns where the target-show section is a full review",
+    "steps": [
+      "BRO-7344: read the full stored text. TheaterMania review of Art of Leaving at Pershing Square Signature Center by Sandy MacDonald: evaluative from start to its closing verdict; the CV truncation note is a TheaterMania related-video caption plus site footer after the verdict, not a missing ending.",
+      "Release the stale CV-promoted non-review flag (BRO-7344)",
+      "Clear the rejectionReason the CV promotion stamped (BRO-7344)",
+      "BRO-7344: read the full stored text. Vulture multi-show theater column by Jackson McHenry; its first and longest section is a full evaluative review of Ava: The Secret Conversations at City Center. The other two shows are separate sections; the scorer prompt scores only the target show portion.",
+      "Release the stale CV-promoted non-review flag (BRO-7344)",
+      "Clear the rejectionReason the CV promotion stamped (BRO-7344)",
+      "BRO-7344: read the full stored text. HuffPost First Nighter column by David Finkle; the section before the asterisk divider is a complete evaluative review of Ernest Shackleton Loves Me at Second Stage Tony Kiser; a separate Twelfth Night review follows the divider. Scorer prompt scores only the target show portion.",
+      "Release the stale CV-promoted non-review flag (BRO-7344)",
+      "Clear the rejectionReason the CV promotion stamped (BRO-7344)",
+      "BRO-7344: read the full stored text. HuffPost First Nighter column by David Finkle; the section before the asterisk divider is a complete evaluative review of New Yiddish Rep God of Vengeance at La MaMa; a short unrelated HBO note follows the divider. Scorer prompt scores only the target show portion.",
+      "Release the stale CV-promoted non-review flag (BRO-7344)",
+      "Clear the rejectionReason the CV promotion stamped (BRO-7344)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "art-of-leaving-off-broadway-2025/theatermania--sandy-macdonald.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7344: read the full stored text. TheaterMania review of Art of Leaving at Pershing Square Signature Center by Sandy MacDonald: evaluative from start to its closing verdict; the CV truncation note is a TheaterMania related-video caption plus site footer after the verdict, not a missing ending."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-of-leaving-off-broadway-2025/theatermania--sandy-macdonald.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the stale CV-promoted non-review flag (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "art-of-leaving-off-broadway-2025/theatermania--sandy-macdonald.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7344: read the full stored text. Vulture multi-show theater column by Jackson McHenry; its first and longest section is a full evaluative review of Ava: The Secret Conversations at City Center. The other two shows are separate sections; the scorer prompt scores only the target show portion."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the stale CV-promoted non-review flag (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7344: read the full stored text. HuffPost First Nighter column by David Finkle; the section before the asterisk divider is a complete evaluative review of Ernest Shackleton Loves Me at Second Stage Tony Kiser; a separate Twelfth Night review follows the divider. Scorer prompt scores only the target show portion."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the stale CV-promoted non-review flag (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "god-of-vengeance-off-broadway-2016/huffpost--david-finkle.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7344: read the full stored text. HuffPost First Nighter column by David Finkle; the section before the asterisk divider is a complete evaluative review of New Yiddish Rep God of Vengeance at La MaMa; a short unrelated HBO note follows the divider. Scorer prompt scores only the target show portion."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "god-of-vengeance-off-broadway-2016/huffpost--david-finkle.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the stale CV-promoted non-review flag (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "god-of-vengeance-off-broadway-2016/huffpost--david-finkle.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-7344)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-15T17:32:07.601Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-of-leaving-off-broadway-2025/theatermania--sandy-macdonald.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-of-leaving-off-broadway-2025/theatermania--sandy-macdonald.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "art-of-leaving-off-broadway-2025/theatermania--sandy-macdonald.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ernest-shackleton-loves-me-off-broadway-2017/huffpost--david-finkle.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "god-of-vengeance-off-broadway-2016/huffpost--david-finkle.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "god-of-vengeance-off-broadway-2016/huffpost--david-finkle.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "god-of-vengeance-off-broadway-2016/huffpost--david-finkle.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

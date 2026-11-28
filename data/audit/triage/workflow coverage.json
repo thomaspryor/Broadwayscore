@@ -1,0 +1,20 @@
+{
+  "system": "workflow coverage",
+  "status": "pass",
+  "lastChecked": "2026-11-28T16:04:54.892Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Workflow coverage: invalid files",
+      "status": "pass",
+      "message": "No workflow shows the invalid-file signature in the last 24h"
+    },
+    {
+      "name": "Workflow coverage: never-run",
+      "status": "pass",
+      "message": "No never-run workflows among 336 checked"
+    }
+  ]
+}

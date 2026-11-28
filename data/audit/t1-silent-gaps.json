@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-11-28T21:45:14.371Z",
+  "windowDays": 45,
+  "showsScanned": 300,
+  "gaps": [
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "openingDate": "2026-11-08",
+      "file": "guardian--unknown.json",
+      "outletId": "guardian",
+      "tier": 1,
+      "type": "empty-body",
+      "recoverable": false,
+      "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
+      "recovery": null,
+      "recoveryCount": 3,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-09T07:02:09.044Z",
+      "fileAgeHours": 470.71776305555557,
+      "gapSeenAt": "2026-11-10T05:35:04.300Z",
+      "nonTerminalAgeHours": 448.1694638888889,
+      "needsManualRecovery": true
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "openingDate": "2026-11-03",
+      "file": "talkinbroadway--unknown.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": false,
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 10,
+      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
+      "firstSeen": "2026-11-10T13:48:14.823Z",
+      "fileAgeHours": 439.94969638888887,
+      "gapSeenAt": "2026-11-10T14:56:56.302Z",
+      "nonTerminalAgeHours": 438.80501888888887,
+      "needsManualRecovery": true
+    }
+  ],
+  "contradictions": []
+}

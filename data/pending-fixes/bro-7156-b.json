@@ -1,0 +1,111 @@
+{
+  "issueNumber": "bro-7156-b",
+  "planId": "698bcd04-e6ff-4bbd-947e-cb64070a399f",
+  "status": "applied",
+  "createdAt": "2026-11-14T00:18:13.734Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7156: retire 4 same-run duplicate rows (Honor, An Artist Lecture; the bare Kiln Berlin stub; Lumin By Emma Gibson; Ohio / Greenwich House Theater), retitle Berlin_2027 to Berlin, add Ohio's 2027-01-26 opening date",
+    "steps": [
+      "Retire the bare Kiln venue stub (id only)",
+      "Retitle Berlin_2027 to Berlin",
+      "Retire the duplicate Lumin By Emma Gibson row (id only)",
+      "Retire the untyped duplicate Honor, An Artist Lecture row (id only)",
+      "Retire the Ohio / Greenwich House Theater duplicate (id only)",
+      "Official opening 26 Jan 2027 (TheaterMania announcement; TDF Show Finder lists the same first preview and opening)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "description": "Retire the bare Kiln venue stub (id only)",
+        "id": "berlin-off-west-end-2027",
+        "expectTitle": "Berlin",
+        "duplicateOf": "berlin2027-off-west-end-2026",
+        "evidenceUrl": "https://kilntheatre.com/whats-on/berlin/",
+        "reason": "Duplicate listing of berlin2027-off-west-end-2026: same Kiln Theatre run, Joanna Murray-Smith Berlin, 10 Mar to 17 Apr 2027. The kept row carries the TodayTix listing 47136, synopsis, runtime and art; this venue stub carries none; BRO-7156"
+      },
+      {
+        "type": "retitle-show",
+        "description": "Retitle Berlin_2027 to Berlin",
+        "id": "berlin2027-off-west-end-2026",
+        "expectTitle": "Berlin_2027",
+        "newTitle": "Berlin",
+        "reason": "Listing artefact: Kiln and TodayTix title the play Berlin (Joanna Murray-Smith); BRO-7156"
+      },
+      {
+        "type": "retire-show",
+        "description": "Retire the duplicate Lumin By Emma Gibson row (id only)",
+        "id": "lumin-by-emma-gibson-regional-2027",
+        "expectTitle": "Lumin By Emma Gibson",
+        "duplicateOf": "lumin-regional-2027",
+        "evidenceUrl": "https://moxietheatre.com/shows/lumin/",
+        "reason": "Duplicate listing of lumin-regional-2027: same MOXIE Theatre run, Lumin by Emma Gibson, 14 Feb to 14 Mar 2027; the byline was read into the title; BRO-7156"
+      },
+      {
+        "type": "retire-show",
+        "description": "Retire the untyped duplicate Honor, An Artist Lecture row (id only)",
+        "id": "honor-an-artist-lecture-off-broadway-2027",
+        "expectTitle": "Honor, An Artist Lecture",
+        "duplicateOf": "honor-off-broadway-2027",
+        "evidenceUrl": "https://www.tfana.org/current-season/honor",
+        "reason": "Duplicate listing of honor-off-broadway-2027: same Theatre for a New Audience run (Polonsky Shakespeare Center), Suzanne Bocanegra Honor, An Artist Lecture, 13 to 31 Jan 2027; BRO-7156"
+      },
+      {
+        "type": "retire-show",
+        "description": "Retire the Ohio / Greenwich House Theater duplicate (id only)",
+        "id": "ohio-greenwich-house-theater-off-broadway-2027",
+        "expectTitle": "Ohio / Greenwich House Theater",
+        "duplicateOf": "ohio-off-broadway-2027",
+        "evidenceUrl": "https://www.theatermania.com/news/the-bengsons-will-bring-ohio-to-off-broadway-this-winter_1857788/",
+        "reason": "Duplicate listing of ohio-off-broadway-2027: the Bengsons musical Ohio at Greenwich House Theater, first preview 17 Jan 2027 (the stray row stored it as openingDate); the venue name was read into the title; BRO-7156"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ohio-off-broadway-2027",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2027-01-26",
+        "description": "Official opening 26 Jan 2027 (TheaterMania announcement; TDF Show Finder lists the same first preview and opening)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-14T01:05:06.531Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired berlin-off-west-end-2027 (\"Berlin\" @ Kiln Theatre)"
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled berlin2027-off-west-end-2026: \"Berlin_2027\" -> \"Berlin\""
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired lumin-by-emma-gibson-regional-2027 (\"Lumin By Emma Gibson\" @ Moxie Theatre, San Diego, CA)"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired honor-an-artist-lecture-off-broadway-2027 (\"Honor, An Artist Lecture\" @ Polonsky Shakespeare Center)"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired ohio-greenwich-house-theater-off-broadway-2027 (\"Ohio / Greenwich House Theater\" @ Greenwich House Theater)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for ohio-off-broadway-2027"
+    }
+  ],
+  "executedIn": "ci"
+}

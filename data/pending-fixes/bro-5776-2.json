@@ -1,0 +1,549 @@
+{
+  "issueNumber": "bro-5776-2",
+  "planId": "e51527c2-d955-49dc-a91a-fe4c8a8b59d3",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5776: add commercial.json records for every announced or upcoming Broadway production that had none (22 shows) and record the Inter Alia and Much Ado SEC Form D offering maximums (Damn Yankees is in bro-5776-2-b). Producers of Roundabout, Second Stage, MTC and Lincoln Center shows are marked Nonprofit with nonprofitOrg, each cited to a trade article; all others are TBD.",
+    "steps": [
+      "Nonprofit only where a trade article names the nonprofit as producer; commercial shows are TBD, never a guessed outcome.",
+      "SEC Form D amounts are offering maxima and carry capitalizationBasis=maximum."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-fantasticks",
+        "entry": {
+          "designation": "Nonprofit",
+          "nonprofitOrg": "Second Stage Theater",
+          "notes": "Second Stage Theater production at the Hayes Theater (Second Stage's Broadway house), opening Nov 16, 2026. No capitalization, weekly running cost or recoupment figures have been published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/second-stage-to-produce-branden-jacobs-jenkins-gloria-and-christopher-gattelli-helmed-the-fantasticks-on-broadway/",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/the-fantasticks-is-finally-coming-to-broadway",
+              "date": null
+            }
+          ]
+        },
+        "description": "the-fantasticks: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "gloria",
+        "entry": {
+          "designation": "Nonprofit",
+          "nonprofitOrg": "Second Stage Theater",
+          "notes": "Second Stage Theater production at the Hayes Theater, opening Apr 5, 2027. No capitalization, weekly running cost or recoupment figures have been published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/second-stage-to-produce-branden-jacobs-jenkins-gloria-and-christopher-gattelli-helmed-the-fantasticks-on-broadway/",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadway.com/buzz/207260/christopher-gattellis-the-fantasticks-revival-and-branden-jacobs-jenkins-gloria-join-second-stages-2026-2027-season/",
+              "date": null
+            }
+          ]
+        },
+        "description": "gloria: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "awake-and-sing",
+        "entry": {
+          "designation": "Nonprofit",
+          "nonprofitOrg": "Manhattan Theatre Club",
+          "notes": "Manhattan Theatre Club production at the Samuel J. Friedman Theatre, opening Jan 7, 2027. No capitalization, weekly running cost or recoupment figures have been published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/awake-and-sing-starring-danny-burstein-jessica-hecht-jeremy-shamos-will-play-broadway-next-season/",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/clifford-odets-awake-and-sing-will-get-a-broadway-revival-in-2027",
+              "date": null
+            }
+          ]
+        },
+        "description": "awake-and-sing: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "montauk",
+        "entry": {
+          "designation": "Nonprofit",
+          "nonprofitOrg": "Manhattan Theatre Club",
+          "notes": "Manhattan Theatre Club world premiere at the Samuel J. Friedman Theatre, spring 2027. No capitalization, weekly running cost or recoupment figures have been published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/laura-linney-to-lead-world-premiere-of-david-hares-montauk-on-broadway-in-spring-2027/",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/laura-linney-will-return-to-broadway-in-2027-in-david-hares-montauk",
+              "date": null
+            }
+          ]
+        },
+        "description": "montauk: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-sound-of-music",
+        "entry": {
+          "designation": "Nonprofit",
+          "nonprofitOrg": "Lincoln Center Theater",
+          "notes": "Lincoln Center Theater revival at the Vivian Beaumont Theater, opening Apr 15, 2027. No capitalization, weekly running cost or recoupment figures have been published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/the-sound-of-music-is-coming-back-to-broadway-starring-jasmine-amy-rogers",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://broadwaydirect.com/a-few-good-men-and-the-sound-of-music-announce-broadway-revivals/",
+              "date": null
+            }
+          ]
+        },
+        "description": "the-sound-of-music: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "mix-and-master",
+        "entry": {
+          "designation": "Nonprofit",
+          "nonprofitOrg": "Roundabout Theatre Company",
+          "notes": "Roundabout Theatre Company production at the Todd Haimes Theatre, opening Jan 27, 2027. No capitalization, weekly running cost or recoupment figures have been published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/roundabout-theatre-company-announces-dates-for-2026-2027-season-productions/",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/roundabout-reveals-dates-for-broadway-revivals-of-the-full-monty-the-imaginary-invalid-more",
+              "date": null
+            }
+          ]
+        },
+        "description": "mix-and-master: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-full-monty",
+        "entry": {
+          "designation": "Nonprofit",
+          "nonprofitOrg": "Roundabout Theatre Company",
+          "notes": "Roundabout Theatre Company revival at the Todd Haimes Theatre; Roundabout postponed it in Oct 2026 and Rhinoceros takes its Apr 25, 2027 slot. No capitalization, weekly running cost or recoupment figures have been published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadway.com/buzz/206975/the-full-monty-returns-to-broadway-in-the-roundabout-theatre-companys-2026-27-season/",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadway.com/buzz/207479/tony-shalhoub-john-turturro-and-tatiana-maslany-to-star-in-broadways-rhinoceros-as-the-full-monty-is-postponed/",
+              "date": "2026-10-15"
+            }
+          ]
+        },
+        "description": "the-full-monty: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "rhinoceros",
+        "entry": {
+          "designation": "Nonprofit",
+          "nonprofitOrg": "Roundabout Theatre Company",
+          "notes": "Roundabout Theatre Company production in association with American Repertory Theater at the Todd Haimes Theatre, opening Apr 25, 2027 (replaces The Full Monty). No capitalization, weekly running cost or recoupment figures have been published.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadway.com/buzz/207479/tony-shalhoub-john-turturro-and-tatiana-maslany-to-star-in-broadways-rhinoceros-as-the-full-monty-is-postponed/",
+              "date": "2026-10-15"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.theatermania.com/news/john-turturro-tony-shalhoub-and-tatiana-maslany-to-star-on-broadway-in-rhinocero_1857244/",
+              "date": null
+            }
+          ]
+        },
+        "description": "rhinoceros: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "dreamgirls",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Commercial revival produced by Sonia Friedman Productions, Sue Wager, John Johnson and Jennifer Hudson (per producer announcements). No capitalization reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://blackamericaweb.com/2026/02/20/jennifer-hudson-dreamgirls-broadway-revival/",
+              "date": "2026-02-20"
+            }
+          ]
+        },
+        "description": "dreamgirls: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "private-lives",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Announced Broadway revival; no producers or capitalization confirmed yet.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+              "date": null
+            }
+          ]
+        },
+        "description": "private-lives: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "10-things-i-hate-about-you-on-broadway",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Announced Broadway production; producers and capitalization not confirmed.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+              "date": null
+            }
+          ]
+        },
+        "description": "10-things-i-hate-about-you-on-broadway: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "evita",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Announced Broadway revival at the Winter Garden Theatre; producers and capitalization not confirmed.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+              "date": null
+            }
+          ]
+        },
+        "description": "evita: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "warriors",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Commercial musical by Lin-Manuel Miranda and Eisa Davis at the Lunt-Fontanne Theatre, previews March 2027; no capitalization reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://broadwaydirect.com/warriors-is-coming-to-broadway-heres-what-we-know/",
+              "date": null
+            }
+          ]
+        },
+        "description": "warriors: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "downstate",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Commercial production by Scott Rudin and Barry Diller at the Booth Theatre; no capitalization reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayworld.com/article/Bruce-Norris-DOWNSTATE-Will-Open-on-Broadway-This-Season-20260817",
+              "date": "2026-08-17"
+            }
+          ]
+        },
+        "description": "downstate: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "three-days-of-rain",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Commercial revival produced by David Binder with Jayne Baron Sherman at the Longacre Theatre, opening Mar 1, 2027; no capitalization reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/broadway-will-get-a-three-days-of-rain-revival-starring-francois-arnaud-david-corenswet-yvonne-strahovski-in-2027",
+              "date": null
+            }
+          ]
+        },
+        "description": "three-days-of-rain: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "now-you-see-me-live",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Announced Broadway production at the Al Hirschfeld Theatre; producers and capitalization not confirmed.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+              "date": null
+            }
+          ]
+        },
+        "description": "now-you-see-me-live: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "blue-man-group-a-new-holiday-surprise",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Announced holiday engagement at the Lunt-Fontanne Theatre; producers and capitalization not confirmed.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+              "date": null
+            }
+          ]
+        },
+        "description": "blue-man-group-a-new-holiday-surprise: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "wanted",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Broadway production at the James Earl Jones Theatre; producers and capitalization not confirmed.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+              "date": null
+            }
+          ]
+        },
+        "description": "wanted: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "let-the-good-times-roll",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Announced Broadway production; producers and capitalization not confirmed.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+              "date": null
+            }
+          ]
+        },
+        "description": "let-the-good-times-roll: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "midnight-in-the-garden-of-good-and-evil",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Announced Broadway production; producers and capitalization not confirmed.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+              "date": null
+            }
+          ]
+        },
+        "description": "midnight-in-the-garden-of-good-and-evil: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "inter-alia",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Play at the Music Box Theatre. Capitalization is the SEC Form D offering maximum, not a reported final figure.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+              "date": null
+            },
+            {
+              "type": "sec",
+              "url": "https://www.sec.gov/Archives/edgar/data/2133084/000213308426000001/primary_doc.xml",
+              "date": null
+            }
+          ],
+          "capitalization": 7000000,
+          "capitalizationBasis": "maximum",
+          "capitalizationSource": "SEC Form D filing (Inter Alia Broadway Ltd Liability Co, CIK 0002133084): total offering amount $7,000,000, an offering maximum rather than a reported final capitalization. Matched to Inter Alia by the issuer name and its related persons."
+        },
+        "description": "inter-alia: add commercial entry (BRO-5776 enrollment)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "much-ado-about-nothing",
+        "entry": {
+          "designation": "TBD",
+          "notes": "Revival at the Winter Garden Theatre. Capitalization is the SEC Form D offering maximum, not a reported final figure.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/whats-headed-for-broadway-in-2026-2027",
+              "date": null
+            },
+            {
+              "type": "sec",
+              "url": "https://www.sec.gov/Archives/edgar/data/2133246/000213324626000001/primary_doc.xml",
+              "date": null
+            }
+          ],
+          "capitalization": 7500000,
+          "capitalizationBasis": "maximum",
+          "capitalizationSource": "SEC Form D filing (JLC Much Ado Limited Partnership, CIK 0002133246): total offering amount $7,500,000, an offering maximum rather than a reported final capitalization. Matched to Much Ado About Nothing by the issuer name and its related persons."
+        },
+        "description": "much-ado-about-nothing: add commercial entry (BRO-5776 enrollment)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T04:18:20.772Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-fantasticks (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added gloria (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added awake-and-sing (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added montauk (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-sound-of-music (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added mix-and-master (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-full-monty (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added rhinoceros (Nonprofit)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added dreamgirls (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added private-lives (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added 10-things-i-hate-about-you-on-broadway (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added evita (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added warriors (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added downstate (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added three-days-of-rain (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added now-you-see-me-live (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added blue-man-group-a-new-holiday-surprise (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added wanted (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added let-the-good-times-roll (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added midnight-in-the-garden-of-good-and-evil (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added inter-alia (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added much-ado-about-nothing (TBD)"
+    }
+  ],
+  "executedIn": "ci"
+}

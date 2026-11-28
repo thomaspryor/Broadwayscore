@@ -1,0 +1,203 @@
+{
+  "issueNumber": "bro-7131",
+  "planId": "998dd5d0-f409-4a4c-94fc-a98b1abadb19",
+  "status": "partial",
+  "createdAt": "2026-11-08T16:34:19.685Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Tango After Dark Nov 2026 run moved from the Peacock to Sadler's Wells (Peacock closed for works; Sadler's Wells help page + BWW 2026-04-01). Fix venue/previews and clear the venue-only wrong_production rejection on the in-run Theatre and Tonic review.",
+    "steps": [
+      "shows.json: tango-after-dark-off-west-end-2026.venue",
+      "shows.json: tango-after-dark-off-west-end-2026.previewsStartDate",
+      "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: rejectedAt",
+      "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: rejectedBy",
+      "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: rejectionReason",
+      "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: rejectionReasoning",
+      "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: wrongProductionManualClear",
+      "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: wrongProduction",
+      "Ingest tosca-english-national-opera-west-end-2026 from handed-off HTML: https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+      "Ingest medea-off-broadway-2026 from handed-off HTML: https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-2026",
+      "Ingest parsifal-off-west-end-2026 from handed-off HTML: https://bachtrack.com/review-wagner-parsifal-titov-hrusa-de-barbeyrac-sherratt-royal-opera-october-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tango-after-dark-off-west-end-2026",
+        "field": "venue",
+        "oldValue": "Peacock Theatre",
+        "newValue": "Sadler's Wells Theatre",
+        "description": "shows.json: tango-after-dark-off-west-end-2026.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tango-after-dark-off-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-04-14",
+        "newValue": "2026-11-05",
+        "description": "shows.json: tango-after-dark-off-west-end-2026.previewsStartDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-11-08T03:06:48.071Z",
+        "newValue": null,
+        "description": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: rejectedAt"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: rejectedBy"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: rejectionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: The show context specifies 'Tango After Dark at Peacock Theatre (Off-West End)' but this review covers the production at Sadler's Wells Theatre, which is a different venue. Despite both being associated with the Sadler's Wells organization, they are distinct venues and this constitutes a different production.; openai: The review is about 'Tango After Dark' at Sadler's Wells Theatre, which is a different venue than the specified Peacock Theatre.",
+        "newValue": null,
+        "description": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: rejectionReasoning"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: wrongProductionManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json: wrongProduction"
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "tosca-english-national-opera-west-end-2026",
+        "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+        "outlet": "bachtrack",
+        "critic": "Mark Pullinger",
+        "publishDate": "2026-10-31",
+        "description": "BRO-5886 html handoff: ingest https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026 from HTML fetched outside CI",
+        "htmlBytes": 66829,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "ddeaa7b6b8283b0d8acb18401300a7ec980b21c811ae6db1843fefd3a9aea3a5",
+          "scrubbed": true
+        }
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "medea-off-broadway-2026",
+        "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-2026",
+        "outlet": "bachtrack",
+        "critic": "Susan Stempleski",
+        "publishDate": "2026-10-31",
+        "description": "BRO-5886 html handoff: ingest https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-2026 from HTML fetched outside CI",
+        "htmlBytes": 65636,
+        "html": {
+          "v": 1,
+          "alg": "RSA-OAEP-256+A256GCM+gzip",
+          "kid": "ecc142c27b1b7f86",
+          "ek": "ZJAsLc/fvWeMGhtWPLxb4vHd14EyDsaiJCLZCd4PmoAff/GyGZ+La2PHtA3jKSsf+W7Ggkmba0GmYIjQmnZ8RBOk87yNSKGAWTa7FFQ0wz53Krczqo/jmrArAhWL1OiodtxwAKfbClC/twNPLq+yJ2mWffiKXJ5YWhRDopPADldZLBFrxAy+oYrvevHYR7xcuBjh/h18Hh/lVUc8K8kNJbnbtBoorcmiYkpltKENt/7hB5S6KXzXFM0EslyaUU6U+V/iCHuV75x0HqtAF3TBboVcQeLoIaUt3+RNwgZPM68EAwiJB6usIwiPLAewF0XqfU6L2XejCHn5HP6mN7JbEmw4Bucj9MT+d0kn93KwszgOAqL1UQb3Dnd+TRcy/RbIaEqcYTwOQJP/pVrQ9YJMxpJW1qUKwpfjCa3URsPbtrB3MeijgyBKSueLhQZ2LVPLDZUwsT27gWyf03QxEUd0oDdk5Xwe06imULBPhvBYdV3VbrCrw8zByaw3CT8exIAD",
+          "iv": "tB6xfofQOT75A3s0",
+          "tag": "bAHdYz32tkM9AnCc5lbZAQ==",
+          "ct": "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"
+        }
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "parsifal-off-west-end-2026",
+        "url": "https://bachtrack.com/review-wagner-parsifal-titov-hrusa-de-barbeyrac-sherratt-royal-opera-october-2026",
+        "outlet": "bachtrack",
+        "critic": "David Karlin",
+        "publishDate": "2026-10-02",
+        "description": "BRO-5886 html handoff: ingest https://bachtrack.com/review-wagner-parsifal-titov-hrusa-de-barbeyrac-sherratt-royal-opera-october-2026 from HTML fetched outside CI",
+        "htmlBytes": 73624,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "e120119cd3efa22f6ac3011f162c04b721d2c8f91c23de9ac6b1183a3cd34169",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-08T16:43:36.824Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for tango-after-dark-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for tango-after-dark-off-west-end-2026"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json rejectedAt: \"2026-11-08T03:06:48.071Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json rejectionReasoning: \"claude: The show context specifies 'Tango After Dark at Peacock Theatre (Off-West End)' but this review covers the production at Sadler's Wells Theatre, which is a different venue. Despite both being associated with the Sadler's Wells organization, they are distinct venues and this constitutes a different production.; openai: The review is about 'Tango After Dark' at Sadler's Wells Theatre, which is a different venue than the specified Peacock Theatre.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026 for tosca-english-national-opera-west-end-2026 from handed-off HTML (66616 chars)"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": false,
+      "reason": "ingest-html-handoff: ingest failed (Command failed: /opt/hostedtoolcache/node/22.23.4/x64/bin/node scripts/ingest-review-from-url.js --show=medea-off-broadway-2026 --url=https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-2026 --html-file=/home/runner/work/_temp/html-handoff-wwZp0A/page.html --outlet=bachtrack --critic=Susan Stempleski --publish-date=2026-10-31)"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://bachtrack.com/review-wagner-parsifal-titov-hrusa-de-barbeyrac-sherratt-royal-opera-october-2026 for parsifal-off-west-end-2026 from handed-off HTML (73447 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

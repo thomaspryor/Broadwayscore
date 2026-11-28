@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6541-i",
+  "planId": "552e9630-0027-4a43-b87c-efd1c8e5dd0c",
+  "status": "applied",
+  "createdAt": "2026-10-29T20:34:32.412Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest UK hub reviews (Guardian seeding reviews + census matches) (part 1 of 9)",
+    "steps": [
+      "BRO-6541: ingest guardian review for blue-beard-royal-bath-regional-2024",
+      "BRO-6541: ingest guardian review for summer-1954-royal-bath-regional-2024",
+      "BRO-6541: ingest guardian review for the-lover-the-collection-royal-bath-regional-2024",
+      "BRO-6541: ingest guardian review for play-on-bristol-old-vic-regional-2025",
+      "BRO-6541: ingest guardian review for reverberation-bristol-old-vic-regional-2024",
+      "BRO-6541: ingest guardian review for the-complete-works-of-william-shakespeare-abridged-bristol-old-vic-regional-2026",
+      "BRO-6541: ingest guardian review for 45-years-chichester-festival-regional-2026",
+      "BRO-6541: ingest guardian review for redlands-chichester-festival-regional-2024",
+      "BRO-6541: ingest guardian review for sunset-song-dundee-rep-regional-2024",
+      "BRO-6541: ingest guardian review for anna-anastasia-oran-mor-regional-2024",
+      "BRO-6541: ingest guardian review for dancing-shoes-oran-mor-regional-2025",
+      "BRO-6541: ingest guardian review for gallus-in-weegieland-tron-regional-2025",
+      "BRO-6541: ingest guardian review for peter-panto-and-the-incredible-stinkerbell-tron-regional-2024",
+      "BRO-6541: ingest guardian review for revolution-days-citizens-regional-2026",
+      "BRO-6541: ingest guardian review for stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026",
+      "BRO-6541: ingest guardian review for the-legend-of-davie-mckenzie-oran-mor-regional-2026",
+      "BRO-6541: ingest guardian review for macbeth-hull-truck-regional-2026",
+      "BRO-6541: ingest guardian review for frankenstein-leeds-regional-2024",
+      "BRO-6541: ingest guardian review for escaped-alone-and-what-if-if-only-royal-exchange-regional-2025",
+      "BRO-6541: ingest guardian review for hamlet-hail-to-the-thief-aviva-studios-regional-2025",
+      "BRO-6541: ingest guardian review for jungle-book-aviva-studios-regional-2024",
+      "BRO-6541: ingest guardian review for of-mice-and-men-octagon-regional-2025",
+      "BRO-6541: ingest guardian review for shed-exploded-view-royal-exchange-regional-2024",
+      "BRO-6541: ingest guardian review for singin-in-the-rain-royal-exchange-regional-2025",
+      "BRO-6541: ingest guardian review for the-long-shadow-of-alois-brunner-aviva-studios-regional-2024"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=blue-beard-royal-bath-regional-2024 --url=https://www.theguardian.com/stage/2024/feb/09/blue-beard-review-emma-rices-fairytale-hits-home-with-horror-and-pizzazz --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for blue-beard-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=summer-1954-royal-bath-regional-2024 --url=https://www.theguardian.com/stage/2024/nov/03/summer-1954-review-rattigan-double-bill-packs-an-intellectual-and-emotional-punch --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for summer-1954-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-lover-the-collection-royal-bath-regional-2024 --url=https://www.theguardian.com/stage/2024/mar/28/the-loverthe-collection-review-pinter-plays-psychological-games --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-lover-the-collection-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=play-on-bristol-old-vic-regional-2025 --url=https://www.theguardian.com/stage/2025/jan/19/play-on-review-bristol-old-vic-talawa-belgrade-theatre --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for play-on-bristol-old-vic-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=reverberation-bristol-old-vic-regional-2024 --url=https://www.theguardian.com/stage/2024/oct/13/reverberation-matthew-lopez-bristol-old-vic-european-premiere-review-matthew-lopez-a-romcom-rooted-in-violence-and-rejection-eleanor-tomlinson --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for reverberation-bristol-old-vic-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-complete-works-of-william-shakespeare-abridged-bristol-old-vic-regional-2026 --url=https://www.theguardian.com/stage/2026/mar/28/the-complete-works-of-william-shakespeare-abridged-review-bristol-old-vic --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-complete-works-of-william-shakespeare-abridged-bristol-old-vic-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=45-years-chichester-festival-regional-2026 --url=https://www.theguardian.com/stage/2026/jun/19/45-years-review-minerva-theatre-chichester-gabriel-byrne-geraldine-james --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for 45-years-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=redlands-chichester-festival-regional-2024 --url=https://www.theguardian.com/stage/2024/oct/01/redlands-review-rolling-stones-chichester-festival-theatre-justin-audibert --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for redlands-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sunset-song-dundee-rep-regional-2024 --url=https://www.theguardian.com/stage/2024/apr/28/sunset-song-review-a-lively-if-melodramatic-take-on-lewis-grassic-gibbons-classic-novel --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for sunset-song-dundee-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=anna-anastasia-oran-mor-regional-2024 --url=https://www.theguardian.com/stage/2024/oct/01/anna-anastasia-review-oran-mor-glasgow-jonny-donahoe --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for anna-anastasia-oran-mor-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dancing-shoes-oran-mor-regional-2025 --url=https://www.theguardian.com/stage/2025/mar/26/dancing-shoes-review-oran-mor-glasgow --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for dancing-shoes-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=gallus-in-weegieland-tron-regional-2025 --url=https://www.theguardian.com/stage/2025/nov/23/gallus-in-weegieland-review-tron-theatre-glasgow --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for gallus-in-weegieland-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peter-panto-and-the-incredible-stinkerbell-tron-regional-2024 --url=https://www.theguardian.com/stage/2024/nov/27/peter-panto-and-the-incredible-stinkerbell-review-tron-theatre-glasgow --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for peter-panto-and-the-incredible-stinkerbell-tron-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=revolution-days-citizens-regional-2026 --url=https://www.theguardian.com/stage/2026/may/22/revolution-days-review-fearless-aid-worker-bears-witness-to-the-arab-spring --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for revolution-days-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026 --url=https://www.theguardian.com/stage/2026/apr/29/stand-deliver-the-lee-jeans-sit-in-review-tron-theatre-glasgow --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-legend-of-davie-mckenzie-oran-mor-regional-2026 --url=https://www.theguardian.com/stage/2026/mar/05/the-legend-of-davie-mckenzie-review-traverse-theatre-oran-mor --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-legend-of-davie-mckenzie-oran-mor-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=macbeth-hull-truck-regional-2026 --url=https://www.theguardian.com/stage/2026/feb/12/macbeth-review-theatre-hull-truck-bolton-octagon-derby-theatre --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for macbeth-hull-truck-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=frankenstein-leeds-regional-2024 --url=https://www.theguardian.com/stage/2024/mar/31/frankenstein-review-leeds-playhouse-imitating-the-dog-mary-shelley --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for frankenstein-leeds-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=escaped-alone-and-what-if-if-only-royal-exchange-regional-2025 --url=https://www.theguardian.com/stage/2025/feb/16/caryl-churchill-escaped-alone-what-if-if-only-review-royal-exchange-manchester-sarah-frankcom --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for escaped-alone-and-what-if-if-only-royal-exchange-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hamlet-hail-to-the-thief-aviva-studios-regional-2025 --url=https://www.theguardian.com/stage/2025/may/07/hamlet-hail-to-the-thief-review-study-of-righteous-anger-links-shakespeare-to-radiohead --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for hamlet-hail-to-the-thief-aviva-studios-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jungle-book-aviva-studios-regional-2024 --url=https://www.theguardian.com/stage/2024/mar/29/jungle-book-review-aviva-studios-manchester --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for jungle-book-aviva-studios-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=of-mice-and-men-octagon-regional-2025 --url=https://www.theguardian.com/stage/2025/mar/30/of-mice-and-men-octagon-bolton-review-steinbeck-derby-theatre-hull-truck-theatre-by-the-lake-keswick --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for of-mice-and-men-octagon-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=shed-exploded-view-royal-exchange-regional-2024 --url=https://www.theguardian.com/stage/2024/feb/25/shed-an-exploded-view-royal-exchange-manchester-review-phoebe-eclair-powell-cornelia-parker --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for shed-exploded-view-royal-exchange-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=singin-in-the-rain-royal-exchange-regional-2025 --url=https://www.theguardian.com/stage/2025/dec/07/singin-in-the-rain-review-royal-exchange-theatre-manchester --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for singin-in-the-rain-royal-exchange-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-long-shadow-of-alois-brunner-aviva-studios-regional-2024 --url=https://www.theguardian.com/stage/2024/mar/22/the-long-shadow-of-alois-brunner-review-aviva-studios-manchester --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-long-shadow-of-alois-brunner-aviva-studios-regional-2024"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T22:47:58.597Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

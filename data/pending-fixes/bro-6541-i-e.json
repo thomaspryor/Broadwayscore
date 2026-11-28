@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6541-i-e",
+  "planId": "3d9f7473-1fb2-4a78-85b9-7312ad83449c",
+  "status": "applied",
+  "createdAt": "2026-10-29T20:34:32.412Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest UK hub reviews (Guardian seeding reviews + census matches) (part 5 of 9)",
+    "steps": [
+      "BRO-6541: ingest thestage review for waiting-for-godot-citizens-regional-2026",
+      "BRO-6541: ingest thestage review for road-royal-exchange-regional-2026",
+      "BRO-6541: ingest thestage review for macbeth-hull-truck-regional-2026",
+      "BRO-6541: ingest thestage review for saint-joan-citizens-regional-2026",
+      "BRO-6541: ingest thestage review for my-brothers-a-genius-sheffield-regional-2026",
+      "BRO-6541: ingest thestage review for the-memory-of-water-octagon-regional-2026",
+      "BRO-6541: ingest thestage review for crown-of-blood-crucible-regional-2026",
+      "BRO-6541: ingest thestage review for jack-and-the-beanstalk-dundee-rep-regional-2025",
+      "BRO-6541: ingest thestage review for beauty-and-the-beast-citizens-regional-2025",
+      "BRO-6541: ingest thestage review for singin-in-the-rain-royal-exchange-regional-2025",
+      "BRO-6541: ingest thestage review for gallus-in-weegieland-tron-regional-2025",
+      "BRO-6541: ingest thestage review for gwendas-garage-sheffield-regional-2025",
+      "BRO-6541: ingest thestage review for safe-space-chichester-festival-regional-2025",
+      "BRO-6541: ingest thestage review for marina-abramovic-balkan-erotic-epic-aviva-studios-regional-2025",
+      "BRO-6541: ingest thestage review for cheapo-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for dancing-at-lughnasa-crucible-regional-2025",
+      "BRO-6541: ingest thestage review for black-hole-sign-tron-regional-2025",
+      "BRO-6541: ingest thestage review for hamlet-chichester-festival-regional-2025",
+      "BRO-6541: ingest thestage review for small-acts-of-love-citizens-regional-2025",
+      "BRO-6541: ingest thestage review for endgame-royal-bath-regional-2025",
+      "BRO-6541: ingest thestage review for hedda-royal-bath-regional-2025",
+      "BRO-6541: ingest thestage review for choir-chichester-festival-regional-2025",
+      "BRO-6541: ingest thestage review for liberation-royal-exchange-regional-2025",
+      "BRO-6541: ingest thestage review for grace-pervades-royal-bath-regional-2025",
+      "BRO-6541: ingest thestage review for mans-best-friend-tron-regional-2025"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=waiting-for-godot-citizens-regional-2026 --url=https://www.thestage.co.uk/reviews/waiting-for-godot-review-citizens-theatre-glasgow-beckett --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for waiting-for-godot-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=road-royal-exchange-regional-2026 --url=https://www.thestage.co.uk/reviews/road-review-royal-exchange-manchester-2026-jim-cartwright-johnny-vegas --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for road-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=macbeth-hull-truck-regional-2026 --url=https://www.thestage.co.uk/reviews/macbeth-review-hull-truck-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for macbeth-hull-truck-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=saint-joan-citizens-regional-2026 --url=https://www.thestage.co.uk/reviews/saint-joan-review-citizens-theatre-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for saint-joan-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=my-brothers-a-genius-sheffield-regional-2026 --url=https://www.thestage.co.uk/reviews/my-brothers-a-genius-review-sheffield-playhouse --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for my-brothers-a-genius-sheffield-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-memory-of-water-octagon-regional-2026 --url=https://www.thestage.co.uk/reviews/the-memory-of-water-review-octagon-theatre-bolton --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-memory-of-water-octagon-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=crown-of-blood-crucible-regional-2026 --url=https://www.thestage.co.uk/reviews/crown-of-blood-review-the-crucible-sheffield-utopia-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for crown-of-blood-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jack-and-the-beanstalk-dundee-rep-regional-2025 --url=https://www.thestage.co.uk/reviews/jack-and-the-beanstalk-review-at-dundee-rep-theatre-by-jonathan-oneill-and-isaac-savage --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for jack-and-the-beanstalk-dundee-rep-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=beauty-and-the-beast-citizens-regional-2025 --url=https://www.thestage.co.uk/reviews/beauty-and-the-beast-review-citizens-theatre-glasgow-lewis-hetherington --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for beauty-and-the-beast-citizens-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=singin-in-the-rain-royal-exchange-regional-2025 --url=https://www.thestage.co.uk/reviews/singin-in-the-rain-review-royal-exchange-theatre-manchester --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for singin-in-the-rain-royal-exchange-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=gallus-in-weegieland-tron-regional-2025 --url=https://www.thestage.co.uk/reviews/gallus-in-weegieland-review-tron-theatre-glasgow-johnny-mcknight --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for gallus-in-weegieland-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=gwendas-garage-sheffield-regional-2025 --url=https://www.thestage.co.uk/reviews/gwendas-garage-review-tanya-moiseiwitsch-playhouse-sheffield-theatres --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for gwendas-garage-sheffield-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=safe-space-chichester-festival-regional-2025 --url=https://www.thestage.co.uk/reviews/safe-space-review-minerva-theatre-chichester-festival-theatre-jamie-bogyo --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for safe-space-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marina-abramovic-balkan-erotic-epic-aviva-studios-regional-2025 --url=https://www.thestage.co.uk/reviews/marina-abramovic-balkan-erotic-epic-review-aviva-studios-manchester --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for marina-abramovic-balkan-erotic-epic-aviva-studios-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cheapo-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/cheapo-review-oran-mor-glasgow-a-play-a-pie-and-a-pint --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for cheapo-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dancing-at-lughnasa-crucible-regional-2025 --url=https://www.thestage.co.uk/reviews/dancing-at-lughnasa-review-crucible-theatre-sheffield --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for dancing-at-lughnasa-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=black-hole-sign-tron-regional-2025 --url=https://www.thestage.co.uk/reviews/black-hole-sign-review-tron-theatre-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for black-hole-sign-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hamlet-chichester-festival-regional-2025 --url=https://www.thestage.co.uk/reviews/hamlet-review-chichester-festival-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for hamlet-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=small-acts-of-love-citizens-regional-2025 --url=https://www.thestage.co.uk/reviews/small-acts-of-love-review-citizens-theatre-glasgow-frances-poet-ricky-ross-dominic-hill --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for small-acts-of-love-citizens-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=endgame-royal-bath-regional-2025 --url=https://www.thestage.co.uk/reviews/endgame-review-ustinov-studio-theatre-royal-bath-samuel-beckett-douglas-hodge-mathew-horne --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for endgame-royal-bath-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hedda-royal-bath-regional-2025 --url=https://www.thestage.co.uk/reviews/hedda-review-ustinov-studio-theatre-royal-bath-lily-allen-matthew-dunster --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for hedda-royal-bath-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=choir-chichester-festival-regional-2025 --url=https://www.thestage.co.uk/reviews/choir-review-minerva-theatre-chichester --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for choir-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=liberation-royal-exchange-regional-2025 --url=https://www.thestage.co.uk/reviews/liberation-review-royal-exchange-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for liberation-royal-exchange-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=grace-pervades-royal-bath-regional-2025 --url=https://www.thestage.co.uk/reviews/grace-pervades-review-theatre-royal-bath --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for grace-pervades-royal-bath-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mans-best-friend-tron-regional-2025 --url=https://www.thestage.co.uk/reviews/mans-best-friend-review-tron-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for mans-best-friend-tron-regional-2025"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T23:18:12.811Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

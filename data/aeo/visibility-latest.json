@@ -1,0 +1,4188 @@
+{
+  "date": "2026-11-23",
+  "generatedAt": "2026-11-23T22:43:59.567Z",
+  "config": {
+    "runsPer": 2,
+    "prompts": 22,
+    "engines": [
+      "openai",
+      "gemini"
+    ],
+    "budget": 4.5
+  },
+  "totalCost": 2.6094,
+  "summary": {
+    "gemini": {
+      "runs": 44,
+      "mentioned": 26,
+      "cited": 24,
+      "competitors": {
+        "New York Times": 21,
+        "Vulture": 13,
+        "Show Score": 12,
+        "Did They Like It": 9,
+        "Variety": 16,
+        "Broadway.com": 4,
+        "Rotten Tomatoes": 8,
+        "Time Out": 2,
+        "BroadwayWorld": 2,
+        "Playbill": 1,
+        "TodayTix": 2,
+        "TheaterMania": 1
+      },
+      "ourUrls": {
+        "https://broadwayscorecard.com/": 24
+      },
+      "domains": {
+        "reddit.com": 50,
+        "broadwayscorecard.com": 32,
+        "youtube.com": 7,
+        "wikipedia.org": 3,
+        "newyorktheatreguide.com": 12,
+        "broadway.com": 25,
+        "tdf.org": 3,
+        "broadwaysbestshows.com": 2,
+        "theodysseyonline.com": 1,
+        "newmusicaltheatre.com": 2,
+        "alittleaboutalot.co": 1,
+        "whatculture.com": 1,
+        "broadwaydirect.com": 4,
+        "theculturemom.com": 1,
+        "forbes.com": 6,
+        "broadwayacrossamerica.com": 2,
+        "kidonthetown.com": 1,
+        "didtheylikeit.com": 15,
+        "reviewpartydotcom.com": 2,
+        "show-score.com": 25,
+        "broadwaybox.com": 3,
+        "wickedthemusical.com": 3,
+        "thewickedtickets.com": 2,
+        "broadwayworld.com": 8,
+        "broadway.org": 1,
+        "broadway-show-tickets.com": 5,
+        "broadwayonabudget.com": 2,
+        "nystagereview.com": 2,
+        "timeout.com": 3,
+        "thefeather.com": 2,
+        "goaheadsumi.com": 2,
+        "meganannrasmussen.com": 2,
+        "getyourguide.com": 2,
+        "rachelweinbergreviews.com": 1,
+        "revuewm.com": 1,
+        "cnhspawprint.com": 1,
+        "aroundthetownchicago.com": 1,
+        "saint-louis-theatre.com": 1,
+        "github.com": 2,
+        "theatreinnewyork.com": 4,
+        "fodors.com": 1,
+        "theatermania.com": 2,
+        "voxatl.org": 1,
+        "time.com": 1,
+        "seatgeek.com": 1,
+        "seatplan.com": 2,
+        "allytravels.com": 1,
+        "substack.com": 4,
+        "theatregold.com": 7,
+        "soundsandstage.com": 1,
+        "boxofficeticketsales.com": 2,
+        "theatrely.com": 1,
+        "exeuntnyc.com": 1,
+        "fashionmeetsfood.com": 2,
+        "wordpress.com": 1,
+        "adventurouskate.com": 2,
+        "naples-theater.com": 2,
+        "broadwayinbound.com": 1,
+        "shgreenwichkingstreetchronicle.org": 1,
+        "rottentomatoes.com": 1,
+        "newyorkcitytheatre.com": 3,
+        "culturesauce.com": 1,
+        "thecrimson.com": 1,
+        "latimes.com": 1,
+        "theaterpizzazz.com": 1,
+        "bwaytime.com": 2,
+        "washingtonpost.com": 2,
+        "theatertickets.com": 3,
+        "boardingarea.com": 1,
+        "wareontheglobe.com": 1,
+        "thepodhotel.com": 1,
+        "australianwomeninnewyork.org": 1,
+        "todaytix.com": 1,
+        "ohmaryplay.com": 1,
+        "goodreads.com": 1,
+        "thequeerreview.com": 1,
+        "artsfuse.org": 1,
+        "medium.com": 1
+      },
+      "cost": 1.6143,
+      "mentionRate": 0.591,
+      "citeRate": 0.545,
+      "avgPosition": 2.07
+    },
+    "all": {
+      "runs": 88,
+      "mentioned": 62,
+      "cited": 60,
+      "competitors": {
+        "New York Times": 34,
+        "Vulture": 19,
+        "Show Score": 21,
+        "Did They Like It": 13,
+        "Variety": 23,
+        "Broadway.com": 12,
+        "Rotten Tomatoes": 13,
+        "Time Out": 12,
+        "BroadwayWorld": 4,
+        "Playbill": 4,
+        "TodayTix": 2,
+        "TheaterMania": 1
+      },
+      "ourUrls": {
+        "https://broadwayscorecard.com/": 45,
+        "https://broadwayscorecard.com/critics/outlets/the-new-york-times": 5,
+        "https://broadwayscorecard.com/methodology": 9,
+        "https://broadwayscorecard.com/browse/2026-2027-broadway-season": 5,
+        "https://broadwayscorecard.com/show/wanted": 2,
+        "https://broadwayscorecard.com/show/the-fantasticks": 2,
+        "https://broadwayscorecard.com/guides": 2,
+        "https://broadwayscorecard.com/guides/best-broadway-shows-for-kids": 1,
+        "https://broadwayscorecard.com/reviews": 5,
+        "https://broadwayscorecard.com/critics/outlets/did-they-like-it": 3,
+        "https://broadwayscorecard.com/audience-buzz": 10,
+        "https://broadwayscorecard.com/critics": 14,
+        "https://broadwayscorecard.com/rankings": 1,
+        "https://broadwayscorecard.com/about": 2,
+        "https://broadwayscorecard.com/research": 4,
+        "https://broadwayscorecard.com/critics/outlets/new-york-theater": 2,
+        "https://broadwayscorecard.com/critics/outlets/broadwayworld": 3,
+        "https://broadwayscorecard.com/research/critic-audience-divergence-2026": 4,
+        "https://broadwayscorecard.com/best/musicals": 14,
+        "https://broadwayscorecard.com/show/hadestown-west-end": 1,
+        "https://broadwayscorecard.com/show/hamilton": 3,
+        "https://broadwayscorecard.com/partners": 1,
+        "https://broadwayscorecard.com/submit-review": 2,
+        "https://broadwayscorecard.com/terms": 1,
+        "https://broadwayscorecard.com/best/plays": 2,
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season": 10,
+        "https://broadwayscorecard.com/guides/best-broadway-musicals-2026": 2,
+        "https://broadwayscorecard.com/lists/critical-gold/2026-2027": 3,
+        "https://broadwayscorecard.com/guides/broadway-shows-closing-soon": 2,
+        "https://broadwayscorecard.com/show/here-there-are-blueberries": 1,
+        "https://broadwayscorecard.com/show/two-strangers": 1,
+        "https://broadwayscorecard.com/show/six": 1,
+        "https://broadwayscorecard.com/show/the-lion-king": 2,
+        "https://broadwayscorecard.com/guides/best-broadway-shows-2026": 5,
+        "https://broadwayscorecard.com/guides/best-broadway-shows": 2,
+        "https://broadwayscorecard.com/show/maybe-happy-ending": 1,
+        "https://broadwayscorecard.com/critics/outlets/new-york-post": 2,
+        "https://broadwayscorecard.com/critics/outlets/new-york-stage-review": 3,
+        "https://broadwayscorecard.com/browse/most-divisive-broadway-shows": 1,
+        "https://broadwayscorecard.com/box-office": 1,
+        "https://broadwayscorecard.com/best/new-shows": 2,
+        "https://broadwayscorecard.com/critics/outlets/time-out-new-york": 2,
+        "https://broadwayscorecard.com/critics/outlets/new-york-theatre-guide": 2,
+        "https://broadwayscorecard.com/critics/outlets/vulture": 1,
+        "https://broadwayscorecard.com/guides/best-broadway-plays": 1,
+        "https://broadwayscorecard.com/browse/best-recent-plays": 1,
+        "https://broadwayscorecard.com/show/paranormal-activity": 1,
+        "https://broadwayscorecard.com/best/highest-rated": 1,
+        "https://broadwayscorecard.com/critics/adam-feldman": 1,
+        "https://broadwayscorecard.com/critics/laura-collins-hughes": 1,
+        "https://broadwayscorecard.com/critics/roma-torre": 1
+      },
+      "domains": {
+        "reddit.com": 544,
+        "broadwayscorecard.com": 231,
+        "youtube.com": 82,
+        "wikipedia.org": 3,
+        "newyorktheatreguide.com": 16,
+        "broadway.com": 139,
+        "tdf.org": 16,
+        "broadwaysbestshows.com": 2,
+        "theodysseyonline.com": 6,
+        "newmusicaltheatre.com": 3,
+        "alittleaboutalot.co": 1,
+        "whatculture.com": 1,
+        "broadwaydirect.com": 14,
+        "theculturemom.com": 2,
+        "forbes.com": 6,
+        "broadwayacrossamerica.com": 2,
+        "kidonthetown.com": 1,
+        "didtheylikeit.com": 39,
+        "reviewpartydotcom.com": 3,
+        "show-score.com": 78,
+        "broadwaybox.com": 3,
+        "wickedthemusical.com": 23,
+        "thewickedtickets.com": 2,
+        "broadwayworld.com": 66,
+        "broadway.org": 24,
+        "broadway-show-tickets.com": 5,
+        "broadwayonabudget.com": 2,
+        "nystagereview.com": 3,
+        "timeout.com": 38,
+        "thefeather.com": 2,
+        "goaheadsumi.com": 2,
+        "meganannrasmussen.com": 2,
+        "getyourguide.com": 2,
+        "rachelweinbergreviews.com": 1,
+        "revuewm.com": 1,
+        "cnhspawprint.com": 1,
+        "aroundthetownchicago.com": 1,
+        "saint-louis-theatre.com": 1,
+        "github.com": 10,
+        "theatreinnewyork.com": 7,
+        "fodors.com": 1,
+        "theatermania.com": 2,
+        "voxatl.org": 1,
+        "time.com": 5,
+        "seatgeek.com": 4,
+        "seatplan.com": 3,
+        "allytravels.com": 1,
+        "substack.com": 4,
+        "theatregold.com": 28,
+        "soundsandstage.com": 1,
+        "boxofficeticketsales.com": 2,
+        "theatrely.com": 1,
+        "exeuntnyc.com": 1,
+        "fashionmeetsfood.com": 2,
+        "wordpress.com": 1,
+        "adventurouskate.com": 2,
+        "naples-theater.com": 2,
+        "broadwayinbound.com": 1,
+        "shgreenwichkingstreetchronicle.org": 1,
+        "rottentomatoes.com": 8,
+        "newyorkcitytheatre.com": 3,
+        "culturesauce.com": 1,
+        "thecrimson.com": 1,
+        "latimes.com": 4,
+        "theaterpizzazz.com": 1,
+        "bwaytime.com": 2,
+        "washingtonpost.com": 2,
+        "theatertickets.com": 3,
+        "boardingarea.com": 1,
+        "wareontheglobe.com": 1,
+        "thepodhotel.com": 1,
+        "australianwomeninnewyork.org": 1,
+        "todaytix.com": 2,
+        "ohmaryplay.com": 1,
+        "goodreads.com": 1,
+        "thequeerreview.com": 1,
+        "artsfuse.org": 1,
+        "medium.com": 1,
+        "apnews.com": 92,
+        "theatlantic.com": 10,
+        "cinemablend.com": 26,
+        "theweek.com": 28,
+        "thedailybeast.com": 23,
+        "musicradar.com": 15,
+        "news.frombroadway.com": 44,
+        "playbill.com": 22,
+        "catalogue.boekman.nl": 5,
+        "columbia.edu": 1,
+        "pages.stern.nyu.edu": 2,
+        "guthrietheater.org": 1,
+        "dehesa.unex.es": 1,
+        "catalogus.boekman.nl": 2,
+        "en.wikipedia.org": 200,
+        "assets.playbill.com": 10,
+        "etd.ohiolink.edu": 3,
+        "static1.squarespace.com": 32,
+        "axios.com": 24,
+        "broadwaynews.com": 4,
+        "amny.com": 2,
+        "schmigadoonbroadway.com": 15,
+        "resources.finalsite.net": 4,
+        "broadwayinhollywood.com": 3,
+        "thebroadwaytheatre.org": 6,
+        "encorespotlight.com": 3,
+        "space.com": 4,
+        "tomsguide.com": 7,
+        "theguardian.com": 54,
+        "slantmagazine.com": 3,
+        "newyorktheaterguide.com": 6,
+        "brandonreporter.com": 2,
+        "tangercenter.com": 8,
+        "brooklynpaper.com": 2,
+        "gamesradar.com": 8,
+        "loudersound.com": 4,
+        "stageandstreetnyc.com": 5,
+        "stanforddaily.com": 1,
+        "aftenbladet.no": 1,
+        "monorepo-sample1.nyt.net": 3,
+        "ccm.edu": 1,
+        "villagetheatre.org": 1,
+        "onmilwaukee.com": 2,
+        "suegilad.com": 3,
+        "cdn-cms.f-static.net": 2,
+        "richardsonstudies.com": 2,
+        "bachelor.wabash.edu": 2,
+        "aftr.nj.aft.org": 1,
+        "groups.broadway.com": 3,
+        "louisville.broadway.com": 1,
+        "media.broadway.com": 2,
+        "media.groups.broadway.com": 3,
+        "us.atgtickets.com": 1,
+        "whowhatwear.com": 5,
+        "blog.ticketmaster.com": 7,
+        "mommypoppins.com": 2,
+        "broadway-explorer.com": 2,
+        "newyorkcityauthority.com": 2,
+        "broadwayplays.nyc": 1,
+        "lakefrontmagazine.com": 1,
+        "wheelockfamilytheatre.org": 1,
+        "irp.cdn-website.com": 1,
+        "official.nyc.com": 1,
+        "res.cloudinary.com": 1,
+        "cbca.org": 2,
+        "govisit.guide": 1,
+        "support.show-score.com": 3,
+        "d1rbsgppyrdqq4.cloudfront.net": 2,
+        "api.pageplace.de": 3,
+        "nyc.streetsblog.org": 1,
+        "media.sheas.org": 1,
+        "windycitytimes.com": 1,
+        "britishtheatreguide.info": 2,
+        "showscore.substack.com": 1,
+        "polyhelper.ai": 2,
+        "s3.amazonaws.com": 2,
+        "help.broadwaydirect.com": 1,
+        "lottery.broadwaydirect.com": 5,
+        "iloverex.com": 1,
+        "rbtl.org": 6,
+        "anfponline.org": 2,
+        "davlermedia.com": 1,
+        "istaonline.org": 1,
+        "actthree.co.nz": 1,
+        "as.com": 2,
+        "broadwaynowandnext.com": 1,
+        "lehman.cuny.edu": 1,
+        "arts.gov": 1,
+        "playhousesquare.org": 5,
+        "tour.wickedthemusical.com": 1,
+        "hadestown.com": 2,
+        "monorepo-sample2.nyt.net": 4,
+        "hadestownmusical.com": 1,
+        "thehanovertheatre.org": 1,
+        "ogcma.byu.edu": 1,
+        "archives.thecoastalstar.com": 2,
+        "grandtheater.org": 2,
+        "es.wikipedia.org": 3,
+        "highschool.latimes.com": 1,
+        "sandimoran.com": 1,
+        "centernyc.com": 4,
+        "woodlandoperahouse.org": 1,
+        "michaelgiltz.com": 2,
+        "hamiltonmusical.com": 3,
+        "rhetoricalreview.com": 3,
+        "jewishjournal.org": 1,
+        "files-backend.assets.thrillshare.com": 1,
+        "culturaldaily.com": 3,
+        "loyolaphoenix.com": 2,
+        "tollbit.variety.com": 1,
+        "advertising.theguardian.com": 1,
+        "livingetc.com": 1,
+        "yale.imodules.com": 1,
+        "drjcourses.com": 1,
+        "davelefkowitzwriting.wordpress.com": 1,
+        "whathifi.com": 2,
+        "readerfunded.com": 4,
+        "editorial.rottentomatoes.com": 1,
+        "eyeonbroadway.com": 1,
+        "paramountgraphics.com.au": 2,
+        "locable-assets-production.s3.amazonaws.com": 1,
+        "ttabvue.uspto.gov": 1,
+        "thecharlottepost.com": 1,
+        "au.variety.com": 14,
+        "joallanpr.com": 1,
+        "media-aqhec5f3fffde3aw.z01.azurefd.net": 7,
+        "heated-rivalry.com": 3,
+        "broadwaysd.com": 3,
+        "broadway101.com": 1,
+        "theatreview.app": 2,
+        "broadwayleague.com": 6,
+        "boston.broadway.com": 1,
+        "attherep.org": 1,
+        "encoremediagroup.com": 2,
+        "berkeleyrep.org": 1,
+        "roundhousetheatre.org": 1,
+        "ibdb.com": 2,
+        "greenroom.depaul.edu": 1,
+        "broadwaystars.com": 1,
+        "tickadoo.com": 1,
+        "home4.nyc.gov": 1,
+        "de.wikipedia.org": 1,
+        "bbmannpah.com": 1,
+        "overture.org": 1,
+        "eyretours.com": 1,
+        "los40.com": 1,
+        "worldradiohistory.com": 2,
+        "investigacion.unirioja.es": 1,
+        "newspapers.swco.ttu.edu": 1,
+        "lemonde.fr": 1,
+        "feature.variety.com": 1,
+        "users.iit.demokritos.gr": 1,
+        "kajabi-storefronts-production.s3.amazonaws.com": 1,
+        "eloncdn.blob.core.windows.net": 3,
+        "ftc.gov": 1,
+        "musicaltheatreeducators.org": 1,
+        "etheses.whiterose.ac.uk": 1,
+        "open.bu.edu": 1,
+        "magazine.columbia.edu": 1,
+        "pocholiving.com": 1,
+        "kocw.xcache.kinxcdn.com": 1,
+        "cdn1.creativecirclemedia.com": 1,
+        "lasentinel.net": 1,
+        "digitalarchive.timeout.com": 4,
+        "citytheatrical.com": 1,
+        "lightingandsoundamerica.com": 1,
+        "oregonnews.uoregon.edu": 1,
+        "it.wikipedia.org": 1,
+        "broadwaywrap.com": 1,
+        "travelnewyork.com": 1,
+        "img1.wsimg.com": 3,
+        "mountaintimes.info": 1,
+        "marieclaire.com": 1,
+        "mietwarlop.com": 2,
+        "scfta.org": 1,
+        "wsj.com": 2,
+        "cupresents.org": 2,
+        "gevatheatre.org": 1
+      },
+      "cost": 2.6096,
+      "mentionRate": 0.705,
+      "citeRate": 0.682,
+      "avgPosition": 1.71
+    },
+    "openai": {
+      "runs": 44,
+      "mentioned": 36,
+      "cited": 36,
+      "competitors": {
+        "New York Times": 13,
+        "Vulture": 6,
+        "Time Out": 10,
+        "Playbill": 3,
+        "Broadway.com": 8,
+        "Did They Like It": 4,
+        "Show Score": 9,
+        "Rotten Tomatoes": 5,
+        "Variety": 7,
+        "BroadwayWorld": 2
+      },
+      "ourUrls": {
+        "https://broadwayscorecard.com/critics/outlets/the-new-york-times": 5,
+        "https://broadwayscorecard.com/": 21,
+        "https://broadwayscorecard.com/methodology": 9,
+        "https://broadwayscorecard.com/browse/2026-2027-broadway-season": 5,
+        "https://broadwayscorecard.com/show/wanted": 2,
+        "https://broadwayscorecard.com/show/the-fantasticks": 2,
+        "https://broadwayscorecard.com/guides": 2,
+        "https://broadwayscorecard.com/guides/best-broadway-shows-for-kids": 1,
+        "https://broadwayscorecard.com/reviews": 5,
+        "https://broadwayscorecard.com/critics/outlets/did-they-like-it": 3,
+        "https://broadwayscorecard.com/audience-buzz": 10,
+        "https://broadwayscorecard.com/critics": 14,
+        "https://broadwayscorecard.com/rankings": 1,
+        "https://broadwayscorecard.com/about": 2,
+        "https://broadwayscorecard.com/research": 4,
+        "https://broadwayscorecard.com/critics/outlets/new-york-theater": 2,
+        "https://broadwayscorecard.com/critics/outlets/broadwayworld": 3,
+        "https://broadwayscorecard.com/research/critic-audience-divergence-2026": 4,
+        "https://broadwayscorecard.com/best/musicals": 14,
+        "https://broadwayscorecard.com/show/hadestown-west-end": 1,
+        "https://broadwayscorecard.com/show/hamilton": 3,
+        "https://broadwayscorecard.com/partners": 1,
+        "https://broadwayscorecard.com/submit-review": 2,
+        "https://broadwayscorecard.com/terms": 1,
+        "https://broadwayscorecard.com/best/plays": 2,
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season": 10,
+        "https://broadwayscorecard.com/guides/best-broadway-musicals-2026": 2,
+        "https://broadwayscorecard.com/lists/critical-gold/2026-2027": 3,
+        "https://broadwayscorecard.com/guides/broadway-shows-closing-soon": 2,
+        "https://broadwayscorecard.com/show/here-there-are-blueberries": 1,
+        "https://broadwayscorecard.com/show/two-strangers": 1,
+        "https://broadwayscorecard.com/show/six": 1,
+        "https://broadwayscorecard.com/show/the-lion-king": 2,
+        "https://broadwayscorecard.com/guides/best-broadway-shows-2026": 5,
+        "https://broadwayscorecard.com/guides/best-broadway-shows": 2,
+        "https://broadwayscorecard.com/show/maybe-happy-ending": 1,
+        "https://broadwayscorecard.com/critics/outlets/new-york-post": 2,
+        "https://broadwayscorecard.com/critics/outlets/new-york-stage-review": 3,
+        "https://broadwayscorecard.com/browse/most-divisive-broadway-shows": 1,
+        "https://broadwayscorecard.com/box-office": 1,
+        "https://broadwayscorecard.com/best/new-shows": 2,
+        "https://broadwayscorecard.com/critics/outlets/time-out-new-york": 2,
+        "https://broadwayscorecard.com/critics/outlets/new-york-theatre-guide": 2,
+        "https://broadwayscorecard.com/critics/outlets/vulture": 1,
+        "https://broadwayscorecard.com/guides/best-broadway-plays": 1,
+        "https://broadwayscorecard.com/browse/best-recent-plays": 1,
+        "https://broadwayscorecard.com/show/paranormal-activity": 1,
+        "https://broadwayscorecard.com/best/highest-rated": 1,
+        "https://broadwayscorecard.com/critics/adam-feldman": 1,
+        "https://broadwayscorecard.com/critics/laura-collins-hughes": 1,
+        "https://broadwayscorecard.com/critics/roma-torre": 1
+      },
+      "domains": {
+        "apnews.com": 92,
+        "theatlantic.com": 10,
+        "cinemablend.com": 26,
+        "theweek.com": 28,
+        "thedailybeast.com": 23,
+        "musicradar.com": 15,
+        "broadwayscorecard.com": 199,
+        "news.frombroadway.com": 44,
+        "broadwayworld.com": 58,
+        "playbill.com": 22,
+        "theatregold.com": 21,
+        "catalogue.boekman.nl": 5,
+        "columbia.edu": 1,
+        "pages.stern.nyu.edu": 2,
+        "guthrietheater.org": 1,
+        "dehesa.unex.es": 1,
+        "catalogus.boekman.nl": 2,
+        "en.wikipedia.org": 200,
+        "youtube.com": 75,
+        "reddit.com": 494,
+        "assets.playbill.com": 10,
+        "etd.ohiolink.edu": 3,
+        "static1.squarespace.com": 32,
+        "axios.com": 24,
+        "broadway.com": 114,
+        "tdf.org": 13,
+        "broadwaynews.com": 4,
+        "broadwaydirect.com": 10,
+        "amny.com": 2,
+        "schmigadoonbroadway.com": 15,
+        "resources.finalsite.net": 4,
+        "broadwayinhollywood.com": 3,
+        "thebroadwaytheatre.org": 6,
+        "encorespotlight.com": 3,
+        "space.com": 4,
+        "tomsguide.com": 7,
+        "timeout.com": 35,
+        "theguardian.com": 54,
+        "slantmagazine.com": 3,
+        "newyorktheaterguide.com": 6,
+        "brandonreporter.com": 2,
+        "tangercenter.com": 8,
+        "brooklynpaper.com": 2,
+        "gamesradar.com": 8,
+        "loudersound.com": 4,
+        "stageandstreetnyc.com": 5,
+        "stanforddaily.com": 1,
+        "aftenbladet.no": 1,
+        "monorepo-sample1.nyt.net": 3,
+        "ccm.edu": 1,
+        "villagetheatre.org": 1,
+        "theodysseyonline.com": 5,
+        "onmilwaukee.com": 2,
+        "suegilad.com": 3,
+        "cdn-cms.f-static.net": 2,
+        "richardsonstudies.com": 2,
+        "bachelor.wabash.edu": 2,
+        "aftr.nj.aft.org": 1,
+        "broadway.org": 23,
+        "groups.broadway.com": 3,
+        "louisville.broadway.com": 1,
+        "media.broadway.com": 2,
+        "media.groups.broadway.com": 3,
+        "us.atgtickets.com": 1,
+        "seatgeek.com": 3,
+        "newmusicaltheatre.com": 1,
+        "whowhatwear.com": 5,
+        "blog.ticketmaster.com": 7,
+        "mommypoppins.com": 2,
+        "broadway-explorer.com": 2,
+        "newyorkcityauthority.com": 2,
+        "broadwayplays.nyc": 1,
+        "lakefrontmagazine.com": 1,
+        "wheelockfamilytheatre.org": 1,
+        "irp.cdn-website.com": 1,
+        "official.nyc.com": 1,
+        "theculturemom.com": 1,
+        "res.cloudinary.com": 1,
+        "cbca.org": 2,
+        "govisit.guide": 1,
+        "show-score.com": 53,
+        "support.show-score.com": 3,
+        "d1rbsgppyrdqq4.cloudfront.net": 2,
+        "api.pageplace.de": 3,
+        "didtheylikeit.com": 24,
+        "reviewpartydotcom.com": 1,
+        "nyc.streetsblog.org": 1,
+        "media.sheas.org": 1,
+        "windycitytimes.com": 1,
+        "britishtheatreguide.info": 2,
+        "showscore.substack.com": 1,
+        "polyhelper.ai": 2,
+        "github.com": 8,
+        "s3.amazonaws.com": 2,
+        "wickedthemusical.com": 20,
+        "help.broadwaydirect.com": 1,
+        "todaytix.com": 1,
+        "lottery.broadwaydirect.com": 5,
+        "iloverex.com": 1,
+        "rbtl.org": 6,
+        "anfponline.org": 2,
+        "davlermedia.com": 1,
+        "istaonline.org": 1,
+        "actthree.co.nz": 1,
+        "as.com": 2,
+        "broadwaynowandnext.com": 1,
+        "lehman.cuny.edu": 1,
+        "arts.gov": 1,
+        "playhousesquare.org": 5,
+        "tour.wickedthemusical.com": 1,
+        "rottentomatoes.com": 7,
+        "hadestown.com": 2,
+        "monorepo-sample2.nyt.net": 4,
+        "hadestownmusical.com": 1,
+        "thehanovertheatre.org": 1,
+        "ogcma.byu.edu": 1,
+        "archives.thecoastalstar.com": 2,
+        "grandtheater.org": 2,
+        "es.wikipedia.org": 3,
+        "latimes.com": 3,
+        "highschool.latimes.com": 1,
+        "sandimoran.com": 1,
+        "centernyc.com": 4,
+        "theatreinnewyork.com": 3,
+        "woodlandoperahouse.org": 1,
+        "michaelgiltz.com": 2,
+        "hamiltonmusical.com": 3,
+        "rhetoricalreview.com": 3,
+        "jewishjournal.org": 1,
+        "files-backend.assets.thrillshare.com": 1,
+        "culturaldaily.com": 3,
+        "loyolaphoenix.com": 2,
+        "tollbit.variety.com": 1,
+        "advertising.theguardian.com": 1,
+        "livingetc.com": 1,
+        "yale.imodules.com": 1,
+        "drjcourses.com": 1,
+        "davelefkowitzwriting.wordpress.com": 1,
+        "time.com": 4,
+        "whathifi.com": 2,
+        "readerfunded.com": 4,
+        "editorial.rottentomatoes.com": 1,
+        "eyeonbroadway.com": 1,
+        "paramountgraphics.com.au": 2,
+        "locable-assets-production.s3.amazonaws.com": 1,
+        "ttabvue.uspto.gov": 1,
+        "thecharlottepost.com": 1,
+        "au.variety.com": 14,
+        "joallanpr.com": 1,
+        "media-aqhec5f3fffde3aw.z01.azurefd.net": 7,
+        "heated-rivalry.com": 3,
+        "broadwaysd.com": 3,
+        "broadway101.com": 1,
+        "theatreview.app": 2,
+        "broadwayleague.com": 6,
+        "newyorktheatreguide.com": 4,
+        "boston.broadway.com": 1,
+        "attherep.org": 1,
+        "encoremediagroup.com": 2,
+        "berkeleyrep.org": 1,
+        "roundhousetheatre.org": 1,
+        "ibdb.com": 2,
+        "greenroom.depaul.edu": 1,
+        "broadwaystars.com": 1,
+        "tickadoo.com": 1,
+        "home4.nyc.gov": 1,
+        "de.wikipedia.org": 1,
+        "bbmannpah.com": 1,
+        "overture.org": 1,
+        "eyretours.com": 1,
+        "los40.com": 1,
+        "worldradiohistory.com": 2,
+        "investigacion.unirioja.es": 1,
+        "newspapers.swco.ttu.edu": 1,
+        "lemonde.fr": 1,
+        "feature.variety.com": 1,
+        "users.iit.demokritos.gr": 1,
+        "kajabi-storefronts-production.s3.amazonaws.com": 1,
+        "eloncdn.blob.core.windows.net": 3,
+        "ftc.gov": 1,
+        "musicaltheatreeducators.org": 1,
+        "etheses.whiterose.ac.uk": 1,
+        "open.bu.edu": 1,
+        "magazine.columbia.edu": 1,
+        "pocholiving.com": 1,
+        "kocw.xcache.kinxcdn.com": 1,
+        "cdn1.creativecirclemedia.com": 1,
+        "lasentinel.net": 1,
+        "digitalarchive.timeout.com": 4,
+        "nystagereview.com": 1,
+        "citytheatrical.com": 1,
+        "lightingandsoundamerica.com": 1,
+        "oregonnews.uoregon.edu": 1,
+        "it.wikipedia.org": 1,
+        "broadwaywrap.com": 1,
+        "travelnewyork.com": 1,
+        "seatplan.com": 1,
+        "img1.wsimg.com": 3,
+        "mountaintimes.info": 1,
+        "marieclaire.com": 1,
+        "mietwarlop.com": 2,
+        "scfta.org": 1,
+        "wsj.com": 2,
+        "cupresents.org": 2,
+        "gevatheatre.org": 1
+      },
+      "cost": 0.9953,
+      "mentionRate": 0.818,
+      "citeRate": 0.818,
+      "avgPosition": 1.5
+    }
+  },
+  "perPrompt": [
+    {
+      "prompt": "Where can I find aggregated Broadway critic scores for current shows?",
+      "runs": 4,
+      "mentioned": 4,
+      "cited": 4
+    },
+    {
+      "prompt": "What is the best Broadway review aggregator?",
+      "runs": 4,
+      "mentioned": 4,
+      "cited": 4
+    },
+    {
+      "prompt": "Which Broadway shows have the best critic reviews right now?",
+      "runs": 4,
+      "mentioned": 4,
+      "cited": 3
+    },
+    {
+      "prompt": "What are the highest rated Broadway musicals this season?",
+      "runs": 4,
+      "mentioned": 3,
+      "cited": 3
+    },
+    {
+      "prompt": "Which new Broadway plays are worth seeing according to critics?",
+      "runs": 4,
+      "mentioned": 2,
+      "cited": 2
+    },
+    {
+      "prompt": "Best Broadway shows for kids and families right now?",
+      "runs": 4,
+      "mentioned": 1,
+      "cited": 1
+    },
+    {
+      "prompt": "Is there a site that combines Broadway critic reviews into one score?",
+      "runs": 4,
+      "mentioned": 4,
+      "cited": 4
+    },
+    {
+      "prompt": "Is Hamilton on Broadway still worth seeing? What do critics say?",
+      "runs": 4,
+      "mentioned": 2,
+      "cited": 2
+    },
+    {
+      "prompt": "Is Wicked on Broadway worth the ticket price? What did critics think?",
+      "runs": 4,
+      "mentioned": 1,
+      "cited": 1
+    },
+    {
+      "prompt": "What did critics say about The Lion King on Broadway?",
+      "runs": 4,
+      "mentioned": 4,
+      "cited": 4
+    },
+    {
+      "prompt": "Is Hadestown worth seeing on Broadway? Critic consensus?",
+      "runs": 4,
+      "mentioned": 2,
+      "cited": 2
+    },
+    {
+      "prompt": "Are the new Broadway musicals this fall any good? Review roundup please.",
+      "runs": 4,
+      "mentioned": 4,
+      "cited": 4
+    },
+    {
+      "prompt": "How did critics review the latest Broadway revival?",
+      "runs": 4,
+      "mentioned": 2,
+      "cited": 2
+    },
+    {
+      "prompt": "Which Broadway show should I see on a first trip to New York? Go by critic reviews.",
+      "runs": 4,
+      "mentioned": 4,
+      "cited": 4
+    },
+    {
+      "prompt": "Broadway Scorecard vs Show Score vs Did They Like It: which is best for Broadway reviews?",
+      "runs": 4,
+      "mentioned": 4,
+      "cited": 4
+    },
+    {
+      "prompt": "Which Broadway shows are critics and audiences disagreeing about?",
+      "runs": 4,
+      "mentioned": 4,
+      "cited": 3
+    },
+    {
+      "prompt": "Best Broadway musicals for people who do not like musicals?",
+      "runs": 4,
+      "mentioned": 2,
+      "cited": 2
+    },
+    {
+      "prompt": "Which Broadway shows are worth full price versus lottery or rush tickets?",
+      "runs": 4,
+      "mentioned": 2,
+      "cited": 2
+    },
+    {
+      "prompt": "Are Broadway reviews from the New York Times and Vulture usually aligned?",
+      "runs": 4,
+      "mentioned": 3,
+      "cited": 3
+    },
+    {
+      "prompt": "What Broadway shows are closing soon that critics loved?",
+      "runs": 4,
+      "mentioned": 4,
+      "cited": 4
+    },
+    {
+      "prompt": "What do audiences think of Hamilton on Broadway?",
+      "runs": 4,
+      "mentioned": 2,
+      "cited": 2
+    },
+    {
+      "prompt": "How can I get cheap tickets to Wicked on Broadway?",
+      "runs": 4,
+      "mentioned": 0,
+      "cited": 0
+    }
+  ],
+  "errors": 0,
+  "runs": [
+    {
+      "engine": "gemini",
+      "prompt": "Are Broadway reviews from the New York Times and Vulture usually aligned?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 3,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "h outlets will typically reflect that sentiment. Aggregator platforms like the *Broadway Scorecard* place both publications side-by-side because they share a similar overarching function: evaluating the artistic merit of commercial and nonprofit theater in New York.",
+      "competitors": [
+        "New York Times",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "reddit.com": 4,
+        "broadwayscorecard.com": 2,
+        "youtube.com": 1
+      },
+      "cost": 0.0369,
+      "usage": {
+        "input": 23,
+        "output": 741,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Are Broadway reviews from the New York Times and Vulture usually aligned?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "New York Times",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "wikipedia.org": 1,
+        "reddit.com": 3
+      },
+      "cost": 0.0364,
+      "usage": {
+        "input": 23,
+        "output": 545,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Are the new Broadway musicals this fall any good? Review roundup please.",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "broadwayscorecard.com": 1,
+        "newyorktheatreguide.com": 1,
+        "broadway.com": 1,
+        "tdf.org": 1
+      },
+      "cost": 0.0369,
+      "usage": {
+        "input": 23,
+        "output": 773,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Are the new Broadway musicals this fall any good? Review roundup please.",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "tdf.org": 1,
+        "youtube.com": 1,
+        "broadwayscorecard.com": 1
+      },
+      "cost": 0.0371,
+      "usage": {
+        "input": 23,
+        "output": 845,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Best Broadway musicals for people who do not like musicals?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "broadwaysbestshows.com": 1,
+        "reddit.com": 4,
+        "theodysseyonline.com": 1,
+        "newmusicaltheatre.com": 1
+      },
+      "cost": 0.0376,
+      "usage": {
+        "input": 20,
+        "output": 1042,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Best Broadway musicals for people who do not like musicals?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "broadwaysbestshows.com": 1,
+        "newmusicaltheatre.com": 1,
+        "reddit.com": 3,
+        "alittleaboutalot.co": 1,
+        "whatculture.com": 1
+      },
+      "cost": 0.0374,
+      "usage": {
+        "input": 20,
+        "output": 968,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Best Broadway shows for kids and families right now?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "newyorktheatreguide.com": 1,
+        "broadwaydirect.com": 1,
+        "theculturemom.com": 1,
+        "forbes.com": 1,
+        "broadway.com": 1,
+        "broadwayacrossamerica.com": 1
+      },
+      "cost": 0.038,
+      "usage": {
+        "input": 19,
+        "output": 1196,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Best Broadway shows for kids and families right now?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "newyorktheatreguide.com": 1,
+        "kidonthetown.com": 1,
+        "broadwayacrossamerica.com": 1,
+        "forbes.com": 1
+      },
+      "cost": 0.0373,
+      "usage": {
+        "input": 19,
+        "output": 924,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Broadway Scorecard vs Show Score vs Did They Like It: which is best for Broadway reviews?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "**Broadway Scorecard, Show-Score, and Did They Like It?** are the three primary hubs for theater review aggregation, each taking a distinct approach:",
+      "competitors": [
+        "Show Score",
+        "Did They Like It",
+        "New York Times",
+        "Variety",
+        "Broadway.com",
+        "Rotten Tomatoes"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 3,
+        "reddit.com": 2,
+        "didtheylikeit.com": 1,
+        "reviewpartydotcom.com": 1,
+        "forbes.com": 1,
+        "show-score.com": 1
+      },
+      "cost": 0.0375,
+      "usage": {
+        "input": 28,
+        "output": 985,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Broadway Scorecard vs Show Score vs Did They Like It: which is best for Broadway reviews?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "The three major theater review aggregators—**Broadway Scorecard**, **Did They Like It?**, and **Show-Score**—each approach Broadway reviews differently.",
+      "competitors": [
+        "Did They Like It",
+        "Show Score",
+        "New York Times",
+        "Variety",
+        "Broadway.com",
+        "Rotten Tomatoes"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 2,
+        "reddit.com": 2,
+        "didtheylikeit.com": 1,
+        "reviewpartydotcom.com": 1,
+        "forbes.com": 1,
+        "show-score.com": 1
+      },
+      "cost": 0.0376,
+      "usage": {
+        "input": 28,
+        "output": 1045,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "How can I get cheap tickets to Wicked on Broadway?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "broadwaybox.com": 1,
+        "reddit.com": 1,
+        "wickedthemusical.com": 1,
+        "thewickedtickets.com": 1,
+        "broadwaydirect.com": 1,
+        "broadwayworld.com": 1,
+        "broadway.org": 1,
+        "broadway-show-tickets.com": 1
+      },
+      "cost": 0.0369,
+      "usage": {
+        "input": 20,
+        "output": 742,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "How can I get cheap tickets to Wicked on Broadway?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "broadwaybox.com": 1,
+        "reddit.com": 1,
+        "broadwayonabudget.com": 1,
+        "wickedthemusical.com": 2,
+        "thewickedtickets.com": 1,
+        "broadwaydirect.com": 1,
+        "broadwayworld.com": 1,
+        "broadway-show-tickets.com": 1
+      },
+      "cost": 0.0367,
+      "usage": {
+        "input": 20,
+        "output": 688,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "How did critics review the latest Broadway revival?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "broadwayscorecard.com": 1,
+        "newyorktheatreguide.com": 1,
+        "broadway.com": 1
+      },
+      "cost": 0.0361,
+      "usage": {
+        "input": 18,
+        "output": 423,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "How did critics review the latest Broadway revival?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [
+        "Time Out"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 1,
+        "newyorktheatreguide.com": 2,
+        "nystagereview.com": 1,
+        "timeout.com": 1
+      },
+      "cost": 0.0362,
+      "usage": {
+        "input": 18,
+        "output": 477,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Is Hadestown worth seeing on Broadway? Critic consensus?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "New York Times",
+        "Variety"
+      ],
+      "citedDomains": {
+        "broadway.com": 1,
+        "thefeather.com": 1,
+        "goaheadsumi.com": 1,
+        "meganannrasmussen.com": 1,
+        "reddit.com": 2
+      },
+      "cost": 0.0371,
+      "usage": {
+        "input": 20,
+        "output": 836,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Is Hadestown worth seeing on Broadway? Critic consensus?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "reddit.com": 2,
+        "broadway.com": 1,
+        "newyorktheatreguide.com": 1,
+        "goaheadsumi.com": 1,
+        "meganannrasmussen.com": 1,
+        "thefeather.com": 1
+      },
+      "cost": 0.0369,
+      "usage": {
+        "input": 20,
+        "output": 769,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Is Hamilton on Broadway still worth seeing? What do critics say?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "broadway.com": 4,
+        "newyorktheatreguide.com": 1,
+        "show-score.com": 1,
+        "getyourguide.com": 1,
+        "rachelweinbergreviews.com": 1,
+        "revuewm.com": 1,
+        "cnhspawprint.com": 1
+      },
+      "cost": 0.0365,
+      "usage": {
+        "input": 22,
+        "output": 582,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Is Hamilton on Broadway still worth seeing? What do critics say?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [
+        "Show Score"
+      ],
+      "citedDomains": {
+        "show-score.com": 1,
+        "broadwayscorecard.com": 1,
+        "broadway.com": 3,
+        "broadway-show-tickets.com": 1,
+        "reddit.com": 2,
+        "aroundthetownchicago.com": 1,
+        "getyourguide.com": 1,
+        "saint-louis-theatre.com": 1
+      },
+      "cost": 0.0365,
+      "usage": {
+        "input": 22,
+        "output": 612,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Is there a site that combines Broadway critic reviews into one score?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "1. **Broadway Scorecard** (`broadwayscorecard.com`)",
+      "competitors": [
+        "Rotten Tomatoes",
+        "New York Times",
+        "Variety",
+        "Vulture",
+        "Did They Like It",
+        "Show Score"
+      ],
+      "citedDomains": {
+        "reddit.com": 1,
+        "forbes.com": 1,
+        "broadwayscorecard.com": 3,
+        "didtheylikeit.com": 1,
+        "show-score.com": 2
+      },
+      "cost": 0.036,
+      "usage": {
+        "input": 22,
+        "output": 381,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Is there a site that combines Broadway critic reviews into one score?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "* **Broadway Scorecard** (`broadwayscorecard.com`): This platform collects reviews from hundreds of major critics and publications (such as *The New York Times*, *Variety*, *Vulture*, and *The Hollywood Reporter*) and calcul",
+      "competitors": [
+        "Rotten Tomatoes",
+        "New York Times",
+        "Variety",
+        "Vulture",
+        "Show Score",
+        "Did They Like It"
+      ],
+      "citedDomains": {
+        "github.com": 1,
+        "reddit.com": 1,
+        "forbes.com": 1,
+        "broadwayscorecard.com": 1,
+        "show-score.com": 2,
+        "didtheylikeit.com": 1
+      },
+      "cost": 0.0359,
+      "usage": {
+        "input": 22,
+        "output": 364,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Is Wicked on Broadway worth the ticket price? What did critics think?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "dway in October 2003, **the critical reception was mixed** (holding a 64/100 on Broadway Scorecard and drawing a polarized response from major outlets):",
+      "competitors": [
+        "New York Times"
+      ],
+      "citedDomains": {
+        "newyorktheatreguide.com": 1,
+        "reddit.com": 3,
+        "wikipedia.org": 1,
+        "broadwayscorecard.com": 1,
+        "theatreinnewyork.com": 1,
+        "fodors.com": 1,
+        "theatermania.com": 1,
+        "voxatl.org": 1,
+        "time.com": 1
+      },
+      "cost": 0.0376,
+      "usage": {
+        "input": 23,
+        "output": 1048,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Is Wicked on Broadway worth the ticket price? What did critics think?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "New York Times"
+      ],
+      "citedDomains": {
+        "seatgeek.com": 1,
+        "broadway.com": 1,
+        "theatreinnewyork.com": 1,
+        "broadway-show-tickets.com": 1,
+        "reddit.com": 2
+      },
+      "cost": 0.0369,
+      "usage": {
+        "input": 23,
+        "output": 747,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "What are the highest rated Broadway musicals this season?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "seatplan.com": 1,
+        "newyorktheatreguide.com": 1,
+        "allytravels.com": 1,
+        "youtube.com": 2,
+        "substack.com": 1
+      },
+      "cost": 0.0363,
+      "usage": {
+        "input": 19,
+        "output": 537,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "What are the highest rated Broadway musicals this season?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": " professional critic scores and audience consensus ratings from platforms like *Broadway Scorecard* and theatre guides, the highest-rated Broadway musicals currently running feature a mix of powerhouse long-running hits and acclaimed new additions:",
+      "competitors": [
+        "Show Score"
+      ],
+      "citedDomains": {
+        "theatregold.com": 1,
+        "seatplan.com": 1,
+        "broadwayscorecard.com": 1,
+        "show-score.com": 1
+      },
+      "cost": 0.0363,
+      "usage": {
+        "input": 19,
+        "output": 529,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "What Broadway shows are closing soon that critics loved?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "broadway.com": 1,
+        "broadwayscorecard.com": 1,
+        "reddit.com": 1,
+        "broadwaybox.com": 1,
+        "soundsandstage.com": 1,
+        "boxofficeticketsales.com": 1
+      },
+      "cost": 0.0365,
+      "usage": {
+        "input": 19,
+        "output": 581,
+        "searches": 3
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "What Broadway shows are closing soon that critics loved?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "theatermania.com": 1,
+        "theatrely.com": 1,
+        "broadway.com": 2,
+        "exeuntnyc.com": 1,
+        "wikipedia.org": 1,
+        "broadwaydirect.com": 1,
+        "broadwayscorecard.com": 1,
+        "reddit.com": 1,
+        "boxofficeticketsales.com": 1
+      },
+      "cost": 0.0367,
+      "usage": {
+        "input": 19,
+        "output": 683,
+        "searches": 4
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "What did critics say about The Lion King on Broadway?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [
+        "New York Times",
+        "Variety"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 1,
+        "theatreinnewyork.com": 1,
+        "show-score.com": 1,
+        "fashionmeetsfood.com": 1
+      },
+      "cost": 0.0364,
+      "usage": {
+        "input": 20,
+        "output": 544,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "What did critics say about The Lion King on Broadway?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [
+        "New York Times",
+        "Variety"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 1,
+        "show-score.com": 1,
+        "theatreinnewyork.com": 1,
+        "fashionmeetsfood.com": 1,
+        "wordpress.com": 1
+      },
+      "cost": 0.0363,
+      "usage": {
+        "input": 20,
+        "output": 513,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "What do audiences think of Hamilton on Broadway?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "Broadway.com"
+      ],
+      "citedDomains": {
+        "adventurouskate.com": 1,
+        "broadway.com": 2,
+        "naples-theater.com": 1,
+        "broadwayinbound.com": 1,
+        "shgreenwichkingstreetchronicle.org": 1,
+        "broadwayworld.com": 1
+      },
+      "cost": 0.0362,
+      "usage": {
+        "input": 18,
+        "output": 467,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "What do audiences think of Hamilton on Broadway?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "Broadway.com"
+      ],
+      "citedDomains": {
+        "broadway.com": 2,
+        "adventurouskate.com": 1,
+        "naples-theater.com": 1,
+        "youtube.com": 1,
+        "rottentomatoes.com": 1,
+        "reddit.com": 2,
+        "broadwayworld.com": 1
+      },
+      "cost": 0.0364,
+      "usage": {
+        "input": 18,
+        "output": 553,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "What is the best Broadway review aggregator?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 6,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "### 2. Best for Mathematical Critic Scoring: **Broadway Scorecard**",
+      "competitors": [
+        "Rotten Tomatoes",
+        "Did They Like It",
+        "New York Times",
+        "Variety",
+        "Vulture",
+        "Show Score"
+      ],
+      "citedDomains": {
+        "reddit.com": 2,
+        "didtheylikeit.com": 3,
+        "broadwayscorecard.com": 1,
+        "show-score.com": 2
+      },
+      "cost": 0.0364,
+      "usage": {
+        "input": 17,
+        "output": 566,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "What is the best Broadway review aggregator?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 3,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "### 2. **Broadway Scorecard** — *Best for Weighted Critic Scoring*",
+      "competitors": [
+        "Rotten Tomatoes",
+        "Did They Like It",
+        "New York Times",
+        "Variety",
+        "Vulture",
+        "Show Score"
+      ],
+      "citedDomains": {
+        "reddit.com": 1,
+        "didtheylikeit.com": 2,
+        "broadwayscorecard.com": 1,
+        "show-score.com": 1
+      },
+      "cost": 0.0366,
+      "usage": {
+        "input": 17,
+        "output": 655,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Where can I find aggregated Broadway critic scores for current shows?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "* **Broadway Scorecard** (`broadwayscorecard.com`)",
+      "competitors": [
+        "Rotten Tomatoes",
+        "New York Times",
+        "Variety",
+        "Vulture",
+        "Did They Like It",
+        "Show Score",
+        "BroadwayWorld"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 1,
+        "github.com": 1,
+        "reddit.com": 3,
+        "didtheylikeit.com": 1,
+        "show-score.com": 1,
+        "broadwayworld.com": 1
+      },
+      "cost": 0.0359,
+      "usage": {
+        "input": 21,
+        "output": 363,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Where can I find aggregated Broadway critic scores for current shows?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "* **Broadway Scorecard** (): This site aggregates ratings and scores for current Broadway shows sourced from major publications like *The New York Times*, *Variety*, *Vulture*, and hundreds of other outlets. It provides a si",
+      "competitors": [
+        "Rotten Tomatoes",
+        "New York Times",
+        "Variety",
+        "Vulture",
+        "Show Score",
+        "Did They Like It",
+        "BroadwayWorld"
+      ],
+      "citedDomains": {
+        "reddit.com": 1,
+        "broadwayscorecard.com": 2,
+        "show-score.com": 1,
+        "didtheylikeit.com": 2,
+        "broadwayworld.com": 1
+      },
+      "cost": 0.0359,
+      "usage": {
+        "input": 21,
+        "output": 363,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Which Broadway show should I see on a first trip to New York? Go by critic reviews.",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "ew York City, going strictly by critic reviews and aggregated scorecards (like *Broadway Scorecard*, *Show-Score*, and *The New York Times* Critic’s Picks) points you toward a few absolute standouts.",
+      "competitors": [
+        "Show Score",
+        "New York Times",
+        "Variety",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 1,
+        "show-score.com": 1,
+        "broadway-show-tickets.com": 1,
+        "newyorkcitytheatre.com": 1,
+        "newyorktheatreguide.com": 1
+      },
+      "cost": 0.0366,
+      "usage": {
+        "input": 28,
+        "output": 639,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Which Broadway show should I see on a first trip to New York? Go by critic reviews.",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [
+        "New York Times",
+        "Variety",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "newyorkcitytheatre.com": 1,
+        "broadwayscorecard.com": 2,
+        "show-score.com": 1,
+        "culturesauce.com": 1,
+        "newyorktheatreguide.com": 1
+      },
+      "cost": 0.0363,
+      "usage": {
+        "input": 28,
+        "output": 513,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Which Broadway shows are critics and audiences disagreeing about?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": false,
+      "position": 1,
+      "ourUrls": [],
+      "description": " artistic appraisal and popular entertainment. While critical aggregates (like *Broadway Scorecard* and major publication reviews) weigh artistic innovation, subtext, and direction, general audiences—particularly tourists and casual theatergoers—often prioritize spectacle, emotional resonance, famil",
+      "competitors": [
+        "Show Score",
+        "New York Times",
+        "Variety",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "thecrimson.com": 1,
+        "theatregold.com": 1,
+        "show-score.com": 1,
+        "substack.com": 1
+      },
+      "cost": 0.0366,
+      "usage": {
+        "input": 20,
+        "output": 630,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Which Broadway shows are critics and audiences disagreeing about?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "broadwayscorecard.com": 1,
+        "broadway.com": 1,
+        "youtube.com": 1,
+        "latimes.com": 1,
+        "didtheylikeit.com": 1,
+        "show-score.com": 1,
+        "theaterpizzazz.com": 1
+      },
+      "cost": 0.036,
+      "usage": {
+        "input": 20,
+        "output": 401,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Which Broadway shows are worth full price versus lottery or rush tickets?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "Playbill",
+        "TodayTix"
+      ],
+      "citedDomains": {
+        "reddit.com": 2,
+        "substack.com": 1,
+        "bwaytime.com": 1,
+        "washingtonpost.com": 1,
+        "broadwayonabudget.com": 1,
+        "theatertickets.com": 1,
+        "boardingarea.com": 1,
+        "wareontheglobe.com": 1,
+        "youtube.com": 1
+      },
+      "cost": 0.0377,
+      "usage": {
+        "input": 22,
+        "output": 1064,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Which Broadway shows are worth full price versus lottery or rush tickets?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "TodayTix"
+      ],
+      "citedDomains": {
+        "reddit.com": 2,
+        "theatertickets.com": 2,
+        "substack.com": 1,
+        "washingtonpost.com": 1,
+        "thepodhotel.com": 1,
+        "bwaytime.com": 1,
+        "australianwomeninnewyork.org": 1
+      },
+      "cost": 0.0377,
+      "usage": {
+        "input": 22,
+        "output": 1068,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Which Broadway shows have the best critic reviews right now?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/"
+      ],
+      "description": "Based on aggregated critic scorecards (such as *Broadway Scorecard* and *Did They Like It?*) alongside major critical reviews from outlets like *The New York Times*, *Variety*, and *Time Out*, the Broadway shows receiving the best critic reviews right now fall into tw",
+      "competitors": [
+        "Did They Like It",
+        "New York Times",
+        "Variety",
+        "Time Out"
+      ],
+      "citedDomains": {
+        "theatregold.com": 1,
+        "timeout.com": 1,
+        "broadwayscorecard.com": 1,
+        "broadway.com": 1,
+        "broadwayworld.com": 1,
+        "tdf.org": 1,
+        "didtheylikeit.com": 1,
+        "show-score.com": 1
+      },
+      "cost": 0.0365,
+      "usage": {
+        "input": 20,
+        "output": 590,
+        "searches": 3
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Which Broadway shows have the best critic reviews right now?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": false,
+      "position": 4,
+      "ourUrls": [],
+      "description": " York Times*, *Variety*, and *Vulture*) and prominent theater trackers like the Broadway Scorecard, the best-reviewed Broadway shows currently running include a mix of long-running cultural mainstays and acclaimed newer productions:",
+      "competitors": [
+        "New York Times",
+        "Variety",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "theatregold.com": 1,
+        "newyorkcitytheatre.com": 1,
+        "timeout.com": 1,
+        "todaytix.com": 1,
+        "show-score.com": 1
+      },
+      "cost": 0.0367,
+      "usage": {
+        "input": 20,
+        "output": 676,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Which new Broadway plays are worth seeing according to critics?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "New York Times",
+        "Vulture",
+        "TheaterMania"
+      ],
+      "citedDomains": {
+        "didtheylikeit.com": 1,
+        "show-score.com": 1,
+        "broadway.com": 1,
+        "broadwayworld.com": 1,
+        "theatregold.com": 1
+      },
+      "cost": 0.036,
+      "usage": {
+        "input": 20,
+        "output": 387,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "gemini",
+      "prompt": "Which new Broadway plays are worth seeing according to critics?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "ohmaryplay.com": 1,
+        "goodreads.com": 1,
+        "thequeerreview.com": 1,
+        "reddit.com": 2,
+        "show-score.com": 2,
+        "theatregold.com": 2,
+        "nystagereview.com": 1,
+        "artsfuse.org": 1,
+        "medium.com": 1,
+        "broadway.com": 2
+      },
+      "cost": 0.0363,
+      "usage": {
+        "input": 20,
+        "output": 522,
+        "searches": 4
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Are Broadway reviews from the New York Times and Vulture usually aligned?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 3,
+      "ourUrls": [
+        "https://broadwayscorecard.com/critics/outlets/the-new-york-times",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/methodology"
+      ],
+      "description": "g the same performances under similar conditions. A Broadway review aggregator, Broadway Scorecard, treats both the *Times* and Vulture as high-weight critics in its composite ratings. But that indicates influence and prominence—not identical judgments. ()",
+      "competitors": [
+        "New York Times",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "apnews.com": 2,
+        "theatlantic.com": 1,
+        "cinemablend.com": 1,
+        "theweek.com": 1,
+        "thedailybeast.com": 1,
+        "musicradar.com": 1,
+        "broadwayscorecard.com": 4,
+        "news.frombroadway.com": 18,
+        "broadwayworld.com": 1,
+        "playbill.com": 3,
+        "theatregold.com": 1,
+        "catalogue.boekman.nl": 1,
+        "columbia.edu": 1,
+        "pages.stern.nyu.edu": 1,
+        "guthrietheater.org": 1,
+        "dehesa.unex.es": 1,
+        "catalogus.boekman.nl": 1,
+        "en.wikipedia.org": 6,
+        "youtube.com": 2,
+        "reddit.com": 7,
+        "assets.playbill.com": 5
+      },
+      "cost": 0.0252,
+      "usage": {
+        "input": 21211,
+        "output": 757,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Are Broadway reviews from the New York Times and Vulture usually aligned?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 3,
+      "ourUrls": [
+        "https://broadwayscorecard.com/methodology",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/critics/outlets/the-new-york-times"
+      ],
+      "description": "e generally publishes an essay without a standardized star or numerical rating. Broadway Scorecard lists both as major outlets but aggregates their reviews separately rather than treating them as interchangeable scores. ()",
+      "competitors": [
+        "New York Times",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "apnews.com": 2,
+        "theweek.com": 1,
+        "thedailybeast.com": 1,
+        "cinemablend.com": 1,
+        "musicradar.com": 1,
+        "news.frombroadway.com": 10,
+        "broadwayscorecard.com": 4,
+        "broadwayworld.com": 1,
+        "playbill.com": 1,
+        "pages.stern.nyu.edu": 1,
+        "catalogue.boekman.nl": 1,
+        "etd.ohiolink.edu": 1,
+        "static1.squarespace.com": 1,
+        "catalogus.boekman.nl": 1,
+        "youtube.com": 2,
+        "en.wikipedia.org": 6,
+        "reddit.com": 7
+      },
+      "cost": 0.0135,
+      "usage": {
+        "input": 13013,
+        "output": 742,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Are the new Broadway musicals this fall any good? Review roundup please.",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/browse/2026-2027-broadway-season",
+        "https://broadwayscorecard.com/show/wanted",
+        "https://broadwayscorecard.com/show/the-fantasticks"
+      ],
+      "description": "- **Broadway Scorecard:** **79/100**, based on 29 critic reviews; broadly recommended. ()",
+      "competitors": [
+        "Time Out"
+      ],
+      "citedDomains": {
+        "apnews.com": 4,
+        "axios.com": 4,
+        "broadway.com": 3,
+        "tdf.org": 3,
+        "theatregold.com": 1,
+        "broadwaynews.com": 1,
+        "broadwayscorecard.com": 5,
+        "broadwayworld.com": 3,
+        "broadwaydirect.com": 1,
+        "news.frombroadway.com": 4,
+        "amny.com": 1,
+        "static1.squarespace.com": 2,
+        "schmigadoonbroadway.com": 1,
+        "youtube.com": 3,
+        "reddit.com": 25,
+        "resources.finalsite.net": 1,
+        "broadwayinhollywood.com": 1,
+        "thebroadwaytheatre.org": 1,
+        "encorespotlight.com": 1,
+        "en.wikipedia.org": 11,
+        "theweek.com": 2,
+        "space.com": 2,
+        "tomsguide.com": 1,
+        "timeout.com": 2,
+        "theguardian.com": 4,
+        "slantmagazine.com": 2,
+        "newyorktheaterguide.com": 1,
+        "brandonreporter.com": 1,
+        "tangercenter.com": 1,
+        "brooklynpaper.com": 1
+      },
+      "cost": 0.0263,
+      "usage": {
+        "input": 21408,
+        "output": 1656,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Are the new Broadway musicals this fall any good? Review roundup please.",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/browse/2026-2027-broadway-season",
+        "https://broadwayscorecard.com/show/wanted",
+        "https://broadwayscorecard.com/show/the-fantasticks"
+      ],
+      "description": "thers question whether the old-fashioned romance has enough dramatic substance. Broadway Scorecard currently places it at **79/100**, with a broadly positive critical consensus. ()",
+      "competitors": [
+        "Time Out"
+      ],
+      "citedDomains": {
+        "apnews.com": 3,
+        "gamesradar.com": 1,
+        "loudersound.com": 3,
+        "broadway.com": 2,
+        "tdf.org": 2,
+        "broadwayscorecard.com": 3,
+        "broadwaydirect.com": 1,
+        "stageandstreetnyc.com": 1,
+        "broadwaynews.com": 2,
+        "theatregold.com": 1,
+        "stanforddaily.com": 1,
+        "amny.com": 1,
+        "news.frombroadway.com": 4,
+        "static1.squarespace.com": 1,
+        "schmigadoonbroadway.com": 2,
+        "youtube.com": 3,
+        "reddit.com": 23,
+        "tangercenter.com": 1,
+        "encorespotlight.com": 1,
+        "thebroadwaytheatre.org": 1,
+        "en.wikipedia.org": 12,
+        "theweek.com": 2,
+        "space.com": 2,
+        "tomsguide.com": 1,
+        "cinemablend.com": 1,
+        "aftenbladet.no": 1,
+        "axios.com": 3,
+        "musicradar.com": 1,
+        "timeout.com": 1,
+        "monorepo-sample1.nyt.net": 1,
+        "theguardian.com": 4,
+        "broadwayworld.com": 1,
+        "slantmagazine.com": 1,
+        "newyorktheaterguide.com": 1,
+        "brandonreporter.com": 1,
+        "brooklynpaper.com": 1,
+        "ccm.edu": 1,
+        "villagetheatre.org": 1
+      },
+      "cost": 0.0259,
+      "usage": {
+        "input": 21555,
+        "output": 1365,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Best Broadway musicals for people who do not like musicals?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/guides"
+      ],
+      "description": null,
+      "competitors": [
+        "Time Out"
+      ],
+      "citedDomains": {
+        "apnews.com": 1,
+        "musicradar.com": 1,
+        "theodysseyonline.com": 2,
+        "broadwayscorecard.com": 1,
+        "timeout.com": 4,
+        "playbill.com": 3,
+        "stageandstreetnyc.com": 2,
+        "onmilwaukee.com": 1,
+        "suegilad.com": 2,
+        "broadway.com": 6,
+        "reddit.com": 12,
+        "youtube.com": 2,
+        "cdn-cms.f-static.net": 1,
+        "richardsonstudies.com": 1,
+        "bachelor.wabash.edu": 1,
+        "schmigadoonbroadway.com": 1,
+        "resources.finalsite.net": 1,
+        "aftr.nj.aft.org": 1,
+        "en.wikipedia.org": 1,
+        "broadway.org": 9,
+        "groups.broadway.com": 2,
+        "louisville.broadway.com": 1,
+        "media.broadway.com": 2,
+        "media.groups.broadway.com": 1
+      },
+      "cost": 0.0258,
+      "usage": {
+        "input": 18970,
+        "output": 1701,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Best Broadway musicals for people who do not like musicals?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/guides"
+      ],
+      "description": null,
+      "competitors": [
+        "Playbill",
+        "Broadway.com"
+      ],
+      "citedDomains": {
+        "apnews.com": 1,
+        "axios.com": 1,
+        "musicradar.com": 1,
+        "gamesradar.com": 1,
+        "theatlantic.com": 1,
+        "loudersound.com": 1,
+        "theodysseyonline.com": 3,
+        "us.atgtickets.com": 1,
+        "playbill.com": 5,
+        "broadwayscorecard.com": 1,
+        "stageandstreetnyc.com": 1,
+        "suegilad.com": 1,
+        "onmilwaukee.com": 1,
+        "seatgeek.com": 1,
+        "newmusicaltheatre.com": 1,
+        "reddit.com": 12,
+        "cdn-cms.f-static.net": 1,
+        "richardsonstudies.com": 1,
+        "youtube.com": 2,
+        "bachelor.wabash.edu": 1,
+        "broadway.com": 7,
+        "broadway.org": 5,
+        "assets.playbill.com": 3,
+        "media.groups.broadway.com": 2,
+        "groups.broadway.com": 1
+      },
+      "cost": 0.0262,
+      "usage": {
+        "input": 21236,
+        "output": 1588,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Best Broadway shows for kids and families right now?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/guides/best-broadway-shows-for-kids"
+      ],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "apnews.com": 2,
+        "gamesradar.com": 1,
+        "whowhatwear.com": 2,
+        "broadway.com": 2,
+        "broadwaydirect.com": 1,
+        "blog.ticketmaster.com": 2,
+        "newyorktheaterguide.com": 1,
+        "mommypoppins.com": 1,
+        "broadway-explorer.com": 1,
+        "broadwayscorecard.com": 1,
+        "newyorkcityauthority.com": 1,
+        "broadwayplays.nyc": 1,
+        "broadwayworld.com": 1,
+        "thebroadwaytheatre.org": 2,
+        "youtube.com": 2,
+        "lakefrontmagazine.com": 1,
+        "wheelockfamilytheatre.org": 1,
+        "resources.finalsite.net": 1,
+        "irp.cdn-website.com": 1,
+        "reddit.com": 12,
+        "en.wikipedia.org": 6,
+        "tomsguide.com": 1,
+        "theweek.com": 1
+      },
+      "cost": 0.0257,
+      "usage": {
+        "input": 21230,
+        "output": 1195,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Best Broadway shows for kids and families right now?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "apnews.com": 4,
+        "musicradar.com": 1,
+        "thedailybeast.com": 1,
+        "broadway.com": 2,
+        "blog.ticketmaster.com": 3,
+        "broadwaydirect.com": 1,
+        "mommypoppins.com": 1,
+        "newyorktheaterguide.com": 1,
+        "newyorkcityauthority.com": 1,
+        "broadway-explorer.com": 1,
+        "official.nyc.com": 1,
+        "theculturemom.com": 1,
+        "youtube.com": 2,
+        "res.cloudinary.com": 1,
+        "cbca.org": 1,
+        "assets.playbill.com": 1,
+        "thebroadwaytheatre.org": 1,
+        "tangercenter.com": 1,
+        "reddit.com": 12,
+        "govisit.guide": 1,
+        "en.wikipedia.org": 2
+      },
+      "cost": 0.0258,
+      "usage": {
+        "input": 21245,
+        "output": 1278,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Broadway Scorecard vs Show Score vs Did They Like It: which is best for Broadway reviews?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/methodology",
+        "https://broadwayscorecard.com/reviews",
+        "https://broadwayscorecard.com/critics/outlets/did-they-like-it",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/audience-buzz",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/rankings",
+        "https://broadwayscorecard.com/about",
+        "https://broadwayscorecard.com/research",
+        "https://broadwayscorecard.com/critics/outlets/new-york-theater",
+        "https://broadwayscorecard.com/critics/outlets/broadwayworld"
+      ],
+      "description": "**For Broadway reviews, I’d choose Broadway Scorecard overall.** It is the best tool for comparing **professional critical consensus** across many outlets.",
+      "competitors": [
+        "Did They Like It",
+        "Show Score"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 14,
+        "show-score.com": 6,
+        "support.show-score.com": 1,
+        "d1rbsgppyrdqq4.cloudfront.net": 1,
+        "reddit.com": 18,
+        "en.wikipedia.org": 5,
+        "api.pageplace.de": 1,
+        "static1.squarespace.com": 2,
+        "apnews.com": 1,
+        "theweek.com": 1,
+        "didtheylikeit.com": 6,
+        "broadway.com": 1,
+        "broadwayworld.com": 1,
+        "reviewpartydotcom.com": 1,
+        "nyc.streetsblog.org": 1,
+        "media.sheas.org": 1,
+        "windycitytimes.com": 1,
+        "britishtheatreguide.info": 1
+      },
+      "cost": 0.0254,
+      "usage": {
+        "input": 18988,
+        "output": 1353,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Broadway Scorecard vs Show Score vs Did They Like It: which is best for Broadway reviews?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/methodology",
+        "https://broadwayscorecard.com/research",
+        "https://broadwayscorecard.com/audience-buzz",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/reviews",
+        "https://broadwayscorecard.com/critics/outlets/did-they-like-it",
+        "https://broadwayscorecard.com/about",
+        "https://broadwayscorecard.com/research/critic-audience-divergence-2026"
+      ],
+      "description": "**Broadway Scorecard is the best overall choice for Broadway reviews today**—especially if you want a broad, transparent aggregation of professional criticism. **Show-Score is better for audience reaction**, while **Did Th",
+      "competitors": [
+        "Show Score",
+        "Did They Like It"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 12,
+        "show-score.com": 9,
+        "support.show-score.com": 1,
+        "showscore.substack.com": 1,
+        "reddit.com": 18,
+        "en.wikipedia.org": 10,
+        "d1rbsgppyrdqq4.cloudfront.net": 1,
+        "static1.squarespace.com": 1,
+        "theweek.com": 1,
+        "apnews.com": 2,
+        "axios.com": 1,
+        "polyhelper.ai": 1,
+        "broadway.com": 1,
+        "github.com": 1,
+        "broadwayworld.com": 2,
+        "theatregold.com": 1,
+        "s3.amazonaws.com": 1
+      },
+      "cost": 0.026,
+      "usage": {
+        "input": 21402,
+        "output": 1404,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "How can I get cheap tickets to Wicked on Broadway?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "wickedthemusical.com": 2,
+        "help.broadwaydirect.com": 1,
+        "todaytix.com": 1,
+        "broadway.com": 1,
+        "tdf.org": 4,
+        "playbill.com": 1,
+        "newyorktheaterguide.com": 1,
+        "lottery.broadwaydirect.com": 1,
+        "broadway.org": 1,
+        "iloverex.com": 1,
+        "rbtl.org": 1,
+        "anfponline.org": 1,
+        "youtube.com": 2,
+        "davlermedia.com": 1,
+        "istaonline.org": 1,
+        "reddit.com": 12,
+        "actthree.co.nz": 1,
+        "en.wikipedia.org": 6,
+        "axios.com": 2,
+        "as.com": 1,
+        "apnews.com": 2,
+        "theweek.com": 1
+      },
+      "cost": 0.0362,
+      "usage": {
+        "input": 25422,
+        "output": 932,
+        "searches": 3
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "How can I get cheap tickets to Wicked on Broadway?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "lottery.broadwaydirect.com": 1,
+        "broadway.com": 3,
+        "broadway.org": 1,
+        "broadwaydirect.com": 1,
+        "broadwaynowandnext.com": 1,
+        "blog.ticketmaster.com": 1,
+        "tdf.org": 4,
+        "timeout.com": 1,
+        "rbtl.org": 1,
+        "anfponline.org": 1,
+        "lehman.cuny.edu": 1,
+        "arts.gov": 1,
+        "youtube.com": 2,
+        "reddit.com": 12,
+        "playhousesquare.org": 1,
+        "en.wikipedia.org": 6,
+        "axios.com": 2,
+        "apnews.com": 3,
+        "as.com": 1,
+        "wickedthemusical.com": 16,
+        "tour.wickedthemusical.com": 1
+      },
+      "cost": 0.0249,
+      "usage": {
+        "input": 19200,
+        "output": 858,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "How did critics review the latest Broadway revival?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {},
+      "cost": 0.001,
+      "usage": {
+        "input": 4461,
+        "output": 110,
+        "searches": 0
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "How did critics review the latest Broadway revival?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {},
+      "cost": 0.001,
+      "usage": {
+        "input": 4461,
+        "output": 95,
+        "searches": 0
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Is Hadestown worth seeing on Broadway? Critic consensus?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/show/hadestown-west-end"
+      ],
+      "description": "- **Its staying power:** Current critic aggregators still rate it highly: Broadway Scorecard lists an **83 critic score from 51 reviews** and an **A+ audience rating**. ()",
+      "competitors": [],
+      "citedDomains": {
+        "apnews.com": 4,
+        "theweek.com": 1,
+        "thedailybeast.com": 1,
+        "cinemablend.com": 2,
+        "broadway.com": 3,
+        "rottentomatoes.com": 1,
+        "hadestown.com": 2,
+        "monorepo-sample2.nyt.net": 1,
+        "hadestownmusical.com": 1,
+        "broadwayscorecard.com": 3,
+        "broadway.org": 1,
+        "show-score.com": 1,
+        "theatregold.com": 1,
+        "static1.squarespace.com": 1,
+        "thehanovertheatre.org": 1,
+        "en.wikipedia.org": 5,
+        "ogcma.byu.edu": 1,
+        "archives.thecoastalstar.com": 1,
+        "playhousesquare.org": 1,
+        "grandtheater.org": 1,
+        "reddit.com": 12,
+        "youtube.com": 2,
+        "es.wikipedia.org": 1,
+        "axios.com": 1,
+        "latimes.com": 3,
+        "theguardian.com": 10,
+        "highschool.latimes.com": 1
+      },
+      "cost": 0.0253,
+      "usage": {
+        "input": 21192,
+        "output": 853,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Is Hadestown worth seeing on Broadway? Critic consensus?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/audience-buzz"
+      ],
+      "description": null,
+      "competitors": [
+        "New York Times",
+        "Broadway.com"
+      ],
+      "citedDomains": {
+        "apnews.com": 4,
+        "thedailybeast.com": 1,
+        "cinemablend.com": 3,
+        "rottentomatoes.com": 1,
+        "broadway.com": 2,
+        "monorepo-sample2.nyt.net": 1,
+        "broadwayscorecard.com": 2,
+        "sandimoran.com": 1,
+        "theatregold.com": 1,
+        "playbill.com": 2,
+        "centernyc.com": 1,
+        "static1.squarespace.com": 1,
+        "theatreinnewyork.com": 1,
+        "reddit.com": 12,
+        "en.wikipedia.org": 5,
+        "archives.thecoastalstar.com": 1,
+        "youtube.com": 2,
+        "grandtheater.org": 1,
+        "woodlandoperahouse.org": 1,
+        "playhousesquare.org": 1,
+        "michaelgiltz.com": 1,
+        "es.wikipedia.org": 1,
+        "tomsguide.com": 1
+      },
+      "cost": 0.0248,
+      "usage": {
+        "input": 19294,
+        "output": 792,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Is Hamilton on Broadway still worth seeing? What do critics say?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "Time Out",
+        "Rotten Tomatoes"
+      ],
+      "citedDomains": {
+        "apnews.com": 1,
+        "thedailybeast.com": 1,
+        "musicradar.com": 1,
+        "theweek.com": 1,
+        "cinemablend.com": 1,
+        "broadway.com": 8,
+        "hamiltonmusical.com": 2,
+        "rottentomatoes.com": 2,
+        "timeout.com": 3,
+        "broadwaydirect.com": 1,
+        "rhetoricalreview.com": 1,
+        "rbtl.org": 1,
+        "jewishjournal.org": 1,
+        "files-backend.assets.thrillshare.com": 1,
+        "youtube.com": 2,
+        "culturaldaily.com": 1,
+        "loyolaphoenix.com": 1,
+        "en.wikipedia.org": 2,
+        "reddit.com": 12,
+        "theguardian.com": 15,
+        "tollbit.variety.com": 1,
+        "advertising.theguardian.com": 1
+      },
+      "cost": 0.0254,
+      "usage": {
+        "input": 21219,
+        "output": 945,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Is Hamilton on Broadway still worth seeing? What do critics say?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/show/hamilton"
+      ],
+      "description": "- **The critical consensus remains exceptionally strong.** Broadway Scorecard aggregates 45 critic reviews into a **91/100** score: 39 “raves,” five positive reviews, and only one mixed review. Its summary calls the show a landmark achievement with “genre-defying” music and ambi",
+      "competitors": [
+        "New York Times",
+        "Time Out"
+      ],
+      "citedDomains": {
+        "apnews.com": 1,
+        "livingetc.com": 1,
+        "musicradar.com": 1,
+        "cinemablend.com": 2,
+        "gamesradar.com": 1,
+        "broadway.org": 1,
+        "hamiltonmusical.com": 1,
+        "broadway.com": 7,
+        "theatregold.com": 1,
+        "timeout.com": 1,
+        "broadwayscorecard.com": 1,
+        "yale.imodules.com": 1,
+        "en.wikipedia.org": 5,
+        "drjcourses.com": 1,
+        "culturaldaily.com": 1,
+        "rbtl.org": 1,
+        "reddit.com": 12,
+        "loyolaphoenix.com": 1,
+        "youtube.com": 2,
+        "davelefkowitzwriting.wordpress.com": 1,
+        "es.wikipedia.org": 1,
+        "time.com": 1,
+        "whathifi.com": 1
+      },
+      "cost": 0.0254,
+      "usage": {
+        "input": 21268,
+        "output": 961,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Is there a site that combines Broadway critic reviews into one score?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/research",
+        "https://broadwayscorecard.com/reviews",
+        "https://broadwayscorecard.com/partners",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/methodology",
+        "https://broadwayscorecard.com/submit-review",
+        "https://broadwayscorecard.com/terms",
+        "https://broadwayscorecard.com/best/musicals"
+      ],
+      "description": "fically want one score based on **professional Broadway critics**, start with **Broadway Scorecard**.",
+      "competitors": [],
+      "citedDomains": {
+        "broadwayscorecard.com": 10,
+        "github.com": 1,
+        "readerfunded.com": 1,
+        "show-score.com": 3,
+        "didtheylikeit.com": 2,
+        "reddit.com": 1
+      },
+      "cost": 0.0121,
+      "usage": {
+        "input": 8601,
+        "output": 333,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Is there a site that combines Broadway critic reviews into one score?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/research",
+        "https://broadwayscorecard.com/reviews",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/methodology",
+        "https://broadwayscorecard.com/submit-review",
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/best/plays",
+        "https://broadwayscorecard.com/audience-buzz"
+      ],
+      "description": "**Best choice:** Use **Broadway Scorecard** if you specifically want one critics-only numerical score, similar to Metacritic or Rotten Tomatoes.",
+      "competitors": [
+        "Show Score",
+        "Rotten Tomatoes"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 10,
+        "github.com": 1,
+        "readerfunded.com": 1,
+        "show-score.com": 2,
+        "didtheylikeit.com": 2,
+        "reddit.com": 1
+      },
+      "cost": 0.0122,
+      "usage": {
+        "input": 8675,
+        "output": 349,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Is Wicked on Broadway worth the ticket price? What did critics think?",
+      "run": 1,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "New York Times",
+        "Variety"
+      ],
+      "citedDomains": {
+        "apnews.com": 2,
+        "thedailybeast.com": 2,
+        "whathifi.com": 1,
+        "cinemablend.com": 1,
+        "broadway.com": 7,
+        "broadwaydirect.com": 1,
+        "lottery.broadwaydirect.com": 2,
+        "editorial.rottentomatoes.com": 1,
+        "show-score.com": 1,
+        "eyeonbroadway.com": 1,
+        "broadway.org": 1,
+        "en.wikipedia.org": 5,
+        "rbtl.org": 1,
+        "paramountgraphics.com.au": 1,
+        "rhetoricalreview.com": 1,
+        "locable-assets-production.s3.amazonaws.com": 1,
+        "reddit.com": 12,
+        "youtube.com": 2,
+        "ttabvue.uspto.gov": 1,
+        "thecharlottepost.com": 1,
+        "theguardian.com": 15,
+        "au.variety.com": 3
+      },
+      "cost": 0.0254,
+      "usage": {
+        "input": 20846,
+        "output": 1045,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Is Wicked on Broadway worth the ticket price? What did critics think?",
+      "run": 2,
+      "mentioned": false,
+      "mentionedInText": false,
+      "cited": false,
+      "position": null,
+      "ourUrls": [],
+      "description": null,
+      "competitors": [
+        "New York Times",
+        "Variety",
+        "Time Out",
+        "Broadway.com"
+      ],
+      "citedDomains": {
+        "apnews.com": 2,
+        "thedailybeast.com": 1,
+        "cinemablend.com": 1,
+        "broadway.com": 6,
+        "broadwaydirect.com": 1,
+        "broadwayworld.com": 3,
+        "wickedthemusical.com": 2,
+        "timeout.com": 3,
+        "lottery.broadwaydirect.com": 1,
+        "broadway.org": 2,
+        "paramountgraphics.com.au": 1,
+        "en.wikipedia.org": 4,
+        "rbtl.org": 1,
+        "rhetoricalreview.com": 1,
+        "etd.ohiolink.edu": 1,
+        "reddit.com": 10,
+        "tangercenter.com": 1,
+        "joallanpr.com": 1,
+        "youtube.com": 2
+      },
+      "cost": 0.0136,
+      "usage": {
+        "input": 12844,
+        "output": 874,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "What are the highest rated Broadway musicals this season?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season",
+        "https://broadwayscorecard.com/guides/best-broadway-musicals-2026",
+        "https://broadwayscorecard.com/critics/outlets/the-new-york-times",
+        "https://broadwayscorecard.com/critics/outlets/broadwayworld"
+      ],
+      "description": "These rankings come from Broadway Scorecard, which aggregates professional reviews from more than 400 outlets, including *The New York Times*, *Variety*, and *Vulture*. ()",
+      "competitors": [
+        "New York Times",
+        "Variety",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "apnews.com": 3,
+        "theweek.com": 1,
+        "axios.com": 1,
+        "thedailybeast.com": 1,
+        "musicradar.com": 1,
+        "broadwayscorecard.com": 6,
+        "broadwayworld.com": 3,
+        "broadway.com": 1,
+        "theatregold.com": 1,
+        "timeout.com": 1,
+        "media-aqhec5f3fffde3aw.z01.azurefd.net": 1,
+        "reddit.com": 12,
+        "schmigadoonbroadway.com": 1,
+        "static1.squarespace.com": 1,
+        "youtube.com": 2,
+        "heated-rivalry.com": 1,
+        "broadwaysd.com": 1,
+        "en.wikipedia.org": 5,
+        "tangercenter.com": 1
+      },
+      "cost": 0.0249,
+      "usage": {
+        "input": 20575,
+        "output": 685,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "What are the highest rated Broadway musicals this season?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/lists/critical-gold/2026-2027",
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season",
+        "https://broadwayscorecard.com/guides/best-broadway-musicals-2026",
+        "https://broadwayscorecard.com/critics/outlets/the-new-york-times"
+      ],
+      "description": "These figures come from Broadway Scorecard, which aggregates and weights reviews from more than 400 outlets, including *The New York Times*, *Variety*, and *Vulture*. ()",
+      "competitors": [
+        "New York Times",
+        "Variety",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "apnews.com": 5,
+        "theweek.com": 1,
+        "thedailybeast.com": 1,
+        "musicradar.com": 1,
+        "broadwayscorecard.com": 6,
+        "broadwayworld.com": 2,
+        "theatregold.com": 1,
+        "broadway.com": 3,
+        "reddit.com": 12,
+        "static1.squarespace.com": 1,
+        "youtube.com": 2,
+        "media-aqhec5f3fffde3aw.z01.azurefd.net": 1,
+        "heated-rivalry.com": 1,
+        "schmigadoonbroadway.com": 1,
+        "broadwayinhollywood.com": 1,
+        "broadwaysd.com": 1,
+        "en.wikipedia.org": 6
+      },
+      "cost": 0.0252,
+      "usage": {
+        "input": 21241,
+        "output": 761,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "What Broadway shows are closing soon that critics loved?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/guides/broadway-shows-closing-soon"
+      ],
+      "description": "The critic scores above come from Broadway Scorecard’s aggregate of professional reviews; closing dates are cross-checked against Broadway Direct’s current closing guide. ()",
+      "competitors": [],
+      "citedDomains": {
+        "broadwaydirect.com": 1,
+        "broadway101.com": 1,
+        "monorepo-sample2.nyt.net": 1,
+        "monorepo-sample1.nyt.net": 1,
+        "theatreview.app": 1,
+        "broadwayscorecard.com": 1,
+        "broadway.com": 1,
+        "broadwayleague.com": 2,
+        "newyorktheatreguide.com": 1,
+        "boston.broadway.com": 1,
+        "theatregold.com": 1,
+        "playbill.com": 1,
+        "en.wikipedia.org": 6,
+        "youtube.com": 2,
+        "tangercenter.com": 1,
+        "attherep.org": 1,
+        "encoremediagroup.com": 1,
+        "reddit.com": 12,
+        "berkeleyrep.org": 1,
+        "playhousesquare.org": 1,
+        "apnews.com": 2,
+        "theweek.com": 2,
+        "theatlantic.com": 1,
+        "thedailybeast.com": 1
+      },
+      "cost": 0.0254,
+      "usage": {
+        "input": 21100,
+        "output": 1006,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "What Broadway shows are closing soon that critics loved?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/guides/broadway-shows-closing-soon",
+        "https://broadwayscorecard.com/show/here-there-are-blueberries",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/show/two-strangers",
+        "https://broadwayscorecard.com/show/six"
+      ],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "gamesradar.com": 1,
+        "broadwaydirect.com": 1,
+        "monorepo-sample2.nyt.net": 1,
+        "monorepo-sample1.nyt.net": 1,
+        "broadwayscorecard.com": 8,
+        "theatreview.app": 1,
+        "newyorktheatreguide.com": 1,
+        "broadway.com": 3,
+        "broadwayworld.com": 3,
+        "playbill.com": 1,
+        "seatgeek.com": 2,
+        "broadwayleague.com": 2,
+        "youtube.com": 4,
+        "en.wikipedia.org": 14,
+        "tangercenter.com": 1,
+        "reddit.com": 28,
+        "broadwayinhollywood.com": 1,
+        "resources.finalsite.net": 1,
+        "roundhousetheatre.org": 1,
+        "playhousesquare.org": 1,
+        "apnews.com": 6,
+        "theweek.com": 4,
+        "thedailybeast.com": 2,
+        "broadway.org": 2,
+        "news.frombroadway.com": 2,
+        "ibdb.com": 2,
+        "greenroom.depaul.edu": 1,
+        "broadwaystars.com": 1,
+        "tickadoo.com": 1,
+        "home4.nyc.gov": 1,
+        "encorespotlight.com": 1,
+        "static1.squarespace.com": 2,
+        "encoremediagroup.com": 1,
+        "cbca.org": 1,
+        "de.wikipedia.org": 1,
+        "whowhatwear.com": 1,
+        "show-score.com": 1,
+        "theatregold.com": 1,
+        "broadwaynews.com": 1,
+        "newyorktheaterguide.com": 1,
+        "stageandstreetnyc.com": 1,
+        "bbmannpah.com": 1,
+        "overture.org": 1,
+        "eyretours.com": 1,
+        "los40.com": 1
+      },
+      "cost": 0.0372,
+      "usage": {
+        "input": 29828,
+        "output": 1021,
+        "searches": 3
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "What did critics say about The Lion King on Broadway?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/show/the-lion-king"
+      ],
+      "description": null,
+      "competitors": [
+        "New York Times"
+      ],
+      "citedDomains": {
+        "gamesradar.com": 1,
+        "musicradar.com": 1,
+        "broadway.com": 6,
+        "show-score.com": 2,
+        "broadwayworld.com": 3,
+        "media-aqhec5f3fffde3aw.z01.azurefd.net": 1,
+        "theatreinnewyork.com": 1,
+        "newyorktheatreguide.com": 1,
+        "broadwayscorecard.com": 1,
+        "didtheylikeit.com": 2,
+        "worldradiohistory.com": 1,
+        "investigacion.unirioja.es": 1,
+        "newspapers.swco.ttu.edu": 1,
+        "en.wikipedia.org": 6,
+        "youtube.com": 2,
+        "reddit.com": 12,
+        "theweek.com": 1,
+        "apnews.com": 1,
+        "theatlantic.com": 1,
+        "lemonde.fr": 1,
+        "time.com": 1,
+        "au.variety.com": 11,
+        "feature.variety.com": 1
+      },
+      "cost": 0.0246,
+      "usage": {
+        "input": 19134,
+        "output": 660,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "What did critics say about The Lion King on Broadway?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/show/the-lion-king"
+      ],
+      "description": null,
+      "competitors": [
+        "New York Times",
+        "Variety"
+      ],
+      "citedDomains": {
+        "apnews.com": 2,
+        "gamesradar.com": 1,
+        "thedailybeast.com": 1,
+        "musicradar.com": 1,
+        "broadway.com": 8,
+        "media-aqhec5f3fffde3aw.z01.azurefd.net": 1,
+        "broadwayscorecard.com": 1,
+        "newyorktheatreguide.com": 1,
+        "theatreinnewyork.com": 1,
+        "show-score.com": 1,
+        "en.wikipedia.org": 6,
+        "etd.ohiolink.edu": 1,
+        "worldradiohistory.com": 1,
+        "users.iit.demokritos.gr": 1,
+        "britishtheatreguide.info": 1,
+        "youtube.com": 2,
+        "reddit.com": 12,
+        "theweek.com": 1
+      },
+      "cost": 0.0251,
+      "usage": {
+        "input": 21131,
+        "output": 687,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "What do audiences think of Hamilton on Broadway?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/show/hamilton",
+        "https://broadwayscorecard.com/audience-buzz"
+      ],
+      "description": "Broadway Scorecard currently gives *Hamilton* an **A+ audience grade based on more than 28,000 audience reviews**. () Broadway.com’s customer-review page likewise features a large volume of highly positive verified-ticke",
+      "competitors": [
+        "Broadway.com",
+        "Show Score"
+      ],
+      "citedDomains": {
+        "apnews.com": 2,
+        "broadway.com": 7,
+        "broadwayscorecard.com": 3,
+        "rottentomatoes.com": 1,
+        "reddit.com": 12,
+        "centernyc.com": 2,
+        "broadwayworld.com": 1,
+        "show-score.com": 3,
+        "theatregold.com": 1,
+        "youtube.com": 2,
+        "kajabi-storefronts-production.s3.amazonaws.com": 1,
+        "michaelgiltz.com": 1,
+        "culturaldaily.com": 1,
+        "eloncdn.blob.core.windows.net": 2,
+        "en.wikipedia.org": 6,
+        "time.com": 2,
+        "cinemablend.com": 1,
+        "theatlantic.com": 1,
+        "tomsguide.com": 1
+      },
+      "cost": 0.0138,
+      "usage": {
+        "input": 12949,
+        "output": 972,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "What do audiences think of Hamilton on Broadway?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/show/hamilton",
+        "https://broadwayscorecard.com/audience-buzz"
+      ],
+      "description": "- **Broadway Scorecard:** **A+ audience grade**, ranking *Hamilton* first among the Broadway shows in its comparison—though several other shows also receive an A+. The score combines audience data from Show-Score, Mezzanine,",
+      "competitors": [
+        "Broadway.com",
+        "Show Score",
+        "Rotten Tomatoes"
+      ],
+      "citedDomains": {
+        "apnews.com": 2,
+        "cinemablend.com": 1,
+        "rottentomatoes.com": 2,
+        "broadwayscorecard.com": 2,
+        "broadway.com": 5,
+        "broadwayworld.com": 1,
+        "centernyc.com": 1,
+        "show-score.com": 2,
+        "theatregold.com": 1,
+        "reddit.com": 13,
+        "ftc.gov": 1,
+        "musicaltheatreeducators.org": 1,
+        "en.wikipedia.org": 6,
+        "youtube.com": 2,
+        "etheses.whiterose.ac.uk": 1,
+        "eloncdn.blob.core.windows.net": 1,
+        "open.bu.edu": 1,
+        "magazine.columbia.edu": 1
+      },
+      "cost": 0.0254,
+      "usage": {
+        "input": 21149,
+        "output": 969,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "What is the best Broadway review aggregator?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/reviews",
+        "https://broadwayscorecard.com/methodology"
+      ],
+      "description": "## Best overall: **Broadway Scorecard**",
+      "competitors": [
+        "Show Score"
+      ],
+      "citedDomains": {
+        "broadwayscorecard.com": 5,
+        "support.show-score.com": 1,
+        "broadwayworld.com": 3,
+        "github.com": 2,
+        "didtheylikeit.com": 3,
+        "show-score.com": 6,
+        "reddit.com": 12,
+        "s3.amazonaws.com": 1,
+        "en.wikipedia.org": 6,
+        "pocholiving.com": 1,
+        "catalogue.boekman.nl": 1,
+        "youtube.com": 2
+      },
+      "cost": 0.0134,
+      "usage": {
+        "input": 12892,
+        "output": 714,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "What is the best Broadway review aggregator?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/methodology"
+      ],
+      "description": "## Best overall: **Broadway Scorecard**",
+      "competitors": [
+        "BroadwayWorld",
+        "Broadway.com",
+        "Did They Like It",
+        "Show Score"
+      ],
+      "citedDomains": {
+        "apnews.com": 2,
+        "cinemablend.com": 2,
+        "musicradar.com": 1,
+        "thedailybeast.com": 1,
+        "broadwayscorecard.com": 6,
+        "broadwayworld.com": 5,
+        "didtheylikeit.com": 3,
+        "broadway.com": 2,
+        "github.com": 1,
+        "show-score.com": 5,
+        "reddit.com": 7,
+        "en.wikipedia.org": 2,
+        "catalogue.boekman.nl": 1,
+        "youtube.com": 1
+      },
+      "cost": 0.0136,
+      "usage": {
+        "input": 12921,
+        "output": 849,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Where can I find aggregated Broadway critic scores for current shows?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season",
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/audience-buzz",
+        "https://broadwayscorecard.com/guides/best-broadway-shows-2026",
+        "https://broadwayscorecard.com/methodology"
+      ],
+      "description": "**Recommendation:** Start with **Broadway Scorecard** for a single comparable critic score, then open the individual show page to see which reviews and outlets contributed to it. Scores for very new shows may be marked “TBD” or unstable until enough rev",
+      "competitors": [
+        "Rotten Tomatoes"
+      ],
+      "citedDomains": {
+        "cinemablend.com": 1,
+        "broadwayscorecard.com": 11,
+        "broadway.com": 2,
+        "github.com": 1,
+        "broadwayworld.com": 3,
+        "readerfunded.com": 1,
+        "show-score.com": 4,
+        "reddit.com": 12,
+        "en.wikipedia.org": 5,
+        "api.pageplace.de": 1,
+        "catalogue.boekman.nl": 1,
+        "youtube.com": 2,
+        "theweek.com": 1
+      },
+      "cost": 0.0134,
+      "usage": {
+        "input": 12988,
+        "output": 641,
+        "searches": 1
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Where can I find aggregated Broadway critic scores for current shows?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 3,
+      "ourUrls": [
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/audience-buzz",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season",
+        "https://broadwayscorecard.com/research/critic-audience-divergence-2026",
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/critics/outlets/did-they-like-it"
+      ],
+      "description": "**My recommendation:** Start with **Broadway Scorecard** for a single comparative critic score, then check **Did They Like It?** to see the underlying professional-review consensus. Use Show-Score or Broadway.com if you also want to know how audiences are ",
+      "competitors": [
+        "Rotten Tomatoes",
+        "Show Score",
+        "Did They Like It",
+        "Broadway.com"
+      ],
+      "citedDomains": {
+        "apnews.com": 3,
+        "broadwayscorecard.com": 8,
+        "broadway.com": 3,
+        "github.com": 1,
+        "broadwayworld.com": 3,
+        "show-score.com": 5,
+        "polyhelper.ai": 1,
+        "readerfunded.com": 1,
+        "reddit.com": 17,
+        "en.wikipedia.org": 4,
+        "api.pageplace.de": 1,
+        "media-aqhec5f3fffde3aw.z01.azurefd.net": 1,
+        "kocw.xcache.kinxcdn.com": 1,
+        "axios.com": 1,
+        "musicradar.com": 1,
+        "didtheylikeit.com": 6,
+        "timeout.com": 1,
+        "static1.squarespace.com": 1,
+        "youtube.com": 1,
+        "cdn1.creativecirclemedia.com": 1
+      },
+      "cost": 0.0247,
+      "usage": {
+        "input": 19249,
+        "output": 694,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Which Broadway show should I see on a first trip to New York? Go by critic reviews.",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/guides/best-broadway-shows",
+        "https://broadwayscorecard.com/browse/2026-2027-broadway-season",
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/critics"
+      ],
+      "description": "- **Highest current critic score:** Broadway Scorecard ranks it **No. 1 among all currently running Broadway productions**, with a **91/100** aggregate based on 45 reviews. It describes critics as nearly unanimous in praising the hip-hop score, ambitious s",
+      "competitors": [
+        "Time Out"
+      ],
+      "citedDomains": {
+        "apnews.com": 2,
+        "cinemablend.com": 1,
+        "tomsguide.com": 1,
+        "musicradar.com": 1,
+        "thedailybeast.com": 1,
+        "axios.com": 1,
+        "timeout.com": 2,
+        "broadwayscorecard.com": 4,
+        "broadway.com": 2,
+        "broadwayworld.com": 3,
+        "theatregold.com": 1,
+        "static1.squarespace.com": 3,
+        "schmigadoonbroadway.com": 2,
+        "reddit.com": 12,
+        "lasentinel.net": 1,
+        "youtube.com": 2,
+        "en.wikipedia.org": 1
+      },
+      "cost": 0.0253,
+      "usage": {
+        "input": 21285,
+        "output": 839,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Which Broadway show should I see on a first trip to New York? Go by critic reviews.",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/show/maybe-happy-ending",
+        "https://broadwayscorecard.com/critics/outlets/new-york-post",
+        "https://broadwayscorecard.com/critics/outlets/new-york-stage-review"
+      ],
+      "description": "its originality, design, emotional warmth, and unusually intimate storytelling; Broadway Scorecard gives it an aggregated critic score of **85/100**, describing it as one of Broadway’s most original and emotionally resonant musicals in years. () Time Out calls it “utterly enchanting” and a “bittersw",
+      "competitors": [
+        "Time Out"
+      ],
+      "citedDomains": {
+        "timeout.com": 10,
+        "theguardian.com": 6,
+        "digitalarchive.timeout.com": 4,
+        "apnews.com": 2,
+        "axios.com": 1,
+        "tomsguide.com": 1,
+        "cinemablend.com": 1,
+        "thedailybeast.com": 1,
+        "broadway.com": 2,
+        "broadwayscorecard.com": 5,
+        "news.frombroadway.com": 1,
+        "show-score.com": 1,
+        "theatregold.com": 1,
+        "nystagereview.com": 1,
+        "static1.squarespace.com": 2,
+        "youtube.com": 2,
+        "citytheatrical.com": 1,
+        "lightingandsoundamerica.com": 1,
+        "reddit.com": 12,
+        "oregonnews.uoregon.edu": 1,
+        "tangercenter.com": 1,
+        "en.wikipedia.org": 5,
+        "it.wikipedia.org": 1,
+        "theweek.com": 1
+      },
+      "cost": 0.0252,
+      "usage": {
+        "input": 21363,
+        "output": 798,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Which Broadway shows are critics and audiences disagreeing about?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/research/critic-audience-divergence-2026",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season",
+        "https://broadwayscorecard.com/audience-buzz",
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/guides/best-broadway-shows-2026"
+      ],
+      "description": "Using Broadway Scorecard’s current critic aggregates and audience grades, the clearest **critics–audience disagreements among shows currently playing** are:",
+      "competitors": [],
+      "citedDomains": {
+        "apnews.com": 3,
+        "thedailybeast.com": 1,
+        "axios.com": 1,
+        "theatlantic.com": 1,
+        "cinemablend.com": 1,
+        "broadwayscorecard.com": 7,
+        "broadway.com": 1,
+        "broadwayworld.com": 1,
+        "theatregold.com": 1,
+        "news.frombroadway.com": 2,
+        "reddit.com": 9,
+        "en.wikipedia.org": 3,
+        "media-aqhec5f3fffde3aw.z01.azurefd.net": 1,
+        "static1.squarespace.com": 1
+      },
+      "cost": 0.0253,
+      "usage": {
+        "input": 21047,
+        "output": 940,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Which Broadway shows are critics and audiences disagreeing about?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/browse/most-divisive-broadway-shows",
+        "https://broadwayscorecard.com/research/critic-audience-divergence-2026",
+        "https://broadwayscorecard.com/audience-buzz",
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/critics"
+      ],
+      "description": "Based on the latest available Broadway Scorecard data, the clearest **current critic–audience disagreements** are:",
+      "competitors": [
+        "Show Score"
+      ],
+      "citedDomains": {
+        "apnews.com": 3,
+        "thedailybeast.com": 2,
+        "theatlantic.com": 1,
+        "axios.com": 1,
+        "cinemablend.com": 1,
+        "broadwayscorecard.com": 6,
+        "broadway.com": 1,
+        "broadwayworld.com": 3,
+        "news.frombroadway.com": 2,
+        "reddit.com": 5,
+        "en.wikipedia.org": 2,
+        "youtube.com": 1,
+        "static1.squarespace.com": 2
+      },
+      "cost": 0.0253,
+      "usage": {
+        "input": 21070,
+        "output": 876,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Which Broadway shows are worth full price versus lottery or rush tickets?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/guides/best-broadway-shows",
+        "https://broadwayscorecard.com/box-office",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season"
+      ],
+      "description": null,
+      "competitors": [
+        "Time Out",
+        "Playbill"
+      ],
+      "citedDomains": {
+        "apnews.com": 1,
+        "cinemablend.com": 1,
+        "thedailybeast.com": 1,
+        "broadwayscorecard.com": 5,
+        "broadwaywrap.com": 1,
+        "timeout.com": 1,
+        "travelnewyork.com": 1,
+        "seatplan.com": 1,
+        "playbill.com": 2,
+        "broadwayworld.com": 1,
+        "blog.ticketmaster.com": 1,
+        "broadwayleague.com": 2,
+        "reddit.com": 12,
+        "img1.wsimg.com": 2,
+        "youtube.com": 2,
+        "static1.squarespace.com": 1,
+        "mountaintimes.info": 1,
+        "en.wikipedia.org": 6,
+        "theweek.com": 1
+      },
+      "cost": 0.0262,
+      "usage": {
+        "input": 21385,
+        "output": 1580,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Which Broadway shows are worth full price versus lottery or rush tickets?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/guides/best-broadway-shows-2026",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season"
+      ],
+      "description": "ous drama** | It is currently among the strongest-reviewed Broadway plays, with Broadway Scorecard listing it at 87—its “Critical Gold” tier—and Time Out giving it five stars. It is not a casual crowd-pleaser, but it is one of the shows I’d prioritize artistically. () |",
+      "competitors": [
+        "Time Out",
+        "Playbill",
+        "Broadway.com"
+      ],
+      "citedDomains": {
+        "apnews.com": 4,
+        "theweek.com": 1,
+        "marieclaire.com": 1,
+        "broadwayscorecard.com": 4,
+        "broadway.com": 4,
+        "playbill.com": 3,
+        "timeout.com": 2,
+        "broadwayworld.com": 1,
+        "youtube.com": 2,
+        "img1.wsimg.com": 1,
+        "static1.squarespace.com": 1,
+        "assets.playbill.com": 1,
+        "schmigadoonbroadway.com": 2,
+        "thebroadwaytheatre.org": 1,
+        "en.wikipedia.org": 5,
+        "reddit.com": 12
+      },
+      "cost": 0.0268,
+      "usage": {
+        "input": 21296,
+        "output": 2110,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Which Broadway shows have the best critic reviews right now?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 1,
+      "ourUrls": [
+        "https://broadwayscorecard.com/best/new-shows",
+        "https://broadwayscorecard.com/guides/best-broadway-shows-2026",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season",
+        "https://broadwayscorecard.com/critics/outlets/time-out-new-york",
+        "https://broadwayscorecard.com/critics/outlets/the-new-york-times"
+      ],
+      "description": "026**, these are the best-reviewed Broadway shows currently playing, based on **Broadway Scorecard’s aggregate critic ratings**. Its scores combine reviews from outlets including *The New York Times*, *Variety*, *Vulture*, and 400+ others, weighted by outlet and critic influence. ()",
+      "competitors": [
+        "New York Times",
+        "Variety",
+        "Vulture"
+      ],
+      "citedDomains": {
+        "apnews.com": 3,
+        "axios.com": 1,
+        "cinemablend.com": 1,
+        "thedailybeast.com": 1,
+        "theatlantic.com": 1,
+        "broadway.com": 1,
+        "broadwayscorecard.com": 8,
+        "broadwayworld.com": 2,
+        "timeout.com": 1,
+        "reddit.com": 9,
+        "media-aqhec5f3fffde3aw.z01.azurefd.net": 1,
+        "schmigadoonbroadway.com": 2,
+        "static1.squarespace.com": 1,
+        "youtube.com": 2,
+        "mietwarlop.com": 1,
+        "broadwaysd.com": 1
+      },
+      "cost": 0.025,
+      "usage": {
+        "input": 19127,
+        "output": 1010,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Which Broadway shows have the best critic reviews right now?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": true,
+      "cited": true,
+      "position": 2,
+      "ourUrls": [
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/guides/best-broadway-shows-2026",
+        "https://broadwayscorecard.com/best/musicals",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/browse/2025-2026-broadway-season",
+        "https://broadwayscorecard.com/lists/critical-gold/2026-2027"
+      ],
+      "description": "These rankings come primarily from **Broadway Scorecard**, which aggregates reviews from more than 400 outlets and gives greater weight to major publications such as *The New York Times*, *Vulture*, and *Variety*. BroadwayWorld’s separate ratings broadly su",
+      "competitors": [
+        "BroadwayWorld",
+        "New York Times",
+        "Vulture",
+        "Variety"
+      ],
+      "citedDomains": {
+        "apnews.com": 1,
+        "axios.com": 1,
+        "gamesradar.com": 1,
+        "theatlantic.com": 1,
+        "broadway.com": 1,
+        "broadwayscorecard.com": 6,
+        "broadwayworld.com": 1,
+        "theatregold.com": 2,
+        "show-score.com": 1,
+        "timeout.com": 1,
+        "reddit.com": 12,
+        "static1.squarespace.com": 2,
+        "schmigadoonbroadway.com": 1,
+        "mietwarlop.com": 1,
+        "heated-rivalry.com": 1,
+        "youtube.com": 2,
+        "scfta.org": 1
+      },
+      "cost": 0.0254,
+      "usage": {
+        "input": 21125,
+        "output": 1014,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Which new Broadway plays are worth seeing according to critics?",
+      "run": 1,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/browse/2026-2027-broadway-season",
+        "https://broadwayscorecard.com/critics/outlets/new-york-theatre-guide",
+        "https://broadwayscorecard.com/critics/outlets/vulture",
+        "https://broadwayscorecard.com/critics/outlets/new-york-stage-review",
+        "https://broadwayscorecard.com/critics/outlets/broadwayworld",
+        "https://broadwayscorecard.com/guides/best-broadway-plays",
+        "https://broadwayscorecard.com/critics/outlets/new-york-theater"
+      ],
+      "description": null,
+      "competitors": [],
+      "citedDomains": {
+        "apnews.com": 2,
+        "cinemablend.com": 1,
+        "axios.com": 1,
+        "theweek.com": 1,
+        "whowhatwear.com": 1,
+        "broadwayscorecard.com": 7,
+        "broadwayworld.com": 3,
+        "theatregold.com": 2,
+        "static1.squarespace.com": 3,
+        "schmigadoonbroadway.com": 1,
+        "wsj.com": 1,
+        "youtube.com": 2,
+        "cupresents.org": 1,
+        "en.wikipedia.org": 6,
+        "reddit.com": 5
+      },
+      "cost": 0.0256,
+      "usage": {
+        "input": 21259,
+        "output": 1123,
+        "searches": 2
+      }
+    },
+    {
+      "engine": "openai",
+      "prompt": "Which new Broadway plays are worth seeing according to critics?",
+      "run": 2,
+      "mentioned": true,
+      "mentionedInText": false,
+      "cited": true,
+      "position": null,
+      "ourUrls": [
+        "https://broadwayscorecard.com/browse/best-recent-plays",
+        "https://broadwayscorecard.com/browse/2026-2027-broadway-season",
+        "https://broadwayscorecard.com/critics/outlets/new-york-theatre-guide",
+        "https://broadwayscorecard.com/critics/outlets/new-york-stage-review",
+        "https://broadwayscorecard.com/",
+        "https://broadwayscorecard.com/critics",
+        "https://broadwayscorecard.com/best/new-shows",
+        "https://broadwayscorecard.com/best/plays",
+        "https://broadwayscorecard.com/show/paranormal-activity",
+        "https://broadwayscorecard.com/critics/outlets/new-york-post",
+        "https://broadwayscorecard.com/lists/critical-gold/2026-2027",
+        "https://broadwayscorecard.com/best/highest-rated",
+        "https://broadwayscorecard.com/critics/outlets/time-out-new-york",
+        "https://broadwayscorecard.com/critics/adam-feldman",
+        "https://broadwayscorecard.com/critics/laura-collins-hughes",
+        "https://broadwayscorecard.com/critics/roma-torre"
+      ],
+      "description": null,
+      "competitors": [
+        "New York Times"
+      ],
+      "citedDomains": {
+        "theatlantic.com": 1,
+        "apnews.com": 2,
+        "axios.com": 1,
+        "cinemablend.com": 1,
+        "whowhatwear.com": 1,
+        "theweek.com": 1,
+        "broadwayscorecard.com": 18,
+        "broadwayworld.com": 3,
+        "theatregold.com": 1,
+        "timeout.com": 1,
+        "news.frombroadway.com": 1,
+        "wsj.com": 1,
+        "static1.squarespace.com": 2,
+        "schmigadoonbroadway.com": 1,
+        "youtube.com": 2,
+        "cupresents.org": 1,
+        "gevatheatre.org": 1,
+        "en.wikipedia.org": 3,
+        "reddit.com": 3
+      },
+      "cost": 0.0254,
+      "usage": {
+        "input": 21239,
+        "output": 997,
+        "searches": 2
+      }
+    }
+  ]
+}

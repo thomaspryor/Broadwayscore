@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-7257-b",
+  "planId": "22d36ccb-17aa-4f3d-96ca-53da003c433a",
+  "status": "partial",
+  "createdAt": "2026-11-10T04:26:36.271Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7257: retire four stale manual rows in reviews.json so correct pipeline scores show on the Boston hub",
+    "steps": [
+      "BRO-7257: remove four stale hand-entered rows that block their pipeline twins and sit 11 to 21 points under the dual-model reading (Arts Fuse Wonder Robert Israel 40 should be Martin Copenhaver 71; Boston.com Paranormal Genzer 68 vs 81; BroadwayWorld Paranormal Reedy 80 vs 87; Metro Wonder Baldwin 74 vs 77). The next rebuild restores the pipeline rows."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "BRO-7257: remove four stale hand-entered rows that block their pipeline twins and sit 11 to 21 points under the dual-model reading (Arts Fuse Wonder Robert Israel 40 should be Martin Copenhaver 71; Boston.com Paranormal Genzer 68 vs 81; BroadwayWorld Paranormal Reedy 80 vs 87; Metro Wonder Baldwin 74 vs 77). The next rebuild restores the pipeline rows.",
+        "script": "retire-stale-manual-rows.js",
+        "args": "--row=wonder-regional-2026:artsfuse:Robert_Israel:40 --row=paranormal-activity-boston-regional-2026:boston-com:Samantha_Genzer:68 --row=paranormal-activity-boston-regional-2026:broadwayworld:R._Scott_Reedy:80 --row=wonder-regional-2026:metrmag:Kevin_T._Baldwin:74 --apply --expect=4"
+      }
+    ]
+  },
+  "executedAt": "2026-11-10T05:28:51.499Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script retire-stale-manual-rows.js failed: Command failed: node scripts/retire-stale-manual-rows.js --row=wonder-regional-2026:artsfuse:Robert_Israel:40 --row=paranormal-activity-boston-regional-2026:boston-com:Samantha_Genzer:68 --row=paranormal-activity-boston-regional-2026:broadwayworld:R._Scott_Reedy:80 --row=wonder-regional-2026:metrmag:Kevin_T._Baldwin:74 --apply --expect=4"
+    }
+  ],
+  "executedIn": "ci"
+}

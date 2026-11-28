@@ -1,0 +1,76 @@
+{
+  "issueNumber": "bro-6481-5",
+  "planId": "fc7de6d4-30d8-4db2-8d5b-4ed2b8f8f03d",
+  "status": "applied",
+  "createdAt": "2026-10-28T23:24:07.253Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6481 Titanique 2026: date and unflag the reingested TheWrap Broadway review, delete the stale 2022 off-Broadway duplicate",
+    "steps": [
+      "BRO-6481: Set publish date from page datePublished 2026-04-13T13:56:33Z (opened 2026-04-12); null date caused the anticipatory pre-opening flag",
+      "BRO-6481: Manual clear: this is the 2026 Broadway review, published the day after opening",
+      "BRO-6481: Clear anticipatory_pre_opening_post flag set while publishDate was null",
+      "BRO-6481: Leftover 2022 off-Broadway TheWrap URL with 0 chars, already flagged; the 2026 review is thewrap--robert-hofler.json"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/thewrap--robert-hofler.json",
+        "field": "publishDate",
+        "newValue": "2026-04-13",
+        "description": "BRO-6481: Set publish date from page datePublished 2026-04-13T13:56:33Z (opened 2026-04-12); null date caused the anticipatory pre-opening flag",
+        "oldValue": null
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/thewrap--robert-hofler.json",
+        "field": "wrongProductionManualClear",
+        "newValue": true,
+        "description": "BRO-6481: Manual clear: this is the 2026 Broadway review, published the day after opening",
+        "oldValue": null
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/thewrap--robert-hofler.json",
+        "field": "wrongProduction",
+        "newValue": false,
+        "description": "BRO-6481: Clear anticipatory_pre_opening_post flag set while publishDate was null",
+        "oldValue": true
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "titanique-2026/thewrap--unknown.json",
+        "description": "BRO-6481: Leftover 2022 off-Broadway TheWrap URL with 0 chars, already flagged; the 2026 review is thewrap--robert-hofler.json"
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T23:45:47.819Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/thewrap--robert-hofler.json publishDate: null -> \"2026-04-13\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/thewrap--robert-hofler.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/thewrap--robert-hofler.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted titanique-2026/thewrap--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
+}

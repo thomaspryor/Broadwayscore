@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "description": "Fixed test set for seat-research eval harness. Used to measure fabrication + support quality across prompt versions.",
+    "purpose": "Run research prompt against this set → run adjudicator → aggregate → compare prompt versions over time.",
+    "last_updated": "2026-04-17"
+  },
+  "selection_criteria": [
+    "Include 1 already-validated theater (ground-truthy baseline)",
+    "Include mixed difficulty: large house with quirks, small house with few hazards, mid-size typical",
+    "All currently have live productions (ensures AVFMS has recent user reports)",
+    "Mix of operators (Shubert / Jujamcyn / Nederlander / ATG) — catches operator-specific bias"
+  ],
+  "theaters": [
+    {
+      "display_name": "Majestic Theatre",
+      "slug": "majestic-theatre",
+      "capacity": 1645,
+      "operator": "Shubert",
+      "notes": "Already-live baseline. Large house. Mezz overhang + side-angle quirks. Adjudicator caught 4 UNSUPPORTED claims on first pass; now fixed to 5 sections.",
+      "difficulty": "high",
+      "baseline_audit": "reference — first research on 2026-04-16"
+    },
+    {
+      "display_name": "Music Box Theatre",
+      "slug": "music-box-theatre",
+      "capacity": 1023,
+      "operator": "Shubert",
+      "notes": "Already-live baseline. Small intimate house. Acoustically strong. Fewer hazards. Re-verdicted Orch Front from solid→skip after adjudicator.",
+      "difficulty": "low",
+      "baseline_audit": "reference — first research on 2026-04-16"
+    },
+    {
+      "display_name": "Gershwin Theatre",
+      "slug": "gershwin-theatre",
+      "capacity": 1933,
+      "operator": "Nederlander",
+      "notes": "Largest Broadway house. Balcony is infamous — nosebleed with distance/resolution issues. Currently hosting Wicked. Rich AVFMS data expected.",
+      "difficulty": "high",
+      "baseline_audit": "new — eval target"
+    },
+    {
+      "display_name": "Hayes Theater",
+      "slug": "hayes-theater",
+      "capacity": 597,
+      "operator": "Second Stage",
+      "notes": "Smallest Broadway theater. Mostly plays. Modern renovation (2018). Few known hazards — tests whether the methodology handles sparse-evidence cases without fabricating.",
+      "difficulty": "medium",
+      "baseline_audit": "new — eval target"
+    },
+    {
+      "display_name": "Imperial Theatre",
+      "slug": "imperial-theatre",
+      "capacity": 1417,
+      "operator": "Shubert",
+      "notes": "Mid-size, typical. Known for Les Mis residencies. Balanced difficulty — tests the prompt's ability to produce 'solid' verdicts for sections without inventing quirks.",
+      "difficulty": "medium",
+      "baseline_audit": "new — eval target"
+    }
+  ]
+}

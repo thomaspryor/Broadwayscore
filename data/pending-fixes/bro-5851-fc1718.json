@@ -1,0 +1,292 @@
+{
+  "issueNumber": "bro-5851-fc1718",
+  "planId": "cce7d828-6eb8-46d9-8b41-54bd3e6cbce4",
+  "status": "applied",
+  "createdAt": "2026-10-22T07:54:42.955Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5851: fix the 2017-18 West End historical fact-check errors (press nights stored as first previews, stale closing dates, two synopses) and the season's three remaining WhatsOnStage first-performance openings",
+    "steps": [
+      "shows.json: fanny-and-alexander-west-end-2018.previewsStartDate",
+      "shows.json: fanny-and-alexander-west-end-2018.openingDate",
+      "shows.json: fanny-and-alexander-west-end-2018.closingDate",
+      "shows.json: young-frankenstein-west-end-2017.closingDate",
+      "shows.json: the-jungle-west-end-2018.openingDate",
+      "shows.json: killer-joe-west-end-2018.openingDate",
+      "shows.json: consent-west-end-2018.openingDate",
+      "shows.json: imperium-the-cicero-plays-west-end-2018.openingDate",
+      "shows.json: knights-of-the-rose-west-end-2018.openingDate",
+      "shows.json: bat-out-of-hell-west-end-2018.closingDate",
+      "shows.json: strictly-ballroom-west-end-2018.closingDate",
+      "shows.json: strictly-ballroom-west-end-2018.synopsis",
+      "shows.json: the-king-and-i-west-end-2018.closingDate",
+      "shows.json: long-days-journey-into-night-west-end-2018.closingDate",
+      "shows.json: tina-the-tina-turner-musical-west-end-2018.synopsis",
+      "shows.json: translations-west-end-2018.openingDate",
+      "shows.json: pressure-west-end-2018.openingDate",
+      "shows.json: the-glenn-miller-story-west-end-2018.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fanny-and-alexander-west-end-2018",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2018-02-21",
+        "description": "shows.json: fanny-and-alexander-west-end-2018.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fanny-and-alexander-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-02-18",
+        "newValue": "2018-03-01",
+        "description": "shows.json: fanny-and-alexander-west-end-2018.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fanny-and-alexander-west-end-2018",
+        "field": "closingDate",
+        "oldValue": "2018-04-17",
+        "newValue": "2018-04-14",
+        "description": "shows.json: fanny-and-alexander-west-end-2018.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "young-frankenstein-west-end-2017",
+        "field": "closingDate",
+        "oldValue": "2018-09-29",
+        "newValue": "2018-08-25",
+        "description": "shows.json: young-frankenstein-west-end-2017.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-jungle-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-06-16",
+        "newValue": "2018-07-05",
+        "description": "shows.json: the-jungle-west-end-2018.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "killer-joe-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-05-18",
+        "newValue": "2018-06-04",
+        "description": "shows.json: killer-joe-west-end-2018.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "consent-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-05-18",
+        "newValue": "2018-05-29",
+        "description": "shows.json: consent-west-end-2018.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "imperium-the-cicero-plays-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-06-14",
+        "newValue": "2018-06-30",
+        "description": "shows.json: imperium-the-cicero-plays-west-end-2018.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "knights-of-the-rose-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-06-29",
+        "newValue": "2018-07-05",
+        "description": "shows.json: knights-of-the-rose-west-end-2018.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bat-out-of-hell-west-end-2018",
+        "field": "closingDate",
+        "oldValue": "2018-10-27",
+        "newValue": "2019-01-05",
+        "description": "shows.json: bat-out-of-hell-west-end-2018.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "strictly-ballroom-west-end-2018",
+        "field": "closingDate",
+        "oldValue": "2018-10-20",
+        "newValue": "2018-10-27",
+        "description": "shows.json: strictly-ballroom-west-end-2018.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "strictly-ballroom-west-end-2018",
+        "field": "synopsis",
+        "oldValue": "Matt Cardle joins Jonny Labey and Zizi Strallen in the cast of Strictly Ballroom The Musical at the Piccadilly Theatre. Strictly Ballroom tells the story of Scott Hastings – an arrogant young ballroom champion who gets in trouble for daring to dance his own steps. When he ends up dancing with a beginner, Fran, together they find the courage to defy tradition with moves that aren't \"strictly ballroom\"... The show features over 30 classic hits including Time After Time, Let's Dance, I'm So Excited, Perhaps Perhaps Perhaps, I Wanna Dance With Somebody, Sway (Quien Sera), Mambo No.",
+        "newValue": "Strictly Ballroom tells the story of Scott Hastings, an arrogant young ballroom champion who gets into trouble for daring to dance his own steps. When he ends up partnering Fran, a beginner, the two find the courage to defy tradition with moves that are not \"strictly ballroom\". Drew McOnie's production of Baz Luhrmann's musical, based on his 1992 film, tells the story through pop hits including Time After Time, Let's Dance and I Wanna Dance With Somebody.",
+        "description": "shows.json: strictly-ballroom-west-end-2018.synopsis"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-king-and-i-west-end-2018",
+        "field": "closingDate",
+        "oldValue": "2018-07-29",
+        "newValue": "2018-09-29",
+        "description": "shows.json: the-king-and-i-west-end-2018.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "long-days-journey-into-night-west-end-2018",
+        "field": "closingDate",
+        "oldValue": "2018-04-07",
+        "newValue": "2018-04-08",
+        "description": "shows.json: long-days-journey-into-night-west-end-2018.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tina-the-tina-turner-musical-west-end-2018",
+        "field": "synopsis",
+        "oldValue": "Tina Turner recounts her remarkable journey from a impoverished childhood in rural Mississippi through her rise to become the \"Queen of Rock and Roll.\" The musical traces her escape from an abusive relationship with Ike Turner, her reinvention as a solo artist, and her triumphant comeback to global stardom, celebrating her resilience, talent, and transformation into an iconic performer.",
+        "newValue": "Tina Turner recounts her remarkable journey from an impoverished childhood in Nutbush, Tennessee through her rise to become the \"Queen of Rock and Roll.\" The musical traces her escape from an abusive relationship with Ike Turner, her reinvention as a solo artist, and her triumphant comeback to global stardom, celebrating her resilience, talent, and transformation into an iconic performer.",
+        "description": "shows.json: tina-the-tina-turner-musical-west-end-2018.synopsis"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "translations-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-05-22",
+        "newValue": "2018-05-30",
+        "description": "shows.json: translations-west-end-2018.openingDate 2018-05-22 -> 2018-05-30 (https://www.londontheatre.co.uk/theatre-news/news/cast-joining-colin-morgan-in-translations-at-national-theatre-announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pressure-west-end-2018",
+        "field": "openingDate",
+        "oldValue": "2018-06-06",
+        "newValue": "2018-06-12",
+        "description": "shows.json: pressure-west-end-2018.openingDate 2018-06-06 -> 2018-06-12 (https://seatplan.com/london/pressure-tickets/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-glenn-miller-story-west-end-2018",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: the-glenn-miller-story-west-end-2018.openingDateSource whatsonstage-first-performance -> first-performance-no-press-night-found (no press night found after a sourced search; https://officiallondontheatre.com/show/glenn-miller-show-111409139/ lists 6 Jul to 18 Aug 2018 at the Coliseum, no press night)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T10:59:34.573Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for fanny-and-alexander-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for fanny-and-alexander-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for fanny-and-alexander-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for young-frankenstein-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-jungle-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for killer-joe-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for consent-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for imperium-the-cicero-plays-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for knights-of-the-rose-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for bat-out-of-hell-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for strictly-ballroom-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for strictly-ballroom-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-king-and-i-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for long-days-journey-into-night-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for tina-the-tina-turner-musical-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for translations-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for pressure-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-glenn-miller-story-west-end-2018"
+    }
+  ],
+  "executedIn": "ci"
+}

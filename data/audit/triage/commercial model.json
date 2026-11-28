@@ -1,0 +1,25 @@
+{
+  "system": "commercial model",
+  "status": "warn",
+  "lastChecked": "2026-11-28T16:04:54.888Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Commercial model: stored vs fresh run",
+      "status": "warn",
+      "message": "1 of 483 records differ from a fresh run (1 same-day, 0 drift, 0 method): oh-mary [same-day] run 2026-11-28 stored 1148.2%, same inputs give 1157%"
+    },
+    {
+      "name": "Commercial model: Boring Waltz fit",
+      "status": "pass",
+      "message": "overall 38% inside (n=90); <0.9x cost too few rows; 0.9-1.3x 48% inside (n=67); >=1.3x 10% inside (n=20); his posts to 2026-11-17, trailing 84 days"
+    },
+    {
+      "name": "Commercial model: running-show bar revisit",
+      "status": "pass",
+      "message": "Running-show bars stay off: plays 1/2 inside, musicals 5/8 (needs 10+ rows and 80%+ each)"
+    }
+  ]
+}

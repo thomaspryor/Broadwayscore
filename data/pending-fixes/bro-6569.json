@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6569",
+  "planId": "0731d4bf-c9df-498d-8562-6d6c670719cc",
+  "status": "applied",
+  "createdAt": "2026-10-30T04:05:08.120Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6569: resolve London review urls held by two files or two different-title shows (auto-pinned duplicates, wrong-production copies, wrong urls, non-review pages) (part 1 of 3)",
+    "steps": [
+      "BRO-6569: empty stub auto-pinned to Dave Fargnoli's The Stage review (held in thestage--dave-fargnoli.json)",
+      "BRO-6569: empty stub (byline Stuart King) duplicating london-box-office--stuart-king.json",
+      "BRO-6569: empty stub duplicating thestage--dave-fargnoli.json",
+      "BRO-6569: text and page byline are Kirsten Grant's (held in telegraph--kirsten-grant.json); score was counted under Benson",
+      "BRO-6569: third copy of the LBO review-roundup page",
+      "BRO-6569: second copy of the LBO review-roundup page",
+      "BRO-6569: empty 2020 ALW Cinderella copy on the unopened 2026 Palladium run",
+      "BRO-6569: empty 2020 ALW Cinderella copy (byline Balfour-Oatts)",
+      "BRO-6569: empty copy of the 2021 Gillian Lynne review held on cinderella-west-end-2021",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2023 Prince Edward review",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2025 Olivier review",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); text is a Lehman Trilogy review",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2025 Olivier review",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2019 Piccadilly url on an unopened 2026 run",
+      "BRO-6569: text is Saville's 2026 Dracula review (held on dracula-west-end-2025)",
+      "BRO-6569: 2018 Girls and Boys review (held on girls-and-boys-west-end-2018)",
+      "BRO-6569: empty copy of the 2019 Top Girls review (held on top-girls-west-end-2019)",
+      "BRO-6569: second copy of a url another file holds with the same review (whatsonstage--sarah-crompton.json)",
+      "BRO-6569: empty stub, byline is the lead actor",
+      "BRO-6569: second copy of a url another file holds with the same review (standard--nick-curtis.json)",
+      "BRO-6569: empty copy of the 2026 Radio City concert review (held on les-miserables-arena-concert-spectacular-off-broadway-2026)",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2019 Prince Edward review held on mary-poppins-west-end-2019",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2023 Soho Place review held on medea-west-end-2023",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2023 Soho Place review held on medea-west-end-2023",
+      "BRO-6569: second copy of a url another file holds with the same review (standard--nick-curtis.json)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
+        "description": "BRO-6569: empty stub auto-pinned to Dave Fargnoli's The Stage review (held in thestage--dave-fargnoli.json)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "abigails-party-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+        "description": "BRO-6569: empty stub (byline Stuart King) duplicating london-box-office--stuart-king.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "an-oak-tree-off-west-end-2026/thestage--unknown.json",
+        "description": "BRO-6569: empty stub duplicating thestage--dave-fargnoli.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+        "description": "BRO-6569: text and page byline are Kirsten Grant's (held in telegraph--kirsten-grant.json); score was counted under Benson"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cats-west-end-2026/london-box-office--daniel-perks.json",
+        "description": "BRO-6569: third copy of the LBO review-roundup page"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cats-west-end-2026/london-box-office--phil-willmott.json",
+        "description": "BRO-6569: second copy of the LBO review-roundup page"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cinderella-west-end-2026/london-box-office--josephine-balfour-oatts.json",
+        "description": "BRO-6569: empty 2020 ALW Cinderella copy on the unopened 2026 Palladium run"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cinderella-west-end-2026/london-box-office--marian-pashley.json",
+        "description": "BRO-6569: empty 2020 ALW Cinderella copy (byline Balfour-Oatts)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cinderella-west-end-2026/london-box-office--stuart-king.json",
+        "description": "BRO-6569: empty copy of the 2021 Gillian Lynne review held on cinderella-west-end-2021"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "dear-england-new-wimbledon-theatre-west-end-2026/london-box-office--stuart-king.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2023 Prince Edward review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "dear-england-new-wimbledon-theatre-west-end-2026/standard--nick-curtis.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2025 Olivier review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "dear-england-new-wimbledon-theatre-west-end-2026/telegraph--dominic-cavendish.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); text is a Lehman Trilogy review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "dear-england-new-wimbledon-theatre-west-end-2026/timeout-london--andrzej-lukowski.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2025 Olivier review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-west-end-2026/london-box-office--phil-willmott.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2019 Piccadilly url on an unopened 2026 run"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "wicked-west-end-2021/independent--alice-saville.json",
+        "description": "BRO-6569: text is Saville's 2026 Dracula review (held on dracula-west-end-2025)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "girls-off-west-end-2026/london-box-office--david-scotland.json",
+        "description": "BRO-6569: 2018 Girls and Boys review (held on girls-and-boys-west-end-2018)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "girls-off-west-end-2026/london-box-office--justin-murray.json",
+        "description": "BRO-6569: empty copy of the 2019 Top Girls review (held on top-girls-west-end-2019)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
+        "description": "BRO-6569: second copy of a url another file holds with the same review (whatsonstage--sarah-crompton.json)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "inter-alia-west-end-2026/standard--rosamund-pike.json",
+        "description": "BRO-6569: empty stub, byline is the lead actor"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "inter-alia-west-end-2026/standard--unknown.json",
+        "description": "BRO-6569: second copy of a url another file holds with the same review (standard--nick-curtis.json)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "les-miserables-west-end-2021/nysr--unknown.json",
+        "description": "BRO-6569: empty copy of the 2026 Radio City concert review (held on les-miserables-arena-concert-spectacular-off-broadway-2026)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "mary-poppins-2006/guardian--michael-billington.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2019 Prince Edward review held on mary-poppins-west-end-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "medea-2002/times-uk--clive-davis.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2023 Soho Place review held on medea-west-end-2023"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "medea-off-broadway-2026/times-uk--clive-davis.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2023 Soho Place review held on medea-west-end-2023"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "my-neighbour-totoro-west-end-2025/standard--unknown.json",
+        "description": "BRO-6569: second copy of a url another file holds with the same review (standard--nick-curtis.json)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T05:00:23.784Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted abigails-party-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted an-oak-tree-off-west-end-2026/thestage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cats-west-end-2026/london-box-office--daniel-perks.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cats-west-end-2026/london-box-office--phil-willmott.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cinderella-west-end-2026/london-box-office--josephine-balfour-oatts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cinderella-west-end-2026/london-box-office--marian-pashley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cinderella-west-end-2026/london-box-office--stuart-king.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dear-england-new-wimbledon-theatre-west-end-2026/london-box-office--stuart-king.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dear-england-new-wimbledon-theatre-west-end-2026/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dear-england-new-wimbledon-theatre-west-end-2026/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dear-england-new-wimbledon-theatre-west-end-2026/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-west-end-2026/london-box-office--phil-willmott.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted wicked-west-end-2021/independent--alice-saville.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted girls-off-west-end-2026/london-box-office--david-scotland.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted girls-off-west-end-2026/london-box-office--justin-murray.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted golden-boy-off-west-end-2026/whatsonstage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted inter-alia-west-end-2026/standard--rosamund-pike.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted inter-alia-west-end-2026/standard--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted les-miserables-west-end-2021/nysr--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted mary-poppins-2006/guardian--michael-billington.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted medea-2002/times-uk--clive-davis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted medea-off-broadway-2026/times-uk--clive-davis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted my-neighbour-totoro-west-end-2025/standard--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
+}

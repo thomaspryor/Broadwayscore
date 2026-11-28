@@ -1,0 +1,217 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { childWaitDecision, parentWatchDecision, firstWatchAdvisories, decideAll } = require('./child-session-wait-guard.js');
+const { ccr: INIT_FAILED } = require('./fixtures/bro-7377-init-failed/get-session.json');
+
+const CHILD_PROMPT = 'BRO-6154: fix probe\nclaim via linear-session.js\nBUDGET: 6h\n';
+const BRO_6154_CLOSING = [
+  'The probe workflow is running.',
+  'Still running: the test run is in progress.',
+  "KEEP OPEN — the test run is in progress; once it finishes I extend the fix...",
+].join('\n');
+const bash = (idx, command, extra = {}) => ({ idx, name: 'Bash', input: { command, ...extra }, ok: true });
+
+// Real shape of the BRO-6154 turn: an earlier background poll (finished, no
+// notice), then the session fires the workflow itself and ends its turn.
+const bro6154 = {
+  firstPrompt: CHILD_PROMPT,
+  env: {},
+  closing: BRO_6154_CLOSING,
+  tools: [
+    bash(3, 'node scripts/lib/wait-for-land.js land/x 60', { run_in_background: true }),
+    bash(9, 'gh workflow run we-historical-tr-probe.yml'),
+  ],
+};
+
+test('replay of the BRO-6154 final turn is blocked', () => {
+  assert.equal(childWaitDecision(bro6154).block, true);
+});
+test('background poll armed after the dispatch passes', () => {
+  const t = { ...bro6154, tools: [...bro6154.tools, bash(10, 'gh run view 1 --json status', { run_in_background: true })] };
+  assert.equal(childWaitDecision(t).block, false);
+});
+test('a finished poll (completion notice) does not count', () => {
+  const poll = { ...bash(10, 'poll', { run_in_background: true }), taskId: 'abc' };
+  const t = { ...bro6154, tools: [...bro6154.tools, poll], done: ['abc'] };
+  assert.equal(childWaitDecision(t).block, true);
+});
+test('report-back to @parent is NOT a wake (nobody wakes the child)', () => {
+  const msg = { idx: 11, name: 'mcp__claude-code-remote__send_message', input: { session_id: '@parent', message: 'waiting' }, ok: true };
+  assert.equal(childWaitDecision({ ...bro6154, tools: [...bro6154.tools, msg] }).block, true);
+});
+test('unrelated background command is not a wake', () => {
+  assert.equal(childWaitDecision({ ...bro6154, tools: [...bro6154.tools, bash(10, 'sleep 5', { run_in_background: true })] }).block, true);
+});
+test('one background command that dispatches and polls passes', () => {
+  const t = { ...bro6154, tools: [bash(9, 'gh workflow run we-historical-tr-probe.yml && gh run watch -i 60', { run_in_background: true })] };
+  assert.equal(childWaitDecision(t).block, false);
+});
+test('gh run rerun / git -C push reset the baseline', () => {
+  const old = bash(3, 'gh run view 1', { run_in_background: true });
+  for (const cmd of ['gh run rerun 123', 'git -C /x push origin land/y']) {
+    assert.equal(childWaitDecision({ ...bro6154, tools: [old, bash(9, cmd)] }).block, true, cmd);
+  }
+});
+test('wording: awaiting / in flight block; finished or nothing running does not', () => {
+  for (const c of ['KEEP OPEN — awaiting CI completion', 'KEEP OPEN — the workflow is in flight']) {
+    assert.equal(childWaitDecision({ ...bro6154, closing: c }).block, true, c);
+  }
+  assert.equal(childWaitDecision({ ...bro6154, closing: 'Still running: nothing, the land run finished green.\nKEEP OPEN — the owner may reply' }).block, false);
+  assert.equal(childWaitDecision({ ...bro6154, closing: 'No tests are running.\nKEEP OPEN — waiting on the parent' }).block, false);
+});
+test('human session is never blocked', () => {
+  assert.equal(childWaitDecision({ ...bro6154, firstPrompt: 'fix the probe' }).block, false);
+});
+test('parent id in env marks a child', () => {
+  assert.equal(childWaitDecision({ ...bro6154, firstPrompt: 'x', env: { CLAUDE_PARENT_SESSION_ID: 's' } }).block, true);
+});
+test('KEEP OPEN not about CI, or other verdicts, pass', () => {
+  assert.equal(childWaitDecision({ ...bro6154, closing: 'KEEP OPEN — waiting on the owner reply' }).block, false);
+  assert.equal(childWaitDecision({ ...bro6154, closing: 'SAFE TO ARCHIVE — done' }).block, false);
+});
+
+// Replay the real failed-init child's ID and creation time. Only the parent's
+// watch duration and observation time vary; the fixture itself stays intact.
+const createdAt = Date.parse(INIT_FAILED.created_at);
+const freshParent = {
+  closing: 'KEEP OPEN: waiting on the child session',
+  liveChildren: [`session ${INIT_FAILED.id} "trial child"`],
+  childCreatedAt: { [INIT_FAILED.id]: createdAt },
+  now: createdAt + 3 * 60000,
+};
+const firstWatch = (flags = '--minutes 25', id = INIT_FAILED.id) => ({
+  ...bash(2, `node scripts/lib/child-idle-watch.js watch --session ${id} ${flags}`, { run_in_background: true }),
+  taskId: 'first-watch', startedAt: createdAt,
+});
+
+test('BRO-7856: CHILDWATCH distinguishes the parent session from child waits', () => {
+  for (const closing of [
+    'KEEP OPEN: this session waits for the IAWL reviews... the page watch wakes it',
+    'KEEP OPEN: the session waits for reviews',
+    'KEEP OPEN: waiting for a report back from the page watch',
+  ]) assert.equal(parentWatchDecision({ ...freshParent, closing }).block, false, closing);
+  for (const closing of [
+    'KEEP OPEN: waiting for the child worker',
+    'KEEP OPEN: waiting for the helper',
+    `KEEP OPEN: waiting for ${INIT_FAILED.id}`,
+    'KEEP OPEN: this session waits for the child',
+  ]) assert.equal(parentWatchDecision({ ...freshParent, closing }).block, true, closing);
+});
+
+test('BRO-7378: 25-minute first watch advises three minutes; three-minute watch passes silently', () => {
+  const slow = parentWatchDecision({ ...freshParent, tools: [firstWatch()] });
+  assert.equal(slow.block, false, 'advisory only');
+  assert.equal(slow.advisories?.length, 1);
+  assert.match(slow.advisories[0], /--minutes 3\b/);
+  assert.ok(slow.advisories[0].includes(INIT_FAILED.id));
+  assert.equal(parentWatchDecision({ ...freshParent, tools: [firstWatch('--minutes 3')] }).advisories, undefined);
+});
+
+test('BRO-7378: pure first-watch check handles defaults, quotes, equals and the six-minute boundary', () => {
+  for (const [flags, count] of [['', 1], ['--minutes=25', 1], ['--minutes "25"', 1],
+    ["--minutes='3'", 0], ['--minutes 6', 0], ['--minutes 6.1', 1], ['--minutes invalid', 0]]) {
+    const advisories = firstWatchAdvisories({ ids: [INIT_FAILED.id], childCreatedAt: freshParent.childCreatedAt,
+      now: freshParent.now, watches: [firstWatch(flags, `"${INIT_FAILED.id}"`)] });
+    assert.equal(advisories.length, count, flags);
+  }
+});
+
+test('BRO-7378: only children known to be less than ten minutes old get an advisory', () => {
+  for (const [age, count] of [[0, 1], [9.99, 1], [10, 0], [25, 0], [-1, 0]]) {
+    const r = parentWatchDecision({ ...freshParent, now: createdAt + age * 60000, tools: [firstWatch()] });
+    assert.equal(r.advisories?.length || 0, count, `age ${age}`);
+  }
+  for (const time of [undefined, null, 'unknown', NaN]) {
+    const r = parentWatchDecision({ ...freshParent, childCreatedAt: { [INIT_FAILED.id]: time }, tools: [firstWatch()] });
+    assert.equal(r.advisories, undefined, `creation time ${time}`);
+  }
+  assert.equal(parentWatchDecision({ ...freshParent, now: null, tools: [firstWatch()] }).advisories, undefined);
+});
+
+test('BRO-7378: only a live short watch for the same child suppresses the advisory', () => {
+  const short = { ...firstWatch('--minutes 3'), taskId: 'short-watch' };
+  const input = { ...freshParent, tools: [firstWatch(), short] };
+  assert.equal(parentWatchDecision(input).advisories, undefined);
+  assert.equal(parentWatchDecision({ ...input, done: ['short-watch'] }).advisories.length, 1);
+  for (const extra of [
+    { ...short, ok: false },
+    { ...short, startedAt: createdAt - 3600000 },
+    firstWatch('--minutes 3', INIT_FAILED.id + 'OTHER'),
+    firstWatch('--minutes 3', 'session_01OTHERCHILDxxxx'),
+    firstWatch('--minutes 25; echo --minutes 3'),
+  ]) assert.equal(parentWatchDecision({ ...freshParent, tools: [firstWatch(), extra] }).advisories.length, 1);
+  assert.equal(parentWatchDecision({ ...freshParent, tools: [firstWatch()], done: ['first-watch'] }).block, true);
+});
+
+test('BRO-7378: advisories reach the Stop decision and respect the existing CHILDWATCH scope and switch', () => {
+  const input = { ...freshParent, tools: [firstWatch()] };
+  const result = decideAll(input);
+  assert.equal(result.block, false);
+  assert.equal(result.code, null);
+  assert.equal(result.advisories.length, 1);
+  for (const extra of [{ skip: ['CHILDWATCH'] }, { keepOpen: false }, { liveChildren: [] },
+    { closing: 'SAFE TO ARCHIVE: finished' }, { closing: 'KEEP OPEN: waiting on CI' }]) {
+    assert.equal(decideAll({ ...input, ...extra }).advisories, undefined, JSON.stringify(extra));
+  }
+});
+
+// ─── DEADWAIT (BRO-7918): KEEP OPEN on a parent / fresh worker / card / recheck date with nothing armed ───
+import { readFileSync } from 'node:fs';
+const { deadWaitDecision } = require('./child-session-wait-guard.js');
+const DEAD = JSON.parse(readFileSync(new URL('./fixtures/bro-7918-dead-keep-open/closings.json', import.meta.url), 'utf8'));
+const NOW = Date.parse('2026-11-21T04:00:00Z');
+const liveWait = { idx: 5, name: 'Bash', input: { command: 'node scripts/lib/wait-for-land.js land/x 60 --prod', run_in_background: true, timeout: 7200000 }, ok: true, taskId: 'live1', startedAt: NOW - 60000 };
+
+test('DEADWAIT: the four real dead KEEP OPEN finals are blocked, for any session (child or not)', () => {
+  for (const k of ['bro-7741-fresh-worker', 'bro-7816-follow-up-card', 'bro-7780-board-worker', 'bro-7817-recheck-date', 'bro-7817-card-paused']) {
+    for (const firstPrompt of ['BRO-1\nBUDGET: 4h\n', 'plain owner prompt']) {
+      const r = decideAll({ closing: DEAD[k], firstPrompt, env: {}, tools: [], done: [], now: NOW, keepOpen: true });
+      assert.equal(r.block, true, k);
+      // a child that also names a CI run is caught first by the older CHILDWAIT; either way it is blocked
+      assert.ok(r.code === 'DEADWAIT' || (firstPrompt.includes('BUDGET') && r.code === 'CHILDWAIT'), k + ' ' + r.code);
+      if (!firstPrompt.includes('BUDGET')) assert.equal(r.code, 'DEADWAIT', k);
+    }
+  }
+});
+test('DEADWAIT: the real KEEP OPEN with a live background wait passes', () => {
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7817-live-wait'], tools: [liveWait], now: NOW }).block, false);
+  assert.equal(decideAll({ closing: DEAD['bro-7817-live-wait'], firstPrompt: 'x', env: {}, tools: [liveWait], now: NOW, keepOpen: true }).block, false);
+});
+test('DEADWAIT: a live wait on the dead-wait wording also passes (the wait is what matters)', () => {
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7741-fresh-worker'], tools: [liveWait], now: NOW }).block, false);
+});
+test('DEADWAIT: a finished wait (completion notice) no longer counts', () => {
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7741-fresh-worker'], tools: [liveWait], done: ['live1'], now: NOW }).block, true);
+});
+test('DEADWAIT: SAFE TO ARCHIVE finals pass (the correct ending)', () => {
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7816-safe'], tools: [] }).block, false);
+});
+test('DEADWAIT: other live wakes (agent, PR watch, trigger), NO-VERIFY and a pending parent question pass', () => {
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7741-fresh-worker'], tools: [], otherLive: true }).block, false);
+  assert.equal(deadWaitDecision({ closing: DEAD['bro-7741-fresh-worker'], tools: [], noVerify: true }).block, false);
+  const ask = { idx: 4, name: 'mcp__claude-code-remote__send_message', ok: true, input: { session_id: '@parent', message: 'Question: which table should I use?' } };
+  const waitAns = 'Still running: nothing.\nKEEP OPEN: waiting for the parent answer to my question.';
+  assert.equal(deadWaitDecision({ closing: waitAns, tools: [ask], anchor: 1 }).block, false);
+  assert.equal(deadWaitDecision({ closing: waitAns, tools: [ask], anchor: 9 }).block, true, 'a question older than the parent latest message does not count');
+  const report = { ...ask, input: { session_id: '@parent', message: 'REPORT-BACK BRO-1: done' } };
+  assert.equal(deadWaitDecision({ closing: waitAns, tools: [report], anchor: 1 }).block, true, 'a report is not a question');
+});
+test('DEADWAIT: KEEP OPEN on unrelated work, or "Nothing" lines, is not this gate', () => {
+  assert.equal(deadWaitDecision({ closing: 'Still running: nothing.\nKEEP OPEN — the build is running in this session.', tools: [] }).block, false);
+  assert.equal(deadWaitDecision({ closing: 'Still running: nothing, no parent involved.\nSAFE TO ARCHIVE — done', tools: [] }).block, false);
+});
+test('DEADWAIT: the suggested SAFE TO ARCHIVE wording names the owner and has no wait phrase LOOSEENDS would catch', () => {
+  const ok = 'Still running: nothing.\nYou need to: nothing needed from you.\n\nSAFE TO ARCHIVE — BRO-7820 owns the remaining reports and a board worker takes it; nothing here is left.';
+  assert.equal(deadWaitDecision({ closing: ok, tools: [] }).block, false);
+  assert.ok(!/waiting (?:on|for)\b|I'll (?:re)?check|\bI will (?:re-?)?check/i.test(ok));
+});
+
+test('DEADWAIT BRO-7918 review: owner-reply waits and parent-directory wording are not dead waits', () => {
+  const run = (closing) => deadWaitDecision({ closing, tools: [], done: [], now: Date.now(), env: {} });
+  assert.equal(run('KEEP OPEN: you can keep chatting; I will recheck once you reply').block, false);
+  assert.equal(run('KEEP OPEN: the parent directory scan runs in the background').block, false);
+  assert.equal(run('KEEP OPEN: board layout render is running').block, false);
+  assert.equal(run('KEEP OPEN: waiting for the parent to start a fresh worker').block, true);
+});

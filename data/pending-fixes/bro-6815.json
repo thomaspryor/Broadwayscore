@@ -1,0 +1,202 @@
+{
+  "issueNumber": "bro-6815",
+  "planId": "6a1036bd-266a-4c03-bb77-ee59df9e7bea",
+  "status": "applied",
+  "createdAt": "2026-11-02T10:59:09.415Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Close 4 off-Broadway shows stuck announced after their runs ended (dates from TDF Show Finder/Irish Arts Center listings)",
+    "steps": [
+      "shows.json: the-paparazzi-off-broadway-2026.status",
+      "shows.json: the-paparazzi-off-broadway-2026.openingDate",
+      "shows.json: the-paparazzi-off-broadway-2026.closingDate",
+      "shows.json: our-house-off-broadway-2026.status",
+      "shows.json: our-house-off-broadway-2026.openingDate",
+      "shows.json: our-house-off-broadway-2026.closingDate",
+      "shows.json: the-wedding-march-off-broadway-2026.status",
+      "shows.json: the-wedding-march-off-broadway-2026.openingDate",
+      "shows.json: the-wedding-march-off-broadway-2026.closingDate",
+      "shows.json: north-star-off-broadway-2026.status",
+      "shows.json: north-star-off-broadway-2026.openingDate",
+      "shows.json: north-star-off-broadway-2026.closingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-paparazzi-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "shows.json: the-paparazzi-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-paparazzi-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-03-06",
+        "description": "shows.json: the-paparazzi-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-paparazzi-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-04-11",
+        "description": "shows.json: the-paparazzi-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-house-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "shows.json: our-house-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-house-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-03-06",
+        "description": "shows.json: our-house-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-house-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-03-21",
+        "description": "shows.json: our-house-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-wedding-march-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "shows.json: the-wedding-march-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-wedding-march-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-04-09",
+        "description": "shows.json: the-wedding-march-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-wedding-march-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-05-03",
+        "description": "shows.json: the-wedding-march-off-broadway-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "north-star-off-broadway-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "shows.json: north-star-off-broadway-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "north-star-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-03",
+        "description": "shows.json: north-star-off-broadway-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "north-star-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-21",
+        "description": "shows.json: north-star-off-broadway-2026.closingDate"
+      }
+    ]
+  },
+  "executedAt": "2026-11-02T11:11:56.033Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-paparazzi-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-paparazzi-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-paparazzi-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for our-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for our-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for our-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-wedding-march-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-wedding-march-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-wedding-march-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for north-star-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for north-star-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for north-star-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

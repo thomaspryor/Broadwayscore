@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-4431-c",
+  "planId": "78321ea6-b38f-45a3-94db-593365edb098",
+  "status": "applied",
+  "createdAt": "2026-09-30T22:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4431 follow-up: the Vulture How Shakespeare Saved My Life / Arias With a Twist piece is one essay about both shows; the earlier photo-caption split filed half of each review under the other show. Re-ingesting the article under How Shakespeare Saved My Life puts the whole article back and the fan-out now undoes the split (both copies whole, marked combined, re-scored). Also re-read The Times' Golden Boy review (Patrick Kidd), whose stub has no text or rating.",
+    "steps": [
+      "Re-ingest the Vulture article under How Shakespeare Saved My Life (undoes the wrong split)",
+      "Ingest The Times' Golden Boy review so the page's own star rating is read"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=how-shakespeare-saved-my-life-off-broadway-2026 --url=https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html",
+        "description": "Vulture Holdren: whole article back, split undone"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=golden-boy-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/golden-boy-josh-oconnor-boxing-five-star-review-8dnqk7c6l --critic=\"Patrick Kidd\" --stub-on-failure",
+        "description": "The Times Kidd: page star rating"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T22:44:52.368Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "issueNumber": "bro-5075-c",
+  "planId": "124a99b7-4770-4809-acc1-b2bbf438e7da",
+  "status": "pending",
+  "createdAt": "2026-11-02T14:24:38.938Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5075: repair or remove the 127 review files whose url is not an absolute http(s) url. 37 repaired in place to the same article (BroadwayWorld relative paths given their host, scheme typos, schemeless hosts; score and flags kept, needs the url-change-invariant repair rule landed with this plan). 90 deleted, none live today: 67 /people/ critic-profile paths and 4 text-fragment urls with no fullText (the rebuild excludes them as skippedInvalidUrl), plus 19 duplicates whose article a sibling or another show already holds with a valid url. (part 3 of 6)",
+    "steps": [
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: Duplicate: broadwayworld--unknown.json holds the same BWW article with an absolute url and is the live row.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-west-end-2023/broadwayworld--michael-dale.json",
+        "field": "url",
+        "oldValue": "/article/BWW-Review-Glenda-Jackson-is-Wickedly-Fun-in-Sam-Golds-Surprisingly-Comic-Take-on-Shakespeares-KING-LEAR-20190405",
+        "newValue": "https://www.broadwayworld.com/article/BWW-Review-Glenda-Jackson-is-Wickedly-Fun-in-Sam-Golds-Surprisingly-Comic-Take-on-Shakespeares-KING-LEAR-20190405",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "les-liaisons-dangereuses-2008/ap--mark-kennedy.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-west-end-2021/broadwayworld--marianka-swain.json",
+        "field": "url",
+        "oldValue": "/article/BWW-Review-LES-MISERABLES-Sondheim-Theatre-20200116",
+        "newValue": "https://www.broadwayworld.com/article/BWW-Review-LES-MISERABLES-Sondheim-Theatre-20200116",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-shop-of-horrors-2003/hendersonville-lightning--david-cameron.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-shop-of-horrors-off-broadway-2019/hendersonville-lightning--david-cameron.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "m-butterfly-1988/amny--matt-windman.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "m-butterfly-1988/chicagotribune--chris-jones.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "mack-and-mabel-1974/broadwayworld--carrie-dunn.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "man-and-boy-west-end-2026/nydailynews--joe-dziemianowicz.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "man-and-boy-west-end-2026/village-voice--michael-musto.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "mary-page-marlowe-west-end-2025/broadwayworld--harlan-laura-jones.json",
+        "description": "BRO-5075: Duplicate: broadwayworld--unknown.json holds the same BWW article with an absolute url and is the live row."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "matilda-the-musical-2013/stagescenela--steven-stanley.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "merrily-we-roll-along-1981/huffpost--howard-kissel.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "merrily-we-roll-along-1981/nytimes--ben-brantley.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/broadwayworld--alyssa-biederman.json",
+        "field": "url",
+        "oldValue": "/rhode-island/article/BWW-Review-Technically-Stunning-MISS-SAIGON-at-PPAC-20180930",
+        "newValue": "https://www.broadwayworld.com/rhode-island/article/BWW-Review-Technically-Stunning-MISS-SAIGON-at-PPAC-20180930",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      }
+    ]
+  }
+}

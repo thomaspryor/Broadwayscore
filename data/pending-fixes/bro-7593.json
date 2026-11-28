@@ -1,0 +1,358 @@
+{
+  "issueNumber": "bro-7593",
+  "planId": "38b9501f-9f37-415e-b480-09f03d2df81d",
+  "status": "applied",
+  "createdAt": "2026-11-16T13:58:02.504Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude 19 Guardian pieces the Guardian files as features/news/comment/blog, not reviews (Two Girls 2026 feature was scored as a 76 review) (part 1 of 2)",
+    "steps": [
+      "accidental-death-of-an-anarchist-west-end-2023/guardian--michael-billington.json: isNonReviewReason",
+      "accidental-death-of-an-anarchist-west-end-2023/guardian--michael-billington.json: isNonReview",
+      "all-the-way-2014/guardian--jesse-green.json: isNonReviewReason",
+      "all-the-way-2014/guardian--jesse-green.json: isNonReview",
+      "funny-girl-2022/guardian--broadway-glee-dazzling-lea-michele-delivers-in-funny-girl.json: isNonReviewReason",
+      "funny-girl-2022/guardian--broadway-glee-dazzling-lea-michele-delivers-in-funny-girl.json: isNonReview",
+      "hamilton-2015/guardian--alexis-soloski.json: isNonReviewReason",
+      "hamilton-2015/guardian--alexis-soloski.json: isNonReview",
+      "hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json: isNonReviewReason",
+      "hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json: isNonReview",
+      "hangmen-west-end-2015/guardian--lyn-gardner.json: isNonReviewReason",
+      "hangmen-west-end-2015/guardian--lyn-gardner.json: isNonReview",
+      "killology-west-end-2017/guardian--lyn-gardner.json: isNonReviewReason",
+      "killology-west-end-2017/guardian--lyn-gardner.json: isNonReview",
+      "kpop-2022/guardian--adrian-horton.json: isNonReviewReason",
+      "kpop-2022/guardian--adrian-horton.json: isNonReview",
+      "krapps-last-tape-godots-todo-list-west-end-2026/guardian--chris-wiegand.json: isNonReviewReason",
+      "krapps-last-tape-godots-todo-list-west-end-2026/guardian--chris-wiegand.json: isNonReview",
+      "mamma-mia-2025/guardian--adrian-horton.json: isNonReviewReason",
+      "mamma-mia-2025/guardian--adrian-horton.json: isNonReview",
+      "man-to-man-west-end-2026/guardian--stephen-unwin.json: isNonReviewReason",
+      "man-to-man-west-end-2026/guardian--stephen-unwin.json: isNonReview",
+      "midnight-off-broadway-2026/guardian--morgan-jerkins.json: isNonReviewReason",
+      "midnight-off-broadway-2026/guardian--morgan-jerkins.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "accidental-death-of-an-anarchist-west-end-2023/guardian--michael-billington.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian files it as tone/comment, not tone/reviews, no star (BRO-7593 sweep)",
+        "description": "accidental-death-of-an-anarchist-west-end-2023/guardian--michael-billington.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "accidental-death-of-an-anarchist-west-end-2023/guardian--michael-billington.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "accidental-death-of-an-anarchist-west-end-2023/guardian--michael-billington.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-way-2014/guardian--jesse-green.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian files it as tone/news, not tone/reviews, no star (BRO-7593 sweep)",
+        "description": "all-the-way-2014/guardian--jesse-green.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-way-2014/guardian--jesse-green.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "all-the-way-2014/guardian--jesse-green.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "funny-girl-2022/guardian--broadway-glee-dazzling-lea-michele-delivers-in-funny-girl.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)",
+        "description": "funny-girl-2022/guardian--broadway-glee-dazzling-lea-michele-delivers-in-funny-girl.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "funny-girl-2022/guardian--broadway-glee-dazzling-lea-michele-delivers-in-funny-girl.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "funny-girl-2022/guardian--broadway-glee-dazzling-lea-michele-delivers-in-funny-girl.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-2015/guardian--alexis-soloski.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)",
+        "description": "hamilton-2015/guardian--alexis-soloski.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-2015/guardian--alexis-soloski.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "hamilton-2015/guardian--alexis-soloski.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian files it as tone/features,tone/comment, not tone/reviews, no star (BRO-7593 sweep)",
+        "description": "hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hangmen-west-end-2015/guardian--lyn-gardner.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian roundup/column piece, no tone/reviews tag, no star (BRO-7593 sweep)",
+        "description": "hangmen-west-end-2015/guardian--lyn-gardner.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hangmen-west-end-2015/guardian--lyn-gardner.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "hangmen-west-end-2015/guardian--lyn-gardner.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "killology-west-end-2017/guardian--lyn-gardner.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian roundup/column piece, no tone/reviews tag, no star (BRO-7593 sweep)",
+        "description": "killology-west-end-2017/guardian--lyn-gardner.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "killology-west-end-2017/guardian--lyn-gardner.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "killology-west-end-2017/guardian--lyn-gardner.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kpop-2022/guardian--adrian-horton.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)",
+        "description": "kpop-2022/guardian--adrian-horton.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kpop-2022/guardian--adrian-horton.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "kpop-2022/guardian--adrian-horton.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "krapps-last-tape-godots-todo-list-west-end-2026/guardian--chris-wiegand.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)",
+        "description": "krapps-last-tape-godots-todo-list-west-end-2026/guardian--chris-wiegand.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "krapps-last-tape-godots-todo-list-west-end-2026/guardian--chris-wiegand.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "krapps-last-tape-godots-todo-list-west-end-2026/guardian--chris-wiegand.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mamma-mia-2025/guardian--adrian-horton.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)",
+        "description": "mamma-mia-2025/guardian--adrian-horton.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mamma-mia-2025/guardian--adrian-horton.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "mamma-mia-2025/guardian--adrian-horton.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "man-to-man-west-end-2026/guardian--stephen-unwin.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)",
+        "description": "man-to-man-west-end-2026/guardian--stephen-unwin.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "man-to-man-west-end-2026/guardian--stephen-unwin.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "man-to-man-west-end-2026/guardian--stephen-unwin.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/guardian--morgan-jerkins.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)",
+        "description": "midnight-off-broadway-2026/guardian--morgan-jerkins.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/guardian--morgan-jerkins.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "midnight-off-broadway-2026/guardian--morgan-jerkins.json: isNonReview"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T15:12:57.950Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "accidental-death-of-an-anarchist-west-end-2023/guardian--michael-billington.json isNonReviewReason: null -> \"manual (not a review): Guardian files it as tone/comment, not tone/reviews, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "accidental-death-of-an-anarchist-west-end-2023/guardian--michael-billington.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-the-way-2014/guardian--jesse-green.json isNonReviewReason: null -> \"manual (not a review): Guardian files it as tone/news, not tone/reviews, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-the-way-2014/guardian--jesse-green.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "funny-girl-2022/guardian--broadway-glee-dazzling-lea-michele-delivers-in-funny-girl.json isNonReviewReason: null -> \"manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "funny-girl-2022/guardian--broadway-glee-dazzling-lea-michele-delivers-in-funny-girl.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/guardian--alexis-soloski.json isNonReviewReason: null -> \"manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/guardian--alexis-soloski.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json isNonReviewReason: null -> \"manual (not a review): Guardian files it as tone/features,tone/comment, not tone/reviews, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamlet-hail-to-the-thief-off-west-end-2026/guardian--alexis-petridis.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hangmen-west-end-2015/guardian--lyn-gardner.json isNonReviewReason: null -> \"manual (not a review): Guardian roundup/column piece, no tone/reviews tag, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hangmen-west-end-2015/guardian--lyn-gardner.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "killology-west-end-2017/guardian--lyn-gardner.json isNonReviewReason: null -> \"manual (not a review): Guardian roundup/column piece, no tone/reviews tag, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "killology-west-end-2017/guardian--lyn-gardner.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kpop-2022/guardian--adrian-horton.json isNonReviewReason: null -> \"manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kpop-2022/guardian--adrian-horton.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "krapps-last-tape-godots-todo-list-west-end-2026/guardian--chris-wiegand.json isNonReviewReason: null -> \"manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "krapps-last-tape-godots-todo-list-west-end-2026/guardian--chris-wiegand.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mamma-mia-2025/guardian--adrian-horton.json isNonReviewReason: null -> \"manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mamma-mia-2025/guardian--adrian-horton.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-to-man-west-end-2026/guardian--stephen-unwin.json isNonReviewReason: null -> \"manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-to-man-west-end-2026/guardian--stephen-unwin.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/guardian--morgan-jerkins.json isNonReviewReason: null -> \"manual (not a review): Guardian files it as tone/features, not tone/reviews, no star (BRO-7593 sweep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/guardian--morgan-jerkins.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

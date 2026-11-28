@@ -1,0 +1,179 @@
+{
+  "issueNumber": 1186,
+  "planId": "c17a9d6d-d9b7-4db7-9e0f-6a8a0c024a85",
+  "status": "pending",
+  "createdAt": "2026-11-10T08:02:22.616Z",
+  "diagnosis": {
+    "fixType": "data",
+    "confidence": "high",
+    "showId": "wanted-2022",
+    "showSlug": "wanted",
+    "showIds": [
+      "wanted-2022",
+      "match-2004"
+    ]
+  },
+  "submitter": {
+    "name": null,
+    "email": null,
+    "show": "Wanted",
+    "message": ""
+  },
+  "plan": {
+    "summary": "The cast list for 'Wanted' (wanted-2022) contains 13 actors from a completely different historical production. We'll replace that incorrect cast array with the correct cast from the `castBilling` field already present in the show data, which lists the actual 2026 Broadway performers.",
+    "steps": [
+      "Replace the incorrect `cast` array in the wanted-2022 show record with the correct cast derived from the `castBilling` field already stored in the same record (Solea Pfeiffer, Liisi LaFontaine, Ledisi, Luke James, Bradley Jaden, Aurelia Williams, Awa Sal Secka, Melody A. Betts, Kailey Boyle, Jennie Harney-Fleming, Aaron Arnell Harrington, Timothy Hughes, Mary Claire King, Rayshun LaMarr, Harris Matthew, Brad Sharp, Hailey Thomas, Nathan Quay Thomas, Katie Thompson). Since individual role assignments are not available in the show data, each entry will carry a null role for now — this is a known gap but far better than showing entirely wrong names."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wanted-2022",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Alney Alba",
+            "role": "Penelope Merton"
+          },
+          {
+            "name": "Frank Andrews",
+            "role": "Major Longstreet"
+          },
+          {
+            "name": "Charles Angelo",
+            "role": "Mr. Robert Trent"
+          },
+          {
+            "name": "Teresa Brooks",
+            "role": "Rena Henry"
+          },
+          {
+            "name": "Ken Cartier",
+            "role": "James Bruce"
+          },
+          {
+            "name": "H.R. Chase",
+            "role": "O'Brien"
+          },
+          {
+            "name": "Inez Clough",
+            "role": "Daisy Brooks"
+          },
+          {
+            "name": "George Connor",
+            "role": "Hugh Clark"
+          },
+          {
+            "name": "Martin Malloy",
+            "role": "Skelly"
+          },
+          {
+            "name": "George McEntee",
+            "role": "Cassidy"
+          },
+          {
+            "name": "Margaret Pitt",
+            "role": "Mrs. Robert Trent"
+          },
+          {
+            "name": "Lloyd Sabine",
+            "role": "Lt. Foley"
+          },
+          {
+            "name": "Irene Shirley",
+            "role": "Marie Newton"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Solea Pfeiffer",
+            "role": null
+          },
+          {
+            "name": "Liisi LaFontaine",
+            "role": null
+          },
+          {
+            "name": "Ledisi",
+            "role": null
+          },
+          {
+            "name": "Luke James",
+            "role": null
+          },
+          {
+            "name": "Bradley Jaden",
+            "role": null
+          },
+          {
+            "name": "Aurelia Williams",
+            "role": null
+          },
+          {
+            "name": "Awa Sal Secka",
+            "role": null
+          },
+          {
+            "name": "Melody A. Betts",
+            "role": null
+          },
+          {
+            "name": "Kailey Boyle",
+            "role": null
+          },
+          {
+            "name": "Jennie Harney-Fleming",
+            "role": null
+          },
+          {
+            "name": "Aaron Arnell Harrington",
+            "role": null
+          },
+          {
+            "name": "Timothy Hughes",
+            "role": null
+          },
+          {
+            "name": "Mary Claire King",
+            "role": null
+          },
+          {
+            "name": "Rayshun LaMarr",
+            "role": null
+          },
+          {
+            "name": "Harris Matthew",
+            "role": null
+          },
+          {
+            "name": "Brad Sharp",
+            "role": null
+          },
+          {
+            "name": "Hailey Thomas",
+            "role": null
+          },
+          {
+            "name": "Nathan Quay Thomas",
+            "role": null
+          },
+          {
+            "name": "Katie Thompson",
+            "role": null
+          }
+        ],
+        "description": "Remove the 13 incorrect cast members from a historical/unrelated production and replace with the 19 actual cast members of the 2026 Broadway production, sourced from the castBilling field (castBillingSource: https://playbill.com/production/wanted-broadway-james-earl-jones-theatre-2026). Individual role assignments are not available in the current show data and are set to null pending a future data enrichment pass."
+      }
+    ]
+  },
+  "verification": {
+    "passed": false,
+    "skipped": false,
+    "issues": [
+      "The proposed cast list for 'Wanted' (wanted-2022) claims to be from the 2026 Broadway production, but the show is actually set to open on November 8, 2026, which means the cast cannot be confirmed as accurate until that date.",
+      "The original cast list contains actors and roles from a different production, but the proposed fix does not verify that the new cast members are indeed part of the 2026 production, as the show has not yet opened."
+    ],
+    "confidence": "medium"
+  }
+}

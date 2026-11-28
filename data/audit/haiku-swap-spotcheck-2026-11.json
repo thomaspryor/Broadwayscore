@@ -1,0 +1,183 @@
+{
+  "card": "BRO-7527",
+  "at": "2026-11-15T23:52:10.110Z",
+  "oldModel": "claude-haiku-4-5-20251001",
+  "newModel": "claude-haiku-5-5",
+  "capUsd": 10,
+  "probe": {
+    "claude-haiku-4-5-20251001": {
+      "ok": true,
+      "textChars": 12
+    },
+    "claude-haiku-5-5": {
+      "ok": true,
+      "textChars": 12
+    }
+  },
+  "verifier": {
+    "cases": 30,
+    "scores": [
+      {
+        "model": "claude-haiku-4-5-20251001",
+        "rep": 0,
+        "scored": 28,
+        "nonLlm": 2,
+        "errors": 0,
+        "capped": 0,
+        "correct": 19,
+        "falseAccepts": 8,
+        "falseRejects": 1
+      },
+      {
+        "model": "claude-haiku-4-5-20251001",
+        "rep": 1,
+        "scored": 29,
+        "nonLlm": 1,
+        "errors": 0,
+        "capped": 0,
+        "correct": 21,
+        "falseAccepts": 7,
+        "falseRejects": 1
+      },
+      {
+        "model": "claude-haiku-5-5",
+        "rep": 0,
+        "scored": 30,
+        "nonLlm": 0,
+        "errors": 0,
+        "capped": 0,
+        "correct": 22,
+        "falseAccepts": 8,
+        "falseRejects": 0
+      },
+      {
+        "model": "claude-haiku-5-5",
+        "rep": 1,
+        "scored": 30,
+        "nonLlm": 0,
+        "errors": 0,
+        "capped": 0,
+        "correct": 19,
+        "falseAccepts": 10,
+        "falseRejects": 1
+      }
+    ],
+    "agreementOldOld": 0.967,
+    "agreementOldNew": [
+      0.767,
+      0.733
+    ],
+    "disagreementClasses": {
+      "expected=valid oldRun1=invalid new=valid newFlags=truncated": [
+        "nysr--roma-torre--an-ark-off-broadway-2026",
+        "nysr--roma-torre--an-ark-off-broadway-2026"
+      ],
+      "expected=garbage oldRun1=invalid new=valid newFlags=none": [
+        "thewrap--thom-geier--slave-play-2021",
+        "theatre-is-easy--dan-dinero--slave-play-2021",
+        "guardian--arifa-akbar--trouble-in-mind-2021",
+        "thewrap--thom-geier--slave-play-2021",
+        "one-minute-critic--one-minute-critic--art-1998",
+        "theatre-is-easy--dan-dinero--slave-play-2021",
+        "guardian--arifa-akbar--trouble-in-mind-2021"
+      ],
+      "expected=garbage oldRun1=valid new=invalid newFlags=wrongProduction+truncated": [
+        "observer--david-cote--uncle-vanya-2024",
+        "theatermania--zachary-stewart--cats-1982"
+      ],
+      "expected=garbage oldRun1=valid new=invalid newFlags=none": [
+        "vulture--helen-shaw--a-christmas-carol-1991",
+        "vulture--helen-shaw--a-christmas-carol-1991"
+      ],
+      "expected=garbage oldRun1=valid new=invalid newFlags=wrongProduction": [
+        "theatermania--zachary-stewart--cats-1982"
+      ],
+      "expected=valid oldRun1=valid new=invalid newFlags=truncated": [
+        "nytimes--ben-brantley--the-ritz-2007"
+      ]
+    },
+    "pass": false
+  },
+  "titles": {
+    "batches": 40,
+    "titles": 1919,
+    "runs": [
+      {
+        "model": "claude-haiku-4-5-20251001",
+        "rep": 0,
+        "errors": 0,
+        "capped": 0,
+        "flaggedTitles": 776
+      },
+      {
+        "model": "claude-haiku-4-5-20251001",
+        "rep": 1,
+        "errors": 0,
+        "capped": 0,
+        "flaggedTitles": 778
+      },
+      {
+        "model": "claude-haiku-5-5",
+        "rep": 0,
+        "errors": 0,
+        "capped": 0,
+        "flaggedTitles": 714
+      },
+      {
+        "model": "claude-haiku-5-5",
+        "rep": 1,
+        "errors": 0,
+        "capped": 0,
+        "flaggedTitles": 767
+      }
+    ],
+    "agreementOldOld": 0.96,
+    "flaggedByBothOld": 739,
+    "oldRunsSplit": 76,
+    "newRuns": [
+      {
+        "rep": 0,
+        "agreementOldNew": 0.848,
+        "keptByNew": 574,
+        "keptShare": 0.777,
+        "missedByNew": 165,
+        "addedByNew": 99,
+        "pass": false
+      },
+      {
+        "rep": 1,
+        "agreementOldNew": 0.824,
+        "keptByNew": 591,
+        "keptShare": 0.8,
+        "missedByNew": 148,
+        "addedByNew": 147,
+        "pass": false
+      }
+    ],
+    "pass": false
+  },
+  "spend": {
+    "capUsd": 10,
+    "capPricedUsd": 1.115,
+    "listUsd": 0.507,
+    "calls": 282,
+    "maxCallUsd": 0.05,
+    "byModel": {
+      "claude-haiku-4-5-20251001": {
+        "calls": 141,
+        "inputTokens": 323194,
+        "outputTokens": 23155
+      },
+      "claude-haiku-5-5": {
+        "calls": 141,
+        "inputTokens": 454521,
+        "outputTokens": 44197
+      }
+    }
+  },
+  "decision": {
+    "verifier": "stay on claude-haiku-4-5-20251001",
+    "titles": "stay on claude-haiku-4-5-20251001",
+    "run": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43777013719"
+  }
+}

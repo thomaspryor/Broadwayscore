@@ -1,0 +1,128 @@
+name: Publish Show Refresh
+
+# BRO-8214 (BRO-8056 phase 1d/3a): publishes changed show slices to the
+# show-refresh store (Supabase bucket show-refresh + the `home` pointer row) so
+# the reader, once SHOW_REFRESH_READER=on, can serve a show's new reviews or
+# score without a full deploy. While the reader is off nothing reads what this
+# writes: it is invisible on the site.
+#
+# Modes: scheduled, workflow_run and re-dispatched runs (redispatched=true, set
+# by cron-redispatch.js and check-cron-health's self-heal when GitHub drops the
+# schedule, BRO-8233) write unless repo variable SHOW_REFRESH_PUBLISH_WRITES is
+# 'off' (only 'off' turns writes off; 'false' or '0' do not). A plain manual
+# dispatch obeys its own `write` input only (default dry-run). Off switches:
+# SHOW_REFRESH_PUBLISH_WRITES=off (dry-run), SHOW_REFRESH_PUBLISH_DISABLED=true
+# (every run skips its work steps and ends green, so the CRITICAL_CRONS entry
+# does not page while it is deliberately off), or the store's kill row (Show
+# Refresh Kill Switch workflow, no variable needed) which stops a run before any
+# write.
+#
+# Triggers: after a data rebuild or deploy (completed, any conclusion: a rebuild
+# can push core data and then fail a later step), plus a 10-minute backstop.
+# One run at a time here (concurrency group, no cancel); the pointer write is a
+# compare-and-swap on home.generation, so rebuild-fast's own publish step (the
+# only run that passes --rebuild-step, i.e. may publish a changed review list)
+# can race this one safely. This backstop never passes --rebuild-step; it keeps
+# what that step published. Writes also need the checked-out code to match the
+# deployed commit's code (publish-show-refresh.ts codeMatchOf; data may differ).
+
+on:
+  workflow_run:
+    workflows: ["Rebuild Reviews (Fast)", "Rebuild Reviews Data", "Deploy to Vercel"]
+    types: [completed]
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      write:
+        description: 'Write to the store (otherwise dry-run)'
+        required: false
+        type: boolean
+        default: false
+      redispatched:
+        # redispatch-after-hours: 0.5  (BRO-8233: the */10 schedule had not fired in its first hours;
+        #   runs otherwise arrive only via workflow_run. cron-redispatch.js replaces a missing run after
+        #   0.5h. A redispatched run behaves exactly like the scheduled one: it writes unless
+        #   SHOW_REFRESH_PUBLISH_WRITES=off, the same rule as schedule and workflow_run.)
+        description: 'Set by scripts/cron-redispatch.js when GitHub dropped the schedule. Behaves like a scheduled run.'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: show-refresh-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    # SHOW_REFRESH_PUBLISH_DISABLED gates the work steps, not the job: a run whose
+    # only job is skipped is not a success, and check-cron-health would page.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - name: Setup node
+        if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
+        uses: ./.github/actions/setup-node
+
+      - name: Checkout core data
+        if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Publish
+        if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SHOW_REFRESH_REVALIDATE_SECRET: ${{ secrets.SHOW_REFRESH_REVALIDATE_SECRET }}
+          # Plain manual dispatch: the `write` input decides. Schedule, workflow_run and a
+          # redispatched dispatch: write unless SHOW_REFRESH_PUBLISH_WRITES=off.
+          WRITE: ${{ ((github.event_name == 'workflow_dispatch' && inputs.redispatched != 'true' && inputs.write == true) || ((github.event_name != 'workflow_dispatch' || inputs.redispatched == 'true') && vars.SHOW_REFRESH_PUBLISH_WRITES != 'off')) && 'true' || 'false' }}
+          TRIGGER: ${{ github.event_name }}:${{ github.event.workflow_run.name || '' }}${{ inputs.redispatched == 'true' && ':redispatched' || '' }}
+        run: |
+          set -o pipefail
+          MODE=--dry-run
+          [ "$WRITE" = "true" ] && MODE=--write
+          echo "trigger=$TRIGGER mode=$MODE" | tee -a "$GITHUB_STEP_SUMMARY"
+          npx tsx scripts/publish-show-refresh.ts "$MODE" --report="$RUNNER_TEMP/show-refresh-report.json" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      # BRO-8397: delete slices no current or recent home generation points to.
+      # At most once a day (prune-last-run.json guard inside the script), advisory
+      # (rule 19), and a dry run that only lists candidates unless repo variable
+      # SHOW_REFRESH_PRUNE_DELETE is 'true'. Scheduled runs only (no workflow_run burst).
+      - name: Prune old show slices (daily, advisory)
+        if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true' && github.event_name == 'schedule'
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SHOW_REFRESH_PRUNE_DELETE: ${{ vars.SHOW_REFRESH_PRUNE_DELETE }}
+        run: |
+          set -o pipefail
+          timeout 300 node scripts/lib/show-refresh/prune.js | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload report
+        if: always() && vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: show-refresh-report
+          path: ${{ runner.temp }}/show-refresh-report.json
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Publish Show Refresh Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

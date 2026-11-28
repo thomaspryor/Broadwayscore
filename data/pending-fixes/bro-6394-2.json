@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-6394-2",
+  "planId": "e7d4e6ad-dd79-41cc-93b4-2870020cc520",
+  "status": "applied",
+  "createdAt": "2026-10-26T21:50:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Second pass for the Hospital Hour duplicate: move the one collected TheaterMania review (flagged wrongProduction only because it sat on the duplicate row) to hospital-hour-off-broadway-2026, then retire the duplicate row.",
+    "steps": [
+      "Move the review file to the kept show's folder",
+      "Retire the duplicate row"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "bob-odenkirk-presents-hospital-hour-off-broadway-2026/theatermania--linda-buchwald.json",
+        "destPath": "hospital-hour-off-broadway-2026/theatermania--linda-buchwald.json",
+        "description": "Move the TheaterMania review to the kept Hospital Hour show"
+      },
+      {
+        "type": "retire-show",
+        "id": "bob-odenkirk-presents-hospital-hour-off-broadway-2026",
+        "expectTitle": "Bob Odenkirk Presents HOSPITAL HOUR",
+        "reason": "Duplicate listing of hospital-hour-off-broadway-2026 (shared TodayTix listing 48160, same Culture Club run; TheaterMania: official opening 2026-10-26); BRO-6394",
+        "duplicateOf": "hospital-hour-off-broadway-2026",
+        "evidenceUrl": "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/",
+        "description": "Retire the duplicate Bob Odenkirk Presents listing"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T21:54:26.346Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved bob-odenkirk-presents-hospital-hour-off-broadway-2026/theatermania--linda-buchwald.json → hospital-hour-off-broadway-2026/theatermania--linda-buchwald.json",
+      "cleared": []
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired bob-odenkirk-presents-hospital-hour-off-broadway-2026 (\"Bob Odenkirk Presents HOSPITAL HOUR\" @ The Night Egg at the Culture Club); dropped its audience-buzz.json key"
+    }
+  ],
+  "executedIn": "ci"
+}

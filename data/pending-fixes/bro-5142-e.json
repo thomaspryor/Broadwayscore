@@ -1,0 +1,257 @@
+{
+  "issueNumber": "bro-5142-e",
+  "planId": "e02e568a-125e-4a14-a5f0-655edc5167ed",
+  "status": "applied",
+  "createdAt": "2026-10-14T11:10:18.100Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "(part 5/5) BRO-5142: clear wrongShow on 57 real reviews of historical/sparse WE shows (no cast/creativeTeam in shows.json) that the BRO-4383 write guard flagged because the text never named the venue. Re-read by hand; 8 genuinely wrong texts stay flagged (a-kind-of-people observer/standard/scotsman, fishing-for-alaska viator, jane-eyre-off-west-end thestage (Colchester play), scenes-with-girls guardian/londontheatre1, toc-toc billboard). two-palestinians standard--nick-curtis skipped: it shares its URL with standard--unknown.json (duplicate).",
+    "steps": [
+      "Set wrongShowManualClear true, then wrongShow false, on each re-read real review (bro-4429 pattern)",
+      "Guard fix in scripts/lib/wrong-article-screen.js stops re-flagging (venue-only metadata is sparseIdentity)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/sunday-express--stefan-kyriazis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/sunday-express--stefan-kyriazis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/thestage--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/timeout-london--andrzej-lukowski.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/timeout-london--andrzej-lukowski.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/times-uk--clive-davis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/times-uk--clive-davis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/whatsonstage--sarah-crompton.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-picture-of-dorian-gray-west-end-2024/whatsonstage--sarah-crompton.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unbelievers-west-end-2025/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unbelievers-west-end-2025/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unbelievers-west-end-2025/thestage--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unbelievers-west-end-2025/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-palestinians-go-dogging-west-end-2022/i-paper--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-palestinians-go-dogging-west-end-2022/i-paper--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-palestinians-go-dogging-west-end-2022/times-uk--donald-hutera.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-palestinians-go-dogging-west-end-2022/times-uk--donald-hutera.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T12:37:09.130Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/sunday-express--stefan-kyriazis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/sunday-express--stefan-kyriazis.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/thestage--sam-marlowe.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/thestage--sam-marlowe.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/timeout-london--andrzej-lukowski.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/timeout-london--andrzej-lukowski.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/times-uk--clive-davis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/times-uk--clive-davis.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/whatsonstage--sarah-crompton.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-picture-of-dorian-gray-west-end-2024/whatsonstage--sarah-crompton.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unbelievers-west-end-2025/standard--nick-curtis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unbelievers-west-end-2025/standard--nick-curtis.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unbelievers-west-end-2025/thestage--sam-marlowe.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unbelievers-west-end-2025/thestage--sam-marlowe.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-palestinians-go-dogging-west-end-2022/i-paper--sam-marlowe.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-palestinians-go-dogging-west-end-2022/i-paper--sam-marlowe.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-palestinians-go-dogging-west-end-2022/times-uk--donald-hutera.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-palestinians-go-dogging-west-end-2022/times-uk--donald-hutera.json wrongShow: true -> false"
+    }
+  ]
+}

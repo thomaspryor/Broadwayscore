@@ -1,0 +1,102 @@
+{
+  "issueNumber": "bro-5395-l",
+  "planId": "e23e8107-cf41-49f0-b629-c2a309ad2177",
+  "status": "applied",
+  "createdAt": "2026-10-15T22:12:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5395 (l): move Lou Reviews' Just for One Day (Shaftesbury 2025) review from One Day the Musical to the Just for One Day Shaftesbury show and clear the verdicts that belonged to the wrong filing.",
+    "steps": [
+      "move",
+      "clear wrong-show verdict",
+      "show-mention clear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "one-day-the-musical-west-end-2026/loureviews--louise-penn.json",
+        "destPath": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json",
+        "description": "BRO-5395: Lou Reviews 2025-06-12, url https://loureviews.blog/2025/06/12/theatre-review-just-for-one-day-shaftesbury/ reviews Just for One Day at the Shaftesbury (2025 run), not One Day the Musical (Garrick 2026-27); the ensemble already rejected it there as wrong_show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: Lou Reviews 2025-06-12, url https://loureviews.blog/2025/06/12/theatre-review-just-for-one-day-shaftesbury/ reviews Just for One Day at the Shaftesbury (2025 run), not One Day the Musical (Garrick 2026-27); the ensemble already rejected it there as wrong_show. Under the right show the wrong-show verdict no longer applies."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_show",
+        "newValue": null,
+        "description": "BRO-5395: Lou Reviews 2025-06-12, url https://loureviews.blog/2025/06/12/theatre-review-just-for-one-day-shaftesbury/ reviews Just for One Day at the Shaftesbury (2025 run), not One Day the Musical (Garrick 2026-27); the ensemble already rejected it there as wrong_show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-5395: Lou Reviews 2025-06-12, url https://loureviews.blog/2025/06/12/theatre-review-just-for-one-day-shaftesbury/ reviews Just for One Day at the Shaftesbury (2025 run), not One Day the Musical (Garrick 2026-27); the ensemble already rejected it there as wrong_show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: url names Just for One Day at the Shaftesbury, 2025-06-12, during that show's run; filed here from One Day the Musical.",
+        "description": "BRO-5395: Lou Reviews 2025-06-12, url https://loureviews.blog/2025/06/12/theatre-review-just-for-one-day-shaftesbury/ reviews Just for One Day at the Shaftesbury (2025 run), not One Day the Musical (Garrick 2026-27); the ensemble already rejected it there as wrong_show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: Lou Reviews 2025-06-12, url https://loureviews.blog/2025/06/12/theatre-review-just-for-one-day-shaftesbury/ reviews Just for One Day at the Shaftesbury (2025 run), not One Day the Musical (Garrick 2026-27); the ensemble already rejected it there as wrong_show."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T22:33:14.929Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved one-day-the-musical-west-end-2026/loureviews--louise-penn.json → just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json rejectionReason: \"wrong_show\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: url names Just for One Day at the Shaftesbury, 2025-06-12, during that show's run; filed here from One Day the Musical.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-for-one-day-the-live-aid-musical-west-end-2025/loureviews--louise-penn.json showNotMentioned: true -> false"
+    }
+  ]
+}

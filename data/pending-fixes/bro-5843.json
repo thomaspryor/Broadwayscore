@@ -1,0 +1,359 @@
+{
+  "issueNumber": "bro-5843",
+  "planId": "c67dd0e4-a27b-45db-85b2-0b56189d0093",
+  "status": "applied",
+  "createdAt": "2026-10-21T16:27:10.875Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5843: fill openingDate on 12 West End historical rows that had none. Each date is a press night a web-grounded checker cited (page confirmed to state it) AND equal to the review-date mode inference (most common review date minus one). Rows where the two disagree, or the agreed date equals the first preview, stay null.",
+    "steps": [
+      "Set openingDate + openingDateSource on 12 shows.json rows"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brace-brace-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-10-09",
+        "description": "brace-brace-west-end-2024: openingDate null -> 2024-10-09 (BRO-5843: press night stated by https://playbill.com/production/brace-brace-london-royal-court-jerwood-theatre-upstairs-2024 and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brace-brace-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "brace-brace-west-end-2024: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-score-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-02-27",
+        "description": "the-score-west-end-2025: openingDate null -> 2025-02-27 (BRO-5843: press night stated by https://www.britishtheatre.com/no/posts/new-production-photos-released-for-the-score-starring-brian-cox-and-nicole-ansari-cox and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-score-west-end-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "the-score-west-end-2025: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "clueless-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-03-13",
+        "description": "clueless-west-end-2025: openingDate null -> 2025-03-13 (BRO-5843: press night stated by https://www.gettyimages.co.uk/detail/news-photo/kate-lawler-attends-the-press-night-performance-of-clueless-news-photo/2204306372 and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "clueless-west-end-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "clueless-west-end-2025: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-deep-blue-sea-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-05-14",
+        "description": "the-deep-blue-sea-west-end-2025: openingDate null -> 2025-05-14 (BRO-5843: press night stated by https://playbill.com/production/the-deep-blue-sea-london-theatre-royal-haymarket-2025 and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-deep-blue-sea-west-end-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "the-deep-blue-sea-west-end-2025: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-great-gatsby-west-end-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-04-24",
+        "description": "the-great-gatsby-west-end-2025: openingDate null -> 2025-04-24 (BRO-5843: press night stated by https://playbill.com/production/the-great-gatsby-london-london-coliseum-2025 and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-great-gatsby-west-end-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "the-great-gatsby-west-end-2025: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "vanya-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-09-21",
+        "description": "vanya-west-end-2023: openingDate null -> 2023-09-21 (BRO-5843: press night stated by https://playbill.com/production/vanya-london-duke-of-yorks-theatre-2023 and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "vanya-west-end-2023",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "vanya-west-end-2023: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "old-friends-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-10-03",
+        "description": "old-friends-west-end-2023: openingDate null -> 2023-10-03 (BRO-5843: press night stated by https://playbill.com/article/stephen-sondheims-old-friends-starring-bernadette-peters-lea-salonga-more-concludes-limited-london-run-january-6 and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "old-friends-west-end-2023",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "old-friends-west-end-2023: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-mirror-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-02-01",
+        "description": "a-mirror-west-end-2024: openingDate null -> 2024-02-01 (BRO-5843: press night stated by https://onin.london/a-mirror-written-by-sam-holcroft-directed-by-jeremy-herrin/ and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-mirror-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "a-mirror-west-end-2024: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "opening-night-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-03-26",
+        "description": "opening-night-west-end-2024: openingDate null -> 2024-03-26 (BRO-5843: press night stated by https://www.gettyimages.no/detail/news-photo/cast-members-shira-haas-benjamin-walker-hadley-fraser-news-photo/2115676708 and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "opening-night-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "opening-night-west-end-2024: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lie-low-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-05-28",
+        "description": "lie-low-west-end-2024: openingDate null -> 2024-05-28 (BRO-5843: press night stated by https://www.thestage.co.uk/reviews/lie-low-review-jerwood-theatre-upstairs-royal-court-london and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lie-low-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "lie-low-west-end-2024: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "slave-play-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-07-10",
+        "description": "slave-play-west-end-2024: openingDate null -> 2024-07-10 (BRO-5843: press night stated by https://www.gettyimages.co.uk/detail/news-photo/tom-fletcher-and-giovanna-fletcher-attend-the-press-night-news-photo/2160853128 and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "slave-play-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "slave-play-west-end-2024: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grenfell-in-the-words-of-survivors-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-07-20",
+        "description": "grenfell-in-the-words-of-survivors-west-end-2023: openingDate null -> 2023-07-20 (BRO-5843: press night stated by https://catalogue.nationaltheatre.org.uk/calmview/Record.aspx?id=PERF11363&src=CalmView.Performance and equal to the review-date mode inference)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grenfell-in-the-words-of-survivors-west-end-2023",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press-night-sourced-bro-5843",
+        "description": "grenfell-in-the-words-of-survivors-west-end-2023: openingDateSource human-correction (stamped by the openingDate edit just before) -> press-night-sourced-bro-5843"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T16:55:42.777Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for brace-brace-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for brace-brace-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-score-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-score-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for clueless-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for clueless-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-deep-blue-sea-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-deep-blue-sea-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-great-gatsby-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-great-gatsby-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for vanya-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for vanya-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for old-friends-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for old-friends-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-mirror-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-mirror-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for opening-night-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for opening-night-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for lie-low-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for lie-low-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for slave-play-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for slave-play-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for grenfell-in-the-words-of-survivors-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for grenfell-in-the-words-of-survivors-west-end-2023"
+    }
+  ],
+  "executedIn": "ci"
+}

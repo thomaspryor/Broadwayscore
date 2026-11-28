@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-7427",
+  "planId": "9c91508a-5c65-4103-abb8-8081c41a22e7",
+  "status": "applied",
+  "createdAt": "2026-11-13T04:26:36.365Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "The Good Thief (Irish Rep) opening night is Tue 2026-11-17 per irishrep.org calendar (Opening Night private event) and Show-Score; shows.json had the originally announced 2026-11-12",
+    "steps": [
+      "shows.json: the-good-thief-off-broadway-2026.openingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-good-thief-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-11-12",
+        "newValue": "2026-11-17",
+        "description": "shows.json: the-good-thief-off-broadway-2026.openingDate"
+      }
+    ]
+  },
+  "executedAt": "2026-11-13T04:34:39.221Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-good-thief-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

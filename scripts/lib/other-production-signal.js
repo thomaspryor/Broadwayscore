@@ -1,0 +1,402 @@
+'use strict';
+
+/**
+ * "Is this review about a DIFFERENT production than the show it is filed under?"
+ *
+ * BRO-4271 (School Girls 2026 opening night): the WestEndTheatre roundup
+ * scraper matched the 2023 Lyric Hammersmith roundup to the 2026 Broadway show
+ * (the London run is not in shows.json, so the Broadway row was the only
+ * same-title candidate). Five 2023 London files landed, were correctly flagged
+ * wrongProduction, and then SQUATTED their outlet slots: the stale-flag
+ * collision guard refused the real 2026 Guardian review because an existing
+ * guardian file carried a flag and the incoming roundup row had no date.
+ *
+ * A publish-date check alone is not enough. timeout-london--alice-saville.json
+ * (a 2023 Time Out LONDON review) carried publishDate 2026-09-10: a
+ * show-not-mentioned URL recovery once swapped its url to a Time Out NEW YORK
+ * listing and took that page's date; the url was later reverted (BRO-4153)
+ * but the date stayed. So this helper also reads signals that do not depend
+ * on the stored date: the url's market edition, the outlet's home market, a
+ * year baked into the url path, and a London venue named in the text.
+ *
+ * Pure apart from lazily loading outlet-registry.json (injectable for tests).
+ * Returns the FIRST signal that fires, or null. Signals only ever say
+ * "different production"; the absence of a signal proves nothing.
+ */
+
+const DAY_MS = 86400000;
+// A review dated this far before the production's first preview is about an
+// earlier production. Generous on purpose: pre-preview press is rare, and a
+// false "other production" here costs a real review.
+const PRE_PREVIEW_GRACE_DAYS = 60;
+// Without a previewsStartDate, measure from opening with a wider margin.
+const PRE_OPENING_GRACE_DAYS = 90;
+
+const NYC_CATEGORIES = new Set(['broadway', 'off-broadway']);
+
+let _regionMaps = null;
+function loadRegionMaps() {
+  if (_regionMaps) return _regionMaps;
+  try {
+    const reg = require('../../data/outlet-registry.json');
+    const { buildOutletMaps } = require('./outlet-region-map');
+    const m = buildOutletMaps(reg);
+    _regionMaps = { outletRegionMap: m.outletRegionMap, dualMarket: m.dualMarket };
+  } catch {
+    _regionMaps = { outletRegionMap: {}, dualMarket: new Set() };
+  }
+  return _regionMaps;
+}
+
+function showMarket(show) {
+  if (!show) return null;
+  const { isLondonMarket } = require('./venue-classification');
+  if (isLondonMarket(show.category)) return 'london';
+  if (!show.category || NYC_CATEGORIES.has(show.category)) return 'nyc';
+  return null; // tour / regional / other: no single home market
+}
+
+/** Market of a url on a declared path-split edition host (timeout.com). */
+function urlEditionMarket(url) {
+  const { resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
+  const resolved = resolveOutletFromUrlIfPathInformed(url);
+  if (!resolved || !resolved.outletId) return null;
+  if (resolved.outletId === 'timeout-london') return 'london';
+  if (resolved.outletId === 'timeout') return 'nyc';
+  return null;
+}
+
+/** A /YYYY/ path segment (Guardian /stage/2023/jun/18/, WordPress /2023/06/). */
+function urlPathYear(url) {
+  if (!url) return null;
+  let pathname;
+  try { pathname = new URL(url).pathname; } catch { return null; }
+  const m = pathname.match(/\/((?:19|20)\d{2})\//);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+function productionStart(show) {
+  const prev = show && Date.parse(show.previewsStartDate || '');
+  if (Number.isFinite(prev)) return { ms: prev, fromPreviews: true };
+  const open = show && Date.parse(show.openingDate || '');
+  if (Number.isFinite(open)) return { ms: open, fromPreviews: false };
+  return null;
+}
+
+function normalizeText(s) {
+  return String(s || '').toLowerCase().replace(/[‘’]/g, "'");
+}
+
+/**
+ * Text names a London venue and never names this show's own venue.
+ * Only used for NYC shows: a Broadway review mentioning a London venue in
+ * passing ("transfers from the Lyric Hammersmith") also names its Broadway
+ * house, so requiring the absence of show.venue keeps that case out.
+ */
+function londonVenueInText(text, show) {
+  if (!text || !show || !show.venue) return null;
+  const t = normalizeText(text);
+  const { normalizeVenueName } = require('./venue-classification');
+  const own = normalizeVenueName(show.venue);
+  if (own && t.includes(own)) return null;
+  // Multi-word or distinctive London houses only: single common words from
+  // the West End list ("arts", "apollo", "playhouse") appear in NYC prose.
+  const LONDON_HOUSES = [
+    'lyric hammersmith', 'national theatre', 'royal court', 'almeida', 'donmar warehouse',
+    'young vic', 'old vic', 'bridge theatre', 'hampstead theatre', 'menier chocolate factory',
+    'barbican', 'southwark playhouse', 'kiln theatre', 'orange tree theatre', 'theatre royal stratford east',
+    'royal shakespeare company',
+  ];
+  const hit = LONDON_HOUSES.find((h) => t.includes(h));
+  return hit || null;
+}
+
+/**
+ * show.priorRuns declares earlier runs whose reviews COUNT for this show
+ * (a Stratford East run transferring to the West End, a Met revival
+ * inheriting its prior season). Dates, url years and markets covered by one
+ * are not "another production".
+ */
+function priorRunCoversDate(show, dateStr) {
+  if (!dateStr || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return false;
+  const { isWithinPriorRun } = require('./wrong-production-autoclear');
+  return isWithinPriorRun(dateStr, show.priorRuns);
+}
+
+function priorRunCoversYear(show, year) {
+  if (!year || !Array.isArray(show.priorRuns)) return false;
+  return show.priorRuns.some((run) => {
+    const a = Date.parse(run.openingDate || '');
+    const b = Date.parse(run.closingDate || run.openingDate || '');
+    if (!Number.isFinite(a)) return false;
+    const y0 = new Date(a).getUTCFullYear();
+    const y1 = Number.isFinite(b) ? new Date(b).getUTCFullYear() : y0;
+    return year >= y0 && year <= y1 + 1; // +1: reviews of a run's tail land next January
+  });
+}
+
+/** A prior run outside NYC: London outlets legitimately reviewed it. */
+function hasNonNycPriorRun(show) {
+  if (!Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return false;
+  const { isNonNycVenue } = require('./venue-classification');
+  return show.priorRuns.some((run) => !run.venue || isNonNycVenue(run.venue));
+}
+
+
+/**
+ * @param {object} review  - a review file or incoming review ({url, outletId, publishDate, fullText})
+ * @param {object} show    - shows.json row ({category, venue, previewsStartDate, openingDate})
+ * @param {object} [opts]
+ * @param {boolean} [opts.skipDate]  - ignore publishDate (caller distrusts it)
+ * @param {boolean} [opts.useText]   - also read fullText for a London venue.
+ *   Off by default: a Broadway transfer's own review routinely names its
+ *   London origin house. Only callers judging a file that is ALREADY flagged
+ *   wrongProduction/wrongShow turn it on, as corroboration.
+ * @param {object}  [opts.regionMaps] - {outletRegionMap, dualMarket} (tests)
+ * @param {string[]} [opts.only]     - consider only these signal names
+ * @returns {{ signal: string, detail: string } | null}
+ */
+function otherProductionSignal(review, show, opts = {}) {
+  if (!review || !show) return null;
+  const want = (name) => !opts.only || opts.only.includes(name);
+  const market = showMarket(show);
+  const url = review.url || null;
+
+  const crossMarketPriorRun = hasNonNycPriorRun(show) || (market === 'london' && Array.isArray(show.priorRuns) && show.priorRuns.length > 0);
+
+  // 1. url edition: timeout.com/london on a NYC show, /newyork on a London show.
+  if (want('url-edition-market') && market && url && !crossMarketPriorRun) {
+    const edition = urlEditionMarket(url);
+    if (edition && edition !== market) {
+      return { signal: 'url-edition-market', detail: `url is the ${edition} edition; show is ${market}` };
+    }
+  }
+
+  // 2. outlet home market: a London-only (non-dual) outlet on a NYC show.
+  // Dual-market outlets (Guardian, Times, The Stage...) review both cities and
+  // are deliberately not judged here; signals 3-5 cover them.
+  // Opera is exempt: London classical outlets (Bachtrack, The Arts Desk)
+  // routinely review the Met and its cinema transmissions.
+  if (want('outlet-market') && market === 'nyc' && review.outletId && !crossMarketPriorRun && show.type !== 'opera') {
+    const { outletRegionMap, dualMarket } = opts.regionMaps || loadRegionMaps();
+    const { UK_MARKET_REGIONS } = require('./cross-market-guard');
+    const id = String(review.outletId).toLowerCase();
+    if (UK_MARKET_REGIONS.has(outletRegionMap[id]) && !dualMarket.has(id)) {
+      return { signal: 'outlet-market', detail: `outlet ${id} is London-only (region ${outletRegionMap[id]}); show is NYC` };
+    }
+  }
+
+  // 2b. rival title (BRO-8321): the url slug (or headline) names a LONGER title that contains
+  // this show's whole title, and the show's title appears only inside it. "A Christmas Carol"
+  // (Old Vic) inside "a-christmas-carol-goes-wrong-grand-theatre-wolverhampton" (Mischief tour).
+  if (want('rival-title') && (url || review.title || review.headline)) {
+    const index = opts.rivalIndex || require('./rival-title').defaultRivalIndex();
+    if (index) {
+      const { rivalSwallowsTitle } = require('./rival-title');
+      const slug = url ? String(url).replace(/^[a-z]+:\/\/[^/]+/i, '').replace(/[?#].*$/, '') : '';
+      const texts = [slug, review.title, review.headline].filter(Boolean);
+      const hits = texts.map((text) => rivalSwallowsTitle(text, show, index));
+      const rival = hits.find(Boolean);
+      // A field that names the show's own title on its own (a corrected headline over a legacy
+      // slug) outweighs one that only names the rival.
+      const ownTitleAlone = texts.some((text, i) => !hits[i] && require('./rival-title').mentionsTitle(text, show));
+      if (rival && !ownTitleAlone) return { signal: 'rival-title', detail: `names "${rival.title}" (${rival.id}), which contains "${show.title}"; the show's own title never appears alone` };
+    }
+  }
+
+  const start = productionStart(show);
+  if (start) {
+    // 3. url year: a /2023/ path on a production whose previews began in 2026.
+    const y = urlPathYear(url);
+    const startYear = new Date(start.ms).getUTCFullYear();
+    // The year the grace window opens: a December review of a show whose
+    // previews start in January is not "another year's production".
+    const graceDays = start.fromPreviews ? PRE_PREVIEW_GRACE_DAYS : PRE_OPENING_GRACE_DAYS;
+    const limit = new Date(start.ms - graceDays * DAY_MS).getUTCFullYear();
+    if (want('url-year') && y && y < limit && !priorRunCoversYear(show, y)) {
+      return { signal: 'url-year', detail: `url path year ${y} predates production start ${startYear}` };
+    }
+
+    // 3b. season label (BRO-8321): Stagedoor lists each past season of an annual show under its own
+    // outlet name ("Time Out (2022)", outletId time-out-2022). A label year before this production
+    // began names an earlier season; no stored date is needed to see it.
+    const labelYear = Number((String(review.outlet || '').match(/\(((?:19|20)\d{2})\)\s*$/) || String(review.outletId || '').match(/-((?:19|20)\d{2})$/) || [])[1]);
+    if (want('outlet-season-label') && labelYear && labelYear < limit && !priorRunCoversYear(show, labelYear)) {
+      return { signal: 'outlet-season-label', detail: `outlet label year ${labelYear} predates production start ${startYear}` };
+    }
+
+    // 4. stored publishDate well before the production started.
+    if (want('date-before-production') && !opts.skipDate && review.publishDate) {
+      const pd = require('./date-utils').toDateMs(review.publishDate);
+      // opts.minDateGapDays (BRO-8266): a caller that DROPS rather than flags asks for a
+      // gap this large (days) before trusting a stored date; never below the grace window.
+      const grace = Math.max(start.fromPreviews ? PRE_PREVIEW_GRACE_DAYS : PRE_OPENING_GRACE_DAYS, opts.minDateGapDays || 0) * DAY_MS;
+      if (Number.isFinite(pd) && pd < start.ms - grace && !priorRunCoversDate(show, review.publishDate)) {
+        const days = Math.round((start.ms - pd) / DAY_MS);
+        return { signal: 'date-before-production', detail: `published ${review.publishDate}, ${days}d before ${start.fromPreviews ? 'first preview' : 'opening'}` };
+      }
+    }
+  }
+
+  // 5. text names a London house and not this show's own venue.
+  if (want('venue-text') && opts.useText && market === 'nyc') {
+    const venue = londonVenueInText(review.fullText, show);
+    if (venue) return { signal: 'venue-text', detail: `text names "${venue}" and not ${show.venue}` };
+  }
+
+  return null;
+}
+
+/**
+ * Shows a London-only aggregator (WestEndTheatre, Stagedoor, The Stage, LBO,
+ * theatre.reviews) may be matched to: London-market rows only. Matching such
+ * a roundup against every show lets a same-title Broadway row win whenever
+ * the London production is not in shows.json (BRO-4271, School Girls 2026).
+ */
+function londonAggregatorCandidates(shows) {
+  const { isLondonMarket } = require('./venue-classification');
+  return (shows || []).filter((s) => s && isLondonMarket(s.category));
+}
+
+// Signals read from the url itself, never from a stored date that may be wrong
+// or from an outlet that may legitimately cover both cities. Safe to act on at
+// ingest, before anything is written (measured 2026-09-29 over 21,054
+// included reviews: every remaining hit was a real other-production review).
+const URL_SIGNALS = Object.freeze(['url-edition-market', 'url-year', 'rival-title', 'outlet-season-label']);
+
+// Ingest gate (BRO-8266): URL signals plus a stored publishDate that is years, not
+// weeks, before the production. A timeout.com URL has no year and the aggregator date
+// is all that says a review is from 2012; two years clear of the grace window keeps
+// a wrong-by-months stored date from dropping a real review (those are flagged later).
+const INGEST_SIGNALS = Object.freeze([...URL_SIGNALS, 'date-before-production']);
+const INGEST_DATE_GAP_DAYS = 730;
+const RIVAL_ONLY = Object.freeze(['rival-title']);
+
+/**
+ * Audit the live corpus: included reviews (data/reviews.json) whose URL proves
+ * another production. Exit 1 when any are found. Pure over its inputs.
+ */
+function auditIncludedReviews(reviews, shows) {
+  const byId = new Map(shows.map((s) => [s.id, s]));
+  const rivalIndex = require('./rival-title').buildRivalIndex(shows);
+  const hits = [];
+  for (const r of reviews) {
+    const show = byId.get(r.showId);
+    if (!show) continue;
+    // Shows with no single home market (tour, regional) skip the market signals but not the
+    // rival-title one: the title clash does not depend on a city.
+    const only = showMarket(show) ? URL_SIGNALS : RIVAL_ONLY;
+    const sig = otherProductionSignal(r, show, { only, rivalIndex });
+    if (sig) hits.push({ showId: r.showId, outletId: r.outletId, publishDate: r.publishDate || null, url: r.url, ...sig });
+  }
+  return hits;
+}
+
+/**
+ * Rebuild-time exclusion (BRO-5015 cluster): a file whose OWN url proves
+ * another production must not score. URL_SIGNALS read only the url; the
+ * class-G url-date contradiction also reads publishDate (it fires only when
+ * publishDate disagrees with the url's own date), so `opts.urlOnly` drops it
+ * for files whose publishDate is known stale (mid url-correction). The date guards key on publishDate, and a url swap or a
+ * republish can stamp the current run's date on an old article (la-traviata
+ * 2026 carried a 2022 Met review dated 2026-03-26), so they let it through.
+ * Scope (shows with a home market) matches auditIncludedReviews. Returns the
+ * signal, or null.
+ */
+const OTHER_PRODUCTION_URL_REASON = 'other-production-url';
+
+function detectOtherProductionUrl(review, show, opts = {}) {
+  if (!review || !show) return null;
+  const homeMarket = !!showMarket(show);
+  const sig = otherProductionSignal(review, show, { ...opts, only: homeMarket ? URL_SIGNALS : RIVAL_ONLY });
+  if (!homeMarket) return sig;
+  if (sig || opts.urlOnly) return sig;
+  // A full /YYYY/mon/DD/ url date outside every run and priorRuns window, on a
+  // file whose publishDate disagrees with it (Oslo 2017 carried the Lyttelton
+  // review, url 2017-09-24, dated 2017-04-14). Reused from BRO-4432 class G.
+  const { urlDateContradictionReason } = require('./older-production-live-guard');
+  const g = urlDateContradictionReason(review, show);
+  if (g) return { signal: 'url-date-contradiction', detail: g };
+  return verifiedPlaceSignal(review, show);
+}
+
+/**
+ * Corroborated tier (BRO-8440), kept out of URL_SIGNALS / INGEST_SIGNALS / the
+ * reviews.json audit because it reads the content verifier and publishDate, not
+ * the url alone. Two independent witnesses must agree: the verifier said "wrong
+ * production" (any confidence) AND the url path stages the show somewhere outside
+ * its home market and venue (census-other-place's matcher). Low-confidence
+ * verdicts include applyTemporalOverrides' "near opening, likely correct" downgrade,
+ * which reads only the date; seven of the ten leaks this caught on 2026-11-28 carried
+ * it (Birmingham Rep's Peter Pan on Polka's, Norwich and Salford Cinderellas on the
+ * Lyric Hammersmith panto). The url place is the evidence that downgrade never saw.
+ * Fires only for a review published on/after the production began (a pre-transfer
+ * tryout review predates it), outside any declared priorRuns / tourLegs window, on a
+ * verdict that still describes the stored body, when the body does not name most of
+ * this show's listed cast. Missing either date: no signal.
+ */
+function verifiedPlaceSignal(review, show) {
+  const cv = review.contentVerification;
+  if (!cv || cv.wrongProduction !== true || !review.url) return null;
+  const start = productionStart(show);
+  const pd = require('./date-utils').toDateMs(review.publishDate);
+  if (!start || !Number.isFinite(pd) || pd < start.ms) return null;
+  // The same carve-outs the rebuild's CV promotion applies (rebuild-all-reviews.js, CV pre-pass):
+  // a declared priorRuns / tourLegs window covering the date, a verdict on an older copy of the
+  // body (refetched or re-hashed since), and a body naming most of THIS show's listed cast.
+  const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+  if (isWithinPriorRun(review.publishDate, show.priorRuns) || isWithinTourLeg(review.publishDate, show.tourLegs)) return null;
+  if (require('./review-guards').computeCvIsStale(review)) return null;
+  const place = require('./census-other-place').urlStagedElsewhere(review.url, show, showMarket(show));
+  if (!place) return null;
+  // BRO-8449: cast overlap proves the SHOW, not the production. A tour reuses the home cast, so a
+  // touring url ("operation-mincemeat-touring") on a body naming that cast was exempted as the home
+  // run. A tour place is told apart by the url and the declared tourLegs window above, so it ignores
+  // the cast. A named city or house still takes the exemption (a transfer shares the cast).
+  const { TOUR_TAILS } = require('./census-other-place');
+  const isTour = TOUR_TAILS.includes(place);
+  if (!isTour && review.fullText && require('./own-show-text-evidence').ownShowTextEvidence(review.fullText, show).strong) return null;
+  return { signal: 'url-place-verified', detail: `content verifier says another production and the url stages it at ${place.replace(/-/g, ' ')}` };
+}
+
+/**
+ * Lift our own flag once the url no longer proves another production (the
+ * url was corrected, or the show gained a priorRuns window covering it).
+ * Human decisions are never touched.
+ */
+function shouldReleaseOtherProductionUrl(d, show, opts = {}) {
+  if (!d || d.wrongProduction !== true || d.wrongProductionReason !== OTHER_PRODUCTION_URL_REASON) return false;
+  if (d.wrongProductionManualClear || d.wrongProductionOverride || d.humanReviewedWrongProduction !== undefined || d.allowEarlyDate) return false;
+  // A unanimous LLM ensemble wrong_production verdict on this text outranks a
+  // detector that merely stopped matching (BRO-7906; autoclear-vs-ensemble class).
+  if (require('./wrong-production-autoclear').hasEnsembleConsensus(d, 'wrong_production')) return false;
+  return !detectOtherProductionUrl(d, show, opts);
+}
+
+if (require.main === module) {
+  const path = require('path');
+  const root = path.join(__dirname, '..', '..');
+  const R = require(path.join(root, 'data', 'reviews.json'));
+  const S = require(path.join(root, 'data', 'shows.json'));
+  const hits = auditIncludedReviews(R.reviews || R, S.shows || S);
+  for (const h of hits) console.log(`${h.signal} | ${h.showId} | ${h.outletId} | ${h.publishDate} | ${h.url}`);
+  console.log(`other-production audit: ${hits.length} included review(s) whose url proves another production`);
+  process.exit(hits.length ? 1 : 0);
+}
+
+module.exports = {
+  OTHER_PRODUCTION_URL_REASON,
+  detectOtherProductionUrl,
+  shouldReleaseOtherProductionUrl,
+  londonAggregatorCandidates,
+  auditIncludedReviews,
+  otherProductionSignal,
+  URL_SIGNALS,
+  INGEST_SIGNALS,
+  INGEST_DATE_GAP_DAYS,
+  urlPathYear,
+  urlEditionMarket,
+  showMarket,
+  PRE_PREVIEW_GRACE_DAYS,
+  PRE_OPENING_GRACE_DAYS,
+};

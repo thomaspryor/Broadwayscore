@@ -1,0 +1,292 @@
+{
+  "issueNumber": "bro-6489-auth-1-b",
+  "planId": "07548721-e46c-4433-9dcd-b13f61325a4e",
+  "status": "applied",
+  "createdAt": "2026-10-29T17:44:41.128Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "bro-6489-auth: 18 edits where the audit judged the stored value wrong from non-Playbill pages (or held it), re-verified on an authoritative page (Playbill production page, IBDB, the theatre or producer own page)",
+    "steps": [
+      "shows.json: the-potluck-off-broadway-2026.type",
+      "shows.json: slanted-floors-off-broadway-2026.openingDate",
+      "shows.json: slanted-floors-off-broadway-2026.closingDate",
+      "shows.json: the-unknown-off-broadway-2026.openingDate",
+      "shows.json: jerome-off-broadway-2025.openingDate",
+      "shows.json: caroline-off-broadway-2026.openingDate",
+      "shows.json: night-side-songs-off-broadway-2026.previewsStartDate",
+      "shows.json: shit-meet-fan-off-broadway-2024.previewsStartDate",
+      "shows.json: elektra-off-broadway-2026.closingDate",
+      "shows.json: bad-krey-l-off-broadway-2026.closingDate",
+      "shows.json: our-sinatra-a-musical-celebration-off-broadway-2026.isRevival",
+      "shows.json: translations-off-broadway-2023.isRevival",
+      "shows.json: the-knight-of-the-burning-pestle-off-broadway-2023.isRevival",
+      "shows.json: arcadia-off-broadway-2023.isRevival",
+      "shows.json: henry-iv-off-broadway-2025.isRevival",
+      "shows.json: eurydice-off-broadway-2026.isRevival",
+      "shows.json: zack-off-broadway-2026.isRevival",
+      "shows.json: turandot-off-broadway-2025.isRevival"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-potluck-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-potluck-off-broadway-2026.type (authoritative page https://sohorep.org/the-potluck/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "slanted-floors-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-20",
+        "newValue": "2026-11-02",
+        "description": "shows.json: slanted-floors-off-broadway-2026.openingDate (authoritative page https://playbill.com/production/slanted-floors-off-broadway-astor-place-theatre-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "slanted-floors-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": "2026-11-15",
+        "newValue": "2026-11-29",
+        "description": "shows.json: slanted-floors-off-broadway-2026.closingDate (authoritative page https://playbill.com/production/slanted-floors-off-broadway-astor-place-theatre-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-unknown-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-01-31",
+        "newValue": "2026-02-12",
+        "description": "shows.json: the-unknown-off-broadway-2026.openingDate (authoritative page https://playbill.com/production/the-unknown-off-broadway-studio-seaview-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jerome-off-broadway-2025",
+        "field": "openingDate",
+        "oldValue": "2026-06-01",
+        "newValue": "2026-06-02",
+        "description": "shows.json: jerome-off-broadway-2025.openingDate (authoritative page https://playbill.com/production/jerome-off-broadway-playwrights-horizons-the-judith-o-rubin-theater-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "caroline-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2025-10-01",
+        "newValue": "2025-09-30",
+        "description": "shows.json: caroline-off-broadway-2026.openingDate (authoritative page https://playbill.com/production/caroline-off-broadway-the-robert-w-wilson-mcc-theater-space-2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "night-side-songs-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-03-02",
+        "newValue": "2026-02-14",
+        "description": "shows.json: night-side-songs-off-broadway-2026.previewsStartDate (authoritative page https://www.lct.org/shows/night-side-songs/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shit-meet-fan-off-broadway-2024",
+        "field": "previewsStartDate",
+        "oldValue": "2024-08-21",
+        "newValue": "2024-10-10",
+        "description": "shows.json: shit-meet-fan-off-broadway-2024.previewsStartDate (authoritative page https://playbill.com/production/shit-meet-fan-off-broadway-the-robert-w-wilson-mcc-theater-space-2024)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "elektra-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": "2026-12-18",
+        "newValue": "2026-12-06",
+        "description": "shows.json: elektra-off-broadway-2026.closingDate (authoritative page https://www.tfana.org/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bad-krey-l-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": "2024-12-08",
+        "newValue": "2024-12-01",
+        "description": "shows.json: bad-krey-l-off-broadway-2026.closingDate (authoritative page https://playbill.com/production/bad-kreyol-off-broadway-the-pershing-square-signature-center-irene-diamond-stage-2024)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: our-sinatra-a-musical-celebration-off-broadway-2026.isRevival (authoritative page https://playbill.com/production/our-sinatra-off-broadway-marjorie-s-deane-little-theater-the-west-side-y-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "translations-off-broadway-2023",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: translations-off-broadway-2023.isRevival (authoritative page https://irishrep.org/production-archive/translations)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-knight-of-the-burning-pestle-off-broadway-2023",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-knight-of-the-burning-pestle-off-broadway-2023.isRevival (authoritative page https://www.redbulltheater.com/post/meet-the-cast-the-knight-of-the-burning-pestle)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arcadia-off-broadway-2023",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: arcadia-off-broadway-2023.isRevival (authoritative page https://playbill.com/article/cast-set-for-bedlams-off-broadway-production-of-tom-stoppards-arcadia)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "henry-iv-off-broadway-2025",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: henry-iv-off-broadway-2025.isRevival (authoritative page https://playbill.com/production/henry-iv-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eurydice-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: eurydice-off-broadway-2026.isRevival (authoritative page https://playbill.com/article/more-can-see-eurydice-as-ruhls-off-broadway-myth-extends-again-com-142115)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "zack-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: zack-off-broadway-2026.isRevival (authoritative page https://minttheater.org/production/zack/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "turandot-off-broadway-2025",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: turandot-off-broadway-2025.isRevival (authoritative page https://playbill.com/article/how-the-met-refurbished-franco-zeffirellis-version-of-turandot)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T18:56:13.189Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-potluck-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for slanted-floors-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for slanted-floors-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-unknown-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for jerome-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for caroline-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for night-side-songs-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for shit-meet-fan-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for elektra-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for bad-krey-l-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for our-sinatra-a-musical-celebration-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for translations-off-broadway-2023 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-knight-of-the-burning-pestle-off-broadway-2023 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for arcadia-off-broadway-2023 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for henry-iv-off-broadway-2025 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for eurydice-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for zack-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for turandot-off-broadway-2025 (tags: [\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
+}

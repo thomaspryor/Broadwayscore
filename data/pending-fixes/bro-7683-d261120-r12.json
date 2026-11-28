@@ -1,0 +1,56 @@
+{
+  "issueNumber": "bro-7683-d261120-r12",
+  "planId": "d6cab103-4bf0-4802-b9ac-8f3b1aa4c915",
+  "status": "applied",
+  "createdAt": "2026-11-20T19:03:37.798Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7683: 1 hub productions reviewed on BroadwayWorld",
+    "steps": [
+      "add fiddler-on-the-roof-regional-2026 (BroadwayWorld review 2026-11-19)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add fiddler-on-the-roof-regional-2026 (BroadwayWorld review 2026-11-19)",
+        "show": {
+          "id": "fiddler-on-the-roof-regional-2026",
+          "title": "Fiddler on the Roof",
+          "slug": "fiddler-on-the-roof-regional-2026",
+          "venue": "Gem Theatre, Garden Grove, CA",
+          "status": "open",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-19",
+          "openingDateSource": "bww-first-review",
+          "closingDate": "2026-12-20",
+          "closingDateSource": "bww-review-text",
+          "discoverySource": "bww-local-reviews",
+          "city": "garden-grove-ca",
+          "discoveredAt": "2026-11-20",
+          "evidenceUrls": [
+            "https://www.broadwayworld.com/los-angeles/article/Review-FIDDLER-ON-THE-ROOF-at-GEM-Theatre-20261119"
+          ],
+          "images": {
+            "poster": "/images/shows/fiddler-on-the-roof-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/fiddler-on-the-roof-regional-2026/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-20T19:12:52.957Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fiddler-on-the-roof-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

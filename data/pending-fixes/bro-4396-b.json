@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-4396-b",
+  "planId": "a31f60af-b21f-4a60-ad8b-05a86da9707b",
+  "status": "applied",
+  "createdAt": "2026-09-30T04:07:12.250Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Follow-up to bro-4396: its wrongProductionReason edit applied, but the wrongProduction edit was refused because the field is false, not absent. Same flag with oldValue false.",
+    "steps": [
+      "Set wrongProduction false -> true on the-car-man-west-end-2026/daily-echo--lorelei-reddin.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "Review dated 2025-11-11 predates this production (earliest date 2026-07-28, prior run from 2026-06-15)"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T04:40:53.558Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json wrongProduction: false -> true"
+    }
+  ]
+}

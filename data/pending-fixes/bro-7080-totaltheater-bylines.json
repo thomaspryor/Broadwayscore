@@ -1,0 +1,120 @@
+{
+  "issueNumber": "bro-7080-totaltheater-bylines",
+  "planId": "8471a660-1da4-4c73-aac1-f4aaa9358fe5",
+  "status": "applied",
+  "createdAt": "2026-11-09T10:49:34.600Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7080: set criticName David Sheward on 7 TotalTheater (totaltheater1) reprints. 5 print 'Critic: David Sheward' in the body header; hairy-ape (7/11) and school-girls (25/30) sentences are verbatim in the theater-life--david-sheward.json file of the same show. With the name set, KNOWN_SYNDICATION_PAIRS (david sheward: theater-life primary) drops the reprint where a Theater Life copy exists.",
+    "steps": [
+      "billy-crystal-860-2026/totaltheater1--unknown.json: criticName",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/totaltheater1--unknown.json: criticName",
+      "degenerates-off-broadway-2026/totaltheater1--unknown.json: criticName",
+      "fish-off-broadway-2026/totaltheater1--unknown.json: criticName",
+      "slam-frank-off-broadway-2026/totaltheater1--unknown.json: criticName",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/totaltheater1--unknown.json: criticName",
+      "school-girls-or-the-african-mean-girls-play-2026/totaltheater1--unknown.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "billy-crystal-860-2026/totaltheater1--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "David Sheward",
+        "description": "billy-crystal-860-2026/totaltheater1--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "creation-stories-and-all-the-important-importants-off-broadway-2026/totaltheater1--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "David Sheward",
+        "description": "creation-stories-and-all-the-important-importants-off-broadway-2026/totaltheater1--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "degenerates-off-broadway-2026/totaltheater1--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "David Sheward",
+        "description": "degenerates-off-broadway-2026/totaltheater1--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fish-off-broadway-2026/totaltheater1--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "David Sheward",
+        "description": "fish-off-broadway-2026/totaltheater1--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "slam-frank-off-broadway-2026/totaltheater1--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "David Sheward",
+        "description": "slam-frank-off-broadway-2026/totaltheater1--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/totaltheater1--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "David Sheward",
+        "description": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/totaltheater1--unknown.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-girls-or-the-african-mean-girls-play-2026/totaltheater1--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "David Sheward",
+        "description": "school-girls-or-the-african-mean-girls-play-2026/totaltheater1--unknown.json: criticName"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T12:00:54.692Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/totaltheater1--unknown.json criticName: \"Unknown\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "creation-stories-and-all-the-important-importants-off-broadway-2026/totaltheater1--unknown.json criticName: \"Unknown\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "degenerates-off-broadway-2026/totaltheater1--unknown.json criticName: \"Unknown\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fish-off-broadway-2026/totaltheater1--unknown.json criticName: \"Unknown\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "slam-frank-off-broadway-2026/totaltheater1--unknown.json criticName: \"Unknown\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/totaltheater1--unknown.json criticName: \"Unknown\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/totaltheater1--unknown.json criticName: \"Unknown\" -> \"David Sheward\""
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-3065-b",
+  "planId": "dff76287-6ee7-418e-9757-49d197d8bb60",
+  "status": "applied",
+  "createdAt": "2026-10-13T17:29:41.031Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3065 follow-up: the bro-3065 move of Clive Davis's Times Hot Wing King review out of The Lion King was refused (destination held a Theatre Record copy that never ships). Replace that copy with the full page review and clear the stale wrong_show rejection.",
+    "steps": [
+      "Full Times page text of Clive Davis's Hot Wing King review (url thetimes.com/.../the-hot-wing-king-review-dorfman-national-theatre, 2024-07-19), misfiled under The Lion King. It replaces the destination's Theatre Record copy of the same review, which is url-less, unscored and excluded as showNotMentioned (its text never names the show).",
+      "Clear the ensemble wrong_show rejection made while this review sat under The Lion King (it is about The Hot Wing King, where it now lives): rejectionReason.",
+      "Clear the ensemble wrong_show rejection made while this review sat under The Lion King (it is about The Hot Wing King, where it now lives): rejectedBy.",
+      "Clear the ensemble wrong_show rejection made while this review sat under The Lion King (it is about The Hot Wing King, where it now lives): rejectedAt."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-lion-king-west-end-2021/times-uk--clive-davis.json",
+        "destPath": "the-hot-wing-king-west-end-2024/times-uk--clive-davis.json",
+        "overwrite": true,
+        "description": "Full Times page text of Clive Davis's Hot Wing King review (url thetimes.com/.../the-hot-wing-king-review-dorfman-national-theatre, 2024-07-19), misfiled under The Lion King. It replaces the destination's Theatre Record copy of the same review, which is url-less, unscored and excluded as showNotMentioned (its text never names the show)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hot-wing-king-west-end-2024/times-uk--clive-davis.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_show",
+        "newValue": null,
+        "description": "Clear the ensemble wrong_show rejection made while this review sat under The Lion King (it is about The Hot Wing King, where it now lives): rejectionReason."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hot-wing-king-west-end-2024/times-uk--clive-davis.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "Clear the ensemble wrong_show rejection made while this review sat under The Lion King (it is about The Hot Wing King, where it now lives): rejectedBy."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hot-wing-king-west-end-2024/times-uk--clive-davis.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-04-03T04:17:28.143Z",
+        "newValue": null,
+        "description": "Clear the ensemble wrong_show rejection made while this review sat under The Lion King (it is about The Hot Wing King, where it now lives): rejectedAt."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T19:06:45.594Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-lion-king-west-end-2021/times-uk--clive-davis.json → the-hot-wing-king-west-end-2024/times-uk--clive-davis.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hot-wing-king-west-end-2024/times-uk--clive-davis.json rejectionReason: \"wrong_show\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hot-wing-king-west-end-2024/times-uk--clive-davis.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hot-wing-king-west-end-2024/times-uk--clive-davis.json rejectedAt: \"2026-04-03T04:17:28.143Z\" -> null"
+    }
+  ]
+}

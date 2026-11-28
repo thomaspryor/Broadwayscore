@@ -1,0 +1,83 @@
+{
+  "generatedAt": "2026-11-15T16:49:37.460Z",
+  "leg": "openai",
+  "sampled": 788,
+  "usable": 779,
+  "paired": 779,
+  "controlFailed": 9,
+  "scoredBoth": 656,
+  "sharesControl": {
+    "Rave": 0.2785622593068036,
+    "Positive": 0.3119383825417201,
+    "Mixed": 0.16302952503209242,
+    "Negative": 0.07958921694480103,
+    "Pan": 0.010269576379974325,
+    "rejected": 0.15661103979460847
+  },
+  "sharesShadow": {
+    "Rave": 0.3055198973042362,
+    "Positive": 0.3119383825417201,
+    "Mixed": 0.13478818998716302,
+    "Negative": 0.08857509627727857,
+    "Pan": 0.01540436456996149,
+    "rejected": 0.14377406931964057
+  },
+  "movedOver5Pts": 0.0427,
+  "bucketFlips": 0.0838,
+  "gates": {
+    "bucketShiftPp": {
+      "pass": true,
+      "value": {
+        "Rave": 2.7,
+        "Positive": 0,
+        "Mixed": -2.82,
+        "Negative": 0.9,
+        "Pan": 0.51
+      },
+      "limit": 5
+    },
+    "meanDrift": {
+      "pass": true,
+      "value": 0.34,
+      "limit": 2
+    },
+    "rejectionDelta": {
+      "pass": true,
+      "value": -1.28,
+      "limit": 2
+    },
+    "showDrift": {
+      "pass": true,
+      "value": {
+        "showsChecked": 25,
+        "showsOver": 1,
+        "worst": [
+          {
+            "showId": "julius-caesar-globe-off-west-end-2026",
+            "n": 9,
+            "meanDelta": 2.11
+          }
+        ]
+      },
+      "limit": 0.1
+    },
+    "legAccuracy": {
+      "pass": true,
+      "value": {
+        "control": 2.56,
+        "shadow": 3.5,
+        "n": 152
+      },
+      "limit": 1
+    },
+    "shadowErrors": {
+      "pass": true,
+      "value": {
+        "shadow": 0,
+        "control": 0
+      },
+      "limit": 0.01
+    }
+  },
+  "allPass": true
+}

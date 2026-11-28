@@ -1,0 +1,330 @@
+{
+  "issueNumber": "bro-5622",
+  "planId": "fa45f968-5c60-4bdc-a9be-3687c2068b81",
+  "status": "applied",
+  "createdAt": "2026-10-29T21:04:21.256Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5622 cross-show excerpt triage: flag 14 excerpt-only reviews whose only scored excerpt is verbatim a review of a different show (7 wrongShow) or a different production of the same title (7 wrongProduction), each hand-verified from cast, venue and creative names in the text. Also blanks one relative critic-profile url the write guard would otherwise null.",
+    "steps": [
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (showScoreExcerpt) is the 2016 revival review (text calls it the revival cast; the 1992 run was not a revival); same text sits in falsettos-2016/zeal-nyc--chris-caggiano.json. Reason first.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (showScoreExcerpt) is the 2016 revival review (text calls it the revival cast; the 1992 run was not a revival); same text sits in falsettos-2016/zeal-nyc--chris-caggiano.json.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) is the 1996 revival review (text calls it a revival of a 21-year-old show and refers to the 90s); belongs to chicago-1996. Reason first.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) is the 1996 revival review (text calls it a revival of a 21-year-old show and refers to the 90s); belongs to chicago-1996.",
+      "BRO-5622: url repair before the flag; the stored value /people/Peter-Marks/ is a relative critic-profile path, not a review url (the write guard nulls it anyway).",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews the 2016 Broadway revival (names Birgitte Hjort Sorensen, Raffi Barsoumian, Elena Kampouris, Mary Beth Peil), not the 2008 Roundabout production. Reason first.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews the 2016 Broadway revival (names Birgitte Hjort Sorensen, Raffi Barsoumian, Elena Kampouris, Mary Beth Peil), not the 2008 Roundabout production.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews the Broadway run (text places it at the Lyceum; off-Broadway ran at the Lucille Lortel); same text in oh-mary-2024/dailybeast--tim-teeman.json. Reason first.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews the Broadway run (text places it at the Lyceum; off-Broadway ran at the Lucille Lortel); same text in oh-mary-2024/dailybeast--tim-teeman.json.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews the 2024 revival (names Michael Urie and Sutton Foster); same text in once-upon-a-mattress-2024/nytimes--unknown.json. Reason first.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews the 2024 revival (names Michael Urie and Sutton Foster); same text in once-upon-a-mattress-2024/nytimes--unknown.json.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) is verbatim the 2025 Broadway review held by purpose-2025/theatrely--juan-a-ramirez.json (dtliExcerpt), relayed onto the 2026 Huntington run. Reason first.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) is verbatim the 2025 Broadway review held by purpose-2025/theatrely--juan-a-ramirez.json (dtliExcerpt), relayed onto the 2026 Huntington run.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) is verbatim the 2025 Broadway review held by purpose-2025/variety--aramide-tinubu.json (dtliExcerpt), relayed onto the 2026 Huntington run. Reason first.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) is verbatim the 2025 Broadway review held by purpose-2025/variety--aramide-tinubu.json (dtliExcerpt), relayed onto the 2026 Huntington run.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews A Free Man of Color (New Orleans, turn of the 19th century), not Well; same text in 13-2008 and job-2024 AP files.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews A Free Man of Color (New Orleans, turn of the 19th century), not JOB; same text in 13-2008 and well-2006 AP files.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews A Free Man of Color (characters Jacques, Murmur, Toussaint, Jefferson), not Well; job-2024 copy already carries a BRO-5232 wrongProduction verdict naming that show.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews A Free Man of Color (characters Jacques, Murmur, Toussaint, Jefferson), not 13; job-2024 copy already carries a BRO-5232 wrongProduction verdict naming that show.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews Leap of Faith (Menken score, book by Janus Cercone, lyrics by Glenn Slater), not Lestat; same text in lennon-2005.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews Leap of Faith (Menken score, book by Janus Cercone, lyrics by Glenn Slater), not Lennon; same text in lestat-2006.",
+      "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews Shucked (book by Robert Horn, country score, corn), not Fat Ham; same text in camelot-2023 and shucked-2023 Broadway News files."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "falsettos-1992/zeal-nyc--chris-caggiano.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5622: showScoreExcerpt is the 2016 revival review (text calls it the revival cast; the 1992 run was not a revival); same text sits in falsettos-2016/zeal-nyc--chris-caggiano.json",
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (showScoreExcerpt) is the 2016 revival review (text calls it the revival cast; the 1992 run was not a revival); same text sits in falsettos-2016/zeal-nyc--chris-caggiano.json. Reason first."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "falsettos-1992/zeal-nyc--chris-caggiano.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (showScoreExcerpt) is the 2016 revival review (text calls it the revival cast; the 1992 run was not a revival); same text sits in falsettos-2016/zeal-nyc--chris-caggiano.json."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chicago-1975/newsday--linda-winer.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5622: bwwExcerpt is the 1996 revival review (text calls it a revival of a 21-year-old show and refers to the 90s); belongs to chicago-1996",
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) is the 1996 revival review (text calls it a revival of a 21-year-old show and refers to the 90s); belongs to chicago-1996. Reason first."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chicago-1975/newsday--linda-winer.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) is the 1996 revival review (text calls it a revival of a 21-year-old show and refers to the 90s); belongs to chicago-1996."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2008/washpost--peter-marks.json",
+        "field": "url",
+        "oldValue": "/people/Peter-Marks/",
+        "newValue": "",
+        "description": "BRO-5622: url repair before the flag; the stored value /people/Peter-Marks/ is a relative critic-profile path, not a review url (the write guard nulls it anyway)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2008/washpost--peter-marks.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5622: bwwExcerpt reviews the 2016 Broadway revival (names Birgitte Hjort Sorensen, Raffi Barsoumian, Elena Kampouris, Mary Beth Peil), not the 2008 Roundabout production",
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews the 2016 Broadway revival (names Birgitte Hjort Sorensen, Raffi Barsoumian, Elena Kampouris, Mary Beth Peil), not the 2008 Roundabout production. Reason first."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2008/washpost--peter-marks.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews the 2016 Broadway revival (names Birgitte Hjort Sorensen, Raffi Barsoumian, Elena Kampouris, Mary Beth Peil), not the 2008 Roundabout production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-off-broadway-2024/dailybeast--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5622: nycTheatreExcerpt reviews the Broadway run (text places it at the Lyceum; off-Broadway ran at the Lucille Lortel); same text in oh-mary-2024/dailybeast--tim-teeman.json",
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews the Broadway run (text places it at the Lyceum; off-Broadway ran at the Lucille Lortel); same text in oh-mary-2024/dailybeast--tim-teeman.json. Reason first."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-off-broadway-2024/dailybeast--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews the Broadway run (text places it at the Lyceum; off-Broadway ran at the Lucille Lortel); same text in oh-mary-2024/dailybeast--tim-teeman.json."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-upon-a-mattress-1996/nytimes--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5622: nycTheatreExcerpt reviews the 2024 revival (names Michael Urie and Sutton Foster); same text in once-upon-a-mattress-2024/nytimes--unknown.json",
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews the 2024 revival (names Michael Urie and Sutton Foster); same text in once-upon-a-mattress-2024/nytimes--unknown.json. Reason first."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-upon-a-mattress-1996/nytimes--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews the 2024 revival (names Michael Urie and Sutton Foster); same text in once-upon-a-mattress-2024/nytimes--unknown.json."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/theatrely--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5622: nycTheatreExcerpt is verbatim the 2025 Broadway review held by purpose-2025/theatrely--juan-a-ramirez.json (dtliExcerpt), relayed onto the 2026 Huntington run",
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) is verbatim the 2025 Broadway review held by purpose-2025/theatrely--juan-a-ramirez.json (dtliExcerpt), relayed onto the 2026 Huntington run. Reason first."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/theatrely--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) is verbatim the 2025 Broadway review held by purpose-2025/theatrely--juan-a-ramirez.json (dtliExcerpt), relayed onto the 2026 Huntington run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/variety--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5622: nycTheatreExcerpt is verbatim the 2025 Broadway review held by purpose-2025/variety--aramide-tinubu.json (dtliExcerpt), relayed onto the 2026 Huntington run",
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) is verbatim the 2025 Broadway review held by purpose-2025/variety--aramide-tinubu.json (dtliExcerpt), relayed onto the 2026 Huntington run. Reason first."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purpose-regional-2026/variety--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) is verbatim the 2025 Broadway review held by purpose-2025/variety--aramide-tinubu.json (dtliExcerpt), relayed onto the 2026 Huntington run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "well-2006/ap--mark-kennedy.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews A Free Man of Color (New Orleans, turn of the 19th century), not Well; same text in 13-2008 and job-2024 AP files."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "job-2024/ap--mark-kennedy.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews A Free Man of Color (New Orleans, turn of the 19th century), not JOB; same text in 13-2008 and well-2006 AP files."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "well-2006/new-jersey-newsroom--michael-sommers.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews A Free Man of Color (characters Jacques, Murmur, Toussaint, Jefferson), not Well; job-2024 copy already carries a BRO-5232 wrongProduction verdict naming that show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "13-2008/new-jersey-newsroom--michael-sommers.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews A Free Man of Color (characters Jacques, Murmur, Toussaint, Jefferson), not 13; job-2024 copy already carries a BRO-5232 wrongProduction verdict naming that show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lestat-2006/oc-register--paul-hodgins.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews Leap of Faith (Menken score, book by Janus Cercone, lyrics by Glenn Slater), not Lestat; same text in lennon-2005."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lennon-2005/oc-register--paul-hodgins.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (bwwExcerpt) reviews Leap of Faith (Menken score, book by Janus Cercone, lyrics by Glenn Slater), not Lennon; same text in lestat-2006."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fat-ham-2023/broadwaynews--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5622 cross-show excerpt triage: excerpt-only record whose only scored excerpt (nycTheatreExcerpt) reviews Shucked (book by Robert Horn, country score, corn), not Fat Ham; same text in camelot-2023 and shucked-2023 Broadway News files."
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T22:10:53.398Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "falsettos-1992/zeal-nyc--chris-caggiano.json wrongProductionReason: null -> \"BRO-5622: showScoreExcerpt is the 2016 revival review (text calls it the revival cast; the 1992 run was not a revival); same text sits in falsettos-2016/zeal-nyc--chris-caggiano.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "falsettos-1992/zeal-nyc--chris-caggiano.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chicago-1975/newsday--linda-winer.json wrongProductionReason: null -> \"BRO-5622: bwwExcerpt is the 1996 revival review (text calls it a revival of a 21-year-old show and refers to the 90s); belongs to chicago-1996\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chicago-1975/newsday--linda-winer.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2008/washpost--peter-marks.json url: \"/people/Peter-Marks/\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2008/washpost--peter-marks.json wrongProductionReason: null -> \"BRO-5622: bwwExcerpt reviews the 2016 Broadway revival (names Birgitte Hjort Sorensen, Raffi Barsoumian, Elena Kampouris, Mary Beth Peil), not the 2008 Roundabout production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2008/washpost--peter-marks.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-off-broadway-2024/dailybeast--unknown.json wrongProductionReason: null -> \"BRO-5622: nycTheatreExcerpt reviews the Broadway run (text places it at the Lyceum; off-Broadway ran at the Lucille Lortel); same text in oh-mary-2024/dailybeast--tim-teeman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-off-broadway-2024/dailybeast--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-upon-a-mattress-1996/nytimes--unknown.json wrongProductionReason: null -> \"BRO-5622: nycTheatreExcerpt reviews the 2024 revival (names Michael Urie and Sutton Foster); same text in once-upon-a-mattress-2024/nytimes--unknown.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-upon-a-mattress-1996/nytimes--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-regional-2026/theatrely--unknown.json wrongProductionReason: null -> \"BRO-5622: nycTheatreExcerpt is verbatim the 2025 Broadway review held by purpose-2025/theatrely--juan-a-ramirez.json (dtliExcerpt), relayed onto the 2026 Huntington run\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-regional-2026/theatrely--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-regional-2026/variety--unknown.json wrongProductionReason: null -> \"BRO-5622: nycTheatreExcerpt is verbatim the 2025 Broadway review held by purpose-2025/variety--aramide-tinubu.json (dtliExcerpt), relayed onto the 2026 Huntington run\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purpose-regional-2026/variety--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "well-2006/ap--mark-kennedy.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "job-2024/ap--mark-kennedy.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "well-2006/new-jersey-newsroom--michael-sommers.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/new-jersey-newsroom--michael-sommers.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lestat-2006/oc-register--paul-hodgins.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lennon-2005/oc-register--paul-hodgins.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fat-ham-2023/broadwaynews--unknown.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

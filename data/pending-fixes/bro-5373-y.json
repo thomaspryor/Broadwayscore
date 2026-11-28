@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5373-y",
+  "planId": "d28f25f6-59e1-4094-bc09-fb387d2e036a",
+  "status": "applied",
+  "createdAt": "2026-10-15T04:07:34.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5373 (y): restore Alix Cohen's Theater Life review of The Porch on Windy Hill, lost to the push ownership gate.",
+    "steps": [
+      "restore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "the-porch-on-windy-hill-off-broadway-2026/theater-life--alix-cohen.json",
+        "fromCommit": "a66c5a474ad50a78181089e0f59addce92b85f14",
+        "description": "BRO-5373 loss sweep: dropped by the push ownership gate on 2026-07-12, found nowhere today. Alix Cohen's Theater Life review (posted 2025-09-19) of the Urban Stages New York premiere (Sept 12 - Oct 11, 2025); the 2026 Urban Stages run held under this show id was the encore of that same production (same venue and company), and the premiere has no show entry of its own."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T04:50:43.620Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored the-porch-on-windy-hill-off-broadway-2026/theater-life--alix-cohen.json@a66c5a474ad50a78181089e0f59addce92b85f14 -> the-porch-on-windy-hill-off-broadway-2026/theater-life--alix-cohen.json"
+    }
+  ]
+}

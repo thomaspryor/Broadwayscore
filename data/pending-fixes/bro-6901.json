@@ -1,0 +1,106 @@
+{
+  "issueNumber": "bro-6901",
+  "planId": "ca902b43-80e9-4c43-b937-93273a5f3170",
+  "status": "applied",
+  "createdAt": "2026-11-12T16:53:09.856Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Repair all four remaining unmarked regional image gaps with verified official production art; add strict regional coverage verification.",
+    "steps": [
+      "BRO-6901: attach verified production artwork; provenance in docs/bro-6901-regional-image-coverage.md",
+      "BRO-6901: attach verified production artwork; provenance in docs/bro-6901-regional-image-coverage.md",
+      "BRO-6901: attach verified production artwork; provenance in docs/bro-6901-regional-image-coverage.md",
+      "BRO-6901: attach verified production artwork; provenance in docs/bro-6901-regional-image-coverage.md"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "contact-oran-mor-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "thumbnail": "/images/shows/contact-oran-mor-regional-2026/thumbnail.webp",
+          "poster": null,
+          "hero": "/images/shows/contact-oran-mor-regional-2026/hero.webp"
+        },
+        "description": "BRO-6901: attach verified production artwork; provenance in docs/bro-6901-regional-image-coverage.md"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-shop-of-horrors-hope-mill-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/little-shop-of-horrors-hope-mill-regional-2026/thumbnail.webp",
+          "poster": null,
+          "hero": "/images/shows/little-shop-of-horrors-hope-mill-regional-2026/hero.webp"
+        },
+        "description": "BRO-6901: attach verified production artwork; provenance in docs/bro-6901-regional-image-coverage.md"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-play-that-goes-wrong-regional-2026/thumbnail.webp",
+          "poster": "/images/shows/the-play-that-goes-wrong-regional-2026/poster.webp",
+          "hero": null
+        },
+        "description": "BRO-6901: attach verified production artwork; provenance in docs/bro-6901-regional-image-coverage.md"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dial-m-for-mayhem-dundee-rep-regional-2025",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "thumbnail": "/images/shows/dial-m-for-mayhem-dundee-rep-regional-2025/thumbnail.webp",
+          "poster": null,
+          "hero": "/images/shows/dial-m-for-mayhem-dundee-rep-regional-2025/hero.webp"
+        },
+        "description": "BRO-6901: attach verified production artwork; provenance in docs/bro-6901-regional-image-coverage.md"
+      }
+    ]
+  },
+  "executedAt": "2026-11-12T18:18:36.747Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for contact-oran-mor-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for little-shop-of-horrors-hope-mill-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-play-that-goes-wrong-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dial-m-for-mayhem-dundee-rep-regional-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

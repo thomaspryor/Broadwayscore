@@ -1,0 +1,373 @@
+{
+  "issueNumber": "bro-5063-b",
+  "planId": "f904dec1-9325-4051-aba3-ac472320f0c7",
+  "status": "applied",
+  "createdAt": "2026-10-11T15:50:28.005Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Part 2 of 3. Synopsis cleanup (BRO-5063). 71 live synopses carried Wikipedia scrape debris (image captions, \";Act I\" headings, cut-off song lists) or producer pitch copy (\"Don’t miss\", \"Join us\", \"invites you\", press quotes, cast billing). This part trims 9 to their story text and clears 16 with no usable story so the verified writer refills them (backfill-historical-metadata.yml, shows= the cleared ids).",
+    "steps": [
+      "Trim 9 synopses to their story text",
+      "Clear 16 pitch/billing/song-list synopses"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pal-joey-2008",
+        "field": "synopsis",
+        "oldValue": "Based on original 1940 book ;Act I In Chicago in the late 1930s, singer/dancer Joey Evans, a charming \"heel\" with big plans, schemes to get his own nightclub. He auditions for an emcee job at a second-rate nightclub (\"You Mustn't Kick It Around\"). Joey gets the job and begins rehearsals with the chorus girls and club singer Gladys Bumps.",
+        "newValue": "In Chicago in the late 1930s, singer/dancer Joey Evans, a charming \"heel\" with big plans, schemes to get his own nightclub. He auditions for an emcee job at a second-rate nightclub (\"You Mustn't Kick It Around\"). Joey gets the job and begins rehearsals with the chorus girls and club singer Gladys Bumps.",
+        "description": "Trimmed to the story text: editor note and \";Act I\" heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "funny-girl-2002",
+        "field": "synopsis",
+        "oldValue": "The musical is set in and around New York City just before and following World War I. Ziegfeld Follies star Fanny Brice, awaiting the return of her husband Nicky Arnstein from prison, reflects on their life together, and their story is told as a flashback. Act 1 Fanny is a stage-struck teen who gets her first job in vaudeville.",
+        "newValue": "The musical is set in and around New York City just before and following World War I. Ziegfeld Follies star Fanny Brice, awaiting the return of her husband Nicky Arnstein from prison, reflects on their life together, and their story is told as a flashback. Fanny is a stage-struck teen who gets her first job in vaudeville.",
+        "description": "Trimmed to the story text: act heading mid-text (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "show-boat-1994",
+        "field": "synopsis",
+        "oldValue": "as Magnolia, 1929 ;Act I In 1887, the show boat Cotton Blossom arrives at the river dock in Natchez, Mississippi. The Reconstruction era had ended a decade earlier, and white-dominated Southern legislatures have imposed racial segregation and Jim Crow rules. The boat's owner, Cap'n Andy Hawks, introduces his actors to the crowd on the levee.",
+        "newValue": "In 1887, the show boat Cotton Blossom arrives at the river dock in Natchez, Mississippi. The Reconstruction era had ended a decade earlier, and white-dominated Southern legislatures have imposed racial segregation and Jim Crow rules. The boat's owner, Cap'n Andy Hawks, introduces his actors to the crowd on the levee.",
+        "description": "Trimmed to the story text: image caption and \";Act I\" heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "show-boat-1983",
+        "field": "synopsis",
+        "oldValue": "as Magnolia, 1929 ;Act I In 1887, the show boat Cotton Blossom arrives at the river dock in Natchez, Mississippi. The Reconstruction era had ended a decade earlier, and white-dominated Southern legislatures have imposed racial segregation and Jim Crow rules. The boat's owner, Cap'n Andy Hawks, introduces his actors to the crowd on the levee.",
+        "newValue": "In 1887, the show boat Cotton Blossom arrives at the river dock in Natchez, Mississippi. The Reconstruction era had ended a decade earlier, and white-dominated Southern legislatures have imposed racial segregation and Jim Crow rules. The boat's owner, Cap'n Andy Hawks, introduces his actors to the crowd on the levee.",
+        "description": "Trimmed to the story text: image caption and \";Act I\" heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "no-no-nanette-1971",
+        "field": "synopsis",
+        "oldValue": "Based on 1971 Revised Production ;Act I: 1925. The home of James Smith, New York City. Jimmy Smith, a millionaire Bible publisher, is married to the overly frugal Sue. Jimmy thus has plenty of disposable income, and, because he likes to use his money to make people happy, he has secretly become the (platonic) benefactor of three beautiful women: Betty from Boston, Winnie from Washington, D.",
+        "newValue": "In 1925 New York City, Jimmy Smith, a millionaire Bible publisher, is married to the overly frugal Sue. Because he likes to use his money to make people happy, he has secretly become the (platonic) benefactor of three beautiful women.",
+        "description": "Trimmed to the story text: editor note, \";Act I:\" heading, and a sentence cut at \"D.\" (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pacific-overtures-1976",
+        "field": "synopsis",
+        "oldValue": "Act I Conceived as a Japanese playwright's version of an American musical about American influences on Japan, Pacific Overtures opens in July 1853. As traditional Japanese music plays, the Reciter is revealed on stage. However, unknown to the Nipponese, President Millard Fillmore, determined to open up trade with Japan, has sent Commodore Matthew C.",
+        "newValue": "Conceived as a Japanese playwright's version of an American musical about American influences on Japan, Pacific Overtures opens in July 1853. As traditional Japanese music plays, the Reciter is revealed on stage.",
+        "description": "Trimmed to the story text: act heading; last sentence cut at \"Matthew C.\""
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pacific-overtures-2004",
+        "field": "synopsis",
+        "oldValue": "Act I Conceived as a Japanese playwright's version of an American musical about American influences on Japan, Pacific Overtures opens in July 1853. As traditional Japanese music plays, the Reciter is revealed on stage. However, unknown to the Nipponese, President Millard Fillmore, determined to open up trade with Japan, has sent Commodore Matthew C.",
+        "newValue": "Conceived as a Japanese playwright's version of an American musical about American influences on Japan, Pacific Overtures opens in July 1853. As traditional Japanese music plays, the Reciter is revealed on stage.",
+        "description": "Trimmed to the story text: act heading; last sentence cut at \"Matthew C.\""
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-fidelity-2006",
+        "field": "synopsis",
+        "oldValue": "Act I The Last Real Record Store – Rob, Pale Young Men, Dick, Barry Desert Island Top 5 Break-Ups – Rob, Top 5 Girls It's No Problem – Dick She Goes – Liz, Rob Ian's Here – Ian, Laura Number Five with a Bullet – Laura, Top 5 Girls Ready to Settle – Marie, Back-Up Singer Terrible Things – Marie The Last Real Record Store (Reprise) – Barry, Dick, Rob, Pale Young Men Nine Percent Chance – Rob, Barry, Dick, Pale Young Men ; Act II I Slept with Someone – Rob, Laura Exit Sign – Neil Cryin' in the...",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: song list, not a synopsis"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "state-fair-1996",
+        "field": "synopsis",
+        "oldValue": "Act I Overture – Orchestra Opening (Our State Fair) – Abel, Melissa, and Wayne It Might as Well Be Spring* – Margy Driving at Night/Our State Fair* – Abel, Melissa, Wayne, Margy, and Company That's for Me* – Wayne More Than Just a Friend* – Abel, Hank, Lem, and Clay Isn't It Kinda Fun? * (Reprise) – Margy That's the Way It Happens (from Me and Juliet) – Emily and the Fairtones Boys and Girls Like You and Me (cut from Oklahoma!",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: song list, not a synopsis (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "but-never-jam-today-1979",
+        "field": "synopsis",
+        "oldValue": "Act 1 Curiouser and Curiouser - Alice Twinkle, Twinkle Little Star - Caterpillar, Persona Non Grata, Company Long Live The Queen - Black Queen, Alice A Real Life Lullabye - Duchess, Cooks The More I See People - Cheshire Cat My Little Room - Alice But Never Jam Today - White Queen, Alice Riding For A Fall - Persona Non Grata, Humpty Dumpty, Alice All The Same To Me- Tweedledee, Tweedledum I've Got My Orders - Alice ;Act 2 God Could Give Me Anything - Two, Five, Seven of Spades But Never Jam ...",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: song list, not a synopsis (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-three-musketeers-1984",
+        "field": "synopsis",
+        "oldValue": "Act I Summer Time – Villagers All for One – Aramis, Athos and Porthos The 'He' for Me – Constance, Girls, Aramis, Athos and Porthos My Sword – D'Artagnan and Company Heart of Mine – D'Artagnan and Constance My Sword and I – D'Artagnan and Villagers Vesper Bell – The Pensionaires Dreams – Queen Anne Te Deum – D'Artagnan and Nuns March of the Musketeers – D'Artagnan, Athos, Porthos, Aramis and Musketeers Colonel and Major – Planchet and Girls Love is the Sun – Queen Anne, Constance and The Duk...",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: song list, not a synopsis (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-noon-west-end-2025",
+        "field": "synopsis",
+        "oldValue": "Don’t miss *High Noon*, a thriller like none other, as it brings one of the most iconic westerns to life on stage. Starring Billy Crudup and Denise Gough, this gripping West End premiere counts down to what feels like an impossible choice.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don’t miss\") and billing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sweetmeats-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Don’t miss the world premiere of *Sweetmeats*, a touching tale of unlikely love between two South Asian elders by award-winning playwright Karim Khan.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don’t miss\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deep-azure-globe-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Don’t miss *Deep Azure*, the late Academy Award and BAFTA-nominated actor and writer Chadwick Boseman’s powerhouse of a play, during its UK premiere at the Sam Wanamaker Playhouse, directed by the masterful Tristan Fynn-Aiduenu.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don’t miss\") and billing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-tempest-globe-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Don’t miss this brilliant restaging of William Shakespeare’s *The Tempest*, directed by and starring Tim Crouch. The stunning play turns one island into a gorgeous theatrical landscape.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don’t miss\") and billing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-rat-trap-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Don’t miss Noël Coward’s first-ever but most rarely seen show, *The Rat Trap*, a dark and witty drama focused on marriage as it is reimagined for its centenary year, with revisions by Bill Rosenfield and directed by Kirsty Patrick Ward.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don’t miss\") and billing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+        "field": "synopsis",
+        "oldValue": "Life is a cabaret, old chum! Don't miss this revival of a Kander and Ebb classic, and be immersed into the Kit Kat Club with the incredible transformation of the Playhouse Theatre. Leave all your troubles at the door and see this seven-time Olivier Award-winning production of *Cabaret* in London's West End.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don't miss\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "abba-voyage-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "This digital concert is unlike anything you’ve ever experienced before. Live musicians accompany digital avatars of the hit band ABBA in a totally new form of hybrid entertainment. Designed by the group themselves, you’ve never seen ABBA– or any concert– quite like this. Get your tickets to *ABBA Voyage* at their purpose-built venue the ABBA Arena today.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Get your tickets\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "insane-asylum-seekers-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Don’t miss the world premiere of *Insane Asylum Seekers*, the 2023 Tony Craze Award-winning play. This moving and hilarious story is a multi-generational tale spanning a century and exploring the British-Iraqi experience.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don’t miss\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kimberly-akimbo-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Don’t miss *Kimberly Akimbo*, the Tony Award-winning musical starring Maria Friedman and directed by Michael Longhurst.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don’t miss\") and billing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pinocchio-globe-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Don’t miss this wondrous new musical adaptation of *Pinocchio* as it arrives in London. Created by Charlie Josephine and Jim Fortune and directed by Sean Holmes, this heartwarming adaptation of a classic tale brings audiences of all ages into a world of adventure and wonder.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don’t miss\") and credits"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "million-dollar-quartet-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Don’t miss *Million Dollar Quartet*, the Tony Award-winning musical about Elvis Presley, Johnny Cash, Jerry Lee Lewis, and Carl Perkins on a night they made history.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don’t miss\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-greatest-showman-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "Don’t miss Oliver Tompsett and Samantha Barks in T*he Greatest Showman*, the new stage musical based on the hit 2017 film at Theatre Royal Drury Lane.",
+        "newValue": null,
+        "description": "Cleared so the verified synopsis writer (auto-fix-show-data.js, wrong-show check) refills it: audience pitch (\"Don’t miss\") and billing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amazing-grace-2015",
+        "field": "synopsis",
+        "oldValue": "Act I It is nearly Christmas, 1742, and young Englishman John Newton returns from the sea (\"Prologue\"). His childhood friend, Mary Catlett, an aspiring singer, is angry that John abandoned his musical education to seek adventure at sea. John's father, Captain Newton, a wealthy slave-trader arrives; he is angry that his son has rejected his plans for him (\"Truly Alive\").",
+        "newValue": "It is nearly Christmas, 1742, and young Englishman John Newton returns from the sea (\"Prologue\"). His childhood friend, Mary Catlett, an aspiring singer, is angry that John abandoned his musical education to seek adventure at sea. John's father, Captain Newton, a wealthy slave-trader arrives; he is angry that his son has rejected his plans for him (\"Truly Alive\").",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-town-2014",
+        "field": "synopsis",
+        "oldValue": "Act I A trio of dockyard workers mourns the start of a new workday (\"I Feel Like I'm Not Out of Bed Yet\"). The whistle blows at 6 AM, and three sailors emerge: Ozzie, Chip, and Gabey, excited for 24 hours of shore leave (\"New York, New York\"). Chip is excited to see all the sights that his father told him about after his trip to New York in 1934, with his decade-old guidebook by his side.",
+        "newValue": "A trio of dockyard workers mourns the start of a new workday (\"I Feel Like I'm Not Out of Bed Yet\"). The whistle blows at 6 AM, and three sailors emerge: Ozzie, Chip, and Gabey, excited for 24 hours of shore leave (\"New York, New York\"). Chip is excited to see all the sights that his father told him about after his trip to New York in 1934, with his decade-old guidebook by his side.",
+        "description": "Trimmed to the story text: leading act heading"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T16:40:37.770Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for pal-joey-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for funny-girl-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for show-boat-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for show-boat-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for no-no-nanette-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for pacific-overtures-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for pacific-overtures-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for high-fidelity-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for state-fair-1996"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for but-never-jam-today-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-three-musketeers-1984"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for high-noon-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for sweetmeats-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for deep-azure-globe-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-tempest-globe-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-rat-trap-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for cabaret-at-the-kit-kat-club-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for abba-voyage-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for insane-asylum-seekers-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for kimberly-akimbo-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for pinocchio-globe-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for million-dollar-quartet-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-greatest-showman-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for amazing-grace-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for on-the-town-2014"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "issueNumber": "bro-4504-3",
+  "planId": "f73dd103-421e-43c0-9a93-b2c30cb27790",
+  "status": "pending",
+  "createdAt": "2026-11-01T23:15:00.000Z",
+  "submitter": { "name": null, "email": null },
+  "plan": {
+    "summary": "Give the two scoreable Lane Williamson Exeunt reviews their canonical filenames after removing their excluded duplicate twins. Preserve the scored source records and all scores.",
+    "steps": [
+      "For The Saviors, delete the excluded duplicate twin, then rename the scoreable source into its canonical filename.",
+      "For Prince Faggot at Playwrights Horizons, delete the excluded duplicate twin, then rename the scoreable source into its canonical filename."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-saviors-off-broadway-2026/exeunt-magazine--lane-williamson.json",
+        "description": "Remove the excluded twin whose duplicateOf points to the scoreable source. No other sibling points to the source filename."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "the-saviors-off-broadway-2026/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "destPath": "the-saviors-off-broadway-2026/exeunt-magazine--lane-williamson.json",
+        "description": "Retain the scoreable source under Lane Williamson's canonical filename, after deleting the same-URL excluded twin."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+        "description": "Remove the excluded twin whose duplicateOf points to the scoreable source. No other sibling points to the source filename."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "destPath": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--lane-williamson.json",
+        "description": "Retain the scoreable source under Lane Williamson's canonical filename, after deleting the same-URL excluded twin."
+      }
+    ]
+  }
+}

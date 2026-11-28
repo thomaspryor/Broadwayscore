@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-4259-opening",
+  "planId": "d8320096-32a1-492f-9b68-ccbdc26d5601",
+  "status": "applied",
+  "createdAt": "2026-09-29T05:20:53.865Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Set the Cherry Lane School Pictures opening date to 2026-10-18 (Playbill: previews Oct 7, opening Oct 18) so the review pipeline can fire for it.",
+    "steps": [
+      "Set openingDate from null to 2026-10-18"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "school-pictures-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-10-18",
+        "description": "Playbill (https://playbill.com/article/play-inspired-by-two-girls-one-cup-return-of-school-pictures-scheduled-for-cherry-lane-theatre): official opening Oct 18"
+      }
+    ]
+  },
+  "executedAt": "2026-09-29T05:52:53.287Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for school-pictures-off-broadway-2026"
+    }
+  ]
+}

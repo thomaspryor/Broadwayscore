@@ -1,0 +1,62 @@
+{
+ "city": "boston-ma",
+ "week": "2026-W48",
+ "today": "2026-11-24",
+ "findings": 4,
+ "byClass": {
+  "1": 0,
+  "2": 0,
+  "3": 4,
+  "4": 0,
+  "6": 0
+ },
+ "newFindings": 2,
+ "newByClass": {
+  "1": 0,
+  "2": 0,
+  "3": 2,
+  "4": 0,
+  "6": 0
+ },
+ "provenance": 0,
+ "newProvenance": 0,
+ "plan": null,
+ "card": "BRO-8259",
+ "findingKeys": [
+  "review:1972-regional-2026|https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more|ben west:non-review:roundup",
+  "review:a-streetcar-named-desire-regional-2026|https://parterre.com/2026/11/14/the-trolley-problem|harry rose:wrong-production",
+  "show:in-old-age-regional-2026:venue",
+  "show:rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026:venue"
+ ],
+ "fresh": [
+  {
+   "key": "show:in-old-age-regional-2026:venue",
+   "cls": 3,
+   "kind": "show",
+   "id": "in-old-age-regional-2026",
+   "label": "In Old Age",
+   "code": "venue",
+   "detail": "ours \"ArtsEmerson, Boston, MA\" / page \"Jackie Liebergott Black Box Theatre, Emerson Paramount Center\"",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "review:a-streetcar-named-desire-regional-2026|https://parterre.com/2026/11/14/the-trolley-problem|harry rose:wrong-production",
+   "cls": 3,
+   "kind": "review",
+   "id": "a-streetcar-named-desire-regional-2026|https://parterre.com/2026/11/14/the-trolley-problem|harry rose",
+   "label": "A Streetcar Named Desire | Parterre Box / Harry Rose",
+   "code": "wrong-production",
+   "detail": "At Boston Lyric Opera, a hardworking cast can’t make magic of André Previn’s disenchanting adaptation of A Streetcar Named Desire",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  }
+ ],
+ "provenanceRows": []
+}
