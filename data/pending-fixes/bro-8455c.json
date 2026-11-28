@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8455c",
   "planId": "d63e0127-9932-4f78-82c8-7e1acdf7283c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T20:42:11.503Z",
   "submitter": {
     "name": null,
@@ -77,5 +77,54 @@
         "description": "BRO-8455: Deadline 2024-25 Broadway season roundup, not this production"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T21:02:18.781Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/all-that-dazzles-uk--harry-bower.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/chicagotribune--chris-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/entertainingchicago--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/maryland-theatre-guide--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/picksinsix--ed-tracy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/rachelsreviewstheatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/thestage--holly-omahony.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cottage-regional-2026/12thnight--liz-nicholls.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose-regional-2026/deadline--greg-evans.json"
+    }
+  ],
+  "executedIn": "ci"
 }
