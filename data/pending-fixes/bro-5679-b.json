@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-5679-b",
+  "planId": "db9beba9-b90e-4380-b85b-d9a0a569d527",
+  "status": "applied",
+  "createdAt": "2026-10-20T23:35:30.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5679: Howard Miller's Talkin' Broadway review of The Saviors (07_27_26.html) was flagged wrongProduction by an automatic content check, but there was one production: Bubba Weiler's world premiere at Atlantic Theater Company's Linda Gross Theater, previews from July 8, opening July 27, 2026 (Playbill, July 2026). The review is dated July 27, names the cast (Julius Rinzel, Ivan Howe, Stanley Simons) and says the show opens that night at the Linda Gross Theater. A later re-check (wrongShowOverride) already judged it genuine. Our shows.json venue says Atlantic Stage 2, which is the data defect that made the check disagree.",
+    "steps": [
+      "Record the human clear marker, then clear wrongProduction on the Talkin' Broadway Saviors file."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/talkinbroadway--howard-miller.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Single production (Atlantic Theater Company, Linda Gross Theater, opened 2026-07-27); the review is dated that day and names that cast."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/talkinbroadway--howard-miller.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Stale detection: the only production of The Saviors in 2026 is the one this review covers."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T23:44:27.112Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/talkinbroadway--howard-miller.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/talkinbroadway--howard-miller.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ],
+  "executedIn": "ci"
+}

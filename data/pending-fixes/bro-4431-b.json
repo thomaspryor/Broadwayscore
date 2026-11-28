@@ -1,0 +1,79 @@
+{
+  "issueNumber": "bro-4431-b",
+  "planId": "7956bf71-4a34-4216-bba0-8cb93353daf0",
+  "status": "applied",
+  "createdAt": "2026-09-30T21:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4431 follow-up: the first collection run's 7 multi-show sections were dropped at push time by the review-texts ownership gate (fixed in this landing), and the theatre.reviews step could not fetch from CI (fixed). Re-create the sections by ingesting each article under the show that is missing it, and re-read the three round-ups.",
+    "steps": [
+      "Ingest the Vulture and Theatrely articles under Arias with a Twist / The Body of Mary (their other halves are already filed)",
+      "Re-ingest the New Yorker and Theatrely September articles (both halves were dropped)",
+      "Re-read theatre.reviews round-ups for Cleansed, Golden Boy and Electra/Persona"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=arias-with-a-twist-off-broadway-2026 --url=https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html --stub-on-failure",
+        "description": "Vulture Holdren: Arias with a Twist section"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=https://www.theatrely.com/post/review-roundup-pre-existing-condition-the-body-of-mary --stub-on-failure",
+        "description": "Theatrely Sims: The Body of Mary section"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=delirium-off-broadway-2026 --url=https://www.newyorker.com/magazine/2026/10/05/gut-renos-of-ionesco-and-chekhov --stub-on-failure",
+        "description": "New Yorker Nussbaum: Delirium + The Cherry Orchard (Armory)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=arias-with-a-twist-off-broadway-2026 --url=https://www.theatrely.com/post/a-september-review-roundup --stub-on-failure",
+        "description": "Theatrely Sims September round-up: Arias, Very Blue Light, The Cherry Orchard"
+      },
+      {
+        "type": "run-script",
+        "script": "scrape-theatre-reviews.js",
+        "args": "--shows=cleansed-off-west-end-2026,golden-boy-off-west-end-2026,electra-persona-west-end-2026 --force",
+        "description": "theatre.reviews round-ups: Times/FT/i rows without links, star relay onto the stubs"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T22:02:41.087Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran scrape-theatre-reviews.js successfully"
+    }
+  ]
+}

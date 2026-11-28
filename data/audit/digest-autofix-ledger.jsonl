@@ -1,0 +1,49 @@
+{"ts":"2026-08-14T11:30:46.270Z","event":"auto-dispatch","taskId":"1386","contentHash":"c082a18b2d1fc237"}
+{"ts":"2026-08-14T11:30:46.271Z","event":"auto-dispatch","taskId":"1166","contentHash":"aa7c78c49ed8fb03"}
+{"ts":"2026-08-14T11:30:46.271Z","event":"auto-dispatch","taskId":"linear:BRO-303","contentHash":"3271233f71f3150b"}
+{"ts":"2026-09-14T11:37:13.131Z","event":"card-fail","cardId":"1386","contentHash":"c082a18b2d1fc237","note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-09-14T11:37:13.132Z","event":"card-fail","cardId":"1166","contentHash":"aa7c78c49ed8fb03","note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-09-14T11:37:13.132Z","event":"card-fail","cardId":"linear:BRO-303","contentHash":"3271233f71f3150b","note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-09-14T11:37:13.134Z","event":"auto-dispatch","taskId":"linear:BRO-352","contentHash":"51953825439f7f25"}
+{"ts":"2026-09-14T11:37:13.135Z","event":"auto-dispatch","taskId":"linear:BRO-471","contentHash":"0715a6ef4b6b82c9"}
+{"ts":"2026-09-14T11:37:13.136Z","event":"auto-dispatch","taskId":"linear:BRO-472","contentHash":"cdcb28e023218461"}
+{"ts":"2026-09-19T11:38:42.470Z","event":"card-pass","cardId":"linear:BRO-352","contentHash":"51953825439f7f25","judgedDispatchTs":"2026-09-14T11:37:13.134Z","usd":11.745953200000006,"note":"session finished (Linear-tracked; board Done-audit verifies closure separately)"}
+{"ts":"2026-09-19T11:38:42.470Z","event":"card-pass","cardId":"linear:BRO-471","contentHash":"0715a6ef4b6b82c9","judgedDispatchTs":"2026-09-14T11:37:13.135Z","usd":21.750908850000016,"note":"session finished (Linear-tracked; board Done-audit verifies closure separately)"}
+{"ts":"2026-09-19T11:38:42.470Z","event":"card-pass","cardId":"linear:BRO-472","contentHash":"cdcb28e023218461","judgedDispatchTs":"2026-09-14T11:37:13.136Z","usd":11.902357000000002,"note":"session finished (Linear-tracked; board Done-audit verifies closure separately)"}
+{"ts":"2026-09-19T11:38:42.494Z","event":"auto-dispatch","taskId":"linear:BRO-3349","contentHash":"3408dcf0554f7166"}
+{"ts":"2026-09-19T11:38:42.495Z","event":"auto-dispatch","taskId":"linear:BRO-3794","contentHash":"cd7d8f7d1e5db7e0"}
+{"ts":"2026-10-12T11:30:25.269Z","event":"card-pass","cardId":"linear:BRO-3349","contentHash":"3408dcf0554f7166","judgedDispatchTs":"2026-09-19T11:38:42.494Z","usd":22.1409735,"note":"session finished (Linear-tracked; board Done-audit verifies closure separately)"}
+{"ts":"2026-10-12T11:30:25.269Z","event":"card-fail","cardId":"linear:BRO-3794","contentHash":"cd7d8f7d1e5db7e0","judgedDispatchTs":"2026-09-19T11:38:42.495Z","usd":5.570204599999999,"note":"job job-stopped-short"}
+{"ts":"2026-10-16T11:32:29.745Z","event":"auto-dispatch","taskId":"linear:BRO-4688","contentHash":"f89850c0856c6bc7"}
+{"ts":"2026-10-16T11:32:29.746Z","event":"auto-dispatch","taskId":"linear:BRO-5436","contentHash":"c4109f08c006bafc"}
+{"ts":"2026-10-16T11:32:29.746Z","event":"auto-dispatch","taskId":"linear:BRO-5446","contentHash":"07dbd210c39c6b75"}
+{"ts":"2026-10-17T11:30:23.986Z","event":"card-pass","cardId":"linear:BRO-4688","contentHash":"f89850c0856c6bc7","judgedDispatchTs":"2026-10-16T11:32:29.745Z","usd":10.470202799999994,"note":"session finished (Linear-tracked; board Done-audit verifies closure separately)"}
+{"ts":"2026-10-17T11:30:23.986Z","event":"card-pass","cardId":"linear:BRO-5436","contentHash":"c4109f08c006bafc","judgedDispatchTs":"2026-10-16T11:32:29.746Z","usd":2.44488,"note":"session finished (Linear-tracked; board Done-audit verifies closure separately)"}
+{"ts":"2026-10-17T11:30:23.986Z","event":"card-fail","cardId":"linear:BRO-5446","contentHash":"07dbd210c39c6b75","judgedDispatchTs":"2026-10-16T11:32:29.746Z","usd":0,"note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-10-17T11:32:28.361Z","event":"auto-dispatch","taskId":"linear:BRO-4688","contentHash":"f89850c0856c6bc7"}
+{"ts":"2026-10-17T11:32:28.362Z","event":"auto-dispatch","taskId":"linear:BRO-5534","contentHash":"4cf3d2fe2e352ebc"}
+{"ts":"2026-10-17T11:32:28.363Z","event":"auto-dispatch","taskId":"linear:BRO-5535","contentHash":"37669ab745f6880b"}
+{"ts":"2026-10-18T11:30:21.815Z","event":"card-fail","cardId":"linear:BRO-4688","contentHash":"f89850c0856c6bc7","judgedDispatchTs":"2026-10-17T11:32:28.361Z","usd":0,"note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-10-18T11:30:21.815Z","event":"card-pass","cardId":"linear:BRO-5534","contentHash":"4cf3d2fe2e352ebc","judgedDispatchTs":"2026-10-17T11:32:28.362Z","usd":1.4208362,"note":"session finished (Linear-tracked; board Done-audit verifies closure separately)"}
+{"ts":"2026-10-18T11:30:21.815Z","event":"card-pass","cardId":"linear:BRO-5535","contentHash":"37669ab745f6880b","judgedDispatchTs":"2026-10-17T11:32:28.363Z","usd":0.6900774000000001,"note":"session finished (Linear-tracked; board Done-audit verifies closure separately)"}
+{"ts":"2026-10-18T11:32:18.644Z","event":"auto-dispatch","taskId":"linear:BRO-4688","contentHash":"f89850c0856c6bc7"}
+{"ts":"2026-10-18T11:32:18.645Z","event":"auto-dispatch","taskId":"linear:BRO-5436","contentHash":"c4109f08c006bafc"}
+{"ts":"2026-10-18T11:32:18.645Z","event":"auto-dispatch","taskId":"linear:BRO-4689","contentHash":"5015203970bc56f3"}
+{"ts":"2026-10-19T11:30:30.035Z","event":"card-fail","cardId":"linear:BRO-4688","contentHash":"f89850c0856c6bc7","judgedDispatchTs":"2026-10-18T11:32:18.644Z","usd":0,"note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-10-19T11:30:30.035Z","event":"card-fail","cardId":"linear:BRO-5436","contentHash":"c4109f08c006bafc","judgedDispatchTs":"2026-10-18T11:32:18.645Z","usd":0,"note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-10-19T11:30:30.035Z","event":"card-pass","cardId":"linear:BRO-4689","contentHash":"5015203970bc56f3","judgedDispatchTs":"2026-10-18T11:32:18.645Z","usd":1.1698579000000005,"note":"session finished (Linear-tracked; board Done-audit verifies closure separately)"}
+{"ts":"2026-10-19T11:32:21.952Z","event":"auto-dispatch","taskId":"linear:BRO-5436","contentHash":"c4109f08c006bafc"}
+{"ts":"2026-10-19T11:32:21.953Z","event":"auto-dispatch","taskId":"linear:BRO-5446","contentHash":"07dbd210c39c6b75"}
+{"ts":"2026-10-19T11:32:21.953Z","event":"auto-dispatch","taskId":"linear:BRO-305","contentHash":"21572c80bfc798fe"}
+{"ts":"2026-10-20T11:30:23.376Z","event":"card-fail","cardId":"linear:BRO-5436","contentHash":"c4109f08c006bafc","judgedDispatchTs":"2026-10-19T11:32:21.952Z","usd":0,"note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-10-20T11:30:23.376Z","event":"card-fail","cardId":"linear:BRO-5446","contentHash":"07dbd210c39c6b75","judgedDispatchTs":"2026-10-19T11:32:21.953Z","usd":0,"note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-10-20T11:30:23.376Z","event":"card-pass","cardId":"linear:BRO-305","contentHash":"21572c80bfc798fe","judgedDispatchTs":"2026-10-19T11:32:21.953Z","usd":1.0381771000000002,"note":"session finished (Linear-tracked; board Done-audit verifies closure separately)"}
+{"ts":"2026-10-20T11:32:25.345Z","event":"auto-dispatch","taskId":"linear:BRO-5249","contentHash":"c4861f7e2acf0a62"}
+{"ts":"2026-10-20T11:32:25.346Z","event":"auto-dispatch","taskId":"linear:BRO-2263","contentHash":"5ca578f603f3ac5d"}
+{"ts":"2026-10-20T11:32:25.346Z","event":"auto-dispatch","taskId":"linear:BRO-5684","contentHash":"d989d93934ff2414"}
+{"ts":"2026-10-21T11:30:42.291Z","event":"card-fail","cardId":"linear:BRO-5249","contentHash":"c4861f7e2acf0a62","judgedDispatchTs":"2026-10-20T11:32:25.345Z","usd":0,"note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-10-21T11:30:42.291Z","event":"card-fail","cardId":"linear:BRO-2263","contentHash":"5ca578f603f3ac5d","judgedDispatchTs":"2026-10-20T11:32:25.346Z","usd":0,"note":"spawn never observed within 3h of dispatch (likely refused: runner disabled, live cmux duplicate, already-started issue, or lease already held)"}
+{"ts":"2026-10-21T11:30:42.291Z","event":"card-fail","cardId":"linear:BRO-5684","contentHash":"d989d93934ff2414","judgedDispatchTs":"2026-10-20T11:32:25.346Z","usd":2.0027331999999998,"note":"job job-stranded"}
+{"ts":"2026-10-21T11:32:35.694Z","event":"auto-dispatch","taskId":"linear:BRO-5824","contentHash":"b3123250240f3175"}
+{"ts":"2026-10-21T11:32:35.695Z","event":"auto-dispatch","taskId":"linear:BRO-5819","contentHash":"d0c580fa034bb6fb"}
+{"ts":"2026-10-21T11:32:35.695Z","event":"auto-dispatch","taskId":"linear:BRO-5249","contentHash":"c4861f7e2acf0a62"}

@@ -1,0 +1,246 @@
+{
+  "issueNumber": "bro-7248",
+  "planId": "8706e879-b5f1-4298-aadf-fd93d59a25fc",
+  "status": "applied",
+  "createdAt": "2026-11-16T01:01:16.772Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Review the two newsletter facts: cite delayed Broadway recoupment for Gatsby and the announced closing with unrecouped investment for Buena Vista; correct stale commercial notes without changing financial figures or closing dates.",
+    "steps": [
+      "commercial.json: the-great-gatsby.recoupedSource",
+      "commercial.json: the-great-gatsby.notes",
+      "commercial.json: the-great-gatsby.sources",
+      "commercial.json: buena-vista-social-club.recoupedSource",
+      "commercial.json: buena-vista-social-club.notes",
+      "commercial.json: buena-vista-social-club.sources"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-gatsby",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Gordon Cox, Abroad/Way (Nov 3, 2026), reporting an interview with producer Chunsoo Shin: Broadway production costs had not yet been recouped; profitability was projected for 2027 or 2028. https://gordoncox.substack.com/p/broadway-economic-impact-tourism",
+        "description": "commercial.json: the-great-gatsby.recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-gatsby",
+        "field": "notes",
+        "oldValue": "The Great Gatsby (2024) is currently running on Broadway, but the evidence gathered contains no explicit financial data about its capitalization, weekly running costs, or recoupment status. The Forbes article references Broadway budget concerns generally and mentions a future Wuthering Heights project by the Gatsby producer, but no specific financial figures for Gatsby itself are present in the scraped content. The Broadway League page and academia.edu link are entirely irrelevant to this show's finances.",
+        "newValue": "The Broadway production remains open. Gordon Cox reported on November 3, 2026 that producer Chunsoo Shin attributed delayed recoupment to economic conditions and expected profitability in 2027 or 2028. This is a projection, not an announcement of recoupment or a Broadway closing. The closure mentioned in the same item concerns the separate London production.",
+        "description": "commercial.json: the-great-gatsby.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-gatsby",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
+            "date": "2024-10-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+            "date": "2025-01-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.instagram.com/p/DSWFuk0l8xc/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
+            "date": "2024-10-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+            "date": "2025-01-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.instagram.com/p/DSWFuk0l8xc/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://gordoncox.substack.com/p/broadway-economic-impact-tourism",
+            "date": "2026-11-03"
+          }
+        ],
+        "description": "commercial.json: the-great-gatsby.sources"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "buena-vista-social-club",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Deadline (Nov 6, 2026), corroborated by its syndicated excerpt: the Broadway production had not recouped its reported $17 million investment; producers expected eventual recoupment. https://deadline.com/2026/11/buena-vista-social-club-broadway-closing-date-1237214789/",
+        "description": "commercial.json: buena-vista-social-club.recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "buena-vista-social-club",
+        "field": "notes",
+        "oldValue": "Buena Vista Social Club opened at the Gerald Schoenfeld Theatre on March 19, 2025, with a scheduled closing date of January 17, 2027. The show is currently running. No financial data — capitalization, weekly running costs, or recoupment status — is available from the evidence provided. The Broadway News article yielded only CSS/styling content with no extractable financial information.",
+        "newValue": "The Broadway production at the Gerald Schoenfeld Theatre is scheduled to close January 17, 2027, after 767 regular performances and 27 previews. Deadline reported on November 6, 2026 that it had not yet recouped its reported $17 million investment, while producers said it remained on schedule to recoup. That expectation is not confirmed recoupment or a final loss. Broadway.com independently confirms the closing date and performance counts.",
+        "description": "commercial.json: buena-vista-social-club.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "buena-vista-social-club",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/operation-mincemeat-targets-golden-theatre",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/revived-new-york-state-broadway-tax-credit-lets-purpose-retroactively-recoup",
+            "date": "2026-06-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/buena-vista-social-club-sets-broadway-run-initial-casting-announced-2/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.instagram.com/reel/DdDYYVaBcty/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://cincinnati.broadway.com/buzz/from-havana-to-broadway-buena-vista-social-club-by-the-numbers/",
+            "date": "2026-07-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://theatregold.com/buena-vista-social-club-broadway-musical-reviews-critics-roundup/",
+            "date": "2026-02-06"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/operation-mincemeat-targets-golden-theatre",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/revived-new-york-state-broadway-tax-credit-lets-purpose-retroactively-recoup",
+            "date": "2026-06-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/buena-vista-social-club-sets-broadway-run-initial-casting-announced-2/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.instagram.com/reel/DdDYYVaBcty/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://cincinnati.broadway.com/buzz/from-havana-to-broadway-buena-vista-social-club-by-the-numbers/",
+            "date": "2026-07-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://theatregold.com/buena-vista-social-club-broadway-musical-reviews-critics-roundup/",
+            "date": "2026-02-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/11/buena-vista-social-club-broadway-closing-date-1237214789/",
+            "date": "2026-11-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://digitalpressnetwork.com/story/buena-vista-social-club-sets-broadway-closing-west-end-production-announced-for-2027/r143561123",
+            "date": "2026-11-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadway.com/buzz/207716/buena-vista-social-club-sets-broadway-closing-date/",
+            "date": "2026-11-06"
+          }
+        ],
+        "description": "commercial.json: buena-vista-social-club.sources"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T02:05:47.424Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for buena-vista-social-club"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for buena-vista-social-club"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for buena-vista-social-club"
+    }
+  ],
+  "executedIn": "ci"
+}

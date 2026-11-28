@@ -1,0 +1,121 @@
+{
+  "issueNumber": "bro-6503-we-2011-12-c",
+  "planId": "5d59b552-be00-45fc-a9ba-cd65990bc9c1",
+  "status": "applied",
+  "createdAt": "2026-10-29T05:23:06.926Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 3 closed West End production(s) for 2011-2012 from the historical backfill (we-historical:theatricalia; BRO-6503).",
+    "steps": [
+      "Append much-ado-about-nothing-west-end-2012 (Noël Coward Theatre, 2012-08-08 to 2012-09-15)",
+      "Append volcano-west-end-2012 (Vaudeville Theatre, 2012-08-14 to 2012-09-29)",
+      "Append jumpy-west-end-2012 (Duke of York's Theatre, 2012-08-28 to 2012-11-03)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "much-ado-about-nothing-west-end-2012",
+          "title": "Much Ado About Nothing",
+          "slug": "much-ado-about-nothing-west-end-2012",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2012-08-08",
+          "openingDate": "2012-08-08",
+          "closingDate": "2012-09-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.855Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/1/much-ado-about-nothing/production/12nq"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "volcano-west-end-2012",
+          "title": "Volcano",
+          "slug": "volcano-west-end-2012",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2012-08-14",
+          "openingDate": "2012-08-14",
+          "closingDate": "2012-09-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.873Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/dnh/volcano/production/v91"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "jumpy-west-end-2012",
+          "title": "Jumpy",
+          "slug": "jumpy-west-end-2012",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2012-08-28",
+          "openingDate": "2012-08-28",
+          "closingDate": "2012-11-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2011-2012",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-29T05:23:06.889Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/dat/jumpy/production/t8r"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T07:52:54.874Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added much-ado-about-nothing-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added volcano-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added jumpy-west-end-2012"
+    }
+  ],
+  "executedIn": "ci"
+}

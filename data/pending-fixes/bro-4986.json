@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-4986",
+  "planId": "83c72b17-53c3-4d0b-95a8-73328904b490",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Trim the out.com sponsor block glued onto stored review texts (per-host thresholds in repair-page-bleed.js); each trimmed file queues a rescore.",
+    "steps": [
+      "Run repair-page-bleed.js --host=out.com --apply"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "repair-page-bleed.js",
+        "args": "--host=out.com --apply",
+        "description": "Dry run: 7 files trimmed, 2 refused (head chrome only), rest no tail"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T13:55:36.424Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran repair-page-bleed.js successfully"
+    }
+  ]
+}

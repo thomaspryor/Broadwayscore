@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7407",
+  "planId": "9a7f3450-3bc5-4b3a-8284-079ce6f4b7d4",
+  "status": "applied",
+  "createdAt": "2026-11-15T10:55:36.998Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Restore The Producers Telegraph four-star rating on its canonical review; keep its existing rescore queue. Rebuild published reviews afterward and rerun the star-band alert through the normal health check. The current Sting finding contains wrong-show article text and already needs refetch; this plan does not change it.",
+    "steps": [
+      "Restore the canonical record's 4/5 rating from telegraph--unknown.json: identical article URL, Dominic Cavendish byline and complete Garrick review text; originalScoreSource is telegraph-svg-stars. The canonical rating is null with originalScoreCleared=true from an older aggregator-rating clear. Preserve the existing needsRescore queue and in-band model score; do not alter the critic's rating or invent a score."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-producers-west-end-2025/telegraph--dominic-cavendish.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5 stars",
+        "description": "Restore the canonical record's 4/5 rating from telegraph--unknown.json: identical article URL, Dominic Cavendish byline and complete Garrick review text; originalScoreSource is telegraph-svg-stars. The canonical rating is null with originalScoreCleared=true from an older aggregator-rating clear. Preserve the existing needsRescore queue and in-band model score; do not alter the critic's rating or invent a score."
+      }
+    ]
+  },
+  "executedAt": "2026-11-15T11:57:41.058Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-producers-west-end-2025/telegraph--dominic-cavendish.json originalScore: null -> \"4/5 stars\" (retracted originalScoreCleared, originalScoreClearedReason, originalScoreNormalized, originalScoreSource, scoreSource)"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,768 @@
+{
+  "issueNumber": "bro-6343-1516",
+  "planId": "2a2f1aa9-f21e-4bab-8a2c-7fef35cee2d0",
+  "status": "applied",
+  "createdAt": "2026-10-26T15:48:00.054Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 22 closed West End production(s) for 2015-2016 from the historical backfill (we-historical:olt, we-historical:tr; BRO-6343).",
+    "steps": [
+      "Append photograph-51-west-end-2015 (Noël Coward Theatre, 2015-09-05 to 2015-11-21)",
+      "Append cats-west-end-2015 (London Palladium, 2015-10-23 to 2016-01-02)",
+      "Append elf-west-end-2015 (Dominion Theatre, 2015-10-24 to 2016-01-02)",
+      "Append hangmen-west-end-2015 (Wyndham's Theatre, 2015-12-01 to 2016-03-05)",
+      "Append goodnight-mister-tom-west-end-2015 (Duke of York's Theatre, 2015-12-11 to 2016-02-20)",
+      "Append the-end-of-longing-west-end-2016 (Playhouse Theatre, 2016-02-02 to 2016-05-14)",
+      "Append nell-gwynn-west-end-2016 (Apollo Theatre, 2016-02-04 to 2016-04-30)",
+      "Append hand-to-god-west-end-2016 (Vaudeville Theatre, 2016-02-05 to 2016-04-30)",
+      "Append f-a-n-y-first-aid-nursing-yeomanry-west-end-2016 (Arts Theatre, 2016-03-15 to 2016-04-02)",
+      "Append the-painkiller-west-end-2016 (Garrick Theatre, 2016-03-05 to 2016-04-30)",
+      "Append people-places-and-things-west-end-2016 (Wyndham's Theatre, 2016-03-15 to 2016-06-18)",
+      "Append the-caretaker-west-end-2016 (The Old Vic, 2016-03-29 to 2016-05-14)",
+      "Append funny-girl-west-end-2016 (Savoy Theatre, 2016-04-09 to 2016-10-08)",
+      "Append doctor-faustus-west-end-2016 (Duke of York's Theatre, 2016-04-09 to 2016-06-25)",
+      "Append a-view-from-islington-north-west-end-2016 (Arts Theatre, 2016-05-18 to 2016-07-02)",
+      "Append romeo-and-juliet-west-end-2016 (Garrick Theatre, 2016-05-12 to 2016-08-13)",
+      "Append the-go-between-west-end-2016 (Apollo Theatre, 2016-05-27 to 2016-10-15)",
+      "Append american-idiot-west-end-2016 (Arts Theatre, 2016-07-08 to 2016-09-25)",
+      "Append the-bodyguard-west-end-2016 (Dominion Theatre, 2016-07-15 to 2017-01-07)",
+      "Append the-entertainer-west-end-2016 (Garrick Theatre, 2016-08-20 to 2016-11-12)",
+      "Append groundhog-day-west-end-2016 (The Old Vic, 2016-08-16 to 2016-09-17)",
+      "Append breakfast-at-tiffanys-west-end-2016 (Theatre Royal Haymarket, 2016-07-28 to 2016-09-17)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "photograph-51-west-end-2015",
+          "title": "Photograph 51",
+          "slug": "photograph-51-west-end-2015",
+          "venue": "Noël Coward Theatre",
+          "previewsStartDate": "2015-09-05",
+          "openingDate": "2015-09-14",
+          "closingDate": "2015-11-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.683Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160212124501/http://www.officiallondontheatre.co.uk/london-shows/show/item280220/photograph-51/",
+            "https://www.theatrerecord.com/archive/volume/35/page/898"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cats-west-end-2015",
+          "title": "Cats",
+          "slug": "cats-west-end-2015",
+          "venue": "London Palladium",
+          "previewsStartDate": "2015-10-23",
+          "openingDate": "2015-10-27",
+          "closingDate": "2016-01-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.703Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20170701210535/http://www.officiallondontheatre.co.uk/london-shows/show/item281093/cats/",
+            "https://www.theatrerecord.com/archive/volume/35/page/1078"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "elf-west-end-2015",
+          "title": "Elf",
+          "slug": "elf-west-end-2015",
+          "venue": "Dominion Theatre",
+          "previewsStartDate": "2015-10-24",
+          "openingDate": "2015-11-05",
+          "closingDate": "2016-01-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.725Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160111165911/http://www.officiallondontheatre.co.uk:80/london-shows/show/item273771/elf/",
+            "https://www.theatrerecord.com/archive/volume/35/page/1131"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hangmen-west-end-2015",
+          "title": "Hangmen",
+          "slug": "hangmen-west-end-2015",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2015-12-01",
+          "openingDate": "2015-12-07",
+          "closingDate": "2016-03-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.740Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160802233556/http://www.officiallondontheatre.co.uk:80/london-shows/show/item335860/hangmen/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "goodnight-mister-tom-west-end-2015",
+          "title": "Goodnight Mister Tom",
+          "slug": "goodnight-mister-tom-west-end-2015",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2015-12-11",
+          "openingDate": "2015-12-17",
+          "closingDate": "2016-02-20",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.756Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160531183051/https://www.officiallondontheatre.co.uk/london-shows/show/item332407/goodnight-mister-tom/",
+            "https://www.theatrerecord.com/archive/volume/35/page/1265"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-end-of-longing-west-end-2016",
+          "title": "The End of Longing",
+          "slug": "the-end-of-longing-west-end-2016",
+          "venue": "Playhouse Theatre",
+          "previewsStartDate": "2016-02-02",
+          "openingDate": "2016-02-11",
+          "closingDate": "2016-05-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.779Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160620052522/http://www.officiallondontheatre.co.uk:80/london-shows/show/item343850/the-end-of-longing/?",
+            "https://www.theatrerecord.com/archive/volume/36/page/117"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "nell-gwynn-west-end-2016",
+          "title": "Nell Gwynn",
+          "slug": "nell-gwynn-west-end-2016",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2016-02-04",
+          "openingDate": "2016-02-12",
+          "closingDate": "2016-04-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.799Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160630173610/http://www.officiallondontheatre.co.uk:80/london-shows/show/item343642/nell-gwynn",
+            "https://www.theatrerecord.com/archive/volume/36/page/154"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hand-to-god-west-end-2016",
+          "title": "Hand to God",
+          "slug": "hand-to-god-west-end-2016",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2016-02-05",
+          "openingDate": "2016-02-15",
+          "closingDate": "2016-04-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.812Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160531185334/https://www.officiallondontheatre.co.uk/london-shows/show/item341633/hand-to-god/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "f-a-n-y-first-aid-nursing-yeomanry-west-end-2016",
+          "title": "F.A.N.Y (First Aid Nursing Yeomanry)",
+          "slug": "f-a-n-y-first-aid-nursing-yeomanry-west-end-2016",
+          "venue": "Arts Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2016-03-15",
+          "closingDate": "2016-04-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.828Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160427024625/http://www.officiallondontheatre.co.uk:80/london-shows/show/item346470/f-a-n-y-first-aid-nursing-yeomanry"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-painkiller-west-end-2016",
+          "title": "The Painkiller",
+          "slug": "the-painkiller-west-end-2016",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2016-03-05",
+          "openingDate": "2016-03-17",
+          "closingDate": "2016-04-30",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.843Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20171007111209/http://www.officiallondontheatre.co.uk:80/london-shows/show/item280629/the-painkiller",
+            "https://www.theatrerecord.com/archive/volume/36/page/297"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "people-places-and-things-west-end-2016",
+          "title": "People, Places & Things",
+          "slug": "people-places-and-things-west-end-2016",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2016-03-15",
+          "openingDate": "2016-03-23",
+          "closingDate": "2016-06-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.857Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160804130626/http://www.officiallondontheatre.co.uk/london-shows/show/item340282/people-places-and-things/?utm_source=OlivierSite&utm_medium=Affiliate&utm_campaign=LOA-BuyTickets&src=OlivierSite&inf=LOA-BuyTickets",
+            "https://www.theatrerecord.com/archive/volume/36/page/306"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-caretaker-west-end-2016",
+          "title": "The Caretaker",
+          "slug": "the-caretaker-west-end-2016",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2016-03-29",
+          "openingDate": "2016-04-06",
+          "closingDate": "2016-05-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.872Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160609115229/http://www.officiallondontheatre.co.uk:80/london-shows/show/item334870/the-caretaker",
+            "https://www.theatrerecord.com/archive/volume/36/page/368"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "funny-girl-west-end-2016",
+          "title": "Funny Girl",
+          "slug": "funny-girl-west-end-2016",
+          "venue": "Savoy Theatre",
+          "previewsStartDate": "2016-04-09",
+          "openingDate": "2016-04-20",
+          "closingDate": "2016-10-08",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.887Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20170701212036/http://www.officiallondontheatre.co.uk/london-shows/show/item340784/funnygirl/",
+            "https://www.theatrerecord.com/archive/volume/36/page/438"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "doctor-faustus-west-end-2016",
+          "title": "Doctor Faustus",
+          "slug": "doctor-faustus-west-end-2016",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2016-04-09",
+          "openingDate": "2016-04-25",
+          "closingDate": "2016-06-25",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.901Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160926130621/http://www.officiallondontheatre.co.uk:80/london-shows/show/item350526/doctor-faustus",
+            "https://www.theatrerecord.com/archive/volume/36/page/469"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-view-from-islington-north-west-end-2016",
+          "title": "A View From Islington North",
+          "slug": "a-view-from-islington-north-west-end-2016",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2016-05-18",
+          "openingDate": "2016-05-24",
+          "closingDate": "2016-07-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.915Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20160709020903/http://www.officiallondontheatre.co.uk:80/london-shows/show/item354386/a-view-from-islington-north/",
+            "https://www.theatrerecord.com/archive/volume/36/page/562"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "romeo-and-juliet-west-end-2016",
+          "title": "Romeo and Juliet",
+          "slug": "romeo-and-juliet-west-end-2016",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2016-05-12",
+          "openingDate": "2016-05-25",
+          "closingDate": "2016-08-13",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.929Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20170820024652/http://www.officiallondontheatre.co.uk:80/london-shows/show/item280630/romeo-and-juliet/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-go-between-west-end-2016",
+          "title": "The Go-Between",
+          "slug": "the-go-between-west-end-2016",
+          "venue": "Apollo Theatre",
+          "previewsStartDate": "2016-05-27",
+          "openingDate": "2016-06-07",
+          "closingDate": "2016-10-15",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.944Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20171018120438/http://www.officiallondontheatre.co.uk/london-shows/show/item352009/the-go-between/",
+            "https://www.theatrerecord.com/archive/volume/36/page/630"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "american-idiot-west-end-2016",
+          "title": "American Idiot",
+          "slug": "american-idiot-west-end-2016",
+          "venue": "Arts Theatre",
+          "previewsStartDate": "2016-07-08",
+          "openingDate": "2016-07-13",
+          "closingDate": "2016-09-25",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.957Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20171008184210/http://www.officiallondontheatre.co.uk:80/london-shows/show/item359412/american-idiot",
+            "https://www.theatrerecord.com/archive/volume/36/page/784"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-bodyguard-west-end-2016",
+          "title": "The Bodyguard",
+          "slug": "the-bodyguard-west-end-2016",
+          "venue": "Dominion Theatre",
+          "previewsStartDate": "2016-07-15",
+          "openingDate": "2016-07-18",
+          "closingDate": "2017-01-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.971Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20170112054446/http://www.officiallondontheatre.co.uk/london-shows/show/item352419/thebodyguard/?utm_source=OlivierSite&utm_medium=Affiliate&utm_campaign=LOA-BuyTickets&src=OlivierSite&inf=LOA-BuyTickets",
+            "https://www.whatsonstage.com/news/review-the-bodyguard-dominion-theatre_41335/",
+            "https://www.theatrerecord.com/archive/volume/36/page/794"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-entertainer-west-end-2016",
+          "title": "The Entertainer",
+          "slug": "the-entertainer-west-end-2016",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2016-08-20",
+          "openingDate": "2016-08-30",
+          "closingDate": "2016-11-12",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:olt",
+          "discoveredAt": "2026-10-26T15:47:59.987Z",
+          "openingDateSource": "official-london-theatre",
+          "closingDateSource": "official-london-theatre",
+          "evidenceUrls": [
+            "https://web.archive.org/web/20170112053439/http://www.officiallondontheatre.co.uk/london-shows/show/item280204/theentertainer/?utm_source=OlivierSite&utm_medium=Affiliate&utm_campaign=LOA-BuyTickets&src=OlivierSite&inf=LOA-BuyTickets",
+            "https://www.whatsonstage.com/news/review-the-entertainer-garrick-theatre_41640/",
+            "https://www.theatrerecord.com/archive/volume/36/page/914"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "groundhog-day-west-end-2016",
+          "title": "Groundhog Day",
+          "slug": "groundhog-day-west-end-2016",
+          "venue": "The Old Vic",
+          "previewsStartDate": null,
+          "openingDate": "2016-08-16",
+          "closingDate": "2016-09-17",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-26T15:48:00.001Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-groundhog-day-old-vic_41556/",
+            "https://www.theatrerecord.com/archive/volume/36/page/871"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "breakfast-at-tiffanys-west-end-2016",
+          "title": "Breakfast at Tiffany's",
+          "slug": "breakfast-at-tiffanys-west-end-2016",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": null,
+          "openingDate": "2016-07-28",
+          "closingDate": "2016-09-17",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2015-2016",
+          "discoverySource": "we-historical:tr",
+          "discoveredAt": "2026-10-26T15:48:00.023Z",
+          "openingDateSource": "theatre-record",
+          "closingDateSource": "theatre-record",
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/review-breakfast-at-tiffanys-theatre-royal-haymarket_41389/",
+            "https://www.theatrerecord.com/archive/volume/36/page/839"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T17:39:24.700Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added photograph-51-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cats-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added elf-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hangmen-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added goodnight-mister-tom-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-end-of-longing-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added nell-gwynn-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hand-to-god-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added f-a-n-y-first-aid-nursing-yeomanry-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-painkiller-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added people-places-and-things-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-caretaker-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added funny-girl-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added doctor-faustus-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-view-from-islington-north-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added romeo-and-juliet-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-go-between-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added american-idiot-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-bodyguard-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-entertainer-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added groundhog-day-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added breakfast-at-tiffanys-west-end-2016"
+    }
+  ],
+  "executedIn": "ci"
+}

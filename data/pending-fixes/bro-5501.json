@@ -1,0 +1,296 @@
+{
+  "issueNumber": "bro-5501",
+  "planId": "cb3a2c6f-92cb-4451-8304-bac1656f36a1",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5501: Cherry Orchard 2026 West End + Armory. Delete 2024 wrongProduction files squatting on the 2026 Standard/Time Out London/Times slots and re-ingest the 2026 reviews; fix bylines; refresh the Theatrely roundup fanout; correct Armory cast and creative teams.",
+    "steps": [
+      "Delete 3 wrongProduction files (2024 Benedict Andrews text), ingest the 2026 reviews, set bylines from the live pages, correct shows.json cast/creativeTeam from two agreeing public sources each."
+    ],
+    "riskLevel": "medium",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-cherry-orchard-west-end-2026/standard--nick-curtis.json",
+        "description": "Delete wrongProduction file holding another production's text (Evening Standard) under the 2026 url, so the real 2026 review can be ingested into the slot"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-cherry-orchard-west-end-2026/timeout-london--andrzej-lukowski.json",
+        "description": "Delete wrongProduction file holding another production's text (Time Out London) under the 2026 url, so the real 2026 review can be ingested into the slot"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-cherry-orchard-west-end-2026/times-uk--clive-davis.json",
+        "description": "Delete wrongProduction file holding another production's text (The Times) under the 2026 url, so the real 2026 review can be ingested into the slot"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-cherry-orchard-west-end-2026 --url=https://www.standard.co.uk/culture/theatre/the-cherry-orchard-review-b1300867.html --outlet=standard --critic=\"Nick Curtis\" --stub-on-failure",
+        "description": "Re-ingest the real 2026 Evening Standard review (Nick Curtis, 4/5)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-cherry-orchard-west-end-2026 --url=https://www.timeout.com/london/news/the-cherry-orchard-review-kristin-scott-thomas-harold-pinter-theatre-101426 --outlet=timeout-london --critic=\"Andrzej Lukowski\" --publish-date=2026-10-14 --stub-on-failure",
+        "description": "Re-ingest the real 2026 Time Out London review (Andrzej Lukowski, 4/5)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-cherry-orchard-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6 --outlet=times-uk --stub-on-failure",
+        "description": "Ingest the real 2026 Times review (Kristin Scott Thomas Cherry Orchard)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-cherry-orchard-park-avenue-armory-off-broadway-2026 --url=https://www.theatrely.com/post/a-september-review-roundup",
+        "description": "Re-run ingest on the Theatrely multi-show roundup so the multi-show fanout marks the Cherry Orchard section (BRO-4431), like the New Yorker column"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cherry-orchard-west-end-2026/cultural-capital--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Maryam Philpott",
+        "description": "Byline from the page (byline under the post title)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cherry-orchard-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Guillermo Nazara",
+        "description": "Byline from the page (byline at end of article)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cherry-orchard-west-end-2026/the-spy-in-the-stalls--thespyinthestalls.json",
+        "field": "criticName",
+        "oldValue": "thespyinthestalls",
+        "newValue": "Jonathan Evans",
+        "description": "Byline from the page (byline in review header)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cherry-orchard-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Anton Chekhov",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Anton Chekhov",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Ian Rickson",
+            "role": "Director"
+          },
+          {
+            "name": "Conor McPherson",
+            "role": "Adaptation"
+          },
+          {
+            "name": "Chloe Lamford",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Sussie Juhlin-Wallén",
+            "role": "Costume Design"
+          }
+        ],
+        "description": "Add director, adaptor and designers; sources: WhatsOnStage review (whatsonstage.com/london-theatre/reviews/the-cherry-orchard-review-a-smart-and-salty-west-end-revival_1734872/) and London Theatre review (londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "John Turturro",
+            "role": "Lopakhin"
+          },
+          {
+            "name": "Dianne Wiest",
+            "role": "Ranevskaya"
+          },
+          {
+            "name": "Josh Hamilton",
+            "role": "Trofimov"
+          },
+          {
+            "name": "Daniel Davis",
+            "role": "Gaev"
+          },
+          {
+            "name": "Juliet Rylance",
+            "role": "Varya"
+          },
+          {
+            "name": "Michael Urie",
+            "role": "Yepikhodov"
+          },
+          {
+            "name": "Elisabeth Waterston",
+            "role": "Dunyasha"
+          },
+          {
+            "name": "Katherine Waterston",
+            "role": "Anya"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Jeon Do-yeon",
+            "role": "Song Do-young"
+          },
+          {
+            "name": "Son Sang-kyu",
+            "role": "Song Jae-young"
+          },
+          {
+            "name": "Park Hae-soo",
+            "role": "Hwang Doo-sik"
+          },
+          {
+            "name": "Nam Yun-ho",
+            "role": "Byun Dong-lim"
+          },
+          {
+            "name": "Yoo Byung-hoon"
+          },
+          {
+            "name": "Park Hee-jung"
+          },
+          {
+            "name": "Lee Ju-won"
+          },
+          {
+            "name": "Lee Se-jun"
+          },
+          {
+            "name": "Moon Choi"
+          },
+          {
+            "name": "Lee Ji-hye"
+          }
+        ],
+        "description": "Replace wrong cast (Turturro/Wiest, a different production) with Simon Stone's Korean-language cast; sources: TheaterMania review (theatermania.com/news/review-the-cherry-orchard-reimagined-by-simon-stone-as-a-k-drama_1854057/), New York Stage Review (nystagereview.com/2026/09/18/cherry-orchard-korean-glass-houses/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Anton Chekhov",
+            "role": "Playwright"
+          },
+          {
+            "name": "Simon Stone",
+            "role": "Director"
+          },
+          {
+            "name": "Simon Stone",
+            "role": "Adaptation"
+          },
+          {
+            "name": "Saul Kim",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "James Farncombe",
+            "role": "Lighting Design"
+          }
+        ],
+        "description": "Add director/adaptor and designers; sources: TheaterMania and New York Stage Review reviews (both name Stone, Saul Kim, James Farncombe)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T19:49:10.399Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cherry-orchard-west-end-2026/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cherry-orchard-west-end-2026/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cherry-orchard-west-end-2026/times-uk--clive-davis.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cherry-orchard-west-end-2026/cultural-capital--unknown.json criticName: \"Unknown\" -> \"Maryam Philpott\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cherry-orchard-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cherry-orchard-west-end-2026/the-spy-in-the-stalls--thespyinthestalls.json criticName: \"thespyinthestalls\" -> \"Jonathan Evans\""
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-cherry-orchard-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+    }
+  ]
+}

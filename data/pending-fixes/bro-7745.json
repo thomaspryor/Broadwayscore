@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7745",
+  "planId": "561e0506-3330-435e-89f5-bdc4d4a69eb6",
+  "status": "applied",
+  "createdAt": "2026-11-18T04:26:04.281Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Blue Man Group TheaterMania review: critic is Dan Rubins (visible byline), not posting editor David Gordon",
+    "steps": [
+      "blue-man-group-a-new-holiday-surprise-2026/theatermania--david-gordon.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "blue-man-group-a-new-holiday-surprise-2026/theatermania--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Dan Rubins",
+        "description": "blue-man-group-a-new-holiday-surprise-2026/theatermania--david-gordon.json: criticName"
+      }
+    ]
+  },
+  "executedAt": "2026-11-18T04:42:21.036Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "blue-man-group-a-new-holiday-surprise-2026/theatermania--david-gordon.json criticName: \"David Gordon\" -> \"Dan Rubins\""
+    }
+  ],
+  "executedIn": "ci"
+}

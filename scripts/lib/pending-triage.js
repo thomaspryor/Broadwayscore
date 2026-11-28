@@ -1,0 +1,589 @@
+'use strict';
+/**
+ * pending-triage.js (BRO-8023): classify a _pending stub WITHOUT fetching it.
+ *
+ * The drain (scripts/replay-pending-bylines.js) fetches one file at a time, so a
+ * 16-minute slot never reached most of the 6,786-file queue: thousands of stubs
+ * that a URL rule could settle for free sat next to real reviews waiting for a
+ * fetch. This is the drain's pre-fetch step, pulled out so it is pure, testable
+ * and runnable over the whole queue in one pass (`--triage-only`).
+ *
+ *   duplicate  url already filed for THIS show   -> drain's redundant-stub rule
+ *   junk       never a review of this production -> tagged with a reason, KEPT
+ *   candidate  needs a fetch (byline, show match, date) -> drain's promotion path
+ *
+ * Every junk rule is a shared guard (intake uses the same ones), never a copy.
+ */
+const { offTopicSectionReason, listingPageUrlReason, nonReviewHostMatch } = require('./non-review-url-patterns');
+
+// BRO-8023 (first batch promotions): Playbill /article/ pages are news (season
+// boards, casting); 0 of 49,374 scored review urls are Playbill articles.
+const PLAYBILL_ARTICLE_RE = /^https?:\/\/(?:www\.)?playbill\.com\/article\//i;
+// A photo-call announcement ("production-images-released-for-grace-pervades-...").
+// 0 scored urls match; a "first-look-theatre-..." review slug is left alone.
+const ANNOUNCEMENT_SLUG_RE = /(?:^|[-/])(?:production-(?:images|photos|shots)-(?:released|revealed)|first-look-(?:at|photos|images|pictures))(?:-|\/|$)/i;
+
+// Second batch (2026-11-21): the drain promoted two Times interviews and a Deadline closing-date story.
+// Over the 49,794 scored urls: 0 have an "interview" token in the final slug without "review(s)"; 1 has
+// "closing-date" (itself a news article: independent aspects-of-love-closing-date-refund).
+const INTERVIEW_SLUG_RE = /(?:^|-)interview(?:-|$)/i;
+const CLOSING_DATE_SLUG_RE = /(?:^|-)closing-date(?:-|$)/i;
+const REVIEW_TOKEN_RE = /(?:^|-)reviews?(?:-|$)/i;
+function finalSlug(url) {
+  try { return new URL(String(url)).pathname.split('/').filter(Boolean).pop() || ''; } catch { return ''; }
+}
+
+// BRO-8065: url-text rules for the site-search hits the first triage missed (11 of 18 known junk in the
+// 2025-26 queue). The section/awards text rules never fire when the url names THIS show (a stage review filed
+// under a screen-looking section, a Tony-winner's review), so no real review is rejected on url text alone.
+// A screen section on any host (/movies/, /criticism/movies/, /tv/, /film/): a stage cue in the slug keeps it.
+const SCREEN_SEGMENT_RE = /^(?:movies?|films?|tv|television|streaming)$/i;
+const STAGE_CUE_RE = /theat|stage|musical|broadway|west-?end|opera|ballet|panto|off-broadway|playhouse|play-review/i;
+// A TV episode recap ("outlander-blood-of-my-blood-episode-2-review"); 0 scored stage reviews carry it.
+const TV_EPISODE_RE = /(?:^|-)(?:episode-\d+|s\d{1,2}-?e\d{1,2}|season-\d+-episode)(?:-|$)/i;
+// Awards coverage: a live blog (/live/...), predictions, nominees, a "wins the tony" post, readers' voting.
+const AWARDS_SLUG_RE = /(?:^|-)(?:tonys?|oliviers?|drama-desk|obies?|outer-critics-circle)-(?:awards?(?!-winn)|nominations?|nominees|predictions|host|voting|snubs|ceremony|red-carpet)(?:-|$)|(?:^|-)wins?-(?:the-)?(?:tony|olivier)(?:-|$)|(?:^|-)predictions(?:-|$)/i;
+// Watch/TV fan sites the corpus has never scored a review from.
+const NON_THEATRE_HOSTS = new Set(['watchcrunch.com', 'storiesfromthenewworld.com']);
+
+/** Path segments (lowercased, before the final slug). */
+function pathSegments(url) {
+  try { return new URL(String(url)).pathname.split('/').filter(Boolean).map((p) => p.toLowerCase()); } catch { return []; }
+}
+
+/**
+ * The url's own date (/YYYY/MM/DD/, BWW -YYYYMMDD, /YYYY/MM/ month, /YYYY/ year) wholly outside this production's
+ * window, judged by the SAME canonical rule the drain applies to a fetched date (isArticleOutsideProductionWindow),
+ * plus a one-year margin (below), so a pre-fetch junk verdict is one the post-fetch rule would also reach. A month or year counts only when its first and last day are
+ * both outside and on the same side of the run (a year that contains the run is no evidence). Pure.
+ */
+const URL_DATE_MARGIN_DAYS = 365;
+function urlDateOutsideWindowReason(url, show) {
+  if (!show || !(show.openingDate || show.previewsStartDate)) return null;
+  const { extractDateFromUrl } = require('./url-date');
+  const r = extractDateFromUrl(url);
+  if (!r || r.date === '2001-01-01') return null; // BWW's placeholder -20010101 suffix is not a date
+  let first; let last; let label;
+  if (r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date)) { first = last = label = r.date; } else {
+    // A range (blogspot "YYYY-MM", /YYYY/MM/, /YYYY/): a declared earlier run or tour leg inside it could be the
+    // review's own production, and the canonical guard only tests single days, so leave these shows to the drain.
+    if ((show.priorRuns || []).length || (show.tourLegs || []).length) return null;
+    const ym = r.date && String(r.date).match(/^(\d{4})-(\d{2})$/);
+    const m = ym ? [null, ym[1], ym[2]] : String(url).match(/\/((?:19|20)\d{2})\/(\d{1,2})\//);
+    const y = m ? Number(m[1]) : Number(r.yearOnly);
+    if (!y) return null;
+    const mo = m && Number(m[2]) >= 1 && Number(m[2]) <= 12 ? Number(m[2]) : null;
+    const iso = (d) => d.toISOString().slice(0, 10);
+    first = iso(new Date(Date.UTC(y, mo ? mo - 1 : 0, 1)));
+    last = iso(new Date(Date.UTC(y, mo ? mo : 12, 0)));
+    label = mo ? `${y}-${String(mo).padStart(2, '0')}` : String(y);
+  }
+  if (!isArticleOutsideProductionWindow(show, first) || !isArticleOutsideProductionWindow(show, last)) return null;
+  const anchor = require('./date-guard').earliestShowDate(show);
+  if (!anchor) return null;
+  const end = String(show.closingDate || show.openingDate || anchor);
+  const days = (a, b) => (Date.parse(a) - Date.parse(b)) / 86400000;
+  // Margin: over the 49,907 scored urls the canonical window alone flagged 34 real reviews 9-186 days out
+  // (undeclared earlier runs, late blog posts); a url date more than a year outside flags 4. Nearer ones are left
+  // to the drain, which settles them on the fetched date.
+  const before = days(anchor, last); const after = days(first, end);
+  if (!(before > URL_DATE_MARGIN_DAYS || after > URL_DATE_MARGIN_DAYS)) return null;
+  return `url date ${label} is more than a year outside this production's window`;
+}
+
+/** A venue as a slug phrase: "Royal Exchange Theatre, Manchester" -> "royal-exchange"; "The Old Vic" -> "old-vic". Pure. */
+function venuePhrase(venue) {
+  const head = String(venue || '').split(/[,(]/)[0].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/['’.]/g, '');
+  const words = head.split(/[^a-z0-9]+/).filter((w) => w && !['the', 'theatre', 'theater', 'playhouse'].includes(w));
+  const phrase = words.join('-');
+  return phrase.length >= 5 ? phrase : null;
+}
+/**
+ * The slug names the venue of ANOTHER shows.json entry with this title (twelfth-night-at-the-young-vic filed under
+ * the Olivier 2017 run) and not this show's own venue: that entry's review. Only same-title entries count, so an
+ * undeclared pre-transfer venue (Death of a Salesman: Young Vic -> Piccadilly) never settles a stub. Pure.
+ * @param {{id:string, venue:string}[]} sameTitleShows  other entries sharing this show's title
+ */
+function siblingVenueReason(url, show, sameTitleShows) {
+  const m = siblingVenueMatch(url, show, sameTitleShows);
+  return m ? m.reason : null;
+}
+/** siblingVenueReason with the owning entry's id: {reason, id} | null. Pure. */
+function siblingVenueMatch(url, show, sameTitleShows) {
+  if (!show || !Array.isArray(sameTitleShows) || !sameTitleShows.length) return null;
+  const slug = `-${finalSlug(url).toLowerCase().replace(/\.html?$/i, '')}-`;
+  const mine = venuePhrase(show.venue);
+  if (mine && slug.includes(`-${mine}-`)) return null;
+  if (/-transfer/.test(slug)) return null; // "transfers-from-the-young-vic": continuity, not another production
+  // A tour plays many venues; its reviews name each one.
+  if (/tour/i.test(`${show.category || ''} ${show.venue || ''}`)) return null;
+  const start = (x) => Date.parse(String((x && (x.previewsStartDate || x.openingDate)) || ''));
+  const own = new Set([mine, ...((show.priorRuns || []).map((r) => venuePhrase(r && r.venue))), ...((show.tourLegs || []).map((r) => venuePhrase(r && r.venue)))].filter(Boolean));
+  const hits = [];
+  for (const o of sameTitleShows) {
+    const p = venuePhrase(o && o.venue);
+    if (!p || own.has(p) || (mine && (mine.includes(p) || p.includes(mine)))) continue;
+    // The production this one transferred from/to (declared, or a same-title entry opening up to two years
+    // earlier): its reviews are continuity coverage the corpus scores (1536 Almeida -> Ambassadors).
+    const linked = (a, b) => !!a && a === b;
+    if (linked(o.id, show.transferOf) || linked(o.id, show.transferredTo) || linked(o.transferredTo, show.id) || linked(o.transferOf, show.id)) continue;
+    const gap = (start(show) - start(o)) / 86400000;
+    if (gap >= 0 && gap <= 730) continue;
+    if (/tour/i.test(`${o.category || ''} ${o.venue || ''}`)) continue;
+    if (`-${titleParts(show.title).join('-')}-`.includes(`-${p}-`)) continue; // "crucible": venue word inside the title
+    // Venue context only ("at-the-young-vic", "almeida-theatre"): a bare "harold-pinter" / "noel-coward" is as
+    // often the playwright, and "broadway" / "palace" are ordinary words (corpus audit, BRO-8065).
+    if (new RegExp(`-at-(?:the-)?${p}-|-${p}-(?:theatre|theater|playhouse)-`).test(slug)) hits.push(o);
+  }
+  if (!hits.length) return null;
+  // Two same-title entries at the named venue (two Young Vic revivals): it is not this production, but which one it
+  // is cannot be told from the url, so no owner id (the caller settles it, never moves it). Codex ship-check.
+  const o = hits[0];
+  return { reason: `url names the ${o.venue} production (${hits.map((h) => h.id).join(', ')}), not this one`, id: hits.length === 1 ? o.id : null };
+}
+const titleParts = (title) => String(title || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+  .replace(/['’]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
+/**
+ * A letters-only title with no word of 3+ letters ("No I.D."): no slug word can match it, so site search files any
+ * page under it (67 Daily Mail stubs). True when the rule applies and the url does not spell the title out
+ * ("no-i-d", "no-id", "noid"; the first three parts). Digit titles ("9 to 5", "44") are generic-title-guard's. Pure.
+ */
+function urlMissesShortTitle(url, title) {
+  const parts = titleParts(title);
+  // 3+ parts: "N/A" (2) has opaque review urls (lightingandsoundamerica story.asp?ID=) in the scored corpus.
+  if (parts.length < 3 || parts.some((w) => w.length >= 3 || /\d/.test(w))) return false;
+  // Only a descriptive slug (3+ words) can be judged: an opaque url (FT /content/<uuid>, ?id=) says nothing.
+  // Whole hyphen/underscore parts of 3+ letters, hex-only parts excluded (a uuid's "abcdef" is no word).
+  const words = finalSlug(url).toLowerCase().replace(/\.html?$/i, '').split(/[-_.]+/).filter((w) => /^[a-z]{3,}$/.test(w) && !/^[a-f]+$/.test(w));
+  if (words.length < 3) return false;
+  const re = new RegExp(`(?:^|[^a-z0-9])${parts.slice(0, 3).join('[-_]?')}(?:[^a-z0-9]|$)`);
+  return !re.test(String(url || '').toLowerCase());
+}
+
+function hostKey(url) {
+  try { return new URL(String(url)).hostname.replace(/^www\./i, '').toLowerCase(); } catch { return null; }
+}
+const _heldHostsMemo = new WeakMap();
+/** Hosts with at least one scored review (from the held index's keys). */
+function heldHosts(heldIndex) {
+  if (!heldIndex) return new Set();
+  if (!_heldHostsMemo.has(heldIndex)) _heldHostsMemo.set(heldIndex, new Set([...heldIndex.keys()].map((k) => k.split('/')[0])));
+  return _heldHostsMemo.get(heldIndex);
+}
+const { isBlockedReviewUrl } = require('./domain-filters');
+const { isArticleOutsideProductionWindow } = require('./date-guard');
+const { urlYearConflict } = require('./url-year-guard');
+const { resolveOutOfWindowStub } = require('./pending-sibling-productions');
+
+/**
+ * The canonical same-article key (combined-review-utils.normalizeArticleUrl): tracking params dropped, an id
+ * query kept, so query-routed archives (LSA story.asp?ID=, post.cfm?id=) do not collapse into one key (BRO-6682).
+ */
+function normalizeReviewUrl(url) {
+  return require('./combined-review-utils').normalizeArticleUrl(url);
+}
+
+/** The show title's distinctive words all appear in the url (a double review or roundup naming this show too). Pure. */
+function urlNamesShow(url, show) {
+  const words = String((show && show.title) || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/['\u2019]/g, '').split(/[^a-z0-9]+/).filter((w) => w.length >= 3 && !['the', 'and', 'musical', 'play'].includes(w));
+  if (!words.length) return false;
+  const u = String(url || '').toLowerCase().replace(/['\u2019]/g, '');
+  return words.every((w) => new RegExp(`(?:^|[^a-z0-9])${w}(?:[^a-z0-9]|$)`).test(u));
+}
+
+/**
+ * Map normalized url -> Set(showId) of every scored review (reviews.json rows;
+ * a rebuild-excluded row is not "held"). Pure over the rows passed in.
+ */
+function buildHeldUrlIndex(reviewRows) {
+  const idx = new Map();
+  for (const r of reviewRows || []) {
+    if (!r || !r.url || !r.showId) continue;
+    for (const u of [r.url, r.previousUrl]) {
+      const k = normalizeReviewUrl(u);
+      if (!k) continue;
+      if (!idx.has(k)) idx.set(k, new Set());
+      idx.get(k).add(r.showId);
+    }
+  }
+  return idx;
+}
+
+/**
+ * BRO-8091: the page WAS fetched, it has a real body, and it names no author, on a show outside its
+ * post-opening window (a late byline can no longer appear). 173 pre-2015 TheaterMania archive pages
+ * ended here (their JSON-LD author is a migration account id, no name), and with only "keep" they were
+ * re-fetched, paid, every era run. Settle them with a typed reason; clearing promoteSkippedReason
+ * re-opens one if a byline rule ever learns to read these pages. Pure. Returns the reason or null.
+ */
+function noBylineTerminalReason(data, show, nowMs = Date.now()) {
+  if (!data || !data.pendingRefetchedAt) return null;           // no successful fetch this run
+  if (String(data.fullText || '').trim().length < 200) return null; // no real body: handled by unrecoverable path
+  const op = show && show.openingDate ? Date.parse(show.openingDate) : NaN;
+  if (!Number.isFinite(op) || nowMs - op < 90 * 86400000) return null; // opening week(s): byline may still land
+  return 'no-byline-on-page: fetched page has a body but no author (archive page); not promotable without a critic (BRO-8091)';
+}
+
+/**
+ * BRO-8091: a fetch that failed on every scraper tier is stamped once but triage never read the stamp, so
+ * 63 of 75 open candidates (22/25, 41/50) re-opened as paid fetch candidates on every run. After
+ * FETCH_FAIL_LIMIT failed attempts the stub settles with a typed reason; clearing promoteSkippedReason
+ * (and pendingFetchFailures) re-opens it. Pure. Returns the reason or null.
+ */
+const FETCH_FAIL_LIMIT = 3; // matches RSS_IDENTITY_FETCH_STRIKES: the identity tag and this settle agree on when a repeatedly failing stub stops being retried
+// Paywalled outlets: a failed fetch here is "needs the logged-in browser", not "dead url" (card BRO-8091 step 2).
+const SUBSCRIBER_OUTLETS = new Set(['nytimes', 'wsj', 'times-uk', 'financialtimes', 'telegraph', 'washpost', 'newyorker']);
+function fetchFailedTerminalReason(data) {
+  const n = Number(data && data.pendingFetchFailures) || 0;
+  if (n < FETCH_FAIL_LIMIT) return null;
+  if (SUBSCRIBER_OUTLETS.has(data.outletId)) {
+    return `subscriber-fetch-failed: ${n} paid fetches failed on paywalled outlet ${data.outletId}; needs the logged-in browser path, not retried by the paid scraper (BRO-8091)`;
+  }
+  return `fetch-failed-terminal: ${n} fetches failed on every scraper tier (dead url or bot wall); not retried (BRO-8091)`;
+}
+
+const SETTLED_KEYS = ['promoteSkippedReason', 'rssIdentityRejected'];
+/** A stub the drain already settled (it never fetches it again). Pure. */
+function isSettledPendingStub(data) {
+  return !!data && SETTLED_KEYS.some((k) => !!data[k]);
+}
+/**
+ * BRO-8194: the typed reason a settled stub carries, whichever settle key set it ('' when none). The RSS identity
+ * reject keeps its reason in rssIdentityRejectedReason, not promoteSkippedReason: an audit reading only the latter
+ * reported 25 2025-26 settles as "empty reason" that were all typed. Pure.
+ */
+function settledPendingReason(data) {
+  if (!data) return '';
+  const r = String(data.promoteSkippedReason || '').trim();
+  if (r) return r;
+  return data.rssIdentityRejected ? String(data.rssIdentityRejectedReason || '').trim() : '';
+}
+
+/**
+ * BRO-8090: the url's own date (a day, or a month whose first and last day agree) lands in exactly one corroborated
+ * same-title sibling's window: a 'rehome' verdict (or a duplicate settle when the sibling already carries the url).
+ * null when no sibling owns it. Year-only url dates are too coarse to move a stub. Pure over ctx.
+ */
+function siblingOwnerByUrlDate(data, ctx) {
+  if (!ctx.allShows || !ctx.show) return null;
+  const r = require('./url-date').extractDateFromUrl(data.url);
+  let days = null;
+  if (r && r.date && /^\d{4}-\d{2}-\d{2}$/.test(r.date)) days = [r.date, r.date];
+  else if (r && r.date && /^\d{4}-\d{2}$/.test(r.date)) {
+    const [y, mo] = r.date.split('-').map(Number);
+    days = [new Date(Date.UTC(y, mo - 1, 1)), new Date(Date.UTC(y, mo, 0))].map((d) => d.toISOString().slice(0, 10));
+  }
+  if (!days) return null;
+  const held = ctx.heldIndex && ctx.heldIndex.get(normalizeReviewUrl(data.url));
+  const res = days.map((d) => resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: d, stub: data,
+    hasCopy: ctx.siblingHasCopy || (() => false), holdsUrl: (sid) => !!(held && held.has(sid)) }));
+  if (res[0].kind !== res[1].kind || res[0].sibling !== res[1].sibling) return null;
+  const label = days[0] === days[1] ? days[0] : r.date;
+  if (res[0].kind === 'rehome') return { verdict: 'rehome', reason: `url date ${label} belongs to same-title production ${res[0].sibling}`, sibling: res[0].sibling, publishDate: days[0] === days[1] ? days[0] : null };
+  if (res[0].kind === 'duplicate') return { verdict: 'junk', reason: `url date ${label} belongs to same-title production ${res[0].sibling}, which already holds this url`, sibling: res[0].sibling };
+  return null;
+}
+
+/**
+ * The url is not a review PAGE at all, whatever production it names: an off-topic or film/TV section, a listing,
+ * an interview, a news story, an awards post or live blog, a TV recap, a photo-call announcement. These are the
+ * rules that judge the kind of page, not which production it covers, so intake can apply them too
+ * (pendingIntakeRejectReason). Pure. Returns the reject reason or null.
+ */
+function pageKindJunkReason(url, show) {
+  const offTopic = offTopicSectionReason(url);
+  if (offTopic) return `${offTopic} URL, not a review`;
+  const listing = listingPageUrlReason(url);
+  if (listing) return `${listing} URL, not a review`;
+  if (isBlockedReviewUrl(url)) return 'aggregator/listing/feature URL, not an outlet review';
+  const slug = finalSlug(url).replace(/\.html?$/i, '');
+  if (!REVIEW_TOKEN_RE.test(slug) && INTERVIEW_SLUG_RE.test(slug)) return 'interview, not a review';
+  if (!REVIEW_TOKEN_RE.test(slug) && CLOSING_DATE_SLUG_RE.test(slug)) return 'closing-date news story, not a review';
+  if (PLAYBILL_ARTICLE_RE.test(url)) return 'Playbill news article, not a review';
+  // BRO-8065 rules (see the constants above). Objective evidence first (a fan-site host, an episode number): these
+  // fire even when the slug names the show.
+  const host = hostKey(url);
+  if (host && NON_THEATRE_HOSTS.has(host)) return `${host} is a watch/TV fan site, not a theatre review`;
+  if (TV_EPISODE_RE.test(slug)) return 'TV episode recap, not a review';
+  // Text rules: never when the url names this show (a stage review filed under /movies/, a Tony-winner's review).
+  if (!urlNamesShow(url, show)) {
+    const segs = pathSegments(url).slice(0, -1);
+    // Variety's 2007-09 theatre reviews live under /YYYY/film/awards/ (scored corpus rows): not a screen section.
+    if (segs.some((p) => SCREEN_SEGMENT_RE.test(p)) && !STAGE_CUE_RE.test(slug) && !segs.includes('awards')) return 'film/TV section URL, not a stage review';
+    if (segs[0] === 'live') return 'live-blog URL, not a review';
+    if (!REVIEW_TOKEN_RE.test(slug.replace(/\.html?$/i, '')) && AWARDS_SLUG_RE.test(slug.replace(/\.html?$/i, ''))) return 'awards coverage, not a review';
+  }
+  if (ANNOUNCEMENT_SLUG_RE.test(url)) return 'production-photo announcement, not a review';
+  return null;
+}
+
+/**
+ * @param {object} data  the _pending stub
+ * @param {{showId:string, show?:object, heldIndex?:Map<string,Set<string>>, showTitleOf?:(id:string)=>string}} ctx
+ * @returns {{verdict:'duplicate'|'junk'|'rehome'|'candidate', reason:string|null, heldBy?:string[]}}
+ */
+function triagePendingStub(data, ctx = {}) {
+  const url = data && data.url;
+  if (!url) return { verdict: 'candidate', reason: null };
+  const kind = pageKindJunkReason(url, ctx.show);
+  if (kind) return { verdict: 'junk', reason: kind };
+  // A show with no dates cannot use the production window; its id year against a /YYYY/ url year still settles
+  // a 2-years-off article (observer.com/2024/12/a-complete-unknown-review filed under myth-off-broadway-2026).
+  if (ctx.show && !ctx.show.openingDate && !ctx.show.previewsStartDate) {
+    const idYear = Number((String(ctx.showId || '').match(/-(\d{4})$/) || [])[1]);
+    const bad = idYear ? urlYearConflict(url, idYear, ctx.show.title) : null;
+    if (bad) return { verdict: 'junk', reason: `url year ${bad} is more than a year from the show's ${idYear} (show has no dates)` };
+  }
+  const dateReason = urlDateOutsideWindowReason(url, ctx.show);
+  if (dateReason) {
+    // BRO-8090 cousin: the url's own date sitting in a same-title sibling's window is that sibling's review.
+    const owned = siblingOwnerByUrlDate(data, ctx);
+    if (owned) return owned;
+    return { verdict: 'junk', reason: dateReason };
+  }
+  // A bare numeric / 1-2 letter / generic title ("44", "G", "The Story") the url never spells out: a site-search
+  // fluke (BRO-7930; the drain applied this before triage, now one rule for both). Owner/manual stubs are exempt.
+  if (ctx.show && ctx.show.title && !['submit-review-form', 'manual-user-request'].includes(data.source)) {
+    const gt = require('./generic-title-guard');
+    if (gt.genericSingleWordTitle(ctx.show.title, { shortNumeric: true })
+        && !gt.passesGenericTitleIdentity(url, ctx.show.title, { shortNumeric: true })) {
+      return { verdict: 'junk', reason: `url has no identity for the bare title "${ctx.show.title}"` };
+    }
+  }
+  // A title with no word of 3+ letters ("No I.D.") cannot be matched by any slug word: the url must spell it out.
+  if (ctx.show && ctx.show.title && urlMissesShortTitle(url, ctx.show.title)
+      && !['submit-review-form', 'manual-user-request'].includes(data.source)) {
+    return { verdict: 'junk', reason: `url never spells out the short title "${ctx.show.title}"` };
+  }
+  const sibling = siblingVenueMatch(url, ctx.show, ctx.sameTitleShows);
+  if (sibling) {
+    // BRO-8090 cousin: the url names the venue of exactly one same-title entry, so it is THAT entry's review: move it
+    // there unless the stub's own date rules that entry out, or the entry already carries the url.
+    const sib = (ctx.allShows || []).find((x) => x && x.id === sibling.id);
+    const pdIso0 = stubDateIso(data.publishDate);
+    // A rehome needs a date inside the sibling's run (sample audit 2026-11-23): venues host the same title again
+    // (RST Macbeth 2018 vs 2025, Sadler's Wells Singin' 2021 vs 2027) and "royal-lyceum" names the Lyceum too.
+    // Dateless, it stays settled here with the sibling named; the duplicate settle needs no date.
+    const held0 = ctx.heldIndex && ctx.heldIndex.get(normalizeReviewUrl(url));
+    if (sib && ((ctx.siblingHasCopy && ctx.siblingHasCopy(sib.id)) || (held0 && held0.has(sib.id)))) {
+      return { verdict: 'junk', reason: `${sibling.reason}, which already holds this url`, sibling: sib.id };
+    }
+    if (sib && pdIso0 && !isArticleOutsideProductionWindow(sib, pdIso0)) {
+      const blocked = require('./pending-sibling-productions').siblingRehomeBlocker(data, ctx.show, sib, ctx.allShows, pdIso0);
+      if (!blocked) return { verdict: 'rehome', reason: sibling.reason, sibling: sib.id, publishDate: pdIso0 || null };
+    }
+    return { verdict: 'junk', reason: sibling.reason };
+  }
+  // The census's non-review host list over-reaches on some hosts that do publish reviews (483 scored rows), so it
+  // only settles a stub on a host the corpus has never scored a review from (venue sites such as bam.org).
+  if (ctx.heldIndex && nonReviewHostMatch(url) && !heldHosts(ctx.heldIndex).has(hostKey(url))) {
+    return { verdict: 'junk', reason: 'non-review host (venue/company site) with no scored review, not a review' };
+  }
+  const held = ctx.heldIndex && ctx.heldIndex.get(normalizeReviewUrl(url));
+  if (held && held.size) {
+    if (held.has(ctx.showId)) return { verdict: 'duplicate', reason: 'url already scored for this show', heldBy: [ctx.showId] };
+    const others = [...held].sort();
+    // 425 scored urls belong to 2+ shows (NYT double reviews, Times roundups): a url that names this show too is
+    // a candidate, not another show's review.
+    // Only when the holder is a different WORK: a same-title holder is an earlier/later production of this show,
+    // which is exactly what this rule settles (a 2025 Streetcar review under a-streetcar-named-desire-1973).
+    const titleKey = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const mine = titleKey(ctx.show && ctx.show.title);
+    const holderTitles = others.map((id) => titleKey(ctx.showTitleOf ? ctx.showTitleOf(id) : ''));
+    const jointWithOtherWork = mine && holderTitles.every((t) => t && t !== mine);
+    if (jointWithOtherWork && urlNamesShow(url, ctx.show)) return { verdict: 'candidate', reason: null, heldBy: others };
+    return { verdict: 'junk', reason: `url already scored under ${others.slice(0, 3).join(', ')}, not a review of this production`, heldBy: others };
+  }
+  // A date the stub already carries (site search / aggregator) settles a
+  // same-title earlier or later production without a fetch; the drain applies
+  // the identical canonical window to the fetched date.
+  const pd = data.publishDate;
+  // Aggregator stubs store prose dates ("December 14, 2014"): any parseable date naming a 4-digit year counts.
+  const pdIso = stubDateIso(pd);
+  if (ctx.show && pdIso && isArticleOutsideProductionWindow(ctx.show, pdIso)) {
+    // BRO-8090: a same-title sibling whose window holds the date OWNS the article; settling it here as junk threw
+    // away ~415 real reviews. Needs the sibling list; without one (old callers) the old settle stands.
+    if (ctx.allShows) {
+      const r = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data,
+        hasCopy: ctx.siblingHasCopy || (() => false),
+        holdsUrl: (sid) => !!(ctx.heldIndex && (ctx.heldIndex.get(normalizeReviewUrl(url)) || new Set()).has(sid)) });
+      if (r.kind === 'rehome') return { verdict: 'rehome', reason: `article published ${pdIso} belongs to same-title production ${r.sibling}`, sibling: r.sibling, publishDate: pdIso };
+      if (r.kind === 'duplicate') return { verdict: 'junk', reason: `article published ${pdIso} belongs to same-title production ${r.sibling}, which already holds this url`, sibling: r.sibling };
+    }
+    return { verdict: 'junk', reason: `article published ${pdIso} is outside this production's window (stub date, no fetch)` };
+  }
+  return { verdict: 'candidate', reason: null };
+}
+
+/**
+ * BRO-8195: a url-less stub (Theatre Record full text: critic + date, never a url) has nothing to fetch, so the
+ * url rules above never judge it and it stayed open forever (43 of the 46 url-less open stubs on 2026-11-23,
+ * each one tagged cross_market_contamination at intake). Judged on its own name and date instead:
+ *  - this show already files the same outlet--critic name: a duplicate, settled;
+ *  - its date sits in exactly one same-title sibling's window (the shared resolveOutOfWindowStub rule): settled
+ *    when that sibling already files the same name, else rehomed to it.
+ * ctx: { show, allShows, file, showHasFile(name), siblingHasFile(showId, name) }. Pure over ctx. null = no verdict.
+ */
+const TITLE_KEY_STOP = new Set(['the', 'and', 'into', 'with', 'from', 'that', 'this', 'your', 'what', 'when', 'where', 'show', 'musical', 'play']);
+/** The title's most distinctive word: its longest word of 4+ letters outside a small stop list. Pure. */
+function titleKeyWords(title) {
+  return [...new Set(String(title || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').split(/[^a-z]+/)
+    .filter((w) => w.length >= 4 && !TITLE_KEY_STOP.has(w)))];
+}
+function distinctiveTitleWord(title) {
+  return titleKeyWords(title).sort((a, b) => b.length - a.length)[0] || null;
+}
+/**
+ * The text never names the title: no key word at all for a one-word title, fewer than two of them for a longer one
+ * (a real Joseph review may never say "Technicolor" but says "Joseph" and "Dreamcoat"; Anna X by Joseph Charlton
+ * says only "Joseph"). Pure.
+ */
+function textMissesTitle(text, title) {
+  const keys = titleKeyWords(title);
+  if (!keys.length) return false;
+  const t = String(text || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+  const hits = keys.filter((w) => t.includes(w)).length;
+  return keys.length === 1 ? hits === 0 : hits < 2;
+}
+
+function noUrlStubVerdict(data, ctx = {}) {
+  if (!data || data.url || !ctx.file) return null;
+  const pdIso = stubDateIso(data.publishDate);
+  // A Theatre Record stub whose date year disagrees with its archive link's year has a bad date (a 2025-10 review
+  // stamped 2026-10-24 would rehome a London review to the New York run): judge nothing on that date.
+  const trYear = (String(data.theatreRecordUrl || '').match(/\/archive\/((?:19|20)\d{2})\//) || [])[1];
+  const dateTrusted = pdIso && (!trYear || trYear === pdIso.slice(0, 4));
+  const outside = dateTrusted && ctx.show && ctx.allShows && isArticleOutsideProductionWindow(ctx.show, pdIso);
+  const has = (sid) => !!(ctx.siblingHasFile && ctx.siblingHasFile(sid, ctx.file));
+  if (outside) {
+    // The same outlet--critic name already filed under exactly one sibling whose run holds the date: a duplicate,
+    // with no venue corroboration needed (the name and the date both point at that sibling).
+    const holders = require('./pending-sibling-productions').fittingSiblings(ctx.show, ctx.allShows, pdIso).filter((x) => has(x.id));
+    if (holders.length === 1) return { verdict: 'junk', reason: `url-less stub published ${pdIso} belongs to same-title production ${holders[0].id}, which already files ${ctx.file}`, sibling: holders[0].id };
+  } else if (ctx.showHasFile && ctx.showHasFile(ctx.file)) {
+    return { verdict: 'junk', reason: `url-less stub; this show already files ${ctx.file} (same outlet and critic)` };
+  }
+  // Theatre Record's PDF pages run several shows together: 11 "Joseph" stubs were reviews of Anna X (by playwright
+  // Joseph Charlton). Text that never names the title's distinctive word is another show's review. A url-less stub
+  // is never promoted by the drain, so this settle loses nothing; clearing promoteSkippedReason re-opens it.
+  const text = String(data.fullText || '');
+  if (data.source === 'theatre-record' && ctx.show && text.length >= 200 && textMissesTitle(text, ctx.show.title)) {
+    return { verdict: 'junk', reason: `url-less Theatre Record text never names "${ctx.show.title}" (${titleKeyWords(ctx.show.title).join('/')}): another show's review from the archive page` };
+  }
+  if (outside && ctx.showHasFile && ctx.showHasFile(ctx.file)) {
+    return { verdict: 'junk', reason: `url-less stub; this show already files ${ctx.file} (same outlet and critic)` };
+  }
+  if (outside) {
+    // BRO-8221: a Theatre Record stub whose archive-link year matches its date, in the same market group as its
+    // show, needs no venue words to pick its one fitting sibling (TR text names no venue; Into the Woods, 9 family
+    // entries, stayed open forever). resolveOutOfWindowStub still applies every contradiction/junk check.
+    const mg = { broadway: 'us', 'off-broadway': 'us', 'west-end': 'uk', 'off-west-end': 'uk' };
+    const corroborated = data.source === 'theatre-record' && !!trYear && trYear === pdIso.slice(0, 4);
+    const r0 = resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has });
+    const cand = r0.kind === 'unverified-family' && r0.candidates && r0.candidates.length === 1 && (ctx.allShows || []).find((x) => x.id === r0.candidates[0]);
+    // Theatre Record is a UK archive and the sibling must be the ONLY UK-market same-title production besides this
+    // show (BRO-8221 review: a regional/other-UK review dated in one tracked window is not evidence of that run).
+    const key = require('./title-match').normalizeTitle(ctx.show.title || '');
+    const ukSibs = (ctx.allShows || []).filter((x) => x && x.id !== ctx.show.id && mg[x.category] === 'uk' && require('./title-match').normalizeTitle(x.title || '') === key);
+    const r = corroborated && cand && mg[cand.category] === 'uk' && mg[ctx.show.category] === 'uk' && ukSibs.length === 1
+      ? resolveOutOfWindowStub({ show: ctx.show, allShows: ctx.allShows, publishDate: pdIso, stub: data, hasCopy: has, corroborated: true }) : r0;
+    if (r.kind === 'rehome') return { verdict: 'rehome', reason: `url-less stub published ${pdIso} belongs to same-title production ${r.sibling}`, sibling: r.sibling, publishDate: pdIso };
+    // No tracked production's window holds the date (Jamie 2024 stubs dated 2017, the untracked Sheffield run):
+    // the same settle the url triage gives a dated stub outside every window.
+    if (r.kind === 'outside-all') return { verdict: 'junk', reason: `url-less stub published ${pdIso} is outside this production's window and every tracked same-title production's` };
+  }
+  return null;
+}
+
+/**
+ * A byline that is a member of the show's own creative team (the playwright on a
+ * venue page: "William Shakespeare" on bam.org/Hamlet) means the page is about
+ * the show, not a critic's review of it. Pure.
+ */
+function bylineIsShowCreator(byline, show) {
+  const norm = (x) => String(x || '').toLowerCase().replace(/[^a-z]+/g, ' ').trim();
+  const b = norm(byline);
+  if (!b || b === 'unknown' || !show || !Array.isArray(show.creativeTeam)) return false;
+  return show.creativeTeam.some((m) => m && norm(m.name) === b);
+}
+
+/** A stub's stored date as YYYY-MM-DD, or null when it is absent, unparseable or names no 4-digit year. Pure. */
+function stubDateIso(pd) {
+  const str = String(pd || '').trim().replace(/(\d)(?:st|nd|rd|th)\b/gi, '$1'); // "August 12th, 2021"
+  if (!str || !/(?:^|\D)(?:19|20)\d{2}(?:\D|$)/.test(str)) return null;
+  const t = Date.parse(/^\d{4}-\d{2}-\d{2}$/.test(str) ? `${str}T12:00:00Z` : str);
+  if (!Number.isFinite(t)) return null;
+  return new Date(t).toISOString().slice(0, 10);
+}
+
+/** Era bucket of a show id by its year suffix (the queue report's slices). Pure. */
+function showEra(showId) {
+  const m = String(showId || '').match(/-(\d{4})$/);
+  const y = m ? Number(m[1]) : 0;
+  if (y >= 2025) return '2025-26';
+  if (y >= 2015) return '2015-24';
+  return 'pre-2015';
+}
+
+const _sameTitleMemo = new WeakMap();
+// venue-write-guard-ok: sameTitleShowsFrom builds an in-memory read index of shows.json venues; it never writes a file.
+/** Other shows.json entries sharing this show's title (the fields siblingVenueReason reads). Memoized per array. */
+function sameTitleShowsFrom(show, allShows) {
+  if (!show || !show.title || !Array.isArray(allShows)) return [];
+  const key = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  if (!_sameTitleMemo.has(allShows)) {
+    const idx = new Map();
+    for (const x of allShows) {
+      const k = key(x && x.title); if (!k) continue;
+      if (!idx.has(k)) idx.set(k, []);
+      idx.get(k).push({ id: x.id, venue: x.venue, openingDate: x.openingDate, previewsStartDate: x.previewsStartDate, category: x.category, transferOf: x.transferOf, transferredTo: x.transferredTo });
+    }
+    _sameTitleMemo.set(allShows, idx);
+  }
+  return (_sameTitleMemo.get(allShows).get(key(show.title)) || []).filter((o) => o.id !== show.id);
+}
+/**
+ * BRO-8023 intake guard: the reject reason for a no-byline hit BEFORE it is written to _pending, or null.
+ * gather-reviews' raw _pending write applied only offTopicSectionReason, so site-search title-word hits the drain
+ * later tags as junk (an NYT Tony live blog, awards predictions, an Outlander recap, a 2023 Met Tosca) were still
+ * written, one stub each. Intake applies the drain's page-kind rules plus the url's own date more than a year
+ * outside the run (7 of the 50,022 scored urls flagged). It does NOT apply the production-identity rules (stored
+ * stub date, bare title, sibling venue): over the same urls those flag 82 scored reviews (63 on the stored date
+ * alone; Hadestown at the Olivier), so they stay with the drain, which tags and KEEPS the stub. Human submissions
+ * are never refused here. Pure.
+ * @param {{url:string, source?:string}} review
+ * @param {object|null} show  the shows.json entry (null: the page-kind rules still apply)
+ */
+const INTAKE_EXEMPT_SOURCES = new Set(['submit-review-form', 'manual-user-request', 'manual-entry', 'manual-addition', 'manual']);
+function pendingIntakeRejectReason(review, show) {
+  if (!review || !review.url || INTAKE_EXEMPT_SOURCES.has(review.source)) return null;
+  // BRO-8023 ship-check: no URL-date rule at intake. CLAUDE.md forbids extracting metadata from URLs and a refusal here
+  // is permanent (the drain tags and KEEPS); the drain applies the date rule on the stored stub instead.
+  return pageKindJunkReason(review.url, show || undefined);
+}
+/**
+ * BRO-8195: the critic printed in a _pending stub's own text, when the fetched page named nobody. Uses the
+ * corpus byline reader (outlet extractors + the strict closing-credit rule), so a stub is never named by a
+ * looser rule than a scored file. Pure. Returns the name or null.
+ */
+function textBylineFallback(data, show, showFileNames = []) {
+  if (!data || !data.fullText) return null;
+  const { extractBylineFromText } = require('./byline-from-text');
+  const hit = extractBylineFromText(data.outletId, String(data.fullText), { showTitle: show && show.title });
+  if (!(hit && hit.known && hit.name)) return null;
+  // The rebuild's rule (otherNamedCriticAtOutlet): a text credit never adds a second named critic at an outlet
+  // the show already scores under another name; a misfiled text there stays unpromoted.
+  const { normalizeCritic } = require('./review-normalization');
+  const slug = normalizeCritic(hit.name);
+  const prefix = `${data.outletId}--`;
+  const other = showFileNames.some((f) => {
+    if (!f.startsWith(prefix) || !f.endsWith('.json')) return false;
+    const c = f.slice(prefix.length, -5);
+    return c !== slug && !/^(unknown|unnamed)$/.test(c);
+  });
+  return other ? null : hit.name;
+}
+
+module.exports = {
+  textBylineFallback, noUrlStubVerdict, distinctiveTitleWord, textMissesTitle, fetchFailedTerminalReason, SUBSCRIBER_OUTLETS, FETCH_FAIL_LIMIT, noBylineTerminalReason, siblingOwnerByUrlDate, siblingVenueMatch, pendingIntakeRejectReason, pageKindJunkReason, sameTitleShowsFrom, venuePhrase, siblingVenueReason, urlDateOutsideWindowReason, urlNamesShow, stubDateIso, bylineIsShowCreator, triagePendingStub, buildHeldUrlIndex, normalizeReviewUrl, isSettledPendingStub, showEra, settledPendingReason };

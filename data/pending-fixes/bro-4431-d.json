@@ -1,0 +1,59 @@
+{
+  "issueNumber": "bro-4431-d",
+  "planId": "fc0ddadb-da85-45a3-a10d-884c707ef002",
+  "status": "applied",
+  "createdAt": "2026-09-30T23:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4431 follow-up: The Stage's A Slow Fire review (Dave Fargnoli) was never collected; theatre.reviews round-ups for A Slow Fire and The Standard of Living carry the Times stars for their textless Times stubs; the West End Best Friend Golden Boy review kept the old news post's 'News Desk' byline (the writer now resets it on a slot move).",
+    "steps": [
+      "Ingest The Stage's A Slow Fire review (no stub if the url is wrong)",
+      "Re-read theatre.reviews round-ups for A Slow Fire and The Standard of Living",
+      "Reset the West End Best Friend Golden Boy byline"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-slow-fire-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/a-slow-fire-review-jermyn-street-theatre-london",
+        "description": "The Stage Fargnoli: A Slow Fire"
+      },
+      {
+        "type": "run-script",
+        "script": "scrape-theatre-reviews.js",
+        "args": "--shows=a-slow-fire-off-west-end-2026,the-standard-of-living-west-end-2026 --force",
+        "description": "theatre.reviews round-ups: Times star relay onto the stubs"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "golden-boy-off-west-end-2026/west-end-best-friend--unknown.json",
+        "field": "criticName",
+        "oldValue": "News Desk",
+        "newValue": "Unknown",
+        "description": "The byline came from the news post that held this slot; the review is signed with initials only"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T23:35:26.515Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran scrape-theatre-reviews.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "golden-boy-off-west-end-2026/west-end-best-friend--unknown.json criticName: \"News Desk\" -> \"Unknown\""
+    }
+  ]
+}

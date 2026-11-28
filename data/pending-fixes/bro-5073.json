@@ -1,0 +1,294 @@
+{
+  "issueNumber": "bro-5073",
+  "planId": "b51bda8d-2fea-4c2b-93eb-b17a33aca191",
+  "status": "applied",
+  "createdAt": "2026-10-11T19:41:50.048Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5073 truth set: day-dated recoupment citations for 11 recouped shows (Playbill/Broadway News/BroadwayWorld, each quote checked on the live page), Kimberly Akimbo marked recouped per Playbill (Apr 23, 2026), and a checked Playbill citation on Cabaret's no-distribution statement.",
+    "steps": [
+      "Replace recoupedSource with the day-dated announcement citation (same month as recoupedDate)",
+      "Kimberly Akimbo: recouped true, recoupedDate 2026-04, designation Trickle, notes",
+      "Cabaret 2024: append the Playbill citation to notes"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-mary",
+        "showId": "oh-mary",
+        "field": "recoupedSource",
+        "oldValue": "https://deadline.com/2024/11/oh-mary-broadway-recoups-1236186683/",
+        "newValue": "Playbill (Nov 25, 2024): \"has officially recouped its production costs on Broadway\" https://playbill.com/article/oh-mary-is-broadway-seasons-1st-show-to-recoup Also: https://deadline.com/2024/11/oh-mary-broadway-recoups-1236186683/",
+        "description": "oh-mary: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-in-time",
+        "showId": "just-in-time",
+        "field": "recoupedSource",
+        "oldValue": "Variety",
+        "newValue": "Broadway News (May 18, 2026): \"'Just in Time' has officially recouped its $12.5 million capitalization.\" https://www.broadwaynews.com/just-in-time-becomes-first-musical-of-the-2024-2025-broadway-season-to-recoup/",
+        "description": "just-in-time: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-in-comedy-about-love-2024",
+        "showId": "all-in-comedy-about-love-2024",
+        "field": "recoupedSource",
+        "oldValue": "Broadway News reported that the show recouped during its run at the Hudson Theatre",
+        "newValue": "Broadway News (Feb 18, 2025): \"'All In: Comedy About Love' has recouped its Broadway investment.\" https://broadwaynews.com/all-in-recoups-on-broadway",
+        "description": "all-in-comedy-about-love-2024: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "prima-facie-2023",
+        "showId": "prima-facie-2023",
+        "field": "recoupedSource",
+        "oldValue": "TheaterMania (Jun 2023): Prima Facie recoups $4.1M; Broadway Journal (Aug 25 2023): only 2022-23 show to announce recoupment",
+        "newValue": "Playbill (Jun 20, 2023): \"James Bierman has announced that Broadway's Prima Facie has recouped its $4.1 million capitalization costs as of June 18.\" https://playbill.com/article/prima-facie-recoups-on-broadway",
+        "description": "prima-facie-2023: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "merrily-we-roll-along",
+        "showId": "merrily-we-roll-along",
+        "field": "recoupedSource",
+        "oldValue": "Deadline headline 'Merrily We Roll Along Recoups $12M Broadway Capitalization' from March 2024",
+        "newValue": "Broadway News (Mar 20, 2024): \"has recouped its $12 million capitalization.\" https://broadwaynews.com/merrily-we-roll-along-revival-recoups-investment",
+        "description": "merrily-we-roll-along: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "every-brilliant-thing",
+        "showId": "every-brilliant-thing",
+        "field": "recoupedSource",
+        "oldValue": "https://playbill.com/article/every-brilliant-thing-recoups-on-broadway",
+        "newValue": "Playbill (May 6, 2026): \"has announced that the production has recouped its initial investment as of the week ending May 3\" https://playbill.com/article/every-brilliant-thing-recoups-on-broadway",
+        "description": "every-brilliant-thing: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "giant",
+        "showId": "giant",
+        "field": "recoupedSource",
+        "oldValue": "NYT article (2026-05-19): \"Broadway's 'Giant,' With John Lithgow, Turns a Profit in 10 Weeks\" — explicit recoupment statement",
+        "newValue": "Playbill (May 19, 2026): \"has recouped its $5.6 million Broadway capitalization.\" https://playbill.com/article/giant-recoups-on-broadway",
+        "description": "giant: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "come-from-away-2017",
+        "showId": "come-from-away-2017",
+        "field": "recoupedSource",
+        "oldValue": "Multiple trade publications reported recoupment in less than 8 months after opening",
+        "newValue": "Playbill (Oct 10, 2017): \"The Broadway production of Come From Away has recouped its $12 million capitalization.\" https://playbill.com/article/broadways-come-from-away-recoups-investment",
+        "description": "come-from-away-2017: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beautiful-the-carole-king-musical-2014",
+        "showId": "beautiful-the-carole-king-musical-2014",
+        "field": "recoupedSource",
+        "oldValue": "Producers announced recoupment in September 2014",
+        "newValue": "Playbill (Sep 15, 2014): \"has recouped its $13 million investment, producers announced Sept. 15.\" https://playbill.com/article/beautiful-is-broadway-box-office-gold-carole-king-musical-recoups-com-330554",
+        "description": "beautiful-the-carole-king-musical-2014: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "what-the-constitution-means-to-me-2019",
+        "showId": "what-the-constitution-means-to-me-2019",
+        "field": "recoupedSource",
+        "oldValue": "Playbill 2019-07: \"Broadway's What the Constitution Means to Me Recoups Ahead of August Final Bow\" ($2.5M cap recouped July 2019 before scheduled close).",
+        "newValue": "Playbill (Jul 15, 2019): \"The Broadway production of Heidi Schreck's What the Constitution Means to Me has recouped its $2.5 million capitalization.\" https://playbill.com/article/broadways-what-the-constitution-means-to-me-recoups-ahead-of-august-final-bow",
+        "description": "what-the-constitution-means-to-me-2019: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mamma-mia-2001",
+        "showId": "mamma-mia-2001",
+        "field": "recoupedSource",
+        "oldValue": "Playbill (late May 2002): 'recouped its entire $10 million Broadway investment' in 'less than 28 weeks'",
+        "newValue": "Playbill (May 29, 2002): \"Any measure of surprise comes not from the fact that Mamma Mia! has recouped its entire $10 million Broadway investment\" https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096",
+        "description": "mamma-mia-2001: day-dated recoupment announcement, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "showId": "kimberly-akimbo-2022",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": true,
+        "description": "kimberly-akimbo-2022: Playbill reports the Broadway production has recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "showId": "kimberly-akimbo-2022",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2026-04",
+        "description": "kimberly-akimbo-2022: month of the Playbill report"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "showId": "kimberly-akimbo-2022",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Playbill (Apr 23, 2026): \"Both the Broadway production and the national tour have now recouped their investments\" https://playbill.com/article/kimberly-akimbo-national-tour-sets-closing-date",
+        "description": "kimberly-akimbo-2022: quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "showId": "kimberly-akimbo-2022",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Trickle",
+        "description": "kimberly-akimbo-2022: recouped after closing, with tour profits; no longer \"closed without recouping\""
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "showId": "kimberly-akimbo-2022",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": null,
+        "description": "kimberly-akimbo-2022: loss basis no longer applies (non-loss designation)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "showId": "kimberly-akimbo-2022",
+        "field": "notes",
+        "oldValue": "Tony Best Musical winner that opened Nov 2022 and ran 612 performances until Apr 2024. Low $7M cap and lean $570K/week costs, but modest grosses meant it only reached about halfway to breakeven by closing. Grossed ~$35M total. Second consecutive Best Musical Tony winner to close without recouping (after A Strange Loop).",
+        "newValue": "Tony Best Musical winner that opened Nov 2022 and ran 612 performances until Apr 2024. Low $7M cap and lean $570K/week costs, but modest grosses meant it only reached about halfway to breakeven by closing. Grossed ~$35M total. Playbill reported on Apr 23, 2026 that the Broadway production had recouped, with profits from the national tour letting it return the rest of its capitalization.",
+        "description": "kimberly-akimbo-2022: notes no longer say it closed without recouping"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "showId": "cabaret-2024",
+        "field": "notes",
+        "oldValue": "Closed Oct 2025 without recouping. Actual capitalization $24.25M (not $26M). $7.5M of investor money used to convert Kit Kat Club venue owned by ATG (the lead producer's parent company). Active investor lawsuit alleging producers used investor funds to improve their own real estate. Weekly nut $1.5M proved unsustainable. Investors received 0% recovery.",
+        "newValue": "Closed Oct 2025 without recouping. Actual capitalization $24.25M (not $26M). $7.5M of investor money used to convert Kit Kat Club venue owned by ATG (the lead producer's parent company). Active investor lawsuit alleging producers used investor funds to improve their own real estate. Weekly nut $1.5M proved unsustainable. Investors received 0% recovery. Playbill (Sep 10, 2025): the producers said the production \"has not been in a position fiscally to make any distribution to investors.\" https://playbill.com/article/facing-lawsuit-cabaret-producers-say-they-are-not-able-to-repay-investors",
+        "description": "cabaret-2024: adds a checked trade citation for the no-distribution statement (BRO-5073)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T22:13:31.920Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for oh-mary"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for just-in-time"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for all-in-comedy-about-love-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for prima-facie-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for merrily-we-roll-along"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for every-brilliant-thing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for giant"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for come-from-away-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for beautiful-the-carole-king-musical-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for what-the-constitution-means-to-me-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for mamma-mia-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for kimberly-akimbo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for kimberly-akimbo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for kimberly-akimbo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for kimberly-akimbo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for kimberly-akimbo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for kimberly-akimbo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cabaret-2024"
+    }
+  ]
+}

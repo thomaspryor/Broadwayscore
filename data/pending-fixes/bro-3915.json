@@ -1,0 +1,47 @@
+{
+  "issueNumber": "bro-3915",
+  "planId": "71b5e9d6-6a6c-42f4-b75a-c59597b9329b",
+  "status": "applied",
+  "createdAt": "2026-10-13T19:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Whitespace-only title repairs from the BRO-3915 audit (double space inside one title, leading spaces on another).",
+    "steps": [
+      "Retitle 'Vivat!  Vivat Regina!' to single space",
+      "Retitle '  Doll Day Afternoon' without leading spaces"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retitle-show",
+        "id": "vivat-vivat-regina-1972",
+        "expectTitle": "Vivat!  Vivat Regina!",
+        "newTitle": "Vivat! Vivat Regina!",
+        "reason": "double space inside the title (BRO-3915)"
+      },
+      {
+        "type": "retitle-show",
+        "id": "doll-day-afternoon-off-broadway-2026",
+        "expectTitle": "  Doll Day Afternoon",
+        "newTitle": "Doll Day Afternoon",
+        "reason": "leading whitespace in the title (BRO-3915)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T21:21:26.008Z",
+  "results": [
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled vivat-vivat-regina-1972: \"Vivat!  Vivat Regina!\" -> \"Vivat! Vivat Regina!\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled doll-day-afternoon-off-broadway-2026: \"  Doll Day Afternoon\" -> \"Doll Day Afternoon\""
+    }
+  ]
+}

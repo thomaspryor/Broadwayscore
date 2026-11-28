@@ -1,0 +1,55 @@
+{
+  "system": "data quality",
+  "status": "warn",
+  "lastChecked": "2026-11-28T16:04:54.887Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Data quality: provider spend ledger",
+      "status": "pass",
+      "message": "Newest entry (day=2026-11-27) 16h past its end-of-day"
+    },
+    {
+      "name": "Data quality: cross-outlet attribution drift",
+      "status": "warn",
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (5h ago)"
+    },
+    {
+      "name": "Data quality: cv-wrongproduction lifetime sweep",
+      "status": "warn",
+      "message": "3 NEW unhandled CV.wrongProduction review(s) since last run (151 total across 123 show(s), 5h ago)"
+    },
+    {
+      "name": "Data quality: fulltext-mentions-show lifetime sweep",
+      "status": "pass",
+      "message": "No open violations with contamination evidence (693 known baseline across 4989 show(s); 6 new hit(s) with no contamination evidence added to the backlog, 5h ago)"
+    },
+    {
+      "name": "Data quality: slug-mismatch lifetime sweep",
+      "status": "pass",
+      "message": "No open violations with contamination evidence (217 known baseline across 4989 show(s), 5h ago)"
+    },
+    {
+      "name": "Data quality: roundup-url-mismatch lifetime sweep",
+      "status": "pass",
+      "message": "No new violations since last run (38 known baseline across 4989 show(s), 5h ago)"
+    },
+    {
+      "name": "Data quality: revival-unverified lifetime sweep",
+      "status": "pass",
+      "message": "No open violations with a same-title earlier production (1 known baseline across 4989 show(s); 1 new hit(s) with no a same-title earlier production added to the backlog, 5h ago)"
+    },
+    {
+      "name": "Data quality: missed opening-night broadcasts",
+      "status": "warn",
+      "message": "2 show(s) opened and qualified but never emailed subscribers (2 still alertable, 0 aged out past the paging window; 6 more were covered by a weekly round-up, 5h ago)"
+    },
+    {
+      "name": "Data quality: stale announced shows",
+      "status": "pass",
+      "message": "5 show(s) flagged < 2d or awaiting scheduled automation, waiting on the status flip or the previews-fallback date (10 silenced by contamination, 5h ago)"
+    }
+  ]
+}

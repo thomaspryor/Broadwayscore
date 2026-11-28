@@ -1,0 +1,262 @@
+{
+  "issueNumber": "bro-6569-b",
+  "planId": "b9b0c18d-b03e-4e12-b572-1ee010af38ca",
+  "status": "applied",
+  "createdAt": "2026-10-30T04:05:08.120Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6569: resolve London review urls held by two files or two different-title shows (auto-pinned duplicates, wrong-production copies, wrong urls, non-review pages) (part 2 of 3)",
+    "steps": [
+      "BRO-6569: empty stub duplicating thestage--sam-marlowe.json",
+      "BRO-6569: same NYT London article as nytimes--matt-wolf.json, with the 2024 Broadway date and critic",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); Broadway excerpt on the London url",
+      "BRO-6569: second copy of a url another file holds with the same review (broadwayworld--aliya-al-hassan.json)",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); London Harold Pinter review held on romeo-and-juliet-west-end-2026",
+      "BRO-6569: empty stub duplicating thestage--holly-omahony.json",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2023 Savoy review held on sunset-boulevard-west-end-2023",
+      "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2018 Aldwych review held on tina-the-tina-turner-musical-west-end-2018",
+      "BRO-6569: empty; url is a 2022 Broadway closing news story, not a review",
+      "BRO-6569: empty second copy of the same news-story url",
+      "BRO-6569: empty stub holding the Exit the King review url",
+      "BRO-6569: paywall stub of the John Proctor Is the Villain review (held on john-proctor-is-the-villain-west-end-2026)",
+      "BRO-6569: excerpt and url are the 2024 Tempest review (held on the-tempest-west-end-2024)",
+      "BRO-6569: BroadwayWorld news story about the Bridge transfer, not a review; also inherited onto the Bridge row",
+      "BRO-6569: text is Saville's End review but the url is her Harold Fry review (held on the-unlikely-pilgrimage-of-harold-fry-west-end-2026); a url repair cannot prove it (End is too short a title for the cross-show detector), so delete and re-ingest from https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/end-review-dorfman-clive-owen-saskia-reeves-b2869741.html",
+      "BRO-6569: url and text are the NYT Monte Cristo review (live on monte-cristo-the-york-theatre-company-off-broadway-2026)",
+      "BRO-6569: url and text are the Guardian Krapp's Last Tape review (live on krapps-last-tape-godots-todo-list-west-end-2026)",
+      "BRO-6569: url is the Express theatre section index, text is that listing page, not a review",
+      "BRO-6569: url is the Express theatre section index, text is that listing page, not a review",
+      "BRO-6569: url is the Express theatre section index, text is that listing page, not a review"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "my-neighbour-totoro-west-end-2025/thestage--unknown.json",
+        "description": "BRO-6569: empty stub duplicating thestage--sam-marlowe.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oh-mary-west-end-2025/nytimes--jesse-green.json",
+        "description": "BRO-6569: same NYT London article as nytimes--matt-wolf.json, with the 2024 Broadway date and critic"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oh-mary-west-end-2025/nytimes--unknown.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); Broadway excerpt on the London url"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "rent-west-end-2026/broadwayworld--unknown.json",
+        "description": "BRO-6569: second copy of a url another file holds with the same review (broadwayworld--aliya-al-hassan.json)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "romeo-and-juliet-off-broadway-2026/whatsonstage--unknown.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); London Harold Pinter review held on romeo-and-juliet-west-end-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "shifters-west-end-2024/thestage--unknown.json",
+        "description": "BRO-6569: empty stub duplicating thestage--holly-omahony.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "sunset-boulevard-2024/guardian--arifa-akbar.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2023 Savoy review held on sunset-boulevard-west-end-2023"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "tina-2019/standard--fiona-mountford.json",
+        "description": "BRO-6569: wrong-production copy of another run's review (excluded, same url as the correct file); 2018 Aldwych review held on tina-the-tina-turner-musical-west-end-2018"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
+        "description": "BRO-6569: empty; url is a 2022 Broadway closing news story, not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+        "description": "BRO-6569: empty second copy of the same news-story url"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-king-and-i-west-end-2018/telegraph--unknown.json",
+        "description": "BRO-6569: empty stub holding the Exit the King review url"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "mass-west-end-2026/financialtimes--unknown.json",
+        "description": "BRO-6569: paywall stub of the John Proctor Is the Villain review (held on john-proctor-is-the-villain-west-end-2026)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json",
+        "description": "BRO-6569: excerpt and url are the 2024 Tempest review (held on the-tempest-west-end-2024)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "pride-west-end-2026/broadwayworld--jay-irwin.json",
+        "description": "BRO-6569: BroadwayWorld news story about the Bridge transfer, not a review; also inherited onto the Bridge row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "end-west-end-2025/independent--alice-saville.json",
+        "description": "BRO-6569: text is Saville's End review but the url is her Harold Fry review (held on the-unlikely-pilgrimage-of-harold-fry-west-end-2026); a url repair cannot prove it (End is too short a title for the cross-show detector), so delete and re-ingest from https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/end-review-dorfman-clive-owen-saskia-reeves-b2869741.html"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "becky-shaw-2026/nytimes--elisabeth-vincentelli.json",
+        "description": "BRO-6569: url and text are the NYT Monte Cristo review (live on monte-cristo-the-york-theatre-company-off-broadway-2026)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-p-word-off-west-end-2026/guardian--chris-wiegand.json",
+        "description": "BRO-6569: url and text are the Guardian Krapp's Last Tape review (live on krapps-last-tape-godots-todo-list-west-end-2026)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "titanique-west-end-2024/express-uk--neil-norman.json",
+        "description": "BRO-6569: url is the Express theatre section index, text is that listing page, not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "oliver-west-end-2024/express-uk--neil-norman.json",
+        "description": "BRO-6569: url is the Express theatre section index, text is that listing page, not a review"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-producers-west-end-2025/express-uk--neil-norman.json",
+        "description": "BRO-6569: url is the Express theatre section index, text is that listing page, not a review"
+      }
+    ]
+  },
+  "executedAt": "2026-10-30T05:04:32.182Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted my-neighbour-totoro-west-end-2025/thestage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted oh-mary-west-end-2025/nytimes--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted oh-mary-west-end-2025/nytimes--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted rent-west-end-2026/broadwayworld--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted romeo-and-juliet-off-broadway-2026/whatsonstage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted shifters-west-end-2024/thestage--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted sunset-boulevard-2024/guardian--arifa-akbar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted tina-2019/standard--fiona-mountford.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-king-and-i-west-end-2018/telegraph--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted mass-west-end-2026/financialtimes--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted magic-mike-live-west-end-2021/financialtimes--sarah-hemming.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pride-west-end-2026/broadwayworld--jay-irwin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted end-west-end-2025/independent--alice-saville.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted becky-shaw-2026/nytimes--elisabeth-vincentelli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-p-word-off-west-end-2026/guardian--chris-wiegand.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted titanique-west-end-2024/express-uk--neil-norman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted oliver-west-end-2024/express-uk--neil-norman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-producers-west-end-2025/express-uk--neil-norman.json"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,9 @@
+{
+  "card": "BRO-4315",
+  "reason": "Off West End rows minted with a -west-end id suffix (2026 data audit S8-T1). Batch 1: one slug===id row, one with images only, one bare row.",
+  "renames": [
+    { "oldId": "broken-glass-west-end-2026", "newId": "broken-glass-off-west-end-2026", "expectTitle": "Broken Glass" },
+    { "oldId": "alice-in-wonderland-west-end-2026", "newId": "alice-in-wonderland-off-west-end-2026", "expectTitle": "Alice in Wonderland" },
+    { "oldId": "abigails-party-richmond-theatre-west-end-2026", "newId": "abigails-party-richmond-theatre-off-west-end-2026", "expectTitle": "Abigail's Party" }
+  ]
+}

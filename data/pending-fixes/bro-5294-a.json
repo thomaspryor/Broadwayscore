@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5294-a",
+  "planId": "5be8e366-6d62-48f3-9f0f-b3211d512c55",
+  "status": "applied",
+  "createdAt": "2026-10-13T22:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5294 (a): queue the 11 WSJ rows whose stored body is a multi-review column for a rescore that reads only the target show's section (venue-box-sections.ts). Live scores before: free-man 95, act-one 82, billy-elliot 18, bullets 77, salesman 91, evita 80, godspell 90, master-class 76, matilda 92, next-fall 29, godot 92.",
+    "steps": [
+      "run flag-multishow-column-rescore.js on the 11 named files",
+      "then llm-ensemble-score.yml needs_rescore=true rescore_reason=multi-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "flag-multishow-column-rescore.js",
+        "args": "--file=a-free-man-of-color-2010/wsj--terry-teachout.json,act-one-2014/wsj--terry-teachout.json,billy-elliot-the-musical-2008/wsj--terry-teachout.json,bullets-over-broadway-2014/wsj--terry-teachout.json,death-of-a-salesman-2012/wsj--terry-teachout.json,evita-2012/wsj--terry-teachout.json,godspell-2011/wsj--terry-teachout.json,master-class-2011/wsj--terry-teachout.json,matilda-the-musical-2013/wsj--terry-teachout.json,next-fall-2010/wsj--terry-teachout.json,waiting-for-godot-2009/wsj--terry-teachout.json",
+        "description": "Set needsRescore with rescoreReason 'multi-show column: score the target section (BRO-5294)' on 11 complete, scored, unlocked WSJ rows whose body has 2+ production boxes; the script refuses anything else."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T23:30:56.487Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran flag-multishow-column-rescore.js successfully"
+    }
+  ]
+}

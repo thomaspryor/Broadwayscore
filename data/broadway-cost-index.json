@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "description": "Broadway weekly running-cost index by contract year (BRO-4989). Backbone: the Actors' Equity Production (Broadway) contract weekly minimum. Used to carry a dated weekly-cost figure to another week (costForWeek). Not ticket prices.",
+    "method": "Each point is the Equity weekly minimum in effect from effectiveDate. Values between points are geometric interpolation. basis: 'sourced' = the figure is printed in the cited source; 'derived' = a sourced figure times a sourced contract raise; 'interpolated' = geometric between two sourced figures (no public figure found for those years); 'extrapolated' = before the first sourced figure, at Local 802's sourced 2003-2007 average raise; 'scheduled' = a raise the ratified contract schedules for a future date. Local 802 and Local One raises are recorded under corroboration and are not used in the arithmetic.",
+    "unit": "USD per week (Equity minimum)",
+    "baseDate": "2025-10-01",
+    "lastReviewed": "2026-10-10",
+    "maintenance": "Add a point when a new Equity Production contract is ratified (next: Oct 2028). The unit test fails if a point lacks a source or the series falls."
+  },
+  "points": [
+    { "effectiveDate": "1985-09-01", "value": 832, "basis": "extrapolated", "sourceUrl": "https://local802afm.org/allegro/articles/broadway-musicians-take-a-stand", "note": "2001 value / 1.0275^16. No sourced Equity minimum before 2004 was found online; projects back at the earliest documented raise rate so 1985-2000 weeks are not priced at 2001 costs. Low confidence: replace with contract figures when found" },
+    { "effectiveDate": "2001-09-01", "value": 1282, "basis": "extrapolated", "sourceUrl": "https://local802afm.org/allegro/articles/broadway-musicians-take-a-stand", "note": "2003 value / 1.0275^2; Local 802's 2003-07 average raise 2.75%/yr" },
+    { "effectiveDate": "2002-09-01", "value": 1318, "basis": "extrapolated", "sourceUrl": "https://local802afm.org/allegro/articles/broadway-musicians-take-a-stand", "note": "2003 value / 1.0275" },
+    { "effectiveDate": "2003-09-01", "value": 1354, "basis": "derived", "sourceUrl": "https://www.foxnews.com/story/actors-equity-approves-contract.amp", "note": "$1,381 (2004 first year) / 1.02: the 2004 contract raised minimums 2% in its first year" },
+    { "effectiveDate": "2004-09-01", "value": 1381, "basis": "sourced", "sourceUrl": "https://www.broadway.com/buzz/93649/actors-equity-ratifies-new-production-contract", "note": "\"no less than $1,381 per week in the first year and no less than $1,509 per week in the final year\" (page now 404; quote from search result, schedule corroborated by Fox News 2%/3%/3%/3%)" },
+    { "effectiveDate": "2005-09-01", "value": 1422, "basis": "derived", "sourceUrl": "https://www.foxnews.com/story/actors-equity-approves-contract.amp", "note": "+3% contract year 2" },
+    { "effectiveDate": "2006-09-01", "value": 1465, "basis": "derived", "sourceUrl": "https://www.foxnews.com/story/actors-equity-approves-contract.amp", "note": "+3% contract year 3" },
+    { "effectiveDate": "2007-09-01", "value": 1509, "basis": "sourced", "sourceUrl": "https://www.broadway.com/buzz/93649/actors-equity-ratifies-new-production-contract", "note": "final year of the 2004 contract" },
+    { "effectiveDate": "2018-09-01", "value": 2095, "basis": "sourced", "sourceUrl": "https://www.broadwayjournal.com/p/actors-score-2168-minimum-under-proposed-broadway-contract", "note": "\"The current Production contract, with a minimum weekly salary of $2,095\" (Sep 24, 2019). 2008-2018 are interpolated (3.03%/yr); the 2008 contract's package rose 11.25% over 39 months (Broadway League release), consistent" },
+    { "effectiveDate": "2019-09-30", "value": 2168, "basis": "sourced", "sourceUrl": "https://www.broadwayjournal.com/p/actors-score-2168-minimum-under-proposed-broadway-contract", "note": "\"raise the weekly minimum for Broadway actors 3.5 percent to $2,168\"; annual raises 3.5%" },
+    { "effectiveDate": "2020-09-28", "value": 2244, "basis": "derived", "sourceUrl": "https://www.broadwayjournal.com/p/actors-score-2168-minimum-under-proposed-broadway-contract", "note": "+3.5% contract year 2 (Broadway dark; the scheduled rate)" },
+    { "effectiveDate": "2021-09-27", "value": 2323, "basis": "sourced", "sourceUrl": "https://broadwaynews.com/actors-equity-ratifies-new-production-contract-marking-completion-of-negotiations-with-broadway-league", "note": "\"the minimum weekly salary for an actor, $2,323, increases to $2,439\"; matches 2,168 x 1.035^2" },
+    { "effectiveDate": "2022-09-26", "value": 2439, "basis": "sourced", "sourceUrl": "https://broadwaynews.com/actors-equity-ratifies-new-production-contract-marking-completion-of-negotiations-with-broadway-league", "note": "+5% retroactive to Sep 26, 2022" },
+    { "effectiveDate": "2023-09-25", "value": 2537, "basis": "derived", "sourceUrl": "https://broadwaynews.com/actors-equity-ratifies-new-production-contract-marking-completion-of-negotiations-with-broadway-league", "note": "+4% effective Sep 25, 2023" },
+    { "effectiveDate": "2024-09-30", "value": 2638, "basis": "sourced", "sourceUrl": "https://actorsequity.org/news/inthenews/2022/12/19/NYT121922", "note": "\"by late 2024 would raise the minimum salary ... to $2,638 per week\"; Broadway Journal Oct 2025 calls $2,638 current" },
+    { "effectiveDate": "2025-10-01", "value": 2717, "basis": "sourced", "sourceUrl": "https://broadwayjournal.com/actors-equity-nets-3-annual-raise-musicians-reach-deal/", "note": "\"the minimum will immediately increase to about $2717 a week from the current $2638\" (Oct 23, 2025); 3% a year for three years" },
+    { "effectiveDate": "2026-10-01", "value": 2799, "basis": "scheduled", "sourceUrl": "https://broadwayjournal.com/actors-equity-nets-3-annual-raise-musicians-reach-deal/", "note": "+3% contract year 2" },
+    { "effectiveDate": "2027-10-01", "value": 2883, "basis": "scheduled", "sourceUrl": "https://broadwayjournal.com/actors-equity-nets-3-annual-raise-musicians-reach-deal/", "note": "+3% contract year 3 (contract runs to Sept 2028)" }
+  ],
+  "corroboration": [
+    { "series": "AFM Local 802", "effectiveDate": "2003-03", "change": "+2.75%/yr average over 4 years", "sourceUrl": "https://local802afm.org/allegro/articles/broadway-musicians-take-a-stand" },
+    { "series": "AFM Local 802", "effectiveDate": "2008", "change": "+3.5%", "sourceUrl": "https://www.local802afm.org/allegro/articles/broadway-musicians-say-yes-to-new-contract/" },
+    { "series": "AFM Local 802", "effectiveDate": "2019", "change": "+3.5%/yr for 3 years", "sourceUrl": "https://www.local802afm.org/allegro/articles/a-new-deal-for-broadway/" },
+    { "series": "AFM Local 802", "effectiveDate": "2023-03-06", "change": "weekly minimum $2,143.10", "sourceUrl": "https://playbill.com/article/how-much-money-do-broadway-actors-make" },
+    { "series": "AFM Local 802", "effectiveDate": "2025-09-01", "change": "+3%/yr for 3 years (NYT, via Yahoo)", "sourceUrl": "https://www.yahoo.com/news/articles/broadway-musicians-vow-strike-contract-144605532.html" },
+    { "series": "IATSE Local One", "effectiveDate": "2007-12", "change": "+4% to 4.5%/yr over 5 years", "sourceUrl": "https://www.theatermania.com/new-york-city-theater/news/12-2007/local-one-ratifies-contract_12263.html/" }
+  ]
+}

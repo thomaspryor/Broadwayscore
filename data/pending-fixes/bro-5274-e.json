@@ -1,0 +1,198 @@
+{
+  "issueNumber": "bro-5274-e",
+  "planId": "336ce994-dfc1-4308-87e8-12dba2de20a4",
+  "status": "applied",
+  "createdAt": "2026-10-14T05:50:19.603629Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5274 part 5: remove the weaker copy of 16 duplicate (showDir|outlet|critic) pairs whose url forms differ. reviews.json already collapses the key, so no score changes.",
+    "steps": [
+      "Delete the weaker copy of each pair."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-soldiers-play-2020/variety--marilyn-stasio.json",
+        "description": "BRO-5274: same article as variety--aramide-tinubu.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "between-riverside-and-crazy-2022/variety--naveen-kumar.json",
+        "description": "BRO-5274: same article as variety--aramide-tinubu.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "caroline-or-change-2021/hollywood-reporter--david-rooney.json",
+        "description": "BRO-5274: same article as hollywood-reporter--angie-han.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "caroline-or-change-2021/variety--ayanna-prescod.json",
+        "description": "BRO-5274: same article as variety--aramide-tinubu.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "deuce-2007/variety--david-rooney.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "doctor-zhivago-2015/vulture--jesse-green.json",
+        "description": "BRO-5274: same article as vulture--jeremy-gerard.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "flying-over-sunset-2021/variety--marilyn-stasio.json",
+        "description": "BRO-5274: same article as variety--aramide-tinubu.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "in-transit-2016/hollywood-reporter--frank-scheck.json",
+        "description": "BRO-5274: same article as hollywood-reporter--david-rooney.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "million-dollar-quartet-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+        "description": "BRO-5274: same article as london-box-office--phil-willmott.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "radio-golf-2007/variety--david-rooney.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "spring-awakening-2006/variety--david-rooney.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "straight-white-men-2018/hollywood-reporter--frank-scheck.json",
+        "description": "BRO-5274: same article as hollywood-reporter--david-rooney.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-boys-in-the-band-2018/variety--marilyn-stasio.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-cherry-orchard-2016/variety--marilyn-stasio.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-inheritance-2019/variety--marilyn-stasio.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-lehman-trilogy-2021/variety--marilyn-stasio.json",
+        "description": "BRO-5274: same article as variety--charles-isherwood.json under another byline filename and url form; the write guard refuses a duplicateOf pointer across url forms, so the weaker copy is removed"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T06:36:37.599Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-soldiers-play-2020/variety--marilyn-stasio.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted between-riverside-and-crazy-2022/variety--naveen-kumar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted caroline-or-change-2021/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted caroline-or-change-2021/variety--ayanna-prescod.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted deuce-2007/variety--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted doctor-zhivago-2015/vulture--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted flying-over-sunset-2021/variety--marilyn-stasio.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted in-transit-2016/hollywood-reporter--frank-scheck.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted million-dollar-quartet-off-west-end-2026/london-box-office--shehrazade-zafar-arif.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted radio-golf-2007/variety--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted spring-awakening-2006/variety--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted straight-white-men-2018/hollywood-reporter--frank-scheck.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-boys-in-the-band-2018/variety--marilyn-stasio.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cherry-orchard-2016/variety--marilyn-stasio.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-inheritance-2019/variety--marilyn-stasio.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-lehman-trilogy-2021/variety--marilyn-stasio.json"
+    }
+  ]
+}

@@ -1,0 +1,299 @@
+{
+  "issueNumber": "bro-6927",
+  "planId": "82042a90-e529-4a2a-95d0-de5cf5a64ae6",
+  "status": "partial",
+  "createdAt": "2026-11-03T22:44:29.693Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 1/10): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=evening-all-afternoon-west-end-2026 --url=https://www.standard.co.uk/culture/theatre/evening-all-afternoon-b1272389.html --critic=\"Nick Curtis\" --publish-date=2026-02-25",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of evening-all-afternoon-west-end-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019 --url=https://www.standard.co.uk/culture/theatre/joseph-and-the-amazing-technicolor-dreamcoat-review-a-musical-exuberantly-reborn-at-the-palladium-a4188241.html --critic=\"Nick Curtis\" --publish-date=2019-07-11",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019 --url=https://www.telegraph.co.uk/theatre/what-to-see/joseph-amazing-technicolor-dreamcoat-review-london-palladium/ --critic=\"Dominic Cavendish\" --publish-date=2019-07-11",
+        "description": "BRO-6927 gap: Dominic Cavendish (The Telegraph (UK)) review of joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=les-miserables-west-end-2021 --url=https://www.standard.co.uk/culture/theatre/les-miserables-review-revamped-musical-opens-at-londons-sondheim-theatre-with-added-grit-a4336836.html --critic=\"Nick Curtis\" --publish-date=2020-01-17",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of les-miserables-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=les-miserables-west-end-2021 --url=https://www.telegraph.co.uk/theatre/what-to-see/les-miserables-sondheim-theatre-review-perfect-theatre-perfect/ --critic=\"Dominic Cavendish\" --publish-date=2020-01-16",
+        "description": "BRO-6927 gap: Dominic Cavendish (The Telegraph (UK)) review of les-miserables-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=les-miserables-west-end-2021 --url=https://www.thetimes.co.uk/article/les-miserables-review-overlong-and-clunky-but-there-was-much-to-admire-in-the-performances-r6w7lmhj5 --critic=\"Clive Davis\" --publish-date=2020-01-17",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of les-miserables-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mj-the-musical-west-end-2024 --url=https://www.standard.co.uk/culture/theatre/mj-the-musical-prince-edward-theatre-review-michael-jackson-b1148104.html --critic=\"Nick Curtis\" --publish-date=2024-03-27",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of mj-the-musical-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mj-the-musical-west-end-2024 --url=https://www.thetimes.co.uk/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq --critic=\"Clive Davis\" --publish-date=2024-03-27",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of mj-the-musical-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=player-kings-west-end-2024 --url=https://www.standard.co.uk/culture/theatre/player-kings-noel-coward-theatre-review-ian-mckellen-toheeb-jimoh-b1150748.html --critic=\"Nick Curtis\" --publish-date=2024-04-11",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of player-kings-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=player-kings-west-end-2024 --url=https://www.thetimes.co.uk/article/player-kings-review-ian-mckellen-shines-in-overlong-shakespeare-reimagining-q0zkjzmmk --critic=\"Clive Davis\" --publish-date=2024-04-12",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of player-kings-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=stranger-things-the-first-shadow-west-end-2023 --url=https://www.standard.co.uk/culture/theatre/stranger-things-the-first-shadow-review-west-end-netflix-phoenix-theatre-b1127020.html --critic=\"Nick Curtis\" --publish-date=2023-12-15",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of stranger-things-the-first-shadow-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=stranger-things-the-first-shadow-west-end-2023 --url=https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-review --critic=\"Andrzej Lukowski\" --publish-date=2023-12-15",
+        "description": "BRO-6927 gap: Andrzej Lukowski (Time Out London) review of stranger-things-the-first-shadow-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=stranger-things-the-first-shadow-west-end-2023 --url=https://www.thetimes.co.uk/article/stranger-things-the-first-shadow-review-you-need-to-be-a-fan-to-follow-this-prequel-blds60b6s --critic=\"Clive Davis\" --publish-date=2023-12-15",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of stranger-things-the-first-shadow-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-human-voice-west-end-2022 --url=https://www.standard.co.uk/culture/theatre/the-human-voice-review-ruth-wilson-ivo-van-hove-harold-pinter-theatre-b989889.html --critic=\"Nick Curtis\" --publish-date=2022-03-23",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of the-human-voice-west-end-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-human-voice-west-end-2022 --url=https://www.theguardian.com/stage/2022/mar/23/the-human-voice-review-ruth-wilson-harold-pinter-theatre --critic=\"Arifa Akbar\" --publish-date=2022-03-23",
+        "description": "BRO-6927 gap: Arifa Akbar (The Guardian (UK)) review of the-human-voice-west-end-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-prince-of-egypt-west-end-2020 --url=https://www.standard.co.uk/culture/theatre/the-prince-of-egypt-review-two-mens-internal-struggles-overshadow-beefed-up-musical-a4370831.html --critic=\"Nick Curtis\" --publish-date=2020-02-26",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of the-prince-of-egypt-west-end-2020, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-prince-of-egypt-west-end-2020 --url=https://www.thetimes.co.uk/article/prince-of-egypt-review-moses-the-musical-plagued-by-lack-of-memorable-tunes-kx05qvtfj --critic=\"Clive Davis\" --publish-date=2020-02-26",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of the-prince-of-egypt-west-end-2020, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-time-travellers-wife-west-end-2023 --url=https://www.standard.co.uk/culture/theatre/the-time-traveller-s-wife-at-the-apollo-theatre-review-b1116966.html --critic=\"Nick Curtis\" --publish-date=2023-11-03",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of the-time-travellers-wife-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-time-travellers-wife-west-end-2023 --url=https://www.theguardian.com/stage/2023/nov/01/the-time-travellers-wife-review-apollo-theatre-london-joss-stone-dave-stewart --critic=\"Arifa Akbar\" --publish-date=2023-11-01",
+        "description": "BRO-6927 gap: Arifa Akbar (The Guardian (UK)) review of the-time-travellers-wife-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-time-travellers-wife-west-end-2023 --url=https://www.thetimes.co.uk/article/the-time-travellers-wife-apollo-theatre-review-5f9d0lst2 --critic=\"Clive Davis\" --publish-date=2023-11-02",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of the-time-travellers-wife-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-unfriend-west-end-2023 --url=https://www.standard.co.uk/culture/theatre/the-unfriend-criterion-theatre-review-steven-moffat-mark-gatiss-amanda-abbington-b1054409.html --critic=\"Nick Curtis\" --publish-date=2023-01-20",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of the-unfriend-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-weir-west-end-2025 --url=https://www.standard.co.uk/culture/theatre/the-weir-harold-pinter-theatre-review-brendan-gleeson-b1248987.html --critic=\"Nick Curtis\" --publish-date=2025-09-22",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of the-weir-west-end-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=under-milk-wood-west-end-2021 --url=https://www.standard.co.uk/culture/theatre/under-milk-wood-at-national-theatre-review-dylan-thomas-michael-sheen-b942368.html --critic=\"Nick Curtis\" --publish-date=2021-06-25",
+        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of under-milk-wood-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=crazy-for-you-west-end-2023 --url=https://www.theguardian.com/stage/2022/jul/20/crazy-for-you-review-chichester-festival-theatre-gershwin-musical --critic=\"Arifa Akbar\" --publish-date=2023-07-20",
+        "description": "BRO-6927 gap: Arifa Akbar (The Guardian (UK)) review of crazy-for-you-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=big-the-musical-west-end-2019 --url=https://www.timeout.com/london/theatre/big-the-musical-review --critic=\"Andrzej Lukowski\" --publish-date=2019-09-19",
+        "description": "BRO-6927 gap: Andrzej Lukowski (Time Out London) review of big-the-musical-west-end-2019, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T23:36:51.781Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=evening-all-afternoon-west-end-2026 --url=https://www.standard.co.uk/culture/theatre/evening-all-afternoon-b1272389.html --critic=\"Nick Curtis\" --publish-date=2026-02-25"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019 --url=https://www.telegraph.co.uk/theatre/what-to-see/joseph-amazing-technicolor-dreamcoat-review-london-palladium/ --critic=\"Dominic Cavendish\" --publish-date=2019-07-11"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=les-miserables-west-end-2021 --url=https://www.standard.co.uk/culture/theatre/les-miserables-review-revamped-musical-opens-at-londons-sondheim-theatre-with-added-grit-a4336836.html --critic=\"Nick Curtis\" --publish-date=2020-01-17"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=les-miserables-west-end-2021 --url=https://www.telegraph.co.uk/theatre/what-to-see/les-miserables-sondheim-theatre-review-perfect-theatre-perfect/ --critic=\"Dominic Cavendish\" --publish-date=2020-01-16"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=mj-the-musical-west-end-2024 --url=https://www.thetimes.co.uk/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq --critic=\"Clive Davis\" --publish-date=2024-03-27"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=player-kings-west-end-2024 --url=https://www.thetimes.co.uk/article/player-kings-review-ian-mckellen-shines-in-overlong-shakespeare-reimagining-q0zkjzmmk --critic=\"Clive Davis\" --publish-date=2024-04-12"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=stranger-things-the-first-shadow-west-end-2023 --url=https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-review --critic=\"Andrzej Lukowski\" --publish-date=2023-12-15"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-prince-of-egypt-west-end-2020 --url=https://www.standard.co.uk/culture/theatre/the-prince-of-egypt-review-two-mens-internal-struggles-overshadow-beefed-up-musical-a4370831.html --critic=\"Nick Curtis\" --publish-date=2020-02-26"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-prince-of-egypt-west-end-2020 --url=https://www.thetimes.co.uk/article/prince-of-egypt-review-moses-the-musical-plagued-by-lack-of-memorable-tunes-kx05qvtfj --critic=\"Clive Davis\" --publish-date=2020-02-26"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-time-travellers-wife-west-end-2023 --url=https://www.thetimes.co.uk/article/the-time-travellers-wife-apollo-theatre-review-5f9d0lst2 --critic=\"Clive Davis\" --publish-date=2023-11-02"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-unfriend-west-end-2023 --url=https://www.standard.co.uk/culture/theatre/the-unfriend-criterion-theatre-review-steven-moffat-mark-gatiss-amanda-abbington-b1054409.html --critic=\"Nick Curtis\" --publish-date=2023-01-20"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=under-milk-wood-west-end-2021 --url=https://www.standard.co.uk/culture/theatre/under-milk-wood-at-national-theatre-review-dylan-thomas-michael-sheen-b942368.html --critic=\"Nick Curtis\" --publish-date=2021-06-25"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=big-the-musical-west-end-2019 --url=https://www.timeout.com/london/theatre/big-the-musical-review --critic=\"Andrzej Lukowski\" --publish-date=2019-09-19"
+    }
+  ],
+  "executedIn": "ci"
+}

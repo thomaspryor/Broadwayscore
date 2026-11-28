@@ -1,0 +1,43 @@
+{
+  "issueNumber": "bro-4910-c",
+  "planId": "ae430512-87d1-4110-a1e8-7ee9df0b0d9c",
+  "status": "applied",
+  "createdAt": "2026-10-23T04:55:59.429Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4910 (part c): add Charles Isherwood's Variety review (2002-04-30, byline from the page's JSON-LD author) to the 2002 Broadway revival of Into the Woods, which was missing it.",
+    "steps": [
+      "Ingest into-the-woods-2002 from handed-off HTML: https://variety.com/2002/legit/reviews/into-the-woods-6-1200550018/"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "ingest-html-handoff",
+        "showId": "into-the-woods-2002",
+        "url": "https://variety.com/2002/legit/reviews/into-the-woods-6-1200550018/",
+        "outlet": "variety",
+        "critic": "Charles Isherwood",
+        "publishDate": "2002-04-30",
+        "description": "Ingest Variety review of the 2002 Broadhurst revival (page lists Broadhurst Theater, opened April 30, 2002)",
+        "htmlBytes": 552344,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "2c98fe8f6d677f0cfa704dcdd1ccff9d604efa39a5da1ba50c4ba4c0a1083ddb",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T05:34:03.495Z",
+  "results": [
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://variety.com/2002/legit/reviews/into-the-woods-6-1200550018/ for into-the-woods-2002 from handed-off HTML (552321 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

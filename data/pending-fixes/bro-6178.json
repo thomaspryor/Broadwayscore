@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-6178",
+  "planId": "31e56bd6-acad-4513-b346-397f7a768717",
+  "status": "applied",
+  "createdAt": "2026-10-24T22:43:43.882Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Oedipus (2025): drop the unsourced $950K weekly running cost (an AI deep-research guess with no public source; at that cost a show at 98.7% capacity setting a Studio 54 house record would have lost money every week). The model falls back to its star-play default, flags the cost as estimated, and its quality drops to low; the next merge-model-recoupment run then re-sizes the loss label from Flop to Did Not Recoup (no recoupment announced either way). deepResearch.notes still mention the old figure (not plan-editable).",
+    "steps": [
+      "commercial.json: oedipus.weeklyRunningCost",
+      "commercial.json: oedipus.costMethodology"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "weeklyRunningCost",
+        "oldValue": 950000,
+        "newValue": null,
+        "description": "commercial.json: oedipus.weeklyRunningCost"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "costMethodology",
+        "oldValue": "industry-estimate",
+        "newValue": null,
+        "description": "commercial.json: oedipus.costMethodology"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T00:19:58.171Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for oedipus"
+    }
+  ],
+  "executedIn": "ci"
+}

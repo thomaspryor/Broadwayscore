@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-11-28T16:26:25.826Z",
+  "bannerText": "161/184 Done(14d) verified on main · 6 FAILED · 0 vacuous · 20 stuck-but-done · 3 mis-armed, needs re-arming (BRO-8115, BRO-8112, BRO-8014) — PARTIAL RUN: 2 checks not re-run (ran out of time), so these numbers understate the board",
+  "items": [
+    {
+      "title": "FAILED BRO-8308 — P1: Opening night miss: The Dead, 1904 (2026-11-24)",
+      "detail": "gap audit generated 2026-11-28T15:05:10.195Z PASS the-dead-1904-off-broadway-2026: 5 live, 0 cited not live; info: 7 census candidate(s), 0 exclusion(s) confirmed correct; audited…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8308/p1-opening-night-miss-the-dead-1904-2026-11-24"
+    },
+    {
+      "title": "FAILED BRO-8148 — P1: Opening night miss: Fantasma (2026-11-22)",
+      "detail": "gap audit generated 2026-11-28T15:05:10.195Z BLIND fantasma-off-broadway-2026: 5 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 202…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8148/p1-opening-night-miss-fantasma-2026-11-22"
+    },
+    {
+      "title": "FAILED BRO-8141 — BSC Daily: Data quality: missed opening-night broadcasts",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: missed opening-night broadcasts\" still listed in the 2026-11-28T16:04:56.387Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8141/bsc-daily-data-quality-missed-opening-night-broadcasts"
+    },
+    {
+      "title": "FAILED BRO-7916 — Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+      "detail": "[check-alert-condition-absent] FAIL: \"live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remai…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7916/live-data-test-failing-no-unreviewed-t1t2-fulltext-present-cross"
+    },
+    {
+      "title": "FAILED BRO-7531 — Scraping cost savings: audit vendor spend, re-order fetch chain, evaluate new vendors",
+      "detail": "not ok: BRO-7531: ScrapingBee daily credits fell to a median of 10,…; BRO-7531: Scrapingdog stayed inside its plan (median day 10… | first failure: ScrapingBee median day is 10341…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7531/scraping-cost-savings-audit-vendor-spend-re-order-fetch-chain-evaluate"
+    },
+    {
+      "title": "FAILED BRO-7315 — Guardrail slim-down: cut hooks, rules and CI gates, prove the survivors with tests",
+      "detail": "TAP version 13 # Subtest: every top-level repo hook is wired in .claude/settings.json ok 1 - every top-level repo hook is wired in .claude/settings.json --- duration_ms: 1.348791 …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7315/guardrail-slim-down-cut-hooks-rules-and-ci-gates-prove-the-survivors"
+    },
+    {
+      "title": "STUCK BRO-8305 — Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8305/spend-guard-bd-circuit-breaker-web-unlocker2-cap-drift"
+    },
+    {
+      "title": "STUCK BRO-8277 — One-off large text-recovery batch: honest tried-counts, then work the whole backlog in checkpointed rounds",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-8277/one-off-large-text-recovery-batch-honest-tried-counts-then-work-the"
+    }
+  ],
+  "moreCount": 18
+}

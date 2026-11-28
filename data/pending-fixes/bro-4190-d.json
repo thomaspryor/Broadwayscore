@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-4190-d",
+  "planId": "a28aec55-ca5a-4c9c-9569-83ab9c571eaa",
+  "status": "applied",
+  "createdAt": "2026-10-12T05:48:10.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4658: ingest The Interested Bystander's Torera review. Plan bro-4190-c refused it because the multi-show post's section heading reads 'Toera'; the new --section-title flag isolates that section, and the guard requires the section body to name Torera.",
+    "steps": [
+      "Ingest the Torera section of the Interested Bystander multi-show post."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=torera-off-broadway-2026 --url=https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html --section-title=Toera --stub-on-failure",
+        "description": "BRO-4658: Interested Bystander Torera (WP Theater) review, heading spelled Toera"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T07:00:01.573Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

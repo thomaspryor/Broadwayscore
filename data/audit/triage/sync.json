@@ -1,0 +1,40 @@
+{
+  "system": "sync",
+  "status": "pass",
+  "lastChecked": "2026-11-28T16:04:54.886Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Sync: review-texts vs reviews.json",
+      "status": "pass",
+      "message": "85738 files, 53788 reviews (surplus: 31950)"
+    },
+    {
+      "name": "Sync: open show coverage",
+      "status": "pass",
+      "message": "35 open shows all have reviews and grosses"
+    },
+    {
+      "name": "Sync: phantom show detection",
+      "status": "pass",
+      "message": "No phantom show candidates found"
+    },
+    {
+      "name": "Sync: cast coverage",
+      "status": "pass",
+      "message": "37 active Broadway shows all have cast data"
+    },
+    {
+      "name": "Sync: baseline drift",
+      "status": "pass",
+      "message": "6178 shows, 358 open, 53788 reviews (all at or above baseline)"
+    },
+    {
+      "name": "Sync: grosses weekEnding",
+      "status": "pass",
+      "message": "weekEnding 11/22/2026 (6d ago)"
+    }
+  ]
+}

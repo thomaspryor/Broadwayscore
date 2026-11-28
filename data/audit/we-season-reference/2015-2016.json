@@ -1,0 +1,996 @@
+{
+  "generatedAt": "2026-10-27T23:55:30.141Z",
+  "season": "2015-2016",
+  "issue": "BRO-6450",
+  "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
+  "sources": [
+    "theatricalia (venue histories)",
+    "tr-az",
+    "olt",
+    "wos",
+    "guardian",
+    "wikipedia (venue articles)"
+  ],
+  "counts": {
+    "reference": 61,
+    "theatricaliaOnly": 9,
+    "excludedShortRuns": 3
+  },
+  "reference": [
+    {
+      "title": "People, Places and Things",
+      "venue": "Dorfman Theatre",
+      "start": "2015-09-01",
+      "end": null,
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fwt/people-places-and-things/production/10z0"
+    },
+    {
+      "title": "Showstopper! The Improvised Musical",
+      "venue": "Apollo Theatre",
+      "start": "2015-09-01",
+      "end": "2016-01-31",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/c48/showstopper-the-improvised-musical/production/1b89"
+    },
+    {
+      "title": "Photograph 51",
+      "venue": "Noël Coward Theatre",
+      "start": "2015-09-05",
+      "end": "2015-11-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e6d/photograph-51/production/wnj"
+    },
+    {
+      "title": "Jane Eyre",
+      "venue": "Lyttelton Theatre",
+      "start": "2015-09-08",
+      "end": "2016-01-10",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/3cb/jane-eyre/production/zgj"
+    },
+    {
+      "title": "Ushers",
+      "venue": "Arts Theatre",
+      "start": "2015-09-09",
+      "end": "2015-10-18",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ghm/ushers/production/12ew"
+    },
+    {
+      "title": "The Rocky Horror Show",
+      "venue": "Playhouse Theatre",
+      "start": "2015-09-11",
+      "end": "2015-09-26",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/53h/the-rocky-horror-show/production/19dv"
+    },
+    {
+      "title": "Kinky Boots",
+      "venue": "Adelphi Theatre",
+      "start": "2015-09-15",
+      "end": "2019-01-12",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dq5/kinky-boots/production/zte"
+    },
+    {
+      "title": "The Merchant of Venice / Wuthering Heights / Consensual",
+      "venue": "Ambassadors Theatre",
+      "start": "2015-09-18",
+      "end": "2015-12-04",
+      "sources": [
+        "theatricalia",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gy9/the-merchant-of-venice-wuthering-heights-consensual/production/137v"
+    },
+    {
+      "title": "Farinelli and the King",
+      "venue": "Duke of York's Theatre",
+      "start": "2015-09-29",
+      "end": "2015-12-05",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7j4/farinelli-and-the-king/production/14d1"
+    },
+    {
+      "title": "All On Her Own",
+      "venue": "Garrick Theatre",
+      "start": "2015-10-01",
+      "end": null,
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/es7/all-on-her-own/production/y93"
+    },
+    {
+      "title": "Close to You: Bacharach Reimagined",
+      "venue": "Criterion Theatre",
+      "start": "2015-10-03",
+      "end": "2016-02-14",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h2v/close-to-you-bacharach-reimagined/production/13jn"
+    },
+    {
+      "title": "The Father",
+      "venue": "Wyndham's Theatre",
+      "start": "2015-10-05",
+      "end": "2015-11-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e4h/the-father/production/wh9"
+    },
+    {
+      "title": "The Winter's Tale",
+      "venue": "Garrick Theatre",
+      "start": "2015-10-17",
+      "end": "2016-01-16",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/1v/the-winters-tale/production/way"
+    },
+    {
+      "title": "Elf The Musical",
+      "venue": "Dominion Theatre",
+      "start": "2015-10-24",
+      "end": "2016-01-02",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e6t/elf-the-musical/production/wpd"
+    },
+    {
+      "title": "Harlequinade",
+      "venue": "Garrick Theatre",
+      "start": "2015-10-24",
+      "end": "2016-01-13",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/9cf/harlequinade/production/y92"
+    },
+    {
+      "title": "Mr Foote's Other Leg",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2015-10-28",
+      "end": "2016-01-23",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fgc/mr-footes-other-leg/production/1060"
+    },
+    {
+      "title": "Lovesong of the Electric Bear",
+      "venue": "Arts Theatre",
+      "start": "2015-11-04",
+      "end": "2015-11-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/k66/lovesong-of-the-electric-bear/production/1dah"
+    },
+    {
+      "title": "Derren Brown: Miracle",
+      "venue": "Palace Theatre",
+      "start": "2015-11-11",
+      "end": "2016-01-13",
+      "sources": [
+        "theatricalia",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gtn/derren-brown-miracle/production/1308"
+    },
+    {
+      "title": "The Illusionists: Witness The Impossible",
+      "venue": "Shaftesbury Theatre",
+      "start": "2015-11-14",
+      "end": "2016-01-03",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/g0n/the-illusionists-witness-the-impossible/production/1176"
+    },
+    {
+      "title": "A Christmas Carol",
+      "venue": "Noël Coward Theatre",
+      "start": "2015-11-30",
+      "end": "2016-01-30",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gne/a-christmas-carol/production/12ng"
+    },
+    {
+      "title": "Hangmen",
+      "venue": "Wyndham's Theatre",
+      "start": "2015-12-01",
+      "end": "2016-03-05",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e3d/hangmen/production/we6"
+    },
+    {
+      "title": "Here We Go",
+      "venue": "Lyttelton Theatre",
+      "start": "2015-12-01",
+      "end": null,
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/kjw/here-we-go/production/1efp"
+    },
+    {
+      "title": "Peter Pan Goes Wrong",
+      "venue": "Apollo Theatre",
+      "start": "2015-12-04",
+      "end": "2016-01-31",
+      "sources": [
+        "theatricalia",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/egs/peter-pan-goes-wrong/production/xf4"
+    },
+    {
+      "title": "Guys and Dolls",
+      "venue": "Savoy Theatre",
+      "start": "2016-01-06",
+      "end": "2016-03-12",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/81x/guys-and-dolls/production/107p"
+    },
+    {
+      "title": "Red Velvet",
+      "venue": "Garrick Theatre",
+      "start": "2016-01-23",
+      "end": "2016-02-27",
+      "sources": [
+        "theatricalia",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gwr/red-velvet/production/w9r"
+    },
+    {
+      "title": "The Master Builder",
+      "venue": "The Old Vic",
+      "start": "2016-01-23",
+      "end": "2016-03-19",
+      "sources": [
+        "theatricalia",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/rj/the-master-builder/production/1e6a"
+    },
+    {
+      "title": "The Father",
+      "venue": "Duke of York's Theatre",
+      "start": "2016-02-01",
+      "end": "2016-03-26",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e4h/the-father/production/wh9"
+    },
+    {
+      "title": "Nell Gwynn",
+      "venue": "Apollo Theatre",
+      "start": "2016-02-04",
+      "end": "2016-04-30",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ezp/nell-gwynn/production/13dz"
+    },
+    {
+      "title": "Hand to God",
+      "venue": "Vaudeville Theatre",
+      "start": "2016-02-05",
+      "end": "2016-04-30",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7b4/hand-to-god/production/14sb"
+    },
+    {
+      "title": "The War of the Worlds",
+      "venue": "Dominion Theatre",
+      "start": "2016-02-08",
+      "end": "2016-04-30",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e6s/the-war-of-the-worlds/production/wpc"
+    },
+    {
+      "title": "Mrs Henderson Presents",
+      "venue": "Noël Coward Theatre",
+      "start": "2016-02-09",
+      "end": "2016-06-18",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gnd/mrs-henderson-presents/production/12nf"
+    },
+    {
+      "title": "The End Of Longing",
+      "venue": "Playhouse Theatre",
+      "start": "2016-02-11",
+      "end": "2016-05-14",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/f4q/the-end-of-longing/production/154h"
+    },
+    {
+      "title": "Nina Conti – In Your Face",
+      "venue": "Criterion Theatre",
+      "start": "2016-02-25",
+      "end": "2016-03-12",
+      "sources": [
+        "theatricalia",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h2t/nina-conti-in-your-face/production/13jm"
+    },
+    {
+      "title": "The Painkiller",
+      "venue": "Garrick Theatre",
+      "start": "2016-03-05",
+      "end": "2016-04-30",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gws/the-painkiller/production/134x"
+    },
+    {
+      "title": "Motown The Musical",
+      "venue": "Shaftesbury Theatre",
+      "start": "2016-03-08",
+      "end": "2019-04-20",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wos",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/g0m/motown-the-musical/production/1175"
+    },
+    {
+      "title": "People, Places and Things",
+      "venue": "Wyndham's Theatre",
+      "start": "2016-03-15",
+      "end": "2016-06-18",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fwt/people-places-and-things/production/10z0"
+    },
+    {
+      "title": "Guys and Dolls",
+      "venue": "Phoenix Theatre",
+      "start": "2016-03-19",
+      "end": "2016-08-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/81x/guys-and-dolls/production/107p"
+    },
+    {
+      "title": "The Caretaker",
+      "venue": "The Old Vic",
+      "start": "2016-03-29",
+      "end": "2016-05-31",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/y9/the-caretaker/production/141h"
+    },
+    {
+      "title": "How the Other Half Loves",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2016-03-31",
+      "end": "2016-06-25",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/4sn/how-the-other-half-loves/production/108t"
+    },
+    {
+      "title": "The Comedy About A Bank Robbery",
+      "venue": "Criterion Theatre",
+      "start": "2016-03-31",
+      "end": "2020-03-15",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/eps/the-comedy-about-a-bank-robbery/production/13jh"
+    },
+    {
+      "title": "Cyprus Avenue",
+      "venue": "Royal Court",
+      "start": "2016-04-05",
+      "end": "2016-05-07",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/f7j/cyprus-avenue/production/zg9"
+    },
+    {
+      "title": "The Taming of the Shrew",
+      "venue": "Arts Theatre",
+      "start": "2016-04-05",
+      "end": "2016-05-01",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/1f/the-taming-of-the-shrew/production/12er"
+    },
+    {
+      "title": "Doctor Faustus",
+      "venue": "Duke of York's Theatre",
+      "start": "2016-04-09",
+      "end": "2016-06-25",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/40/doctor-faustus/production/14y2"
+    },
+    {
+      "title": "All That Fall",
+      "venue": "Arts Theatre",
+      "start": "2016-04-13",
+      "end": "2016-05-14",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dbj/all-that-fall/production/12et"
+    },
+    {
+      "title": "Funny Girl",
+      "venue": "Savoy Theatre",
+      "start": "2016-04-20",
+      "end": "2016-10-08",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/aas/funny-girl/production/14nh"
+    },
+    {
+      "title": "Romeo and Juliet",
+      "venue": "Garrick Theatre",
+      "start": "2016-05-12",
+      "end": "2016-08-13",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/n/romeo-and-juliet/production/134w"
+    },
+    {
+      "title": "A View from Islington North",
+      "venue": "Arts Theatre",
+      "start": "2016-05-18",
+      "end": "2016-07-02",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ghj/a-view-from-islington-north/production/12es"
+    },
+    {
+      "title": "The Go-Between",
+      "venue": "Apollo Theatre",
+      "start": "2016-05-27",
+      "end": "2016-10-15",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/h0q/the-go-between/production/13dy"
+    },
+    {
+      "title": "Hobson's Choice",
+      "venue": "Vaudeville Theatre",
+      "start": "2016-06-08",
+      "end": "2016-09-10",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/4k0/hobsons-choice/production/wn4"
+    },
+    {
+      "title": "Disney's Aladdin",
+      "venue": "Prince Edward Theatre",
+      "start": "2016-06-15",
+      "end": "2019-08-31",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ggb/disneys-aladdin/production/129x"
+    },
+    {
+      "title": "The Truth",
+      "venue": "Wyndham's Theatre",
+      "start": "2016-06-27",
+      "end": "2016-09-03",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e4g/the-truth/production/wh8"
+    },
+    {
+      "title": "1984",
+      "venue": "Playhouse Theatre",
+      "start": "2016-06-28",
+      "end": "2016-10-29",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e7m/1984/production/wry"
+    },
+    {
+      "title": "Breakfast At Tiffanys",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2016-06-30",
+      "end": "2016-09-17",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fhr/breakfast-at-tiffanys/production/108w"
+    },
+    {
+      "title": "How the Other Half Loves",
+      "venue": "Duke of York's Theatre",
+      "start": "2016-07-07",
+      "end": "2016-10-01",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/4sn/how-the-other-half-loves/production/108t"
+    },
+    {
+      "title": "Groundhog Day",
+      "venue": "The Old Vic",
+      "start": "2016-07-15",
+      "end": "2016-09-17",
+      "sources": [
+        "theatricalia",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/es5/groundhog-day/production/y90"
+    },
+    {
+      "title": "Impossible",
+      "venue": "Noël Coward Theatre",
+      "start": "2016-07-18",
+      "end": "2016-08-27",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gnc/impossible/production/12ne"
+    },
+    {
+      "title": "The Bodyguard",
+      "venue": "Dominion Theatre",
+      "start": "2016-07-21",
+      "end": "2017-01-07",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e6r/the-bodyguard/production/wpb"
+    },
+    {
+      "title": "The Secret Garden",
+      "venue": "Ambassadors Theatre",
+      "start": "2016-07-27",
+      "end": "2016-08-31",
+      "sources": [
+        "theatricalia",
+        "olt"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/adf/the-secret-garden/production/137s"
+    },
+    {
+      "title": "Harry Potter and the Cursed Child",
+      "venue": "Palace Theatre",
+      "start": "2016-07-30",
+      "end": "2020-03-16",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "wos",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gtm/harry-potter-and-the-cursed-child/production/1307"
+    },
+    {
+      "title": "The Entertainer",
+      "venue": "Garrick Theatre",
+      "start": "2016-08-20",
+      "end": "2016-11-12",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "olt",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/47k/the-entertainer/production/wrw"
+    },
+    {
+      "title": "Dead Funny",
+      "venue": "Vaudeville Theatre",
+      "start": "2016-08-27",
+      "end": "2017-02-04",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/62f/dead-funny/production/x3s"
+    }
+  ],
+  "uncorroborated": [
+    {
+      "title": "Leave Hitler to Me Lad",
+      "venue": "Arts Theatre",
+      "start": "2015-09-29",
+      "end": "2015-10-18",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/ghr/leave-hitler-to-me-lad/production/12f2"
+    },
+    {
+      "title": "Gatsby",
+      "venue": "Arts Theatre",
+      "start": "2015-10-20",
+      "end": "2015-11-16",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/ghk/gatsby/production/12ev"
+    },
+    {
+      "title": "Evening At The Talkhouse",
+      "venue": "Dorfman Theatre",
+      "start": "2015-12-01",
+      "end": null,
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/knv/evening-at-the-talkhouse/production/1efq"
+    },
+    {
+      "title": "Goodnight Mr Tom",
+      "venue": "Duke of York's Theatre",
+      "start": "2015-12-17",
+      "end": "2016-02-20",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/fm9/goodnight-mr-tom/production/14y0"
+    },
+    {
+      "title": "Eddie Izzard: Force Majeure Reloaded",
+      "venue": "Palace Theatre",
+      "start": "2016-01-18",
+      "end": "2016-02-18",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gtp/eddie-izzard-force-majeure-reloaded/production/1309"
+    },
+    {
+      "title": "Bad Jews",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2016-02-08",
+      "end": "2016-03-19",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/dvt/bad-jews/production/108v"
+    },
+    {
+      "title": "Diao Chan, The Rise of the Courtesan",
+      "venue": "Arts Theatre",
+      "start": "2016-05-09",
+      "end": "2016-05-28",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/ghh/diao-chan-the-rise-of-the-courtesan/production/12eq"
+    },
+    {
+      "title": "Quentin Crisp: Naked Hope",
+      "venue": "Arts Theatre",
+      "start": "2016-06-26",
+      "end": null,
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/ghg/quentin-crisp-naked-hope/production/12ep"
+    },
+    {
+      "title": "Our Ladies of Perpetual Succour",
+      "venue": "Dorfman Theatre",
+      "start": "2016-08-10",
+      "end": "2016-10-01",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/e6f/our-ladies-of-perpetual-succour/production/wnp"
+    }
+  ],
+  "excluded": [
+    {
+      "title": "The Tempest",
+      "venue": "Ambassadors Theatre",
+      "start": "2016-06-23",
+      "end": "2016-07-02",
+      "reason": "run of 10 days < 14"
+    },
+    {
+      "title": "Vampire Hospital Waiting Room",
+      "venue": "Arts Theatre",
+      "start": "2015-11-09",
+      "end": "2015-11-21",
+      "reason": "run of 13 days < 14"
+    },
+    {
+      "title": "The Speech / The Door",
+      "venue": "Arts Theatre",
+      "start": "2015-10-20",
+      "end": "2015-10-24",
+      "reason": "run of 5 days < 14"
+    }
+  ]
+}

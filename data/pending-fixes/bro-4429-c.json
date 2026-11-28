@@ -1,0 +1,89 @@
+{
+  "issueNumber": "bro-4429-c",
+  "planId": "46bf9791-8728-4446-bdab-2a996c622a4a",
+  "status": "applied",
+  "createdAt": "2026-09-30T17:56:50.918Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Re-include real reviews that classifiers dropped after reading only part of the text (BRO-4429). The code fix that stops new cases lands in the same change. Hungry Women (Theatrely): the landed bro-4429 plan cleared its wrongProduction flag, but the file holds a two-show column (The Pass, then Hungry Women), so an ensemble score would read both. Score the Hungry Women section by hand, set its verdict line as the pull quote, and fix the byline.",
+    "steps": [
+      "Fix the byline to the column author named in its author bio",
+      "Set a final human score from the Hungry Women section, with a note",
+      "Set the pull quote to the Hungry Women verdict line"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "criticName",
+        "oldValue": "Emily Wyrwa",
+        "newValue": "Juan A. Ramirez",
+        "description": "The column's author bio names Juan A. Ramirez; Emily Wyrwa was carried over from the casting-news URL this file held before"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Scored from the Hungry Women section only (the column also reviews The Pass): potent, remarkably strong first act, predictable later structure, engaging and highly enjoyable production (BRO-4429).",
+        "description": "Why the score is set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": false,
+        "description": "Make the score final so the rebuild honours it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 78,
+        "description": "Positive review of Hungry Women; an ensemble rescore would read The Pass section too"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "llmPullQuote",
+        "oldValue": "The Pass is in performance through September 4, 2026 at La MaMa on East 4th Street in New York City.",
+        "newValue": "Hungry Women is hardly starved for material, and serves up a playwright ravished with talent and voracious in ambition.",
+        "description": "Verdict line from the Hungry Women section"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T18:37:49.083Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json criticName: \"Emily Wyrwa\" -> \"Juan A. Ramirez\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json humanReviewNote: null -> \"Scored from the Hungry Women section only (the column also reviews The Pass): potent, remarkably strong first act, predictable later structure, engaging and highly enjoyable production (BRO-4429).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json humanReviewScore: null -> 78"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json llmPullQuote: \"The Pass is in performance through September 4, 2026 at La MaMa on East 4th Street in New York City.\" -> \"Hungry Women is hardly starved for material, and serves up a playwright ravished with talent and voracious in ambition.\""
+    }
+  ]
+}

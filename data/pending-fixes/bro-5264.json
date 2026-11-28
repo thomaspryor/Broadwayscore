@@ -1,0 +1,243 @@
+{
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "issueNumber": "bro-5264",
+  "planId": "9c14b4f3-294b-4c65-8297-3678c6c0ee6d",
+  "createdAt": "2026-10-13T13:39:32Z",
+  "plan": {
+    "summary": "Hell's Kitchen: cite the trade report of 55-60% returned at the Broadway closing; replace homepage-only source links for Hell's Kitchen, Cabaret, King Kong, Tootsie and Jagged Little Pill",
+    "steps": [
+      "Hell's Kitchen: estimatedRecoupmentPct [55, 60] with the Broadway Journal (Oct 12, 2026) source, dated at the Feb 22, 2026 closing",
+      "Hell's Kitchen: article URLs for its Broadway Journal and amNY sources, plus the Oct 2026 Broadway Journal report",
+      "Cabaret (2024): Broadway Journal article URL and date (Sep 7, 2025)",
+      "King Kong and Tootsie: the SEC Form D filing pages; Jagged Little Pill: the Broadway News closing article"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hells-kitchen",
+        "showId": "hells-kitchen-2024",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          60,
+          60
+        ],
+        "newValue": [
+          55,
+          60
+        ],
+        "description": "Range from the reports: 60% (Keys to the NYT), 55% (one investor)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hells-kitchen",
+        "showId": "hells-kitchen-2024",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": "Section C: Reddit Grosses Analysis post states 'recoup=60-60%' for Hell's Kitchen",
+        "newValue": "Broadway Journal (Oct 12, 2026): Alicia Keys told The New York Times that when the show closed on Broadway, \"investors had been paid back 60% of their stakes\"; one investor told Broadway Journal the figure was 55%. A later sale of the Broadway company's subsidiary income (tour, Seoul, cast album) to Ovation Rights is expected to bring backers to roughly 90% in total, per executive producer Aaron Lustbader. https://www.broadwayjournal.com/p/hells-kitchens-broadway-buyout",
+        "description": "Cite the trade report instead of a Reddit post"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hells-kitchen",
+        "showId": "hells-kitchen-2024",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": "2026-02-04",
+        "newValue": "2026-02-22",
+        "description": "The 60% is as of the Broadway closing (Feb 22, 2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hells-kitchen",
+        "showId": "hells-kitchen-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com",
+            "date": "2024-07-03",
+            "excerpt": "Alicia Keys earns 10% of net profits at recoupment (12.5% at 150% recoupment). At 200% recoupment, 35% of net profits split among Keys, book writer, director, GM, Public Theater, and workshop actors."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.amny.com",
+            "date": "2026-01-18",
+            "excerpt": "Returned only ~60% of $22M capitalization. Did not recoup."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/hells-kitchen-aims-to-defy-big-budget-slump",
+            "date": "2024-07-03",
+            "excerpt": "Alicia Keys earns 10% of net profits at recoupment (12.5% at 150% recoupment). At 200% recoupment, 35% of net profits split among Keys, book writer, director, GM, Public Theater, and workshop actors."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.amny.com/entertainment/theater/broadway-hells-kitchen-to-close/",
+            "date": "2026-01-18",
+            "excerpt": "Returned only ~60% of $22M capitalization. Did not recoup."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/hells-kitchens-broadway-buyout",
+            "date": "2026-10-12",
+            "excerpt": "Keys told the NYT investors had been paid back 60% at the Broadway closing; one investor said 55%. Ovation Rights deal expected to bring backers to ~90% in total."
+          }
+        ],
+        "description": "Article URLs for the two homepage-only links; add the Oct 2026 Broadway Journal report"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "showId": "cabaret-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com",
+            "date": "2025-10-01",
+            "excerpt": "Raised $24.25M. $7.5M of investor capital used to renovate ATG's Kit Kat Club venue. Investors allege 0% recovery."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/cabaret-investor-sues-atg-amid-early-closing",
+            "date": "2025-09-07",
+            "excerpt": "Initial capitalization $24.25M; $7.5M spent transforming the August Wilson into the Kit Kat Club. The production has not returned any money to investors, a total loss to date."
+          }
+        ],
+        "description": "Article URL and date for the homepage-only Broadway Journal link; excerpt matches the article"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-kong-2018",
+        "showId": "king-kong-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov",
+            "date": "2018-01-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/KING-KONG",
+            "date": "2019-08-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1730694/000173069418000001/0001730694-18-000001-index.htm",
+            "date": "2018-04-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/KING-KONG",
+            "date": "2019-08-01"
+          }
+        ],
+        "description": "Filing or article URL for the homepage-only link"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "showId": "tootsie-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov",
+            "date": "2019-01-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1734354/000173435418000001/0001734354-18-000001-index.htm",
+            "date": "2018-03-15"
+          }
+        ],
+        "description": "Filing or article URL for the homepage-only link"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jagged-little-pill-2019",
+        "showId": "jagged-little-pill-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwaynews.com",
+            "date": "2021-12-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/jagged-little-pill-ends-broadway-run/",
+            "date": "2021-12-20"
+          }
+        ],
+        "description": "Filing or article URL for the homepage-only link"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T15:43:35.516Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for hells-kitchen"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for hells-kitchen"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for hells-kitchen"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for hells-kitchen"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for jagged-little-pill-2019"
+    }
+  ]
+}

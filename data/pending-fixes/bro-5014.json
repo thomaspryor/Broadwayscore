@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5014",
+  "planId": "d7a57bf7-c211-406f-b54e-ebe742573d0c",
+  "status": "applied",
+  "createdAt": "2026-10-10T23:05:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire 860-2026 (\"860\", Imperial Theatre), a Playbill-discovered duplicate of billy-crystal-860-2026 (\"Billy Crystal 860\", Imperial Theatre, previews 2026-10-01, opening 2026-10-21, closing 2027-01-03). The duplicate carries a wrong previews date (2026-10-21) and took the League grosses for the week ending 2026-10-04, so the real show had none. The title alias \"860\" now maps grosses to billy-crystal-860.",
+    "steps": [
+      "Retire 860-2026 as a duplicate of billy-crystal-860-2026, id only"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "860-2026",
+        "expectTitle": "860",
+        "duplicateOf": "billy-crystal-860-2026",
+        "reason": "Duplicate of billy-crystal-860-2026: same production at the Imperial Theatre (Playbill titles it \"860\"); wrong previews date and no reviews (BRO-5014)",
+        "description": "Retire the duplicate 860 row"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T00:16:53.509Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired 860-2026 (\"860\" @ Imperial Theatre)"
+    }
+  ]
+}

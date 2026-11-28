@@ -1,0 +1,321 @@
+{
+  "_meta": {
+    "issue": "BRO-5246",
+    "generatedAt": "2026-11-07T00:00:00.000Z",
+    "description": "Second batch of hand-reviewed outlet display names (8-9 character ids the BRO-5507/6991 selectors skipped). Each row was read off the outlet homepage. Applied by node scripts/audit-registry-slug-displaynames.js --apply-proposals."
+  },
+  "proposals": [
+    {
+      "outletId": "bsonarts",
+      "from": "Bsonarts",
+      "action": "rename",
+      "to": "BSonArts",
+      "evidence": "2026-11-07 BRO-5246: https://bsonarts.com/ homepage og:site_name/<title> names \"BSonArts\" (fetchPage)."
+    },
+    {
+      "outletId": "popbytes",
+      "from": "Popbytes",
+      "action": "rename",
+      "to": "PopBytes",
+      "evidence": "2026-11-07 BRO-5246: https://popbytes.com/ homepage og:site_name/<title> names \"PopBytes\" (fetchPage)."
+    },
+    {
+      "outletId": "seatplan",
+      "from": "Seatplan",
+      "action": "rename",
+      "to": "SeatPlan",
+      "evidence": "2026-11-07 BRO-5246: https://seatplan.com/ homepage og:site_name/<title> names \"SeatPlan\" (fetchPage)."
+    },
+    {
+      "outletId": "dailyinfo",
+      "from": "Dailyinfo",
+      "action": "rename",
+      "to": "Daily Info",
+      "evidence": "2026-11-07 BRO-5246: https://dailyinfo.co.uk/ homepage og:site_name/<title> names \"Daily Info\" (fetchPage)."
+    },
+    {
+      "outletId": "goldderby",
+      "from": "Goldderby",
+      "action": "rename",
+      "to": "Gold Derby",
+      "evidence": "2026-11-07 BRO-5246: https://goldderby.com/ homepage og:site_name/<title> names \"Gold Derby\" (fetchPage)."
+    },
+    {
+      "outletId": "gamerant",
+      "from": "Gamerant",
+      "action": "rename",
+      "to": "GameRant",
+      "evidence": "2026-11-07 BRO-5246: https://gamerant.com/ homepage og:site_name/<title> names \"GameRant\" (fetchPage)."
+    },
+    {
+      "outletId": "hercampus",
+      "from": "Hercampus",
+      "action": "rename",
+      "to": "Her Campus",
+      "evidence": "2026-11-07 BRO-5246: https://hercampus.com/ homepage og:site_name/<title> names \"Her Campus\" (fetchPage)."
+    },
+    {
+      "outletId": "markaspen",
+      "from": "Markaspen",
+      "action": "rename",
+      "to": "Mark Aspen",
+      "evidence": "2026-11-07 BRO-5246: https://markaspen.com/ homepage og:site_name/<title> names \"Mark Aspen\" (fetchPage)."
+    },
+    {
+      "outletId": "musicomh",
+      "from": "Musicomh",
+      "action": "rename",
+      "to": "musicOMH",
+      "evidence": "2026-11-07 BRO-5246: https://musicomh.com/ homepage og:site_name/<title> names \"musicOMH\" (fetchPage)."
+    },
+    {
+      "outletId": "reviewstl",
+      "from": "Reviewstl",
+      "action": "rename",
+      "to": "ReviewSTL",
+      "evidence": "2026-11-07 BRO-5246: https://reviewstl.com/ homepage og:site_name/<title> names \"ReviewSTL\" (fetchPage)."
+    },
+    {
+      "outletId": "timteeman",
+      "from": "Timteeman",
+      "action": "rename",
+      "to": "Tim Teeman",
+      "evidence": "2026-11-07 BRO-5246: https://timteeman.com/ homepage og:site_name/<title> names \"Tim Teeman\" (fetchPage)."
+    },
+    {
+      "outletId": "csmonitor",
+      "from": "Csmonitor",
+      "action": "rename",
+      "to": "The Christian Science Monitor",
+      "evidence": "2026-11-07 BRO-5246: https://csmonitor.com/ homepage og:site_name/<title> names \"The Christian Science Monitor\" (fetchPage)."
+    },
+    {
+      "outletId": "bigissue",
+      "from": "Bigissue",
+      "action": "rename",
+      "to": "Big Issue",
+      "evidence": "2026-11-07 BRO-5246: https://bigissue.com/ homepage og:site_name/<title> names \"Big Issue\" (fetchPage)."
+    },
+    {
+      "outletId": "operawire",
+      "from": "Operawire",
+      "action": "rename",
+      "to": "OperaWire",
+      "evidence": "2026-11-07 BRO-5246: https://operawire.com/ homepage og:site_name/<title> names \"OperaWire\" (fetchPage)."
+    },
+    {
+      "outletId": "12thnight",
+      "from": "12thnight",
+      "action": "rename",
+      "to": "12thNight.ca",
+      "evidence": "2026-11-07 BRO-5246: https://12thnight.ca/ homepage og:site_name/<title> names \"12thNight.ca\" (fetchPage)."
+    },
+    {
+      "outletId": "sesayarts",
+      "from": "Sesayarts",
+      "action": "rename",
+      "to": "Sesaya Arts Magazine",
+      "evidence": "2026-11-07 BRO-5246: https://sesayarts.com/ homepage og:site_name/<title> names \"Sesaya Arts Magazine\" (fetchPage)."
+    },
+    {
+      "outletId": "houstonia",
+      "from": "Houstonia",
+      "action": "rename",
+      "to": "Houstonia Magazine",
+      "evidence": "2026-11-07 BRO-5246: https://houstoniamag.com/ homepage og:site_name/<title> names \"Houstonia Magazine\" (fetchPage)."
+    },
+    {
+      "outletId": "nwtheatre",
+      "from": "Nwtheatre",
+      "action": "rename",
+      "to": "NWTheatre",
+      "evidence": "2026-11-07 BRO-5246: https://nwtheatre.org/ homepage og:site_name/<title> names \"NWTheatre\" (fetchPage)."
+    },
+    {
+      "outletId": "newsbreak",
+      "from": "Newsbreak",
+      "action": "rename",
+      "to": "NewsBreak",
+      "evidence": "2026-11-07 BRO-5246: https://newsbreak.com/ homepage og:site_name/<title> names \"NewsBreak\" (fetchPage)."
+    },
+    {
+      "outletId": "egazette",
+      "from": "Egazette",
+      "action": "rename",
+      "to": "EGazette",
+      "evidence": "2026-11-07 BRO-5246: https://egazette.ai/ homepage og:site_name/<title> names \"EGazette\" (fetchPage)."
+    },
+    {
+      "outletId": "heyrhody",
+      "from": "Heyrhody",
+      "action": "rename",
+      "to": "Hey Rhody Media Co.",
+      "evidence": "2026-11-07 BRO-5246: https://heyrhody.com/ homepage og:site_name/<title> names \"Hey Rhody Media Co.\" (fetchPage)."
+    },
+    {
+      "outletId": "westword",
+      "from": "Westword",
+      "action": "rename",
+      "to": "Denver Westword",
+      "evidence": "2026-11-07 BRO-5246: https://westword.com/ homepage og:site_name/<title> names \"Denver Westword\" (fetchPage)."
+    },
+    {
+      "outletId": "telegram",
+      "from": "Telegram",
+      "action": "rename",
+      "to": "Worcester Telegram",
+      "evidence": "2026-11-07 BRO-5246: https://telegram.com/ homepage og:site_name/<title> names \"Worcester Telegram\" (fetchPage)."
+    },
+    {
+      "outletId": "americajr",
+      "from": "Americajr",
+      "action": "rename",
+      "to": "AmericaJR",
+      "evidence": "2026-11-07 BRO-5246: https://americajr.com/ homepage og:site_name/<title> names \"AmericaJR\" (fetchPage)."
+    },
+    {
+      "outletId": "deadline",
+      "from": "Deadline",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://deadline.com/ homepage masthead is the one-word name \"Deadline\" (fetchPage)."
+    },
+    {
+      "outletId": "observer",
+      "from": "Observer",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://observer.com/ homepage masthead is the one-word name \"Observer\" (fetchPage)."
+    },
+    {
+      "outletId": "playbill",
+      "from": "Playbill",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://playbill.com/ homepage masthead is the one-word name \"Playbill\" (fetchPage)."
+    },
+    {
+      "outletId": "billboard",
+      "from": "Billboard",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://billboard.com/ homepage masthead is the one-word name \"Billboard\" (fetchPage)."
+    },
+    {
+      "outletId": "mashable",
+      "from": "Mashable",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://mashable.com/ homepage masthead is the one-word name \"Mashable\" (fetchPage)."
+    },
+    {
+      "outletId": "towleroad",
+      "from": "Towleroad",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://towleroad.com/ homepage masthead is the one-word name \"Towleroad\" (fetchPage)."
+    },
+    {
+      "outletId": "attitude",
+      "from": "Attitude",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://attitude.co.uk/ homepage masthead is the one-word name \"Attitude\" (fetchPage)."
+    },
+    {
+      "outletId": "newsweek",
+      "from": "Newsweek",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://newsweek.com/ homepage masthead is the one-word name \"Newsweek\" (fetchPage)."
+    },
+    {
+      "outletId": "londonist",
+      "from": "Londonist",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://londonist.com/ homepage masthead is the one-word name \"Londonist\" (fetchPage)."
+    },
+    {
+      "outletId": "moviefone",
+      "from": "Moviefone",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://moviefone.com/ homepage masthead is the one-word name \"Moviefone\" (fetchPage)."
+    },
+    {
+      "outletId": "collider",
+      "from": "Collider",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://collider.com/ homepage masthead is the one-word name \"Collider\" (fetchPage)."
+    },
+    {
+      "outletId": "hoodline",
+      "from": "Hoodline",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://hoodline.com/ homepage masthead is the one-word name \"Hoodline\" (fetchPage)."
+    },
+    {
+      "outletId": "grantland",
+      "from": "Grantland",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://grantland.com/ homepage masthead is the one-word name \"Grantland\" (fetchPage)."
+    },
+    {
+      "outletId": "gothamist",
+      "from": "Gothamist",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://gothamist.com/ homepage masthead is the one-word name \"Gothamist\" (fetchPage)."
+    },
+    {
+      "outletId": "gramilano",
+      "from": "Gramilano",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://gramilano.com/ homepage masthead is the one-word name \"Gramilano\" (fetchPage)."
+    },
+    {
+      "outletId": "jackstage",
+      "from": "Jackstage",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://jackstage.co.uk/ homepage masthead is the one-word name \"Jackstage\" (fetchPage)."
+    },
+    {
+      "outletId": "staybook",
+      "from": "Staybook",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://staybook.in/ homepage masthead is the one-word name \"Staybook\" (fetchPage)."
+    },
+    {
+      "outletId": "fandango",
+      "from": "Fandango",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://fandango.com/ homepage masthead is the one-word name \"Fandango\" (fetchPage)."
+    },
+    {
+      "outletId": "bachtrack",
+      "from": "Bachtrack",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://bachtrack.com/ homepage masthead is the one-word name \"Bachtrack\" (fetchPage)."
+    },
+    {
+      "outletId": "cititour",
+      "from": "Cititour",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://cititour.com/ homepage masthead is the one-word name \"Cititour\" (fetchPage)."
+    },
+    {
+      "outletId": "bloomberg",
+      "from": "Bloomberg",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://bloomberg.com/ homepage masthead is the one-word name \"Bloomberg\" (fetchPage)."
+    },
+    {
+      "outletId": "backstage",
+      "from": "Backstage",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://backstage.com/ homepage masthead is the one-word name \"Backstage\" (fetchPage)."
+    },
+    {
+      "outletId": "examiner",
+      "from": "Examiner",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://examiner.com/ homepage masthead is the one-word name \"Examiner\" (fetchPage)."
+    },
+    {
+      "outletId": "priceless",
+      "from": "Priceless",
+      "action": "reviewed",
+      "evidence": "2026-11-07 BRO-5246: https://priceless.com/ homepage masthead is the one-word name \"Priceless\" (fetchPage)."
+    }
+  ]
+}

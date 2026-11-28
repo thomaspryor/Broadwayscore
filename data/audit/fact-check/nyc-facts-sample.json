@@ -1,0 +1,4368 @@
+{
+  "cohort": "nyc-facts",
+  "label": "NYC shows (Broadway + Off-Broadway) begun since 2021-06-01, plus current and upcoming",
+  "seed": 6489,
+  "n": 1085,
+  "population": 1085,
+  "strata": {
+    "current-upcoming": {
+      "population": 330,
+      "sampled": 330
+    },
+    "bway-recent": {
+      "population": 169,
+      "sampled": 169
+    },
+    "ob-recent": {
+      "population": 316,
+      "sampled": 316
+    },
+    "ob-backfilled": {
+      "population": 270,
+      "sampled": 270
+    }
+  },
+  "ids": [
+    {
+      "id": "the-notebook-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "death-of-a-salesman-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-shark-is-broken-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "how-to-dance-in-ohio-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "patriots-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "american-buffalo-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "eureka-day-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "between-riverside-and-crazy-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-little-prince-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "gutenberg-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "kpop-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "waitress-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "chicken-and-biscuits-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "just-for-us-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "water-for-elephants-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "good-night-oscar-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "fat-ham-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "purpose-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "caroline-or-change-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "mamma-mia-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "stephen-sondheims-old-friends-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "glengarry-glen-ross-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "real-women-have-curves-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "floyd-collins-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "all-in-comedy-about-love-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "heart-of-rock-and-roll-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "gypsy-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "good-night-and-good-luck-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-collaboration-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "camelot-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "macbeth-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "a-christmas-carol-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "romeo-juliet-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "skeleton-crew-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "funny-girl-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "mrs-doubtfire-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "trouble-in-mind-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "art-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "here-lies-love-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "prima-facie-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "spamalot-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-roommate-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "i-need-that-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "take-me-out-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-kite-runner-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "ragtime-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "beaches-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "bad-cinderella-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "othello-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "english-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "pirates-the-penzance-musical-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "joe-turners-come-and-gone-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "how-i-learned-to-drive-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-last-five-years-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "stereophonic-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "hangmen-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "leopoldstadt-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "giant-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "once-upon-a-one-more-time-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "summer-1976-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "days-of-wine-and-roses-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "lackawanna-blues-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "all-out-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "every-brilliant-thing-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-thanksgiving-play-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "birthday-candles-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "1776-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-cottage-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "death-of-a-salesman-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "mike-birbiglia-the-old-man-and-the-pool-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "a-strange-loop-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "oedipus-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "queen-versailles-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "mcneal-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "swept-away-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "our-town-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "proof-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "left-on-tenth-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "back-to-the-future-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "death-becomes-her-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "jajas-african-hair-braiding-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "illinoise-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "merrily-we-roll-along-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "boop-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "cats-the-jellicle-ball-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "mother-play-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "tammy-faye-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "kimberly-akimbo-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "peter-pan-goes-wrong-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "harmony-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "topdog-underdog-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "smash-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "paradise-square-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-sign-in-sidney-brusteins-window-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "dana-h-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "cult-of-love-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "sweeney-todd-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "doubt-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "titanique-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "punch-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "bug-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-piano-lesson-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "liberation-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "grey-house-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "mary-jane-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "pass-over-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "chess-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "lempicka-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "uncle-vanya-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "aint-no-mo-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "life-of-pi-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "girl-from-the-north-country-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "walking-with-ghosts-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "almost-famous-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "little-bear-ridge-road-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "ohio-state-murders-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "dead-outlaw-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "an-enemy-of-the-people-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "suffs-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-fear-of-13-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "bob-fosses-dancin-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "redwood-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "clydes-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "once-upon-a-mattress-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "yellow-face-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "cabaret-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "waiting-for-godot-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "pictures-from-home-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "some-like-it-hot-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "purlie-victorious-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "parade-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "is-this-a-room-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-wiz-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-picture-of-dorian-gray-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "flying-over-sunset-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "becky-shaw-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-music-man-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-skin-of-our-teeth-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "celebrity-autobiography-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "hells-kitchen-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "marjorie-prime-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "sunset-boulevard-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-whos-tommy-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "job-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-hills-of-california-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "thoughts-of-a-colored-man-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "shucked-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "slave-play-2021",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "into-the-woods-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "mr-saturday-night-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "the-balusters-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "beetlejuice-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "cost-of-living-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "prayer-for-the-french-republic-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "beetlejuice-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "new-york-new-york-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "elf-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "dog-day-afternoon-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "fallen-angels-2026",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "appropriate-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "a-dolls-house-2023",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "call-me-izzy-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "plaza-suite-2022",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "home-2024",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "john-proctor-is-the-villain-2025",
+      "stratum": "bway-recent"
+    },
+    {
+      "id": "let-em-eat-cake-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "kate-allie-and-the-86-mets-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "now-you-see-me-live-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-morbs-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "do-not-try-this-at-home-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "dead-centre-deaf-republic-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "hadestown-2019",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "anthony-devito-jersey-boy-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "stripped-gertrude-or-aspargus-soup-in-august-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "machine-learning-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "doodle-pop-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "space-quest-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "tosca-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "school-girls-or-the-african-mean-girls-play-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "delirium-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "hamilton-2015",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-rocky-horror-show-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "friends-the-musical-parody-off-broadway-2022",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "twelve-maids-an-original-musical-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "broom-play-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "222-a-ghost-story-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "counting-and-cracking-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "kevin-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "toc-toc-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "sea-wall-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "slam-frank-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "aftermath-art-new-york-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "fantasma-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "fly-you-fools-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "lbj-the-play-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "a-christmas-carol-the-musical-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "playing-burton-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "parsifal-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "i-became-we-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "king-of-the-yees-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "born-in-the-dirt-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "to-the-playground-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-matter-of-the-disappearance-of-michael-anthony-smith-jr-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "lucky-bird-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "love-me-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "amaze-magic-off-broadway-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "silent-night-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "broadway-magic-hour-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-wedding-march-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "harry-potter-2021",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "kiss-of-the-spider-woman-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-greatest-story-ever-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "hospital-hour-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "its-a-wonderful-life-a-live-radio-play-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "soon-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "damn-yankees-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "little-shop-of-horrors-off-broadway-2019",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "just-in-time-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-heart-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "king-lear-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "peter-panto-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-steel-man-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "specimen-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "wold-meteor-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "la-boheme-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "samson-et-dalila-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "egg-or-anything-dipped-in-egg-gone-soften-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "warriors-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "angela-s-mixtape-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "a-christmas-carol-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "saigon-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "our-house-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "kilgallen-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "la-distance-bam-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-lost-boys-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "buena-vista-social-club-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "an-audience-with-virginia-woolf-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "otello-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "galileo-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "la-gringa-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-surge-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "msblackforpresident-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "paranormal-activity-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "slanted-floors-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "much-ado-about-nothing-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "whats-eating-gilbert-grape-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "blood-be-sweet-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "drunk-dracula-nyc-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "all-the-way-home-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-gall-of-her-travels-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-mo-co-show-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "finn-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "schmigadoon-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "dreamgirls-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-grief-eater-near-north-bender-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "cat-on-a-hot-tin-roof-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "jena-friedman-motherfucker-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "purple-rain-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-infinite-wrench-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "tim-and-scrooge-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "girls-chance-music-off-broadway-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "other-bodies-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "rope-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "feast-of-rabbits-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-betrothed-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-sound-of-music-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "age-is-a-feeling-off-broadway-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-lion-king-1997",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "what-belongs-to-you-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-unbelievers-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "violets-magic-glasses-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-verge-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "anne-teresa-de-keersmaeker-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-blue-parts-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-vagina-monologues-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "elektra-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "texas-in-paris-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "let-the-good-times-roll-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "three-days-of-rain-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "new-owner-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-very-gay-christmas-prince-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "ivy-day-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "stories-from-the-brink-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "operation-mincemeat-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "miles-for-mary-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "how-to-roll-a-blunt-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-amish-project-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "el-quijote-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "wonder-a-woman-keeps-a-secret-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "meet-me-at-the-end-of-the-world-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "chasing-grace-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "pretend-its-pretend-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "hole-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "a-few-good-men-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "chicago-1996",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "los-soles-truncos-off-broadway-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "marilyn-exposed-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-kick-inside-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "not-nineveh-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "pre-existing-condition-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "balkan-erotic-epic-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "trouble-struggle-bubble-and-squeak-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "water-walker-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "romeo-castellucci-bros-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "der-rosenkavalier-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "miss-step-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "henry-iv-parts-1-and-2-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "and-juliet-2022",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "flight-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "jackals-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "penelope-an-epic-new-musical-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "maria-stuarda-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "awake-and-sing-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "wanted-2022",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "petite-rouge-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "book-of-mormon-2011",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "aida-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "wild-rose-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "come-back-to-the-5-and-dime-jimmy-dean-jimmy-dean-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "erebus-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "drunk-romeo-and-juliet-off-broadway-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "spring-awakening-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-little-lasses-of-appleton-wisconsin-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "joris-lacoste-nexus-de-ladoration-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "old-actress-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "nature-theater-of-oklahoma-pizza-or-a-door-in-the-dark-does-not-dance-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-hope-theory-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "women-who-eat-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "forget-i-said-anything-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "blue-man-group-a-new-holiday-surprise-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "an-outrageous-outcome-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "mj-2022",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "dolly-an-original-musical-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "angelica-liddell-seppuku-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "fish-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "minor-theater-pity-whore-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "mix-and-master-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "audience-plant-2027-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-gorgeous-nothings-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "small-mouth-sounds-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "la-llamada-off-broadway-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "gloria-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "gods-spies-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-sorcerers-apprentice-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "seussical-theatre-young-audiences-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "dirty-dancing-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "hallelujah-baby-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "peace-camp-a-vigil-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-fever-greenwich-house-theater-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "mario-the-maker-magician-returns-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "we-are-happy-to-serve-you-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "other-desert-cities-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-great-gatsby-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-apple-boys-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-dead-1904-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "imitation-of-life-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "are-the-bennet-girls-ok-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "pea-dinneen-raising-her-voice-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-great-soviet-bucket-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "bocking-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-fantasticks-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "masquerade-off-broadway-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "faydra-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "a-view-from-the-bridge-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "diana-the-untold-and-untrue-story-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "miss-julie-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "starstuff-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "medea-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "singfeld-a-musical-about-nothing-off-broadway-2023",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-kings-critique-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "drunk-christmas-carol-nyc-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "you-go-on-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "heavenly-baba-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "copperfield-the-new-musical-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "phil-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-annunciation-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "10-things-i-hate-about-you-on-broadway-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "midnight-in-the-garden-of-good-and-evil-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-outsiders-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "parcel-from-america-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "rhinoceros-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "aladdin-2014",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "othello-bedlam-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "full-gallop-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-play-that-goes-wrong-off-broadway-2019",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-unsinkable-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "maybe-happy-ending-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "a-kidman-carol-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-charioteer-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-imaginary-invalid-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "phyl-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "is-anything-ok-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "baby-shower-katie-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "two-girls-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-two-of-you-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "sometimes-love-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "new2ny-series-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "our-sinatra-a-musical-celebration-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "what-we-talk-about-when-we-talk-about-anne-frank-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "grass-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "petra-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "traitorz-the-unauthorized-musical-parody-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "stranger-things-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "here-there-are-blueberries-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "oh-mary-2024",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "seven-guitars-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "milo-rau-medeas-children-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-paparazzi-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "manon-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "push-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "too-bad-for-her-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "cullberg-faye-driscoll-flesh-chariot-chariot-of-flesh-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "north-star-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "heathers-the-musical-off-broadway-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-holes-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "stories-to-tell-at-the-end-of-the-world-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-full-monty-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "evita-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "a-ghost-in-your-ear-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "tilt-an-80s-circus-thrill-ride-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "ndt-2-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "go-down-moses-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "human-things-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "magic-mike-live-new-york-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "annie-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "armory-public-tours-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-conversation-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-dog-show-come-sit-stay-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "wicked-2003",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "ghost-notes-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "stone-belly-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "paddington-the-musical-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "little-journey-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "two-strangers-bway-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "narcissister-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "la-fanciulla-del-west-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "chamber-magic-off-broadway-2022",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-visitors-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "arias-with-a-twist-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "degenerates-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "jenufa-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-good-thief-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "beyond-words-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "well-see-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "lincoln-in-the-bardo-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "private-lives-2025",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "tristan-and-yseult-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "bigfoot-ripped-my-dog-in-half-i-saw-it-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "perfect-crime-off-broadway-1987",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "schtick-a-pole-in-it-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "montauk-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "midnight-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "nikola-tesla-the-forgotten-genius-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "school-pictures-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "inter-alia-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "miracle-on-south-division-street-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "sankai-juku-totemvoid-and-height-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "potus-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "welcome-table-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "six-2021",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "youre-a-good-man-charlie-brown-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-ask-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "improv-4-kids-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "billy-crystal-860-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "ohio-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "montgomery-an-american-musical-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "work-of-devotion-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "downstate-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "jest-to-impress-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-masters-tools-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "guernica-guernica-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "ten-thousand-hours-off-broadway-2027",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "the-heart-sellers-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "in-the-heights-off-broadway-2026",
+      "stratum": "current-upcoming"
+    },
+    {
+      "id": "lord-nil-7-deadly-sins-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "duality-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-black-wolfe-tone-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "another-shot-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "kowalski-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "clowns-like-me-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "five-the-parody-musical-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "everythings-fine-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "heaux-church-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "a-knock-on-the-roof-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "all-of-me-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-weir-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-antiquities-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "sumo-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "dead-outlaw-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "curse-of-the-starving-class-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "you-will-get-sick-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "millennials-are-killing-musicals-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "black-odyssey-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "have-you-met-jane-goodall-and-her-mother-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-seat-of-our-pants-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "elephant-and-piggies-we-are-in-a-play-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-last-bimbo-of-the-apocalypse-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-price-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "fabulation-or-the-re-education-of-undine-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "cat-kid-comic-club-the-musical-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "father-anonymous-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "corruption-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-devils-disciple-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "liberation-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "bear-grease-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "here-we-are-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "elyria-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "gruesome-playground-injuries-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "bernardas-daughters-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "conversations-with-mother-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "god-of-carnage-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-fears-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-wanderers-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-doctor-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "fatherland-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "evanston-salt-costs-climbing-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "hannah-senesh-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "what-became-of-us-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "table-17-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "on-beckett-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "macbeth-an-undoing-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "madwomen-of-the-west-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "garsides-career-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "strategic-love-play-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "hyprov-improv-under-hypnosis-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "just-desserts-a-musical-bake-off-off-broadway-2026",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "wine-in-the-wilderness-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "safe-house-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "burnout-paradise-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "good-bones-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-jonathan-larson-project-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "babe-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "six-characters-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "lights-out-nat-king-cole-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "white-rose-the-musical-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "oh-happy-day-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "emergence-things-are-not-as-they-seem-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "watch-me-walk-off-broadway-2026",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "from-here-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-witness-room-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "dark-noon-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "dracula-a-comedy-of-terrors-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "tartuffe-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-seven-year-disappear-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "all-the-beauty-in-the-world-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "circle-jerk-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "hamlet-greenwich-house-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "joy-a-new-true-musical-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "job-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "44-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "pygmalion-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "stereophonic-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "n-a-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "this-world-of-tomorrow-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "grandiloquent-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "your-own-personal-exegesis-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "ginger-twinsies-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "buena-vista-social-club-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "alexandria-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "we-live-in-cairo-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-bookstore-off-broadway-2026",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "reunions-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-beautiful-land-i-seek-la-linda-tierra-que-busco-yo-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "weather-girl-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "laowang-a-chinatown-king-lear-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-burning-cauldron-of-fiery-fire-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "prince-faggot-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "people-of-the-book-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "sorry-for-your-loss-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-half-god-of-rainfall-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "a-bright-new-boise-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "love-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "lowcountry-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "flex-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "saturday-church-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "ceremonies-in-dark-old-men-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "mind-mangler-a-night-of-tragic-illusion-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "mama-im-a-big-girl-now-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "prince-faggot-playwrights-horizons-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "dreadful-episodes-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-refuge-plays-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "bowl-ep-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "deep-blue-sound-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "mary-gets-hers-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "angry-alan-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "dog-man-the-musical-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "translations-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "someone-spectacular-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "david-a-new-musical-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "scene-partners-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "still-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "triple-threat-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "stargazers-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "dirty-laundry-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "maddie-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "toros-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "oh-mary-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-glitch-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "titanique-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "cornelia-street-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "cats-the-jellicle-ball-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "playing-shylock-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "all-the-worlds-a-stage-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "prometheus-firebringer-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "covenant-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-white-chip-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "days-of-wine-and-roses-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "public-obscenities-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "going-bacharach-off-broadway-2026",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "brooklyn-laundry-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-smuggler-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "that-parenting-musical-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "anna-christie-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "iluminate-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-knight-of-the-burning-pestle-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "rolling-thunder-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "you-dont-have-to-do-anything-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "grief-camp-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "bettingers-luggage-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "empire-the-musical-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "drag-the-musical-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "orpheus-descending-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "david-blaine-presents-asi-winds-inner-circle-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "illinoise-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-gardens-of-anuncia-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "teeth-playwrights-horizons-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-very-hungry-caterpillar-show-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-meeting-the-interpreter-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "deep-history-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "a-good-day-to-me-not-to-you-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-saviour-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-connector-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "my-first-ex-husband-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "art-of-leaving-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-counter-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "sesame-street-the-musical-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-brothers-size-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "crooked-cross-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "a-guide-for-the-homesick-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "blood-of-the-lamb-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "messy-white-gays-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "remember-this-the-lesson-of-jan-karski-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "hamlet-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "russian-troll-farm-a-workplace-comedy-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "arcadia-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "beckett-briefs-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "on-the-evolutionary-function-of-shame-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "aristocrats-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-blood-quilt-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "communion-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "waiting-for-godot-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "scarlett-dreams-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-bakers-wife-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "this-much-i-know-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "chester-bailey-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "anne-frank-a-musical-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "philadelphia-here-i-come-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-big-gay-jamboree-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-fires-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "a-sign-of-the-times-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "dilaria-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "duke-and-roya-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-assassination-of-julius-caesar-as-told-by-william-shakespeare-and-george-bernard-shaw-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "last-call-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "sulfur-bottom-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "irishtown-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-effect-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "polishing-shakespeare-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "not-ready-for-prime-time-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "deadly-stages-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-swamp-dwellers-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-creeps-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "henry-iv-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "gatz-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "house-of-mcqueen-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "grenfell-in-the-words-of-survivors-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "make-me-gorgeous-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-least-problematic-woman-in-the-world-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "a-midsummer-nights-dream-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "merrily-we-roll-along-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "i-love-you-so-much-i-could-die-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "des-moines-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-good-john-proctor-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "300-paintings-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "wesley-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "meet-the-cartozians-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "other-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "ava-the-secret-conversations-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "how-to-defend-yourself-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "ode-to-the-wasp-woman-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-welkin-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-beacon-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "lone-star-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "swing-state-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "lets-call-her-patty-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "hold-on-to-me-darling-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "im-assuming-you-know-david-greenspan-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "daphne-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-other-americans-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "pay-the-writer-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "we-are-your-robots-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "pretty-perfect-lives-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "death-let-me-do-my-show-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "a-simulacrum-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-honey-trap-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "jack-was-kind-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "richard-ii-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "picnic-at-hanging-rock-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "odd-man-out-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "this-is-government-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "jonah-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "merry-me-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "isabel-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "queens-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "ta-da-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-goodbye-girl-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "ghosts-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "archduke-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "stalker-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "aint-done-bad-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "becoming-eve-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "infinite-life-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "chiaroscuro-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "the-gospel-according-to-heather-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "arms-and-the-man-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "a-childs-christmas-in-wales-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "bite-me-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "partnership-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "sandra-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "teeth-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "school-pictures-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "just-another-day-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "candida-off-broadway-2022",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "endgame-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "mindplay-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "murdoch-the-final-interview-off-broadway-2025",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "ghost-of-john-mccain-off-broadway-2024",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "i-can-get-it-for-you-wholesale-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "til-death-off-broadway-2023",
+      "stratum": "ob-backfilled"
+    },
+    {
+      "id": "titus-andronicus-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "la-fille-du-regiment-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "three-houses-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "jesa-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "indian-princesses-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "between-two-knees-off-broadway-2024",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "encores-the-wild-party-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "orlando-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "milo-rau-and-edouard-louis-the-interrogation-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "are-you-now-or-have-you-ever-been-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "eurydice-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "tom-at-the-farm-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "eugene-onegin-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "arabella-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "this-is-not-not-a-drill-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "misterman-theatre-row-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "kramerfauci-st-anns-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "spring-dances-2026-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "messy-millie-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "proximo-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "grown-up-nights-jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "day-of-the-hog-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "this-is-not-about-me-59e59-theaters-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "11-to-midnight-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "september-l-davis-the-apology-tour-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "lost-in-del-valle-return-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "beyond-the-stardust-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "mercury-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "an-american-daughter-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "grangeville-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "silver-manhattan-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "tru-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-black-mirror-experience-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "yes-to-the-unknown-a-night-with-gloria-steinem-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "touch-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-vessel-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "stevie-a-life-in-the-key-of-songs-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "triumph-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "and-then-the-rodeo-burned-down-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "body-count-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "73-seconds-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "big-feelings-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "torera-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "hungry-women-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "creation-stories-and-all-the-important-importants-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "robyn-orlin-we-wear-our-wheels-with-pride-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "lets-love-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "maltby-and-shires-about-time-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-hulahoopin-queen-the-musical-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "kyoto-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "father-time-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "i-wish-my-life-were-like-a-musical-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "a-woman-among-women-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "america-who-hurt-you-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-people-versus-lenny-bruce-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "catch-of-the-day-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "safe-house-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-infinite-wrench-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "garry-starr-classic-penguins-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "sunset-baby-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-unknown-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "michael-r-jackson-wake-up-call-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "benevolent-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "ice-queen-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "red-riding-hood-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "youth-in-flames-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "blackout-songs-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "mcmusical-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "uncensored-no-need-to-overthink-it-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "jasmines-demo-show-4-the-end-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "matchbook-fest-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "hold-on-to-your-butts-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "bent-through-glass-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "burnout-paradise-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "repro-eco-tomorrow-is-now-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "hershey-felder-the-piano-and-me-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "tristan-und-isolde-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "othello-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "puppet-up-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "vanya-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "kinky-boots-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "don-giovanni-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-peculiar-patriot-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "chicka-chicka-boom-boom-the-musical-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "hugo-marchand-artists-at-the-center-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "les-miserables-arena-concert-spectacular-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-maids-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-loved-ones-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-lonely-few-off-broadway-2024",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "la-boheme-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "bedlams-othello-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "hardlove-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "disruption-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "broken-snow-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "romeo-and-juliet-suite-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "an-ark-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "encores-la-cage-aux-folles-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "david-copperfield-59e59-theaters-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-saviors-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "cosi-fan-tutte-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "jerome-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "anonymous-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "forest-high-and-the-glitch-in-the-system-a-new-sci-fi-musical-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-disappear-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-adding-machine-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "andrea-chenier-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "ulster-american-irish-repertory-theatre-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "rheology-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "liv-redpath-and-harry-rylance-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "madama-butterfly-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "spread-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "little-women-the-musical-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "macbeth-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "how-shakespeare-saved-my-life-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "vida-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "race-the-movie-the-play-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "porgy-and-bess-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "manual-cinema-the-4th-witch-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-whoopi-monologues-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "all-nighter-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "la-sonnambula-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "birthright-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "are-you-mad-at-me-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "kramerfauci-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-reservoir-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-pass-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "clinamen-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "alice-in-wonderland-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "becoming-hamlet-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "maria-bamford-soundly-unstable-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "hate-radio-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "rosie-odonnell-common-knowledge-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "masticate-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "joy-guidry-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "trash-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "spare-parts-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "ai-yah-goy-vey-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "night-side-songs-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "gotta-dance-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "hamlet-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "mexodus-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "innocence-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "youre-a-good-man-charlie-brown-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "nicole-travolta-is-doing-alright-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "chinese-republicans-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-winters-tale-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "jamire-williams-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "calf-scramble-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-real-ivanov-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "my-joy-is-heavy-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "la-boheme-off-broadway-2024",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "dukes-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "girl-interrupted-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "swan-lake-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "you-got-older-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "eva-luna-off-broadway-2022",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "labelless-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "cold-war-choir-practice-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "quarter-rican-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "la-traviata-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "bigfoot-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "clara-sex-love-and-classical-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "la-ternura-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "bloodlove-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "very-blue-light-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "danny-and-the-deep-blue-sea-off-broadway-2023",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "lean-to-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "doll-day-afternoon-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-porch-on-windy-hill-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "anne-teresa-de-keersmaeker-exit-above-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "paradise-club-presents-salvage-city-supper-club-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "beauty-freak-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "marlise-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "how-my-grandparents-fell-in-love-a-musical-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "frieze-new-york-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "graham100-the-centennial-celebration-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "pied-a-terre-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "bone-wars-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "love-and-other-life-sentences-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "that-math-show-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "mother-russia-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "caroline-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "oratorio-for-living-things-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "heartbreak-hotel-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-pushover-by-john-patrick-shanley-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "not-nobody-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "hamlet-the-furies-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "animal-wisdom-off-broadway-2022",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "dad-dont-read-this-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "a-walk-on-the-moon-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-house-of-the-negro-insane-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "kenrex-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "scorched-earth-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "no-singing-in-the-navy-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "ectoplasm-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "spellbound-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "les-enfants-terribles-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "zack-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-dinosaurs-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-second-best-school-shooting-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "new-born-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "matilda-the-musical-theatre-row-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "sukkot-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "i-puritani-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "no-excuses-no-limits-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-receptionist-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-ford-hill-project-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "data-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "making-a-show-of-myself-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "dirty-books-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "hamlet-by-william-shakespeare-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "mister-snickers-of-new-york-city-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "ulysses-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "milk-and-honey-amt-theater-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "carmen-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "im-almost-there-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "public-charge-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "cable-street-59e59-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "shit-meet-fan-off-broadway-2024",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "primary-trust-off-broadway-2023",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "poet-on-a-string-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "trophy-boys-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "olga-pericet-baile-sonoro-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-bathroom-attendant-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "a-thousand-natural-shocks-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "lost-in-del-valle-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "good-time-charlie-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "what-we-did-before-our-moth-days-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-waterfall-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-last-ship-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-emporium-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-secret-circus-musical-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "truly-howard-hughes-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "madama-butterfly-off-broadway-2024",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "onegin-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-comeuppance-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "cat-cohen-broad-strokes-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "camping-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-other-place-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "falls-for-jodie-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "small-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "steve-burns-alive-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "romeo-and-juliet-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "marcel-on-the-train-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-whole-sky-all-diamonds-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-potluck-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "shifters-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "drunk-shakespeare-off-broadway-2022",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "music-for-18-musicians-staged-variations-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-monsters-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "this-is-my-favorite-song-off-broadway-2024",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "after-all-these-years-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "gimme-a-sign-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "what-happened-was-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-invention-of-love-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "gobstopper-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "yoah-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "bad-krey-l-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "clara-sex-love-and-classical-music-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "pepper-slit-live-in-her-living-room-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "age-of-content-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "isla-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-little-mermaid-the-musical-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "brooklyns-bridge-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "conflicted-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "building-the-wall-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-gin-game-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "break-a-new-play-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "well-ill-let-you-go-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "stephane-wrembels-django-a-gogo-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "bughouse-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "fishing-for-alaska-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "unconditional-a-new-musical-memoir-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "night-of-january-16th-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-tragedy-of-coriolanus-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "ewa-dziarnowska-this-resting-patience-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-amazing-sex-life-of-rabbits-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "dirty-circus-off-broadway-2024",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "turandot-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "the-listening-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "burning-leaves-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "don-quixote-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "fear-and-wonder-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "music-city-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "pen-pals-off-broadway-2025",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "spandex-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "silverback-mountain-off-broadway-2026",
+      "stratum": "ob-recent"
+    },
+    {
+      "id": "seagull-true-story-off-broadway-2026",
+      "stratum": "ob-recent"
+    }
+  ],
+  "drawnAt": "2026-10-29T06:32:28.639Z"
+}

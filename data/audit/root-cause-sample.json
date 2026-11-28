@@ -1,0 +1,217 @@
+{
+  "generatedAt": "2026-11-26T10:52:57.878Z",
+  "grader": "gpt-5.4-mini (diff only, majority of 3)",
+  "poolSize": 137,
+  "noDiff": 3,
+  "landingsWithoutId": 130,
+  "graded": 8,
+  "rootCause": 8,
+  "spot": 0,
+  "unclear": 0,
+  "share": 100,
+  "calibrationOk": true,
+  "calibration": [
+    {
+      "card": "BRO-7066",
+      "expect": "spot-fix",
+      "got": "spot-fix"
+    },
+    {
+      "card": "BRO-7098",
+      "expect": "root-cause",
+      "got": "root-cause"
+    }
+  ],
+  "items": [
+    {
+      "card": "BRO-8081",
+      "grade": "root-cause",
+      "confidence": 0.94,
+      "reason": "The fix adds a reusable WSJ-tail stripper wired into the outlet trailer stripping path and covers it with tests, so any matching WSJ toolbar-chrome tail at the end of text is removed rather than just this one instance.",
+      "guardFile": "scripts/lib/trailer-signatures.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "8ca39d4bb22d",
+      "truncated": false,
+      "files": [
+        "scripts/lib/trailer-signatures.js",
+        "tests/unit/content-quality-wsj-capsule-review.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-8321",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change replaces Node's module loader with explicit fs+JSON parsing for shows.json, which removes the dependency scanner failure mode for all such loads rather than patching one call site.",
+      "guardFile": "scripts/lib/rival-title.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "spot-fix"
+      ],
+      "diffHash": "370d5a2c7c3e",
+      "truncated": true,
+      "files": [
+        "data/audit/claude-session-cost.jsonl",
+        "data/audit/session-retro.jsonl",
+        "data/pending-fixes/bro-8321.json",
+        "scripts/lib/article-extractor-artsdesk-date.test.mjs",
+        "scripts/lib/article-extractor.js",
+        "scripts/lib/content-quality-strip-memo.test.mjs",
+        "scripts/lib/content-quality.js",
+        "scripts/lib/no-readfile-resolve-in-lib.test.mjs",
+        "scripts/lib/other-production-signal.js",
+        "scripts/lib/outlet-listing-helpers.js",
+        "scripts/lib/rival-title.js",
+        "scripts/lib/rival-title.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-8084",
+      "grade": "root-cause",
+      "confidence": 0.88,
+      "reason": "The change adds a reusable truncation classifier and safe-body extraction, plus tests that lock the trailer-only truncation behavior and paywall-prompt exclusion, making the defect class harder to reintroduce rather than patching one review.",
+      "guardFile": "scripts/lib/trailer-signatures.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "bfc1499ea211",
+      "truncated": true,
+      "files": [
+        "data/audit/claude-session-cost.jsonl",
+        "data/audit/llm-session-usage.jsonl",
+        "data/audit/session-retro.jsonl",
+        "scripts/lib/content-tier-reason-sync.js",
+        "scripts/lib/pull-quote-guards.js",
+        "scripts/lib/text-gap-classify.js",
+        "scripts/lib/trailer-signatures.js",
+        "scripts/lib/trailer-signatures.test.mjs",
+        "scripts/rebuild-all-reviews.js",
+        "tests/unit/pull-quote-guards.test.mjs",
+        "tests/unit/review-pullquotes.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-8331",
+      "grade": "root-cause",
+      "confidence": 0.86,
+      "reason": "This adds a dedicated unit test that exercises the live-data-lane preflight behavior and asserts the hook wiring, so the whole class of regressions in that check would be caught rather than patching a single case.",
+      "guardFile": "tests/unit/live-data-lane-preflight.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "b142f675e85d",
+      "truncated": false,
+      "files": [
+        "tests/unit/live-data-lane-preflight.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7945",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change replaces a hardcoded category check with the shared isBroadwayCategory predicate, making the preview-skip logic follow the same classification rule everywhere instead of fixing only one category value.",
+      "guardFile": "scripts/lib/scored-absent.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "ed49c0270dc5",
+      "truncated": true,
+      "files": [
+        "scripts/audit-scored-absent.js",
+        "scripts/lib/multi-show-review-fanout-joint.test.mjs",
+        "scripts/lib/multi-show-review-fanout.js",
+        "scripts/lib/pending-drain-bro-7930.test.mjs",
+        "scripts/lib/pending-review-health.js",
+        "scripts/lib/pending-sibling-productions.js",
+        "scripts/lib/recovery-exclusions.js",
+        "scripts/lib/scored-absent.js",
+        "scripts/rebuild-all-reviews.js",
+        "scripts/replay-pending-bylines.js"
+      ]
+    },
+    {
+      "card": "BRO-8078",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change adds a dedicated gap ledger plus a pure gap-finding function with tests, and wires the audit/workflow to record and stage missing retro/cost rows for all qualifying sessions, not just one case.",
+      "guardFile": "scripts/lib/retro-coverage-stop.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "e77132f7b225",
+      "truncated": false,
+      "files": [
+        ".gitattributes",
+        ".github/workflows/landed-change-proof.yml",
+        "scripts/landed-change-proof-audit.js",
+        "scripts/lib/retro-coverage-stop.mjs",
+        "scripts/lib/retro-coverage-stop.test.mjs",
+        "scripts/lib/session-retro.js"
+      ]
+    },
+    {
+      "card": "BRO-7996",
+      "grade": "root-cause",
+      "confidence": 0.95,
+      "reason": "The change adds a reusable folder-vs-showId mismatch detector, wires validation to warn on any live mismatch, and updates the recovery/gap code to consistently trust the folder, making this class of bug caught or avoided broadly rather than patching one instance.",
+      "guardFile": "scripts/lib/review-showid-folder.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "49de788b77ad",
+      "truncated": false,
+      "files": [
+        "scripts/gap-url-find.js",
+        "scripts/lib/browser-recovery-helpers.js",
+        "scripts/lib/browser-recovery-helpers.test.mjs",
+        "scripts/lib/gap-acceptance.js",
+        "scripts/lib/gap-acceptance.test.mjs",
+        "scripts/lib/review-showid-folder.js",
+        "scripts/lib/review-showid-folder.test.mjs",
+        "scripts/recover-wsj-browser.js",
+        "scripts/validate-data.js"
+      ]
+    },
+    {
+      "card": "BRO-8079",
+      "grade": "root-cause",
+      "confidence": 0.86,
+      "reason": "The diff adds reusable guards and stricter classifiers in shared validation code and dispatcher wake logic, so the broader defect classes (misclassified live-data tests, weak/strong count phrasing, sample-audit completeness, duplicate wake delivery, and bad-event handling) are prevented or caught ra",
+      "guardFile": "scripts/lib/data-effect-close.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "8817a5b2ff0c",
+      "truncated": true,
+      "files": [
+        "scripts/bsc-next.js",
+        "scripts/dispatch-watchdog.js",
+        "scripts/lib/data-effect-close.js",
+        "scripts/lib/dispatcher-wake.js",
+        "scripts/lib/dispatcher-wake.test.mjs",
+        "scripts/lib/linear-done-gate.js",
+        "scripts/lib/linear-done-gate.test.mjs",
+        "scripts/lib/root-cause-close.js",
+        "scripts/lib/root-cause-close.test.mjs",
+        "scripts/linear-next.js",
+        "scripts/tests/headless-dispatch-telemetry.test.mjs"
+      ]
+    }
+  ]
+}

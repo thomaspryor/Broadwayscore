@@ -1,0 +1,7 @@
+{
+  "_note": "Vendor bills by month, USD. Add the month's invoice total per provider; scripts/reconcile-llm-spend.js compares it to the usage ledger.",
+  "2026-10": {
+    "openai": { "usd": 580, "source": "BRO-7517 owner-reported monthly bill (approx)" },
+    "gemini": { "usd": 900, "source": "BRO-7517 owner-reported Google bill, 900+ (approx floor)" }
+  }
+}

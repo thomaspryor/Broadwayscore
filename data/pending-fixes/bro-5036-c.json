@@ -1,0 +1,227 @@
+{
+  "issueNumber": "bro-5036-c",
+  "planId": "f2688508-d3a8-42b0-964c-da56b569f2e5",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:59:45.852Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5036: strict re-verify of the closed Broadway and West End rows with Google-sourced art, then contact sheets of every strict reject, found 30 wrong images on 26 rows (films, albums, novels, other productions, newspaper scans). Null them, reject each Google source, and mark the 7 rows left with no art so the sweep and self-heal stop refilling them. (part 3 of 3)",
+    "steps": [
+      "Null each wrong format (compare-and-set)",
+      "Add its recorded Google source to rejectedImageUrls (add-only)",
+      "Set noReliableArt on rows left with no art (fingerprint-checked)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-iceman-cometh-1973",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-iceman-cometh-1973/thumbnail.jpg",
+          "poster": "/images/shows/the-iceman-cometh-1973/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-iceman-cometh-1973/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-iceman-cometh-1973: poster was the 1985 Lunt-Fontanne revival Playbill (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-iceman-cometh-1973",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/the-iceman-cometh-circle-in-the-square-theatre-vault-0000003302"
+        ],
+        "description": "the-iceman-cometh-1973: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2024",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/la-boheme-off-broadway-2024/thumbnail.jpg",
+          "poster": "/images/shows/la-boheme-off-broadway-2024/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "la-boheme-off-broadway-2024: poster was a Lyric Opera of the North staging; thumbnail was an Arcola Theatre staging (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2024",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://writingnearthelake.org/2025/03/30/an-afternoon-at-the-opera-with-puccinis-la-boheme/",
+          "google-images:https://www.facebook.com/arcolatheatre/posts/la-boh%C3%A8me-soon-arrives-at-grimeborn-2024-on-20th-augustpuccinis-timeless-tale-of/897133892458507/"
+        ],
+        "description": "la-boheme-off-broadway-2024: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2024",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "la bohème|metropolitan opera house|2024-11-13"
+        },
+        "description": "la-boheme-off-broadway-2024: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-had-a-world-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/we-had-a-world-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/we-had-a-world-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "we-had-a-world-off-west-end-2026: poster was the Manhattan Theatre Club production; thumbnail was the Manhattan Theatre Club production (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-had-a-world-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984447029-79axvsi8m89.jpg",
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984452907-nr6ideiwr1f.png",
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984458443-tq8xjgocn69.jpg"
+        ],
+        "newValue": [
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984447029-79axvsi8m89.jpg",
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984452907-nr6ideiwr1f.png",
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984458443-tq8xjgocn69.jpg",
+          "google-images:https://www.manhattantheatreclub.com/shows/24-25-season/we-had-a-world/"
+        ],
+        "description": "we-had-a-world-off-west-end-2026: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-had-a-world-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "we had a world|hampstead theatre|2026-06-09"
+        },
+        "description": "we-had-a-world-off-west-end-2026: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-the-musical-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/little-women-the-musical-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/little-women-the-musical-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/little-women-the-musical-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "little-women-the-musical-off-broadway-2026: poster was a Musical Theatre West, Long Beach staging (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-the-musical-off-broadway-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3xhhpmquDOJksmWGKPaWQY/c044ad3266a474834824278b73d00fdf/LW_Poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4bYiANf6R2yMjINfrYZZiR/4427fff29d0242f6a91a3c5ff2be09e4/LW_Square.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7dOVCmPGrf556jUFgV99Ox/4b4533ad4abaf9b28afe532f71dceb65/LW_Hero.jpg?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3xhhpmquDOJksmWGKPaWQY/c044ad3266a474834824278b73d00fdf/LW_Poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4bYiANf6R2yMjINfrYZZiR/4427fff29d0242f6a91a3c5ff2be09e4/LW_Square.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7dOVCmPGrf556jUFgV99Ox/4b4533ad4abaf9b28afe532f71dceb65/LW_Hero.jpg?fm=webp&q=90",
+          "google-images:https://www.instagram.com/p/DOZSZ1vjDEU/"
+        ],
+        "description": "little-women-the-musical-off-broadway-2026: never re-take those Google sources (BRO-5036)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T14:37:18.916Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-iceman-cometh-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-iceman-cometh-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for la-boheme-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for la-boheme-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for la-boheme-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for we-had-a-world-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for we-had-a-world-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for we-had-a-world-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for little-women-the-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for little-women-the-musical-off-broadway-2026"
+    }
+  ]
+}

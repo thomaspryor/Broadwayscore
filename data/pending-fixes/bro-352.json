@@ -1,0 +1,129 @@
+{
+  "issueNumber": "bro-352",
+  "planId": "c4c66a83-864d-4d4a-9751-d117c6cfabac",
+  "status": "applied",
+  "createdAt": "2026-10-05T13:17:50.873Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-352: triage the 4 unreviewed cross-outlet attribution suspects so the audit reads clean. Each is an aggregator-sourced row credited to another outlet's default critic with no stored text backing the byline. All four are flagged wrongAttribution (excluded from scoring, reversible by clearing the flag) because the byline cannot be verified from stored text or a live url.",
+    "steps": [
+      "Stub with no text: a Cultural Weekly url (David Sheward) filed under StageZine. The real review is already stored as cultural-weekly--david-sheward.json (complete, 7950 chars).",
+      "bnd.com url returns 404 (url_dead) and only a BWW round-up excerpt is stored; Mark Kennedy is the AP critic and the AP review is stored separately, so this byline cannot be confirmed for BND.",
+      "url is a relative author-page path (/people/Matthew-Nerber/), not a review, and no text is stored; Matthew Nerber is the Buffalo News default critic, not Third Coast Review.",
+      "readingeagle.com url now 404s, archive page is a stub and the Gemini pull quote does not appear in Windman's stored amNY text, so the Windman byline cannot be confirmed for Reading Eagle."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "frankie-and-johnny-in-the-clair-de-lune-2019/stagezine--david-sheward.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stub with no text: a Cultural Weekly url (David Sheward) filed under StageZine. The real review is already stored as cultural-weekly--david-sheward.json (complete, 7950 chars)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frankie-and-johnny-in-the-clair-de-lune-2019/stagezine--david-sheward.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-352: Cultural Weekly article filed under StageZine; the review is cultural-weekly--david-sheward.json",
+        "description": "Reason for the flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-2015/belleville-news-democrat--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "bnd.com url returns 404 (url_dead) and only a BWW round-up excerpt is stored; Mark Kennedy is the AP critic and the AP review is stored separately, so this byline cannot be confirmed for BND."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-2015/belleville-news-democrat--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-352: dead bnd.com url, byline unverifiable; AP review is stored as ap--mark-kennedy.json",
+        "description": "Reason for the flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/third-coast-review--matthew-nerber.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "url is a relative author-page path (/people/Matthew-Nerber/), not a review, and no text is stored; Matthew Nerber is the Buffalo News default critic, not Third Coast Review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/third-coast-review--matthew-nerber.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-352: author-page url, no text; byline matches the Buffalo News critic, not Third Coast Review",
+        "description": "Reason for the flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweat-2017/reading-eagle--matt-windman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "readingeagle.com url now 404s, archive page is a stub and the Gemini pull quote does not appear in Windman's stored amNY text, so the Windman byline cannot be confirmed for Reading Eagle."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweat-2017/reading-eagle--matt-windman.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-352: dead readingeagle.com url, byline unverifiable; Windman review is stored as amny--matt-windman.json",
+        "description": "Reason for the flag."
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T13:54:37.458Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frankie-and-johnny-in-the-clair-de-lune-2019/stagezine--david-sheward.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frankie-and-johnny-in-the-clair-de-lune-2019/stagezine--david-sheward.json wrongAttributionReason: null -> \"BRO-352: Cultural Weekly article filed under StageZine; the review is cultural-weekly--david-sheward.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/belleville-news-democrat--mark-kennedy.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/belleville-news-democrat--mark-kennedy.json wrongAttributionReason: null -> \"BRO-352: dead bnd.com url, byline unverifiable; AP review is stored as ap--mark-kennedy.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/third-coast-review--matthew-nerber.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/third-coast-review--matthew-nerber.json wrongAttributionReason: null -> \"BRO-352: author-page url, no text; byline matches the Buffalo News critic, not Third Coast Review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweat-2017/reading-eagle--matt-windman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweat-2017/reading-eagle--matt-windman.json wrongAttributionReason: null -> \"BRO-352: dead readingeagle.com url, byline unverifiable; Windman review is stored as amny--matt-windman.json\""
+    }
+  ]
+}

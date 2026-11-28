@@ -1,0 +1,293 @@
+{
+  "issueNumber": "bro-5647-h",
+  "planId": "d16294b0-ee9b-4a7b-8933-a030d5902683",
+  "status": "applied",
+  "createdAt": "2026-10-19T03:06:47.332327Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Follow-up to bro-5647-g. (1) John Proctor Is the Villain: recoupedSource and designationBasis, which bro-5647-g could not set (the old source was hidden on the public page, and the apply gate filled a silence basis when the label changed). (2) Eight shows whose capitalization is their SEC Form D offering maximum while the same cited filing states the amount actually capitalized (the The Cottage pattern from Dots' Oct 19 audit): A Doll's House, KPOP, Left on Tenth, Mr. Saturday Night, The Anarchist, The Bridges of Madison County, The Great Society, The Hills of California. Old values read from the private core data at f0cfd62.",
+    "steps": [
+      "John Proctor source and basis",
+      "Eight capitalizations moved from the offering maximum to the filing's capitalized amount, with the filing quoted"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "showId": "john-proctor-is-the-villain-2025",
+        "field": "recoupedSource",
+        "oldValue": "Inferred: closed 398 days ago, no trade-press recoupment found",
+        "newValue": "BroadwayWorld (Ben Waterhouse, Jul 17, 2026): \"John Proctor is the Villain, though it did not recoup its investment\" https://www.broadwayworld.com/article/Gen-Z-is-Obsessed-with-Movies-Why-Not-Broadway-20260717",
+        "description": "Direct statement of non-recoupment replaces the inferred-from-silence note (bro-5647-g refused it: the old value was hidden on the public page)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "showId": "john-proctor-is-the-villain-2025",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "A cited source states the non-recoupment; the apply gate defaulted the basis to silence when bro-5647-g set the label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "showId": "a-dolls-house-2023",
+        "field": "capitalization",
+        "oldValue": 6200000,
+        "newValue": 5700000,
+        "description": "The filing states it capitalized at $5,700,000; $6,200,000 was the offering maximum."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "showId": "a-dolls-house-2023",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D/A filing (Beautiful Thing NY Limited Partnership, CIK 0001958447, filed Apr 17, 2023): total offering amount $6,200,000 ($5,700,000 sold by then). Matched to the show by its related persons John Rogers and Benjamin Lowy (Ambassador Theatre Group) and Gavin Kalin, the lead producers; its Beautiful Thing NY Production Services Corporation received the show's NY tax credit. https://www.sec.gov/Archives/edgar/data/1958447/000195844723000001/xslFormDX01/primary_doc.xml",
+        "newValue": "SEC Form D/A filing (Beautiful Thing NY Limited Partnership, CIK 0001958447, filed Apr 17, 2023): total offering amount $6,200,000 ($5,700,000 sold by then). Matched to the show by its related persons John Rogers and Benjamin Lowy (Ambassador Theatre Group) and Gavin Kalin, the lead producers; its Beautiful Thing NY Production Services Corporation received the show's NY tax credit. https://www.sec.gov/Archives/edgar/data/1958447/000195844723000001/xslFormDX01/primary_doc.xml The filing's clarification: \"Maximum capitalization was $6,200,000/Minimum capitalization was $5,700,000/Offering capitalized at $5,700,000\"",
+        "description": "Quote the filing's own statement of the amount capitalized."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kpop-2022",
+        "showId": "kpop-2022",
+        "field": "capitalization",
+        "oldValue": 14000000,
+        "newValue": 13432668,
+        "description": "The filing states it capitalized at $13,432,668; $14,000,000 was the offering maximum."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kpop-2022",
+        "showId": "kpop-2022",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D/A filing (KPOP Broadway LLC, CIK 0001808497, filed Mar 3, 2023): total offering amount $14,000,000 ($13,432,667 sold by then). Matched to the show by its related persons Joey Parnes and Tim Forbes, the lead producers; the same entity received its NY tax credit. https://www.sec.gov/Archives/edgar/data/1808497/000180849723000001/xslFormDX01/primary_doc.xml",
+        "newValue": "SEC Form D/A filing (KPOP Broadway LLC, CIK 0001808497, filed Mar 3, 2023): total offering amount $14,000,000 ($13,432,667 sold by then). Matched to the show by its related persons Joey Parnes and Tim Forbes, the lead producers; the same entity received its NY tax credit. https://www.sec.gov/Archives/edgar/data/1808497/000180849723000001/xslFormDX01/primary_doc.xml The filing's clarification: \"Maximum capitalization was $14,000,000/Minimum capitalization was $11,000,000/Offering capitalized at $13,432,667.86\"",
+        "description": "Quote the filing's own statement of the amount capitalized."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "showId": "left-on-tenth-2024",
+        "field": "capitalization",
+        "oldValue": 5900000,
+        "newValue": 5400000,
+        "description": "The filing states it capitalized at $5,400,000; $5,900,000 was the offering maximum."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "showId": "left-on-tenth-2024",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D/A filing (Left on Tenth Ltd Liability Co, CIK 0002018694, filed Oct 30, 2024): total offering amount $5,900,000 ($5,400,000 sold by then). Matched to the show by its related person Daryl Roth, the lead producer. https://www.sec.gov/Archives/edgar/data/2018694/000201869424000002/xslFormDX01/primary_doc.xml",
+        "newValue": "SEC Form D/A filing (Left on Tenth Ltd Liability Co, CIK 0002018694, filed Oct 30, 2024): total offering amount $5,900,000 ($5,400,000 sold by then). Matched to the show by its related person Daryl Roth, the lead producer. https://www.sec.gov/Archives/edgar/data/2018694/000201869424000002/xslFormDX01/primary_doc.xml The filing's clarification: \"Maximum capitalization was $5,900,000/Minimum capitalization was $4,700,000/Offering capitalized at $5,400,000\"",
+        "description": "Quote the filing's own statement of the amount capitalized."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "showId": "mr-saturday-night-2022",
+        "field": "capitalization",
+        "oldValue": 11000000,
+        "newValue": 10000000,
+        "description": "The filing states it capitalized at $10,000,000; $11,000,000 was the offering maximum."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "showId": "mr-saturday-night-2022",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D/A filing (Buddy Young Jr Ltd Liability Co, CIK 0001887271, filed Apr 26, 2022): total offering amount $11,000,000 ($10,000,000 sold by then). Matched to the show by its related persons James L. Nederlander and Nick Scandalios, the lead producers; the same entity received its NY tax credit. https://www.sec.gov/Archives/edgar/data/1887271/000188727122000001/xslFormDX01/primary_doc.xml",
+        "newValue": "SEC Form D/A filing (Buddy Young Jr Ltd Liability Co, CIK 0001887271, filed Apr 26, 2022): total offering amount $11,000,000 ($10,000,000 sold by then). Matched to the show by its related persons James L. Nederlander and Nick Scandalios, the lead producers; the same entity received its NY tax credit. https://www.sec.gov/Archives/edgar/data/1887271/000188727122000001/xslFormDX01/primary_doc.xml The filing's clarification: \"Maximum capitalization was $11,000,000/Minimum capitalization was $9,200,000/Entity capitalized at $10,000,000\"",
+        "description": "Quote the filing's own statement of the amount capitalized."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "showId": "the-anarchist-2012",
+        "field": "capitalization",
+        "oldValue": 2600000,
+        "newValue": 2450000,
+        "description": "The filing states it capitalized at $2,450,000; $2,600,000 was the offering maximum."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "showId": "the-anarchist-2012",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D filing (Anarchist Broadway Ltd Liability Co, CIK 0001552175; managing members Jeffrey Richards, Jerry Frankel and Howard Kagan; amended Jan 11, 2013): total offering amount $2,600,000, of which $2,450,000 was sold to 49 investors. https://www.sec.gov/Archives/edgar/data/1552175/000155217513000001/xslFormDX01/primary_doc.xml",
+        "newValue": "SEC Form D filing (Anarchist Broadway Ltd Liability Co, CIK 0001552175; managing members Jeffrey Richards, Jerry Frankel and Howard Kagan; amended Jan 11, 2013): total offering amount $2,600,000, of which $2,450,000 was sold to 49 investors. https://www.sec.gov/Archives/edgar/data/1552175/000155217513000001/xslFormDX01/primary_doc.xml The filing's clarification: \"Maximum capitalization was $2,600,000/Minimum capitalization was $2,200,000.  Offering capitalized at $2,450,000.\"",
+        "description": "Quote the filing's own statement of the amount capitalized."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "capitalization",
+        "oldValue": 8500000,
+        "newValue": 8488000,
+        "description": "The filing states it capitalized at $8,488,000; $8,500,000 was the offering maximum."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-bridges-of-madison-county-2014",
+        "showId": "the-bridges-of-madison-county-2014",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D filing (Bridges on Broadway Ltd Liability Co, CIK 0001574928; managing members led by Jeffrey Richards and Stacey Mindich; amended Apr 7, 2014): total offering amount $8,500,000, of which $8,488,000 was sold to 103 investors. https://www.sec.gov/Archives/edgar/data/1574928/000157492814000001/xslFormDX01/primary_doc.xml",
+        "newValue": "SEC Form D filing (Bridges on Broadway Ltd Liability Co, CIK 0001574928; managing members led by Jeffrey Richards and Stacey Mindich; amended Apr 7, 2014): total offering amount $8,500,000, of which $8,488,000 was sold to 103 investors. https://www.sec.gov/Archives/edgar/data/1574928/000157492814000001/xslFormDX01/primary_doc.xml The filing's clarification: \"Maximum capitalization is $8,500,000/Minimum capitalization is $7,500,000;  Offering capitalized at $8,488,000\"",
+        "description": "Quote the filing's own statement of the amount capitalized."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "showId": "the-great-society-2019",
+        "field": "capitalization",
+        "oldValue": 4400000,
+        "newValue": 4302500,
+        "description": "The filing states it capitalized at $4,302,500; $4,400,000 was the offering maximum."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-society-2019",
+        "showId": "the-great-society-2019",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D filing (Great Society Broadway Ltd Liability Co, CIK 0001783749; managing member led by Jeffrey Richards; amended Oct 17, 2019): total offering amount $4,400,000, of which $4,302,500 was sold to 38 investors. https://www.sec.gov/Archives/edgar/data/1783749/000178374919000002/xslFormDX01/primary_doc.xml",
+        "newValue": "SEC Form D filing (Great Society Broadway Ltd Liability Co, CIK 0001783749; managing member led by Jeffrey Richards; amended Oct 17, 2019): total offering amount $4,400,000, of which $4,302,500 was sold to 38 investors. https://www.sec.gov/Archives/edgar/data/1783749/000178374919000002/xslFormDX01/primary_doc.xml The filing's clarification: \"Maximum capitalization was $4,400,000/Minimum capitalization was $3,600,000/Offering capitalized at $4,302,500\"",
+        "description": "Quote the filing's own statement of the amount capitalized."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "showId": "the-hills-of-california-2024",
+        "field": "capitalization",
+        "oldValue": 7500000,
+        "newValue": 7000000,
+        "description": "The filing states it capitalized at $7,000,000; $7,500,000 was the offering maximum."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "showId": "the-hills-of-california-2024",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D/A filing (Hills of California Limited Partnership, CIK 0002026499, filed Nov 4, 2024): total offering amount $7,500,000 ($7,000,000 sold by then). Matched to the show by its related persons Sonia Friedman and Caro Newling, the lead producers. https://www.sec.gov/Archives/edgar/data/2026499/000202649924000002/xslFormDX01/primary_doc.xml",
+        "newValue": "SEC Form D/A filing (Hills of California Limited Partnership, CIK 0002026499, filed Nov 4, 2024): total offering amount $7,500,000 ($7,000,000 sold by then). Matched to the show by its related persons Sonia Friedman and Caro Newling, the lead producers. https://www.sec.gov/Archives/edgar/data/2026499/000202649924000002/xslFormDX01/primary_doc.xml The filing's clarification: \"Maximum capitalization is $7,500,000/Minimum capitalization is $6,500,000/Offering capitalized at $7,000,000\"",
+        "description": "Quote the filing's own statement of the amount capitalized."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T03:13:34.443Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for kpop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for kpop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for mr-saturday-night-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for mr-saturday-night-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-bridges-of-madison-county-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-great-society-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-hills-of-california-2024"
+    }
+  ]
+}

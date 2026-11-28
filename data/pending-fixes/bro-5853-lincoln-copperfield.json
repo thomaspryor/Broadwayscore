@@ -1,0 +1,553 @@
+{
+  "issueNumber": "bro-5853-lincoln-copperfield",
+  "planId": "3db73ac9-7652-49c6-ae02-5150a69920df",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5853: Lincoln in the Bardo (cast, creative team, truncated synopsis, placeholder runtime, two duplicate review files) and Copperfield! The New Musical (3 missing cast members, roles, empty creative team); clears the placeholder runtime '3h 12m' from 9 other rows. Every name checked against the review texts.",
+    "steps": [
+      "Lincoln: cast, creative team, synopsis, runtime, delete two duplicate files",
+      "Copperfield: cast and creative team",
+      "Clear placeholder runtime on 9 rows"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lincoln-in-the-bardo-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Peter Mattei",
+            "role": "Abraham Lincoln"
+          },
+          {
+            "name": "Everett Sobers",
+            "role": "Willie Lincoln"
+          },
+          {
+            "name": "Christine Goerke",
+            "role": "The Reverend"
+          },
+          {
+            "name": "Anthony Roth Costanzo"
+          },
+          {
+            "name": "Ryan McKinny",
+            "role": "Vollman"
+          },
+          {
+            "name": "Jonah Hoskins",
+            "role": "Bevins"
+          },
+          {
+            "name": "Stephanie Blythe",
+            "role": "Mrs. Baron"
+          },
+          {
+            "name": "Craig Colclough",
+            "role": "Mr. Baron"
+          },
+          {
+            "name": "Janai Brugger"
+          },
+          {
+            "name": "Joshua Blue",
+            "role": "Thomas Havens"
+          },
+          {
+            "name": "Viviana Goodwin",
+            "role": "Litzie"
+          },
+          {
+            "name": "Daniel Clark Smith",
+            "role": "Lt. Stone"
+          }
+        ],
+        "description": "BRO-5853: cast credited in the NYT and TheaterMania reviews (roles only where the reviews state them)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lincoln-in-the-bardo-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Missy Mazzoli",
+            "role": "Music",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Royce Vavrek",
+            "role": "Libretto",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "George Saunders",
+            "role": "Source Novel",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Lileana Blain-Cruz",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Yannick Nézet-Séguin",
+            "role": "Music Direction",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Adam Rigg",
+            "role": "Scenic Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Montana Levi Blanco",
+            "role": "Costume Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Yi Zhao",
+            "role": "Lighting Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Stacey Derosier",
+            "role": "Lighting Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "James Ortiz",
+            "role": "Puppetry",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Raja Feather Kelly",
+            "role": "Choreographer",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Hannah Wasileski",
+            "role": "Projection Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Hana S Kim",
+            "role": "Projection Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Jeremy Chernick",
+            "role": "Special Effects",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Kate Marvin",
+            "role": "Sound Design",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: creative team credited in the reviews"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lincoln-in-the-bardo-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "An opera adaptation of George Saunders' Booker Prize-winning novel set in a supernatural afterlife realm. Lincoln in the Bardo takes place in the bardo, a transitional plane between death and rebirth populated by spirits who resist accepting their fate. The story centers on 11-year-old Willie, the recently deceased son of Abraham Lincoln, whose father's grief-stricken visits to his tomb keep Willie's spirit tethered to the bardo rather than allowing him to move on. A community of bardo residents bands together to help free Willie, navigating the boundary between the living world and what comes after. The opera is composed by Missy Mazzoli, with a libretto by Royce Vavrek, based on George Saunders' Booker Prize-winning novel. The production is conducted by Yannick Nézet-Séguin and direct...",
+        "newValue": "The Metropolitan Opera's world premiere of Missy Mazzoli and Royce Vavrek's opera, adapted from George Saunders's novel about Abraham Lincoln mourning his son Willie among the dead, directed by Lileana Blain-Cruz and conducted by Yannick Nézet-Séguin.",
+        "description": "BRO-5853: synopsis on file is cut off mid-sentence"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lincoln-in-the-bardo-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 12m",
+        "newValue": "2h 40m",
+        "description": "BRO-5853: 3h 12m is a placeholder: The Times says 160min, TheaterMania 'a two hour, 40-minute opera'"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "copperfield-the-new-musical-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Bobby Conte",
+            "role": "David Copperfield"
+          },
+          {
+            "name": "Amelia Cormack"
+          },
+          {
+            "name": "Jed Feder"
+          },
+          {
+            "name": "Calvin Knegten"
+          },
+          {
+            "name": "Kent M. Lewis"
+          },
+          {
+            "name": "Kara Mikula"
+          },
+          {
+            "name": "Miyuki Miyagi"
+          },
+          {
+            "name": "Nancy O'Connor"
+          },
+          {
+            "name": "Dan Piering"
+          },
+          {
+            "name": "Aaron Michael Ray"
+          },
+          {
+            "name": "Will Reynolds"
+          },
+          {
+            "name": "Owen Squire Smith"
+          },
+          {
+            "name": "Alexander Sovronsky"
+          },
+          {
+            "name": "Erica Spyres"
+          },
+          {
+            "name": "Andy Taylor"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Bobby Conte",
+            "role": "David Copperfield"
+          },
+          {
+            "name": "Amelia Cormack"
+          },
+          {
+            "name": "Jed Feder"
+          },
+          {
+            "name": "Calvin Knegten"
+          },
+          {
+            "name": "Kent M. Lewis"
+          },
+          {
+            "name": "Kara Mikula",
+            "role": "Aunt Betsey"
+          },
+          {
+            "name": "Miyuki Miyagi"
+          },
+          {
+            "name": "Nancy O'Connor",
+            "role": "Em'ly"
+          },
+          {
+            "name": "Dan Piering"
+          },
+          {
+            "name": "Aaron Michael Ray",
+            "role": "Mr. Dick"
+          },
+          {
+            "name": "Will Reynolds",
+            "role": "Uriah Heep"
+          },
+          {
+            "name": "Owen Squire Smith",
+            "role": "Steerforth"
+          },
+          {
+            "name": "Alexander Sovronsky"
+          },
+          {
+            "name": "Erica Spyres"
+          },
+          {
+            "name": "Andy Taylor"
+          },
+          {
+            "name": "Henry Witcher",
+            "role": "Young David (alternating)"
+          },
+          {
+            "name": "Cathryn Wake",
+            "role": "Clara / Dora"
+          },
+          {
+            "name": "Tatiana Wechsler",
+            "role": "Jane Murdstone / Agnes"
+          }
+        ],
+        "description": "BRO-5853: add Cathryn Wake, Tatiana Wechsler and Henry Witcher (named in the NYSR, NYTG and Talkin' Broadway reviews) and the roles the reviews state"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "copperfield-the-new-musical-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Jeffrey Scharf",
+            "role": "Book",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Jeffrey Scharf",
+            "role": "Music",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Jeffrey Scharf",
+            "role": "Lyrics",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Gabriel Barre",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Gabriel Barre",
+            "role": "Choreographer",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Sonny Paladino",
+            "role": "Orchestrations",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Nancy O'Connor",
+            "role": "Music Direction",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Edward Pierce",
+            "role": "Scenic Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Jeff Croiter",
+            "role": "Lighting Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Jen Caprio",
+            "role": "Costume Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Shannon Slaton",
+            "role": "Sound Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "J. Jared Janas",
+            "role": "Wig, Hair & Makeup Design",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: creative team credited in the reviews"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "lincoln-in-the-bardo-off-broadway-2026/sunday-times--emma-hoffman.json",
+        "destinationPath": null,
+        "description": "BRO-5853: empty stub with the same url as times-uk--emma-hoffman.json"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "lincoln-in-the-bardo-off-broadway-2026/theatermania--unknown.json",
+        "destinationPath": null,
+        "description": "BRO-5853: duplicate of theatermania--zachary-stewart.json (same url, identical text)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "innocence-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 12m",
+        "newValue": null,
+        "description": "BRO-5853: runtime '3h 12m' is a placeholder shared by 10 unrelated rows with no source; cleared until a real runtime is sourced"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 12m",
+        "newValue": null,
+        "description": "BRO-5853: runtime '3h 12m' is a placeholder shared by 10 unrelated rows with no source; cleared until a real runtime is sourced"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-traviata-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 12m",
+        "newValue": null,
+        "description": "BRO-5853: runtime '3h 12m' is a placeholder shared by 10 unrelated rows with no source; cleared until a real runtime is sourced"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eugene-onegin-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 12m",
+        "newValue": null,
+        "description": "BRO-5853: runtime '3h 12m' is a placeholder shared by 10 unrelated rows with no source; cleared until a real runtime is sourced"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tristan-und-isolde-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 12m",
+        "newValue": null,
+        "description": "BRO-5853: runtime '3h 12m' is a placeholder shared by 10 unrelated rows with no source; cleared until a real runtime is sourced"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-ship-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 12m",
+        "newValue": null,
+        "description": "BRO-5853: runtime '3h 12m' is a placeholder shared by 10 unrelated rows with no source; cleared until a real runtime is sourced"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "don-quixote-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 12m",
+        "newValue": null,
+        "description": "BRO-5853: runtime '3h 12m' is a placeholder shared by 10 unrelated rows with no source; cleared until a real runtime is sourced"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "onegin-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 12m",
+        "newValue": null,
+        "description": "BRO-5853: runtime '3h 12m' is a placeholder shared by 10 unrelated rows with no source; cleared until a real runtime is sourced"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-view-from-the-bridge-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "3h 12m",
+        "newValue": null,
+        "description": "BRO-5853: runtime '3h 12m' is a placeholder shared by 10 unrelated rows with no source; cleared until a real runtime is sourced"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T18:32:23.390Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for lincoln-in-the-bardo-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for lincoln-in-the-bardo-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for lincoln-in-the-bardo-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for lincoln-in-the-bardo-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for copperfield-the-new-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for copperfield-the-new-musical-off-broadway-2026"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lincoln-in-the-bardo-off-broadway-2026/sunday-times--emma-hoffman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lincoln-in-the-bardo-off-broadway-2026/theatermania--unknown.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for innocence-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for el-ultimo-sueno-de-frida-y-diego-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for la-traviata-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for eugene-onegin-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for tristan-und-isolde-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-last-ship-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for don-quixote-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for onegin-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for a-view-from-the-bridge-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

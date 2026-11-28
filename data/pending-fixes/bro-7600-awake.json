@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-7600-awake",
+  "planId": "df125ff5-b307-422d-a594-5bf92c2eef19",
+  "status": "applied",
+  "createdAt": "2026-11-16T15:24:19.357Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Awake and Sing! 2026: clear unverified 4h runtime (reader report, issue 1187)",
+    "steps": [
+      "shows.json: awake-and-sing-2026.runtime"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "awake-and-sing-2026",
+        "field": "runtime",
+        "oldValue": "4h",
+        "newValue": null,
+        "description": "shows.json: awake-and-sing-2026.runtime"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T15:36:35.346Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for awake-and-sing-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

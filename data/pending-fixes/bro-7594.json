@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-7594",
+  "planId": "3f1d61f7-f4b6-41a4-9382-93180cd0c755",
+  "status": "applied",
+  "createdAt": "2026-11-16T14:02:10.622Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear or correct 78 runtimes copied from TodayTix filler runningTime values (4hrs inc two intervals, 1hr 35mins inc. interval, 1hr 35min no intermission); values from each show's TodayTix page, cleared where the page has none (part 1 of 5)",
+    "steps": [
+      "shows.json: data-off-broadway-2026.runtime",
+      "shows.json: data-off-broadway-2026.intermissions",
+      "shows.json: touch-off-broadway-2026.runtime",
+      "shows.json: tru-off-broadway-2026.runtime",
+      "shows.json: tru-off-broadway-2026.intermissions",
+      "shows.json: starlight-express-off-west-end-2024.runtime",
+      "shows.json: starlight-express-off-west-end-2024.intermissions",
+      "shows.json: manic-street-creature-off-west-end-2026.intermissions",
+      "shows.json: relics-off-west-end-2026.runtime",
+      "shows.json: relics-off-west-end-2026.intermissions",
+      "shows.json: driftwood-off-west-end-2026.runtime",
+      "shows.json: driftwood-off-west-end-2026.intermissions",
+      "shows.json: care-off-west-end-2026.runtime",
+      "shows.json: care-off-west-end-2026.intermissions",
+      "shows.json: an-ideal-husband-off-west-end-2026.runtime",
+      "shows.json: an-ideal-husband-off-west-end-2026.intermissions",
+      "shows.json: sting-off-west-end-2026.runtime",
+      "shows.json: sting-off-west-end-2026.intermissions",
+      "shows.json: deep-azure-globe-off-west-end-2026.runtime",
+      "shows.json: deep-azure-globe-off-west-end-2026.intermissions",
+      "shows.json: please-please-me-off-west-end-2026.runtime",
+      "shows.json: les-liaisons-dangereuses-west-end-2026.runtime",
+      "shows.json: les-liaisons-dangereuses-west-end-2026.intermissions",
+      "shows.json: are-you-watching-west-end-2026.runtime"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "data-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "4h",
+        "newValue": "1h 40m",
+        "description": "shows.json: data-off-broadway-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "data-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: data-off-broadway-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "touch-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "4h",
+        "newValue": "1h 30m",
+        "description": "shows.json: touch-off-broadway-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tru-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "4h",
+        "newValue": "1h 30m",
+        "description": "shows.json: tru-off-broadway-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tru-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: tru-off-broadway-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "starlight-express-off-west-end-2024",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 30m",
+        "description": "shows.json: starlight-express-off-west-end-2024.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "starlight-express-off-west-end-2024",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: starlight-express-off-west-end-2024.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "manic-street-creature-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: manic-street-creature-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "relics-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 10m",
+        "description": "shows.json: relics-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "relics-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: relics-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "driftwood-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 40m",
+        "description": "shows.json: driftwood-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "driftwood-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: driftwood-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "care-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 10m",
+        "description": "shows.json: care-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "care-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: care-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-ideal-husband-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 15m",
+        "description": "shows.json: an-ideal-husband-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-ideal-husband-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: an-ideal-husband-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sting-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 30m",
+        "description": "shows.json: sting-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sting-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: sting-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deep-azure-globe-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "2h 30m",
+        "description": "shows.json: deep-azure-globe-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deep-azure-globe-off-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: deep-azure-globe-off-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "please-please-me-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": null,
+        "description": "shows.json: please-please-me-off-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "les-liaisons-dangereuses-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "3h",
+        "description": "shows.json: les-liaisons-dangereuses-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "les-liaisons-dangereuses-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: les-liaisons-dangereuses-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "are-you-watching-west-end-2026",
+        "field": "runtime",
+        "oldValue": "1h 35m",
+        "newValue": "1h 5m",
+        "description": "shows.json: are-you-watching-west-end-2026.runtime"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T15:45:42.704Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for data-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for data-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for touch-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for tru-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for tru-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for starlight-express-off-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for starlight-express-off-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for manic-street-creature-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for relics-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for relics-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for driftwood-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for driftwood-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for care-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for care-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for an-ideal-husband-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for an-ideal-husband-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for sting-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for sting-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for deep-azure-globe-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for deep-azure-globe-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for please-please-me-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for les-liaisons-dangereuses-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for les-liaisons-dangereuses-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for are-you-watching-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

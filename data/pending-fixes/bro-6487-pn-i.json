@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-6487-pn-i",
+  "planId": "c209b938-e073-4798-8761-b9bacadc57df",
+  "status": "applied",
+  "createdAt": "2026-10-29T02:36:47.643Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights, set i of 11 (2012-13..2015-16 opening rows)",
+    "steps": [
+      "shows.json: the-father-west-end-2015.previewsStartDate",
+      "shows.json: the-father-west-end-2015.openingDate",
+      "shows.json: the-father-west-end-2015.openingDateSource",
+      "shows.json: peter-pan-goes-wrong-west-end-2015.openingDate",
+      "shows.json: peter-pan-goes-wrong-west-end-2015.openingDateSource",
+      "shows.json: motown-the-musical-west-end-2016.previewsStartDate",
+      "shows.json: motown-the-musical-west-end-2016.openingDate",
+      "shows.json: motown-the-musical-west-end-2016.openingDateSource",
+      "shows.json: aladdin-west-end-2016.previewsStartDate",
+      "shows.json: aladdin-west-end-2016.openingDate",
+      "shows.json: aladdin-west-end-2016.openingDateSource",
+      "shows.json: loserville-west-end-2012.previewsStartDate",
+      "shows.json: loserville-west-end-2012.openingDate",
+      "shows.json: loserville-west-end-2012.openingDateSource",
+      "shows.json: the-effect-west-end-2012.openingDate",
+      "shows.json: the-effect-west-end-2012.openingDateSource",
+      "shows.json: macbeth-west-end-2013.openingDateSource",
+      "shows.json: children-of-the-sun-west-end-2013.openingDate",
+      "shows.json: children-of-the-sun-west-end-2013.openingDateSource",
+      "shows.json: charlie-and-the-chocolate-factory-west-end-2013.previewsStartDate",
+      "shows.json: charlie-and-the-chocolate-factory-west-end-2013.openingDate",
+      "shows.json: charlie-and-the-chocolate-factory-west-end-2013.openingDateSource",
+      "shows.json: a-dolls-house-west-end-2013.previewsStartDate",
+      "shows.json: a-dolls-house-west-end-2013.openingDate",
+      "shows.json: a-dolls-house-west-end-2013.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-10-05",
+        "newValue": "2015-09-30",
+        "description": "shows.json: the-father-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-10-05",
+        "newValue": "2015-10-05",
+        "description": "shows.json: the-father-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-10-05 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: the-father-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-goes-wrong-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-12-04",
+        "newValue": "2015-12-09",
+        "description": "shows.json: peter-pan-goes-wrong-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-goes-wrong-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-12-09 (unitedagents.co.uk; BRO-6487)",
+        "description": "shows.json: peter-pan-goes-wrong-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "motown-the-musical-west-end-2016",
+        "field": "previewsStartDate",
+        "oldValue": "2016-03-08",
+        "newValue": "2016-02-11",
+        "description": "shows.json: motown-the-musical-west-end-2016.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "motown-the-musical-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-03-08",
+        "newValue": "2016-03-08",
+        "description": "shows.json: motown-the-musical-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "motown-the-musical-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-03-08 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: motown-the-musical-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aladdin-west-end-2016",
+        "field": "previewsStartDate",
+        "oldValue": "2016-06-15",
+        "newValue": "2016-05-27",
+        "description": "shows.json: aladdin-west-end-2016.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aladdin-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-06-15",
+        "newValue": "2016-06-15",
+        "description": "shows.json: aladdin-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aladdin-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-06-15 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: aladdin-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loserville-west-end-2012",
+        "field": "previewsStartDate",
+        "oldValue": "2012-10-17",
+        "newValue": "2012-10-01",
+        "description": "shows.json: loserville-west-end-2012.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loserville-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-10-17",
+        "newValue": "2012-10-17",
+        "description": "shows.json: loserville-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loserville-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2012-10-17 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: loserville-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-effect-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-11-06",
+        "newValue": "2012-11-13",
+        "description": "shows.json: the-effect-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-effect-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2012-11-13 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: the-effect-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: macbeth-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "children-of-the-sun-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-04-09",
+        "newValue": "2013-04-16",
+        "description": "shows.json: children-of-the-sun-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "children-of-the-sun-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-04-16 (uktw.co.uk; BRO-6487)",
+        "description": "shows.json: children-of-the-sun-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "charlie-and-the-chocolate-factory-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-05-18",
+        "newValue": "2013-05-22",
+        "description": "shows.json: charlie-and-the-chocolate-factory-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "charlie-and-the-chocolate-factory-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-05-18",
+        "newValue": "2013-06-25",
+        "description": "shows.json: charlie-and-the-chocolate-factory-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "charlie-and-the-chocolate-factory-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-06-25 (en.wikipedia.org; BRO-6487)",
+        "description": "shows.json: charlie-and-the-chocolate-factory-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-west-end-2013",
+        "field": "previewsStartDate",
+        "oldValue": "2013-08-14",
+        "newValue": "2013-08-08",
+        "description": "shows.json: a-dolls-house-west-end-2013.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-08-14",
+        "newValue": "2013-08-14",
+        "description": "shows.json: a-dolls-house-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-08-14 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: a-dolls-house-west-end-2013.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T14:50:05.549Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-father-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-father-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-father-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for peter-pan-goes-wrong-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for peter-pan-goes-wrong-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for motown-the-musical-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for motown-the-musical-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for motown-the-musical-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for aladdin-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for aladdin-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for aladdin-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for loserville-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for loserville-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for loserville-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-effect-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-effect-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for macbeth-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for children-of-the-sun-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for children-of-the-sun-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for charlie-and-the-chocolate-factory-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for charlie-and-the-chocolate-factory-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for charlie-and-the-chocolate-factory-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for a-dolls-house-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-dolls-house-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-dolls-house-west-end-2013"
+    }
+  ],
+  "executedIn": "ci"
+}

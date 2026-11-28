@@ -1,0 +1,300 @@
+{
+  "issueNumber": "bro-6742-c",
+  "planId": "8a7923d0-3bd6-4b31-a71a-37fc331cbf6b",
+  "status": "applied",
+  "createdAt": "2026-11-01T03:18:27.285Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6742 batch 2-3: read-confirmed off-Broadway false drops (venue misreads, non-review misclassifications, wrong-article CV) plus the public-charge body restore",
+    "steps": [
+      "Read-confirmed: LSA reviews David Cale's The Unknown at Studio Seaview; CV did not recognise the venue",
+      "Human clear",
+      "Read-confirmed: Leiter reviews the Signature Theatre run; CV treated Signature Theatre and the Signature Center as different venues",
+      "Human clear",
+      "Read-confirmed: Second Stage produced Meat Suit at the Signature Center; every other review says the same",
+      "Human clear",
+      "Read-confirmed: full evaluative TheaterMania review (tour-de-force, breathtaking theatrical force)",
+      "Human says this is a review",
+      "Read-confirmed: full Culture Sauce review ending in a 4-star rating",
+      "Human says this is a review",
+      "Human read: CV called this a preview; it is the full review",
+      "Put the quarantined 693-word review body back into fullText",
+      "Read-confirmed: evaluative review of Jerome at Playwrights Horizons",
+      "Human says this is a review",
+      "Read-confirmed: amNY Windman is a full review of the Classic Stage run, not a preview",
+      "Read-confirmed: Interested Bystander reviews An Ark at the Shed with a verdict",
+      "Human clear",
+      "Human says this is a review",
+      "The not_a_review rejection judged the whole three-show post; the stored text is now only the Jesa section",
+      "Clear the stale rejection stamp"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-unknown-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: LSA reviews David Cale's The Unknown at Studio Seaview; CV did not recognise the venue"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-unknown-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: Leiter reviews the Signature Theatre run; CV treated Signature Theatre and the Signature Center as different venues"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: Second Stage produced Meat Suit at the Signature Center; every other review says the same"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kenrex-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: full evaluative TheaterMania review (tour-de-force, breathtaking theatrical force)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kenrex-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human says this is a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "public-charge-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: full Culture Sauce review ending in a 4-star rating"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "public-charge-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human says this is a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "public-charge-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human read: CV called this a preview; it is the full review"
+      },
+      {
+        "type": "run-script",
+        "description": "Put the quarantined 693-word review body back into fullText",
+        "script": "restore-released-quarantined-body.js",
+        "args": "--file=public-charge-off-broadway-2026/culturesauce--thom-geier.json --apply"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: evaluative review of Jerome at Playwrights Horizons"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human says this is a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read-confirmed: amNY Windman is a full review of the Classic Stage run, not a preview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-ark-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed: Interested Bystander reviews An Ark at the Shed with a verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-ark-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human clear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-ark-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human says this is a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesa-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "The not_a_review rejection judged the whole three-show post; the stored text is now only the Jesa section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesa-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-04-26T01:47:41.392Z",
+        "newValue": null,
+        "description": "Clear the stale rejection stamp"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T03:27:17.219Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unknown-off-broadway-2026/lighting-and-sound-america--david-barbour.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unknown-off-broadway-2026/lighting-and-sound-america--david-barbour.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mother-russia-off-broadway-2026/theater-life--samuel-l-leiter.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026/nytg--kyle-turner.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kenrex-off-broadway-2026/theatermania--zachary-stewart.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kenrex-off-broadway-2026/theatermania--zachary-stewart.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "public-charge-off-broadway-2026/culturesauce--thom-geier.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "public-charge-off-broadway-2026/culturesauce--thom-geier.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "public-charge-off-broadway-2026/culturesauce--thom-geier.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran restore-released-quarantined-body.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jerome-off-broadway-2025/one-minute-critic--jerry-portwood.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marcel-on-the-train-off-broadway-2026/amny--matt-windman.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-ark-off-broadway-2026/the-interested-bystander--cary-wong.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-ark-off-broadway-2026/the-interested-bystander--cary-wong.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-ark-off-broadway-2026/the-interested-bystander--cary-wong.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesa-off-broadway-2026/the-interested-bystander--cary-wong.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesa-off-broadway-2026/the-interested-bystander--cary-wong.json rejectedAt: \"2026-04-26T01:47:41.392Z\" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

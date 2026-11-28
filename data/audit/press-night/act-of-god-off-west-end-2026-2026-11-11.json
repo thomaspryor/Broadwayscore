@@ -1,0 +1,1069 @@
+{
+  "schemaVersion": 1,
+  "showId": "act-of-god-off-west-end-2026",
+  "night": "2026-11-11",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-11T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-11T20:30:05.437Z",
+    "endedAt": "2026-11-12T03:00:43.418Z",
+    "intervalMin": 5,
+    "samples": 78,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-12T02:59:37.170Z",
+    "lastOkSampleAt": "2026-11-12T02:59:37.170Z"
+  },
+  "firstLiveAt": "2026-11-11T20:30:05.437Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-11T22:30:12.713Z",
+  "liveCount": 7,
+  "liveCountAt": {
+    "1h": 6,
+    "2h": 7,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-11T22:00:10.678Z",
+    "2h": "2026-11-11T23:04:21.611Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-11",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "the stage|holly o'mahony",
+      "outlet": "The Stage",
+      "critic": "Holly O'Mahony",
+      "tier": 1,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T20:30:05.437Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "london box office|francesca shaw",
+      "outlet": "London Box Office",
+      "critic": "Francesca Shaw",
+      "tier": 2,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T20:30:05.437Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-11T14:25:53.716Z"
+    },
+    {
+      "key": "all that dazzles (uk)|unknown",
+      "outlet": "All That Dazzles (UK)",
+      "critic": null,
+      "tier": 3,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T20:30:05.437Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-11T19:23:52.836Z"
+    },
+    {
+      "key": "west end best friend|ophelia fellhauer",
+      "outlet": "West End Best Friend",
+      "critic": "Ophelia Fellhauer",
+      "tier": 3,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T20:30:05.437Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "renamedFrom": "west end best friend|unknown",
+      "scoredAt": "2026-11-11T16:53:03.999Z"
+    },
+    {
+      "key": "the spy in the stalls|sammi xing",
+      "outlet": "The Spy in the Stalls",
+      "critic": "Sammi Xing",
+      "tier": 4,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T20:30:05.437Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-11T14:25:59.456Z"
+    },
+    {
+      "key": "theatre and tonic|annie",
+      "outlet": "Theatre and Tonic",
+      "critic": "Annie",
+      "tier": 3,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T21:50:10.338Z",
+      "prevOkSampleAt": "2026-11-11T21:45:09.837Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-11T21:28:28.935Z"
+    },
+    {
+      "key": "the reviews hub|anna peterson",
+      "outlet": "The Reviews Hub",
+      "critic": "Anna Peterson",
+      "tier": 2,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T22:30:12.713Z",
+      "prevOkSampleAt": "2026-11-11T22:25:12.182Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-11T22:12:17.975Z"
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 7,
+      "fetchedAt": "2026-11-11T23:00:30.240Z",
+      "censusNote": "archive only"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 7,
+      "fetchedAt": "2026-11-12T03:00:36.062Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-11T23:00:30.315Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-12T03:00:36.153Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-12T03:00:36.828Z",
+    "files": [
+      {
+        "file": "all-that-dazzles-uk--all-that-dazzles.json",
+        "outletId": "all-that-dazzles-uk",
+        "outlet": "All That Dazzles (UK)",
+        "critic": "All That Dazzles",
+        "firstSeenAt": "2026-11-11T18:13:58.999Z",
+        "scoredAt": "2026-11-11T19:23:52.836Z",
+        "publishDate": "2026-11-11",
+        "url": "allthatdazzles.co.uk/post/review-act-of-god-riverside-studios",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "bestoftheatre--milo-garth.json",
+        "outletId": "bestoftheatre",
+        "outlet": "Best Of Theatre",
+        "critic": "Milo Garth",
+        "firstSeenAt": "2026-11-10T13:26:18.332Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-29",
+        "url": "bestoftheatre.co.uk/blog/post/act-of-god-jacob-oconnor-riverside-studios",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "broadway-baby--unknown.json",
+        "outletId": "broadway-baby",
+        "outlet": "Broadway Baby",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-11T16:30:29.227Z",
+        "scoredAt": "2026-11-11T16:52:59.516Z",
+        "publishDate": "2026-11-11",
+        "url": "broadwaybaby.com/shows/act-of-god/839216",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "london-box-office--francesca-shaw.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Francesca Shaw",
+        "firstSeenAt": "2026-11-11T14:15:54.214Z",
+        "scoredAt": "2026-11-11T14:25:53.716Z",
+        "publishDate": "2026-11-11",
+        "url": "londonboxoffice.co.uk/news/post/act-of-god-riverside-studios-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "london-box-office--stuart-king.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Stuart King",
+        "firstSeenAt": "2026-10-01T20:01:11.391Z",
+        "scoredAt": "2026-10-01T20:05:38.893Z",
+        "publishDate": null,
+        "url": "londonboxoffice.co.uk/news/post/review-an-act-of-god-vaults",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": null
+      },
+      {
+        "file": "readaboutstuff--dan-english.json",
+        "outletId": "readaboutstuff",
+        "outlet": "Read About Stuff",
+        "critic": "Dan English",
+        "firstSeenAt": "2026-11-09T19:17:13.708Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-01",
+        "url": "readaboutstuff.com/2026/11/01/interview-jacob-oconnor-discusses-act-of-god",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "the-spy-in-the-stalls--sammi-xing.json",
+        "outletId": "the-spy-in-the-stalls",
+        "outlet": "The Spy in the Stalls",
+        "critic": "Sammi Xing",
+        "firstSeenAt": "2026-11-11T14:16:06.019Z",
+        "scoredAt": "2026-11-11T14:25:59.456Z",
+        "publishDate": "2026-11-11",
+        "url": "thespyinthestalls.com/2026/11/act-of-god",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "theatre-weekly--unknown.json",
+        "outletId": "theatre-weekly",
+        "outlet": "Theatre Weekly",
+        "critic": "Staff Writer",
+        "firstSeenAt": "2026-11-10T13:26:26.806Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-29",
+        "url": "theatreweekly.com/act-of-god-to-make-london-debut-at-riverside-studios-this-november",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "theatreandtonic--eleanor-bywater.json",
+        "outletId": "theatreandtonic",
+        "outlet": "Theatre and Tonic",
+        "critic": "Eleanor Bywater",
+        "firstSeenAt": "2026-11-11T21:22:37.688Z",
+        "scoredAt": "2026-11-11T21:28:28.935Z",
+        "publishDate": "2026-11-11",
+        "url": "theatreandtonic.co.uk/blog/act-of-god-at-riverside-studios-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "thereviewshub--anna-peterson.json",
+        "outletId": "thereviewshub",
+        "outlet": "The Reviews Hub",
+        "critic": "Anna Peterson",
+        "firstSeenAt": "2026-11-11T21:58:21.724Z",
+        "scoredAt": "2026-11-11T22:12:17.975Z",
+        "publishDate": "2026-11-11",
+        "url": "thereviewshub.com/act-of-god-riverside-studios-london",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "thestage--holly-omahony.json",
+        "outletId": "thestage",
+        "outlet": "The Stage",
+        "critic": "Holly O'Mahony",
+        "firstSeenAt": "2026-11-11T14:16:00.555Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-11",
+        "url": "thestage.co.uk/reviews/act-of-god-review-riverside-studios-london",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "west-end-best-friend--ophelia-fellhauer.json",
+        "outletId": "west-end-best-friend",
+        "outlet": "West End Best Friend",
+        "critic": "Ophelia Fellhauer",
+        "firstSeenAt": "2026-11-11T16:13:49.668Z",
+        "scoredAt": "2026-11-11T16:53:03.999Z",
+        "publishDate": "2026-11-11",
+        "url": "westendbestfriend.co.uk/news/review-act-of-god-riverside-studios",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      }
+    ]
+  },
+  "pipelineRuns": {
+    "capturedAt": "2026-11-12T03:00:43.353Z",
+    "window": {
+      "from": "2026-11-11T19:00:00Z",
+      "to": "2026-11-12T00:00:00Z"
+    },
+    "complete": true,
+    "runs": [
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-11T15:12:07Z",
+        "updatedAt": "2026-11-11T20:03:44Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-11T15:59:45Z",
+        "updatedAt": "2026-11-11T21:17:43Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-11T18:33:48Z",
+        "updatedAt": "2026-11-11T19:47:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T18:49:51Z",
+        "updatedAt": "2026-11-11T19:00:49Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — dogstar-off-west-end-2026",
+        "startedAt": "2026-11-11T18:52:37Z",
+        "updatedAt": "2026-11-11T19:05:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — julius-caesar-globe-off-west-end-2026",
+        "startedAt": "2026-11-11T18:52:38Z",
+        "updatedAt": "2026-11-11T19:05:21Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — julius-caesar-globe-off-west-end-2026",
+        "startedAt": "2026-11-11T18:52:40Z",
+        "updatedAt": "2026-11-11T19:12:58Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-11T18:53:47Z",
+        "updatedAt": "2026-11-11T19:42:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T19:04:58Z",
+        "updatedAt": "2026-11-11T19:15:08Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T19:05:19Z",
+        "updatedAt": "2026-11-11T19:17:56Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T19:05:50Z",
+        "updatedAt": "2026-11-11T19:30:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T19:17:53Z",
+        "updatedAt": "2026-11-11T19:26:58Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T19:18:23Z",
+        "updatedAt": "2026-11-11T19:29:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T19:32:33Z",
+        "updatedAt": "2026-11-11T19:42:38Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T19:34:27Z",
+        "updatedAt": "2026-11-11T19:40:59Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T19:37:11Z",
+        "updatedAt": "2026-11-11T19:47:45Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T19:45:08Z",
+        "updatedAt": "2026-11-11T19:54:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T19:51:19Z",
+        "updatedAt": "2026-11-11T20:01:34Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-11T19:57:21Z",
+        "updatedAt": "2026-11-11T21:02:11Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T19:58:34Z",
+        "updatedAt": "2026-11-11T20:03:59Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-11T20:00:06Z",
+        "updatedAt": "2026-11-12T00:09:03Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-11T20:01:19Z",
+        "updatedAt": "2026-11-11T21:01:51Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-11T20:01:27Z",
+        "updatedAt": "2026-11-11T21:01:26Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T20:04:16Z",
+        "updatedAt": "2026-11-11T20:13:52Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T20:10:34Z",
+        "updatedAt": "2026-11-11T21:00:29Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T20:13:51Z",
+        "updatedAt": "2026-11-11T21:01:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T20:20:51Z",
+        "updatedAt": "2026-11-11T20:35:15Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T20:26:31Z",
+        "updatedAt": "2026-11-11T20:38:47Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T20:26:32Z",
+        "updatedAt": "2026-11-11T20:38:45Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T20:26:33Z",
+        "updatedAt": "2026-11-11T20:37:03Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T20:26:35Z",
+        "updatedAt": "2026-11-11T20:36:59Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T20:28:41Z",
+        "updatedAt": "2026-11-11T20:39:12Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T20:39:12Z",
+        "updatedAt": "2026-11-11T20:43:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "startup_failure",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T20:42:31Z",
+        "updatedAt": "2026-11-11T20:44:26Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T21:05:00Z",
+        "updatedAt": "2026-11-11T21:15:50Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-11T21:16:47Z",
+        "updatedAt": "2026-11-11T22:07:50Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-11T21:16:55Z",
+        "updatedAt": "2026-11-11T21:48:40Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — are-you-now-or-have-you-ever-been-regional-2026",
+        "startedAt": "2026-11-11T21:24:30Z",
+        "updatedAt": "2026-11-11T21:38:39Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — heartbreak-house-regional-2026",
+        "startedAt": "2026-11-11T21:24:52Z",
+        "updatedAt": "2026-11-11T21:37:40Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — rorschach-regional-2026",
+        "startedAt": "2026-11-11T21:25:12Z",
+        "updatedAt": "2026-11-11T21:36:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — metamorphosis-regional-2026",
+        "startedAt": "2026-11-11T21:25:29Z",
+        "updatedAt": "2026-11-11T21:40:20Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — kaiju-regional-2026",
+        "startedAt": "2026-11-11T21:26:05Z",
+        "updatedAt": "2026-11-11T21:39:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T21:28:42Z",
+        "updatedAt": "2026-11-11T21:39:44Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-snow-queen-regional-2026",
+        "startedAt": "2026-11-11T21:33:32Z",
+        "updatedAt": "2026-11-11T21:46:09Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — are-you-now-or-have-you-ever-been-regional-2026",
+        "startedAt": "2026-11-11T21:34:09Z",
+        "updatedAt": "2026-11-11T21:43:18Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — metamorphosis-regional-2026",
+        "startedAt": "2026-11-11T21:34:10Z",
+        "updatedAt": "2026-11-11T21:42:11Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-snow-queen-regional-2026",
+        "startedAt": "2026-11-11T21:34:11Z",
+        "updatedAt": "2026-11-11T21:54:14Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T21:38:35Z",
+        "updatedAt": "2026-11-11T21:51:18Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T21:39:18Z",
+        "updatedAt": "2026-11-11T21:47:47Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T21:40:16Z",
+        "updatedAt": "2026-11-11T21:46:07Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T21:46:04Z",
+        "updatedAt": "2026-11-11T22:05:38Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T21:56:21Z",
+        "updatedAt": "2026-11-11T22:06:27Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-11T22:01:10Z",
+        "updatedAt": "2026-11-11T22:27:28Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — adaku-part-2-off-broadway-2026",
+        "startedAt": "2026-11-11T22:04:29Z",
+        "updatedAt": "2026-11-11T22:18:38Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — relative-motion-off-west-end-2026",
+        "startedAt": "2026-11-11T22:04:30Z",
+        "updatedAt": "2026-11-11T22:18:26Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-11T22:04:32Z",
+        "updatedAt": "2026-11-11T22:19:25Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — adaku-part-2-off-broadway-2026",
+        "startedAt": "2026-11-11T22:04:33Z",
+        "updatedAt": "2026-11-11T22:26:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T22:16:30Z",
+        "updatedAt": "2026-11-11T22:26:56Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T22:17:54Z",
+        "updatedAt": "2026-11-11T22:28:20Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T22:18:22Z",
+        "updatedAt": "2026-11-11T22:33:33Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T22:18:35Z",
+        "updatedAt": "2026-11-11T22:19:23Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T22:19:20Z",
+        "updatedAt": "2026-11-11T22:48:39Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T22:33:19Z",
+        "updatedAt": "2026-11-11T22:44:02Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-11T22:43:35Z",
+        "updatedAt": "2026-11-11T23:32:56Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-11T22:43:44Z",
+        "updatedAt": "2026-11-11T23:12:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T22:46:35Z",
+        "updatedAt": "2026-11-11T22:57:02Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T22:52:33Z",
+        "updatedAt": "2026-11-11T23:05:26Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T23:02:35Z",
+        "updatedAt": "2026-11-11T23:11:23Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T23:03:03Z",
+        "updatedAt": "2026-11-11T23:18:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T23:03:21Z",
+        "updatedAt": "2026-11-11T23:13:18Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T23:09:19Z",
+        "updatedAt": "2026-11-11T23:17:08Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — 1972-regional-2026",
+        "startedAt": "2026-11-11T23:10:26Z",
+        "updatedAt": "2026-11-11T23:22:01Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-getaway-driver-central-regional-2026",
+        "startedAt": "2026-11-11T23:10:27Z",
+        "updatedAt": "2026-11-11T23:24:45Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — 1972-regional-2026",
+        "startedAt": "2026-11-11T23:14:48Z",
+        "updatedAt": "2026-11-11T23:21:59Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — the-getaway-driver-central-regional-2026",
+        "startedAt": "2026-11-11T23:14:49Z",
+        "updatedAt": "2026-11-11T23:20:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T23:18:30Z",
+        "updatedAt": "2026-11-11T23:27:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — the-getaway-driver-central-regional-2026",
+        "startedAt": "2026-11-11T23:20:07Z",
+        "updatedAt": "2026-11-11T23:22:02Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-pianist-off-west-end-2026",
+        "startedAt": "2026-11-11T23:21:54Z",
+        "updatedAt": "2026-11-11T23:34:46Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — 1972-regional-2026",
+        "startedAt": "2026-11-11T23:21:55Z",
+        "updatedAt": "2026-11-11T23:31:31Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T23:21:57Z",
+        "updatedAt": "2026-11-11T23:36:41Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-getaway-driver-central-regional-2026",
+        "startedAt": "2026-11-11T23:21:59Z",
+        "updatedAt": "2026-11-11T23:33:50Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-pianist-off-west-end-2026",
+        "startedAt": "2026-11-11T23:22:01Z",
+        "updatedAt": "2026-11-11T23:40:57Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T23:23:23Z",
+        "updatedAt": "2026-11-11T23:32:27Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T23:24:41Z",
+        "updatedAt": "2026-11-11T23:34:45Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-11T23:27:16Z",
+        "updatedAt": "2026-11-11T23:53:16Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T23:30:51Z",
+        "updatedAt": "2026-11-11T23:40:52Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-11T23:34:43Z",
+        "updatedAt": "2026-11-11T23:51:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-11T23:44:21Z",
+        "updatedAt": "2026-11-11T23:53:34Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-11T23:50:05Z",
+        "updatedAt": "2026-11-11T23:57:07Z"
+      }
+    ]
+  }
+}

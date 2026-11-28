@@ -1,0 +1,666 @@
+// Colocated tests for the content-aware should-deploy gate (vercel-deploy.yml).
+// Runs in the scripts/lib/*.test.mjs glob batch in test.yml.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { decide, classifyDiffExit, SITE_PATHS, DEFAULT_STALENESS_BACKSTOP_SEC: STALENESS_BACKSTOP_SEC, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours } = require('./should-deploy-gate.js');
+
+const A = 'a'.repeat(40);
+const B = 'b'.repeat(40);
+
+const base = {
+  eventName: 'schedule',
+  gateDisabled: false,
+  baselineSha: A,
+  deployAgeSec: 600,
+  headSha: B,
+  diffResult: 'clean',
+};
+
+test('schedule: baseline == HEAD skips (no-new-commits)', () => {
+  const r = decide({ ...base, headSha: A });
+  assert.deepEqual(r, { proceed: false, reason: 'no-new-commits' });
+});
+
+test('schedule: unknown baseline fails OPEN (deploys)', () => {
+  const r = decide({ ...base, baselineSha: null });
+  assert.equal(r.proceed, true);
+  assert.equal(r.reason, 'no-baseline-fail-open');
+});
+
+test('schedule: clean site diff + fresh deploy skips (content-gate)', () => {
+  const r = decide({ ...base });
+  assert.deepEqual(r, { proceed: false, reason: 'content-gate' });
+});
+
+// BRO-554: the "skip if deployed within 30 min" intent, delivered by the
+// content-aware gate (stronger: it skips for the whole backstop window while nothing
+// site-relevant changed). A cron tick inside 30 min of a live deploy must never
+// rebuild when the site and core data are unchanged, and must still ship a real change.
+test('BRO-554: ticks within 30 min of a live deploy skip when nothing changed, ship when something did', () => {
+  for (const deployAgeSec of [60, 5 * 60, 15 * 60, 29 * 60]) {
+    assert.deepEqual(decide({ ...base, deployAgeSec }), { proceed: false, reason: 'content-gate' }, `age ${deployAgeSec}s`);
+    assert.equal(decide({ ...base, deployAgeSec, diffResult: 'dirty' }).proceed, true, `dirty at ${deployAgeSec}s must ship`);
+  }
+});
+
+test('schedule: dirty site diff deploys (content-changed)', () => {
+  const r = decide({ ...base, diffResult: 'dirty' });
+  assert.deepEqual(r, { proceed: true, reason: 'content-changed' });
+});
+
+test('schedule: staleness backstop fires at >3h even with clean diff (seconds math)', () => {
+  // check-prod-deploy.js --json returns ageSec (already converted from Vercel's
+  // epoch-ms createdAt) — assert exact-boundary semantics so an ms/sec mixup or
+  // an off-by-one can never silently disable the backstop.
+  const atBoundary = decide({ ...base, deployAgeSec: STALENESS_BACKSTOP_SEC });
+  assert.equal(atBoundary.proceed, false, '3h exactly is NOT stale');
+  const past = decide({ ...base, deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
+  assert.deepEqual(past, { proceed: true, reason: 'staleness-backstop' });
+  assert.equal(STALENESS_BACKSTOP_SEC, 10800, 'BRO-8198: owner approved list pages lagging up to 3h');
+});
+
+test('schedule: unknown deploy age fails OPEN', () => {
+  const r = decide({ ...base, deployAgeSec: null });
+  assert.deepEqual(r, { proceed: true, reason: 'no-age-fail-open' });
+});
+
+test('schedule: diff error fails OPEN', () => {
+  for (const diffResult of ['error', null, undefined]) {
+    const r = decide({ ...base, diffResult });
+    assert.equal(r.proceed, true, `diffResult=${diffResult} must fail open`);
+  }
+});
+
+test('workflow_dispatch: proceeds unless SHA already live', () => {
+  assert.deepEqual(
+    decide({ ...base, eventName: 'workflow_dispatch', diffResult: null }),
+    { proceed: true, reason: 'explicit-ship' }
+  );
+  // 'already-live' dedup requires a POSITIVELY clean data signal — see the
+  // BRO-3149 code-review fix test below for the unknown-signal case.
+  assert.deepEqual(
+    decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'clean' }),
+    { proceed: false, reason: 'already-live' }
+  );
+});
+
+test('workflow_dispatch: Vercel API down still ships (no dedup possible)', () => {
+  const r = decide({ ...base, eventName: 'workflow_dispatch', baselineSha: null, deployAgeSec: null });
+  assert.equal(r.proceed, true);
+});
+
+test('workflow_run: same semantics as dispatch', () => {
+  assert.equal(decide({ ...base, eventName: 'workflow_run' }).proceed, true);
+  assert.equal(decide({ ...base, eventName: 'workflow_run', headSha: A, dataDiffResult: 'clean' }).proceed, false);
+});
+
+// Codex adversarial /code-review (BRO-3149, post-merge): the non-schedule
+// dedup branch used to treat an UNKNOWN dataDiffResult exactly like a
+// positively-clean one and skip — reproducing the original bug via the
+// workflow_run/workflow_dispatch lane instead of the schedule lane (this is
+// the trigger rebuild-fast.yml's direct post-push dispatch uses, arguably
+// the highest-value path for this fix). Unknown status must fail OPEN here,
+// unlike the schedule branch (which has an age-gated backstop to lean on
+// instead of a blanket fail-open).
+test('workflow_dispatch: HEAD already live, data status UNKNOWN — fails open (does not silently dedup)', () => {
+  for (const dataDiffResult of ['error', null, undefined]) {
+    const r = decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult });
+    assert.deepEqual(r, { proceed: true, reason: 'data-unknown-fail-open' });
+  }
+});
+
+test('workflow_run: HEAD already live, data status UNKNOWN — fails open (same lane rebuild-fast.yml dispatches through)', () => {
+  const r = decide({ ...base, eventName: 'workflow_run', headSha: A, dataDiffResult: 'error' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-unknown-fail-open' });
+});
+
+// BRO-3149: reviews.json/shows.json live in the private core-data repo and
+// never touch this repo's git tree, so the site-path diff alone is blind to
+// a core-data-only change. dataDiffResult carries that signal in separately —
+// see should-deploy-gate.js header comment for the full incident writeup.
+test('schedule: core data advanced but web HEAD did not — still proceeds (data-changed)', () => {
+  const r = decide({ ...base, diffResult: 'clean', dataDiffResult: 'dirty' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-changed' });
+});
+
+test('schedule: baseline == HEAD but core data advanced — still proceeds (data-changed)', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'dirty' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-changed' });
+});
+
+test('schedule: neither site nor core data changed — skips (content-gate)', () => {
+  const r = decide({ ...base, diffResult: 'clean', dataDiffResult: 'clean' });
+  assert.deepEqual(r, { proceed: false, reason: 'content-gate' });
+});
+
+test('schedule: data diff lookup unavailable falls through to site-diff signal unchanged', () => {
+  for (const dataDiffResult of ['error', null, undefined]) {
+    const clean = decide({ ...base, diffResult: 'clean', dataDiffResult });
+    assert.deepEqual(clean, { proceed: false, reason: 'content-gate' });
+    const dirty = decide({ ...base, diffResult: 'dirty', dataDiffResult });
+    assert.deepEqual(dirty, { proceed: true, reason: 'content-changed' });
+  }
+});
+
+test('workflow_dispatch: already-live dedup still fires when core data has NOT advanced', () => {
+  const r = decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'clean' });
+  assert.deepEqual(r, { proceed: false, reason: 'already-live' });
+});
+
+test('workflow_dispatch: HEAD already live but core data advanced — proceeds (data-changed)', () => {
+  const r = decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'dirty' });
+  assert.deepEqual(r, { proceed: true, reason: 'data-changed' });
+});
+
+// Codex adversarial review (BRO-3149): the `baselineSha === headSha` branch
+// used to return before the staleness-backstop age check ever ran. A
+// persistently-broken data lookup (missing token, API outage) combined with
+// a genuinely idle public repo could therefore strand core-data staleness
+// indefinitely — the ONE case in this file where an unknown signal used to
+// bypass the staleness backstop entirely rather than falling back to it.
+test('schedule: baseline == HEAD, data status unknown, deploy is stale — backstop still fires', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
+  assert.deepEqual(r, { proceed: true, reason: 'staleness-backstop' });
+});
+
+test('schedule: baseline == HEAD, data status unknown, deploy is fresh — still skips (no false proceed)', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: 600 });
+  assert.deepEqual(r, { proceed: false, reason: 'no-new-commits' });
+});
+
+test('BRO-8198: baseline == HEAD, tracked data clean, deploy past the backstop — ships (untracked data like audience-buzz needs the bound)', () => {
+  const r = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: STALENESS_BACKSTOP_SEC + 1 });
+  assert.deepEqual(r, { proceed: true, reason: 'staleness-backstop' });
+  const fresh = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: STALENESS_BACKSTOP_SEC });
+  assert.deepEqual(fresh, { proceed: false, reason: 'no-new-commits' });
+  const unknownAge = decide({ ...base, headSha: A, dataDiffResult: 'clean', deployAgeSec: null });
+  assert.deepEqual(unknownAge, { proceed: false, reason: 'no-new-commits' });
+});
+
+test('kill switch forces proceed on every event, even baseline==HEAD', () => {
+  for (const eventName of ['schedule', 'workflow_dispatch', 'workflow_run']) {
+    const r = decide({ ...base, eventName, gateDisabled: true, headSha: A });
+    assert.deepEqual(r, { proceed: true, reason: 'kill-switch' });
+  }
+});
+
+test('classifyDiffExit: 0=clean, 1=dirty, anything else=error', () => {
+  assert.equal(classifyDiffExit(0), 'clean');
+  assert.equal(classifyDiffExit(1), 'dirty');
+  assert.equal(classifyDiffExit(2), 'error');
+  assert.equal(classifyDiffExit(128), 'error');
+});
+
+test('SITE_PATHS keeps its load-bearing entries', () => {
+  // public/ carries the rebuilt public/data/shows/*.json (review scores);
+  // scripts/ carries prebuild scripts; content/ carries content/reviews.
+  // Removing one silently narrows the gate (pre-mortem scenario 2).
+  for (const p of ['src/', 'public/', 'content/', 'scripts/', 'package.json', 'next.config.js']) {
+    assert.ok(SITE_PATHS.includes(p), `SITE_PATHS must include ${p}`);
+  }
+});
+
+// ─── BRO-3618: more core-data files tracked, generic compare ───────────────
+const { compareDataShas, DATA_TRACKED_FILES } = require('./should-deploy-gate.js');
+const { blobShaMetaKey, pickBlobShaMeta } = require('./core-data-blob-meta.js');
+const fs = await import('node:fs');
+const cp = await import('node:child_process');
+const os = await import('node:os');
+
+const allNow = (over = {}) => Object.fromEntries(DATA_TRACKED_FILES.map((f) => [f, 'n-' + f]).concat(Object.entries(over)));
+const allBase = (over = {}) => Object.fromEntries(DATA_TRACKED_FILES.map((f) => [blobShaMetaKey(f), 'n-' + f]).concat(Object.entries(over)));
+
+test('tracked set covers reviews, shows and the other private files read at build', () => {
+  for (const f of ['reviews.json', 'shows.json', 'commercial.json', 'grosses.json', 'grosses-history.json', 'critic-consensus.json']) {
+    assert.ok(DATA_TRACKED_FILES.includes(f), f);
+  }
+  // churn guard: audience-buzz is rewritten by ~16 workflows; it rides the staleness backstop.
+  assert.ok(!DATA_TRACKED_FILES.includes('audience-buzz.json'));
+});
+
+test('blobShaMetaKey: stable names, legacy keys unchanged', () => {
+  assert.equal(blobShaMetaKey('reviews.json'), 'reviewsBlobSha');
+  assert.equal(blobShaMetaKey('shows.json'), 'showsBlobSha');
+  assert.equal(blobShaMetaKey('critic-consensus.json'), 'criticConsensusBlobSha');
+  assert.deepEqual(pickBlobShaMeta({ githubCommitSha: 'x', grossesBlobSha: 'g', junkBlobSha: '' }), { grossesBlobSha: 'g' });
+});
+
+test('compareDataShas: every tracked file alone, with no public diff, flips the verdict to dirty', () => {
+  for (const f of DATA_TRACKED_FILES) {
+    assert.equal(compareDataShas(allNow({ [f]: 'CHANGED' }), allBase()), 'dirty', f);
+    // and decide() then proceeds on that signal alone (no public-repo diff)
+    const r = decide({ ...base, diffResult: 'clean', dataDiffResult: compareDataShas(allNow({ [f]: 'CHANGED' }), allBase()) });
+    assert.deepEqual([r.proceed, r.reason], [true, 'data-changed'], f);
+  }
+});
+
+// BRO-5044: a weekly grosses-history.json update alone must trigger a deploy.
+test('grosses-history.json alone changing proceeds with data-changed (no public diff)', () => {
+  const verdict = compareDataShas(allNow({ 'grosses-history.json': 'CHANGED' }), allBase());
+  assert.equal(verdict, 'dirty');
+  const r = decide({ ...base, diffResult: 'clean', dataDiffResult: verdict });
+  assert.deepEqual([r.proceed, r.reason], [true, 'data-changed']);
+  assert.equal(blobShaMetaKey('grosses-history.json'), 'grossesHistoryBlobSha');
+});
+
+test('compareDataShas: identical -> clean; lookup failed -> error/null', () => {
+  assert.equal(compareDataShas(allNow(), allBase()), 'clean');
+  assert.equal(compareDataShas(null, allBase()), 'error');
+  assert.equal(compareDataShas(null, {}), null);
+});
+
+test('compareDataShas: first rollout (baseline stamped without new files) is error, not dirty or clean', () => {
+  const legacyBase = { reviewsBlobSha: 'n-reviews.json', showsBlobSha: 'n-shows.json' };
+  assert.equal(compareDataShas(allNow(), legacyBase), 'error');
+  // a real reviews change still wins over the rollout ambiguity
+  assert.equal(compareDataShas(allNow({ 'reviews.json': 'X' }), legacyBase), 'dirty');
+});
+
+test('compareDataShas: a file absent on both sides is ignored, absent on one side is error', () => {
+  const now = allNow({ 'grosses.json': null });
+  const b = allBase();
+  delete b.grossesBlobSha;
+  assert.equal(compareDataShas(now, b), 'clean');
+  assert.equal(compareDataShas(allNow({ 'grosses.json': null }), allBase()), 'error');
+});
+
+test('workflow stamps exactly what the gate tracks (drift guard)', () => {
+  const y = fs.readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+  assert.match(y, /should-deploy-gate\.js --meta-args/);
+  assert.match(y, /META_ARGS\+=\(--meta "\$line"\)/);
+  assert.doesNotMatch(y, /--meta "reviewsBlobSha=/); // hard-coded pair is gone
+  assert.match(y, /"\$\{META_ARGS\[@\]\}"/);
+});
+
+test('--meta-args prints one <name>BlobSha=<git blob sha> per tracked file present in data/', () => {
+  const dir = fs.mkdtempSync(os.tmpdir() + '/gate-meta-');
+  fs.mkdirSync(dir + '/data');
+  fs.writeFileSync(dir + '/data/reviews.json', '{"a":1}\n');
+  fs.writeFileSync(dir + '/data/critic-consensus.json', '{}\n');
+  const out = cp.execFileSync('node', [new URL('./should-deploy-gate.js', import.meta.url).pathname, '--meta-args'], { cwd: dir, encoding: 'utf8' });
+  const want = (f) => cp.execFileSync('git', ['hash-object', dir + '/data/' + f], { encoding: 'utf8' }).trim();
+  assert.equal(out, `reviewsBlobSha=${want('reviews.json')}\ncriticConsensusBlobSha=${want('critic-consensus.json')}\n`);
+});
+
+// BRO-4614: tracked data/*.json that src/ imports must be in the diff list, or
+// a commit that changes one is skipped as bookkeeping. The list is committed
+// (SITE_DATA_FILES) so the gate stays deterministic; this fails on drift.
+test('SITE_DATA_FILES matches the tracked data files src/ imports (BRO-4614)', () => {
+  const { scanSiteDataImports } = require('./site-data-imports.js');
+  const { SITE_DATA_FILES } = require('./should-deploy-gate.js');
+  assert.deepEqual([...SITE_DATA_FILES], scanSiteDataImports(), 'regenerate with: node scripts/lib/site-data-imports.js');
+  for (const f of SITE_DATA_FILES) assert.ok(SITE_PATHS.includes(f), `${f} must be diffed by the gate`);
+});
+
+test('SITE_DATA_FILES never admits data/audit bookkeeping or a bare data/ prefix (BRO-4614)', () => {
+  const { SITE_DATA_FILES } = require('./should-deploy-gate.js');
+  assert.ok(!SITE_DATA_FILES.some((f) => f.startsWith('data/audit/')));
+  assert.ok(!SITE_PATHS.includes('data/'));
+  assert.ok(SITE_DATA_FILES.includes('data/tour-schedules.json'));
+});
+
+test('a committed change to an imported data file is dirty for the real git diff (BRO-4614)', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'gate-data-'));
+  const g = (...a) => execFileSync('git', a, { cwd: d, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' } });
+  try {
+    g('init', '-q');
+    fs.mkdirSync(path.join(d, 'data/audit'), { recursive: true });
+    fs.writeFileSync(path.join(d, 'data/tour-schedules.json'), '{"v":1}');
+    fs.writeFileSync(path.join(d, 'data/audit/x.json'), '{"v":1}');
+    g('add', '-A'); g('commit', '-qm', 'a');
+    const a = g('rev-parse', 'HEAD').trim();
+    fs.writeFileSync(path.join(d, 'data/audit/x.json'), '{"v":2}');
+    g('commit', '-qam', 'bookkeeping');
+    const b = g('rev-parse', 'HEAD').trim();
+    const dirty = (x, y) => { try { g('diff', '--quiet', '--no-renames', x, y, '--', ...SITE_PATHS); return false; } catch (e) { return e.status === 1; } };
+    assert.equal(dirty(a, b), false, 'audit churn must not trigger a deploy');
+    fs.writeFileSync(path.join(d, 'data/tour-schedules.json'), '{"v":2}');
+    g('commit', '-qam', 'tour');
+    assert.equal(dirty(b, g('rev-parse', 'HEAD').trim()), true, 'an imported data file change must trigger a deploy');
+  } finally {
+    fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+// ---- BRO-8028: min-interval throttle + urgent lane -------------------------
+const { isUrgent, URGENT_SOURCES, DEFAULT_MIN_INTERVAL_MIN } = require('./should-deploy-gate.js');
+const MIN = DEFAULT_MIN_INTERVAL_MIN * 60;
+const fresh = { ...base, eventName: 'schedule', baselineSha: 'aaa', headSha: 'bbb', deployAgeSec: 120, diffResult: 'dirty', dataDiffResult: 'dirty', minIntervalSec: MIN };
+
+test('BRO-8028: routine churn (scripts/public/data dirty) inside the interval is held', () => {
+  assert.deepEqual(decide({ ...fresh, codeDiffResult: 'clean' }), { proceed: false, reason: 'min-interval' });
+  assert.deepEqual(decide({ ...fresh, baselineSha: 'bbb', codeDiffResult: null }), { proceed: false, reason: 'min-interval' });
+});
+
+test('BRO-8028: src/config/dependency change ships immediately; unknown code diff fails open', () => {
+  assert.deepEqual(decide({ ...fresh, codeDiffResult: 'dirty' }), { proceed: true, reason: 'code-changed' });
+  assert.equal(decide({ ...fresh, codeDiffResult: 'error' }).proceed, true);
+});
+
+test('BRO-8028: past the interval the normal content gate applies; unknown age fails open; kill switch wins', () => {
+  assert.equal(decide({ ...fresh, deployAgeSec: MIN + 1, codeDiffResult: 'clean' }).proceed, true);
+  assert.equal(decide({ ...fresh, deployAgeSec: MIN + 1, diffResult: 'clean', dataDiffResult: 'clean', codeDiffResult: 'clean' }).proceed, false);
+  assert.equal(decide({ ...fresh, deployAgeSec: null, codeDiffResult: 'clean' }).proceed, true);
+  assert.equal(decide({ ...fresh, gateDisabled: true, codeDiffResult: 'clean' }).proceed, true);
+});
+
+test('BRO-8028: decide() with minIntervalSec=0 keeps the old behaviour (main() passes 45 min)', () => {
+  assert.equal(decide({ ...fresh, minIntervalSec: 0, codeDiffResult: 'clean' }).proceed, true);
+});
+
+test('BRO-8028: urgent lane is explicit sources only; empty/land/unknown are routine', () => {
+  for (const source of URGENT_SOURCES) assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), true, source);
+  for (const source of ['', undefined, 'land', 'heartbeat', 'whatever']) assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), false, String(source));
+  assert.equal(isUrgent({ eventName: 'schedule', source: 'urgent' }), false);
+  assert.equal(isUrgent({ eventName: 'workflow_run', triggerWorkflow: 'Rebuild Reviews (Fast)' }), true);
+  assert.equal(isUrgent({ eventName: 'workflow_run', triggerWorkflow: 'Rebuild Reviews Data' }), false);
+});
+
+test('BRO-8028 class guard: every vercel-deploy dispatcher is classified (urgent source, or on the routine list)', async () => {
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const dir = new URL('../../.github/workflows/', import.meta.url).pathname;
+  const ROUTINE_OK = new Set(['gather-reviews.yml', 'rebuild-reviews.yml', 'sync-vercel-env.yml', 'weekly-grosses.yml', 'update-show-status.yml', 'commercial-weekly.yml', 'data-health-check.yml', 'update-deploy-watermark.yml', 'check-cron-health.yml', 'llm-ensemble-score.yml', 'scrape-bww-reviews.yml']);
+  const bad = [];
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.yml') && n !== 'vercel-deploy.yml')) {
+    const text = fs.readFileSync(path.join(dir, f), 'utf8');
+    for (const line of text.split('\n')) {
+      if (!/^\s*(run:\s*|if\s+|\w+\s*&&\s*)?gh workflow run vercel-deploy\.yml/.test(line)) continue; // real commands only, not comments/descriptions
+      const m = line.match(/-f source=([\w-]+)/);
+      const ok = m ? [...URGENT_SOURCES, 'land'].includes(m[1]) : ROUTINE_OK.has(f) || /wait_for_run/.test(line);
+      if (!ok) bad.push(`${f}: ${line.trim().slice(0, 100)}`);
+    }
+  }
+  assert.deepEqual(bad, [], 'classify new dispatchers: add -f source=<urgent source> or list the file in ROUTINE_OK');
+});
+
+test('BRO-8028 class guard: every source= literal dispatched to vercel-deploy.yml from scripts/ is urgent or land', async () => {
+  const fs = await import('node:fs');
+  const dir = new URL('../', import.meta.url).pathname;
+  const bad = [];
+  for (const f of fs.readdirSync(dir).filter((n) => /\.(js|mjs)$/.test(n) && !/test/.test(n))) {
+    const text = fs.readFileSync(dir + f, 'utf8');
+    for (const line of text.split('\n')) {
+      const m = line.match(/vercel-deploy\.yml.*source=([\w-]+)/);
+      if (m && ![...URGENT_SOURCES, 'land'].includes(m[1])) bad.push(`${f}: ${m[1]}`);
+    }
+  }
+  assert.deepEqual(bad, []);
+});
+
+test('BRO-8028: a held run asks for a deferred retry, and the workflow wires it', async () => {
+  const fs = await import('node:fs');
+  const y = fs.readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+  assert.match(y, /deferred-retry:/);
+  assert.match(y, /reason == 'min-interval'/);
+  assert.match(y, /retry_after_sec: \$\{\{ steps\.check\.outputs\.retry_after_sec \}\}/);
+  const g = fs.readFileSync(new URL('./should-deploy-gate.js', import.meta.url), 'utf8');
+  assert.match(g, /retry_after_sec=\$\{retryAfterSec\}/);
+});
+
+// --- BRO-8198: configurable backstop (default 3h), kill switch, guards ---
+
+test('BRO-8198: decide() honours an explicit backstopSec (6h override restores the old bound)', () => {
+  const sixH = 6 * 3600;
+  assert.deepEqual(decide({ ...base, deployAgeSec: 4 * 3600 }), { proceed: true, reason: 'staleness-backstop' }, 'default 3h: a 4h-old deploy is stale');
+  assert.deepEqual(decide({ ...base, deployAgeSec: 4 * 3600, backstopSec: sixH }), { proceed: false, reason: 'content-gate' }, '6h override: 4h is not stale');
+  assert.deepEqual(decide({ ...base, deployAgeSec: sixH + 1, backstopSec: sixH }), { proceed: true, reason: 'staleness-backstop' });
+  // same-HEAD + unknown data branch uses the same bound
+  assert.equal(decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: 4 * 3600 }).reason, 'staleness-backstop');
+  assert.equal(decide({ ...base, headSha: A, dataDiffResult: 'error', deployAgeSec: 4 * 3600, backstopSec: sixH }).reason, 'no-new-commits');
+});
+
+test('BRO-8198: resolveEnvNumber - strict decimal parse, default on empty/junk, clamp out of range', () => {
+  const o = { def: 180, min: 60, max: 1440 };
+  assert.deepEqual(resolveEnvNumber(undefined, o), { value: 180, invalid: false, clamped: false });
+  assert.deepEqual(resolveEnvNumber('', o), { value: 180, invalid: false, clamped: false });
+  assert.deepEqual(resolveEnvNumber('  ', o), { value: 180, invalid: false, clamped: false });
+  assert.deepEqual(resolveEnvNumber('360', o), { value: 360, invalid: false, clamped: false });
+  assert.deepEqual(resolveEnvNumber(' 360 ', o), { value: 360, invalid: false, clamped: false });
+  for (const junk of ['6h', 'six', '0x6', '1e3', 'NaN', '-']) {
+    assert.deepEqual(resolveEnvNumber(junk, o), { value: 180, invalid: true, clamped: false }, junk);
+  }
+  assert.deepEqual(resolveEnvNumber('2880', o), { value: 1440, invalid: false, clamped: true });
+  assert.deepEqual(resolveEnvNumber('5', o), { value: 60, invalid: false, clamped: true });
+  assert.deepEqual(resolveEnvNumber('90.5', o), { value: 90.5, invalid: false, clamped: false });
+});
+
+test('BRO-8198: resolveGateTiming - defaults, kill switch var, min-interval parsing, backstop floor', () => {
+  let t = resolveGateTiming({});
+  assert.equal(t.minIntervalSec, 45 * 60);
+  assert.equal(t.backstopSec, 3 * 3600);
+  assert.deepEqual(t.warnings, []);
+  t = resolveGateTiming({ GATE_BACKSTOP_MIN: '', GATE_MIN_INTERVAL_MIN: '' }); // unset repo vars reach the step as ''
+  assert.equal(t.backstopSec, 3 * 3600);
+  assert.equal(t.minIntervalSec, 45 * 60);
+  // kill switch: repo var DEPLOY_BACKSTOP_MIN=360 restores the pre-BRO-8198 6h behaviour
+  assert.equal(resolveGateTiming({ GATE_BACKSTOP_MIN: '360' }).backstopSec, 6 * 3600);
+  // min-interval: 0 still disables the throttle (BRO-8028 contract)
+  assert.equal(resolveGateTiming({ GATE_MIN_INTERVAL_MIN: '0' }).minIntervalSec, 0);
+  // a junk value is warned about, never silently obeyed or silently ignored
+  t = resolveGateTiming({ GATE_BACKSTOP_MIN: '6h' });
+  assert.equal(t.backstopSec, 3 * 3600);
+  assert.match(t.warnings.join(' '), /GATE_BACKSTOP_MIN/);
+  // a backstop at or below the min interval would be dead config (throttle runs first): lift it
+  t = resolveGateTiming({ GATE_BACKSTOP_MIN: '60', GATE_MIN_INTERVAL_MIN: '90' });
+  assert.equal(t.backstopSec, (90 + 15) * 60);
+  assert.match(t.warnings.join(' '), /min interval/);
+});
+
+test('BRO-8198: diffWindowOpen agrees with decide() at the backstop boundary', () => {
+  const b = 3 * 3600;
+  assert.equal(diffWindowOpen(b, b), true, 'at the boundary the diff runs and the content gate can skip');
+  assert.deepEqual(decide({ ...base, deployAgeSec: b, backstopSec: b }), { proceed: false, reason: 'content-gate' });
+  assert.equal(diffWindowOpen(b + 1, b), false, 'past it no diff is needed');
+  assert.equal(decide({ ...base, deployAgeSec: b + 1, backstopSec: b, diffResult: null }).reason, 'staleness-backstop');
+  assert.equal(diffWindowOpen(null, b), false);
+});
+
+test('BRO-8198: freshness alert thresholds follow the backstop (3h default keeps today\'s 8h/12h)', () => {
+  assert.deepEqual(freshnessAlertHours(3 * 3600), { warnH: 8, errorH: 12 });
+  assert.deepEqual(freshnessAlertHours(6 * 3600), { warnH: 11, errorH: 15 }, '6h rollback must not raise false alarms');
+});
+
+// Regression nets (pass with or without BRO-8198; they pin the owner's hard constraints).
+test('constraint: routine data/content change on a new commit always ships once past the min interval', () => {
+  for (const age of [45 * 60, 60 * 60, 2 * 3600, 3 * 3600, 5 * 3600]) {
+    for (const dirty of [{ diffResult: 'dirty' }, { diffResult: 'clean', dataDiffResult: 'dirty' }]) {
+      const r = decide({ ...base, deployAgeSec: age, minIntervalSec: 45 * 60, ...dirty });
+      assert.equal(r.proceed, true, `age ${age}s ${JSON.stringify(dirty)} -> ${r.reason}`);
+    }
+  }
+  // same-HEAD core-data change ships too
+  assert.equal(decide({ ...base, headSha: A, dataDiffResult: 'dirty', deployAgeSec: 46 * 60, minIntervalSec: 45 * 60 }).proceed, true);
+});
+
+test('constraint: urgent triggers (opening night, /go-live-now) ignore min interval and backstop', () => {
+  for (const source of ['urgent', 'rebuild-fast', 'opening-night', 'lane-press-night', 'press-night-watchdog']) {
+    assert.equal(isUrgent({ eventName: 'workflow_dispatch', source }), true, source);
+  }
+  for (const backstopSec of [3 * 3600, 6 * 3600]) {
+    const r = decide({ ...base, eventName: 'workflow_dispatch', deployAgeSec: 60, minIntervalSec: 45 * 60, backstopSec });
+    assert.deepEqual(r, { proceed: true, reason: 'explicit-ship' });
+    // dedup when the exact SHA and data are live is unchanged
+    assert.deepEqual(decide({ ...base, eventName: 'workflow_dispatch', headSha: A, dataDiffResult: 'clean', backstopSec }), { proceed: false, reason: 'already-live' });
+  }
+});
+
+// --- BRO-8236 part 2: outputs for the deploy job's pre-upload redundancy check ---
+test('BRO-8236: gateOutputLines carries urgent + live baseline url and created time', async () => {
+  const { gateOutputLines } = await import('./should-deploy-gate.js').then((m) => m.default || m);
+  const out = gateOutputLines({ proceed: true, reason: 'content-changed', urgent: false, baselineUrl: 'b.vercel.app', baselineAgeSec: 3000, nowMs: 10_000_000 });
+  assert.match(out, /^proceed=true$/m);
+  assert.match(out, /^urgent=false$/m);
+  assert.match(out, /^baseline_url=b\.vercel\.app$/m);
+  assert.match(out, /^baseline_created_ms=7000000$/m);
+  const unknown = gateOutputLines({ proceed: true, reason: 'kill-switch' });
+  assert.match(unknown, /^urgent=$/m, 'unknown urgency is empty, which the redundancy check treats as never-stop');
+  assert.match(unknown, /^baseline_created_ms=$/m);
+});
+
+test('BRO-8236: codeChangedFlag is false only on positive proof of no code change', async () => {
+  const { codeChangedFlag, gateOutputLines } = await import('./should-deploy-gate.js').then((m) => m.default || m);
+  const b = { gateDisabled: false, urgent: false, proceed: true, baselineSha: 'a', headSha: 'b' };
+  assert.equal(codeChangedFlag({ ...b, codeDiffResult: 'clean' }), false);
+  assert.equal(codeChangedFlag({ ...b, codeDiffResult: 'dirty' }), true);
+  assert.equal(codeChangedFlag({ ...b, codeDiffResult: 'error' }), null);
+  assert.equal(codeChangedFlag({ ...b, codeDiffResult: null }), null);
+  assert.equal(codeChangedFlag({ ...b, headSha: 'a', codeDiffResult: null }), false, 'same SHA: no code change');
+  assert.equal(codeChangedFlag({ ...b, urgent: true, codeDiffResult: 'clean' }), null, 'urgent: never stoppable');
+  assert.equal(codeChangedFlag({ ...b, proceed: false, codeDiffResult: 'clean' }), null);
+  assert.equal(codeChangedFlag({ ...b, gateDisabled: true, codeDiffResult: 'clean' }), null);
+  assert.match(gateOutputLines({ proceed: true, reason: 'content-changed', codeChanged: false }), /^code_changed=false$/m);
+  assert.match(gateOutputLines({ proceed: true, reason: 'content-changed' }), /^code_changed=$/m);
+});
+test('BRO-8236 wiring: code_changed flows from the gate to the coalesce step', async () => {
+  const fs = await import('node:fs');
+  const y = fs.readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+  assert.ok(y.includes('code_changed: ${{ steps.check.outputs.code_changed }}'));
+  assert.ok(y.includes('GATE_CODE_CHANGED: ${{ needs.should-deploy.outputs.code_changed }}'));
+});
+
+// --- BRO-8397: skip a data-only build the show-refresh store already serves ---
+{
+  const gate = require('./should-deploy-gate.js');
+  const cov = require('./show-refresh/coverage.js');
+  const { blobShaMetaKey } = require('./core-data-blob-meta.js');
+  const sha = (c) => c.repeat(40);
+  // Live deploy stamped reviews=1, shows=2, consensus=3, commercial=4; now reviews moved to 9.
+  const baselineBlobShas = {
+    [blobShaMetaKey('reviews.json')]: sha('1'), [blobShaMetaKey('shows.json')]: sha('2'),
+    [blobShaMetaKey('critic-consensus.json')]: sha('3'), [blobShaMetaKey('commercial.json')]: sha('4'),
+  };
+  const nowShas = { 'reviews.json': sha('9'), 'shows.json': sha('2'), 'critic-consensus.json': sha('3'), 'commercial.json': sha('4') };
+  const homeShows = { x: { hash: 'b'.repeat(16) } };
+  const home = { schema: 1, manifestId: 'm1', generation: 5, shows: homeShows, pending: {} };
+  const stamp = {
+    schema: cov.COVERED_SCHEMA, complete: true, manifestId: 'm1', publicSha: A, generation: 5,
+    homeSig: cov.homeShowsSig(homeShows), dataShas: { 'reviews.json': sha('9'), 'shows.json': sha('2'), 'critic-consensus.json': sha('3') },
+  };
+  const files = (now = nowShas) => cov.changedDataFiles(now, baselineBlobShas, gate.DATA_TRACKED_FILES, blobShaMetaKey);
+  const evalWith = (o = {}) => cov.evaluateCoverage({
+    readerOn: true, kill: { killed: false }, homeRead: { state: 'ok', value: home }, coveredRead: { state: 'ok', value: stamp },
+    nowShas, dataFiles: files(), baselineSha: A, ...o,
+  });
+  // Routine data-only change: HEAD moved by bookkeeping, site diff clean, core data dirty.
+  const dataOnly = { ...base, diffResult: 'clean', dataDiffResult: 'dirty' };
+
+  test('BRO-8397: covered data-only change with the reader on => skip', () => {
+    const r = evalWith();
+    assert.equal(r.covered, true, r.why);
+    assert.deepEqual(decide({ ...dataOnly, showRefreshCovered: r.covered }), { proceed: false, reason: gate.SHOW_REFRESH_COVERED });
+    assert.deepEqual(decide({ ...dataOnly, headSha: A, showRefreshCovered: true }), { proceed: false, reason: gate.SHOW_REFRESH_COVERED }, 'HEAD already live, only core data moved');
+  });
+
+  test('BRO-8397: reader off or unknown => unchanged decision', () => {
+    for (const readerOn of [false, null, undefined]) {
+      const r = evalWith({ readerOn });
+      assert.equal(r.covered, false);
+      assert.deepEqual(decide({ ...dataOnly, showRefreshCovered: r.covered }), decide(dataOnly));
+    }
+    assert.deepEqual(decide(dataOnly), { proceed: true, reason: 'data-changed' });
+    // The lookup itself only runs for a routine data-changed decision.
+    const dc = { proceed: true, reason: 'data-changed' };
+    assert.equal(gate.wantsShowRefreshCheck({ gateDisabled: false, skipDisabled: false, eventName: 'schedule', decision: dc }), true);
+    assert.equal(gate.wantsShowRefreshCheck({ gateDisabled: false, skipDisabled: true, eventName: 'schedule', decision: dc }), false);
+    assert.equal(gate.wantsShowRefreshCheck({ gateDisabled: true, skipDisabled: false, eventName: 'schedule', decision: dc }), false);
+    assert.equal(gate.wantsShowRefreshCheck({ gateDisabled: false, skipDisabled: false, eventName: 'workflow_dispatch', decision: dc }), false);
+    for (const reason of ['content-changed', 'staleness-backstop', 'code-changed', 'explicit-ship']) {
+      assert.equal(gate.wantsShowRefreshCheck({ gateDisabled: false, skipDisabled: false, eventName: 'schedule', decision: { proceed: true, reason } }), false, reason);
+    }
+  });
+
+  test('BRO-8397: reader state comes from the Vercel production env, set before the live deploy', () => {
+    const entry = (o = {}) => ({ key: 'SHOW_REFRESH_READER', target: ['production'], type: 'encrypted', id: 'e1', updatedAt: 1000, ...o });
+    const settled = 1000 + cov.READER_ENV_SETTLE_MS + 1;
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: 'on', deployCreatedMs: settled }).on, true);
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: 'on', deployCreatedMs: 500 }).on, false, 'flipped after the live build: not live yet');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: 'on', deployCreatedMs: settled - 2 }).on, false, 'flipped inside the deploy job window: may not be in the build');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: 'true', deployCreatedMs: 2000 }).on, false, "only exactly 'on' (showRefreshEnabled)");
+    assert.equal(cov.readerOnFromVercel({ entries: [], value: null, deployCreatedMs: 2000 }).on, false, 'unset = off');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: null, deployCreatedMs: 2000 }).on, null, 'unreadable (sensitive) = unknown');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry(), entry({ id: 'e2' })], value: 'on', deployCreatedMs: 2000 }).on, null, 'ambiguous');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry({ target: ['preview'] })], value: 'on', deployCreatedMs: 2000 }).on, false, 'preview-only entry');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: 'on', deployCreatedMs: null }).on, null);
+    assert.equal(cov.readerOnFromVercel({ entries: 'nope', value: 'on', deployCreatedMs: 2000 }).on, null);
+  });
+
+  test('BRO-8397: fetchReaderOn reads the env list then the decrypted entry; failures are unknown', async () => {
+    const calls = [];
+    const fake = (routes) => async (url) => {
+      calls.push(url);
+      const hit = Object.entries(routes).find(([k]) => url.includes(k));
+      if (!hit) return { ok: false, status: 404, json: async () => ({}) };
+      return { ok: true, status: 200, json: async () => hit[1] };
+    };
+    const envs = [{ key: 'SHOW_REFRESH_READER', target: ['production'], type: 'encrypted', id: 'e1', updatedAt: 1000 }];
+    const on = await gate.fetchReaderOn({ token: 't', deployCreatedMs: 1000 + cov.READER_ENV_SETTLE_MS + 5000, fetchImpl: fake({ '/v9/projects/': { envs }, '/v1/projects/': { value: 'on' } }) });
+    assert.equal(on.on, true, on.why);
+    assert.equal(calls.length, 2);
+    const down = await gate.fetchReaderOn({ token: 't', deployCreatedMs: 5000, fetchImpl: async () => { throw new Error('ECONNRESET'); } });
+    assert.equal(down.on, null);
+    assert.equal((await gate.fetchReaderOn({ token: '', deployCreatedMs: 5000 })).on, null);
+  });
+
+  test('BRO-8397: every doubt about the store means not covered', () => {
+    const notCovered = {
+      killed: { kill: { killed: true } },
+      killUnread: { kill: null },
+      noStamp: { coveredRead: { state: 'missing' } },
+      stampError: { coveredRead: { state: 'error', error: 'status 500' } },
+      incomplete: { coveredRead: { state: 'ok', value: { ...stamp, complete: false } } },
+      otherDeploy: { coveredRead: { state: 'ok', value: { ...stamp, publicSha: B } } },
+      homeMoved: { homeRead: { state: 'ok', value: { ...home, generation: 6 } } },
+      homeOtherShows: { homeRead: { state: 'ok', value: { ...home, shows: { x: { hash: 'c'.repeat(16) } } } } },
+      homeError: { homeRead: { state: 'error' } },
+      dataMovedAgain: { nowShas: { ...nowShas, 'reviews.json': sha('8') }, dataFiles: files({ ...nowShas, 'reviews.json': sha('8') }) },
+      commercialToo: { dataFiles: files({ ...nowShas, 'commercial.json': sha('7') }) },
+      dataUnknown: { dataFiles: files(null) },
+    };
+    for (const [name, o] of Object.entries(notCovered)) assert.equal(evalWith(o).covered, false, name);
+  });
+
+  test('BRO-8397: code change, urgent reveal and the backstop still build when covered', () => {
+    assert.deepEqual(decide({ ...dataOnly, diffResult: 'dirty', showRefreshCovered: true }), { proceed: true, reason: 'content-changed' });
+    assert.equal(decide({ ...dataOnly, diffResult: 'error', showRefreshCovered: true }).proceed, true, 'unknown site diff builds');
+    assert.deepEqual(decide({ ...dataOnly, deployAgeSec: STALENESS_BACKSTOP_SEC + 1, showRefreshCovered: true }), { proceed: true, reason: 'staleness-backstop' });
+    assert.deepEqual(decide({ ...dataOnly, headSha: A, deployAgeSec: STALENESS_BACKSTOP_SEC + 1, showRefreshCovered: true }), { proceed: true, reason: 'data-changed' });
+    assert.equal(decide({ ...dataOnly, deployAgeSec: null, showRefreshCovered: true }).proceed, true, 'unknown age builds');
+    // Urgent (non-schedule) lanes keep ship-now semantics.
+    assert.deepEqual(decide({ ...dataOnly, eventName: 'workflow_dispatch', showRefreshCovered: true }), { proceed: true, reason: 'explicit-ship' });
+    assert.deepEqual(decide({ ...dataOnly, eventName: 'workflow_dispatch', headSha: A, showRefreshCovered: true }), { proceed: true, reason: 'data-changed' });
+    // Inside the min interval a code change still ships at once.
+    assert.deepEqual(decide({ ...dataOnly, minIntervalSec: 3600, codeDiffResult: 'dirty', showRefreshCovered: true }), { proceed: true, reason: 'code-changed' });
+    // Kill switch beats everything.
+    assert.deepEqual(decide({ ...dataOnly, gateDisabled: true, showRefreshCovered: true }), { proceed: true, reason: 'kill-switch' });
+  });
+
+  test('BRO-8397: showRefreshCoverage seam and wiring', async () => {
+    const baseline = { sha: A, blobShas: baselineBlobShas };
+    const env = { GATE_SHOW_REFRESH_JSON: JSON.stringify({ readerOn: true, kill: { killed: false }, home, covered: stamp }) };
+    assert.equal((await gate.showRefreshCoverage({ baseline, nowShas, deployCreatedMs: 1, env })).covered, true);
+    const off = { GATE_SHOW_REFRESH_JSON: JSON.stringify({ readerOn: false, kill: { killed: false }, home, covered: stamp }) };
+    assert.equal((await gate.showRefreshCoverage({ baseline, nowShas, deployCreatedMs: 1, env: off })).covered, false);
+    // No seam, no network: a non-covered file short-circuits before any lookup.
+    const r = await gate.showRefreshCoverage({ baseline, nowShas: { ...nowShas, 'commercial.json': sha('7') }, deployCreatedMs: 1, env: {} });
+    assert.match(r.why, /^not-covered-file/);
+    const fs = await import('node:fs');
+    const y = fs.readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+    assert.ok(y.includes('GATE_SHOW_REFRESH_SKIP_DISABLED: ${{ vars.DEPLOY_SHOW_REFRESH_SKIP_DISABLED }}'));
+  });
+}
+
+test('BRO-8397: the gate pins the same Vercel project id as sync-vercel-env.js', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('./should-deploy-gate.js', import.meta.url), 'utf8');
+  const { PROJECT_ID } = require('./sync-vercel-env.js');
+  assert.ok(src.includes(`const PROJECT_ID = '${PROJECT_ID}'`));
+  assert.ok(!/require\('\.\/sync-vercel-env/.test(src), 'requiring it adds a VERCEL_TOKEN secret gap to every workflow that loads the gate');
+});

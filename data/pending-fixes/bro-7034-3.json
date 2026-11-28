@@ -1,0 +1,204 @@
+{
+  "issueNumber": "bro-7034-3",
+  "planId": "ab3de5b3-6563-4469-94df-87a050ef8291",
+  "status": "applied",
+  "createdAt": "2026-11-12T11:07:38.267Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7034: replace the wrongAttribution King Kong, Groundhog Day, Art and Exit the King primaries with the real reviews, drop the wrong-show Play That Goes Wrong phantom and the NYT duplicate files for First Date and Ghost",
+    "steps": [
+      "Delete each stale wrongAttribution/merged file, then ingest the real review from the encrypted page handoff (King Kong / BWW Dale, Groundhog Day / LA Times McNulty, Art / Evening Standard Mountford, Exit the King / Daily Mail Letts)",
+      "Delete the Play That Goes Wrong Telegraph Cavendish phantom (another show's review, text held elsewhere)",
+      "Delete the NYT duplicate files mislabelled Ben Brantley / About Entertainment for First Date and Ghost, keeping nytimes--charles-isherwood.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "king-kong-2018/broadwayworld--michael-dale.json",
+        "description": "stale wrongAttribution file whose body is Bill Hirschman's Florida Theater On Stage review (BRO-6774); deleted so the handoff below writes Dale's real review fresh instead of merging into it"
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "king-kong-2018",
+        "url": "https://www.broadwayworld.com/article/BWW-Review-KING-KONG-It-Was-Inept-Writing-Killed-The-Musical-20181109",
+        "outlet": "broadwayworld",
+        "critic": "Michael Dale",
+        "publishDate": "2018-11-09",
+        "description": "Michael Dale's own BWW review page (canonical matches); replaces the stored Bill Hirschman text",
+        "htmlBytes": 209920,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "eb998220676c8653f6a6c50cb9960433a3588a4fa06c137526e02c0a2325ef78",
+          "scrubbed": true
+        }
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "groundhog-day-2017/latimes--charles-mcnulty.json",
+        "description": "stale wrongAttribution file whose body is Steven Suskin's HuffPost review (BRO-6774); deleted so the handoff below writes McNulty's real review fresh"
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "groundhog-day-2017",
+        "url": "https://www.latimes.com/entertainment/arts/la-et-cm-groundhog-day-review-20170417-story.html",
+        "outlet": "latimes",
+        "critic": "Charles McNulty",
+        "publishDate": "2017-04-18",
+        "description": "Charles McNulty's own LA Times review page (canonical matches); replaces the stored Steven Suskin text",
+        "htmlBytes": 471003,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "ee0f21829e162b4e358629c11c5eb7396494d05a4a56164203e48ed1ae6ab572",
+          "scrubbed": true
+        }
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "art-west-end-2016/standard--fiona-mountford.json",
+        "description": "stale wrongAttribution file holding a Theatre Record OCR interleave of Billington and Mountford (BRO-6774); deleted so the handoff below writes Mountford's real review fresh"
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "art-west-end-2016",
+        "url": "https://www.standard.co.uk/goingout/theatre/art-theatre-review-surface-gloss-rather-than-real-profundity-a3425276.html",
+        "outlet": "standard",
+        "critic": "Fiona Mountford",
+        "publishDate": "2016-12-21",
+        "description": "Fiona Mountford's Evening Standard review (live page 404s; HTML from web.archive.org snapshot 20170701040304, canonical matches); replaces the Theatre Record Billington/Mountford interleave",
+        "htmlBytes": 84420,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "f0203af43846d3f3e1f9dce125dc8276e5caab9ab77659fdf17610e65703ffea",
+          "scrubbed": true
+        }
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "exit-the-king-west-end-2018/daily-mail--quentin-letts.json",
+        "description": "stale wrongAttribution file (bro-7034-2) whose Theatre Record body merges Ann Treneman's Times review (kept on times-uk--ann-treneman.json) with Letts's; deleted so the handoff below writes Letts's own page fresh"
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "exit-the-king-west-end-2018",
+        "url": "https://www.dailymail.com/tvshowbiz/article-5997507/QUENTIN-LETTS-Exit-King-load-royal-nonsense.html",
+        "outlet": "daily-mail",
+        "critic": "Quentin Letts",
+        "publishDate": "2018-07-04",
+        "description": "Quentin Letts's own Daily Mail page (canonical matches); replaces the Theatre Record merge that also held Ann Treneman's Times review",
+        "htmlBytes": 1971067,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "7fafe64bfacefa0eab2df3c34617cc38cf0709bc26d834ea706e9e7b3420295b",
+          "scrubbed": true
+        }
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-play-that-goes-wrong-west-end-2021/telegraph--dominic-cavendish.json",
+        "description": "Wrong-show phantom: its WET excerpt and archive.org url are Dominic Cavendish's Christmas Carol Goes Wrong review (held in christmas-carol-goes-wrong-apollo-west-end-2025/telegraph--dominic-cavendish.json), and its body/url are Tim Walker's 2014 review, already held by telegraph--tim-walker.json and sunday-telegraph--tim-walker.json. No Cavendish review of The Play That Goes Wrong was found (web search, Telegraph not reachable by search)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "first-date-2013/nytimes--ben-brantley.json",
+        "description": "Byline-mislabel duplicate: the file name says Ben Brantley but it is Charles Isherwood's NYT review (criticName already corrected by bro-7034), the same article url as first-date-2013/nytimes--charles-isherwood.json, which is kept as the scored copy"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "first-date-2013/about-entertainment--charles-isherwood.json",
+        "description": "Outlet-mislabel duplicate: a DTLI row filing Charles Isherwood's theater.nytimes.com review under about-entertainment; same NYT article as first-date-2013/nytimes--charles-isherwood.json, which is kept as the scored copy"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "ghost-the-musical-2012/nytimes--ben-brantley.json",
+        "description": "Byline-mislabel duplicate: the file name says Ben Brantley but it is Charles Isherwood's NYT review (criticName already corrected by bro-7034), the same article url as ghost-the-musical-2012/nytimes--charles-isherwood.json, which is kept as the scored copy"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "ghost-the-musical-2012/about-entertainment--charles-isherwood.json",
+        "description": "Outlet-mislabel duplicate: a DTLI row filing Charles Isherwood's theater.nytimes.com review under about-entertainment; same NYT article as ghost-the-musical-2012/nytimes--charles-isherwood.json, which is kept as the scored copy"
+      }
+    ]
+  },
+  "executedAt": "2026-11-12T12:07:34.338Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted king-kong-2018/broadwayworld--michael-dale.json"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.broadwayworld.com/article/BWW-Review-KING-KONG-It-Was-Inept-Writing-Killed-The-Musical-20181109 for king-kong-2018 from handed-off HTML (209856 chars)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted groundhog-day-2017/latimes--charles-mcnulty.json"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.latimes.com/entertainment/arts/la-et-cm-groundhog-day-review-20170417-story.html for groundhog-day-2017 from handed-off HTML (470587 chars)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted art-west-end-2016/standard--fiona-mountford.json"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.standard.co.uk/goingout/theatre/art-theatre-review-surface-gloss-rather-than-real-profundity-a3425276.html for art-west-end-2016 from handed-off HTML (84148 chars)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted exit-the-king-west-end-2018/daily-mail--quentin-letts.json"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.dailymail.com/tvshowbiz/article-5997507/QUENTIN-LETTS-Exit-King-load-royal-nonsense.html for exit-the-king-west-end-2018 from handed-off HTML (1970855 chars)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-play-that-goes-wrong-west-end-2021/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted first-date-2013/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted first-date-2013/about-entertainment--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ghost-the-musical-2012/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ghost-the-musical-2012/about-entertainment--charles-isherwood.json"
+    }
+  ],
+  "executedIn": "ci"
+}

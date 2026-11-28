@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6774-d",
+  "planId": "15e23bc6-6180-4558-bde9-e35851830f4d",
+  "status": "applied",
+  "createdAt": "2026-11-06T08:16:16.672Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6774: stamp the shotoe aggregator reprint of Ken Abrams' Life of Pi review (new cross-outlet row on fresh data)",
+    "steps": [
+      "life-of-pi-tour-2024/shotoe--economic-times.json: crossOutletVerifiedNote",
+      "life-of-pi-tour-2024/shotoe--economic-times.json: crossOutletVerified"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "life-of-pi-tour-2024/shotoe--economic-times.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: shotoe.com is an aggregator page crediting whatsuprhodeisland.com; https://whatsupnewp.com/2025/02/theater-review-life-of-pi-a-story-of-hope-and-survival-a-major-hit-at-ppac/ (Ken Abrams byline) carries 92% of this file's text and 97% of the primary life-of-pi-tour-2024/whats-up-newp--ken-abrams.json's, so it is a reprint of Abrams' review (the 'Economic Times' critic name is a scrape artefact); stays excluded.",
+        "description": "life-of-pi-tour-2024/shotoe--economic-times.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "life-of-pi-tour-2024/shotoe--economic-times.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "life-of-pi-tour-2024/shotoe--economic-times.json: crossOutletVerified"
+      }
+    ]
+  },
+  "executedAt": "2026-11-06T09:07:03.836Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "life-of-pi-tour-2024/shotoe--economic-times.json crossOutletVerifiedNote: null -> \"Re-fetched BRO-6774: shotoe.com is an aggregator page crediting whatsuprhodeisland.com; https://whatsupnewp.com/2025/02/theater-review-life-of-pi-a-story-of-hope-and-survival-a-major-hit-at-ppac/ (Ken Abrams byline) carries 92% of this file's text and 97% of the primary life-of-pi-tour-2024/whats-up-newp--ken-abrams.json's, so it is a reprint of Abrams' review (the 'Economic Times' critic name is a scrape artefact); stays excluded.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "life-of-pi-tour-2024/shotoe--economic-times.json crossOutletVerified: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

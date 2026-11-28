@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-4684",
+  "planId": "cbe5db8a-617e-4b5b-8fc7-ad741145f46e",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4684: Slam Frank's Culture Sauce review has criticName 'Unknown'; the page byline reads 'Author: Thom Geier' (same critic as the Kramer/Fauci and Hairy Ape Culture Sauce reviews).",
+    "steps": [
+      "Set criticName on slam-frank-off-broadway-2026/culturesauce--unknown.json from Unknown to Thom Geier.",
+      "Rebuild fast and check the live JSON."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "slam-frank-off-broadway-2026/culturesauce--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Thom Geier",
+        "description": "Culture Sauce byline on the page: Author: Thom Geier"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T12:03:00.269Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "slam-frank-off-broadway-2026/culturesauce--unknown.json criticName: \"Unknown\" -> \"Thom Geier\""
+    }
+  ]
+}

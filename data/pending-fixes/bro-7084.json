@@ -1,0 +1,86 @@
+{
+  "issueNumber": "bro-7084",
+  "planId": "9cfa93e8-e1b4-445a-b223-464eea9c8193",
+  "status": "pending",
+  "createdAt": "2026-11-07T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7084: four existing CurtainUp rows whose URL suffix year (curtainupSuffixYear in scripts/lib/content-filters.js) falls outside the production window. The new discovery check never re-examined rows already on disk, so flag them wrongProduction. No review text in this plan.",
+    "steps": [
+      "a-bronx-tale-2007: flag wrongProduction on curtainup--elyse-sommer.json (suffix year 2016, window 2007-10-25 to 2008-02-24).",
+      "frozen-2004: flag wrongProduction on curtainup--charles-wright.json (suffix year 2018, window 2004-05-04 to 2004-08-22).",
+      "the-effect-off-broadway-2024: flag wrongProduction on curtainup--elyse-sommer.json (suffix year 2016, window 2024-03-13 to 2024-03-31).",
+      "fabulation-or-the-re-education-of-undine-off-broadway-2024: flag wrongProduction on curtainup--elyse-sommer.json (suffix year 2018, window 2024-04-18 to 2024-05-19)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-bronx-tale-2007/curtainup--elyse-sommer.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "URL suffix year 2016 is outside the production window 2007-10-25 to 2008-02-24; the page is a different staging."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-bronx-tale-2007/curtainup--elyse-sommer.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "CurtainUp page bronxtalebway16.html carries the 2016 suffix year (2016), outside this production's window (2007-10-25 to 2008-02-24)",
+        "description": "Provenance for the wrongProduction flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frozen-2004/curtainup--charles-wright.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "URL suffix year 2018 is outside the production window 2004-05-04 to 2004-08-22; the page is a different staging."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frozen-2004/curtainup--charles-wright.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "CurtainUp page frozenbway18 carries the 2018 suffix year (2018), outside this production's window (2004-05-04 to 2004-08-22)",
+        "description": "Provenance for the wrongProduction flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-effect-off-broadway-2024/curtainup--elyse-sommer.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "URL suffix year 2016 is outside the production window 2024-03-13 to 2024-03-31; the page is a different staging."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-effect-off-broadway-2024/curtainup--elyse-sommer.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "CurtainUp page effect16.html carries the 2016 suffix year (2016), outside this production's window (2024-03-13 to 2024-03-31)",
+        "description": "Provenance for the wrongProduction flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fabulation-or-the-re-education-of-undine-off-broadway-2024/curtainup--elyse-sommer.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "URL suffix year 2018 is outside the production window 2024-04-18 to 2024-05-19; the page is a different staging."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fabulation-or-the-re-education-of-undine-off-broadway-2024/curtainup--elyse-sommer.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "CurtainUp page fabulation18.html carries the 2018 suffix year (2018), outside this production's window (2024-04-18 to 2024-05-19)",
+        "description": "Provenance for the wrongProduction flag."
+      }
+    ]
+  }
+}

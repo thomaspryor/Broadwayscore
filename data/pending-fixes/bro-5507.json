@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5507",
+  "planId": "e413282a-97cf-4abf-a6d1-1b70656e9b91",
+  "status": "applied",
+  "createdAt": "2026-11-05T01:12:47.640Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5507: apply 56 hand-reviewed outlet display names from data/audit/outlet-display-name-proposals.json (44 slug-derived names replaced by the outlet's own homepage masthead, e.g. Theatrecat -> theatreCat, Corrblimey -> Corr Blimey; 12 genuine one-word mastheads stamped displayNameReviewed). Each row refuses if the outlet was renamed since review or the new name would resolve to another outlet.",
+    "steps": [
+      "Apply 56 hand-reviewed outlet display names (44 renames, 12 one-word mastheads stamped displayNameReviewed)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Apply 56 hand-reviewed outlet display names (44 renames, 12 one-word mastheads stamped displayNameReviewed)",
+        "script": "audit-registry-slug-displaynames.js",
+        "args": "--apply-proposals=data/audit/outlet-display-name-proposals.json --write"
+      }
+    ]
+  },
+  "executedAt": "2026-11-05T04:05:06.756Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran audit-registry-slug-displaynames.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

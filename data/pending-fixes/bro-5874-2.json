@@ -1,0 +1,102 @@
+{
+  "issueNumber": "bro-5874-2",
+  "planId": "81d166b5-e584-4863-a0f1-ffff7110c099",
+  "status": "applied",
+  "createdAt": "2026-10-22T01:54:45.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5874: Bachtrack rows that review a different production or are not reviews. Wrong-production calls come from each page's title/byline (read 2026-10-22). The table-17 row is a 0-char stub classed event-listing by the existing non-review-url-patterns rule for bachtrack concert-event pages. Flagging them keeps retry tiers (and any Browserbase route for bachtrack.com) from spending fetches on them. Also fixes the Lincoln critic name typo.",
+    "steps": [
+      "Flag pinocchio-west-end-2017 Bachtrack row wrongProduction (Boesmans opera, Aix Festival July 2017; show is the National Theatre musical at the Lyttelton)",
+      "Flag the-turn-of-the-screw-off-west-end-2026 Bachtrack row wrongProduction (Victorian Opera, Melbourne; show is at the Arcola)",
+      "Delete table-17-off-west-end-2026 Bachtrack row (url is a /concert-event/ listing for The Haunted Keyboard, not a review of Table 17)",
+      "Correct Lincoln in the Bardo critic name to the page byline Susan Stempleski"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "pinocchio-west-end-2017/bachtrack--mark-pullinger.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5874: page title 'Boesmans' dark Pinocchio opens Aix Festival' (Festival d'Aix-en-Provence, July 2017); this show is Pinocchio at the Lyttelton Theatre (opened 2017-12-13)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pinocchio-west-end-2017/bachtrack--mark-pullinger.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Bachtrack reviews the Boesmans opera at the Aix Festival (July 2017), not the National Theatre Pinocchio at the Lyttelton",
+        "description": "BRO-5874: reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-turn-of-the-screw-off-west-end-2026/bachtrack--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5874: page title 'A spellbinding Turn of the Screw from Victorian Opera' (Melbourne, September 2026); this show is at the Arcola Theatre, London"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-turn-of-the-screw-off-west-end-2026/bachtrack--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Bachtrack reviews Victorian Opera's Melbourne staging, not the Arcola production",
+        "description": "BRO-5874: reason for the flag"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "table-17-off-west-end-2026/bachtrack--unknown.json",
+        "description": "BRO-5874: 0-char stub with no review text; the repo's non-review-url-patterns rule classes bachtrack concert-event pages as event-listing (this one lists a Chelsea Table + Stage concert, not Table 17)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json",
+        "field": "criticName",
+        "oldValue": "Susan Sempleski",
+        "newValue": "Susan Stempleski",
+        "description": "BRO-5874: page JSON-LD author is Susan Stempleski"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T02:40:21.195Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pinocchio-west-end-2017/bachtrack--mark-pullinger.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pinocchio-west-end-2017/bachtrack--mark-pullinger.json wrongProductionReason: null -> \"Bachtrack reviews the Boesmans opera at the Aix Festival (July 2017), not the National Theatre Pinocchio at the Lyttelton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-turn-of-the-screw-off-west-end-2026/bachtrack--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-turn-of-the-screw-off-west-end-2026/bachtrack--unknown.json wrongProductionReason: null -> \"Bachtrack reviews Victorian Opera's Melbourne staging, not the Arcola production\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted table-17-off-west-end-2026/bachtrack--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lincoln-in-the-bardo-off-broadway-2026/bachtrack--susan-sempleski.json criticName: \"Susan Sempleski\" -> \"Susan Stempleski\""
+    }
+  ],
+  "executedIn": "ci"
+}

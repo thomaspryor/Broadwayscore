@@ -1,0 +1,231 @@
+{
+  "generatedAt": "2026-11-28T16:25:57.275Z",
+  "shadow": true,
+  "checkoutSha": "ffa6aac56b48b4a8c9d5ef458f5e724159bd9906",
+  "totalCandidates": 502,
+  "eligibleCandidates": 179,
+  "checked": 30,
+  "truncated": true,
+  "fetchError": null,
+  "counts": {
+    "pass": 14,
+    "fail": 13,
+    "unverifiable": 3
+  },
+  "alreadyDone": [
+    {
+      "id": "BRO-8417",
+      "name": "Footer: link the Australian Theatre page next to UK Regional",
+      "verifyCmd": "node --test tests/unit/uk-regional-surfacing.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8402",
+      "name": "City season sync: presenter rows (ArtsEmerson) get the company name as venue, not the building",
+      "verifyCmd": "node --test scripts/lib/city-season.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8398",
+      "name": "Test bench step 4 (cont.): run the Balusters sandboxed lane redo in the 11-29 window (paced by test-bench-redo-pace.js)",
+      "verifyCmd": "node --test scripts/test-bench-redo-pace.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8395",
+      "name": "Run land-timing-report --check-invariants on a schedule so INVARIANT_TESTS cannot silently decay again",
+      "verifyCmd": "node --test scripts/lib/land-timing-report.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8392",
+      "name": "Ship iOS app Australian-shows fix after Mac simulator run",
+      "verifyCmd": "node --test tests/unit/au-regional-country.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8337",
+      "name": "Guardrail slim-down stage 2: merge resize-show-images steps, cut hook-side redundant gates, with proof tests",
+      "verifyCmd": "node --test scripts/tests/verify-edits-cloud-session-gates.test.mjs scripts/tests/verify-edits-scoring-gate.test.mjs scripts/tests/cloud-settings-guards.test.mjs scripts/tests/global-instructions.test.mjs scripts/V1-V3-dispatch-status.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8335",
+      "name": "Stop gate VE:WAKELESS ignores background waits started in an earlier turn",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": null
+    },
+    {
+      "id": "BRO-8332",
+      "name": "BRO-8330 readout: 14-day ScrapingBee-off comparison and GO/NO-GO",
+      "verifyCmd": "node --test scripts/lib/sb-switch.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8330",
+      "name": "ScrapingBee off-switch trial: prove the site runs with SB fully off before the Dec 24 cancel",
+      "verifyCmd": "node --test scripts/lib/sb-switch.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8329",
+      "name": "P2: Opening night miss: A Christmas Carol (2026-11-24)",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": null
+    },
+    {
+      "id": "BRO-8297",
+      "name": "Sentry regression: UgcError: UGC functions mezzanine-search failed (500)",
+      "verifyCmd": "npx tsx --test tests/unit/sentry-7815060800.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8294",
+      "name": "Cost follow-up: non-Broadway poller targeting + Bright Data theatre.reviews repeats",
+      "verifyCmd": "node scripts/lib/check-sb-credits.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-8276",
+      "name": "P1: nightly text recovery aborts the whole run when one file was renamed upstream (backlog stalled)",
+      "verifyCmd": "node --test scripts/lib/review-texts-checkpoint.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-8239",
+      "name": "Orchestrator-session hook friction: 57 blocks in one multi-worker session",
+      "verifyCmd": "node --test scripts/lib/session-retro.test.mjs scripts/lib/child-idle-watch.test.mjs",
+      "detail": null
+    }
+  ],
+  "failing": [
+    {
+      "id": "BRO-8440",
+      "name": "Audit: NY + London openings week of Nov 22-28, review collection and scoring completeness",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-22 --opened-to=2026-11-28 --check-gaps",
+      "detail": "gap audit generated 2026-11-28T15:05:10.195Z\nPASS     the-dead-1904-off-broadway-2026: 5 live, 0 cited not live; info: 7 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T15:05:10.195Z\n         frequent outlets with nothing for this show: front-row-center, nytg, off-off-online, theater-scene\nFAIL     a-christmas-carol-west-end-2026: 18 live, 1 cited not live; info: 2 census"
+    },
+    {
+      "id": "BRO-8426",
+      "name": "Recheck 2026-11-28: 2 done claims no longer hold on main",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class shows-missing-poster-synopsis-tickets --quiet",
+      "detail": "FAIL: last case 5d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8415",
+      "name": "Australia: add the major productions now playing (Sydney, Melbourne, Brisbane)",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=mrs-doubtfire-regional-2026,beetlejuice-regional-2026,the-lion-king-regional-2026 --reviews=5",
+      "detail": "FAIL mrs-doubtfire-regional-2026: scored reviews 0 < 5\nFAIL beetlejuice-regional-2026: scored reviews 0 < 5\nFAIL the-lion-king-regional-2026: scored reviews 4 < 5\n"
+    },
+    {
+      "id": "BRO-8383",
+      "name": "Root cause: \"Sentry regression: UgcError: UGC insert reviews failed\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class ugcerror-ugc-insert-reviews-failed --quiet",
+      "detail": "FAIL: last case 6d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8381",
+      "name": "Root cause: \"much-ado-about-nothing-: review need a decision\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class review-need-decision --quiet",
+      "detail": "FAIL: last case 2d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8350",
+      "name": "Root cause: \"Quality: star-vs-score mismatch\" keeps coming back (4 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class star-score-mismatch --quiet",
+      "detail": "FAIL: last case 3d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8349",
+      "name": "Root cause: first pass keeps getting no full text from theatreandtonic (all markets, 3 shows in 60 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class text-missed-at-first-pass-theatreandtonic --quiet",
+      "detail": "FAIL: last case 3d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8348",
+      "name": "Root cause: first pass keeps missing timeout-london reviews (all markets, 3 shows in 60 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class missed-at-first-pass-timeout-london --quiet",
+      "detail": "FAIL: last case 6d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8245",
+      "name": "Root cause: \"Data: published scores outside the critic's rating\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class published-scores-outside-critic-rating --quiet",
+      "detail": "FAIL: last case 6d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8244",
+      "name": "Root cause: \"Cron stale + consecutive days: Replay Push Rescue\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class replay-push-rescue --quiet",
+      "detail": "FAIL: last case 5d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8243",
+      "name": "Root cause: \"Deploy to Vercel\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class deploy-vercel --quiet",
+      "detail": "FAIL: last case 5d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-8241",
+      "name": "P1: Opening night miss: Seven Guitars (2026-11-23)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-23 --opened-to=2026-11-23 --check-gaps",
+      "detail": "gap audit generated 2026-11-28T15:05:10.195Z\nPASS     the-afronauts-west-end-2026: 26 live, 0 cited not live; info: 1 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T14:05:31.698Z\nPASS     seven-guitars-off-broadway-2026: 20 live, 0 cited not live; info: 4 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T14:05:31.698Z\n         frequent outlets wit"
+    },
+    {
+      "id": "BRO-8240",
+      "name": "P1: Opening night miss: It’s A Wonderful Life: A Live Radio Play (2026-11-23)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-23 --opened-to=2026-11-23 --check-gaps",
+      "detail": "gap audit generated 2026-11-28T15:05:10.195Z\nPASS     the-afronauts-west-end-2026: 26 live, 0 cited not live; info: 1 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T14:05:31.698Z\nPASS     seven-guitars-off-broadway-2026: 20 live, 0 cited not live; info: 4 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-28T14:05:31.698Z\n         frequent outlets wit"
+    }
+  ],
+  "unverifiable": [
+    {
+      "id": "BRO-8391",
+      "name": "AU pilot follow-ups: confirm iOS app handles AU regional shows; check justin-clarke byline on two outlets",
+      "verifyCmd": "node --test scripts/lib/byline-regional-shows.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/byline-regional-shows.test.mjs"
+    },
+    {
+      "id": "BRO-8281",
+      "name": "Cost review: hosting and small tools (Vercel, Resend, Expo, others)",
+      "verifyCmd": "test -f scripts/hosting-cost-review.md",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/hosting-cost-review.md"
+    },
+    {
+      "id": "BRO-8280",
+      "name": "Cost review: scraping providers (ScrapingBee, Scrapingdog, Bright Data, Browserbase)",
+      "verifyCmd": "node --test scripts/verify-sb-pack-pace.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
+    }
+  ],
+  "landedButOpen": [
+    {
+      "id": "BRO-8330",
+      "name": "ScrapingBee off-switch trial: prove the site runs with SB fully off before the Dec 24 cancel",
+      "branch": "land/bro-8330-sweep-test",
+      "sha": "2d56c8d9130149fbd60f7dd06e28aab0e0db07e5",
+      "landedAt": "2026-11-25T23:45:27.269Z"
+    },
+    {
+      "id": "BRO-8294",
+      "name": "Cost follow-up: non-Broadway poller targeting + Bright Data theatre.reviews repeats",
+      "branch": "land/bro-8294-cost",
+      "sha": "5a1f441d03c78bd28306063e293a23aca14f593c",
+      "landedAt": "2026-11-25T06:12:54.931Z"
+    },
+    {
+      "id": "BRO-8276",
+      "name": "P1: nightly text recovery aborts the whole run when one file was renamed upstream (backlog stalled)",
+      "branch": "land/codex-bro-8276",
+      "sha": "fc5a3a6579bce5729119c6bae38ed586d4574c7f",
+      "landedAt": "2026-11-26T05:04:06.811Z"
+    },
+    {
+      "id": "BRO-8239",
+      "name": "Orchestrator-session hook friction: 57 blocks in one multi-worker session",
+      "branch": "land/bro-8239-hook-friction",
+      "sha": "9f91c6ffaf5fb761644f347fa8fb7846af988983",
+      "landedAt": "2026-11-28T06:57:43.111Z"
+    }
+  ]
+}

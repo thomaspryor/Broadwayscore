@@ -1,0 +1,13 @@
+{
+  "_comment": "Owner-approved, one-week editorial exceptions for the weekly newsletter. Each entry applies only to its own weekStart and edition, so it expires by itself. waiveFreshRunGate lets a returning production through the fresh-run gate (BRO-3822) when the owner has decided to feature it anyway. See editorial-overrides.mjs.",
+  "overrides": [
+    {
+      "weekStart": "2026-11-09",
+      "edition": "west-end",
+      "showId": "pride-bridge-theatre-off-west-end-2026",
+      "displayTitle": "Pride",
+      "waiveFreshRunGate": true,
+      "approvedBy": "owner, 2026-11-15 (BRO-7547)"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "issueNumber": "bro-5499-f",
+  "planId": "cb378227-a383-4a29-8446-0a8313a87d95",
+  "status": "applied",
+  "createdAt": "2026-10-16T17:35:49.027Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (f): flag four reviews of a later production filed under an earlier same-title entry (King Lear 2019 in 2004, Gypsy 2024 in 2008, JCS 2012 in 2000, Glengarry 2025 in 2005); then correct UTC-shifted publishDates corpus-wide. Run after plans c and d.",
+    "steps": [
+      "flag",
+      "dates"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-2004/thestage--nicole-serratore.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5499: the Stage review of the 2019 Glenda Jackson King Lear (Cort Theatre, url /reviews/2019/) filed under the 2004 entry; it also exists on king-lear-2019"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-2004/thestage--nicole-serratore.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "2019 Glenda Jackson production review (url /reviews/2019/, text names Glenda Jackson, Pedro Pascal, Ruth Wilson) filed under king-lear-2004 (BRO-5499)",
+        "description": "BRO-5499: reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2008/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5499: Lighting & Sound America review of the 2024 Majestic Gypsy (Audra McDonald, Joy Woods, Danny Burstein) filed under the 2008 St. James entry"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2008/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Text names Audra McDonald, Danny Burstein, Joy Woods (gypsy-2024) and none of the 2008 production: a different production of the same title (BRO-5499)",
+        "description": "BRO-5499: reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-2000/ew--melissa-rose-bernardo.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5499: Entertainment Weekly review of the 2011-12 Stratford (Ontario) production that transferred to the Neil Simon in 2012, filed under the 2000 Lyric entry"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-2000/ew--melissa-rose-bernardo.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Text reviews the Stratford Festival staging (Chilina Kennedy, Paul Nolan, Marcus Nance; jesus-christ-superstar-2012), not the 2000 production (BRO-5499)",
+        "description": "BRO-5499: reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2005/broadwayworld--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5499: BroadwayWorld show page text for the 2025 Palace Glengarry Glen Ross (Kieran Culkin, Bob Odenkirk, Bill Burr) filed under the 2005 entry"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2005/broadwayworld--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Text names Kieran Culkin, Bob Odenkirk, Bill Burr (glengarry-glen-ross-2025) and none of the 2005 production (BRO-5499)",
+        "description": "BRO-5499: reason"
+      },
+      {
+        "type": "run-script",
+        "script": "fix-utc-shifted-publish-dates.js",
+        "args": "--apply",
+        "description": "BRO-5499: 400+ review publishDates stored one day late (UTC truncation); set to the article permalink date where the permalink is exactly one day earlier and nothing human verified the date"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T20:31:26.394Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-2004/thestage--nicole-serratore.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-2004/thestage--nicole-serratore.json wrongProductionReason: null -> \"2019 Glenda Jackson production review (url /reviews/2019/, text names Glenda Jackson, Pedro Pascal, Ruth Wilson) filed under king-lear-2004 (BRO-5499)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2008/lighting-and-sound-america--david-barbour.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2008/lighting-and-sound-america--david-barbour.json wrongProductionReason: null -> \"Text names Audra McDonald, Danny Burstein, Joy Woods (gypsy-2024) and none of the 2008 production: a different production of the same title (BRO-5499)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesus-christ-superstar-2000/ew--melissa-rose-bernardo.json wrongProduction: null -> true (retracted wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesus-christ-superstar-2000/ew--melissa-rose-bernardo.json wrongProductionReason: null -> \"Text reviews the Stratford Festival staging (Chilina Kennedy, Paul Nolan, Marcus Nance; jesus-christ-superstar-2012), not the 2000 production (BRO-5499)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2005/broadwayworld--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2005/broadwayworld--unknown.json wrongProductionReason: null -> \"Text names Kieran Culkin, Bob Odenkirk, Bill Burr (glengarry-glen-ross-2025) and none of the 2005 production (BRO-5499)\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran fix-utc-shifted-publish-dates.js successfully"
+    }
+  ]
+}

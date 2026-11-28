@@ -1,0 +1,349 @@
+{
+  "issueNumber": "bro-3414",
+  "planId": "40c19876-0d96-4e0f-949c-580cf5b1cd91",
+  "status": "applied",
+  "createdAt": "2026-10-12T15:32:33.183569Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct placeholder bylines on live reviews (BRO-3414). \"Eric March\" is the theaterlife.com WordPress import account shown as post author on every Drupal-imported review; each live page names the real critic in a \"By X\" line, or carries no byline. theaterscene.net \"Archive\"/\"Unknown\" files take the JSON-LD author (matching the URL author slug); New Yorker \"Condé Nast\" files take the \"By X\" critic, or Unknown where only the house byline appears. Every page was fetched live on 2026-10-12 and its canonical URL matched the file URL. Also un-glues 9 theaterlife bylines fused to the first word of the article. (part 1 of 12, split for the 25-action cap)",
+    "steps": [
+      "Set criticName to the byline printed on each live page",
+      "Set Unknown where the page names no critic",
+      "Strip the article word glued onto 9 theaterlife bylines"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "110-in-the-shade-2007/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/110-in-the-shade/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "13-2008/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/13-2/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "33-variations-2009/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/33-variations/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-bronx-tale-2007/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Barry Gordin and Patrick Christiano",
+        "description": "live page byline reads \"By Gordin & Christiano\" (https://theaterlife.com/a-bronx-tale/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-catered-affair-2008/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Barry Gordin and Patrick Christiano",
+        "description": "live page byline reads \"By Gordin & Christiano\" (https://theaterlife.com/a-catered-affair/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-chorus-line-2006/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/a-chorus-line/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-little-night-music-2009/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/a-little-night-music-12/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-man-for-all-seasons-2008/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/a-man-for-all-seasons/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-1996/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Barry Gordin and Patrick Christiano",
+        "description": "live page byline reads \"By Gordin & Christiano\" (https://theaterlife.com/midsummer-nights-dream/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-moon-for-the-misbegotten-2007/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/a-moon-for-the-misbegotten/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-night-with-janis-joplin-2013/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/a-night-with-janis-joplin/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-raisin-in-the-sun-2014/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/a-raisin-in-the-sun/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-steady-rain-2009/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/a-steady-rain/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-tale-of-two-cities-2008/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Barry Gordin and Patrick Christiano",
+        "description": "live page byline reads \"By Gordin & Christiano\" (https://theaterlife.com/a-tale-of-two-cities/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-2015/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Paulanne Simmons",
+        "description": "live page byline reads \"By Paulanne Simmons\" (https://theaterlife.com/a-view-from-the-bridge-12/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "act-one-2014/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/act-one-12/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "airline-highway-2015/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/airline-highway-12/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aladdin-2014/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/aladdin-12/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-about-me-2010/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Ellis Nassour",
+        "description": "live page byline reads \"By Ellis Nassour\" (https://theaterlife.com/all-about-me/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2008/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Barry Gordin and Patrick Christiano",
+        "description": "live page byline reads \"By Gordin & Christiano\" (https://theaterlife.com/all-my-sons/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-way-2014/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "live page byline reads \"By David Sheward\" (https://theaterlife.com/all-the-way/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amazing-grace-2015/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "David Sheward",
+        "description": "byline line on the live page names David Sheward (split by inline HTML) (https://theaterlife.com/amazing-grace-12/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-idiot-2010/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Unknown",
+        "description": "live page carries no byline; \"Eric March\" is the WordPress import account shown as post author on every Drupal-imported review (https://theaterlife.com/american-idiot-2/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ann-2013/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/ann/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anything-goes-2011/theater-life--eric-march.json",
+        "field": "criticName",
+        "oldValue": "Eric March",
+        "newValue": "Isa Goldberg",
+        "description": "live page byline reads \"By Isa Goldberg\" (https://theaterlife.com/anything-goes/)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T18:29:01.023Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "110-in-the-shade-2007/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "33-variations-2009/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-bronx-tale-2007/theater-life--eric-march.json criticName: \"Eric March\" -> \"Barry Gordin and Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-catered-affair-2008/theater-life--eric-march.json criticName: \"Eric March\" -> \"Barry Gordin and Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-chorus-line-2006/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-man-for-all-seasons-2008/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-1996/theater-life--eric-march.json criticName: \"Eric March\" -> \"Barry Gordin and Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-moon-for-the-misbegotten-2007/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-night-with-janis-joplin-2013/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-raisin-in-the-sun-2014/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-steady-rain-2009/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-tale-of-two-cities-2008/theater-life--eric-march.json criticName: \"Eric March\" -> \"Barry Gordin and Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-view-from-the-bridge-2015/theater-life--eric-march.json criticName: \"Eric March\" -> \"Paulanne Simmons\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "act-one-2014/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "airline-highway-2015/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aladdin-2014/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-about-me-2010/theater-life--eric-march.json criticName: \"Eric March\" -> \"Ellis Nassour\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2008/theater-life--eric-march.json criticName: \"Eric March\" -> \"Barry Gordin and Patrick Christiano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-the-way-2014/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amazing-grace-2015/theater-life--eric-march.json criticName: \"Eric March\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-idiot-2010/theater-life--eric-march.json criticName: \"Eric March\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ann-2013/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anything-goes-2011/theater-life--eric-march.json criticName: \"Eric March\" -> \"Isa Goldberg\""
+    }
+  ]
+}

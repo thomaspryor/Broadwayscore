@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-8271",
+  "planId": "e0b71967-9bda-45b2-95e5-24239b7acb3b",
+  "status": "applied",
+  "createdAt": "2026-11-24T23:47:38.506Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Fix TodayTix API-default runtimes (BRO-8271): correct 51 to the TodayTix page, clear 36 unconfirmable defaults, set Slanted Floors to 1h 25m (part 1 of 5)",
+    "steps": [
+      "shows.json: cold-war-choir-practice-off-broadway-2026.runtime (TodayTix page: 1hr 40min. No intermission.)",
+      "shows.json: the-adding-machine-off-broadway-2026.runtime (TodayTix page: 2hr 15min. Incl. intermission.)",
+      "shows.json: the-adding-machine-off-broadway-2026.intermissions (TodayTix page)",
+      "shows.json: becky-shaw-2026.runtime (TodayTix page: 2hr 20min. Incl. 1 intermission.)",
+      "shows.json: becky-shaw-2026.intermissions (TodayTix page)",
+      "shows.json: body-count-off-broadway-2026.runtime (TodayTix page: 55min. No intermission.)",
+      "shows.json: no-singing-in-the-navy-off-broadway-2026.runtime (TodayTix page: 1hr 20min. No intermission.)",
+      "shows.json: the-dinosaurs-off-broadway-2026.runtime (TodayTix page: 1hr 30min. No intermission.)",
+      "shows.json: rheology-off-broadway-2026.runtime (TodayTix page: 1hr 20min. No intermission.)",
+      "shows.json: ice-queen-off-broadway-2026.runtime (TodayTix page: 45min.)",
+      "shows.json: 11-to-midnight-off-broadway-2026.runtime (TodayTix page: 1hr 5min.)",
+      "shows.json: youre-a-good-man-charlie-brown-off-broadway-2026.runtime (TodayTix page: 1hr.)",
+      "shows.json: jamire-williams-off-broadway-2026.runtime (TodayTix page: 1hr. (Approx.) No intermission.)",
+      "shows.json: jamire-williams-off-broadway-2026.intermissions (TodayTix page)",
+      "shows.json: liv-redpath-and-harry-rylance-off-broadway-2026.runtime (TodayTix page: 2hr. Incl. 15 min intermission.)",
+      "shows.json: liv-redpath-and-harry-rylance-off-broadway-2026.intermissions (TodayTix page)",
+      "shows.json: the-unknown-off-broadway-2026.runtime (TodayTix page: 1hr 15min.)",
+      "shows.json: olga-pericet-baile-sonoro-off-broadway-2026.runtime (TodayTix page: 1hr 20min.)",
+      "shows.json: vida-off-broadway-2026.runtime (TodayTix page: 1hr 30min.)",
+      "shows.json: proximo-off-broadway-2026.runtime (TodayTix page: 1hr 10min.)",
+      "shows.json: aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026.runtime (TodayTix page: 55min. No intermission.)",
+      "shows.json: aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026.intermissions (TodayTix page)",
+      "shows.json: anne-teresa-de-keersmaeker-exit-above-off-broadway-2026.runtime (TodayTix page: 1hr 30min. No intermission.)",
+      "shows.json: anne-teresa-de-keersmaeker-exit-above-off-broadway-2026.intermissions (TodayTix page)",
+      "shows.json: trash-off-broadway-2026.runtime (TodayTix page: 1hr 30min.)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cold-war-choir-practice-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 30m",
+        "newValue": "1h 40m",
+        "description": "shows.json: cold-war-choir-practice-off-broadway-2026.runtime (TodayTix page: 1hr 40min. No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-adding-machine-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 30m",
+        "newValue": "2h 15m",
+        "description": "shows.json: the-adding-machine-off-broadway-2026.runtime (TodayTix page: 2hr 15min. Incl. intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-adding-machine-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: the-adding-machine-off-broadway-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "becky-shaw-2026",
+        "field": "runtime",
+        "oldValue": "1h 15m",
+        "newValue": "2h 20m",
+        "description": "shows.json: becky-shaw-2026.runtime (TodayTix page: 2hr 20min. Incl. 1 intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "becky-shaw-2026",
+        "field": "intermissions",
+        "oldValue": 0,
+        "newValue": 1,
+        "description": "shows.json: becky-shaw-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "body-count-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 15m",
+        "newValue": "55m",
+        "description": "shows.json: body-count-off-broadway-2026.runtime (TodayTix page: 55min. No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "no-singing-in-the-navy-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": "1h 20m",
+        "description": "shows.json: no-singing-in-the-navy-off-broadway-2026.runtime (TodayTix page: 1hr 20min. No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-dinosaurs-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": "1h 30m",
+        "description": "shows.json: the-dinosaurs-off-broadway-2026.runtime (TodayTix page: 1hr 30min. No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rheology-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": "1h 20m",
+        "description": "shows.json: rheology-off-broadway-2026.runtime (TodayTix page: 1hr 20min. No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ice-queen-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": "45m",
+        "description": "shows.json: ice-queen-off-broadway-2026.runtime (TodayTix page: 45min.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "11-to-midnight-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": "1h 5m",
+        "description": "shows.json: 11-to-midnight-off-broadway-2026.runtime (TodayTix page: 1hr 5min.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "youre-a-good-man-charlie-brown-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": "1h",
+        "description": "shows.json: youre-a-good-man-charlie-brown-off-broadway-2026.runtime (TodayTix page: 1hr.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jamire-williams-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": "1h",
+        "description": "shows.json: jamire-williams-off-broadway-2026.runtime (TodayTix page: 1hr. (Approx.) No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jamire-williams-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: jamire-williams-off-broadway-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "liv-redpath-and-harry-rylance-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 45m",
+        "newValue": "2h",
+        "description": "shows.json: liv-redpath-and-harry-rylance-off-broadway-2026.runtime (TodayTix page: 2hr. Incl. 15 min intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "liv-redpath-and-harry-rylance-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "shows.json: liv-redpath-and-harry-rylance-off-broadway-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-unknown-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "45m",
+        "newValue": "1h 15m",
+        "description": "shows.json: the-unknown-off-broadway-2026.runtime (TodayTix page: 1hr 15min.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "olga-pericet-baile-sonoro-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": "1h 20m",
+        "description": "shows.json: olga-pericet-baile-sonoro-off-broadway-2026.runtime (TodayTix page: 1hr 20min.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "vida-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": "1h 30m",
+        "description": "shows.json: vida-off-broadway-2026.runtime (TodayTix page: 1hr 30min.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "proximo-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h",
+        "newValue": "1h 10m",
+        "description": "shows.json: proximo-off-broadway-2026.runtime (TodayTix page: 1hr 10min.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": "55m",
+        "description": "shows.json: aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026.runtime (TodayTix page: 55min. No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anne-teresa-de-keersmaeker-exit-above-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": "1h 30m",
+        "description": "shows.json: anne-teresa-de-keersmaeker-exit-above-off-broadway-2026.runtime (TodayTix page: 1hr 30min. No intermission.)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anne-teresa-de-keersmaeker-exit-above-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: anne-teresa-de-keersmaeker-exit-above-off-broadway-2026.intermissions (TodayTix page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "trash-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 15m",
+        "newValue": "1h 30m",
+        "description": "shows.json: trash-off-broadway-2026.runtime (TodayTix page: 1hr 30min.)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-25T00:41:33.543Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for cold-war-choir-practice-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-adding-machine-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for the-adding-machine-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for becky-shaw-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for becky-shaw-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for body-count-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for no-singing-in-the-navy-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-dinosaurs-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for rheology-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for ice-queen-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for 11-to-midnight-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for youre-a-good-man-charlie-brown-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for jamire-williams-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for jamire-williams-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for liv-redpath-and-harry-rylance-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for liv-redpath-and-harry-rylance-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-unknown-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for olga-pericet-baile-sonoro-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for vida-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for proximo-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for aim-by-kyle-abraham-cassette-vol-1-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for anne-teresa-de-keersmaeker-exit-above-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for anne-teresa-de-keersmaeker-exit-above-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for trash-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,272 @@
+{
+  "issueNumber": "bro-4889-b",
+  "planId": "312b2517-6e78-4293-be34-4c6d3e2cb4c5",
+  "status": "applied",
+  "createdAt": "2026-10-13T03:12:26.719Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4889: Evita (2012) and Cat on a Hot Tin Roof (2013) exclude genuine reviews on false wrong-production flags and count a junk Ricky Martin topic page and a duplicate Variety credit",
+    "steps": [
+      "Clear false wrongProduction flags on 4 Evita 2012 and 3 Cat 2013 reviews",
+      "Mark the Ricky Martin NYT topics page as a non-review",
+      "Mark the duplicate Variety Stasio credit (same article as Suskin) as a wrong attribution",
+      "Fix the Cat 2013 USA Today date"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/amny--matt-windman.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; text reviews Elena Roger in the 2012 revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/amny--matt-windman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/backstage--david-sheward.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; text reviews \"the new revival of Evita\" (2012)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/backstage--david-sheward.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/ew--melissa-rose-bernardo.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; text reviews Elena Roger \"in the adequate new Broadway revival\""
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/ew--melissa-rose-bernardo.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/philadelphia-inquirer--howard-shapiro.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; 2012 philly.com review of the Broadway revival"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/philadelphia-inquirer--howard-shapiro.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/ricky-martin--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "NYT topics index page for Ricky Martin, no review text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/ricky-martin--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: NYT topics index page (topics.nytimes.com, Ricky Martin), not a review",
+        "description": "Reason for the non-review flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/variety--marilyn-stasio.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "same Variety article (id 1117947355) as variety--steven-suskin.json; counted twice"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/variety--marilyn-stasio.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: same Variety article (id 1117947355) as variety--steven-suskin.json, Suskin's review; Stasio credit is a duplicate",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/nypost--elisabeth-vincentelli.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; text reviews Scarlett Johansson and Benjamin Walker (2013)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/nypost--elisabeth-vincentelli.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/vulture--scott-brown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; url vulture.com/2013/01/theater-review-cat-on-a-hot-tin-roof"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/vulture--scott-brown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/financialtimes--brendan-lemon.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4889: genuine review of this production; text reviews Scarlett Johansson as Maggie (2013)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/financialtimes--brendan-lemon.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: keep the false-positive flag from coming back on rebuild"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/usatoday--elysa-gardner.json",
+        "field": "publishDate",
+        "oldValue": "2013-03-26",
+        "newValue": "2013-01-17",
+        "description": "BRO-4889: opening-night review; 2013-03-26 was a crawl date"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T03:59:32.417Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/amny--matt-windman.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/amny--matt-windman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/backstage--david-sheward.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/backstage--david-sheward.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/ew--melissa-rose-bernardo.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/ew--melissa-rose-bernardo.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/philadelphia-inquirer--howard-shapiro.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/philadelphia-inquirer--howard-shapiro.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/ricky-martin--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/ricky-martin--unknown.json isNonReviewReason: null -> \"BRO-4889: NYT topics index page (topics.nytimes.com, Ricky Martin), not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/variety--marilyn-stasio.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/variety--marilyn-stasio.json wrongAttributionReason: null -> \"BRO-4889: same Variety article (id 1117947355) as variety--steven-suskin.json, Suskin's review; Stasio credit is a duplicate\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/nypost--elisabeth-vincentelli.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/nypost--elisabeth-vincentelli.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/vulture--scott-brown.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/vulture--scott-brown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/financialtimes--brendan-lemon.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/financialtimes--brendan-lemon.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/usatoday--elysa-gardner.json publishDate: \"2013-03-26\" -> \"2013-01-17\""
+    }
+  ]
+}

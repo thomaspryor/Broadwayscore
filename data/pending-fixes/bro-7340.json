@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-7340",
+  "planId": "717d5c66-ffef-4e22-88b8-d31381506874",
+  "status": "applied",
+  "createdAt": "2026-11-14T02:54:42.796Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude the 2023 Broadway TheaterMania review misfiled under the 2026 North Coast Rep production",
+    "steps": [
+      "the-cottage-regional-2026/theatermania--unknown.json: wrongProduction",
+      "the-cottage-regional-2026/theatermania--unknown.json: wrongProductionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/theatermania--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-cottage-regional-2026/theatermania--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cottage-regional-2026/theatermania--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7340: Matched the source excerpt to Pete Hempstead, July 24, 2023, at the Helen Hayes Theater, not the 2026 North Coast Repertory Theatre production. Source roundup: https://www.newyorkcitytheatre.com/news/reviews/438179 ; original review: https://www.theatermania.com/news/review-the-cottage-is-a-welcome-retreat-from-the-summer-heat_1709694/ ; correct existing record: the-cottage-2023/theatermania--pete-hempstead.json",
+        "description": "the-cottage-regional-2026/theatermania--unknown.json: wrongProductionReason"
+      }
+    ]
+  },
+  "executedAt": "2026-11-14T04:19:38.826Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cottage-regional-2026/theatermania--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cottage-regional-2026/theatermania--unknown.json wrongProductionReason: null -> \"BRO-7340: Matched the source excerpt to Pete Hempstead, July 24, 2023, at the Helen Hayes Theater, not the 2026 North Coast Repertory Theatre production. Source roundup: https://www.newyorkcitytheatre.com/news/reviews/438179 ; original review: https://www.theatermania.com/news/review-the-cottage-is-a-welcome-retreat-from-the-summer-heat_1709694/ ; correct existing record: the-cottage-2023/theatermania--pete-hempstead.json\""
+    }
+  ],
+  "executedIn": "ci"
+}

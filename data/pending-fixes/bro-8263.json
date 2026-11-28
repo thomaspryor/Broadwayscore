@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-8263",
+  "planId": "4fc33fd7-3945-42a7-ad25-ea193ab1c607",
+  "status": "pending",
+  "createdAt": "2026-11-26T13:00:29.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8263: the-ugly-one-off-west-end-2026/plays-to-see--sonya-tarkhanova.json holds an unresolved git merge-conflict block (<<<<<<<< HEAD ... >>>>>>>>), so it fails JSON parse and trips the zero-tolerance gate in validate-review-texts. Delete the corrupt file and restore the last valid copy from review-texts history (commit 281642c26).",
+    "steps": [
+      "Delete the conflict-marker file.",
+      "Restore the valid copy from review-texts commit 281642c2693d0744cf17f2377608e0982cde470a."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-ugly-one-off-west-end-2026/plays-to-see--sonya-tarkhanova.json",
+        "description": "BRO-8263: file contains git conflict markers and is not valid JSON."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "the-ugly-one-off-west-end-2026/plays-to-see--sonya-tarkhanova.json",
+        "fromCommit": "281642c2693d0744cf17f2377608e0982cde470a",
+        "description": "BRO-8263: bring back the last valid copy (Sonya Tarkhanova, page-byline enriched)."
+      }
+    ]
+  }
+}

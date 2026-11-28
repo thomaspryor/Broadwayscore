@@ -1,0 +1,335 @@
+{
+  "issueNumber": "bro-6716-g",
+  "planId": "a3eba157-40b8-4927-92f2-fca10afe5540",
+  "status": "applied",
+  "createdAt": "2026-11-02T22:07:07.671Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6716: last-year cited-not-live remainder: restore two false drops (Triumph BTG, New Statesman Banality of Evil), rehome The Stage Leeds Fences review to the Leeds entry, and record three read-confirmed exclusions as human verdicts",
+    "steps": [
+      "BRO-6716: read the full text: a British Theatre Guide review of the Almeida run, closing on its verdict (\"a grim satirical depiction of Trump\"); the ensemble not_a_review call is wrong.",
+      "Clear the ensemble rejection after the manual-clear marker above (BRO-6716).",
+      "BRO-6716: fetched the live page 2026-11-02: meta author and JSON-LD author are Rachel Cunliffe; \"Sally Rooney\" occurs once, in a sidebar. The stored body (refetched) is her review and does not name Sally Rooney.",
+      "BRO-6716: read: the producing venue's own show page (dates, credits, synopsis, Get Tickets), not a review.",
+      "Human-confirmed exclusion (BRO-6716): not_a_review.",
+      "Stamp of the human exclusion (BRO-6716).",
+      "A manual-* rejecter: the gap audit reads this as a human exclusion and stops re-verifying it (BRO-6716).",
+      "BRO-6716: read: the producer's own show page for Soon (credits, \"6 Weeks Only!\", synopsis), not a review.",
+      "BRO-6716: thestage.co.uk/reviews/how-soon-is-now-review is a review of How Soon Is Now, a different show, not Nick Blaemire's Soon.",
+      "Human-confirmed exclusion (BRO-6716): wrong_show.",
+      "Read: a review of the Leeds Playhouse production; the move below files it on the Leeds entry, where the cross-production-audit flag (about the Lyric folder) does not apply (BRO-6716).",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read: the body is a review of Fences (Troy, Rose, August Wilson); the write guard flagged it because the extracted body drops the headline (BRO-6716).",
+      "BRO-6716: The Stage review of the Leeds Playhouse production (URL fences-review-leeds-playhouse, dated 2026-09-17, Leeds press night); it belongs on the Leeds entry, not the Lyric Hammersmith run."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "triumph-off-west-end-2026/british-theatre--keith-mckenna.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6716: read the full text: a British Theatre Guide review of the Almeida run, closing on its verdict (\"a grim satirical depiction of Trump\"); the ensemble not_a_review call is wrong."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "triumph-off-west-end-2026/british-theatre--keith-mckenna.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the ensemble rejection after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "triumph-off-west-end-2026/british-theatre--keith-mckenna.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "Clear the ensemble rejection after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "triumph-off-west-end-2026/british-theatre--keith-mckenna.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-10-20T16:33:20.067Z",
+        "newValue": null,
+        "description": "Clear the ensemble rejection after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "triumph-off-west-end-2026/british-theatre--keith-mckenna.json",
+        "field": "rejectionReasoning",
+        "oldValue": "openai: The text provided is a plot summary and context description without any evaluative content or critique of the production.; gemini: This text is a plot summary and contextualization of the play's themes, not an evaluation or critical assessment of the production itself. It describes what happens in the play and its real-world parallels but offers no critical judgment on performances, direction, staging, or overall quality.",
+        "newValue": null,
+        "description": "Clear the ensemble rejection after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+        "field": "fullTextWrongAuthor",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6716: fetched the live page 2026-11-02: meta author and JSON-LD author are Rachel Cunliffe; \"Sally Rooney\" occurs once, in a sidebar. The stored body (refetched) is her review and does not name Sally Rooney."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "women-who-eat-off-broadway-2026/theaterlabnyc--orietta.json",
+        "field": "rejectionReasoning",
+        "oldValue": null,
+        "newValue": "BRO-6716: read: the producing venue's own show page (dates, credits, synopsis, Get Tickets), not a review.",
+        "description": "BRO-6716: read: the producing venue's own show page (dates, credits, synopsis, Get Tickets), not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "women-who-eat-off-broadway-2026/theaterlabnyc--orietta.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "not_a_review",
+        "description": "Human-confirmed exclusion (BRO-6716): not_a_review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "women-who-eat-off-broadway-2026/theaterlabnyc--orietta.json",
+        "field": "rejectedAt",
+        "oldValue": null,
+        "newValue": "2026-11-02T22:07:07.671Z",
+        "description": "Stamp of the human exclusion (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "women-who-eat-off-broadway-2026/theaterlabnyc--orietta.json",
+        "field": "rejectedBy",
+        "oldValue": null,
+        "newValue": "manual-bro-6716",
+        "description": "A manual-* rejecter: the gap audit reads this as a human exclusion and stops re-verifying it (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soon-off-broadway-2026/ootbtheatrics--unknown.json",
+        "field": "rejectionReasoning",
+        "oldValue": null,
+        "newValue": "BRO-6716: read: the producer's own show page for Soon (credits, \"6 Weeks Only!\", synopsis), not a review.",
+        "description": "BRO-6716: read: the producer's own show page for Soon (credits, \"6 Weeks Only!\", synopsis), not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soon-off-broadway-2026/ootbtheatrics--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "not_a_review",
+        "description": "Human-confirmed exclusion (BRO-6716): not_a_review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soon-off-broadway-2026/ootbtheatrics--unknown.json",
+        "field": "rejectedAt",
+        "oldValue": null,
+        "newValue": "2026-11-02T22:07:07.671Z",
+        "description": "Stamp of the human exclusion (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soon-off-broadway-2026/ootbtheatrics--unknown.json",
+        "field": "rejectedBy",
+        "oldValue": null,
+        "newValue": "manual-bro-6716",
+        "description": "A manual-* rejecter: the gap audit reads this as a human exclusion and stops re-verifying it (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soon-off-broadway-2026/thestage--matt-barton.json",
+        "field": "rejectionReasoning",
+        "oldValue": null,
+        "newValue": "BRO-6716: thestage.co.uk/reviews/how-soon-is-now-review is a review of How Soon Is Now, a different show, not Nick Blaemire's Soon.",
+        "description": "BRO-6716: thestage.co.uk/reviews/how-soon-is-now-review is a review of How Soon Is Now, a different show, not Nick Blaemire's Soon."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soon-off-broadway-2026/thestage--matt-barton.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "wrong_show",
+        "description": "Human-confirmed exclusion (BRO-6716): wrong_show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soon-off-broadway-2026/thestage--matt-barton.json",
+        "field": "rejectedAt",
+        "oldValue": null,
+        "newValue": "2026-11-02T22:07:07.671Z",
+        "description": "Stamp of the human exclusion (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soon-off-broadway-2026/thestage--matt-barton.json",
+        "field": "rejectedBy",
+        "oldValue": null,
+        "newValue": "manual-bro-6716",
+        "description": "A manual-* rejecter: the gap audit reads this as a human exclusion and stops re-verifying it (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/thestage--matt-barton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read: a review of the Leeds Playhouse production; the move below files it on the Leeds entry, where the cross-production-audit flag (about the Lyric folder) does not apply (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/thestage--matt-barton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/thestage--matt-barton.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read: the body is a review of Fences (Troy, Rose, August Wilson); the write guard flagged it because the extracted body drops the headline (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/thestage--matt-barton.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "fences-off-west-end-2026/thestage--matt-barton.json",
+        "destPath": "fences-leeds-regional-2026/thestage--matt-barton.json",
+        "description": "BRO-6716: The Stage review of the Leeds Playhouse production (URL fences-review-leeds-playhouse, dated 2026-09-17, Leeds press night); it belongs on the Leeds entry, not the Lyric Hammersmith run."
+      }
+    ]
+  },
+  "executedAt": "2026-11-02T23:39:43.213Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "triumph-off-west-end-2026/british-theatre--keith-mckenna.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "triumph-off-west-end-2026/british-theatre--keith-mckenna.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "triumph-off-west-end-2026/british-theatre--keith-mckenna.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "triumph-off-west-end-2026/british-theatre--keith-mckenna.json rejectedAt: \"2026-10-20T16:33:20.067Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "triumph-off-west-end-2026/british-theatre--keith-mckenna.json rejectionReasoning: \"openai: The text provided is a plot summary and context description without any evaluative content or critique of the production.; gemini: This text is a plot summary and contextualization of the play's themes, not an evaluation or critical assessment of the production itself. It describes what happens in the play and its real-world parallels but offers no critical judgment on performances, direction, staging, or overall quality.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json fullTextWrongAuthor: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "women-who-eat-off-broadway-2026/theaterlabnyc--orietta.json rejectionReasoning: null -> \"BRO-6716: read: the producing venue's own show page (dates, credits, synopsis, Get Tickets), not a review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "women-who-eat-off-broadway-2026/theaterlabnyc--orietta.json rejectionReason: null -> \"not_a_review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "women-who-eat-off-broadway-2026/theaterlabnyc--orietta.json rejectedAt: null -> \"2026-11-02T22:07:07.671Z\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "women-who-eat-off-broadway-2026/theaterlabnyc--orietta.json rejectedBy: null -> \"manual-bro-6716\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soon-off-broadway-2026/ootbtheatrics--unknown.json rejectionReasoning: null -> \"BRO-6716: read: the producer's own show page for Soon (credits, \\\"6 Weeks Only!\\\", synopsis), not a review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soon-off-broadway-2026/ootbtheatrics--unknown.json rejectionReason: null -> \"not_a_review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soon-off-broadway-2026/ootbtheatrics--unknown.json rejectedAt: null -> \"2026-11-02T22:07:07.671Z\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soon-off-broadway-2026/ootbtheatrics--unknown.json rejectedBy: null -> \"manual-bro-6716\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soon-off-broadway-2026/thestage--matt-barton.json rejectionReasoning: null -> \"BRO-6716: thestage.co.uk/reviews/how-soon-is-now-review is a review of How Soon Is Now, a different show, not Nick Blaemire's Soon.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soon-off-broadway-2026/thestage--matt-barton.json rejectionReason: null -> \"wrong_show\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soon-off-broadway-2026/thestage--matt-barton.json rejectedAt: null -> \"2026-11-02T22:07:07.671Z\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soon-off-broadway-2026/thestage--matt-barton.json rejectedBy: null -> \"manual-bro-6716\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/thestage--matt-barton.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/thestage--matt-barton.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/thestage--matt-barton.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/thestage--matt-barton.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved fences-off-west-end-2026/thestage--matt-barton.json → fences-leeds-regional-2026/thestage--matt-barton.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

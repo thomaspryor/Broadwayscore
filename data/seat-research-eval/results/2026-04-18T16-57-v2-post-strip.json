@@ -1,0 +1,88 @@
+{
+  "promptVersion": "v2-post-strip",
+  "timestamp": "2026-04-18T16:57:11.489Z",
+  "score": {
+    "composite": 63.9,
+    "sectionScore": 46,
+    "claimScore": 37.9,
+    "warningPenalty": 20
+  },
+  "totals": {
+    "theaters_total": 3,
+    "theaters_with_errors": 0,
+    "sections_total": 15,
+    "sections_by_support": {
+      "STRONG": 11,
+      "MODERATE": 4,
+      "WEAK": 0,
+      "UNSUPPORTED": 0,
+      "ERROR": 0
+    },
+    "claims_total": 53,
+    "claims_by_support": {
+      "STRONG": 27,
+      "MODERATE": 15,
+      "WEAK": 9,
+      "UNSUPPORTED": 2
+    },
+    "warnings_total": 42,
+    "urls_fetched_total": 75,
+    "urls_failed_total": 0,
+    "unsupported_claims_examples": [
+      {
+        "theater": "Gershwin Theatre",
+        "section": "Front Mezzanine Center",
+        "note": "Evidence 2 says 'front row of the Center portion provides the best view at this level' which would be Row A, but this is describing it as best view at the mezzanine level generally, not specifically calling it the sweetest row within A-E range. The safety bar hazard in Row A actually argues against it being the sweetest. No source explicitly names Row A as the best row within this specific A-E range."
+      },
+      {
+        "theater": "Gershwin Theatre",
+        "section": "Side Orchestra partial-view (above Row G)",
+        "note": "No source explicitly defines this section as spanning rows H-N. Evidence 1 mentions 'above Row G' but doesn't provide the upper boundary. No source confirms rows H-N as the specific range for this partial-view section."
+      }
+    ]
+  },
+  "perTheater": [
+    {
+      "theater": "Majestic Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 16,
+      "unsupported_claims": 0
+    },
+    {
+      "theater": "Music Box Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 3,
+        "MODERATE": 2,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 9,
+      "unsupported_claims": 0
+    },
+    {
+      "theater": "Gershwin Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 17,
+      "unsupported_claims": 2
+    }
+  ]
+}

@@ -1,0 +1,344 @@
+{
+  "issueNumber": "bro-7660-m",
+  "planId": "fdd772ba-04fb-48b7-9199-a5fd7e588bca",
+  "status": "applied",
+  "createdAt": "2026-11-18T07:28:48.800Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7660: older-show round-up rows excluded by automated wrongProduction/wrongShow/non-review flags, each re-read from the stored text. Clears the wrongly flagged ones (manual-clear breadcrumbs) and re-asserts the genuine ones so the audit counts them as human-held. (part 13 of 15)",
+    "steps": [
+      "BRO-7660 CLEAR_WS: three-show column with a review of Yellow Face at the Todd Haimes",
+      "BRO-7660 CLEAR_WS: three-show column with a review of Yellow Face at the Todd Haimes",
+      "BRO-7660 CLEAR_WS: three-show column with a review of Yellow Face at the Todd Haimes",
+      "BRO-7660 KEEP_NR: fan fiction, not a review",
+      "BRO-7660 KEEP_NR: fan fiction, not a review",
+      "BRO-7660 KEEP_NR: interview piece, not a review",
+      "BRO-7660 KEEP_NR: interview piece, not a review",
+      "BRO-7660 KEEP_NR: interview feature, not a review",
+      "BRO-7660 KEEP_NR: interview feature, not a review",
+      "BRO-7660 KEEP_NR: actor profile with interview quotes, not a review",
+      "BRO-7660 KEEP_NR: actor profile with interview quotes, not a review",
+      "BRO-7660 CLEAR_NR: full critical review of this staging",
+      "BRO-7660 CLEAR_NR: full critical review of this staging",
+      "BRO-7660 CLEAR_NR: full critical review of this production",
+      "BRO-7660 CLEAR_NR: full critical review of this production",
+      "BRO-7660 CLEAR_NR: full critical review of this production",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging",
+      "BRO-7660 CLEAR_NR: full review of this staging"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "yellow-face-2024/this-week-in-new-york--mark-rifkin.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: three-show column with a review of Yellow Face at the Todd Haimes"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "yellow-face-2024/this-week-in-new-york--mark-rifkin.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_WS: three-show column with a review of Yellow Face at the Todd Haimes"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "yellow-face-2024/this-week-in-new-york--mark-rifkin.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_WS: three-show column with a review of Yellow Face at the Todd Haimes"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): fan fiction, not a review",
+        "description": "BRO-7660 KEEP_NR: fan fiction, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: fan fiction, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/woman-around-town--alix-cohen.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): interview piece, not a review",
+        "description": "BRO-7660 KEEP_NR: interview piece, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-part-2-2017/woman-around-town--alix-cohen.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: interview piece, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ava-the-secret-conversations-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+        "field": "isNonReviewReason",
+        "oldValue": "CV-promoted (not a review): This is an interview/profile article published on opening day, not a review. While it names the correct show, venue, and critic, it contains no critical assessment of the production's quality, cast pe",
+        "newValue": "manual (not a review): interview feature, not a review",
+        "description": "BRO-7660 KEEP_NR: interview feature, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ava-the-secret-conversations-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: interview feature, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-2024/observer--rex-reed.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): actor profile with interview quotes, not a review",
+        "description": "BRO-7660 KEEP_NR: actor profile with interview quotes, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-2024/observer--rex-reed.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": true,
+        "description": "BRO-7660 KEEP_NR: actor profile with interview quotes, not a review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-simulacrum-off-broadway-2023/nytg--allison-considine.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full critical review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-simulacrum-off-broadway-2023/nytg--allison-considine.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full critical review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "almost-famous-2022/broadwaynews--brittani-samuel.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full critical review of this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "almost-famous-2022/broadwaynews--brittani-samuel.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full critical review of this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "almost-famous-2022/broadwaynews--brittani-samuel.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full critical review of this production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "crooked-cross-off-broadway-2025/front-row-center--david-walters.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "crooked-cross-off-broadway-2025/front-row-center--david-walters.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "duke-and-roya-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "duke-and-roya-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-7660 CLEAR_NR: full review of this staging"
+      }
+    ]
+  },
+  "executedAt": "2026-11-18T11:38:52.661Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/this-week-in-new-york--mark-rifkin.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/this-week-in-new-york--mark-rifkin.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/this-week-in-new-york--mark-rifkin.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json isNonReviewReason: null -> \"manual (not a review): fan fiction, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/off-script-with-dan-dwyer--dan-dwyer.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/woman-around-town--alix-cohen.json isNonReviewReason: null -> \"manual (not a review): interview piece, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-part-2-2017/woman-around-town--alix-cohen.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/nytimes--elisabeth-vincentelli.json isNonReviewReason: \"CV-promoted (not a review): This is an interview/profile article published on opening day, not a review. While it names the correct show, venue, and critic, it contains no critical assessment of the production's quality, cast pe\" -> \"manual (not a review): interview feature, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ava-the-secret-conversations-off-broadway-2025/nytimes--elisabeth-vincentelli.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-2024/observer--rex-reed.json isNonReviewReason: null -> \"manual (not a review): actor profile with interview quotes, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-2024/observer--rex-reed.json isNonReview: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-simulacrum-off-broadway-2023/nytg--allison-considine.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-simulacrum-off-broadway-2023/nytg--allison-considine.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "almost-famous-2022/broadwaynews--brittani-samuel.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "almost-famous-2022/broadwaynews--brittani-samuel.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "almost-famous-2022/broadwaynews--brittani-samuel.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "crooked-cross-off-broadway-2025/front-row-center--david-walters.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "crooked-cross-off-broadway-2025/front-row-center--david-walters.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-history-off-broadway-2024/new-york-sun--elysa-gardner.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "duke-and-roya-off-broadway-2025/theatre-reviews-limited--david-roberts.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "duke-and-roya-off-broadway-2025/theatre-reviews-limited--david-roberts.json isNonReview: true -> false"
+    }
+  ],
+  "executedIn": "ci"
+}
