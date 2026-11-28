@@ -1,19 +1,65 @@
 {
-  "updatedAt": "2026-11-28T01:28:32.609Z",
-  "processed": 29,
-  "failed": 5,
-  "successRate": "85.3%",
+  "updatedAt": "2026-11-28T02:08:59.620Z",
+  "processed": 75,
+  "failed": 49,
+  "successRate": "60.5%",
   "tierBreakdown": {
-    "playwright": 24,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 54,
+    "amp": 2,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 4,
+    "scrapingdog": 12,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "brightdata": 2,
+    "archiveToday": 7,
+    "archive": 9
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-11-28T01:38:44.544Z",
+      "event": "bb-session",
+      "session": "08046a75",
+      "url": "http://www.hollywoodreporter.com/review/ghost-the-musical-theater-review-315033"
+    },
+    {
+      "t": "2026-11-28T01:40:30.811Z",
+      "event": "bb-session",
+      "session": "d6915e85",
+      "url": "http://www.bloomberg.com/apps/news?pid=20601088&sid=aAGTY49Brrmk"
+    },
+    {
+      "t": "2026-11-28T01:40:31.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-28T02:05:01.460Z",
+      "event": "bb-session",
+      "session": "53df8170",
+      "url": "https://concerts.consequence.net/events/getaway-driver-at-central-square-theater"
+    },
+    {
+      "t": "2026-11-28T02:06:02.493Z",
+      "event": "bb-session",
+      "session": "e16ba9f5",
+      "url": "https://www.usatoday.com/2026/11/23/ann-wilson-cancer-heart-documentary"
+    },
+    {
+      "t": "2026-11-28T02:06:03.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-11-28T02:06:19.758Z",
+      "event": "bb-session",
+      "session": "091c9251",
+      "url": "https://www.usatoday.com/2026/11/23/ann-wilson-cancer-heart-documentary"
+    },
+    {
+      "t": "2026-11-28T02:06:20.354Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    }
+  ]
 }
