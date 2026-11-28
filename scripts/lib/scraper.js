@@ -41,7 +41,7 @@ const {
 const { fetchWithCookiesPlain } = require('./fetch-plain');
 const { readEnvKeys } = require('./load-env');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
-const { sdBilledCredits, RUN_MEMO_SKIP } = require('./provider-telemetry');
+const { RUN_MEMO_SKIP } = require('./provider-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats, pressNightCapStatus } = require('./scrapingdog-caps');
@@ -651,6 +651,7 @@ async function fetchWithBrightData(url, opts = {}) {
     return null;
   }
 
+  const startedAt = Date.now();
   try {
     const apiUrl = 'https://api.brightdata.com/request';
     const bodyObj = {
@@ -704,7 +705,7 @@ async function fetchWithBrightData(url, opts = {}) {
     });
 
     _scraperStats.bdRequests++;
-    recordBdCall({ url, fn: 'web-unlocker', success: true, status: response.status, fallbackFrom });
+    recordBdCall({ url, fn: 'web-unlocker', success: true, status: response.status, fallbackFrom, elapsed_ms: Date.now() - startedAt });
     return {
       content: response.data,
       format: 'html',
@@ -713,7 +714,7 @@ async function fetchWithBrightData(url, opts = {}) {
     };
   } catch (error) {
     console.error(`⚠️  Bright Data failed: ${error.message}`);
-    recordBdCall({ url, fn: 'web-unlocker', success: false, status: error.bdStatus || error.message?.slice(0, 80) || 'error', fallbackFrom });
+    recordBdCall({ url, fn: 'web-unlocker', success: false, status: error.bdStatus || error.message?.slice(0, 80) || 'error', fallbackFrom, elapsed_ms: Date.now() - startedAt });
     return null;
   }
 }
@@ -830,6 +831,7 @@ async function fetchWithScrapingdog(url, options = {}) {
     _scraperStats.sdRequests++;
     _scraperStats.sdCredits += creditCost;
     attemptsMade++;
+    const startedAt = Date.now();
     try {
       const response = await new Promise((resolve, reject) => {
         // Explicit timeout: without one, a hung SD request waits indefinitely —
@@ -848,7 +850,7 @@ async function fetchWithScrapingdog(url, options = {}) {
         req.on('timeout', () => { req.destroy(); reject(new Error('Scrapingdog request timeout')); });
       });
 
-      recordSdCall({ url, fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade, fallbackFrom: options.fallbackFrom || null });
+      recordSdCall({ url, fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade, fallbackFrom: options.fallbackFrom || null, elapsed_ms: Date.now() - startedAt });
       return {
         content: response,
         format: 'html',
@@ -856,6 +858,7 @@ async function fetchWithScrapingdog(url, options = {}) {
       };
     } catch (error) {
       lastError = error;
+      recordSdCall({ url, fn: sdMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: 0, fallbackFrom: options.fallbackFrom || null, elapsed_ms: Date.now() - startedAt });
       // BRO-6492: SD's "Something went wrong" 400 is a provider hiccup and
       // gets the one retry too; other 4xx (and the stealth hint) stay final.
       const _sdHttp = parseScrapingdogHttpError(error.message);
@@ -866,10 +869,6 @@ async function fetchWithScrapingdog(url, options = {}) {
   }
 
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-  // SD bills only successful requests (A0 billing probe — see sdBilledCredits
-  // in provider-telemetry.js); booking creditCost here overstated SD spend in
-  // the ledger by ~9,900 credits/7d (BRO-3325 what-else, 2026-09-15).
-  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: sdBilledCredits(false, creditCost * attemptsMade), fallbackFrom: options.fallbackFrom || null });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
 
   // Auto-escalate to stealth_mode on SD's own "try stealth_mode=true" 400
@@ -959,6 +958,7 @@ async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
     _scraperStats.sdRequests++;
     _scraperStats.sdCredits += creditCost;
     attemptsMade++;
+    const startedAt = Date.now();
     try {
       const body = await new Promise((resolve, reject) => {
         const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
@@ -973,10 +973,11 @@ async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
         req.on('timeout', () => { req.destroy(); reject(new Error('Scrapingdog request timeout')); });
       });
       const json = JSON.parse(body);
-      recordSdCall({ host: 'youtube.com', fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade });
+      recordSdCall({ host: 'youtube.com', fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade, elapsed_ms: Date.now() - startedAt });
       return { data: json };
     } catch (error) {
       lastError = error;
+      recordSdCall({ host: 'youtube.com', fn: sdMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: error instanceof SyntaxError ? creditCost : 0, elapsed_ms: Date.now() - startedAt });
       const isTransient = !/Scrapingdog HTTP 4\d\d/.test(error.message || '') && !(error instanceof SyntaxError);
       if (isTransient && attempt < MAX_ATTEMPTS) continue;
       break;
@@ -989,9 +990,6 @@ async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
     }
     return null;
   }
-  // A 200 with an unparseable body was still billed; other failures are not.
-  const billed = lastError instanceof SyntaxError ? creditCost : sdBilledCredits(false, creditCost * attemptsMade);
-  recordSdCall({ host: 'youtube.com', fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: billed });
   const failStatus = /Scrapingdog HTTP (\d+)/.exec(lastError.message || '')?.[1];
   // 403 is not latched here: the YouTube endpoints may answer 403 for one
   // private/region-locked video, which must not disable SD for the whole run.
@@ -1084,6 +1082,7 @@ async function fetchWithScrapingBee(url, options = {}) {
   _scraperStats.sbRequests++;
   _scraperStats.sbCredits += creditCost;
 
+  const startedAt = Date.now();
   try {
     let apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`;
     if (premium) apiUrl += '&premium_proxy=true';
@@ -1118,7 +1117,7 @@ async function fetchWithScrapingBee(url, options = {}) {
     });
 
     sbHostCooldown.record(url, true);
-    recordSbCall({ url, fn: sbMode, success: true, status: 200, credits: creditCost, fallbackFrom: options.fallbackFrom || null });
+    recordSbCall({ url, fn: sbMode, success: true, status: 200, credits: creditCost, fallbackFrom: options.fallbackFrom || null, elapsed_ms: Date.now() - startedAt });
     return {
       content: response,
       format: 'html',
@@ -1127,7 +1126,7 @@ async function fetchWithScrapingBee(url, options = {}) {
   } catch (error) {
     const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
     sbHostCooldown.record(url, false);
-    recordSbCall({ host: hostname, fn: sbMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost, fallbackFrom: options.fallbackFrom || null });
+    recordSbCall({ host: hostname, fn: sbMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost, fallbackFrom: options.fallbackFrom || null, elapsed_ms: Date.now() - startedAt });
     console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}${premium ? ', premium' : ''}, domain=${hostname}): ${error.message}`);
     // Same trigger set as url-discovery.js's _serpViaScrapingBee circuit breaker:
     // 401 (auth/limit), 403 (forbidden/plan), 429 (rate limit) all mean "stop
@@ -2155,6 +2154,7 @@ async function fetchJSON(url, options = {}) {
 
   // Last resort: ScrapingBee (render_js=false = 1 credit)
   if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skipSbAggregator(url) && !skips.has('scrapingbee') && sbHostCooldown.consult(url).allowed) {
+    const startedAt = Date.now();
     try {
       const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
       const response = await new Promise((resolve, reject) => {
@@ -2176,12 +2176,12 @@ async function fetchJSON(url, options = {}) {
       _scraperStats.sbRequests++;
       _scraperStats.sbCredits += creditsFor('sb', 'page'); // render_js=false
       sbHostCooldown.record(url, true);
-      recordSbCall({ url, fn: 'json', success: true, status: 200, credits: creditsFor('sb', 'page') });
+      recordSbCall({ url, fn: 'json', success: true, status: 200, credits: creditsFor('sb', 'page'), elapsed_ms: Date.now() - startedAt });
       return won('scrapingbee', JSON.parse(response));
     } catch (err) {
       outcomes.push({ tier: 'scrapingbee', attempted: true, ok: false });
       sbHostCooldown.record(url, false);
-      recordSbCall({ url, fn: 'json', success: false, status: (err.message || 'error').slice(0, 80), credits: creditsFor('sb', 'page') });
+      recordSbCall({ url, fn: 'json', success: false, status: (err.message || 'error').slice(0, 80), credits: creditsFor('sb', 'page'), elapsed_ms: Date.now() - startedAt });
       console.log(`  fetchJSON ScrapingBee failed: ${err.message}`);
       if ([401, 403, 429].includes(err.statusCode)) {
         _scrapingBeePageExhausted = true;

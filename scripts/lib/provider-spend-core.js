@@ -683,7 +683,24 @@ function attributionWindowVerdict(series, provider, { min = 0.8, days = 2 } = {}
   return { verdict: 'clear', days: dayList, pcts };
 }
 
+// Nearest-rank percentiles, excluding legacy and non-call rows without timings.
+function latencyByProvider(rows, day) {
+  const groups = new Map();
+  for (const row of rows) {
+    if (!row || !row.ts?.startsWith(day) || !row.provider || !row.fn || typeof row.elapsed_ms !== 'number' || !Number.isFinite(row.elapsed_ms) || row.elapsed_ms < 0) continue;
+    const key = JSON.stringify([row.provider, row.fn]);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(row.elapsed_ms);
+  }
+  return [...groups].map(([key, values]) => {
+    values.sort((a, b) => a - b);
+    const [provider, fn] = JSON.parse(key);
+    return { provider, fn, count: values.length, p50: values[Math.ceil(values.length * 0.5) - 1], p90: values[Math.ceil(values.length * 0.9) - 1] };
+  }).sort((a, b) => a.provider.localeCompare(b.provider) || a.fn.localeCompare(b.fn));
+}
+
 module.exports = {
+  latencyByProvider,
   sessionAlertClears,
   attributionGaps,
   attributionWindowVerdict,

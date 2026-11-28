@@ -269,6 +269,7 @@ function recordProviderCall(opts) {
       success: opts.success === true,
       status: opts.status ?? null,
       credits: opts.credits ?? null,
+      elapsed_ms: Number.isFinite(opts.elapsed_ms) && opts.elapsed_ms >= 0 ? opts.elapsed_ms : null,
       fallback_from: currentSpendFallback(opts.fallbackFrom),
       purpose: opts.purpose || process.env.SCRAPER_SPEND_PURPOSE || null, // env: per-show tag, see spend-purpose.js
       category: opts.category || null,

@@ -29,7 +29,7 @@ const {
 const {
   computeDayRecord, budgetBreaches, llmScoringBreach, computeStreak, renderSnapshot, utcYesterday, rebuildDailyAggregate,
   ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
-  attributionGaps, attributionWindowVerdict,
+  attributionGaps, attributionWindowVerdict, latencyByProvider,
 } = require('./lib/provider-spend-core');
 const {
   countCallsByProvider, topCallers, creditsByProvider, topCallersByCredits,
@@ -179,6 +179,10 @@ async function main() {
   // capture all scraping spend" into a number that fails loudly when it's
   // wrong — the exact gap that let the Aug 1 Browserbase rebound go unnamed.
   const callLedger = readCallLedger();
+  const latency = latencyByProvider(callLedger, DAY);
+  console.log(`[provider-spend] ${DAY}: latency by provider and function (nearest-rank, ms):`);
+  if (!latency.length) console.log('  No timed calls available for this day.');
+  for (const row of latency) console.log(`  ${row.provider} / ${row.fn}: n=${row.count} p50=${row.p50}ms p90=${row.p90}ms`);
   const ledgerCounts = countCallsByProvider(callLedger, DAY);
   // ScrapingBee/Scrapingdog "dayCredits" is the counter delta since the
   // previous record's reading, not the UTC day. Sum ledger credits over that
