@@ -347,9 +347,15 @@ function verifiedPlaceSignal(review, show) {
   const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
   if (isWithinPriorRun(review.publishDate, show.priorRuns) || isWithinTourLeg(review.publishDate, show.tourLegs)) return null;
   if (require('./review-guards').computeCvIsStale(review)) return null;
-  if (review.fullText && require('./own-show-text-evidence').ownShowTextEvidence(review.fullText, show).strong) return null;
   const place = require('./census-other-place').urlStagedElsewhere(review.url, show, showMarket(show));
   if (!place) return null;
+  // BRO-8449: cast overlap proves the SHOW, not the production. A tour reuses the home cast, so a
+  // touring url ("operation-mincemeat-touring") on a body naming that cast was exempted as the home
+  // run. A tour place is told apart by the url and the declared tourLegs window above, so it ignores
+  // the cast. A named city or house still takes the exemption (a transfer shares the cast).
+  const { TOUR_TAILS } = require('./census-other-place');
+  const isTour = TOUR_TAILS.includes(place);
+  if (!isTour && review.fullText && require('./own-show-text-evidence').ownShowTextEvidence(review.fullText, show).strong) return null;
   return { signal: 'url-place-verified', detail: `content verifier says another production and the url stages it at ${place.replace(/-/g, ' ')}` };
 }
 

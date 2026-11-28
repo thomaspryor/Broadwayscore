@@ -374,4 +374,4 @@ function urlStagedElsewhere(url, show, market) {
   return TOUR_TAILS.find((t) => rawSegments.some((seg) => endsWith(seg, t))) || null;
 }
 
-module.exports = { urlStagedElsewhere, censusOtherPlaceSignal, createCensusProductionGuard, urlNamesOtherNyHouse, NY_HOUSE_GROUPS, NY_OTHER_HOUSES, OTHER_HOUSES, CITIES, NY_MARKERS, NY_COVERAGE_MIN };
+module.exports = { TOUR_TAILS, urlStagedElsewhere, censusOtherPlaceSignal, createCensusProductionGuard, urlNamesOtherNyHouse, NY_HOUSE_GROUPS, NY_OTHER_HOUSES, OTHER_HOUSES, CITIES, NY_MARKERS, NY_COVERAGE_MIN };

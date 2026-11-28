@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T19:15:33.595Z",
+  "generatedAt": "2026-11-28T20:10:23.876Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -164,28 +164,27 @@
       "status": "open",
       "slug": "fly-you-fools-off-west-end",
       "thumbnail": "/images/shows/fly-you-fools-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 92.68,
-      "liveScore": 93,
-      "scoreDrift": 0.3199999999999932,
+      "siteScore": 86.29,
+      "liveScore": 86,
+      "scoreDrift": -0.29000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 7,
       "t1": 0,
       "t2": 1,
-      "t3": 3,
-      "positive": 4,
+      "t3": 6,
+      "positive": 7,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "7/8 total",
           "T1:0/3",
-          "T2:1/2",
-          "hi-conf:4/6"
+          "T2:1/2"
         ],
-        "highConfidence": 4,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -322,6 +321,30 @@
           "t2": 1,
           "t3": 3,
           "p": 4,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-28T19:31:12.733Z",
+          "rc": 6,
+          "s": 85.05,
+          "t1": 0,
+          "t2": 1,
+          "t3": 5,
+          "p": 6,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-28T20:10:23.876Z",
+          "rc": 7,
+          "s": 86.29,
+          "t1": 0,
+          "t2": 1,
+          "t3": 6,
+          "p": 7,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -1101,7 +1124,7 @@
       "title": "Frozen",
       "market": "broadway",
       "category": "regional",
-      "type": "play",
+      "type": "musical",
       "openingDate": "2026-11-27",
       "status": "open",
       "slug": "frozen-regional-2026",
@@ -2361,10 +2384,6 @@
         },
         {
           "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Sunday Times",
           "isDualMarket": true
         },
         {

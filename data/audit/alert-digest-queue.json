@@ -111,7 +111,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-28T19:08:17.922Z"
+    "queuedAt": "2026-11-28T19:40:30.362Z"
   },
   {
     "conditionKey": "land:land/bro-8449-url-place",
@@ -205,5 +205,194 @@
       }
     ],
     "queuedAt": "2026-11-28T18:59:02.279Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-fly-you-fools-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Fly You Fools",
+    "description": "the-spy-in-the-stalls/Hannah Bothelton (the-spy-in-the-stalls--hannah-bothelton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: The scraped review clearly evaluates Recent Cutbacks' Edinburgh Fringe production of 'Fly, You Fools!' — the opening exp — https://thespyinthestalls.com/2026/11/fly-you-fools/\nthereviewshub/Jane Darcy (thereviewshub--jane-darcy.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid theater review with strong critical assessment of 'Fly You Fools!' However, the scraped content does not — https://www.thereviewshub.com/fly-you-fools-southwark-playhouse-borough-london/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T19:47:16.107Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-fly-you-fools-off-west-end-2026",
+    "title": "Placeholder synopsis on Fly You Fools",
+    "description": "synopsis for fly-you-fools-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T19:47:17.331Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-a-christmas-story-regional-2026",
+    "title": "Placeholder synopsis on A Christmas Story",
+    "description": "synopsis for a-christmas-story-regional-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T19:47:19.191Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8454-limelight-followup",
+    "title": "Landing blocked: colocated-tests red on land/bro-8454-limelight-followup",
+    "description": "land.yml did not land land/bro-8454-limelight-followup: the colocated-tests gate went red at a70a1161e5. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-8454-limelight-followup @ a70a1161e5 (origin/land/bro-8454-limelight-followup) → origin/main @ 06744eb570 [land] attempt 1/3: rebased onto 06744eb570, 4 file(s) changed — running checks [land] verified-base: main moved a073796c61 → 06744eb570 across 130 file(s), substantive — re-checking on the merged tree (+8 test file(s) changed on main since the verified base); full re-check: br Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46180844087",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8454-limelight-followup"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "a70a1161e51cf5af6aef08298b5e9917ed133f84"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46180844087"
+      }
+    ],
+    "queuedAt": "2026-11-28T20:01:40.643Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8451",
+    "title": "Landing blocked: rebase red on land/bro-8451",
+    "description": "land.yml did not land land/bro-8451: the rebase gate went red at b3b640f05b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46183675033",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8451"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b3b640f05ba6933be8758bf3730c2001471cf9cd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46183675033"
+      }
+    ],
+    "queuedAt": "2026-11-28T20:02:37.026Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8451-au-gold",
+    "title": "Landing blocked: rebase red on land/bro-8451-au-gold",
+    "description": "land.yml did not land land/bro-8451-au-gold: the rebase gate went red at b3b640f05b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46183708125",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8451-au-gold"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b3b640f05ba6933be8758bf3730c2001471cf9cd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46183708125"
+      }
+    ],
+    "queuedAt": "2026-11-28T20:02:23.010Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
+    "title": "Data audit failing: Audit outlet-registry gaps",
+    "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46184911845",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit outlet-registry gaps"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/46184911845)"
+      }
+    ],
+    "queuedAt": "2026-11-28T20:21:45.524Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-self-contradictory-clear-drain-acceptance-test-needs-review-texts",
+    "title": "Data audit failing: Run self-contradictory-clear drain acceptance test (needs review-texts)",
+    "description": "The \"Run self-contradictory-clear drain acceptance test (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46184547483",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run self-contradictory-clear drain acceptance test (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/46184547483)"
+      }
+    ],
+    "queuedAt": "2026-11-28T20:12:46.205Z"
   }
 ]

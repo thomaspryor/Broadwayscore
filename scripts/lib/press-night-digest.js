@@ -24,6 +24,7 @@ const { draftDeadlineAt } = require('./broadcast-deadline');
 const { SUBREDDIT_BY_MARKET, MIN_REVIEWS, emailedNumbers } = require('./reddit-opening-post');
 const { getOutletDisplayName } = require('./review-normalization');
 const { classifyShowBroadcastState } = require('./missed-broadcasts');
+const { isRedditRetired } = require('./reddit-status');
 const { BROADWAY_MIN, WEST_END_MIN } = require('./broadcast-readiness');
 const { foldDiacritics } = require('./title-match');
 // Time helpers and the email block live in a module with no package imports: the morning-email job runs
@@ -207,7 +208,9 @@ function gradeEmails({ show, sentShows = {}, redditDraft = null, readNumbers, no
     }
   }
 
-  if (SUBREDDIT_BY_MARKET[market]) {
+  // Reddit is retired (config/retired-sources.json): its drafter cron is gone, so a Reddit draft can never be
+  // refreshed or posted and grading it only files permanent false misses (BRO-8329 cousin).
+  if (SUBREDDIT_BY_MARKET[market] && !isRedditRetired()) {
     const d = redditDraft;
     const expected = d || (market !== 'off-west-end' && live && live.reviewCount >= MIN_REVIEWS[market]);
     if (d && d.postedAt) out.push({ kind: 'reddit', status: 'ok', text: 'Reddit post is up' });

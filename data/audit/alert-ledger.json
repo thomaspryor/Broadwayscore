@@ -19535,7 +19535,7 @@
       "title": "Roundup gaps: 1 listed review(s) not captured across 1 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-28T19:04:16.255Z",
+      "lastSeen": "2026-11-28T19:39:00.115Z",
       "lastNotifiedAt": "2026-11-28T11:11:05.265Z",
       "lastSurfacedAt": null,
       "notifyCount": 79,
@@ -41660,20 +41660,18 @@
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-self-contradictory-clear-drain-acceptance-test-needs-review-texts": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Data audit failing: Run self-contradictory-clear drain acceptance test (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.437Z",
-      "incidentOpenedAt": "2026-11-10T15:36:09.437Z",
+      "incidentOpenedAt": "2026-11-28T20:12:46.116Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-10T15:36:09.437Z",
-      "lastNotifiedAt": "2026-11-10T15:36:09.437Z",
-      "lastSurfacedAt": "2026-11-10T15:36:09.437Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-28T20:12:46.116Z",
+      "lastNotifiedAt": "2026-11-28T20:12:46.116Z",
+      "lastSurfacedAt": "2026-11-28T20:12:46.116Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-10T15:55:14.171Z",
-      "resolveReason": "step passed"
+      "linearIdentifier": null
     },
     "test-yml:data-validation-red:audit-non-review-content-weather-sports-junk-pages": {
       "status": "resolved",
@@ -41692,20 +41690,18 @@
       "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-outlet-registry-gaps": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Data audit failing: Audit outlet-registry gaps",
       "firstSeen": "2026-11-10T15:36:09.494Z",
-      "incidentOpenedAt": "2026-11-27T20:03:31.492Z",
+      "incidentOpenedAt": "2026-11-28T20:21:45.521Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-27T20:03:31.492Z",
-      "lastNotifiedAt": "2026-11-27T20:03:31.492Z",
-      "lastSurfacedAt": "2026-11-27T20:03:31.492Z",
-      "notifyCount": 13,
+      "lastSeen": "2026-11-28T20:21:45.521Z",
+      "lastNotifiedAt": "2026-11-28T20:21:45.521Z",
+      "lastSurfacedAt": "2026-11-28T20:21:45.521Z",
+      "notifyCount": 14,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-27T20:37:18.120Z",
-      "resolveReason": "step passed"
+      "linearIdentifier": null
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
       "status": "resolved",
@@ -46431,7 +46427,7 @@
       "title": "Bundle Size Check is red on main",
       "firstSeen": "2026-11-19T11:59:56.789Z",
       "incidentOpenedAt": "2026-11-27T23:12:12.948Z",
-      "lastSeen": "2026-11-28T18:23:08.793Z",
+      "lastSeen": "2026-11-28T20:18:41.521Z",
       "lastNotifiedAt": "2026-11-27T23:12:12.948Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -46443,7 +46439,7 @@
         "runId": "46080622313",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46080622313"
       },
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-remediation-exhausted-empty-cast:the-snowman-off-west-end-2026": {
       "status": "open",
@@ -47869,12 +47865,13 @@
       "title": "process-feedback.yml is running 2% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.086Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.086Z",
-      "lastSeen": "2026-11-27T21:32:12.188Z",
+      "lastSeen": "2026-11-28T20:26:04.499Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.188Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.188Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-fire-rate:send-welcome-emails.yml": {
       "status": "open",
@@ -47882,12 +47879,13 @@
       "title": "send-welcome-emails.yml is running 3% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.122Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.122Z",
-      "lastSeen": "2026-11-27T21:32:12.242Z",
+      "lastSeen": "2026-11-28T20:26:04.542Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.242Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.242Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-fire-rate:opening-night-completeness-check.yml": {
       "status": "open",
@@ -47895,12 +47893,13 @@
       "title": "opening-night-completeness-check.yml is running 28% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.155Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.155Z",
-      "lastSeen": "2026-11-27T21:32:12.403Z",
+      "lastSeen": "2026-11-28T20:26:04.666Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.403Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.403Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-fire-rate:replay-push-rescue.yml": {
       "status": "open",
@@ -47908,12 +47907,13 @@
       "title": "replay-push-rescue.yml is running 13% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.185Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.185Z",
-      "lastSeen": "2026-11-27T21:32:12.282Z",
+      "lastSeen": "2026-11-28T20:26:04.579Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.282Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.282Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-fire-rate:evidence-review-catchup.yml": {
       "status": "open",
@@ -47921,12 +47921,13 @@
       "title": "evidence-review-catchup.yml is running 23% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.216Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.216Z",
-      "lastSeen": "2026-11-27T21:32:12.322Z",
+      "lastSeen": "2026-11-28T20:26:04.613Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.322Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.322Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-fire-rate:opening-night-broadcast.yml": {
       "status": "open",
@@ -47934,12 +47935,13 @@
       "title": "opening-night-broadcast.yml is running 24% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.250Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.250Z",
-      "lastSeen": "2026-11-27T21:32:12.365Z",
+      "lastSeen": "2026-11-28T20:26:04.641Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.365Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.365Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-fire-rate:opening-night-reviews.yml": {
       "status": "open",
@@ -47947,12 +47949,13 @@
       "title": "opening-night-reviews.yml is running 57% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.314Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.314Z",
-      "lastSeen": "2026-11-27T21:32:12.482Z",
+      "lastSeen": "2026-11-28T20:26:04.692Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.482Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.482Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-fire-rate:audit-reverse-discovery.yml": {
       "status": "open",
@@ -47960,12 +47963,13 @@
       "title": "audit-reverse-discovery.yml is running 59% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.362Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.362Z",
-      "lastSeen": "2026-11-27T21:32:12.520Z",
+      "lastSeen": "2026-11-28T20:26:04.719Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.520Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.520Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-fire-rate:enrich-reviews.yml": {
       "status": "open",
@@ -47973,12 +47977,13 @@
       "title": "enrich-reviews.yml is running 60% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.392Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.392Z",
-      "lastSeen": "2026-11-27T21:32:12.559Z",
+      "lastSeen": "2026-11-28T20:26:04.744Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.559Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.559Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-fire-rate:mirror-to-gitlab.yml": {
       "status": "open",
@@ -47986,12 +47991,13 @@
       "title": "mirror-to-gitlab.yml is running 63% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.433Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.433Z",
-      "lastSeen": "2026-11-27T21:32:12.604Z",
+      "lastSeen": "2026-11-28T20:26:04.770Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.604Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.604Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-fire-rate:collect-review-texts.yml": {
       "status": "open",
@@ -47999,12 +48005,13 @@
       "title": "collect-review-texts.yml is running 68% of the time it should",
       "firstSeen": "2026-11-21T19:35:58.472Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.472Z",
-      "lastSeen": "2026-11-27T21:32:12.699Z",
+      "lastSeen": "2026-11-28T20:26:04.838Z",
       "lastNotifiedAt": "2026-11-27T21:32:12.699Z",
       "lastSurfacedAt": "2026-11-27T21:32:12.699Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "cron-cancelled:scrape-new-aggregators.yml": {
       "status": "resolved",
@@ -48027,12 +48034,13 @@
       "title": "opening-night-orchestrator.yml: 34 of its 98 scheduled runs were cancelled",
       "firstSeen": "2026-11-21T19:35:58.800Z",
       "incidentOpenedAt": "2026-11-21T19:35:58.800Z",
-      "lastSeen": "2026-11-27T21:32:13.674Z",
+      "lastSeen": "2026-11-28T20:26:05.466Z",
       "lastNotifiedAt": "2026-11-27T21:32:13.674Z",
       "lastSurfacedAt": "2026-11-27T21:32:13.674Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-7984-mwqp2wam": {
       "status": "open",
@@ -48844,13 +48852,13 @@
       "title": "scrape-bww-reviews has stopped updating (30 days)",
       "firstSeen": "2026-11-22T19:54:13.165Z",
       "incidentOpenedAt": "2026-11-22T19:54:13.165Z",
-      "lastSeen": "2026-11-27T21:31:17.764Z",
+      "lastSeen": "2026-11-28T20:24:59.240Z",
       "lastNotifiedAt": "2026-11-22T19:54:13.165Z",
       "lastSurfacedAt": "2026-11-22T19:54:13.165Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "discovery-caller-missing": {
       "status": "open",
@@ -48858,12 +48866,13 @@
       "title": "272 review files were ingested with no caller recorded",
       "firstSeen": "2026-11-22T19:55:07.367Z",
       "incidentOpenedAt": "2026-11-22T19:55:07.367Z",
-      "lastSeen": "2026-11-27T21:32:19.879Z",
+      "lastSeen": "2026-11-28T20:26:09.598Z",
       "lastNotifiedAt": "2026-11-27T21:32:19.879Z",
       "lastSurfacedAt": "2026-11-27T21:32:19.879Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-8067-pullquote-live-score": {
       "status": "resolved",
@@ -49630,13 +49639,13 @@
       "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.296Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.296Z",
-      "lastSeen": "2026-11-28T19:25:48.095Z",
+      "lastSeen": "2026-11-28T20:09:53.830Z",
       "lastNotifiedAt": "2026-11-27T20:24:01.221Z",
       "lastSurfacedAt": "2026-11-27T20:24:01.221Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 50
+      "silentRefires": 53
     },
     "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c": {
       "status": "open",
@@ -49644,13 +49653,13 @@
       "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.324Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.324Z",
-      "lastSeen": "2026-11-28T19:25:48.116Z",
+      "lastSeen": "2026-11-28T20:09:53.849Z",
       "lastNotifiedAt": "2026-11-27T20:24:01.250Z",
       "lastSurfacedAt": "2026-11-27T20:24:01.250Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 50
+      "silentRefires": 53
     },
     "land:land/job/linear-BRO-8167-mwtgpag4": {
       "status": "resolved",
@@ -50008,13 +50017,13 @@
       "title": "scrape-dtli-show-score has stopped updating (9 days)",
       "firstSeen": "2026-11-24T00:07:52.228Z",
       "incidentOpenedAt": "2026-11-24T00:07:52.228Z",
-      "lastSeen": "2026-11-27T21:31:17.801Z",
+      "lastSeen": "2026-11-28T20:24:59.264Z",
       "lastNotifiedAt": "2026-11-24T00:07:52.228Z",
       "lastSurfacedAt": "2026-11-24T00:07:52.228Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "arm-yield:workflow:promote-we-aggregator": {
       "status": "resolved",
@@ -50036,13 +50045,13 @@
       "title": "discover-opera-shows has stopped updating (8 days)",
       "firstSeen": "2026-11-24T00:07:52.279Z",
       "incidentOpenedAt": "2026-11-24T00:07:52.279Z",
-      "lastSeen": "2026-11-27T21:31:17.830Z",
+      "lastSeen": "2026-11-28T20:24:59.284Z",
       "lastNotifiedAt": "2026-11-24T00:07:52.279Z",
       "lastSurfacedAt": "2026-11-24T00:07:52.279Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "arm-yield:workflow:discover-regional-serp-reviews": {
       "status": "resolved",
@@ -50532,13 +50541,13 @@
       "title": "Placeholder synopsis on Frozen",
       "firstSeen": "2026-11-25T00:51:10.072Z",
       "incidentOpenedAt": "2026-11-25T00:51:10.072Z",
-      "lastSeen": "2026-11-28T16:17:31.840Z",
+      "lastSeen": "2026-11-28T19:47:18.867Z",
       "lastNotifiedAt": "2026-11-25T00:51:10.072Z",
       "lastSurfacedAt": "2026-11-25T00:51:10.072Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 28
+      "silentRefires": 29
     },
     "land:land/bro-8280-sb-cooldown": {
       "status": "resolved",
@@ -51191,7 +51200,7 @@
       "title": "Review gap — \"A Christmas Carol\" missing 1 cited review(s)",
       "firstSeen": "2026-11-25T20:52:54.894Z",
       "incidentOpenedAt": "2026-11-25T20:52:54.894Z",
-      "lastSeen": "2026-11-28T19:04:16.078Z",
+      "lastSeen": "2026-11-28T19:38:59.970Z",
       "lastNotifiedAt": "2026-11-28T11:11:05.100Z",
       "lastSurfacedAt": "2026-11-28T11:11:05.100Z",
       "notifyCount": 4,
@@ -51205,13 +51214,13 @@
       "title": "Test red on main: real data loads and gives the expected answers for the four JS outlets [testCodeFailure]",
       "firstSeen": "2026-11-25T21:15:32.320Z",
       "incidentOpenedAt": "2026-11-25T21:15:32.320Z",
-      "lastSeen": "2026-11-28T19:25:48.135Z",
+      "lastSeen": "2026-11-28T20:09:53.867Z",
       "lastNotifiedAt": "2026-11-27T22:10:41.140Z",
       "lastSurfacedAt": "2026-11-27T22:10:41.140Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 47
+      "silentRefires": 50
     },
     "live-data-test:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets": {
       "status": "open",
@@ -51358,7 +51367,7 @@
       "title": "Review gap — \"Blue Man Group “A New Holiday Surprise”\" missing 1 cited review(s)",
       "firstSeen": "2026-11-26T01:14:23.038Z",
       "incidentOpenedAt": "2026-11-26T01:14:23.038Z",
-      "lastSeen": "2026-11-28T19:04:16.104Z",
+      "lastSeen": "2026-11-28T19:38:59.992Z",
       "lastNotifiedAt": "2026-11-28T15:05:10.855Z",
       "lastSurfacedAt": "2026-11-28T15:05:10.855Z",
       "notifyCount": 4,
@@ -51400,7 +51409,7 @@
       "title": "Review gap — \"Now You See Me Live\" missing 1 cited review(s)",
       "firstSeen": "2026-11-26T08:54:21.751Z",
       "incidentOpenedAt": "2026-11-26T08:54:21.751Z",
-      "lastSeen": "2026-11-28T19:04:16.162Z",
+      "lastSeen": "2026-11-28T19:39:00.042Z",
       "lastNotifiedAt": "2026-11-28T01:04:45.212Z",
       "lastSurfacedAt": "2026-11-28T01:04:45.212Z",
       "notifyCount": 3,
@@ -51523,13 +51532,13 @@
       "title": "Shipped review too short to verify on A Christmas Carol",
       "firstSeen": "2026-11-26T15:28:58.848Z",
       "incidentOpenedAt": "2026-11-26T15:28:58.848Z",
-      "lastSeen": "2026-11-26T21:45:41.502Z",
+      "lastSeen": "2026-11-28T20:20:12.294Z",
       "lastNotifiedAt": "2026-11-26T15:28:58.848Z",
       "lastSurfacedAt": "2026-11-26T15:28:58.848Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-readiness:failed:dick-whittington-adults-only-off-west-end-2026": {
       "status": "resolved",
@@ -51654,13 +51663,13 @@
       "title": "Test red on main: real shows.json: zero un-reviewed hits [testCodeFailure]",
       "firstSeen": "2026-11-27T12:14:42.889Z",
       "incidentOpenedAt": "2026-11-27T12:14:42.889Z",
-      "lastSeen": "2026-11-28T19:25:48.031Z",
+      "lastSeen": "2026-11-28T20:09:53.772Z",
       "lastNotifiedAt": "2026-11-28T12:16:10.919Z",
       "lastSurfacedAt": "2026-11-28T12:16:10.919Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 29
+      "silentRefires": 32
     },
     "land-preexisting:tests/unit/id-year-drift.test.mjs::ingestion-year stamp (BRO-2829)": {
       "status": "open",
@@ -51668,13 +51677,13 @@
       "title": "Test red on main: ingestion-year stamp (BRO-2829)",
       "firstSeen": "2026-11-27T12:14:42.921Z",
       "incidentOpenedAt": "2026-11-27T12:14:42.921Z",
-      "lastSeen": "2026-11-28T19:25:48.054Z",
+      "lastSeen": "2026-11-28T20:09:53.794Z",
       "lastNotifiedAt": "2026-11-28T12:16:10.952Z",
       "lastSurfacedAt": "2026-11-28T12:16:10.952Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 29
+      "silentRefires": 32
     },
     "broadcast:never-sent:a-christmas-carol-west-end-2026": {
       "status": "open",
@@ -51794,13 +51803,13 @@
       "title": "Unhandled CV.wrongProduction on Ebony Scrooge",
       "firstSeen": "2026-11-27T19:31:05.142Z",
       "incidentOpenedAt": "2026-11-27T19:31:05.142Z",
-      "lastSeen": "2026-11-28T16:17:31.738Z",
+      "lastSeen": "2026-11-28T19:47:17.350Z",
       "lastNotifiedAt": "2026-11-27T19:31:05.142Z",
       "lastSurfacedAt": "2026-11-27T19:31:05.142Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-publish-date-pre-opening:missing:ebony-scrooge-off-west-end-2026": {
       "status": "open",
@@ -51808,13 +51817,13 @@
       "title": "Shipped review missing publishDate on Ebony Scrooge",
       "firstSeen": "2026-11-27T19:31:06.504Z",
       "incidentOpenedAt": "2026-11-27T19:31:06.504Z",
-      "lastSeen": "2026-11-28T16:17:31.779Z",
+      "lastSeen": "2026-11-28T19:47:18.462Z",
       "lastNotifiedAt": "2026-11-27T19:31:06.504Z",
       "lastSurfacedAt": "2026-11-27T19:31:06.504Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "land:land/bro-7929-baseline-ratchet": {
       "status": "resolved",
@@ -52119,13 +52128,13 @@
       "title": "Auto-remediation gave up on a-masked-ball-off-west-end-2026",
       "firstSeen": "2026-11-28T13:08:03.805Z",
       "incidentOpenedAt": "2026-11-28T13:08:03.805Z",
-      "lastSeen": "2026-11-28T16:17:31.801Z",
+      "lastSeen": "2026-11-28T19:47:18.481Z",
       "lastNotifiedAt": "2026-11-28T13:08:03.805Z",
       "lastSurfacedAt": "2026-11-28T13:08:03.805Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-7207-critic-pairs": {
       "status": "resolved",
@@ -52174,7 +52183,7 @@
       "title": "Review gap — \"It’s a Wonderful Life\" missing 16 cited review(s)",
       "firstSeen": "2026-11-28T16:39:36.486Z",
       "incidentOpenedAt": "2026-11-28T16:39:36.486Z",
-      "lastSeen": "2026-11-28T19:04:16.133Z",
+      "lastSeen": "2026-11-28T19:39:00.017Z",
       "lastNotifiedAt": "2026-11-28T16:39:36.486Z",
       "lastSurfacedAt": "2026-11-28T16:39:36.486Z",
       "notifyCount": 1,
@@ -52203,13 +52212,13 @@
       "title": "Test red on main: West End 2026-11-09 features Pride under its plain title with a \"moved\" editorial note [testCodeFailure]",
       "firstSeen": "2026-11-28T17:23:41.458Z",
       "incidentOpenedAt": "2026-11-28T17:23:41.458Z",
-      "lastSeen": "2026-11-28T19:25:48.075Z",
+      "lastSeen": "2026-11-28T20:09:53.813Z",
       "lastNotifiedAt": "2026-11-28T17:23:41.458Z",
       "lastSurfacedAt": "2026-11-28T17:23:41.458Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 15
     },
     "dependabot-pr:1207": {
       "status": "open",
@@ -52252,7 +52261,7 @@
       "resolvedAt": "2026-11-28T19:25:47.932Z"
     },
     "land:land/bro-8456-tours-suburbs": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-tsx red on land/bro-8456-tours-suburbs",
       "firstSeen": "2026-11-28T18:59:02.278Z",
@@ -52263,7 +52272,86 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-28T20:09:53.658Z"
+    },
+    "opening-night-cv-wrongproduction-unhandled-fly-you-fools-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unhandled CV.wrongProduction on Fly You Fools",
+      "firstSeen": "2026-11-28T19:47:16.107Z",
+      "incidentOpenedAt": "2026-11-28T19:47:16.107Z",
+      "lastSeen": "2026-11-28T19:47:16.107Z",
+      "lastNotifiedAt": "2026-11-28T19:47:16.107Z",
+      "lastSurfacedAt": "2026-11-28T19:47:16.107Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-placeholder-synopsis-fly-you-fools-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Placeholder synopsis on Fly You Fools",
+      "firstSeen": "2026-11-28T19:47:17.331Z",
+      "incidentOpenedAt": "2026-11-28T19:47:17.331Z",
+      "lastSeen": "2026-11-28T19:47:17.331Z",
+      "lastNotifiedAt": "2026-11-28T19:47:17.331Z",
+      "lastSurfacedAt": "2026-11-28T19:47:17.331Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-placeholder-synopsis-a-christmas-story-regional-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Placeholder synopsis on A Christmas Story",
+      "firstSeen": "2026-11-28T19:47:19.191Z",
+      "incidentOpenedAt": "2026-11-28T19:47:19.191Z",
+      "lastSeen": "2026-11-28T19:47:19.191Z",
+      "lastNotifiedAt": "2026-11-28T19:47:19.191Z",
+      "lastSurfacedAt": "2026-11-28T19:47:19.191Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-8454-limelight-followup": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: colocated-tests red on land/bro-8454-limelight-followup",
+      "firstSeen": "2026-11-28T20:01:40.643Z",
+      "incidentOpenedAt": "2026-11-28T20:01:40.643Z",
+      "lastSeen": "2026-11-28T20:01:40.643Z",
+      "lastNotifiedAt": "2026-11-28T20:01:40.643Z",
+      "lastSurfacedAt": "2026-11-28T20:01:40.643Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-8451": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/bro-8451",
+      "firstSeen": "2026-11-28T20:02:37.025Z",
+      "incidentOpenedAt": "2026-11-28T20:02:37.025Z",
+      "lastSeen": "2026-11-28T20:02:37.025Z",
+      "lastNotifiedAt": "2026-11-28T20:02:37.025Z",
+      "lastSurfacedAt": "2026-11-28T20:02:37.025Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-8451-au-gold": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/bro-8451-au-gold",
+      "firstSeen": "2026-11-28T20:02:23.009Z",
+      "incidentOpenedAt": "2026-11-28T20:02:23.009Z",
+      "lastSeen": "2026-11-28T20:02:23.009Z",
+      "lastNotifiedAt": "2026-11-28T20:02:23.009Z",
+      "lastSurfacedAt": "2026-11-28T20:02:23.009Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

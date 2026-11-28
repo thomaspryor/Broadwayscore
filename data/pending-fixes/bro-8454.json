@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8454",
   "planId": "fc4c50a5-8a88-44fe-a944-c8bda816c964",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T18:17:08.308Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,19 @@
         "description": "shows.json: wild-child-regional-2026.city"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T20:02:17.402Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for theater-of-the-mind-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for wild-child-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
