@@ -165,19 +165,25 @@ async function main() {
     if (!id || retired(id)) { report.skipped.push(`${row.title}: id taken or retired`); continue; }
     if (cands.length >= (Number(arg('max', 0)) || Infinity) + 2) { report.skipped.push(`${row.title}: over the per-run cap`); continue; } // before the art download; +2 spare for banner rejects
     const art = await findArt(row, getPage);
-    if (!art) { report.skipped.push(`${row.title}: no real image`); continue; }
+    // BRO-8455 item 3: no real image no longer drops the production (the Grinch, Scrooge, Fargo, A Christmas
+    // Story were all lost this way). The row is added without art; validate-data flags it and the Mon/Thu
+    // fetch-show-images cron fills it. Holiday shows are the ones whose theatre banner is the only image.
     taken.add(id);
-    cands.push({ row, id, art, hash: crypto.createHash('sha1').update(art).digest('hex') });
+    cands.push({ row, id, art, hash: art ? crypto.createHash('sha1').update(art).digest('hex') : null });
   }
   // One banner shared by several productions is the theatre's site-wide image, not that show's art.
   const perHash = {};
-  for (const c of cands) perHash[c.hash] = (perHash[c.hash] || 0) + 1;
+  for (const c of cands) if (c.hash) perHash[c.hash] = (perHash[c.hash] || 0) + 1;
   const max = Number(arg('max', 0)) || Infinity; // per-run cap (daily job): the rest wait for the next run
   for (const c of cands) {
     if (actions.length >= max) { report.skipped.push(`${c.row.title}: over the per-run cap`); continue; }
-    if (perHash[c.hash] > 1) { report.skipped.push(`${c.row.title}: image shared with another production (site-wide banner)`); continue; }
     const show = S.buildShow(c.row, { id: c.id, hubSlug, hub, city, today });
-    show.images = flag('apply') ? await writeArt(c.id, c.art) : { poster: `/images/shows/${c.id}/poster.webp`, thumbnail: `/images/shows/${c.id}/thumbnail.webp` };
+    const sharedBanner = c.hash && perHash[c.hash] > 1; // one banner on several productions is the theatre's, not the show's
+    if (!c.art || sharedBanner) {
+      report.noArt = [...(report.noArt || []), `${c.row.title}: ${sharedBanner ? 'image shared with another production (site-wide banner)' : 'no real image'}, added without art`];
+    } else {
+      show.images = flag('apply') ? await writeArt(c.id, c.art) : { poster: `/images/shows/${c.id}/poster.webp`, thumbnail: `/images/shows/${c.id}/thumbnail.webp` };
+    }
     actions.push({ type: 'add-show', show, description: `add ${c.id}` });
     report.added.push({ id: c.id, title: c.row.title, theatre: c.row.theatre, start: c.row.start, end: c.row.end, sources: c.row.sources });
   }

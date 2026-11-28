@@ -282,7 +282,23 @@ function theatreReviewsDirectAcceptable(pathname, status, content) {
   return false; // other TR paths: no verified marker, keep the paid route
 }
 
+/**
+ * BRO-8455 item 2: Stage West (David Coddon's San Diego reviews) is a static Squarespace-style site that
+ * answers a plain GET with the full review. The paid chain timed out on it (all 17 in-window reviews were
+ * stored as scraper_timeout stubs) while curl returned the whole page. One free direct attempt first.
+ */
+function isStageWestHost(hostname) {
+  return hostname === 'davidcoddon.com' || hostname === 'www.davidcoddon.com';
+}
+function stageWestDirectAcceptable(pathname, status, content) {
+  if (status !== 200 || typeof content !== 'string' || !/<\/html\s*>/i.test(content)) return false;
+  if (!/^\/theatre-reviews(?:\/|\.html)/.test(pathname)) return false;
+  return content.length >= 3000;
+}
+
 module.exports = {
+  isStageWestHost,
+  stageWestDirectAcceptable,
   buildWpSearchUrl,
   parseWpSearchResults,
   urlMatchesLinkPattern,

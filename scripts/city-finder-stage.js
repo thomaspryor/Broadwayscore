@@ -19,6 +19,7 @@ const { closingFields, ESTIMATED_RUN_DAYS } = require('./lib/run-end-from-text')
 const F = require('./lib/city-review-finder');
 const { stagedTitle } = require('./lib/staged-title');
 const { getFinder } = require('./lib/city-finder-config');
+const { emitDecision, typeForTitle } = require('./lib/city-finder-emit');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 
 const ROOT = path.join(__dirname, '..');
@@ -119,7 +120,7 @@ async function run() {
 
 function emit() {
   const city = getFinder(arg('city', 'san-diego'));
-  const min = Number(arg('min', 3));
+  const min = Number(arg('min', 1)); // BRO-8455: 1-2 review productions are listed (unscored), not dropped
   const staged = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'audit', `city-finder-stage-${city.key}.json`), 'utf8'));
   const shows = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8')).shows;
   const taken = new Set(shows.map((s) => s.id));
@@ -134,8 +135,8 @@ function emit() {
   const haveProd = new Set(shows.filter((s) => s.localOnly).map((s) => `${F.norm(s.title)}|${F.norm(s.venue || '').split(' ').slice(0, 2).join(' ')}`));
   for (const p of staged.productions) {
     if (haveProd.has(`${F.norm(p.title)}|${F.norm(p.theatre).split(' ').slice(0, 2).join(' ')}`)) { skipped.push(`${p.title} (already a show)`); continue; }
-    const openNow = p.end && p.end >= today && p.start <= today;
-    if (p.reviews.length < min && !(openNow && p.reviews.length >= 2)) { skipped.push(`${p.title} (${p.reviews.length} reviews)`); continue; }
+    const decision = emitDecision(p, { min, today });
+    if (!decision.emit) { skipped.push(`${p.title} (${decision.reason})`); continue; }
     const opening = p.firstReview && p.firstReview < p.start && p.startSource !== 'bww' ? p.firstReview : p.start;
     let id = `${slugify(p.title)}-regional-${SLUG_YEAR(opening)}`;
     if (taken.has(id)) id = `${slugify(p.title)}-${slugify(p.theatre).replace(/^the-/, '').split('-').slice(0, /^the /i.test(p.theatre) || !/^la /i.test(p.theatre) ? 1 : 2).join('')}-regional-${SLUG_YEAR(opening)}`;
@@ -146,7 +147,7 @@ function emit() {
       id, title: stagedTitleLogged(id, p.title), slug: id,
       venue: sanitizeVenueForWrite(`${p.theatre}, ${p.city || city.defaultCity || 'San Diego'}, ${city.state}`),
       status: closed ? 'closed' : 'open',
-      type: /\b(musical|rent|hairspray|mean girls|cher show|rock of ages|guys and dolls|come from away|evan hansen|seussical|spongebob|most happy fella|american rhythm|we will rock you|carrie|charlie and the chocolate factory)\b/i.test(p.title) ? 'musical' : 'play',
+      type: typeForTitle(p.title),
       category: 'regional', market: 'regional',
       openingDate: opening,
       openingDateSource: p.startSource === 'census' ? 'census-earliest-review-date' : p.startSource === 'bww' ? 'broadwayworld-regional-listing' : 'earliest-review-date',

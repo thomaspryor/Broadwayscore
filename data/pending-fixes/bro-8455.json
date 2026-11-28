@@ -1,0 +1,165 @@
+{
+  "issueNumber": "bro-8455",
+  "planId": "5654cd1d-f547-4279-b3f7-43595ea46fe5",
+  "status": "pending",
+  "createdAt": "2026-11-28T18:11:23.611418Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8455 regional data cleanup: Boston musical types, Jekyll and Bouncers dates, and estimated-closing flags for five open hub rows with no end date.",
+    "steps": [
+      "Set type=musical on six Boston rows",
+      "Correct Dr. Jekyll opening and Bouncers run dates, close Bouncers",
+      "Mark five open rows without a published end as estimated so the hub retires them after 42 days"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "something-rotten-regional-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "Boston musical typed play (BRO-8455 item 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "annie-regional-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "Boston musical typed play (BRO-8455 item 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-your-feet-regional-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "Boston musical typed play (BRO-8455 item 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "Boston musical typed play (BRO-8455 item 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "merrily-we-roll-along-sullivan-regional-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "Boston musical typed play (BRO-8455 item 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "frozen-regional-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "Boston musical typed play (BRO-8455 item 6)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dr-jekyll-and-mr-hyde-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-31",
+        "newValue": "2026-10-14",
+        "description": "MRT run is Oct 14 to Nov 1 2026 per BroadwayWorld and mrt.org; 10-31 was the first review date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bouncers-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-24",
+        "newValue": "2026-10-01",
+        "description": "Modern Theatre run Oct 1 to 24 2026 per BroadwayWorld listing; 10-24 was the first review date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bouncers-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-24",
+        "description": "run ended Oct 24 2026 per BroadwayWorld listing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bouncers-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "broadwayworld-regional-listing",
+        "description": "source of closing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bouncers-regional-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "run ended 2026-10-24"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-winters-tale-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "estimated",
+        "description": "No published end date found; hub retires the row 42 days after opening (BRO-8455 item 8)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "body-language-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "estimated",
+        "description": "No published end date found; hub retires the row 42 days after opening (BRO-8455 item 8)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-exactly-a-nun-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "estimated",
+        "description": "No published end date found; hub retires the row 42 days after opening (BRO-8455 item 8)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "falsettos-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "estimated",
+        "description": "No published end date found; hub retires the row 42 days after opening (BRO-8455 item 8)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "carmen-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "estimated",
+        "description": "No published end date found; hub retires the row 42 days after opening (BRO-8455 item 8)"
+      }
+    ]
+  }
+}
