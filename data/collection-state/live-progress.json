@@ -1,27 +1,21 @@
 {
-  "updatedAt": "2026-11-28T16:13:16.319Z",
-  "processed": 204,
-  "failed": 3,
-  "successRate": "98.6%",
+  "updatedAt": "2026-11-28T16:21:39.495Z",
+  "processed": 279,
+  "failed": 147,
+  "successRate": "65.5%",
   "tierBreakdown": {
-    "playwright": 148,
+    "playwright": 187,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 26,
+    "scrapingdog": 33,
     "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 21,
-    "archive": 35
+    "archiveToday": 31,
+    "archive": 66
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-11-28T14:46:01.239Z",
-      "event": "bb-session",
-      "session": "97710fd9",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
     {
       "t": "2026-11-28T14:46:01.549Z",
       "event": "bb-cookie-inject",
@@ -128,6 +122,12 @@
       "t": "2026-11-28T15:38:15.007Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-28T16:15:26.195Z",
+      "event": "bb-session",
+      "session": "35aa42fe",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     }
   ]
 }
