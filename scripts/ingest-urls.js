@@ -30,6 +30,8 @@ const { parseIngestLine, chooseIngestByline } = require('./lib/ingest-url-line')
 const { isPlausiblePersonName } = require('./lib/byline-recovery');
 const { classifyNewsPost } = require('./lib/news-post-guard');
 const { readPageByline, bylineConflictStands } = require('./lib/page-byline');
+const { isolateForIngest } = require('./lib/multi-show-section-extract');
+const { findCrossShowOwners } = require('./lib/url-ownership');
 
 // An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
 function isRegisteredOutletId(id) {
@@ -305,6 +307,31 @@ async function main() {
       }
     }
 
+    // BRO-8433: a multi-show page (Nine "review wrap", Interested Bystander post) keeps only
+    // this show's section and that section's critic, as ingest-review-from-url does; a page
+    // where the section can't be found uniquely is refused rather than stored whole.
+    let isolatedFields = {};
+    if (fullText) {
+      const cut = isolateForIngest({
+        url, text: fullText, showTitle: show.title, criticName,
+        ownerShowIds: () => findCrossShowOwners(url, showId, reviewTextsDir).filter((o) => o.blocking).map((o) => o.showId),
+      });
+      if (cut.refuse) {
+        results.failed++;
+        results.warnings.push(`${prefix} Multi-show page with no unique "${show.title}" section, not stored: ${url}`);
+        console.log(`    ⚠️  Refused: no unique "${show.title}" section in multi-show page`);
+        console.log('');
+        continue;
+      }
+      if (cut.isolated) {
+        if (verbose) console.log(`    ✓ Isolated "${show.title}" section: ${fullText.length} -> ${cut.text.length} chars`);
+        fullText = cut.text;
+        criticName = cut.criticName;
+        bylineConflict = null; // the page byline belongs to the page, not this section
+        isolatedFields = cut.writeFields;
+      }
+    }
+
     // BRO-7817: an announcement (closing date, opening date, anniversary) is not a review. Refuse it
     // before any file is written. BRO-7874: also when no text was extracted (refused on an
     // announcement slug alone; Theater Pizzazz "assassins-cancels-remaining-performances" was a stub).
@@ -342,7 +369,7 @@ async function main() {
       html: paywallHtml,
       // BRO-7934: a run with no named dispatcher is a person or session: record that as 'manual'
       // instead of leaving the file with no caller (164 files in one week).
-      fields: { ingestSource: ingestCaller || 'manual' },
+      fields: { ingestSource: ingestCaller || 'manual', ...isolatedFields },
     };
     if (publishDate) input.publishDate = publishDate;
     if (bylineConflictStands(byline.criticName, bylineConflict)) {

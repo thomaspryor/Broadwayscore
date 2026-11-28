@@ -32,7 +32,7 @@ const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { planIsolation, planRefetchedIsolation, needsRefetch } = require('./lib/multi-show-isolation-plan');
-const { findSectionHeadings } = require('./lib/multi-show-section-extract');
+const { findHeadingsForUrl } = require('./lib/multi-show-section-extract');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
 const USAGE = 'Usage: node scripts/isolate-multi-show-sections.js [--apply] [--refetch] [--dir=PATH] [--show=ID] [--deadline-sec=N]';
@@ -75,7 +75,7 @@ async function main() {
         plan = post ? planRefetchedIsolation(data, showId, post, at) : null;
         if (!plan) {
           const why = !post ? 'fetch failed'
-            : findSectionHeadings(post).length < 2 ? 'refetched post has no section headings'
+            : findHeadingsForUrl(data.url, post).length < 2 ? 'refetched post has no section headings'
               : 'no unique section, or verdict does not quote another section\'s title';
           console.log(`  keep    ${showId}/${file} (refetched: ${why})`);
           continue;

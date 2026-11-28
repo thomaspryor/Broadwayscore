@@ -49,7 +49,7 @@ const { classifyTimeoutPage, isTimeoutUrl } = require('./lib/timeout-capsule');
 const { applyExplicitCriticToUnknown } = require('./lib/explicit-critic-rename');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
-const { isolateMultiShowSection, normSectionText, isolatedSectionWriteFields } = require('./lib/multi-show-section-extract');
+const { isolateMultiShowSection, normSectionText, isolatedSectionWriteFields, isolatedSectionByline } = require('./lib/multi-show-section-extract');
 const { findCrossShowOwners } = require('./lib/url-ownership');
 const { extractArticleTextFromUrl, extractLsaByline } = require('./lib/article-extractor');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
@@ -575,7 +575,8 @@ if (!show) {
   const { extractTheStageArticleMeta, isTheStageUrl } = require('./lib/walled-page-meta');
   const stageMeta = isTheStageUrl(url) ? extractTheStageArticleMeta(html) : null;
   const critic = resolveCritic({
-    criticArg,
+    // BRO-8433: a Nine review wrap credits each item; the page byline is the first item's critic.
+    criticArg: criticArg || (iso.action === 'isolated' ? isolatedSectionByline(url, text) : null),
     lsaCritic,
     byline: extractByline(html, { outletId, text }),
     stageCritic: stageMeta && stageMeta.criticName,

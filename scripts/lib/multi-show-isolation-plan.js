@@ -7,7 +7,7 @@
  */
 
 const {
-  isMultiShowPostUrl, isolateMultiShowSectionForShowId, findSectionHeadings, headingShowName, normSectionText,
+  isMultiShowPostUrl, isolateMultiShowSectionForShowId, findSectionHeadings, findHeadingsForUrl, headingShowName, normSectionText,
 } = require('./multi-show-section-extract');
 const { markRescoreNeeded } = require('./rescore-flagging');
 
@@ -190,7 +190,7 @@ function planRefetchedIsolation(data, showId, fetchedPost, at) {
 function needsRefetch(data) {
   if (!data || !isMultiShowPostUrl(data.url)) return false;
   if (data.wrongShow !== true && data.wrongProduction !== true) return false;
-  return findSectionHeadings(String(data.fullText || '')).length < 2;
+  return findHeadingsForUrl(data.url, String(data.fullText || '')).length < 2;
 }
 
 module.exports = { planIsolation, planStaleWholePostRejection, verdictCitesOtherSection, verdictReason, quotedTitles, planRefetchedIsolation, needsRefetch };

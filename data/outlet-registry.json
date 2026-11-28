@@ -4088,7 +4088,7 @@
     },
     "age": {
       "displayName": "The Age",
-      "tier": 3,
+      "tier": 2,
       "aliases": [
         "age",
         "the-age",
@@ -4099,7 +4099,7 @@
     },
     "herald-sun": {
       "displayName": "Herald Sun",
-      "tier": 3,
+      "tier": 2,
       "aliases": [
         "herald-sun",
         "the-herald-sun",
@@ -15951,7 +15951,7 @@
     },
     "daily-telegraph-au": {
       "displayName": "The Daily Telegraph (Sydney)",
-      "tier": 3,
+      "tier": 2,
       "aliases": [
         "daily-telegraph-au",
         "daily telegraph sydney",
@@ -16246,6 +16246,18 @@
       ],
       "accessModel": "free",
       "domain": "indailyqld.com.au"
+    },
+    "the-new-daily": {
+      "displayName": "The New Daily",
+      "tier": 3,
+      "aliases": [
+        "the-new-daily",
+        "the new daily",
+        "thenewdaily",
+        "new daily"
+      ],
+      "accessModel": "free",
+      "domain": "thenewdaily.com.au"
     },
     "scenestr": {
       "displayName": "Scenestr",
@@ -17060,7 +17072,10 @@
     "stage-whispers": "stage-whispers",
     "stage whispers": "stage-whispers",
     "audrey-journal": "audrey-journal",
-    "audrey journal": "audrey-journal"
+    "audrey journal": "audrey-journal",
+    "the new daily": "the-new-daily",
+    "thenewdaily": "the-new-daily",
+    "new daily": "the-new-daily"
   },
   "lastUpdated": "2026-11-26T23:19:03.960Z",
   "lastChange": "BRO-8415: register Scenestr and MelbourniseMe (AU pilot)"

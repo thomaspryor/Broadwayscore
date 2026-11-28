@@ -84,9 +84,9 @@ function sectionTitleVariants(showTitle, aliases = []) {
   return [...out].filter(v => v === own || v.length >= 4);
 }
 
-function extractShowSection(text, showTitle, aliases = []) {
+function extractShowSection(text, showTitle, aliases = [], findHeadings = findSectionHeadings) {
   if (!text || !showTitle) return null;
-  const heads = findSectionHeadings(text);
+  const heads = findHeadings(text);
   if (heads.length < 2) return null; // not a multi-show post of this shape
   const variants = sectionTitleVariants(showTitle, aliases);
   // "Thornton Wilder's The Emporium": also try the heading minus a possessive
@@ -111,17 +111,111 @@ function extractShowSection(text, showTitle, aliases = []) {
   return { text: text.slice(h.start, end).trim(), start: h.start, end, sectionCount: heads.length };
 }
 
-// Hosts that publish several shows' reviews in ONE post. Every text path
-// (collector, manual ingest) must isolate the show's section before the text
-// is stored or scored, or other shows' paragraphs get scored into the file.
-// The corpus spells it www.interestedbystander.com; accept both forms.
-const MULTI_SHOW_POST_HOSTS = [/(^|\.)(the)?interestedbystander\.com$/i];
+/**
+ * Nine Publishing "review wrap" pages (BRO-8433): The Age / SMH /
+ * Brisbane Times / WAtoday print several short reviews on one
+ * /culture/live-reviews/ page. Flattened, each item reads
+ *   "<GENRE> <Title> ★★★½ <venue, run> <body> Reviewed by <Name> Advertisement"
+ * A heading is a known genre word in capitals, the title, then 1-5 stars
+ * within ~120 chars. The section runs to the next heading, so the item's
+ * "Reviewed by" byline stays inside it. A single-review page has <2
+ * headings and is left whole.
+ */
+// Longest first: "MUSICAL THEATRE" must win over "MUSICAL" and "THEATRE".
+const NINE_GENRES = ['PHYSICAL THEATRE', 'MUSICAL THEATRE', 'MUSIC THEATRE', 'VISUAL ART', 'CLASSICAL MUSIC',
+  'CONTEMPORARY MUSIC', 'MUSICAL', 'THEATRE', 'OPERA', 'MUSIC', 'JAZZ', 'DANCE', 'BALLET', 'COMEDY',
+  'CABARET', 'CIRCUS', 'CLASSICAL', 'FESTIVAL', 'ART', 'FILM'];
+const NINE_HEADING_RE = new RegExp(`(?:^|(?<=\\s))(${NINE_GENRES.join('|')})\\s+([^★\\n]{2,120}?)\\s*★{1,5}½?`, 'g');
+
+/** Every "<GENRE> <Title> ★★★" item heading of a Nine review wrap: [{ start, title }]. */
+function findNineWrapHeadings(text) {
+  const out = [];
+  NINE_HEADING_RE.lastIndex = 0;
+  let m;
+  while ((m = NINE_HEADING_RE.exec(String(text || ''))) !== null) {
+    let start = m.index;
+    let title = m[2];
+    // A capitalised genre word earlier in the previous item's body must not
+    // swallow the real heading: re-anchor on the LAST genre inside the match.
+    const inner = new RegExp(`(?:^|\\s)(${NINE_GENRES.join('|')})\\s+`, 'g');
+    let im; let last = null;
+    while ((im = inner.exec(title)) !== null) last = im;
+    if (last) {
+      const titleOffset = m[0].indexOf(m[2], m[1].length);
+      start = m.index + titleOffset + last.index + (last[0].length - last[0].trimStart().length);
+      title = title.slice(last.index + last[0].length);
+    }
+    title = title.trim();
+    // A real title has a lowercase letter or digit; "A A A MUSIC" furniture or an
+    // all-caps run is not one.
+    if (!/[a-z0-9]/.test(title)) continue;
+    out.push({ start, title });
+  }
+  return out;
+}
+
+/** "Reviewed by <Name>" of one isolated Nine wrap item, or null. */
+function nineWrapSectionByline(sectionText) {
+  const m = String(sectionText || '').match(/Reviewed by ([A-Z][\p{L}'’.-]+(?: (?!Advertisement\b)[A-Z][\p{L}'’.-]+){0,3})/u);
+  return m ? m[1].trim() : null;
+}
+
+// Hosts that publish several shows' reviews in ONE post, with the heading
+// detector for each. Every text path (collector, manual ingest) must isolate
+// the show's section before the text is stored or scored, or other shows'
+// paragraphs get scored into the file. The corpus spells the bystander host
+// www.interestedbystander.com; accept both forms.
+const MULTI_SHOW_POST_STRATEGIES = [
+  { name: 'interestedbystander', host: /(^|\.)(the)?interestedbystander\.com$/i, path: null, findHeadings: findSectionHeadings, sectionByline: null },
+  { name: 'nine-review-wrap', host: /(^|\.)(theage|smh|brisbanetimes|watoday)\.com\.au$/i, path: /^\/culture\/live-reviews\//i, findHeadings: findNineWrapHeadings, sectionByline: nineWrapSectionByline },
+];
+
+function multiShowStrategyFor(url) {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, '');
+    return MULTI_SHOW_POST_STRATEGIES.find((st) => st.host.test(host) && (!st.path || st.path.test(u.pathname))) || null;
+  } catch { return null; }
+}
 
 function isMultiShowPostUrl(url) {
-  try {
-    const host = new URL(url).hostname.replace(/^www\./, '');
-    return MULTI_SHOW_POST_HOSTS.some((re) => re.test(host));
-  } catch { return false; }
+  return multiShowStrategyFor(url) !== null;
+}
+
+/**
+ * Critic named inside an isolated section, for hosts that print one byline per
+ * section (a Nine wrap credits each item; the page byline is the first item's
+ * critic). null when the host has none or the section names nobody.
+ */
+function isolatedSectionByline(url, sectionText) {
+  const st = multiShowStrategyFor(url);
+  return st && st.sectionByline ? st.sectionByline(sectionText) : null;
+}
+
+/**
+ * ingest-urls / ingest-review-from-url step: cut a multi-show post down to
+ * this show's section before anything is written.
+ * @param {{url:string, text:string|null, showTitle:string, criticName:string|null, ownerShowIds:()=>string[]}} a
+ *   ownerShowIds: lazily lists the shows already holding this URL (url-ownership findCrossShowOwners).
+ * @returns {{ refuse: true } | { refuse: false, isolated: boolean, text: string|null, criticName: string|null, writeFields: object }}
+ */
+function isolateForIngest({ url, text, showTitle, criticName, ownerShowIds }) {
+  const iso = isolateMultiShowSection(url, text, showTitle);
+  if (iso.action === 'refuse') return { refuse: true };
+  if (iso.action !== 'isolated') return { refuse: false, isolated: false, text, criticName, writeFields: {} };
+  return {
+    refuse: false,
+    isolated: true,
+    text: iso.text,
+    criticName: isolatedSectionByline(url, iso.text) || criticName,
+    writeFields: isolatedSectionWriteFields(iso, showTitle, ownerShowIds()),
+  };
+}
+
+/** Section headings of a multi-show post, found with its host's detector ([] for other hosts). */
+function findHeadingsForUrl(url, text) {
+  const st = multiShowStrategyFor(url);
+  return st ? st.findHeadings(String(text || '')) : [];
 }
 
 /**
@@ -135,9 +229,10 @@ function isolateMultiShowSection(url, text, showTitle, aliases = []) {
   // runs on every write, and title-based sectioning truncated single-show
   // reviews. They are isolated only after the verifier rejects the page as a
   // multi-show roundup (column-section-extract.js columnSectionAfterRoundupRejection).
-  if (!text || !isMultiShowPostUrl(url)) return { action: 'not-multi-show', text };
-  if (findSectionHeadings(text).length < 2) return { action: 'single-section', text };
-  const sec = extractShowSection(text, showTitle, aliases);
+  const st = text ? multiShowStrategyFor(url) : null;
+  if (!st) return { action: 'not-multi-show', text };
+  if (st.findHeadings(text).length < 2) return { action: 'single-section', text };
+  const sec = extractShowSection(text, showTitle, aliases, st.findHeadings);
   if (!sec) return { action: 'refuse', text: null };
   return { action: 'isolated', text: sec.text };
 }
@@ -196,6 +291,7 @@ function isolateMultiShowSectionForShowId(url, text, showId) {
 const MULTI_SHOW_NOT_FOUND_REASON = 'multi_show_section_not_found';
 
 module.exports = {
-  extractShowSection, findSectionHeadings, headingShowName, normSectionText: norm, sectionTitleVariants, isMultiShowPostUrl, isolateMultiShowSection,
+  extractShowSection, findSectionHeadings, findNineWrapHeadings, nineWrapSectionByline, findHeadingsForUrl,
+  multiShowStrategyFor, MULTI_SHOW_POST_STRATEGIES, isolatedSectionByline, isolateForIngest, headingShowName, normSectionText: norm, sectionTitleVariants, isMultiShowPostUrl, isolateMultiShowSection,
   isolateMultiShowSectionForShowId, isolatedSectionWriteFields, MULTI_SHOW_NOT_FOUND_REASON, allShowTitles,
 };
