@@ -306,7 +306,7 @@ function getTourPromptContext() {
  */
 function getTierMarket(show) {
   if (!show) return undefined;
-  return show.category === 'regional' && isAuRegionalVenue(show.venue) ? 'regional-au' : (show.category ?? undefined);
+  return show.category === 'regional' && getRegionalCountry(show.venue) === 'AU' ? 'regional-au' : (show.category ?? undefined);
 }
 
 module.exports = {

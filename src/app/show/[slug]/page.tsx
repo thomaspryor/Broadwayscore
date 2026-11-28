@@ -1033,7 +1033,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               </span>
             </header>
 
-            <LiveCallResultStrip show={{ id: show.id, category: show.category }} critic={show.criticScore.score} />
+            <LiveCallResultStrip show={{ id: show.id, category: getTierMarket(show) }} critic={show.criticScore.score} />
 
             {/* Breakdown bar — shown when redesign moves it out of the header card */}
             {show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
@@ -1123,7 +1123,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                   : <>Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.</>}
             </p>
             {/* Opening day, status already "open", no review live yet: predictions stay open (BRO-7857). Renders nothing otherwise. */}
-            {!noReviewsExpected && <CallTheScore show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount: show.criticScore?.reviewCount ?? 0 }} />}
+            {!noReviewsExpected && <CallTheScore show={{ id: show.id, category: show.category, venue: show.venue, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount: show.criticScore?.reviewCount ?? 0 }} />}
           </section>
           </LiveHideWhenOverlay>
         )}

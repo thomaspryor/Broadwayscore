@@ -50,7 +50,7 @@ const { scoreGateArg } = require('./lib/should-hide-reviews');
 const { computeCriticScore: canonicalComputeCriticScore } = require('./lib/compute-critic-score');
 const { rowConfidence } = require('./lib/score-confidence-gate'); // BRO-6623: raw lane rows keep confidence in llmScore
 const { isLocalOnlyShow } = require('./lib/local-market');
-const { isUkRegionalVenue, isAuRegionalVenue } = require('./lib/market-label');
+const { isUkRegionalVenue, isAuRegionalVenue, getTierMarket } = require('./lib/market-label');
 const {
   TOKENS,
   esc,
@@ -522,7 +522,7 @@ function thumbnailHtml(row) {
 // on a block-level div. That's what we do here.
 function scoreColumnHtml(row) {
   const score = row.criticScore;
-  const tier = criticTier(score, row.market);
+  const tier = criticTier(score, row.tierMarket || row.market);
 
   let badgeBg, badgeFg, badgeShadow, labelColor;
   if (score == null) {
@@ -673,7 +673,7 @@ function smallScorePill(row) {
   if (score == null) {
     return `<span style="${square}background:${TOKENS.surfaceOverlay};border:1px solid ${TOKENS.border};color:#9ca3af;font-size:13px;">TBD</span>`;
   }
-  const tier = criticTier(score, row.market);
+  const tier = criticTier(score, row.tierMarket || row.market);
   const glow = tier.glow ? 'border:2px solid #C8960E;' : '';
   return `<span style="${square}background:${tier.bg};color:${tier.fg};font-size:18px;${glow}">${score}</span>`;
 }
