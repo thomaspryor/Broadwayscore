@@ -131,7 +131,7 @@ function countByShow(reviews, getTier) {
   for (const r of reviews) {
     const id = r.showId;
     if (!id) continue;
-    if (!map[id]) map[id] = { count: 0, tier1And2: 0, dates: [] };
+    if (!map[id]) map[id] = { count: 0, tier1And2: 0, dates: [], dayOutlets: [] };
     map[id].count += 1;
     if (getTier) {
       const t = getTier(r);
@@ -140,9 +140,50 @@ function countByShow(reviews, getTier) {
     const d = r.publishDate || r.date;
     if (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d)) {
       map[id].dates.push(d.slice(0, 10));
+      // BRO-8446: who published on that day, so a press wave (2+ outlets) can be told from one review.
+      const outlet = outletKey(r);
+      if (outlet) map[id].dayOutlets.push({ date: d.slice(0, 10), outlet });
     }
   }
   return map;
+}
+
+/** Stable per-outlet key of a review (outletId, outlet name, or URL host); null when none. */
+function outletKey(review) {
+  if (!review || typeof review !== 'object') return null;
+  let host = null;
+  try { host = new URL(review.url).hostname.replace(/^www\./, ''); } catch { /* no host */ }
+  return review.outletId || review.outlet || host || null;
+}
+
+// BRO-8446: one review is not press night (a preview piece or a wrong-production review stamped
+// Jungle Book / Fourteen Again / Jack and the Beanstalk days early). A review-derived openingDate
+// needs a wave: this many distinct outlets on the same day.
+const PRESS_WAVE_MIN_OUTLETS = 2;
+// A wave this wide contradicts a stored review-derived date that no wave backs.
+const CONTRADICT_MIN_OUTLETS = 3;
+const CONTRADICT_MAX_DAYS = 14;
+// Sources that mean "a review guessed this"; confirmed sources (ibdb, playbill, a human pin) are never touched.
+const REVIEW_DERIVED_SOURCES = new Set(['review-derived-press-night', 'review-open-signal', 'discovery-open-signal']);
+
+/**
+ * Press-wave night from [{date, outlet}]: the modal day among days that have at least `minOutlets`
+ * distinct outlets (ties break to the earliest). null when no day has a wave.
+ */
+function pressWaveNight(items, minOutlets = PRESS_WAVE_MIN_OUTLETS) {
+  const byDay = new Map();
+  for (const it of items || []) {
+    if (!it || typeof it.date !== 'string' || !it.outlet) continue;
+    if (!byDay.has(it.date)) byDay.set(it.date, new Set());
+    byDay.get(it.date).add(it.outlet);
+  }
+  let best = null;
+  let bestN = 0;
+  for (const day of [...byDay.keys()].sort()) {
+    const n = byDay.get(day).size;
+    if (n >= minOutlets && n > bestN) { best = day; bestN = n; }
+  }
+  return best;
 }
 
 /**
@@ -179,6 +220,13 @@ function runDates(show, dates) {
   const all = dates || [];
   if (!show || !show.previewsStartDate) return all;
   return all.filter((d) => typeof d === 'string' && d.slice(0, 10) >= show.previewsStartDate);
+}
+
+/** runDates for [{date, outlet}] items. */
+function runDayOutlets(show, items) {
+  const all = items || [];
+  if (!show || !show.previewsStartDate) return all;
+  return all.filter((it) => it && typeof it.date === 'string' && it.date >= show.previewsStartDate);
 }
 
 /**
@@ -278,9 +326,13 @@ function openSignalFromReviews(show, entry, isDateReached) {
  * open→previews (oscillation). `isDateReached` is injected (date <= today) so the
  * lib stays deterministic and testable without touching the clock.
  */
-function chooseOpeningDateBackfill(show, dates, isDateReached) {
+function chooseOpeningDateBackfill(show, dates, isDateReached, dayOutlets) {
   if (!show || show.openingDate) return null;
-  const pressNight = estimatePressNight(runDates(show, dates));
+  // BRO-8446: when outlet data is supplied (every real caller), only a press wave stamps a date.
+  // Plain date strings keep the old modal rule for callers that cannot know outlets.
+  const pressNight = Array.isArray(dayOutlets)
+    ? pressWaveNight(runDayOutlets(show, dayOutlets))
+    : estimatePressNight(runDates(show, dates));
   if (pressNight && isDateReached(pressNight)) {
     return { date: pressNight, source: 'review-derived-press-night' };
   }
@@ -341,6 +393,21 @@ function datesFromDiscoveredReviews(files, show) {
     // reviews sitting in the-winters-tale-off-broadway-2026 are exactly this).
     if (show && show.previewsStartDate && day < show.previewsStartDate) continue;
     out.push(day);
+  }
+  return out;
+}
+
+/** [{date, outlet}] for clean discovered reviews on/after previews start (BRO-8446: press-wave input). */
+function dayOutletsFromDiscoveredReviews(files, show) {
+  const out = [];
+  for (const review of files || []) {
+    if (!isCleanDiscoveredReview(review)) continue;
+    const d = review.publishDate || review.date;
+    if (typeof d !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(d)) continue;
+    const day = d.slice(0, 10);
+    if (show && show.previewsStartDate && day < show.previewsStartDate) continue;
+    const outlet = outletKey(review);
+    if (outlet) out.push({ date: day, outlet });
   }
   return out;
 }
@@ -414,9 +481,7 @@ function openingDateCorrectionFromCluster(show, files, isDateReached) {
     if (typeof raw !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(raw)) continue;
     const day = raw.slice(0, 10);
     if (day < show.previewsStartDate) continue;
-    let host = null;
-    try { host = new URL(review.url).hostname.replace(/^www\./, ''); } catch { /* no host */ }
-    const key = review.outletId || review.outlet || host;
+    const key = outletKey(review);
     if (!key) continue;
     const prev = earliestByOutlet.get(key);
     if (!prev || day < prev) earliestByOutlet.set(key, day);
@@ -432,6 +497,37 @@ function openingDateCorrectionFromCluster(show, files, isDateReached) {
   // the press wave itself has to be 3+ outlets on the same day.
   if (early.filter((d) => d === pressNight).length < CLUSTER_MIN_OUTLETS) return null;
   return { date: pressNight, source: 'review-derived-press-night', outlets: days.length, earlyOutlets: early.length };
+}
+
+/**
+ * BRO-8446: fix an openingDate on a show that is already open (or closed) from its press wave.
+ * Status-neutral by design: it never flips status, so it cannot reach opening-night automation.
+ *  - null date + a 2+ outlet wave on one day -> fill it (the single-review flip left it null).
+ *  - review-derived date + a 3+ outlet wave on a different day within CONTRADICT_MAX_DAYS, while the stored
+ *    day itself has at most one outlet -> move it to the wave day.
+ * Confirmed sources and human pins are never touched. Wave days must be reached and on/after previews.
+ *
+ * @param items [{date, outlet}] from clean reviews of THIS show
+ * @returns {{date, kind: 'fill'|'correct', outlets}|null}
+ */
+function openingDateFixForOpenShow(show, items, isDateReached) {
+  if (!show || (show.status !== 'open' && show.status !== 'closed')) return null;
+  if (show.humanCorrectedOpeningDate) return null;
+  const run = runDayOutlets(show, items);
+  const stored = show.openingDate;
+  if (!stored) {
+    const date = pressWaveNight(run, PRESS_WAVE_MIN_OUTLETS);
+    if (!date || !isDateReached(date)) return null;
+    return { date, kind: 'fill', outlets: new Set(run.filter((i) => i.date === date).map((i) => i.outlet)).size };
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(stored) || !REVIEW_DERIVED_SOURCES.has(show.openingDateSource)) return null;
+  const date = pressWaveNight(run, CONTRADICT_MIN_OUTLETS);
+  if (!date || date === stored || !isDateReached(date)) return null;
+  const gap = Math.abs(Date.parse(date + 'T00:00:00Z') - Date.parse(stored + 'T00:00:00Z')) / 86400000;
+  if (!(gap <= CONTRADICT_MAX_DAYS)) return null;
+  const storedOutlets = new Set(run.filter((i) => i.date === stored).map((i) => i.outlet)).size;
+  if (storedOutlets > 1) return null;
+  return { date, kind: 'correct', outlets: new Set(run.filter((i) => i.date === date).map((i) => i.outlet)).size };
 }
 
 /**
@@ -526,5 +622,13 @@ module.exports = {
   openingDateCorrectionFromCluster,
   CLUSTER_MIN_OUTLETS,
   chooseOpeningDateBackfill,
+  outletKey,
+  pressWaveNight,
+  runDayOutlets,
+  dayOutletsFromDiscoveredReviews,
+  openingDateFixForOpenShow,
+  PRESS_WAVE_MIN_OUTLETS,
+  CONTRADICT_MIN_OUTLETS,
+  REVIEW_DERIVED_SOURCES,
   findStuckPreviews,
 };

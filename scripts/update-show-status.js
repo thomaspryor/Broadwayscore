@@ -24,7 +24,7 @@ const { shouldTrustShowScoreClosed } = require('./lib/showscore-closure-guard');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { isTodayTixBookingHorizon } = require('./lib/closing-date-evidence');
 const { hasBookableEvidence, buildBlockedReopenRecord, formatBlockedReopensSummary } = require('./lib/todaytix-reopen-guard');
-const { countByShow, isStuckInPreviews, reviewsPredateRun, openingDateStillAhead, openSignalFromReviews, openSignalFromDiscovery, openingDateCorrectionFromCluster, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
+const { countByShow, isStuckInPreviews, reviewsPredateRun, openingDateStillAhead, openSignalFromReviews, openSignalFromDiscovery, openingDateCorrectionFromCluster, chooseOpeningDateBackfill, estimatePressNight, dayOutletsFromDiscoveredReviews, openingDateFixForOpenShow, REVIEW_DERIVED_SOURCES } = require('./lib/opening-signal');
 const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./lib/opening-date-fallback');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion, blockAnnouncedCatchUp, typeForListedShow } = require('./lib/announced-promotion');
@@ -985,7 +985,12 @@ async function updateShowStatuses() {
           const backfillDates = discoverySignal
             ? [discoverySignal.date]
             : (entry ? entry.dates : []);
-          const backfill = chooseOpeningDateBackfill(show, backfillDates, isDateReached);
+          // BRO-8446: only a press wave (2+ outlets on one day) stamps a date; one review leaves it null
+          // and the open-show fill below stamps it once a second outlet lands.
+          const backfillOutlets = discoverySignal
+            ? dayOutletsFromDiscoveredReviews(loadDiscoveredReviews(show.id), show)
+            : (entry ? entry.dayOutlets : []);
+          const backfill = chooseOpeningDateBackfill(show, backfillDates, isDateReached, backfillOutlets || []);
           if (backfill) {
             // Stamp discovery-derived dates distinctly. They rest on a review
             // we have NOT fetched, so they are the weakest of the three
@@ -1001,6 +1006,25 @@ async function updateShowStatuses() {
           } else {
             console.log(`  ℹ️  ${show.title} (${show.id}): flipped previews→open via review signal but no press-night date is derivable (reviews dateless) — openingDate left null; fill from ${openingDateSourceHint(show.category)}`);
           }
+        }
+      }
+    }
+
+    // Check 2f (BRO-8446): an already-open/closed show whose openingDate is null or a review-derived guess
+    // is fixed from its press wave. Status-neutral: it never sets changes.status, so it cannot reach
+    // opening-night automation (splitOpenedShows only counts status flips) and never calls Resend.
+    if (!changes.status && !changes.openingDate && (show.status === 'open' || show.status === 'closed')
+        && (!show.openingDate || REVIEW_DERIVED_SOURCES.has(show.openingDateSource))) {
+      const entry = reviewCounts[show.id];
+      const items = [...((entry && entry.dayOutlets) || []), ...dayOutletsFromDiscoveredReviews(loadDiscoveredReviews(show.id), show)];
+      const fix = openingDateFixForOpenShow(show, items, isDateReached);
+      if (fix) {
+        changes.openingDate = { from: show.openingDate || 'null', to: fix.date };
+        changes.note = `${fix.kind === 'fill' ? 'press wave fills missing' : 'press wave of ' + fix.outlets + ' outlets contradicts review-derived'} openingDate (${fix.outlets} outlets on ${fix.date})`;
+        console.log(`  ⚠️  ${show.title} (${show.id}): ${changes.note}`);
+        if (!dryRun) {
+          show.openingDate = fix.date;
+          show.openingDateSource = 'review-derived-press-night';
         }
       }
     }

@@ -482,3 +482,71 @@ import { readFileSync as _readFileSync } from 'node:fs';
     a2.equal(sig2.openingDateCorrectionFromCluster(show2, sameHost, reached2), null);
   });
 }
+
+// ---- BRO-8446: press wave, not a single review, stamps/corrects openingDate ----
+const wave = require('./opening-signal.js');
+const on = (d) => (x) => new Date(x) <= new Date(d);
+const items = (...pairs) => pairs.map(([date, outlet]) => ({ date, outlet }));
+
+test('BRO-8446: a single review cannot stamp an openingDate, a 2+ outlet wave can', () => {
+  const show = { openingDate: null, previewsStartDate: '2026-11-21', status: 'open' };
+  const reached = on('2026-11-28');
+  assert.equal(chooseOpeningDateBackfill(show, ['2026-11-24'], reached, items(['2026-11-24', 'blog'])), null);
+  // two reviews from ONE outlet are still one voice
+  assert.equal(chooseOpeningDateBackfill(show, ['2026-11-24', '2026-11-24'], reached, items(['2026-11-24', 'blog'], ['2026-11-24', 'blog'])), null);
+  assert.deepEqual(
+    chooseOpeningDateBackfill(show, [], reached, items(['2026-11-24', 'blog'], ['2026-12-02', 'a'], ['2026-12-02', 'b'])),
+    null, // wave day 12-02 is not reached yet on 11-28
+  );
+  assert.deepEqual(
+    chooseOpeningDateBackfill(show, [], on('2026-12-03'), items(['2026-11-24', 'blog'], ['2026-12-02', 'a'], ['2026-12-02', 'b'])),
+    { date: '2026-12-02', source: 'review-derived-press-night' },
+  );
+});
+
+test('BRO-8446: countByShow records dayOutlets and keeps dates as strings', () => {
+  const m = countByShow([{ showId: 'x', outletId: 'nyt', publishDate: '2026-05-31' }, { showId: 'x', url: 'https://www.foo.com/r', date: '2026-05-31' }]);
+  assert.deepEqual(m.x.dates, ['2026-05-31', '2026-05-31']);
+  assert.deepEqual(m.x.dayOutlets, [{ date: '2026-05-31', outlet: 'nyt' }, { date: '2026-05-31', outlet: 'foo.com' }]);
+});
+
+test('BRO-8446: openingDateFixForOpenShow fills a null date from a 2+ outlet wave only', () => {
+  const show = { status: 'open', openingDate: null, previewsStartDate: '2026-11-10' };
+  assert.equal(wave.openingDateFixForOpenShow(show, items(['2026-11-12', 'a']), on('2026-11-28')), null);
+  const fix = wave.openingDateFixForOpenShow(show, items(['2026-11-12', 'a'], ['2026-11-12', 'b']), on('2026-11-28'));
+  assert.equal(fix.date, '2026-11-12');
+  assert.equal(fix.kind, 'fill');
+});
+
+test('BRO-8446: a 3+ outlet wave corrects a review-derived date on an open show (desire-under-the-elms shape)', () => {
+  const show = { status: 'open', openingDate: '2026-11-14', openingDateSource: 'review-derived-press-night', previewsStartDate: '2026-11-10' };
+  const w = items(['2026-11-14', 'blog'], ['2026-11-18', 'a'], ['2026-11-18', 'b'], ['2026-11-18', 'c']);
+  const fix = wave.openingDateFixForOpenShow(show, w, on('2026-11-28'));
+  assert.deepEqual({ d: fix.date, k: fix.kind }, { d: '2026-11-18', k: 'correct' });
+  // idempotent: once corrected, the stored day carries the wave and nothing moves
+  assert.equal(wave.openingDateFixForOpenShow({ ...show, openingDate: '2026-11-18' }, w, on('2026-11-28')), null);
+});
+
+test('BRO-8446: corrections never touch confirmed sources, pins, thin waves, far waves or pre-run reviews', () => {
+  const base = { status: 'open', openingDate: '2026-11-14', openingDateSource: 'review-derived-press-night', previewsStartDate: '2026-11-10' };
+  const w3 = items(['2026-11-18', 'a'], ['2026-11-18', 'b'], ['2026-11-18', 'c']);
+  const reached = on('2026-11-28');
+  assert.equal(wave.openingDateFixForOpenShow({ ...base, openingDateSource: 'playbill' }, w3, reached), null);
+  assert.equal(wave.openingDateFixForOpenShow({ ...base, humanCorrectedOpeningDate: true }, w3, reached), null);
+  assert.equal(wave.openingDateFixForOpenShow(base, items(['2026-11-18', 'a'], ['2026-11-18', 'b']), reached), null);
+  assert.equal(wave.openingDateFixForOpenShow({ ...base, openingDate: '2026-10-01', previewsStartDate: '2026-09-20' }, w3, reached), null); // >14 days
+  assert.equal(wave.openingDateFixForOpenShow(base, items(['2016-07-31', 'a'], ['2016-07-31', 'b'], ['2016-07-31', 'c']), reached), null); // prior production
+  assert.equal(wave.openingDateFixForOpenShow({ ...base, status: 'previews' }, w3, reached), null);
+  // the stored day is itself backed by a wave: do not move it
+  assert.equal(wave.openingDateFixForOpenShow(base, [...items(['2026-11-14', 'x'], ['2026-11-14', 'y']), ...w3], reached), null);
+});
+
+test('BRO-8446: discovery outlet items skip flagged and pre-previews reviews', () => {
+  const show = { previewsStartDate: '2026-11-21' };
+  const out = wave.dayOutletsFromDiscoveredReviews([
+    { url: 'https://a.com/1', outletId: 'a', publishDate: '2026-12-02' },
+    { url: 'https://b.com/1', publishDate: '2026-12-02', wrongProduction: true },
+    { url: 'https://c.com/1', outletId: 'c', publishDate: '2026-11-01' },
+  ], show);
+  assert.deepEqual(out, [{ date: '2026-12-02', outlet: 'a' }]);
+});

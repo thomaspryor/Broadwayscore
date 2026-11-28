@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-8446",
+  "planId": "95bd1ba6-3c23-47bf-8c56-e1cb5d7687a8",
+  "status": "pending",
+  "createdAt": "2026-11-28T15:13:46.688Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8446: three upcoming London shows were stamped open from a single early review; restore real press-night dates and previews status.",
+    "steps": [
+      "BRO-8446: National Theatre press night is 30 Nov 2026 (Sept 2026 cast announcement and Theatre Weekly), not the 24 Nov press performance theatremonkey printed.",
+      "BRO-8446: press night 30 Nov has not happened.",
+      "BRO-8446: Menier Chocolate Factory press night 2 Dec 2026 (WhatsOnStage, WestEndTheatre); 11-24 came from one T4 preview review.",
+      "BRO-8446: press night 2 Dec has not happened.",
+      "BRO-8446: Hackney Empire press performance Thu 3 Dec 2026 (WhatsOnStage casting article, plus search results citing the venue listing); 11-27 came from a wrong-production Newcastle review.",
+      "BRO-8446: press night 3 Dec has not happened."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-jungle-book-west-end-2026",
+        "field": "openingDate",
+        "oldValue": "2026-11-24",
+        "newValue": "2026-11-30",
+        "description": "BRO-8446: National Theatre press night is 30 Nov 2026 (Sept 2026 cast announcement and Theatre Weekly), not the 24 Nov press performance theatremonkey printed."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-jungle-book-west-end-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "previews",
+        "description": "BRO-8446: press night 30 Nov has not happened."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fourteen-again-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": "2026-11-24",
+        "newValue": "2026-12-02",
+        "description": "BRO-8446: Menier Chocolate Factory press night 2 Dec 2026 (WhatsOnStage, WestEndTheatre); 11-24 came from one T4 preview review."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fourteen-again-off-west-end-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "previews",
+        "description": "BRO-8446: press night 2 Dec has not happened."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jack-and-the-beanstalk-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": "2026-11-27",
+        "newValue": "2026-12-03",
+        "description": "BRO-8446: Hackney Empire press performance Thu 3 Dec 2026 (WhatsOnStage casting article, plus search results citing the venue listing); 11-27 came from a wrong-production Newcastle review."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jack-and-the-beanstalk-off-west-end-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "previews",
+        "description": "BRO-8446: press night 3 Dec has not happened."
+      }
+    ]
+  }
+}
