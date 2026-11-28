@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { fileURLToPath } from 'node:url';
@@ -396,5 +396,41 @@ test('BRO-7378: Stop hook logs first-watch advice from creation timestamps witho
       assert.match(r.stderr, /--minutes 3\b/);
       assert.ok(r.stderr.includes(INIT_FAILED.ccr.id));
     }
+  }
+});
+
+// ─── BRO-8239: one watcher per child ─────────────────────────────────────────
+test('BRO-8239: a second watch for a child with a live watcher exits at once instead of stacking a timer', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ciw-reg-'));
+  const cli = path.join(HERE, 'child-idle-watch.js');
+  const env = { ...process.env, CHILD_IDLE_WATCH_DIR: dir };
+  const holder = spawn('sleep', ['30']);
+  try {
+    const { claimWatch, liveWatcher, releaseWatch } = require('./child-idle-watch.js');
+    const id = 'session_01DEDUPEABCDEF';
+    assert.equal(claimWatch(id, { dir, pid: holder.pid, until: Date.now() + 60000 }).ok, true);
+    assert.equal(liveWatcher(id, { dir }).pid, holder.pid);
+    const r = spawnSync('node', [cli, 'watch', '--session', id, '--minutes', '1'], { encoding: 'utf8', env, timeout: 10000 });
+    assert.equal(r.status, 0, `the deduped watch must exit at once, not sleep 1 min (signal ${r.signal}) ${r.stderr}`);
+    assert.match(r.stdout, new RegExp(`ALREADY-WATCHED ${id} by pid ${holder.pid}`));
+    // check --session tells a rearm not to start another.
+    const f = path.join(dir, 'g.json');
+    fs.writeFileSync(f, JSON.stringify({ status_bucket: 'WORKING', updated_at: new Date().toISOString() }));
+    const c = JSON.parse(spawnSync('node', [cli, 'check', '--from-json', f, '--session', id], { encoding: 'utf8', env }).stdout);
+    assert.equal(c.action, 'rearm');
+    assert.equal(c.alreadyWatched.pid, holder.pid);
+    assert.match(c.reason, /do not start another/);
+    // Another process's entry is never released; a stale one (past until, or a dead pid) is taken over.
+    releaseWatch(id, { dir, pid: process.pid });
+    assert.ok(liveWatcher(id, { dir }), 'release by a non-owner pid is a no-op');
+    assert.equal(liveWatcher(id, { dir, now: Date.now() + 120000 }), null, 'past until is stale');
+    assert.equal(claimWatch(id, { dir, until: Date.now() + 60000, now: Date.now() + 120000 }).ok, true, 'a stale entry is taken over');
+    assert.equal(liveWatcher(id, { dir }).pid, process.pid);
+    const dead = spawnSync('true').pid;
+    fs.writeFileSync(path.join(dir, 'session_02DEAD.json'), JSON.stringify({ pid: dead, until: new Date(Date.now() + 60000).toISOString() }));
+    assert.equal(liveWatcher('session_02DEAD', { dir }), null, 'a dead pid is stale');
+  } finally {
+    holder.kill();
+    fs.rmSync(dir, { recursive: true, force: true });
   }
 });

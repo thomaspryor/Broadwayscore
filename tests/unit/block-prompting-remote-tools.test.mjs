@@ -211,6 +211,24 @@ test('a Broadwayscore worker session needs a REPORT-BACK: line so the parent is 
   assert.equal(run(remote('create_session', { prompt: 'BUDGET: 6h\n  REPORT-BACK: send_message @parent when done', model: SONNET, source_url: url })), 'pass');
 });
 
+test('the missing-BUDGET deny carries a copy-paste line, alone or beside a missing REPORT-BACK (BRO-8239)', () => {
+  const url = 'https://github.com/thomaspryor/Broadwayscore';
+  const reason = (prompt) => {
+    const res = spawnSyncStdinFile('bash', [HOOK], {
+      cwd: BSC, input: JSON.stringify(remote('create_session', { prompt, model: SONNET, source_url: url })), encoding: 'utf8',
+      env: { ...process.env, HOME: os.tmpdir(), CLAUDE_PROJECT_DIR: BSC, REMOTE_TOOL_BLOCKER_DISABLE: '' },
+    });
+    return JSON.parse(res.stdout.trim()).hookSpecificOutput.permissionDecisionReason;
+  };
+  for (const prompt of ['Fix BRO-1.\nREPORT-BACK: tell @parent', 'Fix BRO-1.', 'budget 4 hours\nREPORT-BACK: tell @parent']) {
+    const r = reason(prompt);
+    const pasted = r.match(/Paste this as its own prompt line[^:]*: (BUDGET: \d+h)\b/);
+    assert.ok(pasted, `no pasteable BUDGET line in: ${r}`);
+    // The pasted line itself must satisfy the hook.
+    assert.equal(run(remote('create_session', { prompt: `Fix BRO-1.\n${pasted[1]}\nREPORT-BACK: tell @parent`, model: SONNET, source_url: url })), 'pass');
+  }
+});
+
 test('unrelated tools, malformed input and the kill switch all pass', () => {
   assert.equal(run(remote('update_trigger', {})), 'pass');
   assert.equal(run(remote('subscribe_pr_activity', {})), 'pass');

@@ -16,7 +16,7 @@
  *   1. Bash run_in_background, timeout 7200000 (one per child):
  *        node scripts/lib/child-idle-watch.js watch --session <id> [--minutes 25]
  *   2. On wake: get_session <id>, save the JSON, then
- *        node scripts/lib/child-idle-watch.js check --from-json <file> [--reported-at <iso>]
+ *        node scripts/lib/child-idle-watch.js check --from-json <file> [--session <id>] [--reported-at <iso>]
  *      It prints {action, reason, rearmMinutes}: rearm (start step 1 again with
  *      rearmMinutes), unblock (interrupt_session, send a workaround), nudge (send_message the child: poll in-turn or hand its
  *      queue to a workflow / the tic-daily pending queue, then report), restart
@@ -135,6 +135,52 @@ function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES,
   return out('rearm', `child ${bucket || 'not working'} for ${Math.round(ageMin)} min, under ${idleMinutes}`, idleMinutes - ageMin);
 }
 
+// ─── One watcher per child (BRO-8239) ───────────────────────────────────────
+// Parents stacked a fresh 25-min watch per child every cycle (a rearm while
+// an earlier watch for the same child was still live), so one child woke the
+// parent several times per cycle. get_session is MCP-only, so a Bash watcher
+// cannot learn the child was archived and re-arm itself; the safe part is to
+// dedupe: `watch` registers <dir>/<child>.json {pid, until} with an exclusive
+// create, and a second `watch` for a child with a live entry exits at once.
+// The registry is container-local (a resumed session in a new container is
+// not deduped, which is harmless). A SIGKILLed watcher leaves its file; the
+// pid and `until` checks make that entry stale.
+function watchDir(env = process.env) {
+  return env.CHILD_IDLE_WATCH_DIR || require('path').join(require('os').tmpdir(), 'child-idle-watch');
+}
+function watchFile(id, dir) {
+  return require('path').join(dir, String(id).replace(/[^0-9A-Za-z_.-]/g, '_') + '.json');
+}
+function pidAlive(pid) {
+  try { process.kill(pid, 0); return true; } catch (e) { return e.code === 'EPERM'; }
+}
+/** The live registered watcher for this child, or null. */
+function liveWatcher(id, { dir = watchDir(), now = Date.now() } = {}) {
+  try {
+    const w = JSON.parse(require('fs').readFileSync(watchFile(id, dir), 'utf8'));
+    return Number.isInteger(w.pid) && w.pid > 0 && pidAlive(w.pid) && toMs(w.until) > toMs(now) ? w : null;
+  } catch { return null; }
+}
+/** Register this process as the child's watcher. {ok:true} or {ok:false, live}. */
+function claimWatch(id, { dir = watchDir(), pid = process.pid, until, now = Date.now() } = {}) {
+  const fs = require('fs');
+  const f = watchFile(id, dir);
+  fs.mkdirSync(dir, { recursive: true });
+  const body = JSON.stringify({ session: id, pid, until: new Date(toMs(until)).toISOString() });
+  for (let i = 0; i < 2; i++) {
+    try { fs.writeFileSync(f, body, { flag: 'wx' }); return { ok: true }; } catch (e) { if (e.code !== 'EEXIST') throw e; }
+    const live = liveWatcher(id, { dir, now });
+    if (live) return { ok: false, live };
+    try { fs.unlinkSync(f); } catch { /* raced with another claimant: retry the exclusive create */ }
+  }
+  const live = liveWatcher(id, { dir, now });
+  return live ? { ok: false, live } : { ok: false, live: null };
+}
+function releaseWatch(id, { dir = watchDir(), pid = process.pid } = {}) {
+  const fs = require('fs');
+  try { if (JSON.parse(fs.readFileSync(watchFile(id, dir), 'utf8')).pid === pid) fs.unlinkSync(watchFile(id, dir)); } catch { /* gone already */ }
+}
+
 function arg(argv, name, dflt) {
   const i = argv.indexOf(name);
   if (i >= 0 && i + 1 < argv.length) return argv[i + 1];
@@ -146,7 +192,7 @@ function usage() {
   return [
     'child-idle-watch.js (BRO-6717): wake a parent session when its child goes idle.',
     '  watch --session <id> [--minutes 25]   timer; run it with run_in_background (timeout 7200000); its exit wakes you',
-    '  check --from-json <file> [--reported-at <iso>] [--idle-minutes 30] [--now <iso>]',
+    '  check --from-json <file> [--session <id>] [--reported-at <iso>] [--idle-minutes 30] [--now <iso>]',
     '                                        decide from a saved get_session result: rearm | nudge | restart | done',
   ].join('\n');
 }
@@ -161,9 +207,15 @@ async function main(argv) {
       process.stderr.write('watch needs --session <id> and --minutes in 1..115 (background Bash caps at 2h)\n');
       return 2;
     }
+    const claim = claimWatch(session, { until: Date.now() + minutes * 60000 });
+    if (!claim.ok && claim.live) {
+      process.stdout.write(`ALREADY-WATCHED ${session} by pid ${claim.live.pid} until ${claim.live.until}: that watch wakes you then; do not start another (BRO-8239)\n`);
+      return 0;
+    }
     await new Promise((r) => setTimeout(r, minutes * 60000));
+    releaseWatch(session); // before the wake text, so an immediate rearm is not refused by this exiting watcher
     process.stdout.write(`CHILD-IDLE-WATCH WAKE ${session} after ${minutes} min: call get_session ${session}, save the JSON, then run\n`
-      + `  node scripts/lib/child-idle-watch.js check --from-json <file>\n`
+      + `  node scripts/lib/child-idle-watch.js check --from-json <file> --session ${session}\n`
       + `  (a rearm runs watch again with Bash run_in_background and timeout 7200000)\n`);
     return 0;
   }
@@ -177,6 +229,8 @@ async function main(argv) {
       idleMinutes: Number(arg(argv, '--idle-minutes', DEFAULT_IDLE_MINUTES)),
       reportedAt: arg(argv, '--reported-at', undefined),
     });
+    const live = arg(argv, '--session', '') && res.action === 'rearm' ? liveWatcher(arg(argv, '--session', '')) : null;
+    if (live) Object.assign(res, { alreadyWatched: { pid: live.pid, until: live.until }, reason: `${res.reason}; a watch for it is already live until ${live.until}, do not start another (BRO-8239)` });
     process.stdout.write(JSON.stringify(res) + '\n');
     return 0;
   }
@@ -184,7 +238,7 @@ async function main(argv) {
   return cmd ? 2 : 0;
 }
 
-module.exports = { decide, findField, normBucket, DEFAULT_IDLE_MINUTES, SAFE_WATCH_MINUTES };
+module.exports = { decide, findField, normBucket, liveWatcher, claimWatch, releaseWatch, DEFAULT_IDLE_MINUTES, SAFE_WATCH_MINUTES };
 
 if (require.main === module) {
   main(process.argv.slice(2)).then((c) => { process.exitCode = c; }, (e) => {

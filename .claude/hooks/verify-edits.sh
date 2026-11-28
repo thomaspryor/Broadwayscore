@@ -424,6 +424,24 @@ def _session_has_card():
             return True
     return False
 
+# BRO-8239: a turn that only reads, get_sessions or comments on a card is not new work, so earlier work (blocked or NO-CARD'd
+# at its own Stop) does not re-block it once the session names a card (first prompt, own earlier reply, a linear-* command).
+_LIGHT_TOOLS = ('Read', 'Grep', 'Glob', 'ToolSearch', 'TaskGet', 'TaskList', 'TaskOutput')
+_LIGHT_SEG_RE = re.compile(r'\s*(?:(?:cat|ls|grep|rg|head|tail|wc|jq|date|echo)\b|git\s+(?:status|log|diff|show|fetch|ls-remote|rev-parse)\b|gh\s+(?:run|pr)\s+(?:view|list)\b'
+                           r'|node\s+(?:\S*/)?scripts/(?:linear-brain\.js\s+(?:comment|get|show|list)\b|check-prod-deploy\.js|board-report\.js))')
+def _light_tool(name, inp):
+    cmd = (inp.get('command') or '') if isinstance(inp, dict) else ''
+    if name != 'Bash':
+        return name in _LIGHT_TOOLS or str(name).endswith('__get_session')
+    cmd = re.sub(r'\s*(?:2>&1|[12]?>\s*/dev/null)', '', _strip_heredocs(cmd))
+    return not re.search(r'[`>]|\$\(|<\(', cmd) and all(_LIGHT_SEG_RE.match(sg) for sg in re.split(r'[&|;\n]+', cmd) if sg.strip())
+def _nocard_light_turn():
+    ts = _turn_starts[-1] if _turn_starts else 0
+    if not all(_light_tool(p[0], p[1]) for k, p in events[ts:] if k == 'tool'):
+        return False
+    said = [p for k, p in events[:ts] if k == 'text'] + [p[1].get('command') or '' for k, p in events if k == 'tool' and p[0] == 'Bash' and isinstance(p[1], dict) and re.search(r'linear-(?:brain|session)\.js', p[1].get('command') or '')]
+    return any(re.search(r'\bBRO-\d+\b', t) for t in [re.sub(r'<system-reminder>.*?</system-reminder>', '', (_user_prompts or [''])[0], flags=re.S)] + said)
+
 # Owner-asks the PR gate blocks (the owner never merges OR reviews). Merge-asks
 # since 2026-09-27; review-asks since 2026-09-28 (session 01Fn6CXk parked PR
 # #947 ~11h on "NOT SAFE TO EXIT — PR still open and unreviewed"). A match
@@ -571,6 +589,7 @@ def _is_owner_record(r, text):
     return bool(t) and not t.startswith(('<', '[Request interrupted', 'This session is being continued'))
 
 events = []  # list of (kind, payload)
+_turn_starts = []  # events index of each non-meta user prompt or idle-time notice (NOCARD light turn)
 _user_prompts = []  # early user texts (CHILDWAIT: worker BUDGET: line)
 _report_back_prompt = []  # CHILDSTALL: an early prompt has a REPORT-BACK: line (full text, not the 6000-char copy)
 def _rb_child(t):  # a create_session child prompt: REPORT-BACK: and BUDGET: lines (CHILDSTALL)
@@ -637,6 +656,7 @@ try:
                 # by the in-flight gate only) so the existing user_text
                 # consumers keep seeing exactly what they saw before.
                 if isinstance(content, str):
+                    _turn_starts += [] if r.get('isMeta') else [len(events)]  # NOCARD light turn (BRO-8239); Stop feedback is isMeta
                     events.append(('user_notice', content))
                     if len(_user_prompts) < 6 and not r.get('isMeta'):
                         _user_prompts.append(content[:6000])
@@ -662,6 +682,7 @@ try:
                 if _list_text and len(_user_prompts) < 6 and not r.get('isMeta'):
                     _user_prompts.append(_list_text[:6000])
                     _report_back_prompt += [_list_text if _rb_child(_list_text) else '']
+                _turn_starts += [len(events)] if _list_text and not r.get('isMeta') else []
                 if _list_text and _is_owner_record(r, _list_text):
                     events.append(('user_human', ''))
                 for c in content:
@@ -1304,6 +1325,7 @@ if os.environ.get('CARD_GATE_DISABLE', '0') != '1':
         if (_did_work_nc and 'NO-VERIFY:' not in _nc_msg
                 and not re.search(r'NO-CARD:\s*\S.{9,}', _nc_msg)
                 and not _session_has_card()
+                and not _nocard_light_turn()
                 and _board_gate_enforced()):
             _ve_block("NOCARD")
     except Exception:

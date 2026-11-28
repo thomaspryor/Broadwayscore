@@ -1193,6 +1193,33 @@ test('NOCARD false-positive guard: a read-only turn needs no card → ALLOWED', 
   assertAllowed(r, 'answering a question is not work');
 });
 
+// BRO-8239: an orchestrator that did work earlier is not re-blocked on a later turn that only
+// checks a child or comments on its card, once the session names a card.
+const GET_SESSION = toolUse('mcp__claude-code-remote__get_session', { session_id: 'session_01ABCDEFGHIJKL' }, '{"status_bucket":"WORKING"}');
+const LB_COMMENT = toolUse('Bash', { command: 'node scripts/linear-brain.js comment BRO-8239 "child 1 landed" 2>&1 | tail -2' }, 'commented');
+const OWNER_NEXT = { _notice: 'how are the workers doing?', _extra: { origin: { kind: 'human' } } };
+const LIGHT_CLOSE = 'Both workers are still running.\n\nKEEP OPEN — waiting on the two child sessions.';
+test('NOCARD light turn: earlier push, this turn only get_session + a card comment, card named → ALLOWED (BRO-8239)', skipNoRepoHook, () => {
+  const named = { userText: 'Orchestrate BRO-8239: start two workers and follow them.' };
+  assertAllowed(runCard('nocard-light', [GIT_PUSH, OWNER_NEXT, GET_SESSION, LB_COMMENT], LIGHT_CLOSE, named), 'a check-in turn is not new work');
+  const report = { _notice: '<cross-session-message from="session_01X">REPORT-BACK BRO-1: landed</cross-session-message>' };
+  assertAllowed(runCard('nocard-light-notice', [GIT_PUSH, report, GET_SESSION, toolUse('Read', { file_path: 'x.md' })], LIGHT_CLOSE, named), 'an idle-time report-back starts the turn too');
+  // Named only in the session's own earlier reply.
+  const said = { type: 'text', text: 'Working card BRO-8239 now.' };
+  assertAllowed(runCard('nocard-light-said', [said, GIT_PUSH, OWNER_NEXT, toolUse('Bash', { command: 'git status' })], LIGHT_CLOSE, { userText: 'start the workers' }), 'an earlier reply of its own names the card');
+});
+test('NOCARD light turn guards: work this turn, no card named, a banner-only card, Stop feedback or a compound command → BLOCKED (BRO-8239)', skipNoRepoHook, () => {
+  const named = { userText: 'Orchestrate BRO-8239: start two workers and follow them.' };
+  assertBlocked(runCard('nocard-light-edit', [GIT_PUSH, OWNER_NEXT, GET_SESSION, QUALIFYING_EDIT], LIGHT_CLOSE, named), 'an edit this turn is work');
+  assertBlocked(runCard('nocard-light-unnamed', [GIT_PUSH, OWNER_NEXT, GET_SESSION, toolUse('Bash', { command: 'git log -1' })], LIGHT_CLOSE, { userText: 'start the workers' }), 'no card named anywhere');
+  assertBlocked(runCard('nocard-light-banner', [GIT_PUSH, OWNER_NEXT, GET_SESSION], LIGHT_CLOSE, { userText: '<system-reminder>STALE CODE CHECKOUT (BRO-2663)</system-reminder>start the workers' }), 'an injected banner BRO-N does not name the card');
+  const feedback = { _notice: 'Stop hook feedback: BLOCKED NOCARD', _isMeta: true };
+  assertBlocked(runCard('nocard-light-meta', [GIT_PUSH, feedback, GET_SESSION], LIGHT_CLOSE, named), 'Stop-hook feedback does not start a new turn');
+  for (const command of ['cat a.txt; node scripts/fix-data.js', 'cat a.txt & node scripts/fix-data.js', 'ls\nnode scripts/fix-data.js', 'echo hi > src/x.ts', 'node scripts/linear-brain.js update BRO-8239 --state Done', 'grep x $(node scripts/run.js)']) {
+    assertBlocked(runCard('nocard-light-cmd', [GIT_PUSH, OWNER_NEXT, toolUse('Bash', { command })], LIGHT_CLOSE, named), command);
+  }
+});
+
 // ─────────────────── wrap-up close-out on Linear (2026-09-28) ───────────────
 
 test('NOWRAPUP: a linear-brain Done that the done-gate REFUSED is not a close-out → BLOCKED', skipNoRepoHook, () => {
