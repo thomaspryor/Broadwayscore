@@ -38,7 +38,26 @@ async function main() {
     issues.push(...batch);
     if (batch.length < 100) break;
   }
-  const parked = selectParkedIssues(issues).sort((a, b) => a.number - b.number).slice(0, limit);
+  // BRO-8260: finish already-fixed closes the auto-fix run could not do (its
+  // close step is soft-fail and the ledger never retries). Never card these.
+  const Proposal = require('./lib/feedback-proposal.js');
+  const stranded = Proposal.selectStrandedAlreadyFixed(issues, Proposal.loadLedger());
+  const strandedNums = new Set(stranded.map((i) => i.number));
+  if (stranded.length) console.log(`stranded already-fixed issues to close: ${stranded.map((i) => `#${i.number}`).join(', ')}`);
+  for (const issue of stranded) {
+    if (dryRun) { console.log(`  would close #${issue.number}`); continue; }
+    try {
+      const comments = await gh('GET', `/repos/${REPO}/issues/${issue.number}/comments?per_page=100`);
+      if (!Proposal.hasAlreadyFixedComment(comments)) {
+        await gh('POST', `/repos/${REPO}/issues/${issue.number}/comments`, { body: Proposal.buildAlreadyFixedComment() });
+      }
+      await gh('PATCH', `/repos/${REPO}/issues/${issue.number}`, { state: 'closed', state_reason: 'completed' });
+      console.log(`  closed #${issue.number} (already fixed)`);
+    } catch (e) {
+      console.error(`::warning::#${issue.number}: could not close already-fixed issue: ${e.message}`);
+    }
+  }
+  const parked = selectParkedIssues(issues.filter((i) => !strandedNums.has(i.number))).sort((a, b) => a.number - b.number).slice(0, limit);
   console.log(`parked feedback issues needing a card: ${parked.length}`);
   for (const issue of parked) {
     const card = buildParkedCard(issue);

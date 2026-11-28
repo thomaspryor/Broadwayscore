@@ -33,3 +33,33 @@ test('proposal ledger merge preserves independently sent issues as whole entries
     assert.equal(proposal.decideSend(merged, keys[1]).reason, 'already-sent');
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
+
+// BRO-8260: an already-fixed issue whose soft-fail close step failed stayed open forever.
+test('stranded already-fixed sweep selects only open, non-reopened issues the ledger marked already-fixed', () => {
+  const ledger = { version: 1, entries: {
+    '10': { proposalSentAt: '2026-11-20T00:00:00Z', kind: 'already-fixed' },
+    '11': { proposalSentAt: '2026-11-20T00:00:00Z', kind: 'needs-fix' },
+    '12': { proposalSentAt: '2026-11-20T00:00:00Z', kind: 'already-fixed' },
+    '13': { proposalSentAt: '2026-11-20T00:00:00Z', kind: 'already-fixed' },
+    '14': { proposalSentAt: '2026-11-20T00:00:00Z', kind: 'already-fixed' },
+  } };
+  const issues = [
+    { number: 10, state: 'open', state_reason: null },
+    { number: 11, state: 'open' },
+    { number: 12, state: 'open', state_reason: 'reopened' },
+    { number: 13, state: 'open', pull_request: {} },
+    { number: 14, state: 'closed' },
+    { number: 15, state: 'open' },
+  ];
+  assert.deepEqual(proposal.selectStrandedAlreadyFixed(issues, ledger).map((i) => i.number), [10]);
+  assert.deepEqual(proposal.selectStrandedAlreadyFixed(issues, { entries: {} }), []);
+});
+
+test('sweep comment dedupe recognises the workflow close comment', () => {
+  const body = proposal.buildAlreadyFixedComment(['https://broadwayscorecard.com/show/x']);
+  assert.ok(proposal.hasAlreadyFixedComment([{ body: 'Work card filed' }, { body }]));
+  assert.ok(!proposal.hasAlreadyFixedComment([{ body: 'Work card filed' }]));
+  // The workflow posts its own copy of this comment; the sweep's dedupe keys on the heading.
+  const wf = readFileSync('.github/workflows/auto-fix-feedback-bug.yml', 'utf8');
+  assert.ok(wf.includes(`'${proposal.ALREADY_FIXED_HEADING}'`), 'auto-fix close step comment heading drifted from ALREADY_FIXED_HEADING');
+});
