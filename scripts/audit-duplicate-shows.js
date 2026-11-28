@@ -237,7 +237,7 @@ function main() {
     const a = shows.find((s) => s.id === f.a);
     const b = shows.find((s) => s.id === f.b);
     rawClusters.push({
-      key: `leading-title@${f.venue}`,
+      key: `leading-title@${f.house}`,
       pairs: [{
         a: { id: f.a, venue: a?.venue, opening: a?.openingDate, reviews: reviewFileCount(f.a) },
         b: { id: f.b, venue: b?.venue, opening: b?.openingDate, reviews: reviewFileCount(f.b) },
