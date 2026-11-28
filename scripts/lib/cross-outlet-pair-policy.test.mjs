@@ -70,9 +70,12 @@ test('sameCritic: spelling variants, slug-style names, middle initials, blanks',
 
 test('bylineless file hides only at near-identical similarity', () => {
   const named = { outletId: 'artsdesk', outlet: 'theartsdesk', criticName: 'Aleks Sierz', text: 'x' };
-  const blank = { outletId: 'sierz-co-uk', outlet: 'Sierz', criticName: 'Unknown', text: 'x' };
+  const blank = { outletId: 'whatsonstage', outlet: 'WhatsOnStage', criticName: 'Unknown', text: 'x' };
   assert.equal(classifyCrossOutletPair(named, blank, { similarity: 85 }).action, 'flag');
   assert.equal(classifyCrossOutletPair(named, blank, { similarity: 58 }).action, 'review');
+  // BRO-7207: sierz-co-uk reprints The Arts Desk (publishing group), so a related pair flags at 58 too.
+  const reprint = { outletId: 'sierz-co-uk', outlet: 'Sierz', criticName: 'Unknown', text: 'x' };
+  assert.equal(classifyCrossOutletPair(named, reprint, { similarity: 58 }).action, 'flag');
 });
 
 test('review fixes: wire subscribers are not related to each other, only to the wire', () => {
