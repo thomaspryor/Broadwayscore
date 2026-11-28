@@ -44,7 +44,7 @@ async function prefetchDiscoveredArticle(url, opts = {}) {
   const { extractArticleTextFromUrl, extractPublishDate } = require('./article-extractor');
   const { extractByline } = require('./byline-extraction');
   const { stripTrailingJunk } = require('./text-cleaning');
-  const { isolateMultiShowSectionForShowId } = require('./multi-show-section-extract');
+  const { isolateMultiShowSectionForShowId, sectionCriticFor } = require('./multi-show-section-extract');
   const { resolveCritic } = require('./resolve-critic');
   let html;
   try {
@@ -58,11 +58,13 @@ async function prefetchDiscoveredArticle(url, opts = {}) {
   if (!html || typeof html !== 'string' || html.length < 500) return empty;
 
   let text = '';
+  let sectionCritic = { creditsSection: false, criticName: null };
   try {
     text = stripTrailingJunk(extractArticleTextFromUrl(html, url, opts.criticName || null) || '') || '';
     if (text && opts.showId) {
       const iso = isolateMultiShowSectionForShowId(url, text, opts.showId);
       text = iso.action === 'refuse' ? '' : (iso.text || '');
+      sectionCritic = sectionCriticFor(url, iso, null);
     }
   } catch { text = ''; }
   let publishDate = null;
@@ -73,8 +75,10 @@ async function prefetchDiscoveredArticle(url, opts = {}) {
   const hasBody = text.length >= MIN_BODY_CHARS;
   const serpName = opts.criticName && opts.criticName !== 'Unknown' ? opts.criticName : null;
   const resolved = resolveCritic({ criticArg: serpName, byline, outletEntry: outletEntryFor(opts.outletId) });
-  const criticName = resolved === 'Unknown' ? null : resolved;
+  // A Nine wrap item is credited to the section's own byline; null is Unknown, never the page byline.
+  const criticName = sectionCritic.creditsSection ? sectionCritic.criticName : (resolved === 'Unknown' ? null : resolved);
   return {
+    ...(sectionCritic.creditsSection ? { criticOverride: true } : {}),
     fullText: hasBody ? text : null,
     // Carry raw evidence to the canonical writer before furniture is lost.
     ...(require('./paywall-detector').detectSubscriberPaywall(html, url).detected ? { html } : {}),
@@ -86,7 +90,8 @@ async function prefetchDiscoveredArticle(url, opts = {}) {
 /** Merge a prefetch result into the createOrMergeReviewFile input. */
 function applyPrefetch(input, pre) {
   const out = { ...input, fields: { ...input.fields } };
-  if (pre && pre.criticName) out.criticName = pre.criticName;
+  if (pre && pre.criticOverride) out.criticName = pre.criticName || 'Unknown';
+  else if (pre && pre.criticName) out.criticName = pre.criticName;
   if (pre && pre.fullText) out.fields.fullText = pre.fullText;
   if (pre && pre.html) out.html = pre.html;
   if (pre && pre.publishDate) out.fields.publishDate = pre.publishDate;
