@@ -14,7 +14,11 @@ const { getRegionalCountry } = require('./lib/market-label.js');
 const { getTier } = require('./lib/outlet-tiers.js');
 
 const ROOT = path.join(__dirname, '..');
-const arg = (n) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || '').split('=')[1];
+const arg = (n) => {
+  const i = process.argv.findIndex((a) => a === `--${n}` || a.startsWith(`--${n}=`));
+  if (i < 0) return undefined;
+  return process.argv[i].includes('=') ? process.argv[i].split('=').slice(1).join('=') : process.argv[i + 1];
+};
 const only = arg('show');
 const asJson = process.argv.includes('--json');
 
@@ -25,18 +29,19 @@ const au = list.filter((s) => s.category === 'regional' && getRegionalCountry(s.
 const out = [];
 for (const s of au) {
   let cs = null;
-  try { cs = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/shows', `${s.id}.json`), 'utf8')).cs ?? null; } catch {}
+  try { cs = JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/shows', `${s.id}.json`), 'utf8')).cs ?? null; } catch (e) { if (e.code !== 'ENOENT') console.error(`slim read failed for ${s.id}: ${e.message}`); }
   const dir = path.join(ROOT, 'data/review-texts', s.id);
   const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.json')) : [];
   const reviews = files.map((f) => {
     let j = {};
     let parseError = false;
     try { j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { parseError = true; }
+    if (!j || typeof j !== 'object') { j = {}; parseError = true; }
     const oid = typeof j.outletId === 'string' ? j.outletId : '';
     return {
       file: f, outletId: oid, tier: oid ? getTier(oid, { showCategory: 'regional' }) : null,
       assigned: typeof j.assignedScore === 'number' ? j.assignedScore : null,
-      stars: typeof j.originalRating === 'string' ? j.originalRating : null,
+      stars: (typeof j.originalRating === 'string' || typeof j.originalRating === 'number') ? String(j.originalRating) : null,
       flags: [parseError && 'PARSE-ERROR', ...['wrongProduction', 'wrongShow', 'isRoundupArticle', 'excludeFromScoring'].filter((k) => j[k])].filter(Boolean),
     };
   });
