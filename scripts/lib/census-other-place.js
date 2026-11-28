@@ -294,4 +294,84 @@ function createCensusProductionGuard({ reviews, normalizeUrl, loadShowFiles = ()
   };
 }
 
-module.exports = { censusOtherPlaceSignal, createCensusProductionGuard, urlNamesOtherNyHouse, NY_HOUSE_GROUPS, NY_OTHER_HOUSES, OTHER_HOUSES, CITIES, NY_MARKERS, NY_COVERAGE_MIN };
+// BRO-8440: the same place reading for a review FILE's url, for either home market.
+// London's own houses (and the generic "theatre-royal") are this market's venues, so a
+// London show only counts houses and cities outside London. Bath and Oxford stay out for
+// the reason CITIES gives (common words, surnames); Bath is also the usual pre-transfer
+// tryout house, so its reviews are the same staging.
+const LONDON_AREA_HOUSES = new Set([
+  'duke-of-yorks', 'richmond-theatre', 'lyric-hammersmith', 'royal-court', 'almeida', 'donmar', 'young-vic',
+  'old-vic', 'bridge-theatre', 'hampstead-theatre', 'menier-chocolate-factory', 'barbican', 'southwark-playhouse',
+  'kiln-theatre', 'orange-tree-theatre', 'shakespeares-globe', 'sam-wanamaker', 'national-theatre', 'theatre-royal',
+  'london-coliseum',
+]);
+const UK_REGIONAL_HOUSES = [
+  'lowry', 'birmingham-rep', 'sheffield-theatres', 'liverpool-everyman', 'royal-lyceum', 'citizens-theatre',
+  'theatr-clwyd', 'nottingham-playhouse', 'northern-stage', 'hull-truck', 'curve-leicester', 'mayflower-theatre',
+  // "lowry", not "the-lowry": a title's "the" is stripped before matching (Jack and The Beanstalk).
+];
+const UK_REGIONAL_CITIES = [
+  'norwich', 'newcastle', 'newcastle-upon-tyne', 'salford', 'plymouth', 'southampton', 'leicester', 'coventry',
+  'aberdeen', 'dundee', 'swansea', 'bradford', 'blackpool', 'bournemouth', 'canterbury', 'cheltenham', 'ipswich',
+  'northampton', 'derby', 'sunderland', 'inverness', 'stoke-on-trent', 'milton-keynes', 'wolverhampton', 'exeter',
+  'truro', 'harrogate', 'scarborough', 'darlington', 'brighton',
+];
+const LONDON_MARKERS = ['london', 'west-end', 'westend'];
+// A touring staging: only as the slug's last words ("operation-mincemeat-touring").
+const TOUR_TAILS = ['touring', 'uk-tour', 'national-tour'];
+
+function urlPlaceLists(market) {
+  if (market === 'london') {
+    return {
+      houses: [...OTHER_HOUSES.filter((h) => !LONDON_AREA_HOUSES.has(h)), ...UK_REGIONAL_HOUSES],
+      cities: [...CITIES.filter((c) => !LONDON_MARKERS.includes(c)), ...UK_REGIONAL_CITIES],
+      home: LONDON_MARKERS,
+    };
+  }
+  if (market === 'nyc') return { houses: [...OTHER_HOUSES, ...UK_REGIONAL_HOUSES], cities: [...CITIES, ...UK_REGIONAL_CITIES], home: NY_MARKERS };
+  return null;
+}
+
+/**
+ * The place a review url's path stages the show in, when that place is outside the
+ * show's home market and is not its venue; else null. Reads only the path, with the
+ * census matcher's rules: a city counts as a whole path segment, next to a staging
+ * word (cityStaged), or as the last words of a "review-..." slug
+ * ("review-blue-man-holiday-chicago"); a house counts anywhere. The show's own title
+ * words never count, and a path naming the home market or the venue counts for nothing.
+ * @param {string} url
+ * @param {{title?: string, venue?: string|{name?: string}}} show
+ * @param {'nyc'|'london'} market
+ * @returns {string|null} the place, hyphenated ("newcastle", "birmingham-rep")
+ */
+function urlStagedElsewhere(url, show, market) {
+  const lists = urlPlaceLists(market);
+  const path = pathOf(url);
+  if (!lists || path == null || !show) return null;
+  const titleSet = new Set(tokensOf(show.title));
+  // A file extension is not a slug word ("...-touring.html").
+  const rawSegments = path.split('/').filter(Boolean).map((s) => tokensOf(s.replace(/\.(?:s?html?|php|aspx?)$/i, '')));
+  const segments = rawSegments.map((seg) => seg.filter((t) => !titleSet.has(t)));
+  const raw = rawSegments.flat();
+  const venueName = typeof show.venue === 'object' && show.venue ? show.venue.name : show.venue;
+  const venueFull = tokensOf(String(venueName || '').replace(/^the\s+/i, '')).join('-');
+  const venueStem = tokensOf(String(venueName || '').replace(/^the\s+/i, '').replace(/\s+theat(?:re|er)$/i, '')).join('-');
+  // Full name ("polka-theatre") or its distinctive stem ("lyric-hammersmith"); a short stem
+  // ("polka", "bush") only counts with its house noun, which the full name covers.
+  const namesVenue = (venueFull.replace(/-/g, '').length >= 6 && hasRun(raw, venueFull))
+    || (venueStem.replace(/-/g, '').length >= 6 && hasRun(raw, venueStem));
+  // Home-market words read the title-stripped slug: "London Road" must not veto its own regional review.
+  if (namesVenue || lists.home.some((m) => segments.some((seg) => hasRun(seg, m)))) return null;
+
+  const all = segments.flat();
+  const house = lists.houses.find((h) => hasRun(all, h));
+  if (house) return house;
+  const endsWith = (seg, phrase) => { const n = phrase.split('-').length; return seg.length > n && seg.slice(-n).join('-') === phrase; };
+  const city = lists.cities.find((c) => segments.some((seg) => seg.join('-') === c
+    || (seg[0] === 'review' && endsWith(seg, c))) || cityStaged(all, c));
+  if (city) return city;
+  // Tour tails read the unstripped segment: the title words are what precede them.
+  return TOUR_TAILS.find((t) => rawSegments.some((seg) => endsWith(seg, t))) || null;
+}
+
+module.exports = { urlStagedElsewhere, censusOtherPlaceSignal, createCensusProductionGuard, urlNamesOtherNyHouse, NY_HOUSE_GROUPS, NY_OTHER_HOUSES, OTHER_HOUSES, CITIES, NY_MARKERS, NY_COVERAGE_MIN };

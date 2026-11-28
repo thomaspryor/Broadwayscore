@@ -316,7 +316,41 @@ function detectOtherProductionUrl(review, show, opts = {}) {
   // review, url 2017-09-24, dated 2017-04-14). Reused from BRO-4432 class G.
   const { urlDateContradictionReason } = require('./older-production-live-guard');
   const g = urlDateContradictionReason(review, show);
-  return g ? { signal: 'url-date-contradiction', detail: g } : null;
+  if (g) return { signal: 'url-date-contradiction', detail: g };
+  return verifiedPlaceSignal(review, show);
+}
+
+/**
+ * Corroborated tier (BRO-8440), kept out of URL_SIGNALS / INGEST_SIGNALS / the
+ * reviews.json audit because it reads the content verifier and publishDate, not
+ * the url alone. Two independent witnesses must agree: the verifier said "wrong
+ * production" (any confidence) AND the url path stages the show somewhere outside
+ * its home market and venue (census-other-place's matcher). Low-confidence
+ * verdicts include applyTemporalOverrides' "near opening, likely correct" downgrade,
+ * which reads only the date; seven of the ten leaks this caught on 2026-11-28 carried
+ * it (Birmingham Rep's Peter Pan on Polka's, Norwich and Salford Cinderellas on the
+ * Lyric Hammersmith panto). The url place is the evidence that downgrade never saw.
+ * Fires only for a review published on/after the production began (a pre-transfer
+ * tryout review predates it), outside any declared priorRuns / tourLegs window, on a
+ * verdict that still describes the stored body, when the body does not name most of
+ * this show's listed cast. Missing either date: no signal.
+ */
+function verifiedPlaceSignal(review, show) {
+  const cv = review.contentVerification;
+  if (!cv || cv.wrongProduction !== true || !review.url) return null;
+  const start = productionStart(show);
+  const pd = require('./date-utils').toDateMs(review.publishDate);
+  if (!start || !Number.isFinite(pd) || pd < start.ms) return null;
+  // The same carve-outs the rebuild's CV promotion applies (rebuild-all-reviews.js, CV pre-pass):
+  // a declared priorRuns / tourLegs window covering the date, a verdict on an older copy of the
+  // body (refetched or re-hashed since), and a body naming most of THIS show's listed cast.
+  const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+  if (isWithinPriorRun(review.publishDate, show.priorRuns) || isWithinTourLeg(review.publishDate, show.tourLegs)) return null;
+  if (require('./review-guards').computeCvIsStale(review)) return null;
+  if (review.fullText && require('./own-show-text-evidence').ownShowTextEvidence(review.fullText, show).strong) return null;
+  const place = require('./census-other-place').urlStagedElsewhere(review.url, show, showMarket(show));
+  if (!place) return null;
+  return { signal: 'url-place-verified', detail: `content verifier says another production and the url stages it at ${place.replace(/-/g, ' ')}` };
 }
 
 /**
