@@ -34,6 +34,14 @@ function validateOverrides(doc) {
     for (const k of keys) if (typeof was[k] !== 'string') errs.push(`${at}: was.${k} required`);
     if (set.start && set.end && set.end < set.start) errs.push(`${at}: end before start`);
   });
+  // layoffAllowances: a tour that paused longer than the fetcher's 365-day
+  // new-company cutoff and resumed under the same title (BRO-8456).
+  (doc.layoffAllowances || []).forEach((a, i) => {
+    const at = `layoffAllowances[${i}]`;
+    if (!a || !a.tourId) errs.push(`${at}: tourId required`);
+    if (!a || !Number.isInteger(a.maxLayoffDays) || a.maxLayoffDays < 366 || a.maxLayoffDays > 1500) errs.push(`${at}: maxLayoffDays must be an integer 366-1500`);
+    if (!a || !a.reason) errs.push(`${at}: reason required`);
+  });
   // No two overrides may target the same stop or chain (one's result = another's selector).
   const seen = new Map();
   doc.overrides.forEach((o, i) => {
