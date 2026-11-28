@@ -360,6 +360,35 @@
     "queuedAt": "2026-11-28T15:29:51.717Z"
   },
   {
+    "conditionKey": "live-data-test:tests/unit/id-year-drift.test.mjs::real shows.json: zero un-reviewed hits",
+    "title": "Live-data test failing: real shows.json: zero un-reviewed hits (tests/unit/id-year-drift.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"real shows.json: zero un-reviewed hits\" in tests/unit/id-year-drift.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'life-and-times-of-michael-k-regional-2027'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/id-year-drift.test.mjs::real shows.json: zero un-reviewed hits",
+    "fields": [],
+    "queuedAt": "2026-11-28T15:45:57.259Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/trace-excludes-data-dirs-live-data.test.mjs::real detect-route graph stays under the function size budget (when data is present)",
+    "title": "Live-data test failing: real detect-route graph stays under the function size budget (when data is present) (tests/unit/trace-excludes-data-dirs-live-data.test.mjs) (still open — BRO-8344)",
+    "description": "Still firing after 6 notifications since it was filed. Tracked at BRO-8344.\n\ncheck-corpus-drift.yml \"Live-data assertions\" step: node:test \"real detect-route graph stays under the function size budget (when data is present)\" in tests/unit/trace-excludes-data-dirs-live-data.test.mjs is red against the live corpus.\n\ndetect route traces 653MB of repo files (budget 200MB); a data/ tree is leaking in",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-8344",
+    "fields": [],
+    "queuedAt": "2026-11-28T15:45:57.407Z"
+  },
+  {
     "conditionKey": "land:land/codex-bro-8322",
     "title": "Landing blocked: lint-workflows red on land/codex-bro-8322",
     "description": "land.yml did not land land/codex-bro-8322: the lint-workflows gate went red at 11f1dbbf95. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46158945398",
