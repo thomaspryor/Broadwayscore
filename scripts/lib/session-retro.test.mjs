@@ -342,3 +342,13 @@ test('BRO-7910: --record writes webSessionId (session_01 form) from CLAUDE_CODE_
   assert.equal(rows[0].webSessionId, 'session_01XYZ');
   assert.equal(rows[1].webSessionId, null);
 });
+
+test('BRO-8328: the launcher-owned git-check hook is recorded but is never a rollup signal or friction card', () => {
+  assert.ok(R.signals({ hookBlocks: { 'git-check': 3, '[VE:RCOV]': 1 } , landRefusals: [], bypasses: {}, triggers: [], repeats: [], longWaits: [], restarts: 0, compactions: 0 }).every((s) => s !== 'hook:git-check'));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retro-'));
+  const ledger = path.join(dir, 'l.jsonl');
+  const row = (i) => JSON.stringify({ sessionId: 's' + i, recordedAt: new Date().toISOString(), signals: ['hook:git-check', 'hook:[VE:RCOV]'] });
+  fs.writeFileSync(ledger, [1, 2, 3].map(row).join('\n') + '\n');
+  const top = R.rollup(7, false, { ledger, log: () => {} });
+  assert.deepEqual(top.map((t) => t[0]), ['hook:[VE:RCOV]']);
+});

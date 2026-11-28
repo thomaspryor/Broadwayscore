@@ -22,7 +22,9 @@ const LEDGER = process.env.SESSION_RETRO_LEDGER || path.join(__dirname, '..', '.
 // (2h wall clock, 3 hook blocks) pair, so the 'fix or card every finding' ask was noise. activeHours is
 // wall clock minus owner idle gaps over gapMin after the first edit (a long CI wait is friction, not idle); a legacy row has only wall clock.
 const T = { activeHours: 4, hookBlocks: 15, restarts: 1, bypasses: 2, gapMin: 10, repeats: 3 };
-const GENERIC_HOOK = /^(hook|hook:hook|unclassified)$/;
+// git-check is the launcher's own stop hook (/root/.claude/stop-hook-git-check.sh, outside this repo): nothing here can fix it, so it is
+// recorded in hookBlocks but never a rollup signal or a friction card (BRO-8328; two workers found the cause is external).
+const GENERIC_HOOK = /^(hook|hook:hook|unclassified|git-check)$/;
 
 // BRO-7749: the advisory Stop gates log each decision to <hook checkout>/.cache/<log>.log, which a cloud container loses
 // when it is reclaimed, so their advisory week left no data. --record (run in the same container, before it goes) folds
