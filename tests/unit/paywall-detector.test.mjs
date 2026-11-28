@@ -146,7 +146,7 @@ test('BRO-8264: walled body is skipped but independent excerpts still score', as
 test('BRO-8418: stamp-coverage audit counts stamped POS files and flags other outlets', async () => {
   const { createRequire } = await import('node:module');
   const req = createRequire(import.meta.url);
-  const { summarizeStamps } = req('../../scripts/audit-paywall-stamp-coverage');
+  const { summarizeStamps } = req('../../scripts/check-paywall-stamp-coverage');
   const data = { fullText: teaser, url: pagesUrl };
   paywall.stampSubscriberPaywall(data, paidHtml, pagesUrl, teaser);
   const clean = { fullText: teaser, url: pagesUrl };

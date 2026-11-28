@@ -7,7 +7,7 @@
  * files are stamped (and still hash-bound to their text) and whether any other
  * outlet was stamped by mistake.
  *
- * Usage: node scripts/audit-paywall-stamp-coverage.js [reviewTextsDir] [--strict]
+ * Usage: node scripts/check-paywall-stamp-coverage.js [reviewTextsDir] [--strict]
  *   --strict exits 1 when another outlet carries a subscriber-paywall stamp.
  *   A stamp that no longer matches its text is a released recovery, not an error.
  */
