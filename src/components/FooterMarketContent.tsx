@@ -69,6 +69,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/browse/best-off-west-end-plays" className="hover:text-white transition-colors">Best OWE Plays</Link></li>
               <li><Link href="/browse/upcoming-off-west-end-shows" className="hover:text-white transition-colors">Upcoming OWE</Link></li>
               {featureFlags.regional && <li><Link href="/browse/beyond-london" className="hover:text-white transition-colors">UK Regional Theatre</Link></li>}
+              {featureFlags.regional && <li><Link href="/browse/australian-theatre" className="hover:text-white transition-colors">Australian Theatre</Link></li>}
             </ul>
           </div>
           <div>
@@ -100,6 +101,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/browse/longest-running-broadway-shows" className="hover:text-white transition-colors">Longest-Running</Link></li>
               {featureFlags.tours && <li><Link href="/browse/broadway-national-tours" className="hover:text-white transition-colors">National Tours</Link></li>}
               {featureFlags.regional && <li><Link href="/browse/beyond-london" className="hover:text-white transition-colors">UK Regional Theatre</Link></li>}
+              {featureFlags.regional && <li><Link href="/browse/australian-theatre" className="hover:text-white transition-colors">Australian Theatre</Link></li>}
               {featureFlags.regional && Object.entries(HUB_CITIES).map(([slug, hub]) => <li key={slug}><Link href={`/tours/${slug}`} className="hover:text-white transition-colors">{hub.short} Theater</Link></li>)}
             </ul>
           </div>

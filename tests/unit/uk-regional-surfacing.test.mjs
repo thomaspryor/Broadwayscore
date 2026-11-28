@@ -24,6 +24,13 @@ for (const [name, file] of SURFACES) {
   });
 }
 
+test('Australian Theatre follows UK Regional in both guarded footer lists', () => {
+  const footer = read('src/components/FooterMarketContent.tsx');
+  const pair = /\{featureFlags\.regional && <li><Link href="\/browse\/beyond-london"[^\n]*\n\s*\{featureFlags\.regional && <li><Link href="\/browse\/australian-theatre"[^\n]*/g;
+  assert.equal([...footer.matchAll(pair)].length, 2, 'both market footers need a guarded Australian Theatre link after UK Regional');
+  assert.match(read('src/components/MarketNav.tsx'), /featureFlags\.regional &&[\s\S]*?href="\/browse\/australian-theatre"/);
+});
+
 test('market stats feed the dropdown count from the page gate', () => {
   const core = read('src/lib/data-core.ts');
   assert.match(core, /ukRegional:\s*\{[\s\S]*pickRegionalShelf\(ukRegional,[\s\S]*requireEnoughReviews: true/);
