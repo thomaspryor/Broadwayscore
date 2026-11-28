@@ -11,6 +11,8 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+// The Reddit grade only runs while Reddit is on; the existing cases below exercise it. The retired case is its own test.
+process.env.REDDIT_FORCE_ENABLED = '1';
 const D = require(path.join(ROOT, 'scripts/lib/press-night-digest.js'));
 
 const load = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'tests/fixtures/press-night', f), 'utf8'));
@@ -464,4 +466,17 @@ test('BRO-7230: an early-stopped probe is named in the why even when the verdict
   const g = D.gradeReviews(rec, AFTER_DEADLINE);
   assert.equal(g.verdict, 'UNKNOWN');
   assert.match(g.why, /no reviews were published overnight.*also stopped early: probe stopped at \+2\.0h/);
+});
+
+test('BRO-8329: while Reddit is retired its draft is never graded (the drafter cron is gone, so it files only false misses)', () => {
+  const show = { id: 'w-west-end-2026', title: 'W', category: 'west-end', openingDate: '2026-11-24' };
+  const stale = { emailedAt: '2026-11-25T10:00:00Z', emailedScore: 78, emailedReviewCount: 13 };
+  const args = { show, sentShows: {}, redditDraft: stale, readNumbers: () => ({ score: 79, reviewCount: 18 }), nowMs: Date.parse('2026-11-26T16:00:00Z') };
+  const was = process.env.REDDIT_FORCE_ENABLED;
+  try {
+    process.env.REDDIT_FORCE_ENABLED = '1';
+    assert.ok(D.gradeEmails(args).some((x) => x.kind === 'reddit'));
+    delete process.env.REDDIT_FORCE_ENABLED;
+    assert.equal(D.gradeEmails(args).filter((x) => x.kind === 'reddit').length, 0);
+  } finally { process.env.REDDIT_FORCE_ENABLED = was; }
 });
