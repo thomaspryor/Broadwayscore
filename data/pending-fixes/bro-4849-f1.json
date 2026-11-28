@@ -1,0 +1,334 @@
+{
+  "issueNumber": "bro-4849-f1",
+  "planId": "dda521e8-c33c-4596-9881-153bc4152e09",
+  "status": "applied",
+  "createdAt": "2026-10-12T10:21:50.515Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4849 class F (1 of 2): published scores outside the critic's own rating band. Rating checked on the outlet page where reachable; score set to the nearest band edge via humanReviewScore.",
+    "steps": [
+      "Set humanReviewScore + humanReviewNote on 12 reviews"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-lost-boys-2026/ew--dalton-ross.json",
+        "field": "humanReviewScore",
+        "oldValue": 88,
+        "newValue": 82,
+        "description": "Set the score from the critic's own rating: EW letter grade B+ confirmed in the text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lost-boys-2026/ew--dalton-ross.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): EW letter grade B+ confirmed in the text. Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 51,
+        "description": "Set the score from the critic's own rating: outlet structured rating 2.5 of 5 confirmed on the page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): outlet structured rating 2.5 of 5 confirmed on the page. Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sinatra-the-musical-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 31,
+        "description": "Set the score from the critic's own rating: two out of five confirmed on the page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sinatra-the-musical-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): two out of five confirmed on the page. Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json",
+        "field": "humanReviewScore",
+        "oldValue": 65,
+        "newValue": 91,
+        "description": "Set the score from the critic's own rating: five stars confirmed on the page; the earlier auto-adjudication assumed three"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json",
+        "field": "humanReviewNote",
+        "oldValue": "Auto-adjudicated (high confidence, sided with neither): The 3/5 star rating is definitive. While Crompton praises the technical spectacle extensively ('game-changing experience,' 'jaw-dropping'), she explicitly calls it 'high-class hokum' and says 'as a piece of drama, this is more than high-class hokum' — acknowledging it's not strong dramatically. The star rating confirms this is admiration for craft without full recommendation.",
+        "newValue": "BRO-4849 (2026-10-12): five stars confirmed on the page; the earlier auto-adjudication assumed three. Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-note-the-musical-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 51,
+        "description": "Set the score from the critic's own rating: 2.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-note-the-musical-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): 2.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hay-fever-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 51,
+        "description": "Set the score from the critic's own rating: 2.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hay-fever-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): 2.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thelma-and-louise-a-new-musical-off-west-end-2026/a-youngish-perspective--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 51,
+        "description": "Set the score from the critic's own rating: 2.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thelma-and-louise-a-new-musical-off-west-end-2026/a-youngish-perspective--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): 2.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 31,
+        "description": "Set the score from the critic's own rating: 1.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-last-ship-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): 1.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "darkling-off-west-end-2026/liamodell--liam-odell.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 70,
+        "description": "Set the score from the critic's own rating: 3 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "darkling-off-west-end-2026/liamodell--liam-odell.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): 3 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 71,
+        "description": "Set the score from the critic's own rating: three and a half stars confirmed on the page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): three and a half stars confirmed on the page. Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-children-off-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 71,
+        "description": "Set the score from the critic's own rating: 3.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-children-off-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): 3.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tru-off-west-end-2026/artsdesk--unknown.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 70,
+        "description": "Set the score from the critic's own rating: three stars confirmed in the outlet rating widget"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tru-off-west-end-2026/artsdesk--unknown.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4849 (2026-10-12): three stars confirmed in the outlet rating widget. Score set by hand after checking the critic's own rating.",
+        "description": "Record why the score was set by hand"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T13:11:06.203Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lost-boys-2026/ew--dalton-ross.json humanReviewScore: 88 -> 82"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lost-boys-2026/ew--dalton-ross.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): EW letter grade B+ confirmed in the text. Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json humanReviewScore: null -> 51"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): outlet structured rating 2.5 of 5 confirmed on the page. Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sinatra-the-musical-west-end-2026/firstnightmagazine--unknown.json humanReviewScore: null -> 31"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sinatra-the-musical-west-end-2026/firstnightmagazine--unknown.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): two out of five confirmed on the page. Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json humanReviewScore: 65 -> 91"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json humanReviewNote: \"Auto-adjudicated (high confidence, sided with neither): The 3/5 star rating is definitive. While Crompton praises the technical spectacle extensively ('game-changing experience,' 'jaw-dropping'), she explicitly calls it 'high-class hokum' and says 'as a piece of drama, this is more than high-class hokum' — acknowledging it's not strong dramatically. The star rating confirms this is admiration for craft without full recommendation.\" -> \"BRO-4849 (2026-10-12): five stars confirmed on the page; the earlier auto-adjudication assumed three. Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-note-the-musical-west-end-2026/firstnightmagazine--unknown.json humanReviewScore: null -> 51"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-note-the-musical-west-end-2026/firstnightmagazine--unknown.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): 2.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hay-fever-west-end-2026/firstnightmagazine--unknown.json humanReviewScore: null -> 51"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hay-fever-west-end-2026/firstnightmagazine--unknown.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): 2.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thelma-and-louise-a-new-musical-off-west-end-2026/a-youngish-perspective--unknown.json humanReviewScore: null -> 51"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thelma-and-louise-a-new-musical-off-west-end-2026/a-youngish-perspective--unknown.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): 2.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/firstnightmagazine--unknown.json humanReviewScore: null -> 31"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-last-ship-west-end-2026/firstnightmagazine--unknown.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): 1.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "darkling-off-west-end-2026/liamodell--liam-odell.json humanReviewScore: null -> 70"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "darkling-off-west-end-2026/liamodell--liam-odell.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): 3 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/the-spy-in-the-stalls--unknown.json humanReviewScore: null -> 71"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/the-spy-in-the-stalls--unknown.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): three and a half stars confirmed on the page. Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-children-off-west-end-2026/firstnightmagazine--unknown.json humanReviewScore: null -> 71"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-children-off-west-end-2026/firstnightmagazine--unknown.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): 3.5 of 5 printed in the stored text (outlet page rate-limited at check time; tone consistent). Score set by hand after checking the critic's own rating.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-west-end-2026/artsdesk--unknown.json humanReviewScore: null -> 70"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-west-end-2026/artsdesk--unknown.json humanReviewNote: null -> \"BRO-4849 (2026-10-12): three stars confirmed in the outlet rating widget. Score set by hand after checking the critic's own rating.\""
+    }
+  ]
+}

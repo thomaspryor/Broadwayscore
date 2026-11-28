@@ -1,0 +1,124 @@
+{
+  "issueNumber": "bro-5602",
+  "planId": "24dfa3ba-ac0d-4092-8185-3d231d7326c0",
+  "status": "applied",
+  "createdAt": "2026-10-18T05:32:44.030Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5602: two closed shows were labelled Fizzle (an estimated 30% or more returned) although every estimate on their own records says under 30%: Suffs and Call Me Izzy become Flop; the uncited 0-10% Suffs range and its notes sentence go.",
+    "steps": [
+      "Each edit reads its oldValue from live commercial.json.",
+      "designationBasis is edited before designation."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "suffs: the loss rests on a cited report (recoupedSource: The New York Times via Fox News, Oct 13 2024, \"it has not recouped that amount\"), not on our notes; listed before the designation edit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "suffs: Fizzle means an estimated 30% or more returned; every estimate on the record is under that (model 4-42%, middle 23%), so Flop."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          0,
+          10
+        ],
+        "newValue": null,
+        "description": "suffs: the 0-10% returned range came from an AI research summary (\"GPT DR\") with no source; an uncited line is not an estimate we can show."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": "GPT DR: 'Nearly total loss for investors (0-10% returned).' Frequent comping reduced revenue.",
+        "newValue": null,
+        "description": "suffs: goes with the uncited 0-10% range above."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": "2026-02-03",
+        "newValue": null,
+        "description": "suffs: goes with the uncited 0-10% range above."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "field": "notes",
+        "oldValue": "Won Tony for Best Original Score but closed Jan 5, 2025 without recouping. Shaina Taub won two Tonys. Weekly nut ~$640K (breakeven ~$800K gross). Cast of 19. Often grossed only $500-700K in summer/fall (below nut), only hit capacity in final holiday weeks. Hillary Clinton and Malala Yousafzai co-producers. Frequently comped tickets to build word-of-mouth. SEC entities: 'Young Are At the Gates LLC' ($19M, main Broadway) + 'Wing Women On Broadway LLC' ($6.75M, development). Nearly total loss for investors (0-10% returned).",
+        "newValue": "Won Tony for Best Original Score but closed Jan 5, 2025 without recouping. Shaina Taub won two Tonys. Weekly nut ~$640K (breakeven ~$800K gross). Often grossed only $500-700K in summer/fall (below nut), only hit capacity in final holiday weeks. Hillary Clinton and Malala Yousafzai co-producers. SEC entities: 'Young Are At the Gates LLC' ($19M, main Broadway) + 'Wing Women On Broadway LLC' ($6.75M, development).",
+        "description": "suffs: drop the uncited \"Nearly total loss for investors (0-10% returned)\" sentence and two details from the same AI research summary that no source on the record supports (cast size, comped tickets); with a reported-loss basis the notes print on the show card."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "call-me-izzy: its own estimate is 20-30% returned (middle 25%) and the model is below zero, under the 30% Fizzle line, so Flop."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T06:05:16.413Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for call-me-izzy"
+    }
+  ]
+}

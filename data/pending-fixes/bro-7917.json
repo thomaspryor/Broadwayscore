@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-7917",
+  "planId": "ef083764-5112-40fe-b979-def81a0cab3b",
+  "status": "applied",
+  "createdAt": "2026-11-25T09:03:09.886Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Fill missing runtimes for open/previews shows from venue/official pages (BRO-7917) (part 1 of 2)",
+    "steps": [
+      "shows.json: ilford-boy-off-west-end-2026.runtime",
+      "shows.json: desire-under-the-elms-off-west-end-2026.runtime",
+      "shows.json: golden-boy-off-west-end-2026.runtime",
+      "shows.json: the-smile-of-her-off-west-end-2026.runtime",
+      "shows.json: the-hunger-games-on-stage-off-west-end-2025.runtime",
+      "shows.json: julius-caesar-globe-off-west-end-2026.runtime",
+      "shows.json: la-distance-bam-off-broadway-2026.runtime",
+      "shows.json: tartuffe-remixed-off-west-end-2026.runtime",
+      "shows.json: night-city-off-west-end-2026.runtime",
+      "shows.json: relative-motion-off-west-end-2026.runtime",
+      "shows.json: downstate-2026.runtime",
+      "shows.json: the-ripple-the-wave-that-carried-me-home-off-broadway-2026.runtime",
+      "shows.json: a-kidman-carol-off-broadway-2026.runtime",
+      "shows.json: father-christmas-off-west-end-2026.runtime",
+      "shows.json: are-you-even-indian-off-west-end-2026.runtime",
+      "shows.json: cranford-off-west-end-2026.runtime",
+      "shows.json: big-man-little-man-off-west-end-2026.runtime",
+      "shows.json: speculations-off-west-end-2026.runtime",
+      "shows.json: the-ugly-one-off-west-end-2026.runtime",
+      "shows.json: goblin-off-west-end-2026.runtime",
+      "shows.json: peter-pan-off-west-end-2026.runtime",
+      "shows.json: the-jungle-book-west-end-2026.runtime",
+      "shows.json: the-visitors-off-broadway-2026.runtime",
+      "shows.json: the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026.runtime",
+      "shows.json: chewing-gum-dreams-off-west-end-2026.runtime"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ilford-boy-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 30m",
+        "description": "shows.json: ilford-boy-off-west-end-2026.runtime from https://www.donmarwarehouse.com/events/ilford-boy/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "desire-under-the-elms-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 35m",
+        "description": "shows.json: desire-under-the-elms-off-west-end-2026.runtime from https://almeida.co.uk/whats-on/desire-under-the-elms/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "golden-boy-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 25m",
+        "description": "shows.json: golden-boy-off-west-end-2026.runtime from https://almeida.co.uk/whats-on/golden-boy/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-smile-of-her-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 30m",
+        "description": "shows.json: the-smile-of-her-off-west-end-2026.runtime from https://officiallondontheatre.com/show/the-smile-of-her-111473487/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-hunger-games-on-stage-off-west-end-2025",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 30m",
+        "description": "shows.json: the-hunger-games-on-stage-off-west-end-2025.runtime from https://officiallondontheatre.com/show/the-hunger-games-on-stage-111466358/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "julius-caesar-globe-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 30m",
+        "description": "shows.json: julius-caesar-globe-off-west-end-2026.runtime from https://www.shakespearesglobe.com/whats-on/julius-caesar/ (venue; OLT lists 1h40), read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-distance-bam-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 25m",
+        "description": "shows.json: la-distance-bam-off-broadway-2026.runtime from https://www.bam.org/theater/2026/la-distance, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tartuffe-remixed-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 30m",
+        "description": "shows.json: tartuffe-remixed-off-west-end-2026.runtime from https://www.marylebonetheatre.com/productions/tartuffe-remixed, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "night-city-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 25m",
+        "description": "shows.json: night-city-off-west-end-2026.runtime from https://southwarkplayhouse.co.uk/productions/night-city/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "relative-motion-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 30m",
+        "description": "shows.json: relative-motion-off-west-end-2026.runtime from https://southwarkplayhouse.co.uk/productions/relative-motion/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "downstate-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 25m",
+        "description": "shows.json: downstate-2026.runtime from https://www.broadway.com/shows/downstate/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 30m",
+        "description": "shows.json: the-ripple-the-wave-that-carried-me-home-off-broadway-2026.runtime from https://www.playwrightshorizons.org/shows/production-history/2020s/2627/the-ripple-the-wave-that-carried-me-home, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-kidman-carol-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 20m",
+        "description": "shows.json: a-kidman-carol-off-broadway-2026.runtime from https://broadwaydirect.com/show/a-kidman-carol/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "father-christmas-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "50m",
+        "description": "shows.json: father-christmas-off-west-end-2026.runtime from https://lyric.co.uk/shows/raymond-briggs-father-christmas-2026/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "are-you-even-indian-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h",
+        "description": "shows.json: are-you-even-indian-off-west-end-2026.runtime from https://riversidestudios.co.uk/whats-on/SR-are-you-even-indian/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cranford-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 15m",
+        "description": "shows.json: cranford-off-west-end-2026.runtime from https://orangetreetheatre.co.uk/whats-on/cranford/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "big-man-little-man-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 15m",
+        "description": "shows.json: big-man-little-man-off-west-end-2026.runtime from https://theotherpalace.co.uk/big-man-little-man/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "speculations-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 20m",
+        "description": "shows.json: speculations-off-west-end-2026.runtime from https://www.marylebonetheatre.com/productions/speculations, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-ugly-one-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h",
+        "description": "shows.json: the-ugly-one-off-west-end-2026.runtime from https://www.arcolatheatre.com/event/the-ugly-one/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "goblin-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 10m",
+        "description": "shows.json: goblin-off-west-end-2026.runtime from https://parktheatre.co.uk/?p=7783, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 30m",
+        "description": "shows.json: peter-pan-off-west-end-2026.runtime from https://polkatheatre.com/event/peter-pan/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-jungle-book-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 20m",
+        "description": "shows.json: the-jungle-book-west-end-2026.runtime from https://www.nationaltheatre.org.uk/productions/the-jungle-book/, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-visitors-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h 35m",
+        "description": "shows.json: the-visitors-off-broadway-2026.runtime from https://2st.com/shows/the-visitors, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 10m",
+        "description": "shows.json: the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026.runtime from https://epicplayersinc.thundertix.com/events/270991, read via fetchPage 2026-11-25"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chewing-gum-dreams-off-west-end-2026",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "1h",
+        "description": "shows.json: chewing-gum-dreams-off-west-end-2026.runtime from https://theatre503.com/whats-on/chewing-gum-dreams/, read via fetchPage 2026-11-25"
+      }
+    ]
+  },
+  "executedAt": "2026-11-25T09:48:06.812Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for ilford-boy-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for desire-under-the-elms-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for golden-boy-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-smile-of-her-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-hunger-games-on-stage-off-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for julius-caesar-globe-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for la-distance-bam-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for tartuffe-remixed-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for night-city-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for relative-motion-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for downstate-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-ripple-the-wave-that-carried-me-home-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for a-kidman-carol-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for father-christmas-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for are-you-even-indian-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for cranford-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for big-man-little-man-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for speculations-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-ugly-one-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for goblin-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for peter-pan-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-jungle-book-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-visitors-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for chewing-gum-dreams-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5326",
+  "planId": "c759a9fb-cd6f-497b-b26b-713dcde230e4",
+  "status": "applied",
+  "createdAt": "2026-10-14T04:39:40.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5326: name the Theater Pizzazz critic on the Fish (WP Theater) review. The page byline reads By Stuart Miller; the file was ingested as Unknown and the 6-hourly backfill has not reached it.",
+    "steps": [
+      "Set criticName Unknown -> Stuart Miller on fish-off-broadway-2026/theater-pizzazz--unknown.json."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "fish-off-broadway-2026/theater-pizzazz--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Stuart Miller",
+        "description": "Byline on https://theaterpizzazz.com/its-sink-or-swim-in-melis-akers-fish/ reads 'By Stuart Miller', Oct 12, 2026."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T05:24:47.687Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fish-off-broadway-2026/theater-pizzazz--unknown.json criticName: \"Unknown\" -> \"Stuart Miller\""
+    }
+  ]
+}

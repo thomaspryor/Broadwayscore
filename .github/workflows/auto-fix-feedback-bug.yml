@@ -1,0 +1,388 @@
+name: Auto-Fix Feedback Bug
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to process'
+        required: true
+        type: number
+
+# Per-issue group, not shared (BRO-3500 what-else follow-up — same bug class
+# Codex caught in process-review-submission.yml): GitHub cancels a PENDING
+# run in a concurrency group the moment a third run for that group arrives,
+# regardless of cancel-in-progress. A shared group here would silently drop
+# issue B's auto-fix attempt if issue C is opened while A is still running —
+# each issue is distinct, non-idempotent work. Keyed to match
+# execute-approved-fix.yml's group exactly (same issue number, same group
+# value) so the two workflows still coordinate: an issue's auto-fix and its
+# manually-approved-fix execution can't run concurrently on the SAME issue,
+# while different issues run in true parallel like today.
+concurrency:
+  # shows-json-writer-exempt: per-issue group by design (BRO-3500, see above); a shared group would drop distinct issues' fixes at GitHub's one-pending limit (BRO-5803)
+  group: auto-fix-feedback-bug-${{ github.event.issue.number || inputs.issue_number }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+jobs:
+  auto-fix:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, 'bug-diagnosis')
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Resolve issue number and body
+        id: issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            NUM="${{ inputs.issue_number }}"
+          else
+            NUM="${{ github.event.issue.number }}"
+          fi
+          echo "number=$NUM" >> $GITHUB_OUTPUT
+          BODY=$(gh api repos/${{ github.repository }}/issues/$NUM --jq '.body')
+          # needs-review issues carry no DIAGNOSIS_JSON: they skip auto-fix and
+          # go straight to the owner proposal (BRO-7847).
+          if printf '%s' "$BODY" | grep -q 'DIAGNOSIS_JSON'; then
+            echo "kind=diagnosed" >> $GITHUB_OUTPUT
+          else
+            echo "kind=needs-review" >> $GITHUB_OUTPUT
+          fi
+          EOF_MARKER="EOFBODY_$(date +%s)"
+          echo "body<<$EOF_MARKER" >> $GITHUB_OUTPUT
+          echo "$BODY" >> $GITHUB_OUTPUT
+          echo "$EOF_MARKER" >> $GITHUB_OUTPUT
+
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 300
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run auto-fix
+        id: fix
+        if: steps.issue.outputs.kind != 'needs-review'
+        env:
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Owner "reader fix" email: who reported it + what they wrote (BRO-4452)
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/auto-fix-feedback-bug.js
+
+      - name: Commit and push
+        if: always() && (steps.fix.outputs.action == 'fixed' || steps.fix.outputs.action == 'partial')
+        env:
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        run: |
+          # Core data files pushed to private repo by push-core-data action
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "fix(data): Auto-fix feedback bug #${ISSUE_NUMBER}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from auto-fix-feedback-bug'
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Auto-Fix Feedback Bug Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Update issue labels (comments only when the fix script wrote one)
+        if: always() && steps.issue.outputs.kind != 'needs-review'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          FIX_ACTION: ${{ steps.fix.outputs.action }}
+          FIX_ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const action = process.env.FIX_ACTION || 'error';
+            const issueNumber = parseInt(process.env.FIX_ISSUE_NUMBER);
+            const fs = require('fs');
+
+            // scripts/auto-fix-feedback-bug.js writes a substantive comment via
+            // writeComment() before nearly every outcome it returns (not just
+            // 'fixed'/'partial') — confirmed by reading every writeComment()
+            // call site against every output() call site (BRO-4659). Post it
+            // whenever present; branches below differ only in label/state.
+            function readCommentFile() {
+              try {
+                const content = fs.readFileSync('.github-comment.md', 'utf8');
+                return content && content.trim() ? content : null;
+              } catch (_) {
+                return null;
+              }
+            }
+
+            if (action === 'fixed') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: '## Fix Applied\n\nThe data fix has been applied and will be live shortly.'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['auto-fixed']
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                state: 'closed', state_reason: 'completed'
+              });
+            } else if (action === 'partial') {
+              // Multi-show report where only some shows got fixed (issue
+              // #515) — comment with the per-show breakdown and leave the
+              // issue OPEN. Never state_reason:'completed' here: closing
+              // would silently drop the unresolved show(s) exactly like the
+              // original bug.
+              const body = readCommentFile() ||
+                'Some but not all shows referenced in this report were auto-fixed. Leaving this issue open for the remainder.';
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body,
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['auto-fixed', 'needs-manual-review']
+              });
+            } else if (action === 'not-a-bug') {
+              // Same comment-drop bug as the catch-all branch below (BRO-4659
+              // cousin): the script writes a substantive "Likely Not a Bug" /
+              // "Already Fixed" comment via writeComment() before returning
+              // this action, but only addLabels ever ran here — the comment
+              // was silently discarded every time.
+              const body = readCommentFile();
+              if (body) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body,
+                });
+              }
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['not-a-bug']
+              });
+            } else if (action === 'error') {
+              // Deliberately generic, NOT the comment-drop bug class above:
+              // the specific err.message written via writeComment() may
+              // contain internal paths/stack detail we don't want to leak
+              // into this public repo, so a generic message is intentional
+              // here rather than read via readCommentFile().
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: '## Error\n\nAuto-fix encountered an error. A maintainer will review.'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['needs-manual-review']
+              });
+            } else {
+              // skipped, validation-failed — label always, comment when the
+              // script wrote one. Nearly every skip/validation-failed call
+              // site in auto-fix-feedback-bug.js DOES write a substantive
+              // comment via writeComment() before returning here (confirmed
+              // by reading every writeComment() site against every output()
+              // site) — this was discarding almost all of them, not just the
+              // two originally found (BRO-4659).
+              const body = readCommentFile();
+              if (body) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body,
+                });
+              }
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['needs-manual-review']
+              });
+            }
+
+      - name: Generate remediation plan
+        if: always() && steps.fix.outputs.action != 'fixed' && steps.fix.outputs.action != 'not-a-bug'
+        id: plan
+        env:
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          FIX_ACTION: ${{ steps.fix.outputs.action }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          # BRO-7847: proposal email kill switch (repo variable) and the private reader store
+          FEEDBACK_PROPOSAL_DISABLED: ${{ vars.FEEDBACK_PROPOSAL_DISABLED }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # read by draft-fixed-replies.js, which the planner now requires
+        run: node scripts/generate-remediation-plan.js
+
+      # BRO-7600: every needs-manual-review outcome (plan refused, plan created,
+      # skipped, error) gets ONE dispatchable Linear card, deduped by GitHub
+      # issue number. Before this, the only signal was an approve/reject email
+      # and a health-digest warn row, and the old in-plan escalation filed
+      # --park without a LINEAR_API_KEY, so no card was ever filed from CI.
+      - name: File dispatchable card
+        if: always() && steps.fix.outputs.action != 'fixed' && steps.fix.outputs.action != 'not-a-bug' && steps.issue.outputs.kind != 'needs-review'
+        continue-on-error: true
+        env:
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          PLAN_CREATED: ${{ steps.plan.outputs.plan_created }}
+          PLAN_REFUSED: ${{ steps.plan.outputs.plan_refused }}
+          PLAN_REASON: ${{ steps.plan.outputs.plan_refusal_reason }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/file-feedback-card.js
+
+      - name: Commit pending fix plan
+        if: always() && contains(format('{0}{1}', steps.plan.outputs.plan_created, steps.plan.outputs.proposal_sent), 'true')
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+        run: |
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
+          git add data/pending-fixes/
+          if git diff --staged --quiet; then
+            echo "No plan file to commit"
+          else
+            git commit -m "chore: Save remediation plan for #${ISSUE_NUMBER}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Commit content-error ledger tracking
+        if: always() && steps.plan.outputs.ledger_updated == 'true'
+        run: |
+          git add data/audit/feedback-request-ledger.json
+          if git diff --staged --quiet; then
+            echo "No ledger change to commit"
+          else
+            git commit -m "chore: Track Manual-Fix-Needed content-error ask (#${{ steps.issue.outputs.number }})
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      # BRO-7693: nothing goes to the reader. This emails a draft reply to the
+      # owner, who sends it by hand. FEEDBACK_AUTO_REPLY_KINDS stays empty.
+      - name: Email draft reply to owner
+        if: always() && (steps.fix.outputs.action == 'fixed' || steps.fix.outputs.action == 'not-a-bug')
+        env:
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FIX_ACTION: ${{ steps.fix.outputs.action }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          if [ "$FIX_ACTION" = "fixed" ]; then
+            node scripts/send-feedback-reply.js --type=fixed
+          else
+            node scripts/send-feedback-reply.js --type=acknowledged
+          fi
+
+      # BRO-7521: persist this job's LLM usage rows (data/audit/gemini-usage-ledger.jsonl)
+      - name: Commit LLM usage ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: auto-fix-feedback-bug
+
+      # BRO-7847: the owner proposal said this is already fixed. Close the
+      # issue with a comment so it stops sitting open with no reply.
+      - name: Close already-fixed issue
+        if: always() && steps.plan.outputs.already_fixed == 'true'
+        continue-on-error: true
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          FIX_ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          ALREADY_FIXED_URLS: ${{ steps.plan.outputs.already_fixed_urls }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue_number = parseInt(process.env.FIX_ISSUE_NUMBER);
+            const urls = (process.env.ALREADY_FIXED_URLS || '').split(' ').filter(Boolean);
+            const lines = [
+              '## Already fixed',
+              '',
+              'Checked against current site data: this report is already resolved, so closing it.',
+              ...(urls.length ? ['', ...urls.map(u => `- ${u}`)] : []),
+              '',
+              '---',
+              '_Generated by [Claude Code](https://claude.ai/code)_',
+            ];
+            await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number, body: lines.join('\n') });
+            await github.rest.issues.update({ owner: context.repo.owner, repo: context.repo.repo, issue_number, state: 'closed', state_reason: 'completed' });
+
+      # BRO-7847: persist the proposal cap + SLA ledger (issue numbers and
+      # timestamps only, no reader data). Last step on purpose: it is a
+      # soft-fail commit and must not strand the all-safe commit steps above.
+      - name: Commit proposal ledger
+        if: always() && steps.plan.outputs.proposal_sent == 'true'
+        continue-on-error: true
+        run: |
+          git add data/audit/feedback-proposals.json
+          if git diff --staged --quiet; then
+            echo "No proposal ledger change to commit"
+          else
+            git commit -m "chore: Record owner proposal for #${{ steps.issue.outputs.number }} [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi

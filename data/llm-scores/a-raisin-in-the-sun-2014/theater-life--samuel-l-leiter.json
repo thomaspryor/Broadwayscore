@@ -1,0 +1,46 @@
+{
+  "showId": "a-raisin-in-the-sun-2014",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Barry Gordin",
+  "score": 40,
+  "bucket": "Mixed-negative",
+  "thumb": "Down",
+  "confidence": "high",
+  "keyPhrases": [
+    {
+      "text": "equally powerful revivals",
+      "sentiment": "positive"
+    },
+    {
+      "text": "No better opportunity could exist",
+      "sentiment": "positive"
+    },
+    {
+      "text": "unfortunately, chooses to twist",
+      "sentiment": "negative"
+    },
+    {
+      "text": "does a disservice",
+      "sentiment": "negative"
+    },
+    {
+      "text": "However true its implications, it's not what Hansberry wrote",
+      "sentiment": "negative"
+    }
+  ],
+  "reasoning": "While the review acknowledges the production's power and educational value in comparison to Death of a Salesman, it strongly criticizes the director's choice to alter Hansberry's optimistic ending, calling it unfortunate and a disservice to the playwright's intentions. The tone becomes increasingly critical toward the end.",
+  "flags": [
+    {
+      "type": "original_rating_mismatch",
+      "originalRating": "5/5",
+      "expectedRange": "85-100",
+      "actualScore": 40
+    }
+  ],
+  "scoredAt": "2026-02-21T22:16:37.357Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": "4.5/5 stars",
+  "dtliThumb": null,
+  "bwwThumb": null
+}

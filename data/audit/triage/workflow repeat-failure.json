@@ -1,0 +1,20 @@
+{
+  "system": "workflow repeat-failure",
+  "status": "error",
+  "lastChecked": "2026-11-23T10:54:31.408Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Workflow repeat-failure: Deploy to Vercel / deploy / Deploy to Production",
+      "status": "error",
+      "message": "Deploy to Vercel / deploy / Deploy to Production failed 12 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Deploy to Vercel",
+      "status": "error",
+      "message": "Deploy to Vercel failed 6 times in the last 24h; failed-step details unavailable, this count may combine different causes — likely broken, not transient."
+    }
+  ]
+}

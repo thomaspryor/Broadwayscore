@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-5755-c",
+  "planId": "083d55da-0a41-49a8-a5ac-e96781c21f08",
+  "status": "applied",
+  "createdAt": "2026-11-17T17:06:52.067Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5755: fill empty synopsis for jenufa-off-broadway-2026 and replace the 115-char synopsis for the-fantasticks-2026, both from the productions' TodayTix product copy (TodayTix ids 48540, 47137).",
+    "steps": [
+      "shows.json: jenufa-off-broadway-2026.synopsis",
+      "shows.json: the-fantasticks-2026.synopsis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jenufa-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "",
+        "newValue": "Janáček's opera follows Jenůfa, a young woman driven to despair by abandonment and betrayal. Števa fathers her child and then abandons her, his stepbrother Laca disfigures her in a fit of jealousy, and her stern stepmother, the Kostelnička, commits an unspeakable act in a misguided attempt to save her from ruin. Claus Guth directs the Met's new staging, with Asmik Grigorian as Jenůfa, Nina Stemme as the Kostelnička and Tomáš Hanus conducting.",
+        "description": "shows.json: jenufa-off-broadway-2026.synopsis"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-fantasticks-2026",
+        "field": "synopsis",
+        "oldValue": "*The Fantasticks* is the beloved musical about neighbors who pretend to feud to get their children to fall in love.",
+        "newValue": "In *The Fantasticks*, two neighboring parents pretend to feud so that, through reverse psychology, their children will fall in love. Traditionally the parents are two fathers with a son and a daughter; in this first Broadway production the parents are both mothers and the children are both sons. The musical, known for \"Try to Remember\" and \"Soon It's Gonna Rain,\" ran for 42 years off-Broadway.",
+        "description": "shows.json: the-fantasticks-2026.synopsis"
+      }
+    ]
+  },
+  "executedAt": "2026-11-17T19:47:41.626Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for jenufa-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-fantasticks-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

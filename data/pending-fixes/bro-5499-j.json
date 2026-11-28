@@ -1,0 +1,100 @@
+{
+  "issueNumber": "bro-5499-j",
+  "planId": "d792e67d-f2fa-4d53-a6ba-7b84c1a56158",
+  "status": "applied",
+  "createdAt": "2026-10-16T20:53:16.410Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (j): flag three reviews of a later production filed under an earlier same-title entry (Gin Game 2015 in 1977, Old Times 2015 in 1971, Edwin Drood 2012 in 1985); found by audit-sibling-production-cast.js on refreshed data.",
+    "steps": [
+      "flag"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-gin-game-1977/ap--mark-kennedy.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5499: AP review published 2015-10-14 of the 2015 Golden Theatre Gin Game (James Earl Jones, Cicely Tyson) filed under the 1977 entry"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-gin-game-1977/ap--mark-kennedy.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "AP review dated 2015-10-14 naming James Earl Jones and Cicely Tyson (the-gin-game-2015), not the 1977 production (BRO-5499)",
+        "description": "BRO-5499: reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "old-times-1971/nbcny--robert-kahn.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5499: NBC New York review of the 2015 Roundabout revival (Clive Owen, Eve Best, Kelly Reilly) filed under the 1971 entry"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "old-times-1971/nbcny--robert-kahn.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of the Roundabout revival naming Clive Owen, Eve Best, Kelly Reilly (old-times-2015), not the 1971 production (BRO-5499)",
+        "description": "BRO-5499: reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mystery-of-edwin-drood-1985/amny--matt-windman.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5499: amNY review of the 2012 Studio 54 revival (Will Chase, Betsy Wolfe, Stephanie J. Block) filed under the 1985 entry"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mystery-of-edwin-drood-1985/amny--matt-windman.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of the 2012 Roundabout revival naming Will Chase, Stephanie J. Block, Chita Rivera (the-mystery-of-edwin-drood-2012), not the 1985 production (BRO-5499)",
+        "description": "BRO-5499: reason"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T21:45:13.062Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-gin-game-1977/ap--mark-kennedy.json wrongProduction: null -> true (retracted wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-gin-game-1977/ap--mark-kennedy.json wrongProductionReason: null -> \"AP review dated 2015-10-14 naming James Earl Jones and Cicely Tyson (the-gin-game-2015), not the 1977 production (BRO-5499)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "old-times-1971/nbcny--robert-kahn.json wrongProduction: null -> true (retracted wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "old-times-1971/nbcny--robert-kahn.json wrongProductionReason: null -> \"Review of the Roundabout revival naming Clive Owen, Eve Best, Kelly Reilly (old-times-2015), not the 1971 production (BRO-5499)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mystery-of-edwin-drood-1985/amny--matt-windman.json wrongProduction: null -> true (retracted wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mystery-of-edwin-drood-1985/amny--matt-windman.json wrongProductionReason: null -> \"Review of the 2012 Roundabout revival naming Will Chase, Stephanie J. Block, Chita Rivera (the-mystery-of-edwin-drood-2012), not the 1985 production (BRO-5499)\""
+    }
+  ]
+}

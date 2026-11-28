@@ -1,0 +1,322 @@
+{
+  "issueNumber": "bro-6245-c",
+  "planId": "39b3e729-189d-4ef8-97cd-81fc89b70dd1",
+  "status": "applied",
+  "createdAt": "2026-10-26T05:42:05.517Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Our rounded estimate ranges for closed shows.",
+    "steps": [
+      "commercial.json: peter-pan-goes-wrong-2023.ourEstimateRangePct",
+      "commercial.json: the-sign-in-sidney-brusteins-window-2023.ourEstimateRangePct",
+      "commercial.json: oedipus.ourEstimateRangePct",
+      "commercial.json: the-last-five-years-2025.ourEstimateRangePct",
+      "commercial.json: grey-house.ourEstimateRangePct",
+      "commercial.json: once-upon-a-one-more-time.ourEstimateRangePct",
+      "commercial.json: harmony.ourEstimateRangePct",
+      "commercial.json: how-to-dance-in-ohio.ourEstimateRangePct",
+      "commercial.json: illinoise.ourEstimateRangePct",
+      "commercial.json: a-beautiful-noise-the-neil-diamond-musical-2022.ourEstimateRangePct",
+      "commercial.json: a-strange-loop-2022.ourEstimateRangePct",
+      "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.ourEstimateRangePct",
+      "commercial.json: once-on-this-island-2017.ourEstimateRangePct",
+      "commercial.json: job-2024.ourEstimateRangePct",
+      "commercial.json: the-kite-runner-2022.ourEstimateRangePct",
+      "commercial.json: peter-pan-goes-wrong-2023.designation",
+      "commercial.json: oedipus.designation"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          80
+        ],
+        "description": "commercial.json: peter-pan-goes-wrong-2023.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          50
+        ],
+        "description": "commercial.json: the-sign-in-sidney-brusteins-window-2023.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          50,
+          65
+        ],
+        "description": "commercial.json: oedipus.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          30
+        ],
+        "description": "commercial.json: the-last-five-years-2025.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          20
+        ],
+        "description": "commercial.json: grey-house.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-one-more-time",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          20
+        ],
+        "description": "commercial.json: once-upon-a-one-more-time.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harmony",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          20
+        ],
+        "description": "commercial.json: harmony.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          20
+        ],
+        "description": "commercial.json: how-to-dance-in-ohio.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "illinoise",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          10,
+          20
+        ],
+        "description": "commercial.json: illinoise.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          20
+        ],
+        "description": "commercial.json: a-beautiful-noise-the-neil-diamond-musical-2022.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-strange-loop-2022",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          20,
+          50
+        ],
+        "description": "commercial.json: a-strange-loop-2022.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frankie-and-johnny-in-the-clair-de-lune-2019",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          10
+        ],
+        "description": "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-on-this-island-2017",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          10
+        ],
+        "description": "commercial.json: once-on-this-island-2017.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          10
+        ],
+        "description": "commercial.json: job-2024.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-kite-runner-2022",
+        "field": "ourEstimateRangePct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          15
+        ],
+        "description": "commercial.json: the-kite-runner-2022.ourEstimateRangePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Fizzle",
+        "description": "commercial.json: peter-pan-goes-wrong-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Fizzle",
+        "description": "commercial.json: oedipus.designation"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T06:34:42.420Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for peter-pan-goes-wrong-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for once-upon-a-one-more-time"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for harmony"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for illinoise"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for a-beautiful-noise-the-neil-diamond-musical-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for frankie-and-johnny-in-the-clair-de-lune-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for once-on-this-island-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for peter-pan-goes-wrong-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for oedipus"
+    }
+  ],
+  "executedIn": "ci"
+}

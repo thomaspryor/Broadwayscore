@@ -1,0 +1,501 @@
+{
+  "issueNumber": "bro-5527",
+  "planId": "6be94b41-8394-47d5-b85e-3551c716ace1",
+  "status": "applied",
+  "createdAt": "2026-10-17T07:50:17.554Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5527: shows on the NY tax-credit lists had no capitalization, so /biz had no cost basis for them. Each gets the total offering amount from its production entity's SEC Form D (Regulation D notice), matched to the show by the filing's related persons (lead producers), its timing and, where the tax-credit payout list names the entity, that name. Filed figures, not estimates; notes that said no capitalization was reported are corrected. Model rerun on apply. (part 1 of 6: a-dolls-house-2023, a-strange-loop-2022, a-wonderful-world-the-louis-armstrong-musical-2024, aint-too-proud-2019, american-buffalo-2022)",
+    "steps": [
+      "Filed figures: capitalization, a Form D citation, the estimate flag, and the filing in sources.",
+      "Notes that said no capitalization was reported now state the filed offering."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 6200000,
+        "description": "a-dolls-house-2023: the SEC Form D/A gives a $6.2 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Beautiful Thing NY Limited Partnership, CIK 0001958447, filed Apr 17, 2023): total offering amount $6,200,000 ($5,700,000 sold by then). Matched to the show by its related persons John Rogers and Benjamin Lowy (Ambassador Theatre Group) and Gavin Kalin, the lead producers; its Beautiful Thing NY Production Services Corporation received the show's NY tax credit. https://www.sec.gov/Archives/edgar/data/1958447/000195844723000001/xslFormDX01/primary_doc.xml",
+        "description": "a-dolls-house-2023: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "a-dolls-house-2023: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/production/a-dolls-house-broadway-hudson-theatre-2023",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/production/a-dolls-house-broadway-hudson-theatre-2023",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1958447/000195844723000001/xslFormDX01/primary_doc.xml",
+            "date": "2023-04-17"
+          }
+        ],
+        "description": "a-dolls-house-2023: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-strange-loop-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 9500000,
+        "description": "a-strange-loop-2022: the SEC Form D gives a $9.5 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-strange-loop-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Strange Loop Broadway LLC, CIK 0001909220, filed Feb 9, 2022): total offering amount $9,500,000 ($1,932,500 sold by then). Matched to the show by its related person Barbara Whitman, the lead producer. https://www.sec.gov/Archives/edgar/data/1909220/000190922022000001/xslFormDX01/primary_doc.xml",
+        "description": "a-strange-loop-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-strange-loop-2022",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "a-strange-loop-2022: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-strange-loop-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.bloomberg.com/news/articles/2025-06-06/costs-behind-tony-nominated-broadway-shows-starring-george-clooney-sarah-snook",
+            "date": "2025-06-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/stereophonic-makes-tony-history-in-hazardous-season",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2022/10/11/theater/strange-loop-broadway-closing.html",
+            "date": "2022-10-11"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.bloomberg.com/news/articles/2025-06-06/costs-behind-tony-nominated-broadway-shows-starring-george-clooney-sarah-snook",
+            "date": "2025-06-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/stereophonic-makes-tony-history-in-hazardous-season",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2022/10/11/theater/strange-loop-broadway-closing.html",
+            "date": "2022-10-11"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1909220/000190922022000001/xslFormDX01/primary_doc.xml",
+            "date": "2022-02-09"
+          }
+        ],
+        "description": "a-strange-loop-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-wonderful-world-the-louis-armstrong-musical-2024",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 23000000,
+        "description": "a-wonderful-world-the-louis-armstrong-musical-2024: the SEC Form D gives a $23 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-wonderful-world-the-louis-armstrong-musical-2024",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Red Roses Too LLC, CIK 0002029521, filed Jul 10, 2024): total offering amount $23,000,000 ($25,000 sold by then). Matched to the show by its related persons Renee Delaplaine Rodgers and Carl White (Martian Entertainment), the lead producers. https://www.sec.gov/Archives/edgar/data/2029521/000202952124000001/xslFormDX01/primary_doc.xml",
+        "description": "a-wonderful-world-the-louis-armstrong-musical-2024: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-wonderful-world-the-louis-armstrong-musical-2024",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "a-wonderful-world-the-louis-armstrong-musical-2024: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-wonderful-world-the-louis-armstrong-musical-2024",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2029521/000202952124000001/xslFormDX01/primary_doc.xml",
+            "date": "2024-07-10"
+          }
+        ],
+        "description": "a-wonderful-world-the-louis-armstrong-musical-2024: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-wonderful-world-the-louis-armstrong-musical-2024",
+        "field": "notes",
+        "oldValue": "Louis Armstrong bio-musical that opened Nov 2024 and closed early 2025. Among the most expensive new musicals of its season but exact cap not disclosed. Averaged 75% capacity but with ongoing weekly losses. Total gross $11.2M — far below capitalization. Net loss for investors.",
+        "newValue": "Louis Armstrong bio-musical that opened Nov 2024 and closed early 2025. Among the most expensive new musicals of its season: its SEC Form D (Jul 2024) offered $23 million. Averaged 75% capacity but with ongoing weekly losses. Total gross $11.2M — far below capitalization. Net loss for investors.",
+        "description": "a-wonderful-world-the-louis-armstrong-musical-2024: the notes said no capitalization was reported; it was filed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 16750000,
+        "description": "aint-too-proud-2019: the SEC Form D/A gives a $16.75 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Temptations Broadway Ltd Liability Co, CIK 0001732505, filed Apr 15, 2019): total offering amount $16,750,000, fully sold. Matched to the show by its related persons Ira Pittelman and Tom Hulce, the lead producers; the same entity received its NY tax credit. https://www.sec.gov/Archives/edgar/data/1732505/000173250519000001/xslFormDX01/primary_doc.xml",
+        "description": "aint-too-proud-2019: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "aint-too-proud-2019: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/aint-too-proud-to-end-broadway-run-jan-16/",
+            "date": "2021-12-28",
+            "excerpt": "will play its final Broadway performance Jan. 16"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2021/12/28/aint-too-proud-is-latest-broadway-show-to-close-but-first-to-make-profit/",
+            "date": "2021-12-28"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/aint-too-proud-to-end-broadway-run-jan-16/",
+            "date": "2021-12-28",
+            "excerpt": "will play its final Broadway performance Jan. 16"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2021/12/28/aint-too-proud-is-latest-broadway-show-to-close-but-first-to-make-profit/",
+            "date": "2021-12-28"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1732505/000173250519000001/xslFormDX01/primary_doc.xml",
+            "date": "2019-04-15"
+          }
+        ],
+        "description": "aint-too-proud-2019: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "field": "notes",
+        "oldValue": "Temptations jukebox musical that opened Mar 2019 and ran 488 performances until Jan 2022. Consistently grossed over $1M a week before the pandemic. Despite a 19-month COVID closure, producers announced full recoupment in late 2021 (Forbes). Capitalization not publicly reported.",
+        "newValue": "Temptations jukebox musical that opened Mar 2019 and ran 488 performances until Jan 2022. Consistently grossed over $1M a week before the pandemic. Despite a 19-month COVID closure, producers announced full recoupment in late 2021 (Forbes). Its SEC Form D/A (Apr 2019) put the offering at $16.75 million, fully sold.",
+        "description": "aint-too-proud-2019: the notes said no capitalization was reported; it was filed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4000000,
+        "description": "american-buffalo-2022: the SEC Form D/A gives a $4 million offering (no capitalization was on file)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "capitalizationSource",
+        "oldValue": "No public capitalization located; the NYC tax-credit list did not show a match, and trade coverage said the producers had not disclosed a figure.",
+        "newValue": "SEC Form D/A filing (Nickel Productions LLC, CIK 0001791296, filed Jun 30, 2022): total offering amount $4,000,000, fully sold. Matched to the show by its related person Jeffrey Richards, the lead producer; the same entity received its NY tax credit. https://www.sec.gov/Archives/edgar/data/1791296/000179129622000001/xslFormDX01/primary_doc.xml",
+        "description": "american-buffalo-2022: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "american-buffalo-2022: a filed figure, not an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.ibdb.com/broadway-production/american-buffalo-525177",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.broadwayworld.com/grossescumulative.php?year=2022",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.imdb.com/name/nm2774166/news/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.ibdb.com/broadway-production/american-buffalo-525177",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.broadwayworld.com/grossescumulative.php?year=2022",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.imdb.com/name/nm2774166/news/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1791296/000179129622000001/xslFormDX01/primary_doc.xml",
+            "date": "2022-06-30"
+          }
+        ],
+        "description": "american-buffalo-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "recoupedSource",
+        "oldValue": "Trade-press summary of a Deadline report (via IMDb news) said the producers had not disclosed capitalization and that the production would not recoup its investment.",
+        "newValue": "Trade-press summary of a Deadline report (via IMDb news) said the production would not recoup its investment.",
+        "description": "american-buffalo-2022: drop the stale \"capitalization not disclosed\" clause now that the Form D figure is cited."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T09:14:57.353Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for a-wonderful-world-the-louis-armstrong-musical-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-wonderful-world-the-louis-armstrong-musical-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for a-wonderful-world-the-louis-armstrong-musical-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for a-wonderful-world-the-louis-armstrong-musical-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for a-wonderful-world-the-louis-armstrong-musical-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for american-buffalo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for american-buffalo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for american-buffalo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for american-buffalo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for american-buffalo-2022"
+    }
+  ]
+}

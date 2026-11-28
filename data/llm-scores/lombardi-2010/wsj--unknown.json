@@ -1,0 +1,37 @@
+{
+  "showId": "lombardi-2010",
+  "outletId": "wsj",
+  "outlet": "The Wall Street Journal",
+  "criticName": null,
+  "score": 40,
+  "bucket": "Negative",
+  "thumb": "Down",
+  "confidence": "medium",
+  "keyPhrases": [
+    {
+      "text": "Who's going to go see a play about a football coach who died 40 years ago?",
+      "sentiment": "negative"
+    },
+    {
+      "text": "Somehow I doubt there's much of an overlap between the audience",
+      "sentiment": "negative"
+    },
+    {
+      "text": "operating on the assumption that there are plenty of men out there who don't usually go to Broadway shows",
+      "sentiment": "negative"
+    }
+  ],
+  "reasoning": "Review is entirely focused on questioning the commercial viability and audience appeal rather than artistic merit. The critic expresses strong skepticism about who would want to see this play, comparing it unfavorably to other shows and questioning the target market throughout.",
+  "flags": [
+    {
+      "type": "dtli_thumb_mismatch",
+      "dtliThumb": "Up",
+      "llmThumb": "Down"
+    }
+  ],
+  "scoredAt": "2026-02-21T14:38:48.867Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": null,
+  "dtliThumb": "Up",
+  "bwwThumb": null
+}

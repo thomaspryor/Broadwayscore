@@ -1,0 +1,56 @@
+{
+  "issueNumber": "bro-5619",
+  "planId": "50e70a03-3afb-407c-8724-933d119cf0c8",
+  "status": "applied",
+  "createdAt": "2026-10-22T15:33:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5619: delete the 3 empty wrongProduction stubs left in review-text folders whose names are not shows.json ids (written by the 2026-10-13 DTLI refresh; extract-dtli-reviews.js now skips unknown ids, BRO-5288).",
+    "steps": [
+      "Delete 3 zero-text stub review files in orphan folders"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/nypost--elisabeth-vincentelli.json",
+        "description": "BRO-5619: empty stub (0 chars, wrongProduction) of an older production's review, filed by the 2026-10-13 DTLI refresh under an id shows.json does not have. Nothing to keep; the right-production twin is unaffected."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-other-place-2026/nytimes--charles-isherwood.json",
+        "description": "BRO-5619: empty stub (0 chars, wrongProduction) of an older production's review, filed by the 2026-10-13 DTLI refresh under an id shows.json does not have. Nothing to keep; the right-production twin is unaffected."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "you-got-older-2026/nytimes--charles-isherwood.json",
+        "description": "BRO-5619: empty stub (0 chars, wrongProduction) of an older production's review, filed by the 2026-10-13 DTLI refresh under an id shows.json does not have. Nothing to keep; the right-production twin is unaffected."
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T18:05:11.295Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/nypost--elisabeth-vincentelli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/nytimes--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted you-got-older-2026/nytimes--charles-isherwood.json"
+    }
+  ],
+  "executedIn": "ci"
+}

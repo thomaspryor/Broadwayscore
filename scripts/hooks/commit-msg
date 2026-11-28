@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# commit-msg hook (version-controlled — active via core.hooksPath=scripts/hooks
+# or via the delegator in .git/hooks/commit-msg).
+#
+# Visual proof for UI commits. Any staged .tsx file in src/app/ or src/components/
+# renders visible HTML and must have been screenshotted (/visual-qa) before commit.
+#
+# BRO-8156: the proof is a PASSING visual-qa verdict for this branch whose
+# recorded file contents equal the staged ones (scripts/lib/visual-scope.js,
+# blob ids, not mtimes). Nothing to type: the old self-typed VISUAL-OK-1440:
+# label proved nothing and made sessions ask the owner for permission to type it.
+# The label is still accepted for older sessions; it is no longer advertised.
+# Non-rendering change (types, comments only): SKIP-VISUAL-CHECK: <reason>
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Check if any staged file is a UI component
+UI_FILES=$(git diff --cached --name-only | grep -E "^src/(app|components)/.*\.tsx$" || true)
+
+if [ -z "$UI_FILES" ]; then
+  exit 0  # No UI files staged, no check needed
+fi
+
+if echo "$COMMIT_MSG" | grep -qE "^(VISUAL-OK-1440:|SKIP-VISUAL-CHECK:|Merge )"; then
+  exit 0
+fi
+
+# A passing verdict that screenshotted exactly the staged contents is the proof.
+HOOK_DIR=$(cd "$(dirname "$0")" && pwd)
+SCOPE="$HOOK_DIR/../lib/visual-scope.js"
+[ -f "$SCOPE" ] || SCOPE="$(git rev-parse --show-toplevel 2>/dev/null)/scripts/lib/visual-scope.js"
+WHY=""
+if [ -f "$SCOPE" ]; then
+  WHY=$(node "$SCOPE" commit-proof 2>&1 >/dev/null) && exit 0
+  WHY=$(printf '%s' "$WHY" | sed 's/^\[visual-scope\] no proof: //' | tail -1)
+fi
+
+echo ""
+echo "ERROR: UI files staged but no passing visual-qa run covers them${WHY:+ ($WHY)}."
+echo ""
+echo "Staged UI files:"
+echo "$UI_FILES" | sed 's/^/  /'
+echo ""
+echo "Fix: run /visual-qa (node scripts/visual-qa.mjs) on these files as they are staged now, then commit again."
+echo "No label to type and nothing to ask the owner: the passing verdict is the proof."
+echo ""
+echo "Whole land checklist in one run (report-only): npm run land:ready"
+echo ""
+echo "If this is truly a non-rendering change (types, comments only):"
+echo "  Prefix with: SKIP-VISUAL-CHECK: <reason>"
+echo ""
+exit 1

@@ -1,0 +1,371 @@
+{
+  "issueNumber": "bro-5081-10",
+  "planId": "bd839ca0-2233-42f4-b953-8c9a3c6fef6d",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:42:49.529Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5081 part 10: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+    "steps": [
+      "Page byline at https://www.vulture.com/2012/01/theater-review-a-wit-that-still-crackles.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html is Sara Holdren; Jackson McHenry came from the legacy web-search step and is not on the page.",
+      "Page date at https://www.theguardian.com/stage/2022/oct/06/1776-american-history-play-new-york-broadway is 2022-10-07 (show opened 2022-10-06); September 17, 2022 came from the legacy web-search step.",
+      "Page date at https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/ is 2022-10-07 (show opened 2022-10-06); September 17, 2022 came from the legacy web-search step.",
+      "Page date at https://www.theatermania.com/news/a-behanding-in-spokane_25180/#:~:text=Reviews,%7C%20New%20York%20City%20%7C is 2010-03-04 (show opened 2010-03-04); April 4, 2010 came from the legacy web-search step.",
+      "Page date at https://observer.com/2019/11/a-christmas-carol-review-jack-thorne-campbell-scott/ is 2019-11-21 (show opened 2019-11-20); December 3, 2019 came from the legacy web-search step.",
+      "Page date at https://www.theatermania.com/news/review-jefferson-mays-brings-his-ghastly-good-christmas-carol-to-broadway_94589/#:~:text=Review%3A%20Jefferson%20Mays%20Brings%20His,Good%20Christmas%20Carol%20to%20Broadway&text=Jefferson%20Mays%20stars%20in%20Charles,Arden%2C%20at%20Broadway's%20Nederlander%20Theatre. is 2022-11-22 (show opened 2022-11-21); December 15, 2022 came from the legacy web-search step.",
+      "Page date at https://www.vulture.com/2019/11/a-christmas-carol-with-campbell-scott-on-broadway.html is 2019-11-20 (show opened 2019-11-20); December 2, 2019 came from the legacy web-search step.",
+      "Page date at https://www.timeout.com/newyork/theater/a-christmas-story-the-musical is 2012-10-22 (show opened 2012-11-19); November 19, 2012 came from the legacy web-search step.",
+      "Page date at https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain is 2023-03-10 (show opened 2023-03-09); March 20, 2023 came from the legacy web-search step.",
+      "Page date at https://variety.com/2013/legit/reviews/broadway-review-after-midnight-1200791616/ is 2013-11-04 (show opened 2013-11-03); November 13, 2013 came from the legacy web-search step.",
+      "Page date at http://www.timeout.com/newyork/theater/after-midnight is 2013-11-04 (show opened 2013-11-03); November 14, 2013 came from the legacy web-search step.",
+      "Page date at https://www.theguardian.com/stage/2019/apr/22/all-my-sons-review-annette-bening-and-tracy-letts-power-sturdy-revival is 2019-04-23 (show opened 2019-04-22); May 9, 2019 came from the legacy web-search step.",
+      "Page date at https://www.theguardian.com/stage/2022/nov/08/almost-famous-musical-review-cameron-crowe-broadway is 2022-11-08 (show opened 2022-11-03); October 12, 2022 came from the legacy web-search step.",
+      "Page date at https://variety.com/2008/legit/reviews/american-buffalo-5-1200472173/ is 2008-11-18 (show opened 2008-11-17); October 16, 2008 came from the legacy web-search step.",
+      "Page date at https://observer.com/2016/05/musical-adaptation-of-american-psycho-is-as-depressing-as-it-is-distressing/ is 2016-05-02 (show opened 2016-04-21); April 21, 2016 came from the legacy web-search step.",
+      "Page date at http://www.timeout.com/newyork/theater/american-psycho is 2016-05-26 (show opened 2016-04-21); April 21, 2016 came from the legacy web-search step.",
+      "Page date at http://www.hollywoodreporter.com/review/anastasia-theater-review-996856 is 2017-04-24 (show opened 2017-04-24); May 4, 2017 came from the legacy web-search step.",
+      "Page date at https://variety.com/2022/legit/reviews/amp-juliet-review-musical-broadway-1235435481/ is 2022-11-18 (show opened 2022-11-17); November 3, 2022 came from the legacy web-search step.",
+      "Page date at https://variety.com/2018/legit/reviews/bernhardt-hamlet-review-janet-mcteer-1202956884/ is 2018-09-26 (show opened 2018-09-25); October 16, 2018 came from the legacy web-search step.",
+      "Page date at https://www.theguardian.com/stage/2013/oct/28/betrayal-review-daniel-craig-pinter-new-york is 2013-10-28 (show opened 2013-10-27); November 6, 2013 came from the legacy web-search step.",
+      "Page date at https://www.vulture.com/2013/10/theater-review-betrayal.html is 2013-10-27 (show opened 2013-10-27); November 4, 2013 came from the legacy web-search step.",
+      "Page date at https://www.vulture.com/2023/03/theater-review-bob-fosse-dancin-revival.html is 2023-03-19 (show opened 2023-03-19); March 27, 2023 came from the legacy web-search step.",
+      "Page date at https://stageandcinema.com/2014/04/28/bullets-over-broadway/ is 2014-04-28 (show opened 2014-04-10); April 11, 2014 came from the legacy web-search step.",
+      "Page date at https://www.timeout.com/newyork/theater/camelot-musical-broadway-review-aaron-sorkin is 2023-04-13 (show opened 2023-04-13); May 2, 2023 came from the legacy web-search step."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "wit-2012/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at https://www.vulture.com/2012/01/theater-review-a-wit-that-still-crackles.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "yellow-face-2024/vulture--jackson-mchenry.json",
+        "field": "criticName",
+        "oldValue": "Jackson McHenry",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html is Sara Holdren; Jackson McHenry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "1776-2022/guardian--adrian-horton.json",
+        "field": "publishDate",
+        "oldValue": "September 17, 2022",
+        "newValue": "2022-10-07",
+        "description": "Page date at https://www.theguardian.com/stage/2022/oct/06/1776-american-history-play-new-york-broadway is 2022-10-07 (show opened 2022-10-06); September 17, 2022 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "1776-2022/variety--charles-isherwood.json",
+        "field": "publishDate",
+        "oldValue": "September 17, 2022",
+        "newValue": "2022-10-07",
+        "description": "Page date at https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/ is 2022-10-07 (show opened 2022-10-06); September 17, 2022 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-behanding-in-spokane-2010/theatermania--david-finkle.json",
+        "field": "publishDate",
+        "oldValue": "April 4, 2010",
+        "newValue": "2010-03-04",
+        "description": "Page date at https://www.theatermania.com/news/a-behanding-in-spokane_25180/#:~:text=Reviews,%7C%20New%20York%20City%20%7C is 2010-03-04 (show opened 2010-03-04); April 4, 2010 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-2019/observer--rex-reed.json",
+        "field": "publishDate",
+        "oldValue": "December 3, 2019",
+        "newValue": "2019-11-21",
+        "description": "Page date at https://observer.com/2019/11/a-christmas-carol-review-jack-thorne-campbell-scott/ is 2019-11-21 (show opened 2019-11-20); December 3, 2019 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-2022/theatermania--jesse-green.json",
+        "field": "publishDate",
+        "oldValue": "December 15, 2022",
+        "newValue": "2022-11-22",
+        "description": "Page date at https://www.theatermania.com/news/review-jefferson-mays-brings-his-ghastly-good-christmas-carol-to-broadway_94589/#:~:text=Review%3A%20Jefferson%20Mays%20Brings%20His,Good%20Christmas%20Carol%20to%20Broadway&text=Jefferson%20Mays%20stars%20in%20Charles,Arden%2C%20at%20Broadway's%20Nederlander%20Theatre. is 2022-11-22 (show opened 2022-11-21); December 15, 2022 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-2019/vulture--helen-shaw.json",
+        "field": "publishDate",
+        "oldValue": "December 2, 2019",
+        "newValue": "2019-11-20",
+        "description": "Page date at https://www.vulture.com/2019/11/a-christmas-carol-with-campbell-scott-on-broadway.html is 2019-11-20 (show opened 2019-11-20); December 2, 2019 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-story-the-musical-2012/timeout--david-cote.json",
+        "field": "publishDate",
+        "oldValue": "November 19, 2012",
+        "newValue": "2012-10-22",
+        "description": "Page date at https://www.timeout.com/newyork/theater/a-christmas-story-the-musical is 2012-10-22 (show opened 2012-11-19); November 19, 2012 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-dolls-house-2023/newyorker--naomi-fry.json",
+        "field": "publishDate",
+        "oldValue": "March 20, 2023",
+        "newValue": "2023-03-10",
+        "description": "Page date at https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain is 2023-03-10 (show opened 2023-03-09); March 20, 2023 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "after-midnight-2013/variety--marilyn-stasio.json",
+        "field": "publishDate",
+        "oldValue": "November 13, 2013",
+        "newValue": "2013-11-04",
+        "description": "Page date at https://variety.com/2013/legit/reviews/broadway-review-after-midnight-1200791616/ is 2013-11-04 (show opened 2013-11-03); November 13, 2013 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "after-midnight-2013/timeout--adam-feldman.json",
+        "field": "publishDate",
+        "oldValue": "November 14, 2013",
+        "newValue": "2013-11-04",
+        "description": "Page date at http://www.timeout.com/newyork/theater/after-midnight is 2013-11-04 (show opened 2013-11-03); November 14, 2013 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/guardian--adrian-horton.json",
+        "field": "publishDate",
+        "oldValue": "May 9, 2019",
+        "newValue": "2019-04-23",
+        "description": "Page date at https://www.theguardian.com/stage/2019/apr/22/all-my-sons-review-annette-bening-and-tracy-letts-power-sturdy-revival is 2019-04-23 (show opened 2019-04-22); May 9, 2019 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "almost-famous-2022/guardian--adrian-horton.json",
+        "field": "publishDate",
+        "oldValue": "October 12, 2022",
+        "newValue": "2022-11-08",
+        "description": "Page date at https://www.theguardian.com/stage/2022/nov/08/almost-famous-musical-review-cameron-crowe-broadway is 2022-11-08 (show opened 2022-11-03); October 12, 2022 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-buffalo-2008/variety--david-rooney.json",
+        "field": "publishDate",
+        "oldValue": "October 16, 2008",
+        "newValue": "2008-11-18",
+        "description": "Page date at https://variety.com/2008/legit/reviews/american-buffalo-5-1200472173/ is 2008-11-18 (show opened 2008-11-17); October 16, 2008 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-psycho-2016/observer--rex-reed.json",
+        "field": "publishDate",
+        "oldValue": "April 21, 2016",
+        "newValue": "2016-05-02",
+        "description": "Page date at https://observer.com/2016/05/musical-adaptation-of-american-psycho-is-as-depressing-as-it-is-distressing/ is 2016-05-02 (show opened 2016-04-21); April 21, 2016 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "american-psycho-2016/timeout--adam-feldman.json",
+        "field": "publishDate",
+        "oldValue": "April 21, 2016",
+        "newValue": "2016-05-26",
+        "description": "Page date at http://www.timeout.com/newyork/theater/american-psycho is 2016-05-26 (show opened 2016-04-21); April 21, 2016 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anastasia-2017/hollywood-reporter--david-rooney.json",
+        "field": "publishDate",
+        "oldValue": "May 4, 2017",
+        "newValue": "2017-04-24",
+        "description": "Page date at http://www.hollywoodreporter.com/review/anastasia-theater-review-996856 is 2017-04-24 (show opened 2017-04-24); May 4, 2017 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "and-juliet-2022/variety--aramide-tinubu.json",
+        "field": "publishDate",
+        "oldValue": "November 3, 2022",
+        "newValue": "2022-11-18",
+        "description": "Page date at https://variety.com/2022/legit/reviews/amp-juliet-review-musical-broadway-1235435481/ is 2022-11-18 (show opened 2022-11-17); November 3, 2022 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bernhardthamlet-2018/variety--marilyn-stasio.json",
+        "field": "publishDate",
+        "oldValue": "October 16, 2018",
+        "newValue": "2018-09-26",
+        "description": "Page date at https://variety.com/2018/legit/reviews/bernhardt-hamlet-review-janet-mcteer-1202956884/ is 2018-09-26 (show opened 2018-09-25); October 16, 2018 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2013/guardian--charles-isherwood.json",
+        "field": "publishDate",
+        "oldValue": "November 6, 2013",
+        "newValue": "2013-10-28",
+        "description": "Page date at https://www.theguardian.com/stage/2013/oct/28/betrayal-review-daniel-craig-pinter-new-york is 2013-10-28 (show opened 2013-10-27); November 6, 2013 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2013/vulture--jesse-green.json",
+        "field": "publishDate",
+        "oldValue": "November 4, 2013",
+        "newValue": "2013-10-27",
+        "description": "Page date at https://www.vulture.com/2013/10/theater-review-betrayal.html is 2013-10-27 (show opened 2013-10-27); November 4, 2013 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bob-fosses-dancin-2023/vulture--sara-holdren.json",
+        "field": "publishDate",
+        "oldValue": "March 27, 2023",
+        "newValue": "2023-03-19",
+        "description": "Page date at https://www.vulture.com/2023/03/theater-review-bob-fosse-dancin-revival.html is 2023-03-19 (show opened 2023-03-19); March 27, 2023 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bullets-over-broadway-2014/stageandcinema--paulanne-simmons.json",
+        "field": "publishDate",
+        "oldValue": "April 11, 2014",
+        "newValue": "2014-04-28",
+        "description": "Page date at https://stageandcinema.com/2014/04/28/bullets-over-broadway/ is 2014-04-28 (show opened 2014-04-10); April 11, 2014 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "camelot-2023/timeout--adam-feldman.json",
+        "field": "publishDate",
+        "oldValue": "May 2, 2023",
+        "newValue": "2023-04-13",
+        "description": "Page date at https://www.timeout.com/newyork/theater/camelot-musical-broadway-review-aaron-sorkin is 2023-04-13 (show opened 2023-04-13); May 2, 2023 came from the legacy web-search step."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:48:39.985Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wit-2012/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/vulture--jackson-mchenry.json criticName: \"Jackson McHenry\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1776-2022/guardian--adrian-horton.json publishDate: \"September 17, 2022\" -> \"2022-10-07\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1776-2022/variety--charles-isherwood.json publishDate: \"September 17, 2022\" -> \"2022-10-07\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-behanding-in-spokane-2010/theatermania--david-finkle.json publishDate: \"April 4, 2010\" -> \"2010-03-04\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-2019/observer--rex-reed.json publishDate: \"December 3, 2019\" -> \"2019-11-21\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-2022/theatermania--jesse-green.json publishDate: \"December 15, 2022\" -> \"2022-11-22\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-2019/vulture--helen-shaw.json publishDate: \"December 2, 2019\" -> \"2019-11-20\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-story-the-musical-2012/timeout--david-cote.json publishDate: \"November 19, 2012\" -> \"2012-10-22\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-dolls-house-2023/newyorker--naomi-fry.json publishDate: \"March 20, 2023\" -> \"2023-03-10\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "after-midnight-2013/variety--marilyn-stasio.json publishDate: \"November 13, 2013\" -> \"2013-11-04\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "after-midnight-2013/timeout--adam-feldman.json publishDate: \"November 14, 2013\" -> \"2013-11-04\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/guardian--adrian-horton.json publishDate: \"May 9, 2019\" -> \"2019-04-23\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "almost-famous-2022/guardian--adrian-horton.json publishDate: \"October 12, 2022\" -> \"2022-11-08\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-buffalo-2008/variety--david-rooney.json publishDate: \"October 16, 2008\" -> \"2008-11-18\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-psycho-2016/observer--rex-reed.json publishDate: \"April 21, 2016\" -> \"2016-05-02\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "american-psycho-2016/timeout--adam-feldman.json publishDate: \"April 21, 2016\" -> \"2016-05-26\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anastasia-2017/hollywood-reporter--david-rooney.json publishDate: \"May 4, 2017\" -> \"2017-04-24\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "and-juliet-2022/variety--aramide-tinubu.json publishDate: \"November 3, 2022\" -> \"2022-11-18\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bernhardthamlet-2018/variety--marilyn-stasio.json publishDate: \"October 16, 2018\" -> \"2018-09-26\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2013/guardian--charles-isherwood.json publishDate: \"November 6, 2013\" -> \"2013-10-28\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2013/vulture--jesse-green.json publishDate: \"November 4, 2013\" -> \"2013-10-27\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bob-fosses-dancin-2023/vulture--sara-holdren.json publishDate: \"March 27, 2023\" -> \"2023-03-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bullets-over-broadway-2014/stageandcinema--paulanne-simmons.json publishDate: \"April 11, 2014\" -> \"2014-04-28\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "camelot-2023/timeout--adam-feldman.json publishDate: \"May 2, 2023\" -> \"2023-04-13\""
+    }
+  ]
+}

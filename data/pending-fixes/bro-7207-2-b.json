@@ -1,0 +1,366 @@
+{
+  "issueNumber": "bro-7207-2-b",
+  "planId": "6ffdd934-478d-4eae-838e-ad7de285798c",
+  "status": "applied",
+  "createdAt": "2026-11-28T13:25:40.036Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7207: resolve same-critic outlet pairs (syndicated copies, wrong bylines, wrong-show texts) (part 2 of 3)",
+    "steps": [
+      "summer-1976-2023/nydailynews--joe-dziemianowicz.json: same article as nytg--joe-dziemianowicz.json (BWW roundup excerpt credited to New York Theatre Guide, filed under the Daily News; text contained in the NYTG review)",
+      "summer-1976-2023/nydailynews--joe-dziemianowicz.json: duplicateReason",
+      "a-behanding-in-spokane-2010/ap--elisabeth-vincentelli.json: same article as ap--michael-kuchwara.json (the AP wire review; the body byline is Michael Kuchwara, AP Drama Critic)",
+      "a-behanding-in-spokane-2010/ap--elisabeth-vincentelli.json: duplicateReason",
+      "delete death-of-a-salesman-2022/ew--steven-suskin.json: excerpt copy of the EW Lester Fabian Brathwaite review (same url) under a wrong Steven Suskin byline; ew--lester-fabian-brathwaite.json holds the review (BRO-7207)",
+      "the-little-foxes-2017/ny1--david-cote-time-out-new-york.json: criticName -> David Cote (outlet suffix in the byline hid the known Time Out/NY1 syndication pair)",
+      "a-strange-loop-regional-2026/around-the-town-chicago--paul-lisnek.json: criticName -> Alan Bresloff (body opens with the Alan Bresloff byline)",
+      "bloody-bloody-andrew-jackson-2010/chicagotribune--ben-brantley.json: criticName -> Chris Jones (url is Chris Jones's Theater Loop blog; Brantley is the NYT critic)",
+      "broken-glass-off-west-end-2026/standard--asserts-dominic-cavendish.json: criticName -> Nick Curtis (same url and text as standard--nick-curtis.json)",
+      "delete cabaret-2024/observer--rex-reed.json: same url and text as observer--jesse-green.json, which is renamed to the right byline Rex Reed in this plan (BRO-7207)",
+      "cabaret-2024/observer--jesse-green.json: criticName -> Rex Reed (same url and text as observer--rex-reed.json)",
+      "glengarry-glen-ross-2012/amny--ben-brantley.json: criticName -> Matt Windman (amNY star-rated review; DTLI carried the NYT byline onto the next row)",
+      "a-night-with-janis-joplin-2013/amny--scott-brown.json: criticName -> Matt Windman (amNY star-rated review, text differs from the Scott Brown Vulture review)",
+      "the-price-2017/dailybeast--chris-jones.json: criticName -> Tim Teeman (body byline Tim Teeman 03.16.17)",
+      "yellow-face-2024/thewrap--greg-evans.json: criticName -> Robert Hofler (TheWrap review; same url and text as thewrap--robert-hofler.json; Greg Evans is the Deadline critic)",
+      "what-the-constitution-means-to-me-2019/vulture--jesse-green.json: criticName -> Sara Holdren (holds the Sara Holdren Vulture review (same url and text as vulture--sara-holdren.json))",
+      "delete almost-famous-2022/broadwaynews--brian-scott-lipton.json: truncated BWW-roundup copy (bway.ly short link) of the Brittani Samuel Broadway News review held complete in broadwaynews--brittani-samuel.json (BRO-7207)",
+      "the-kite-runner-west-end-2017/express-uk--michael-arditti.json: criticName -> Neil Norman (Daily Express (Friday) Theatre Record column printing Neil Norman; Arditti's Sunday Express review is sunday-express--michael-arditti.json)",
+      "oliver-west-end-2024/sunday-times--dominic-maxwell.json: criticName -> Neil Fisher (the url's page credits Neil Fisher (Times, Jan 14 2025))",
+      "evita-west-end-2025/london-theatre-reviews--marianka-swain.json: criticName -> Unknown (the londontheatrereviews.co.uk page is signed by LTR, not Marianka Swain)",
+      "all-about-me-2010/theatermania--ben-brantley.json: criticName -> Unknown (TheaterMania review; DTLI carried the NYT critic name from the row above; the page shows no byline)",
+      "the-pitmen-painters-2010/theatermania--ben-brantley.json: criticName -> Unknown (TheaterMania review; DTLI carried the NYT critic name from the row above; the page shows no byline)",
+      "la-bete-2010/theatermania--ben-brantley.json: criticName -> Unknown (TheaterMania review; DTLI carried the NYT critic name from the row above; the page shows no byline)",
+      "1984-2017/theatermania--adam-feldman.json: isNonReviewReason",
+      "1984-2017/theatermania--adam-feldman.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "summer-1976-2023/nydailynews--joe-dziemianowicz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytg--joe-dziemianowicz.json",
+        "description": "summer-1976-2023/nydailynews--joe-dziemianowicz.json: same article as nytg--joe-dziemianowicz.json (BWW roundup excerpt credited to New York Theatre Guide, filed under the Daily News; text contained in the NYTG review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "summer-1976-2023/nydailynews--joe-dziemianowicz.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: BWW roundup excerpt credited to New York Theatre Guide, filed under the Daily News; text contained in the NYTG review (BRO-7207)",
+        "description": "summer-1976-2023/nydailynews--joe-dziemianowicz.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-behanding-in-spokane-2010/ap--elisabeth-vincentelli.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ap--michael-kuchwara.json",
+        "description": "a-behanding-in-spokane-2010/ap--elisabeth-vincentelli.json: same article as ap--michael-kuchwara.json (the AP wire review; the body byline is Michael Kuchwara, AP Drama Critic)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-behanding-in-spokane-2010/ap--elisabeth-vincentelli.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: the AP wire review; the body byline is Michael Kuchwara, AP Drama Critic (BRO-7207)",
+        "description": "a-behanding-in-spokane-2010/ap--elisabeth-vincentelli.json: duplicateReason"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-2022/ew--steven-suskin.json",
+        "description": "delete death-of-a-salesman-2022/ew--steven-suskin.json: excerpt copy of the EW Lester Fabian Brathwaite review (same url) under a wrong Steven Suskin byline; ew--lester-fabian-brathwaite.json holds the review (BRO-7207)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-little-foxes-2017/ny1--david-cote-time-out-new-york.json",
+        "field": "criticName",
+        "oldValue": "David Cote - Time Out New York",
+        "newValue": "David Cote",
+        "description": "the-little-foxes-2017/ny1--david-cote-time-out-new-york.json: criticName -> David Cote (outlet suffix in the byline hid the known Time Out/NY1 syndication pair)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-strange-loop-regional-2026/around-the-town-chicago--paul-lisnek.json",
+        "field": "criticName",
+        "oldValue": "Paul Lisnek",
+        "newValue": "Alan Bresloff",
+        "description": "a-strange-loop-regional-2026/around-the-town-chicago--paul-lisnek.json: criticName -> Alan Bresloff (body opens with the Alan Bresloff byline)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bloody-bloody-andrew-jackson-2010/chicagotribune--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Chris Jones",
+        "description": "bloody-bloody-andrew-jackson-2010/chicagotribune--ben-brantley.json: criticName -> Chris Jones (url is Chris Jones's Theater Loop blog; Brantley is the NYT critic)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "broken-glass-off-west-end-2026/standard--asserts-dominic-cavendish.json",
+        "field": "criticName",
+        "oldValue": "Asserts Dominic Cavendish",
+        "newValue": "Nick Curtis",
+        "description": "broken-glass-off-west-end-2026/standard--asserts-dominic-cavendish.json: criticName -> Nick Curtis (same url and text as standard--nick-curtis.json)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cabaret-2024/observer--rex-reed.json",
+        "description": "delete cabaret-2024/observer--rex-reed.json: same url and text as observer--jesse-green.json, which is renamed to the right byline Rex Reed in this plan (BRO-7207)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2024/observer--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Rex Reed",
+        "description": "cabaret-2024/observer--jesse-green.json: criticName -> Rex Reed (same url and text as observer--rex-reed.json)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/amny--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Matt Windman",
+        "description": "glengarry-glen-ross-2012/amny--ben-brantley.json: criticName -> Matt Windman (amNY star-rated review; DTLI carried the NYT byline onto the next row)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-night-with-janis-joplin-2013/amny--scott-brown.json",
+        "field": "criticName",
+        "oldValue": "Scott Brown",
+        "newValue": "Matt Windman",
+        "description": "a-night-with-janis-joplin-2013/amny--scott-brown.json: criticName -> Matt Windman (amNY star-rated review, text differs from the Scott Brown Vulture review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-price-2017/dailybeast--chris-jones.json",
+        "field": "criticName",
+        "oldValue": "Chris Jones",
+        "newValue": "Tim Teeman",
+        "description": "the-price-2017/dailybeast--chris-jones.json: criticName -> Tim Teeman (body byline Tim Teeman 03.16.17)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "yellow-face-2024/thewrap--greg-evans.json",
+        "field": "criticName",
+        "oldValue": "Greg Evans",
+        "newValue": "Robert Hofler",
+        "description": "yellow-face-2024/thewrap--greg-evans.json: criticName -> Robert Hofler (TheWrap review; same url and text as thewrap--robert-hofler.json; Greg Evans is the Deadline critic)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-constitution-means-to-me-2019/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "what-the-constitution-means-to-me-2019/vulture--jesse-green.json: criticName -> Sara Holdren (holds the Sara Holdren Vulture review (same url and text as vulture--sara-holdren.json))"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "almost-famous-2022/broadwaynews--brian-scott-lipton.json",
+        "description": "delete almost-famous-2022/broadwaynews--brian-scott-lipton.json: truncated BWW-roundup copy (bway.ly short link) of the Brittani Samuel Broadway News review held complete in broadwaynews--brittani-samuel.json (BRO-7207)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-kite-runner-west-end-2017/express-uk--michael-arditti.json",
+        "field": "criticName",
+        "oldValue": "Michael Arditti",
+        "newValue": "Neil Norman",
+        "description": "the-kite-runner-west-end-2017/express-uk--michael-arditti.json: criticName -> Neil Norman (Daily Express (Friday) Theatre Record column printing Neil Norman; Arditti's Sunday Express review is sunday-express--michael-arditti.json)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/sunday-times--dominic-maxwell.json",
+        "field": "criticName",
+        "oldValue": "Dominic Maxwell",
+        "newValue": "Neil Fisher",
+        "description": "oliver-west-end-2024/sunday-times--dominic-maxwell.json: criticName -> Neil Fisher (the url's page credits Neil Fisher (Times, Jan 14 2025))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-west-end-2025/london-theatre-reviews--marianka-swain.json",
+        "field": "criticName",
+        "oldValue": "Marianka Swain",
+        "newValue": "Unknown",
+        "description": "evita-west-end-2025/london-theatre-reviews--marianka-swain.json: criticName -> Unknown (the londontheatrereviews.co.uk page is signed by LTR, not Marianka Swain)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-about-me-2010/theatermania--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Unknown",
+        "description": "all-about-me-2010/theatermania--ben-brantley.json: criticName -> Unknown (TheaterMania review; DTLI carried the NYT critic name from the row above; the page shows no byline)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pitmen-painters-2010/theatermania--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Unknown",
+        "description": "the-pitmen-painters-2010/theatermania--ben-brantley.json: criticName -> Unknown (TheaterMania review; DTLI carried the NYT critic name from the row above; the page shows no byline)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-bete-2010/theatermania--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Unknown",
+        "description": "la-bete-2010/theatermania--ben-brantley.json: criticName -> Unknown (TheaterMania review; DTLI carried the NYT critic name from the row above; the page shows no byline)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "1984-2017/theatermania--adam-feldman.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): TheaterMania news feature on audience reactions, not Adam Feldman's review (BRO-7207)",
+        "description": "1984-2017/theatermania--adam-feldman.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "1984-2017/theatermania--adam-feldman.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "1984-2017/theatermania--adam-feldman.json: isNonReview"
+      }
+    ]
+  },
+  "executedAt": "2026-11-28T16:11:58.935Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "summer-1976-2023/nydailynews--joe-dziemianowicz.json duplicateOf: null -> \"nytg--joe-dziemianowicz.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "summer-1976-2023/nydailynews--joe-dziemianowicz.json duplicateReason: null -> \"syndicated: BWW roundup excerpt credited to New York Theatre Guide, filed under the Daily News; text contained in the NYTG review (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-behanding-in-spokane-2010/ap--elisabeth-vincentelli.json duplicateOf: null -> \"ap--michael-kuchwara.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-behanding-in-spokane-2010/ap--elisabeth-vincentelli.json duplicateReason: null -> \"syndicated: the AP wire review; the body byline is Michael Kuchwara, AP Drama Critic (BRO-7207)\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2022/ew--steven-suskin.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-little-foxes-2017/ny1--david-cote-time-out-new-york.json criticName: \"David Cote - Time Out New York\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-strange-loop-regional-2026/around-the-town-chicago--paul-lisnek.json criticName: \"Paul Lisnek\" -> \"Alan Bresloff\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bloody-bloody-andrew-jackson-2010/chicagotribune--ben-brantley.json criticName: \"Ben Brantley\" -> \"Chris Jones\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broken-glass-off-west-end-2026/standard--asserts-dominic-cavendish.json criticName: \"Asserts Dominic Cavendish\" -> \"Nick Curtis\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cabaret-2024/observer--rex-reed.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2024/observer--jesse-green.json criticName: \"Jesse Green\" -> \"Rex Reed\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/amny--ben-brantley.json criticName: \"Ben Brantley\" -> \"Matt Windman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-night-with-janis-joplin-2013/amny--scott-brown.json criticName: \"Scott Brown\" -> \"Matt Windman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-2017/dailybeast--chris-jones.json criticName: \"Chris Jones\" -> \"Tim Teeman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "yellow-face-2024/thewrap--greg-evans.json criticName: \"Greg Evans\" -> \"Robert Hofler\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-constitution-means-to-me-2019/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted almost-famous-2022/broadwaynews--brian-scott-lipton.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-kite-runner-west-end-2017/express-uk--michael-arditti.json criticName: \"Michael Arditti\" -> \"Neil Norman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oliver-west-end-2024/sunday-times--dominic-maxwell.json criticName: \"Dominic Maxwell\" -> \"Neil Fisher\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/london-theatre-reviews--marianka-swain.json criticName: \"Marianka Swain\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-about-me-2010/theatermania--ben-brantley.json criticName: \"Ben Brantley\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pitmen-painters-2010/theatermania--ben-brantley.json criticName: \"Ben Brantley\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-bete-2010/theatermania--ben-brantley.json criticName: \"Ben Brantley\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1984-2017/theatermania--adam-feldman.json isNonReviewReason: null -> \"manual (not a review): TheaterMania news feature on audience reactions, not Adam Feldman's review (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1984-2017/theatermania--adam-feldman.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

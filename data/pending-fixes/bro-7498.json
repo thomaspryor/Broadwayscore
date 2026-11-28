@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-7498",
+  "planId": "426e0282-b0f1-498d-b2dd-0a10a8a31a36",
+  "status": "applied",
+  "createdAt": "2026-11-18T00:59:13.601Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Flag Times review of the 2024 Young Vic production incorrectly attributed to the 2026 Pasadena production",
+    "steps": [
+      "passing-strange-regional-2026/times-uk--clive-davis.json: wrongProduction",
+      "passing-strange-regional-2026/times-uk--clive-davis.json: wrongProductionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-regional-2026/times-uk--clive-davis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "passing-strange-regional-2026/times-uk--clive-davis.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-regional-2026/times-uk--clive-davis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review concerns the Young Vic 2024 production, not Pasadena Playhouse 2026; confirmed by West End Theatre review roundup.",
+        "description": "passing-strange-regional-2026/times-uk--clive-davis.json: wrongProductionReason"
+      }
+    ]
+  },
+  "executedAt": "2026-11-18T01:51:32.689Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "passing-strange-regional-2026/times-uk--clive-davis.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "passing-strange-regional-2026/times-uk--clive-davis.json wrongProductionReason: null -> \"Review concerns the Young Vic 2024 production, not Pasadena Playhouse 2026; confirmed by West End Theatre review roundup.\""
+    }
+  ],
+  "executedIn": "ci"
+}

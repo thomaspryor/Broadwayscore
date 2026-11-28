@@ -1,0 +1,79 @@
+{
+  "issueNumber": "bro-6703",
+  "planId": "fcda353f-61d0-4ad2-a9d5-349b64df7124",
+  "status": "applied",
+  "createdAt": "2026-11-17T04:54:53.355Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Mark 3 imageless closed/old shows noReliableArt so the self-heal stops re-dispatching (BRO-6703)",
+    "steps": [
+      "shows.json: all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024.noReliableArt",
+      "shows.json: noises-off-west-end-2019.noReliableArt",
+      "shows.json: blithe-spirit-west-end-2014.noReliableArt"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-11-17",
+          "reason": "BRO-6703: 11 self-heal searches found no matching art",
+          "key": "all the devils are here: how shakespeare invented the villain|north american tour|2024-10-12"
+        },
+        "description": "shows.json: all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024.noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "noises-off-west-end-2019",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-11-17",
+          "reason": "BRO-6703: 11 self-heal searches found no matching art",
+          "key": "noises off|garrick theatre|2019-10-03"
+        },
+        "description": "shows.json: noises-off-west-end-2019.noReliableArt"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blithe-spirit-west-end-2014",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-11-17",
+          "reason": "BRO-6703: 11 self-heal searches found no matching art",
+          "key": "blithe spirit|gielgud theatre|2014-03-18"
+        },
+        "description": "shows.json: blithe-spirit-west-end-2014.noReliableArt"
+      }
+    ]
+  },
+  "executedAt": "2026-11-17T05:07:43.061Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for noises-off-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for blithe-spirit-west-end-2014"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,93 @@
+{
+  "generatedAt": "2026-11-23T23:04:04.412Z",
+  "verdict": "ok",
+  "reason": "3 search method(s) within their noise-adjusted threshold (floor 0.15) of their 4-run median",
+  "regressions": [],
+  "comparedArms": 3,
+  "trendEntries": 15,
+  "latest": {
+    "date": "2026-11-23",
+    "generatedAt": "2026-11-23T23:04:04.412Z",
+    "naivePages": 2,
+    "shows": 5,
+    "informativeShows": 4,
+    "excluded": {
+      "settling": 4
+    },
+    "truthUrls": 42,
+    "onDiskUrls": 30,
+    "newFromNaive": 7,
+    "families": {
+      "naive": 0.286,
+      "onDisk": 0.714,
+      "scoped": 0.214
+    },
+    "arms": {
+      "naive-p0": 0.19,
+      "naive-p1": 0.095,
+      "onDisk": 0.714,
+      "scoped-q0": 0.071,
+      "scoped-q1": 0.071,
+      "scoped-q2": 0.095
+    },
+    "combinedRecall": 0.833,
+    "familyYield": {
+      "naive": 2.4,
+      "onDisk": 6,
+      "scoped": 1.8
+    },
+    "armYield": {
+      "naive-p0": 1.6,
+      "naive-p1": 0.8,
+      "onDisk": 6,
+      "scoped-q0": 0.6,
+      "scoped-q1": 0.6,
+      "scoped-q2": 0.8
+    },
+    "armsFailed": {
+      "naive-p0": 0,
+      "naive-p1": 0,
+      "onDisk": 0,
+      "scoped-q0": 0,
+      "scoped-q1": 0,
+      "scoped-q2": 0
+    },
+    "unavailableArms": [],
+    "byCategory": {
+      "off-west-end": {
+        "shows": 2,
+        "truthUrls": 31,
+        "families": {
+          "naive": 0.323,
+          "onDisk": 0.806,
+          "scoped": 0.097
+        }
+      },
+      "regional": {
+        "shows": 2,
+        "truthUrls": 11,
+        "families": {
+          "naive": 0.182,
+          "onDisk": 0.455,
+          "scoped": 0.545
+        }
+      },
+      "tour": {
+        "shows": 1,
+        "truthUrls": 0,
+        "families": {
+          "naive": null,
+          "onDisk": null,
+          "scoped": null
+        }
+      }
+    },
+    "sampleIds": [
+      "a-midsummer-nights-dream-jentes-regional-2026",
+      "arrowhead-regional-2026",
+      "cinderella-lyric-hammersmith-off-west-end-2026",
+      "the-snowman-off-west-end-2026",
+      "the-unauthorized-hallmark-ish-parody-musical-tour-2026"
+    ]
+  }
+}

@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-6137-c",
+  "planId": "4f51bc54-d6de-4efa-b3f9-a9a1e8f49e3f",
+  "status": "applied",
+  "createdAt": "2026-10-24T14:26:22.323Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6137: Money Scorecard launch data cleanup. Drop orphan key 860, record 8 announced recoupments with citations, Did Not Recoup for silent closures per BRO-5645, Once On This Island capitalization. (part 3 of 5)",
+    "steps": [
+      "once-on-this-island-2017: capitalization source.",
+      "death-of-a-salesman-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "death-of-a-salesman-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "peter-pan-goes-wrong-2023: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "peter-pan-goes-wrong-2023: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "diana-the-musical-2021: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "diana-the-musical-2021: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "chicken-and-biscuits-2021: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "chicken-and-biscuits-2021: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "aint-no-mo-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "aint-no-mo-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "walking-with-ghosts-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "walking-with-ghosts-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "the-little-prince-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "the-little-prince-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "the-cher-show-2018: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "the-cher-show-2018: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "west-side-story-2020: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "west-side-story-2020: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "escape-to-margaritaville-2018: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "escape-to-margaritaville-2018: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "gary-a-sequel-to-titus-andronicus-2019: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "gary-a-sequel-to-titus-andronicus-2019: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A.",
+      "king-lear-2019: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule).",
+      "king-lear-2019: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-on-this-island-2017",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "https://access.intix.org/Full-Article/three-broadway-shows-to-close-as-box-office-sinks-and-long-term-issues-loom",
+        "description": "once-on-this-island-2017: capitalization source."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman-2022",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "death-of-a-salesman-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "death-of-a-salesman-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "peter-pan-goes-wrong-2023: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "peter-pan-goes-wrong-2023: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "diana-the-musical-2021",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "diana-the-musical-2021: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "diana-the-musical-2021",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "diana-the-musical-2021: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicken-and-biscuits-2021",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "chicken-and-biscuits-2021: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicken-and-biscuits-2021",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "chicken-and-biscuits-2021: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-no-mo-2022",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "aint-no-mo-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-no-mo-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "aint-no-mo-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "walking-with-ghosts-2022",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "walking-with-ghosts-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "walking-with-ghosts-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "walking-with-ghosts-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-little-prince-2022",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-little-prince-2022: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-little-prince-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "the-little-prince-2022: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cher-show-2018",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "the-cher-show-2018: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cher-show-2018",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "the-cher-show-2018: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "west-side-story-2020",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "west-side-story-2020: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "west-side-story-2020",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "west-side-story-2020: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "escape-to-margaritaville-2018",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "escape-to-margaritaville-2018: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "escape-to-margaritaville-2018",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "escape-to-margaritaville-2018: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gary-a-sequel-to-titus-andronicus-2019",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "gary-a-sequel-to-titus-andronicus-2019: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gary-a-sequel-to-titus-andronicus-2019",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "gary-a-sequel-to-titus-andronicus-2019: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-lear-2019",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "king-lear-2019: closed more than six months ago with no recoupment ever reported (BRO-6137, BRO-5645 owner rule)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-lear-2019",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "king-lear-2019: closed more than six months, no recoupment reported, model range tops out under 100% so no quiet recoup is indicated; owner rule BRO-5645 Option A."
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T14:43:43.430Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for once-on-this-island-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for death-of-a-salesman-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-of-a-salesman-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for peter-pan-goes-wrong-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for peter-pan-goes-wrong-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for diana-the-musical-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for diana-the-musical-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for chicken-and-biscuits-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for chicken-and-biscuits-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for aint-no-mo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for aint-no-mo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for walking-with-ghosts-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for walking-with-ghosts-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-little-prince-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-little-prince-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-cher-show-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-cher-show-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for west-side-story-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for west-side-story-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for escape-to-margaritaville-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for escape-to-margaritaville-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for gary-a-sequel-to-titus-andronicus-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for gary-a-sequel-to-titus-andronicus-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for king-lear-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for king-lear-2019"
+    }
+  ],
+  "executedIn": "ci"
+}

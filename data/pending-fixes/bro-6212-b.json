@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-6212-b",
+  "planId": "d9776067-f2c1-40bc-a2f8-7d9526b9ad73",
+  "status": "applied",
+  "createdAt": "2026-10-25T17:57:08.977Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Re-tier Express Benjamin Button WE review after newsletter chrome fix",
+    "steps": [
+      "BRO-6212: Express (George Simpson, 5/5) West End review was tiered invalid for a mid-article Reach newsletter signup. The express-reach-newsletter chrome block now landed on main; recompute contentTier so the rebuild counts it."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "BRO-6212: Express (George Simpson, 5/5) West End review was tiered invalid for a mid-article Reach newsletter signup. The express-reach-newsletter chrome block now landed on main; recompute contentTier so the rebuild counts it.",
+        "script": "reclassify-invalid-reviews.js",
+        "args": "--file=the-curious-case-of-benjamin-button-west-end-2024/express-uk--george-simpson.json --apply"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T18:03:41.758Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

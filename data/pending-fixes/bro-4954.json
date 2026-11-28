@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-4954",
+  "planId": "0775f51a-e208-4ba7-a588-02cd1d8fb09b",
+  "status": "applied",
+  "createdAt": "2026-10-10T01:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4954 (class tracked on BRO-4304): remove two unknown-byline duplicate files that put London Arts Desk reviews on Broadway pages. validate-data.js fails on exactly these two (cross-market T1/T2 London outlet on a Broadway show). Each duplicates a URL already held by a correctly filed file.",
+    "steps": [
+      "Delete stephen-sondheims-old-friends-2025/artsdesk--unknown.json: the 2023 Gielgud Theatre gala review; the same URL is held by old-friends-west-end-2023/artsdesk--helen-hawkins.json.",
+      "Delete tammy-faye-2024/artsdesk--unknown.json: the 2022 Almeida Theatre review; the same URL is held by tammy-faye-2024/artsdesk--gary-naylor.json, correctly flagged wrongProduction."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "stephen-sondheims-old-friends-2025/artsdesk--unknown.json",
+        "description": "London 2023 Gielgud gala review on the 2025 Broadway entry (no London priorRuns). Duplicate of old-friends-west-end-2023/artsdesk--helen-hawkins.json (same URL)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "tammy-faye-2024/artsdesk--unknown.json",
+        "description": "London 2022 Almeida review on the 2024 Broadway entry. Duplicate of tammy-faye-2024/artsdesk--gary-naylor.json (same URL, already wrongProduction)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T01:10:00.430Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted stephen-sondheims-old-friends-2025/artsdesk--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted tammy-faye-2024/artsdesk--unknown.json"
+    }
+  ]
+}

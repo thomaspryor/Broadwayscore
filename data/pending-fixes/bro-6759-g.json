@@ -1,0 +1,55 @@
+{
+  "issueNumber": "bro-6759-g",
+  "planId": "45e932d8-0da7-4a58-a703-781d61b5e146",
+  "status": "applied",
+  "createdAt": "2026-11-01T13:33:08.482Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6759: replace Guardian Appropriate file (held Deadline text) with the real Guardian review",
+    "steps": [
+      "BRO-6759: file holds Deadline text under a Guardian byline; delete so the real Guardian page is re-ingested",
+      "Ingest appropriate-2023 from handed-off HTML: https://www.theguardian.com/stage/2023/dec/18/appropriate-broadway-review-sarah-paulson-branden-jacobs-jenkins"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "appropriate-2023/guardian--adrian-horton.json",
+        "description": "BRO-6759: file holds Deadline text under a Guardian byline; delete so the real Guardian page is re-ingested"
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "appropriate-2023",
+        "url": "https://www.theguardian.com/stage/2023/dec/18/appropriate-broadway-review-sarah-paulson-branden-jacobs-jenkins",
+        "outlet": "guardian",
+        "critic": "Adrian Horton",
+        "publishDate": "2023-12-19",
+        "description": "BRO-5886 html handoff: ingest https://www.theguardian.com/stage/2023/dec/18/appropriate-broadway-review-sarah-paulson-branden-jacobs-jenkins from HTML fetched outside CI",
+        "htmlBytes": 369989,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "a1b3ee111158e1ef4f3bd3f39c4c0054fa5c21890b28e57393313fc81bf03874",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T16:05:43.158Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted appropriate-2023/guardian--adrian-horton.json"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.theguardian.com/stage/2023/dec/18/appropriate-broadway-review-sarah-paulson-branden-jacobs-jenkins for appropriate-2023 from handed-off HTML (369874 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

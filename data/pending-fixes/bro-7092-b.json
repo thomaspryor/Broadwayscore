@@ -1,0 +1,32 @@
+{
+  "issueNumber": "bro-7092-b",
+  "planId": "8f431799-bd88-4b4f-b237-36f3aa52d7d0",
+  "status": "superseded",
+  "createdAt": "2026-11-07T20:10:13.202Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7092: BRO-4779 failed because --expect=60 no longer matched the archive. Run the sibling-misfile audit read-only (no --delete) to get the current count; a follow-up plan deletes with the new --expect.",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "audit-sibling-misfile-archive.js",
+        "args": "--json",
+        "description": "Read-only: list sibling-misfiled Show Score/DTLI archive pages now on file (BRO-4779)."
+      }
+    ]
+  },
+  "executedAt": "2026-11-07T20:52:45.692Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script audit-sibling-misfile-archive.js failed: Command failed: node scripts/audit-sibling-misfile-archive.js --json"
+    }
+  ],
+  "executedIn": "ci",
+  "supersededAt": "2026-11-07T20:59:04.121Z",
+  "supersededReason": "BRO-7092: read-only recount done; the audit found 156 sibling-misfiled archive pages (run 42412802580). The non-zero exit is the audit reporting findings, not a failure. The count is recorded on bro-4779 triage."
+}

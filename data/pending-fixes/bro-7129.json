@@ -1,0 +1,120 @@
+{
+  "issueNumber": "bro-7129",
+  "planId": "62120d4f-5d4e-4d3f-b798-c36b5e6265ab",
+  "status": "applied",
+  "createdAt": "2026-11-08T16:17:43.680Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Exclude 4 other-production/other-show reviews live on NY show pages (found by the BRO-7129 census-other-place replay)",
+    "steps": [
+      "into-the-woods-2022/thestage--neil-norman.json: wrongProduction",
+      "into-the-woods-2022/thestage--neil-norman.json: wrongProductionReason",
+      "trouble-in-mind-2021/guardian--arifa-akbar.json: wrongProduction",
+      "trouble-in-mind-2021/guardian--arifa-akbar.json: wrongProductionReason",
+      "the-other-place-off-broadway-2026/thestage--neil-norman.json: wrongShow",
+      "the-color-purple-2005/talkinbroadway--matthew-murray.json: wrongProduction",
+      "the-color-purple-2005/talkinbroadway--matthew-murray.json: wrongProductionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/thestage--neil-norman.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "into-the-woods-2022/thestage--neil-norman.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/thestage--neil-norman.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7129: reviews the Terry Gilliam production at Theatre Royal Bath (Aug 2022), not the Broadway revival at the St. James",
+        "description": "into-the-woods-2022/thestage--neil-norman.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "trouble-in-mind-2021/guardian--arifa-akbar.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "trouble-in-mind-2021/guardian--arifa-akbar.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "trouble-in-mind-2021/guardian--arifa-akbar.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7129: Guardian review of the National Theatre staging (Dec 2021, URL trouble-in-mind-review-national-theatre), not the Broadway production",
+        "description": "trouble-in-mind-2021/guardian--arifa-akbar.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-other-place-off-broadway-2026/thestage--neil-norman.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-other-place-off-broadway-2026/thestage--neil-norman.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2005/talkinbroadway--matthew-murray.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-color-purple-2005/talkinbroadway--matthew-murray.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2005/talkinbroadway--matthew-murray.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-7129: URL is a Talkin Broadway regional/boston page (dead), not the Broadway review",
+        "description": "the-color-purple-2005/talkinbroadway--matthew-murray.json: wrongProductionReason"
+      }
+    ]
+  },
+  "executedAt": "2026-11-08T17:40:57.338Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/thestage--neil-norman.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/thestage--neil-norman.json wrongProductionReason: null -> \"BRO-7129: reviews the Terry Gilliam production at Theatre Royal Bath (Aug 2022), not the Broadway revival at the St. James\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trouble-in-mind-2021/guardian--arifa-akbar.json wrongProduction: false -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trouble-in-mind-2021/guardian--arifa-akbar.json wrongProductionReason: null -> \"BRO-7129: Guardian review of the National Theatre staging (Dec 2021, URL trouble-in-mind-review-national-theatre), not the Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-other-place-off-broadway-2026/thestage--neil-norman.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2005/talkinbroadway--matthew-murray.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2005/talkinbroadway--matthew-murray.json wrongProductionReason: null -> \"BRO-7129: URL is a Talkin Broadway regional/boston page (dead), not the Broadway review\""
+    }
+  ],
+  "executedIn": "ci"
+}

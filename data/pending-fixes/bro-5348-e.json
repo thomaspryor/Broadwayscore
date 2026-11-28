@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-5348-e",
+  "planId": "9ca729d1-2d85-427d-8368-37f9a7efcdd5",
+  "status": "applied",
+  "createdAt": "2026-10-14T13:26:09.877Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5348: HuffPost rows whose credited critic differs from the url contributor and page byline: 2 reviews credited to the wrong critic (noises-off-2016 -> Steven Suskin, beautiful-the-carole-king-musical-2014 -> David Finkle) and 2 misspellings (Glitz -> Giltz).",
+    "steps": [
+      "Rename the 4 rows to the page byline"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "noises-off-2016/huffpost--fern-siegel.json",
+        "field": "criticName",
+        "oldValue": "Fern Siegel",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5348: url https://www.huffpost.com/steven-suskin/aisle-view-splendidly-del_b_8985436.html is bylined Steven Suskin (JSON-LD + byline) and carries this text (overlap 0.96). huffpost--steven-suskin.json is the same url, duplicateOf this row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beautiful-the-carole-king-musical-2014/huffpost--danny-groner.json",
+        "field": "criticName",
+        "oldValue": "Danny Groner",
+        "newValue": "David Finkle",
+        "description": "BRO-5348: this row url is a /david-finkle/ HuffPost page bylined David Finkle (JSON-LD + byline) and carries this text (overlap 1). huffpost--david-finkle.json already points duplicateOf at this row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eclipsed-2016/huffpost--michael-glitz.json",
+        "field": "criticName",
+        "oldValue": "Michael Glitz",
+        "newValue": "Michael Giltz",
+        "description": "BRO-5348: spelling; the url is the /michael-giltz/ HuffPost contributor page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "therese-raquin-2015/huffpost--michael-glitz.json",
+        "field": "criticName",
+        "oldValue": "Michael Glitz",
+        "newValue": "Michael Giltz",
+        "description": "BRO-5348: spelling; the url is the /michael-giltz/ HuffPost contributor page."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T13:54:29.693Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "noises-off-2016/huffpost--fern-siegel.json criticName: \"Fern Siegel\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beautiful-the-carole-king-musical-2014/huffpost--danny-groner.json criticName: \"Danny Groner\" -> \"David Finkle\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eclipsed-2016/huffpost--michael-glitz.json criticName: \"Michael Glitz\" -> \"Michael Giltz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "therese-raquin-2015/huffpost--michael-glitz.json criticName: \"Michael Glitz\" -> \"Michael Giltz\""
+    }
+  ]
+}

@@ -1,0 +1,334 @@
+{
+  "issueNumber": "bro-5420-d",
+  "planId": "60463c05-02cb-47e8-a8a2-223954de4943",
+  "status": "applied",
+  "createdAt": "2026-10-16T03:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (d): re-credit 24 Theatre Record bylines left as OCR residue on rows already excluded (wrong production); names legible in the residue. Cosmetic: no live score changes.",
+    "steps": [
+      "recredit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "chicago-1975/daily-mail--michael-covene.json",
+        "field": "criticName",
+        "oldValue": "Michael Covene>",
+        "newValue": "Michael Coveney",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Michael Coveney (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "charlotte-1980/the-scotsman--joyce-mcmillan.json",
+        "field": "criticName",
+        "oldValue": "Joyce McMillan •",
+        "newValue": "Joyce McMillan",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Joyce McMillan (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "company-1993/observer--clare-brennan-theatre-record-01-31-october-2018.json",
+        "field": "criticName",
+        "oldValue": "Clare Brennan\fTheatre Record 01 – 31 October 2018",
+        "newValue": "Clare Brennan",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Clare Brennan (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "company-2006/observer--clare-brennan-theatre-record-01-31-october-2018.json",
+        "field": "criticName",
+        "oldValue": "Clare Brennan\fTheatre Record 01 – 31 October 2018",
+        "newValue": "Clare Brennan",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Clare Brennan (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "defender-of-the-faith-1971/herald--markbrown-its-oftensaid-byshrewd.json",
+        "field": "criticName",
+        "oldValue": "MarkBrown IT'S oftensaid, byshrewd",
+        "newValue": "Mark Brown",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Mark Brown (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fosse-1999/observer--susannah-clapp.json",
+        "field": "criticName",
+        "oldValue": "Susannah Clapp _",
+        "newValue": "Susannah Clapp",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Susannah Clapp (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "i-ought-to-be-in-pictures-1980/the-jewish-chronicle--david-nathd.json",
+        "field": "criticName",
+        "oldValue": "David Nathd::",
+        "newValue": "David Nathan",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is David Nathan (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-me-1982/daily-telegra-h--john-barber.json",
+        "field": "criticName",
+        "oldValue": "John· Barber",
+        "newValue": "John Barber",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is John Barber (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paul-robeson-1978/times-uk--jeremy-kingsto.json",
+        "field": "criticName",
+        "oldValue": "Jeremy Kingsto~",
+        "newValue": "Jeremy Kingston",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Jeremy Kingston (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paul-robeson-1988/times-uk--jeremy-kingsto.json",
+        "field": "criticName",
+        "oldValue": "Jeremy Kingsto~",
+        "newValue": "Jeremy Kingston",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Jeremy Kingston (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paul-robeson-1995/times-uk--jeremy-kingsto.json",
+        "field": "criticName",
+        "oldValue": "Jeremy Kingsto~",
+        "newValue": "Jeremy Kingston",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Jeremy Kingston (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peg-1983/wall-street-jocrnal--ned-chaiilet.json",
+        "field": "criticName",
+        "oldValue": "Ned. Chaiilet·",
+        "newValue": "Ned Chaillet",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Ned Chaillet (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sophisticated-ladies-1981/eveningstandard--nicholasdejon.json",
+        "field": "criticName",
+        "oldValue": "NicholasdeJon^",
+        "newValue": "Nicholas de Jongh",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Nicholas de Jongh (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-blue-room-1998/standard--shane-watson-ms.json",
+        "field": "criticName",
+        "oldValue": "Shane Watson (Ms)",
+        "newValue": "Shane Watson",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Shane Watson (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-gospel-at-colonus-1988/herald--swayingshoulder-rollingtambourine-mark-brown.json",
+        "field": "criticName",
+        "oldValue": "swaying,shoulder-rolling,tambourine- Mark Brown",
+        "newValue": "Mark Brown",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Mark Brown (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-human-comedy-1984/telegraph--charles-spe11cer.json",
+        "field": "criticName",
+        "oldValue": "Charles Spe11cer- ·",
+        "newValue": "Charles Spencer",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Charles Spencer (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-magic-show-1974/times-uk--mackintosh-could-in-itself-i-kid-dominic-maxwell.json",
+        "field": "criticName",
+        "oldValue": "Mackintosh) could in itself- I kid Dominic Maxwell",
+        "newValue": "Dominic Maxwell",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Dominic Maxwell (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-philadelphia-story-1980/the-spectator-uk--tobyyoung.json",
+        "field": "criticName",
+        "oldValue": "TobyYoung,",
+        "newValue": "Toby Young",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Toby Young (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-philadelphia-story-1980/tribune--alekssierz.json",
+        "field": "criticName",
+        "oldValue": "AleksSierz ^ . •'",
+        "newValue": "Aleks Sierz",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Aleks Sierz (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-twilight-of-the-golds-1993/twilight-sunday-times--robert-hewison-of-the-golds-if-if-was-sittiiog.json",
+        "field": "criticName",
+        "oldValue": "Robert Hewison OF THE GOLDS IF if,was sittiiog",
+        "newValue": "Robert Hewison",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Robert Hewison (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wicked-2003/express-uk--sheridan-morley.json",
+        "field": "criticName",
+        "oldValue": "Sheridan Morley·",
+        "newValue": "Sheridan Morley",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Sheridan Morley (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brighton-beach-memoirs-1983/standard--mi-1ton-shui-ir-an.json",
+        "field": "criticName",
+        "oldValue": "Mi 1ton Shui ir:an",
+        "newValue": "Milton Shulman",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Milton Shulman (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brighton-beach-memoirs-1983/sunday-telegraph--fra-nci-s-1-ng.json",
+        "field": "criticName",
+        "oldValue": "Fra.nci s !-::.1 ng",
+        "newValue": "Francis King",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Francis King (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burn-this-1987/express-uk--jason-solcnnods-on.json",
+        "field": "criticName",
+        "oldValue": "Jason SolcnnoDS on",
+        "newValue": "Jason Solomons",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Jason Solomons (the outlet's critic at that date, legible in the residue)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T04:07:26.843Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chicago-1975/daily-mail--michael-covene.json criticName: \"Michael Covene>\" -> \"Michael Coveney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "charlotte-1980/the-scotsman--joyce-mcmillan.json criticName: \"Joyce McMillan •\" -> \"Joyce McMillan\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "company-1993/observer--clare-brennan-theatre-record-01-31-october-2018.json criticName: \"Clare Brennan\\fTheatre Record 01 – 31 October 2018\" -> \"Clare Brennan\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "company-2006/observer--clare-brennan-theatre-record-01-31-october-2018.json criticName: \"Clare Brennan\\fTheatre Record 01 – 31 October 2018\" -> \"Clare Brennan\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "defender-of-the-faith-1971/herald--markbrown-its-oftensaid-byshrewd.json criticName: \"MarkBrown IT'S oftensaid, byshrewd\" -> \"Mark Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fosse-1999/observer--susannah-clapp.json criticName: \"Susannah Clapp _\" -> \"Susannah Clapp\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "i-ought-to-be-in-pictures-1980/the-jewish-chronicle--david-nathd.json criticName: \"David Nathd::\" -> \"David Nathan\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-me-1982/daily-telegra-h--john-barber.json criticName: \"John· Barber\" -> \"John Barber\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paul-robeson-1978/times-uk--jeremy-kingsto.json criticName: \"Jeremy Kingsto~\" -> \"Jeremy Kingston\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paul-robeson-1988/times-uk--jeremy-kingsto.json criticName: \"Jeremy Kingsto~\" -> \"Jeremy Kingston\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paul-robeson-1995/times-uk--jeremy-kingsto.json criticName: \"Jeremy Kingsto~\" -> \"Jeremy Kingston\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "peg-1983/wall-street-jocrnal--ned-chaiilet.json criticName: \"Ned. Chaiilet·\" -> \"Ned Chaillet\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sophisticated-ladies-1981/eveningstandard--nicholasdejon.json criticName: \"NicholasdeJon^\" -> \"Nicholas de Jongh\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-blue-room-1998/standard--shane-watson-ms.json criticName: \"Shane Watson (Ms)\" -> \"Shane Watson\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-gospel-at-colonus-1988/herald--swayingshoulder-rollingtambourine-mark-brown.json criticName: \"swaying,shoulder-rolling,tambourine- Mark Brown\" -> \"Mark Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-human-comedy-1984/telegraph--charles-spe11cer.json criticName: \"Charles Spe11cer- ·\" -> \"Charles Spencer\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-magic-show-1974/times-uk--mackintosh-could-in-itself-i-kid-dominic-maxwell.json criticName: \"Mackintosh) could in itself- I kid Dominic Maxwell\" -> \"Dominic Maxwell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-philadelphia-story-1980/the-spectator-uk--tobyyoung.json criticName: \"TobyYoung,\" -> \"Toby Young\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-philadelphia-story-1980/tribune--alekssierz.json criticName: \"AleksSierz ^ . •'\" -> \"Aleks Sierz\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-twilight-of-the-golds-1993/twilight-sunday-times--robert-hewison-of-the-golds-if-if-was-sittiiog.json criticName: \"Robert Hewison OF THE GOLDS IF if,was sittiiog\" -> \"Robert Hewison\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wicked-2003/express-uk--sheridan-morley.json criticName: \"Sheridan Morley·\" -> \"Sheridan Morley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brighton-beach-memoirs-1983/standard--mi-1ton-shui-ir-an.json criticName: \"Mi 1ton Shui ir:an\" -> \"Milton Shulman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brighton-beach-memoirs-1983/sunday-telegraph--fra-nci-s-1-ng.json criticName: \"Fra.nci s !-::.1 ng\" -> \"Francis King\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burn-this-1987/express-uk--jason-solcnnods-on.json criticName: \"Jason SolcnnoDS on\" -> \"Jason Solomons\""
+    }
+  ]
+}

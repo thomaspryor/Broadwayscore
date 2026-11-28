@@ -1,0 +1,372 @@
+{
+  "issueNumber": "bro-6054-b",
+  "planId": "4f7d42c2-566f-49bd-ac8a-37d42da433b7",
+  "status": "applied",
+  "createdAt": "2026-10-23T09:39:31.283Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6054 part 2: wrongAttribution flags on sibling-critic text copies, criticName cleared on real reviews carrying a wrong byline, amazing-grace byline fix.",
+    "steps": [
+      "red-2010/variety--charles-isherwood.json: wrongAttribution",
+      "romeo-juliet-2024/variety--charles-isherwood.json: wrongAttribution",
+      "skeleton-crew-2022/theatermania--adam-feldman.json: wrongAttribution",
+      "stick-fly-2011/theatermania--charles-isherwood.json: wrongAttribution",
+      "stranger-things-the-first-shadow-west-end-2023/timeout-london--dominic-cavendish.json: wrongAttribution",
+      "the-collaboration-2022/variety--charles-isherwood.json: wrongAttribution",
+      "the-color-purple-2015/guardian--jesse-green.json: wrongAttribution",
+      "the-cripple-of-inishmaan-2014/guardian--jesse-green.json: wrongAttribution",
+      "the-crucible-2016/theatermania--jesse-green.json: wrongAttribution",
+      "the-gin-game-2015/theatermania--jesse-green.json: wrongAttribution",
+      "the-normal-heart-2011/variety--david-rooney.json: wrongAttribution",
+      "the-piano-lesson-2022/variety--charles-isherwood.json: wrongAttribution",
+      "the-play-that-goes-wrong-2017/theatermania--adam-feldman.json: wrongAttribution",
+      "the-present-2017/guardian--jesse-green.json: wrongAttribution",
+      "the-scottsboro-boys-2010/variety--charles-isherwood.json: wrongAttribution",
+      "the-thanksgiving-play-2023/nysr--christian-holub.json: wrongAttribution",
+      "the-velocity-of-autumn-2014/theatermania--charles-isherwood.json: wrongAttribution",
+      "the-waverly-gallery-2018/nysr--matt-windman.json: wrongAttribution",
+      "three-men-in-a-boat-off-west-end-2026/mail-on-sunday--patrick-marmion.json: wrongAttribution",
+      "time-stands-still-2010/variety--charles-isherwood.json: wrongAttribution",
+      "topdog-underdog-2022/theatermania--adam-feldman.json: wrongAttribution",
+      "torch-song-2018/nysr--matt-windman.json: wrongAttribution",
+      "waiting-for-godot-2013/guardian--jesse-green.json: wrongAttribution",
+      "wolf-hall-parts-one-and-two-2015/guardian--jesse-green.json: wrongAttribution",
+      "amazing-grace-2015/nytg--steven-babyak.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "red-2010/variety--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "red-2010/variety--charles-isherwood.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-juliet-2024/variety--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "romeo-juliet-2024/variety--charles-isherwood.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "skeleton-crew-2022/theatermania--adam-feldman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "skeleton-crew-2022/theatermania--adam-feldman.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stick-fly-2011/theatermania--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "stick-fly-2011/theatermania--charles-isherwood.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/timeout-london--dominic-cavendish.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "stranger-things-the-first-shadow-west-end-2023/timeout-london--dominic-cavendish.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-collaboration-2022/variety--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-collaboration-2022/variety--charles-isherwood.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2015/guardian--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-color-purple-2015/guardian--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cripple-of-inishmaan-2014/guardian--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Unknown",
+        "description": "the-cripple-of-inishmaan-2014/guardian--jesse-green.json: unique text with a wrong byline (sibling critic's name); keep the review, clear the byline"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-crucible-2016/theatermania--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-crucible-2016/theatermania--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-gin-game-2015/theatermania--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-gin-game-2015/theatermania--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-normal-heart-2011/variety--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-normal-heart-2011/variety--david-rooney.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-piano-lesson-2022/variety--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-piano-lesson-2022/variety--charles-isherwood.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/theatermania--adam-feldman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-play-that-goes-wrong-2017/theatermania--adam-feldman.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-present-2017/guardian--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-present-2017/guardian--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-scottsboro-boys-2010/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Unknown",
+        "description": "the-scottsboro-boys-2010/variety--charles-isherwood.json: unique text with a wrong byline (sibling critic's name); keep the review, clear the byline"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-thanksgiving-play-2023/nysr--christian-holub.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-thanksgiving-play-2023/nysr--christian-holub.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-velocity-of-autumn-2014/theatermania--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Unknown",
+        "description": "the-velocity-of-autumn-2014/theatermania--charles-isherwood.json: unique text with a wrong byline (sibling critic's name); keep the review, clear the byline"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-waverly-gallery-2018/nysr--matt-windman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-waverly-gallery-2018/nysr--matt-windman.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "three-men-in-a-boat-off-west-end-2026/mail-on-sunday--patrick-marmion.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "three-men-in-a-boat-off-west-end-2026/mail-on-sunday--patrick-marmion.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "time-stands-still-2010/variety--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "time-stands-still-2010/variety--charles-isherwood.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "topdog-underdog-2022/theatermania--adam-feldman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "topdog-underdog-2022/theatermania--adam-feldman.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "torch-song-2018/nysr--matt-windman.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "torch-song-2018/nysr--matt-windman.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2013/guardian--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "waiting-for-godot-2013/guardian--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wolf-hall-parts-one-and-two-2015/guardian--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "wolf-hall-parts-one-and-two-2015/guardian--jesse-green.json: wrongAttribution"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amazing-grace-2015/nytg--steven-babyak.json",
+        "field": "criticName",
+        "oldValue": "Steven Babyak",
+        "newValue": "Dom O'Hanlon",
+        "description": "amazing-grace-2015/nytg--steven-babyak.json: criticName"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T10:53:20.218Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "red-2010/variety--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "romeo-juliet-2024/variety--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "skeleton-crew-2022/theatermania--adam-feldman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stick-fly-2011/theatermania--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/timeout-london--dominic-cavendish.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-collaboration-2022/variety--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2015/guardian--jesse-green.json wrongAttribution: null -> true (write guard stripped cloned bwwExcerpt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cripple-of-inishmaan-2014/guardian--jesse-green.json criticName: \"Jesse Green\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-crucible-2016/theatermania--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-gin-game-2015/theatermania--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-normal-heart-2011/variety--david-rooney.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-piano-lesson-2022/variety--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/theatermania--adam-feldman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-present-2017/guardian--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-scottsboro-boys-2010/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-thanksgiving-play-2023/nysr--christian-holub.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-velocity-of-autumn-2014/theatermania--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-waverly-gallery-2018/nysr--matt-windman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-men-in-a-boat-off-west-end-2026/mail-on-sunday--patrick-marmion.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "time-stands-still-2010/variety--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "topdog-underdog-2022/theatermania--adam-feldman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "torch-song-2018/nysr--matt-windman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/guardian--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wolf-hall-parts-one-and-two-2015/guardian--jesse-green.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amazing-grace-2015/nytg--steven-babyak.json criticName: \"Steven Babyak\" -> \"Dom O'Hanlon\""
+    }
+  ],
+  "executedIn": "ci"
+}

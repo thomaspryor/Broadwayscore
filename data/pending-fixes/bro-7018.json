@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-7018",
+  "planId": "57baa808-5923-4f3b-bfea-36c62ef5bdd5",
+  "status": "applied",
+  "createdAt": "2026-11-05T22:58:42.167Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Review Indecent stale closure: retain TBD (Undisclosed) because the later break-even report does not explicitly confirm investor-capital repayment; preserve BRO-6336 and BRO-6865 decisions and lock the reviewed designation.",
+    "steps": [
+      "commercial.json: indecent-2017.humanReviewedDesignation",
+      "commercial.json: indecent-2017.notes"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "indecent-2017",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: indecent-2017.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "indecent-2017",
+        "field": "notes",
+        "oldValue": "Paula Vogel's play at the Cort (opened Apr 18, 2017). It posted a closing notice for Jun 25, won Tonys for direction and lighting, then extended and closed Aug 6, 2017. The $3.8M is the SEC filing figure.",
+        "newValue": "Paula Vogel's play at the Cort (opened Apr 18, 2017). It posted a closing notice for Jun 25, won Tonys for direction and lighting, then extended and closed Aug 6, 2017. The $3.8M is the SEC filing figure. BRO-7018 review: retain TBD (Undisclosed), consistent with BRO-6336 and BRO-6865. Diep Tran, American Theatre, March 6, 2019, reports that the Broadway production broke even after its six-week extension, but does not explicitly confirm repayment of original investor capital or a recoupment date. The June 19, 2017 flop description predates that extension and cannot establish the final outcome. Source: https://www.americantheatre.org/2019/03/06/daryl-roth-producing-with-a-purpose/. The archived recoupment claim was rejected by BRO-6865; its recent timestamp is not new evidence. Reassess if explicit investor-return evidence emerges.",
+        "description": "commercial.json: indecent-2017.notes"
+      }
+    ]
+  },
+  "executedAt": "2026-11-06T00:02:11.161Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for indecent-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for indecent-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

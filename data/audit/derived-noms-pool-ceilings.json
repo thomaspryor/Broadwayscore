@@ -1,0 +1,110 @@
+{
+  "snapshotSource": "data/audit/tony-pre-tier-weights/awards.json.snapshot",
+  "derivedAt": "2026-05-16T20:26:58.409Z",
+  "formula": "sum across DL+OCC+DD of PRECURSOR_TIER_NOM_WEIGHTS[classifyCategory(nomCat).tier], skipping matching top cat",
+  "percentile": 95,
+  "ceilings": {
+    "best-musical": 14.5,
+    "best-play": 1.5,
+    "best-revival-musical": 0,
+    "best-revival-play": 0
+  },
+  "diagnostics": {
+    "best-musical": {
+      "n": 50,
+      "nonzeroCount": 12,
+      "max": 15,
+      "median": 0,
+      "p95": 14.5,
+      "top3": [
+        {
+          "id": "moulin-rouge-2019",
+          "season": "2019-20",
+          "weightedNoms": 15
+        },
+        {
+          "id": "maybe-happy-ending-2024",
+          "season": "2024-25",
+          "weightedNoms": 15
+        },
+        {
+          "id": "hamilton-2015",
+          "season": "2015-16",
+          "weightedNoms": 14.5
+        }
+      ]
+    },
+    "best-play": {
+      "n": 52,
+      "nonzeroCount": 3,
+      "max": 10.5,
+      "median": 0,
+      "p95": 1.5,
+      "top3": [
+        {
+          "id": "stereophonic-2024",
+          "season": "2023-24",
+          "weightedNoms": 10.5
+        },
+        {
+          "id": "harry-potter-2021",
+          "season": "2017-18",
+          "weightedNoms": 7.5
+        },
+        {
+          "id": "oh-mary-2024",
+          "season": "2024-25",
+          "weightedNoms": 1.5
+        }
+      ]
+    },
+    "best-revival-musical": {
+      "n": 33,
+      "nonzeroCount": 1,
+      "max": 1.5,
+      "median": 0,
+      "p95": 0,
+      "top3": [
+        {
+          "id": "cabaret-2024",
+          "season": "2023-24",
+          "weightedNoms": 1.5
+        },
+        {
+          "id": "hedwig-and-the-angry-inch-2014",
+          "season": "2013-14",
+          "weightedNoms": 0
+        },
+        {
+          "id": "les-miserables-2014",
+          "season": "2013-14",
+          "weightedNoms": 0
+        }
+      ]
+    },
+    "best-revival-play": {
+      "n": 46,
+      "nonzeroCount": 0,
+      "max": 0,
+      "median": 0,
+      "p95": 0,
+      "top3": [
+        {
+          "id": "our-town-2024",
+          "season": "2024-25",
+          "weightedNoms": 0
+        },
+        {
+          "id": "a-raisin-in-the-sun-2014",
+          "season": "2013-14",
+          "weightedNoms": 0
+        },
+        {
+          "id": "the-cripple-of-inishmaan-2014",
+          "season": "2013-14",
+          "weightedNoms": 0
+        }
+      ]
+    }
+  }
+}

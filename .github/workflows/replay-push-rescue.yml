@@ -1,0 +1,134 @@
+name: Replay Push Rescue
+
+# BRO-6615: when every review-texts push attempt fails, push-with-retry.sh and
+# the push-review-texts action save the job's commit to a push-rescue/* branch
+# in broadway-review-texts (scripts/lib/push-rescue.js). This restores the NEW
+# review files from those branches on a fresh checkout, runs the cross-show
+# ownership gate on them, pushes, and deletes each branch once its files are
+# on main. Before this, a lost push of a new review was a digest line and the
+# review stayed off the site (opening-night-poller run 41013824281).
+# The first step is one ls-remote; without a rescue branch the run stops there.
+# A branch kept for a conflict with main no longer fails the run (BRO-8244; one parked Linear card asks the owner); once the owner picks
+# main's copy, dispatch with main_wins=<branch>@<tip sha> (the run log prints
+# it). Prune then archives the tip as tag push-rescue-archive/... and deletes it.
+
+on:
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+    inputs:
+      main_wins:
+        description: 'Owner chose main: <push-rescue branch>@<tip sha>, comma-separated (prune then deletes it)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: replay-push-rescue
+  cancel-in-progress: false
+
+jobs:
+  replay:
+    name: Replay rescued review-texts pushes
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Kill switch: repo variable PUSH_RESCUE_REPLAY_DISABLED=true (branches are kept, nothing is deleted).
+
+    steps:
+      - name: Any rescue branches?
+        if: vars.PUSH_RESCUE_REPLAY_DISABLED != 'true'
+        id: probe
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # A failed ls-remote (auth, network) must fail the run, not read as "none".
+          OUT=$(timeout 60 git ls-remote "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 'refs/heads/push-rescue/*') \
+            || { echo "::error::ls-remote of broadway-review-texts failed; rescue branches were not checked"; exit 1; }
+          N=$(printf '%s\n' "$OUT" | grep -c . || true)
+          echo "Rescue branches: $N"
+          echo "count=$N" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout repository
+        if: ${{ steps.probe.outputs.count != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - name: Checkout review-texts
+        if: ${{ steps.probe.outputs.count != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        if: ${{ steps.probe.outputs.count != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
+
+      - name: Restore rescued review files
+        id: replay
+        if: ${{ steps.probe.outputs.count != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
+        working-directory: data/review-texts
+        env:
+          PUSH_RESCUE_MAIN_WINS: ${{ inputs.main_wins }}
+          # BRO-7549 kill switch: repo variable PUSH_RESCUE_AUTO_SETTLE_DISABLE=true restores always-wait on conflicts.
+          PUSH_RESCUE_AUTO_SETTLE_DISABLE: ${{ vars.PUSH_RESCUE_AUTO_SETTLE_DISABLE }}
+        run: node ../../scripts/lib/push-rescue.js replay --manifest="$RUNNER_TEMP/push-rescue-manifest.json"
+
+      - name: Push to private repo
+        id: push
+        if: ${{ steps.probe.outputs.count != '0' && steps.replay.outputs.restored != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
+        uses: ./.github/actions/push-review-texts
+        env:
+          # A failed replay push keeps the existing branches; never mint a new one per run.
+          PUSH_RESCUE_DISABLE: '1'
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: replay ${{ steps.replay.outputs.restored }} rescued review file(s) from push-rescue branches (BRO-6615)'
+
+      - name: Delete replayed rescue branches
+        id: prune
+        if: ${{ steps.probe.outputs.count != '0' && steps.replay.outcome == 'success' && steps.push.outcome != 'failure' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
+        working-directory: data/review-texts
+        run: node ../../scripts/lib/push-rescue.js prune --manifest="$RUNNER_TEMP/push-rescue-manifest.json"
+
+      # BRO-8244: branches waiting for a person are a decision, not a cron failure, so the run stays green
+      # (check-cron-health reads success as "cron alive"). The owner is told through ONE parked Linear card
+      # (linear-brain refuses a near-duplicate open card, so this does not file one per hour). notify-failure
+      # is not used: it only delivers for severity=critical on page-worthy workflows.
+      - name: Report branches waiting for a person
+        # lint-allow-swallow: advisory owner card; the replay result itself is checked by the prune and 'Fail if a rescue branch could not be replayed' steps
+        if: ${{ steps.prune.outputs.waiting != '' && steps.prune.outputs.waiting != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          WAITING: ${{ steps.prune.outputs.waiting }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PARK_REASON: "owner call: pick main's copy or the rescued copy for conflicting review files"
+          CARD_NOTES: |
+            Push-rescue branches in broadway-review-texts conflict with main or were dropped by the ownership gate, and replay cannot pick a side. The latest run log lists each branch with a COMPARE line (metadata only) and prints the main_wins=<branch>@<tip> value to dispatch replay-push-rescue.yml with once main's copy is chosen. The replay cron itself is healthy (BRO-8244).
+
+            DECISION NEEDED: keep main's copy or the rescued copy of the conflicting review files?
+            My recommendation: main's copy when the COMPARE line shows main fuller or equal; otherwise restore the rescued copy by hand.
+        run: |
+          # One card-reuse comment per day, not per hourly run (linear-brain adds a comment on every reuse).
+          case "$(date -u +%H)" in 12|13) ;; *) echo "waiting branches: $WAITING (card refreshed daily at 12-13 UTC)"; exit 0;; esac
+          node scripts/linear-brain.js create "Rescued reviews waiting for an owner pick (push-rescue branches)" \
+            --park "$PARK_REASON" --no-verify "owner decision, not a machine check" --source replay-push-rescue \
+            --notes "$WAITING branch(es) waiting. Run: $RUN_URL
+          $CARD_NOTES" \
+            || echo "::warning::could not file the waiting-branches card (see the error above)"
+
+      - name: Fail if a rescue branch could not be replayed
+        if: ${{ steps.probe.outputs.count != '0' && steps.replay.outputs.failed != '' && steps.replay.outputs.failed != '0' && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
+        run: |
+          echo "::error::${{ steps.replay.outputs.failed }} rescue branch(es) could not be replayed (see the replay step); they are kept for the next run."
+          exit 1
+
+      - name: Notify on failure
+        if: ${{ failure() && vars.PUSH_RESCUE_REPLAY_DISABLED != 'true' }}
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Replay Push Rescue Failed'
+          description: 'New review files saved on push-rescue branches in broadway-review-texts are not back on main yet; the branches are kept and the next hourly run retries.'
+          severity: 'warning'

@@ -1,0 +1,337 @@
+{
+  "issueNumber": "bro-5232-h",
+  "planId": "b33c981e-be37-455a-96b9-2232d386f90b",
+  "status": "applied",
+  "createdAt": "2026-10-13T09:20:23.463Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5232 batch h: byline/outlet/production fixes for BRO-5222 follow-up rows, each cited to the live page, an aggregator or a sitemap.",
+    "steps": [
+      "duplicateOf or wrongAttribution for cross-outlet copies",
+      "isNonReview for reviews that do not exist",
+      "wrongProduction for other-production texts",
+      "criticName for wrong bylines"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "rock-of-ages-2009/newsday--linda-winer.json",
+        "field": "criticName",
+        "oldValue": "Linda Winer",
+        "newValue": "Rafer Guzmán",
+        "description": "BRO-5232: newspapers.com returned 403; stored page scan text carries a BY Rafer Guzmán byline with his newsday.com email Evidence: https://www.newspapers.com/image/711254349/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-little-night-music-2009/hollywood-reporter--ben-brantley.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: row URL now 404s; stored text carries a By Frank Scheck byline dated December 13, 2009 and matches the Frank Scheck sibling row from the same outlet, whose live page loads the same review Evidence: https://www.hollywoodreporter.com/movies/movie-reviews/night-music-theater-review-93806/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-little-night-music-2009/hollywood-reporter--ben-brantley.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of hollywood-reporter--frank-scheck.json credited to the wrong outlet/critic; evidence https://www.hollywoodreporter.com/movies/movie-reviews/night-music-theater-review-93806/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kinky-boots-2013/theater-life--eric-march.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: live row URL page is a different review bylined Isa Goldberg; this row stored text is identical to the sibling and matches the live sibling page bylined David Sheward Evidence: https://theaterlife.com/kinky-boots-ig-12/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kinky-boots-2013/theater-life--eric-march.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of theater-life--david-sheward.json credited to the wrong outlet/critic; evidence https://theaterlife.com/kinky-boots-ig-12/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "illinoise-2024/usatoday--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "Bill Canacci",
+        "description": "BRO-5232: usatoday returned 402 to the fetch; stored text byline is Bill Canacci of NorthJersey.com dated May 10, 2024 Evidence: https://hawkeyeswire.usatoday.com/story/entertainment/theater/2024/05/10/illinoise-on-broadway-dance-musical-nominated-for-four-tonys/73594172007/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "caroline-or-change-2021/talkinbroadway--matthew-murray.json",
+        "field": "criticName",
+        "oldValue": "Matthew Murray",
+        "newValue": "Howard Miller",
+        "description": "BRO-5232: talkinbroadway returned 403; stored text header reads Theatre Review by Howard Miller dated October 27, 2021 Evidence: http://www.talkinbroadway.com/world/CarolineorChange.html"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-2024/talkinbroadway--matthew-murray.json",
+        "field": "criticName",
+        "oldValue": "Matthew Murray",
+        "newValue": "Howard Miller",
+        "description": "BRO-5232: talkinbroadway returned 403; stored text header reads Theatre Review by Howard Miller dated July 11, 2024 Evidence: https://www.talkinbroadway.com/page/world/OhMary.html"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/talkinbroadway--matthew-murray.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--howard-miller.json",
+        "description": "BRO-5232: talkinbroadway returned 403; stored text header reads Theatre Review by Howard Miller dated April 22, 2024 and the Howard Miller sibling row has the same URL Evidence: https://www.talkinbroadway.com/page/world/Patriots.html"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "patriots-2024/talkinbroadway--matthew-murray.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: same review as talkinbroadway--howard-miller.json; evidence https://www.talkinbroadway.com/page/world/Patriots.html",
+        "description": "Reason for the pointer above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "suffs-2024/talkinbroadway--matthew-murray.json",
+        "field": "criticName",
+        "oldValue": "Matthew Murray",
+        "newValue": "Howard Miller",
+        "description": "BRO-5232: talkinbroadway returned 403; stored text header reads Theatre Review by Howard Miller dated April 18, 2024 Evidence: https://www.talkinbroadway.com/page/world/Suffs.html"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "backstairs-billy-west-end-2023/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-5232: live page byline line under the title names Jeremy Malies as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/backstairs-billy-at-duke-of-yorks-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "born-with-teeth-west-end-2025/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Neil Dowden",
+        "description": "BRO-5232: live page byline line under the title names Neil Dowden as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/born-with-teeth-wyndhams-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cock-west-end-2022/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Neil Dowden",
+        "description": "BRO-5232: live page byline line under the title names Neil Dowden as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/cock-ambassadors-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cow-deer-west-end-2025/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-5232: live page byline line under the title names Jeremy Malies as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/cow-deer-royal-court-jerwood-theatre-upstairs/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "crazy-for-you-west-end-2023/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Mark Shenton",
+        "description": "BRO-5232: live page byline line under the title names Mark Shenton as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/crazy-for-you-gillian-lynne-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "de-profundis-off-west-end-2026/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "David Wootton",
+        "description": "BRO-5232: live page byline line under the title names David Wootton as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/de-profundis-coronet-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Franco Milazzo",
+        "description": "BRO-5232: live page byline line under the title names Franco Milazzo as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/death-note-the-musical-barbican/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-strangelove-west-end-2024/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Neil Dowden",
+        "description": "BRO-5232: live page byline line under the title names Neil Dowden as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/dr-strangelove-noel-coward-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-society-west-end-2026/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "David Wootton",
+        "description": "BRO-5232: live page byline line under the title names David Wootton as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/high-society-barbican-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jerusalem-west-end-2022/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-5232: live page byline line under the title names Jeremy Malies as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/jerusalem-jez-butterworth-apollo-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-west-end-2024/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-5232: live page byline line under the title names Jeremy Malies as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/long-days-journey-into-night-wyndhams-theatre-review/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mean-girls-west-end-2024/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Mark Shenton",
+        "description": "BRO-5232: live page byline line under the title names Mark Shenton as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/mean-girls-savoy-theatre/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "next-to-normal-west-end-2024/plays-international--maryam-philpott.json",
+        "field": "criticName",
+        "oldValue": "Maryam Philpott",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-5232: live page byline line under the title names Jeremy Malies as the reviewer; page JSON-LD author is the generic ri-admin account Evidence: https://playsinternational.org.uk/next-to-normal-wyndhams-theatre/"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:13:55.865Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-of-ages-2009/newsday--linda-winer.json criticName: \"Linda Winer\" -> \"Rafer Guzmán\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/hollywood-reporter--ben-brantley.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/hollywood-reporter--ben-brantley.json wrongAttributionReason: null -> \"BRO-5232: copy of hollywood-reporter--frank-scheck.json credited to the wrong outlet/critic; evidence https://www.hollywoodreporter.com/movies/movie-reviews/night-music-theater-review-93806/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kinky-boots-2013/theater-life--eric-march.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kinky-boots-2013/theater-life--eric-march.json wrongAttributionReason: null -> \"BRO-5232: copy of theater-life--david-sheward.json credited to the wrong outlet/critic; evidence https://theaterlife.com/kinky-boots-ig-12/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "illinoise-2024/usatoday--david-rooney.json criticName: \"David Rooney\" -> \"Bill Canacci\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "caroline-or-change-2021/talkinbroadway--matthew-murray.json criticName: \"Matthew Murray\" -> \"Howard Miller\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-2024/talkinbroadway--matthew-murray.json criticName: \"Matthew Murray\" -> \"Howard Miller\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "patriots-2024/talkinbroadway--matthew-murray.json duplicateOf: null -> \"talkinbroadway--howard-miller.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "patriots-2024/talkinbroadway--matthew-murray.json duplicateReason: null -> \"BRO-5232: same review as talkinbroadway--howard-miller.json; evidence https://www.talkinbroadway.com/page/world/Patriots.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-2024/talkinbroadway--matthew-murray.json criticName: \"Matthew Murray\" -> \"Howard Miller\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "backstairs-billy-west-end-2023/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "born-with-teeth-west-end-2025/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Neil Dowden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cock-west-end-2022/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Neil Dowden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cow-deer-west-end-2025/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "crazy-for-you-west-end-2023/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Mark Shenton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "de-profundis-off-west-end-2026/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"David Wootton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-note-the-musical-west-end-2026/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Franco Milazzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-strangelove-west-end-2024/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Neil Dowden\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-society-west-end-2026/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"David Wootton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jerusalem-west-end-2022/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-west-end-2024/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mean-girls-west-end-2024/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Mark Shenton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-to-normal-west-end-2024/plays-international--maryam-philpott.json criticName: \"Maryam Philpott\" -> \"Jeremy Malies\""
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-7398",
+  "planId": "92a4d99b-e104-4b3d-8234-6a0b18cefc42",
+  "status": "applied",
+  "createdAt": "2026-11-12T04:48:41.353Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Null stale ibdbUrl on three-days-of-rain-2026 (403589 is the 2006 production, per 2006 cast scrape)",
+    "steps": [
+      "shows.json: three-days-of-rain-2026.ibdbUrl"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "three-days-of-rain-2026",
+        "field": "ibdbUrl",
+        "oldValue": "https://www.ibdb.com/broadway-production/three-days-of-rain-403589",
+        "newValue": null,
+        "description": "shows.json: three-days-of-rain-2026.ibdbUrl"
+      }
+    ]
+  },
+  "executedAt": "2026-11-12T04:58:04.940Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: ibdbUrl already null, pins refreshed for three-days-of-rain-2026",
+      "noop": true
+    }
+  ],
+  "executedIn": "ci"
+}

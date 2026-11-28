@@ -1,0 +1,118 @@
+name: Backfill Roundup Pull-Quote Compilations
+
+# One-shot (dispatch only) backfill for BRO-2638. detectPullQuoteCompilation()
+# runs only at write time (review-file-writer Guard E4), so compilation pages
+# already on disk were never flagged isRoundupArticle. The approved-fix route
+# (review-field-edit) can only CLEAR that flag, never set it, so this needs a
+# workflow with push access to the private review-texts repo. Going forward
+# Guard E4 covers new writes; this is not scheduled on purpose.
+#
+# Dispatch with dry_run=true first and read the list, then dispatch again.
+# The script refuses more than 50 flags unless force_bulk=true.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no fix'
+        required: false
+        default: 'true'
+        type: string
+      force_bulk:
+        description: 'Override the >50 surge guard'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backfill-roundup-pull-quote-compilation
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    name: Flag pull-quote compilations
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run backfill
+        id: sweep
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_FORCE_BULK: ${{ inputs.force_bulk }}
+        run: |
+          set +e
+          if [ "${INPUT_DRY_RUN}" != "false" ]; then
+            OUT=$(node scripts/backfill-roundup-pull-quote-compilation.js 2>&1)
+          elif [ "${INPUT_FORCE_BULK}" = "true" ]; then
+            OUT=$(node scripts/backfill-roundup-pull-quote-compilation.js --apply --force-bulk 2>&1)
+          else
+            OUT=$(node scripts/backfill-roundup-pull-quote-compilation.js --apply 2>&1)
+          fi
+          STATUS=$?
+          echo "$OUT"
+          COUNT=$(echo "$OUT" | grep -oE 'APPLIED — flagged [0-9]+' | head -1 | grep -oE '[0-9]+')
+          COUNT=${COUNT:-0}
+          WOULD=$(echo "$OUT" | grep -oE 'Would flag: [0-9]+' | head -1 | grep -oE '[0-9]+')
+          WOULD=${WOULD:-0}
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "would=$WOULD" >> $GITHUB_OUTPUT
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Push to private repo
+        if: inputs.dry_run == 'false' && steps.sweep.outputs.status == '0'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            fix: backfill ${{ steps.sweep.outputs.count }} pull-quote compilation isRoundupArticle flags [audit-fix]
+
+      - name: Summary
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          {
+            echo "## Pull-Quote Compilation Backfill"
+            echo ""
+            echo "**Would flag:** ${{ steps.sweep.outputs.would }}"
+            echo "**Flagged:** ${{ steps.sweep.outputs.count }}"
+            if [ "${INPUT_DRY_RUN}" != "false" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
+              echo "**Mode:** surge guard refused, investigate before re-running with force_bulk=true"
+            else
+              echo "**Mode:** flagged + pushed"
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail on surge-guard refusal
+        if: steps.sweep.outputs.status != '0'
+        run: exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Roundup Pull-Quote Compilations Failed'
+          severity: 'warning'

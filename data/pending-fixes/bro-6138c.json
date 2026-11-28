@@ -1,0 +1,72 @@
+{
+  "issueNumber": "bro-6138c",
+  "planId": "820e6972-38aa-4ed1-aea2-28ad681f1dd2",
+  "status": "applied",
+  "createdAt": "2026-10-24T20:32:38.455Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6138: add commercial entries for Finding Neverland and Side Show (2014 revival)",
+    "steps": [
+      "add-commercial-entry",
+      "add-commercial-entry"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "finding-neverland-2015",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "designationBasis": "reported-loss",
+          "recouped": false,
+          "capitalization": 15200000,
+          "capitalizationSource": "Yahoo Entertainment, syndicating Deadline (2016-05-06)",
+          "notes": "Finding Neverland (Lunt-Fontanne Theatre, opened Apr 15, 2015, closed Aug 21, 2016). Producer Harvey Weinstein said in May 2016 that the Broadway production was capitalized at $15.2 million and had returned about 60% of that to investors, so it had not recouped. He said investors would be made whole through the tour and other productions; no source we can read says that happened.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.yahoo.com/entertainment/harvey-weinstein-gives-finding-neverland-045352410.html",
+              "date": "2016-05-06"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "side-show-2014",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "designationBasis": "reported-loss",
+          "recouped": false,
+          "capitalization": 8000000,
+          "capitalizationSource": "NPR via KUNC (2015-01-20)",
+          "notes": "Side Show (St. James Theatre, opened Nov 17, 2014, closed Jan 4, 2015). NPR described it as an $8 million revival and reported that it and The Last Ship closed having lost almost their entire investments. This is the 2014 revival, not the 1997 original.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.kunc.org/2015-01-20/how-broadway-is-losing-its-middle-ground",
+              "date": "2015-01-20"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T21:33:22.844Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added finding-neverland-2015 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added side-show-2014 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
+}

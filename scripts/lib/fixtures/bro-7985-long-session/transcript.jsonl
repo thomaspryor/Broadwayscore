@@ -1,0 +1,3 @@
+{"type": "user", "message": {"role": "user", "content": "Also, a session just asked me to approve sending messages, and I had to go in and click allow for the whole session, so I'm not confident that your message thing worked."}}
+{"type": "assistant", "message": {"id": "m1", "content": [{"type": "tool_use", "id": "p1", "name": "Bash", "input": {"command": "git push origin HEAD:refs/heads/land/session-messaging-allow"}}]}}
+{"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": "p1", "content": "remote: \n409cc55 Allow session messaging without an approval prompt (BRO-7924)"}]}}

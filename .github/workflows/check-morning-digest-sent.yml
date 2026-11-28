@@ -1,0 +1,162 @@
+name: Check Morning Digest Sent
+
+# BRO-4373 / BRO-6764: two live signals, both from GitHub so they work while the Mac is dead.
+# The morning digest is sent by morning-digest-action.yml (cron 07:50 ET with retries to ~08:50, plus catch-up wakes on finished Test Suite and Deploy to Vercel runs until 11:30 ET);
+# this job runs later and checks (1) the digest reached the owner today (mac:morning-digest-missing:
+# the Action itself failed) and (2) the Mac's checkout-sync heartbeat is fresh
+# (mac:checkin-heartbeat-dead: Mac off or at the FileVault login screen; 2026-09-25..29 it was
+# dark for 4.5 days unnoticed). Own alert keys so one re-arming cannot resolve the other.
+# 16:45 UTC = 12:45 EDT / 11:45 EST (BRO-7017: was 16:30, which in winter is the catch-up sender's last send minute), after the Action's last retry plus GHA cron lateness.
+# An unreadable Resend API or an undelivered page exits 2: job red + critical
+# notify-failure email (severity 'warning' would send nothing), and never a false page.
+#
+# BRO-7017: that cron starts 2-7h late here (2026-10-30..11-04: 18:39-23:39Z), so the pager also
+# wakes on finished Test Suite / Deploy to Vercel runs on main (events arrive reliably; a Deploy
+# dispatched with GITHUB_TOKEN wakes nothing, about half of them). The gate steps below run the
+# check only at/after 11:45 ET (15 min past the catch-up sender's last send minute) and only once per ET day (Actions-cache marker keyed on the ET day,
+# saved after every attempt, clean or failed), so extra wakes add no ledger commit and never touch the 20h cooldown.
+# Failed attempts are marked too: Deploy to Vercel finishes every ~5 min, so a retry-on-failure marker would re-page and re-commit the ledger all afternoon.
+on:
+  schedule:
+    - cron: '45 16 * * *'
+  workflow_run:
+    workflows: ['Test Suite', 'Deploy to Vercel']
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no routeAlert'
+        required: false
+        default: 'false'
+        type: boolean
+      date:
+        description: 'ET day to check, YYYY-MM-DD (default: today)'
+        required: false
+        default: ''
+
+concurrency:
+  group: check-morning-digest-sent
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  statuses: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Wake gate (11:45 ET or later)
+        id: gate
+        run: node scripts/lib/digest-pager-gate.js "${{ github.event_name }}" false
+
+      # hygiene-cache-runid-ok: empty marker, one per ET day; the key carries the ET day, not the run id.
+      - name: Already checked today? (marker lookup)
+        id: ran
+        if: steps.gate.outputs.go == 'true' && github.event_name != 'workflow_dispatch'
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .pager-ran
+          key: digest-pager-ran-${{ steps.gate.outputs.day }}
+          lookup-only: true
+
+      - name: Decide
+        id: decide
+        env:
+          GO: ${{ steps.gate.outputs.go }}
+          HIT: ${{ steps.ran.outputs.cache-hit }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$GO" = "true" ] && { [ "$EVENT" = "workflow_dispatch" ] || [ "$HIT" != "true" ]; }; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping: gate=$GO marker=$HIT"
+          fi
+
+      - name: Check the morning digest was sent
+        if: steps.decide.outputs.run == 'true'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          CHECK_DATE: ${{ inputs.date }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ARGS="--signal=digest"
+          [ "$DRY_RUN" = "true" ] && ARGS="$ARGS --dry-run"
+          # Validate before use: workflow_dispatch input reaches a shell.
+          if [ -n "$CHECK_DATE" ]; then
+            grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' <<<"$CHECK_DATE" || { echo "bad date"; exit 2; }
+            ARGS="$ARGS --date=$CHECK_DATE"
+          fi
+          node scripts/check-morning-digest-sent.js $ARGS
+
+      - name: Check the Mac heartbeat
+        if: always() && steps.decide.outputs.run == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ARGS="--signal=heartbeat"
+          if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/check-morning-digest-sent.js $ARGS
+
+      # routeAlert()/resolveCondition() write the cooldown ledger on the
+      # runner's disk; without this commit the 20h cooldown never persists.
+      - name: Commit alert ledger
+        if: always() && steps.decide.outputs.run == 'true'
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          [ "$DRY_RUN" = "true" ] && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          if git diff --staged --quiet; then
+            echo "No ledger change to commit."
+            exit 0
+          fi
+          git commit -m "audit: Update morning-digest liveness alert ledger [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Mark today as checked
+        if: always() && steps.decide.outputs.run == 'true' && github.event_name != 'workflow_dispatch'
+        run: mkdir -p .pager-ran && date -u > .pager-ran/ran
+
+      - name: Save the once-per-day marker
+        if: always() && steps.decide.outputs.run == 'true' && github.event_name != 'workflow_dispatch'
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: .pager-ran
+          key: digest-pager-ran-${{ steps.gate.outputs.day }}
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Morning Digest Sent Failed (cannot verify the digest)'
+          severity: 'critical'
+          email: 'true'
+          # BRO-7017: gated-out wakes end green and break the failure streak, and a failed attempt is marked for the day (one per day),
+          # so a single failed attempt is the signal.
+          min_consecutive_failures: '1'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

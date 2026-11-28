@@ -1,0 +1,57 @@
+{
+  "issueNumber": "bro-7346",
+  "planId": "1cc410ed-8e9e-43a5-aad8-b8a72e04a448",
+  "status": "applied",
+  "createdAt": "2026-11-16T20:02:15.665Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7346: replace Vulture Ava review whose stored text has a foreign Irondale review spliced in with a clean refetch",
+    "steps": [
+      "Delete the spliced Vulture file",
+      "Ingest the live Vulture page via html handoff",
+      "Rebuild and verify",
+      "Ingest ava-the-secret-conversations-off-broadway-2025 from handed-off HTML: https://www.vulture.com/article/theater-reviews-elizabeth-mcgovern-ava-gardner-frank-maya-morgan-bassichis.html"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json",
+        "description": "BRO-7346: stored fullText has an unrelated review spliced in (CV truncated, stuck CV-promoted isNonReview); live page is clean (2456 chars on dry-run ingest). Replaced by the handoff below."
+      },
+      {
+        "type": "ingest-html-handoff",
+        "showId": "ava-the-secret-conversations-off-broadway-2025",
+        "url": "https://www.vulture.com/article/theater-reviews-elizabeth-mcgovern-ava-gardner-frank-maya-morgan-bassichis.html",
+        "outlet": "vulture",
+        "critic": "Jackson McHenry",
+        "publishDate": "2025-08-08",
+        "description": "BRO-5886 html handoff: ingest https://www.vulture.com/article/theater-reviews-elizabeth-mcgovern-ava-gardner-frank-maya-morgan-bassichis.html from HTML fetched outside CI",
+        "htmlBytes": 872461,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "184865d85d1e48994237aa5efe2b912f9acc7593efaeadbd712eae4e9e0339a8",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T20:16:54.546Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ava-the-secret-conversations-off-broadway-2025/vulture--jackson-mchenry.json"
+    },
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.vulture.com/article/theater-reviews-elizabeth-mcgovern-ava-gardner-frank-maya-morgan-bassichis.html for ava-the-secret-conversations-off-broadway-2025 from handed-off HTML (872270 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

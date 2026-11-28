@@ -1,0 +1,190 @@
+{
+  "issueNumber": "bro-5623-b",
+  "planId": "b86c31fb-8b20-405f-96eb-e871f6f6db71",
+  "status": "applied",
+  "createdAt": "2026-10-18T13:00:21.477Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5623 (part b): four more default Fizzles with no estimate become Undisclosed (TBD, flagged for research).",
+    "steps": [
+      "Each edit reads its oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "job-2024: the Fizzle was the old default for a show that never announced a recoupment, with no estimate of how much came back; the owner ruled out default claims (2026-10-18), so it shows as Undisclosed until an estimate exists (the basis drops with the label)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "job-2024: matches every other closed show shown as Undisclosed: no recoupment was announced, so the outcome stays unknown rather than \"did not recoup\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "job-2024",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "job-2024: flagged for research, as the classifier does for a closed show with no estimate (BRO-5623)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "the-hills-of-california-2024: the Fizzle was the old default for a show that never announced a recoupment, with no estimate of how much came back; the owner ruled out default claims (2026-10-18), so it shows as Undisclosed until an estimate exists (the basis drops with the label)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "the-hills-of-california-2024: matches every other closed show shown as Undisclosed: no recoupment was announced, so the outcome stays unknown rather than \"did not recoup\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-hills-of-california-2024: flagged for research, as the classifier does for a closed show with no estimate (BRO-5623)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "john-proctor-is-the-villain-2025: the Fizzle was the old default for a show that never announced a recoupment, with no estimate of how much came back; the owner ruled out default claims (2026-10-18), so it shows as Undisclosed until an estimate exists (the basis drops with the label)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "john-proctor-is-the-villain-2025: matches every other closed show shown as Undisclosed: no recoupment was announced, so the outcome stays unknown rather than \"did not recoup\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "john-proctor-is-the-villain-2025: flagged for research, as the classifier does for a closed show with no estimate (BRO-5623)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "hangmen-2022: the Fizzle was the old default for a show that never announced a recoupment, with no estimate of how much came back; the owner ruled out default claims (2026-10-18), so it shows as Undisclosed until an estimate exists (the basis drops with the label)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "hangmen-2022: matches every other closed show shown as Undisclosed: no recoupment was announced, so the outcome stays unknown rather than \"did not recoup\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "hangmen-2022: flagged for research, as the classifier does for a closed show with no estimate (BRO-5623)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T13:48:51.946Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for job-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for hangmen-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for hangmen-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for hangmen-2022"
+    }
+  ]
+}

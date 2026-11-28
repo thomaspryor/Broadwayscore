@@ -1,0 +1,357 @@
+{
+  "issueNumber": "bro-4317-g-02",
+  "planId": "1525cdce-092f-4f53-92f8-5dad32687397",
+  "status": "applied",
+  "createdAt": "2026-10-13T03:41:03.697Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 2/3: restamp showId to the folder on review files rehomed by publish date",
+    "steps": [
+      "set showId on the-play-that-goes-wrong-2017/huffpost--christian-lewis.json",
+      "set showId on the-play-that-goes-wrong-2017/huffpost--michael-glitz.json",
+      "set showId on the-play-that-goes-wrong-2017/lighting-and-sound-america--david-barbour.json",
+      "set showId on the-play-that-goes-wrong-2017/ny1--david-cote.json",
+      "set showId on the-play-that-goes-wrong-2017/out-magazine--michael-musto.json",
+      "set showId on the-play-that-goes-wrong-2017/scribicide--aaron-botwick.json",
+      "set showId on the-play-that-goes-wrong-2017/talkinbroadway--matthew-murray.json",
+      "set showId on the-play-that-goes-wrong-2017/theater-life--david-sheward.json",
+      "set showId on the-play-that-goes-wrong-2017/theater-pizzazz--carol-rocamora.json",
+      "set showId on the-play-that-goes-wrong-2017/theater-pizzazz--sandi-durell.json",
+      "set showId on the-play-that-goes-wrong-2017/theater-scene--david-kaufman.json",
+      "set showId on the-play-that-goes-wrong-2017/theatermania--zachary-stewart.json",
+      "set showId on the-play-that-goes-wrong-2017/theatre-is-easy--gabriella-steinberg.json",
+      "set showId on the-play-that-goes-wrong-2017/theatre-reviews-limited--david-roberts.json",
+      "set showId on the-play-that-goes-wrong-2017/upstage-downstage--howard-miller.json",
+      "set showId on the-play-that-goes-wrong-2017/wolf-entertainment-guide--william-wolf.json",
+      "set showId on data-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "set showId on jena-friedman-motherfucker-off-broadway-2026/_blocklist.json",
+      "set showId on the-play-that-goes-wrong-off-broadway-2019/front-row-center--stanford-friedman.json",
+      "set showId on the-play-that-goes-wrong-off-broadway-2019/nysr--steven-suskin.json",
+      "set showId on the-play-that-goes-wrong-2017/stagebuddy--erin-kahn.json",
+      "set showId on buena-vista-social-club-2025/nysr--bob-verini.json",
+      "set showId on buena-vista-social-club-2025/nysr--michael-sommers.json",
+      "set showId on spamalot-2023/nysr--sandy-macdonald.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/huffpost--christian-lewis.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/huffpost--michael-glitz.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/lighting-and-sound-america--david-barbour.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/ny1--david-cote.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/out-magazine--michael-musto.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/scribicide--aaron-botwick.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/talkinbroadway--matthew-murray.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/theater-life--david-sheward.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/theater-pizzazz--carol-rocamora.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/theater-pizzazz--sandi-durell.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/theater-scene--david-kaufman.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/theatermania--zachary-stewart.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/theatre-is-easy--gabriella-steinberg.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/theatre-reviews-limited--david-roberts.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/upstage-downstage--howard-miller.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/wolf-entertainment-guide--william-wolf.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "data-off-broadway-2026/the-interested-bystander--cary-wong.json",
+        "field": "showId",
+        "oldValue": "data-2026",
+        "newValue": "data-off-broadway-2026",
+        "description": "BRO-4317: file was moved here from data-2026 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jena-friedman-motherfucker-off-broadway-2026/_blocklist.json",
+        "field": "showId",
+        "oldValue": null,
+        "newValue": "jena-friedman-motherfucker-off-broadway-2026",
+        "description": "BRO-4317: file was moved here from undefined by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/front-row-center--stanford-friedman.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-off-broadway-2019",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-off-broadway-2019/nysr--steven-suskin.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-off-broadway-2019",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/stagebuddy--erin-kahn.json",
+        "field": "showId",
+        "oldValue": "the-play-that-goes-wrong-2019",
+        "newValue": "the-play-that-goes-wrong-2017",
+        "description": "BRO-4317: file was moved here from the-play-that-goes-wrong-2019 by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--bob-verini.json",
+        "field": "showId",
+        "oldValue": "buena-vista-social-club",
+        "newValue": "buena-vista-social-club-2025",
+        "description": "BRO-4317: file was moved here from buena-vista-social-club by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "buena-vista-social-club-2025/nysr--michael-sommers.json",
+        "field": "showId",
+        "oldValue": "buena-vista-social-club",
+        "newValue": "buena-vista-social-club-2025",
+        "description": "BRO-4317: file was moved here from buena-vista-social-club by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-2023/nysr--sandy-macdonald.json",
+        "field": "showId",
+        "oldValue": "spamalot",
+        "newValue": "spamalot-2023",
+        "description": "BRO-4317: file was moved here from spamalot by publish date against the run window; showId still named the old folder, which audit-cross-show-url-collisions Pre-pass 1 would flag as wrongProduction"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T04:34:07.061Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/huffpost--christian-lewis.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/huffpost--michael-glitz.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/lighting-and-sound-america--david-barbour.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/ny1--david-cote.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/out-magazine--michael-musto.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/scribicide--aaron-botwick.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/talkinbroadway--matthew-murray.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/theater-life--david-sheward.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/theater-pizzazz--carol-rocamora.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/theater-pizzazz--sandi-durell.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/theater-scene--david-kaufman.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/theatermania--zachary-stewart.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/theatre-is-easy--gabriella-steinberg.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/theatre-reviews-limited--david-roberts.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/upstage-downstage--howard-miller.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/wolf-entertainment-guide--william-wolf.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "data-off-broadway-2026/the-interested-bystander--cary-wong.json showId: \"data-2026\" -> \"data-off-broadway-2026\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jena-friedman-motherfucker-off-broadway-2026/_blocklist.json showId: null -> \"jena-friedman-motherfucker-off-broadway-2026\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-off-broadway-2019/front-row-center--stanford-friedman.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-off-broadway-2019\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-off-broadway-2019/nysr--steven-suskin.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-off-broadway-2019\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/stagebuddy--erin-kahn.json showId: \"the-play-that-goes-wrong-2019\" -> \"the-play-that-goes-wrong-2017\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--bob-verini.json showId: \"buena-vista-social-club\" -> \"buena-vista-social-club-2025\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "buena-vista-social-club-2025/nysr--michael-sommers.json showId: \"buena-vista-social-club\" -> \"buena-vista-social-club-2025\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-2023/nysr--sandy-macdonald.json showId: \"spamalot\" -> \"spamalot-2023\""
+    }
+  ]
+}

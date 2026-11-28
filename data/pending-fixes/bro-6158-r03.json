@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-6158-r03",
+  "planId": "a02e487a-085a-45af-a042-41716c72e49f",
+  "status": "applied",
+  "createdAt": "2026-10-24T21:57:03.622Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Did Not Recoup shows get our estimate, Flop or Fizzle (owner 2026-10-24)",
+    "steps": [
+      "commercial.json: the-hills-of-california-2024.designation",
+      "commercial.json: the-hills-of-california-2024.designationBasis",
+      "commercial.json: left-on-tenth-2024.designation",
+      "commercial.json: left-on-tenth-2024.designationBasis",
+      "commercial.json: thoughts-of-a-colored-man-2021.designation",
+      "commercial.json: thoughts-of-a-colored-man-2021.designationBasis",
+      "commercial.json: american-buffalo-2022.designation",
+      "commercial.json: american-buffalo-2022.designationBasis",
+      "commercial.json: beetlejuice-2022.designation",
+      "commercial.json: beetlejuice-2022.designationBasis",
+      "commercial.json: death-of-a-salesman-2022.designation",
+      "commercial.json: death-of-a-salesman-2022.designationBasis",
+      "commercial.json: hangmen-2022.designation",
+      "commercial.json: hangmen-2022.designationBasis",
+      "commercial.json: life-of-pi-2023.designation",
+      "commercial.json: life-of-pi-2023.designationBasis",
+      "commercial.json: mr-saturday-night-2022.designation",
+      "commercial.json: mr-saturday-night-2022.designationBasis",
+      "commercial.json: pictures-from-home-2023.designation",
+      "commercial.json: pictures-from-home-2023.designationBasis",
+      "commercial.json: the-sign-in-sidney-brusteins-window-2023.designation",
+      "commercial.json: the-sign-in-sidney-brusteins-window-2023.designationBasis",
+      "commercial.json: peter-pan-goes-wrong-2023.designation",
+      "commercial.json: peter-pan-goes-wrong-2023.designationBasis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-hills-of-california-2024.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-hills-of-california-2024.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: left-on-tenth-2024.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: left-on-tenth-2024.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "thoughts-of-a-colored-man-2021",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: thoughts-of-a-colored-man-2021.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "thoughts-of-a-colored-man-2021",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: thoughts-of-a-colored-man-2021.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Fizzle",
+        "description": "commercial.json: american-buffalo-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": "model-estimate",
+        "description": "commercial.json: american-buffalo-2022.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2022",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Fizzle",
+        "description": "commercial.json: beetlejuice-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2022",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": "model-estimate",
+        "description": "commercial.json: beetlejuice-2022.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman-2022",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: death-of-a-salesman-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman-2022",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: death-of-a-salesman-2022.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: hangmen-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hangmen-2022",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: hangmen-2022.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "life-of-pi-2023",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: life-of-pi-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "life-of-pi-2023",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: life-of-pi-2023.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: mr-saturday-night-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": "model-estimate",
+        "description": "commercial.json: mr-saturday-night-2022.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pictures-from-home-2023",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: pictures-from-home-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pictures-from-home-2023",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: pictures-from-home-2023.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-sign-in-sidney-brusteins-window-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-sign-in-sidney-brusteins-window-2023.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: peter-pan-goes-wrong-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: peter-pan-goes-wrong-2023.designationBasis"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T23:05:21.242Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for thoughts-of-a-colored-man-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for thoughts-of-a-colored-man-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for american-buffalo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for american-buffalo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for beetlejuice-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for beetlejuice-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-of-a-salesman-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for death-of-a-salesman-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for hangmen-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for hangmen-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for life-of-pi-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for life-of-pi-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for mr-saturday-night-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for mr-saturday-night-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for pictures-from-home-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for pictures-from-home-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for peter-pan-goes-wrong-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for peter-pan-goes-wrong-2023"
+    }
+  ],
+  "executedIn": "ci"
+}

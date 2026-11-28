@@ -1,0 +1,335 @@
+{
+  "issueNumber": "bro-5142-b",
+  "planId": "ec28056b-5f4e-46eb-861e-704c110792ac",
+  "status": "applied",
+  "createdAt": "2026-10-14T11:10:18.100Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "(part 2/5) BRO-5142: clear wrongShow on 57 real reviews of historical/sparse WE shows (no cast/creativeTeam in shows.json) that the BRO-4383 write guard flagged because the text never named the venue. Re-read by hand; 8 genuinely wrong texts stay flagged (a-kind-of-people observer/standard/scotsman, fishing-for-alaska viator, jane-eyre-off-west-end thestage (Colchester play), scenes-with-girls guardian/londontheatre1, toc-toc billboard). two-palestinians standard--nick-curtis skipped: it shares its URL with standard--unknown.json (duplicate).",
+    "steps": [
+      "Set wrongShowManualClear true, then wrongShow false, on each re-read real review (bro-4429 pattern)",
+      "Guard fix in scripts/lib/wrong-article-screen.js stops re-flagging (venue-only metadata is sparseIdentity)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/londontheatre1--chris-omaweng.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/londontheatre1--chris-omaweng.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/telegraph--dominic-cavendish.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/telegraph--dominic-cavendish.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/theatrecat--libby-purves.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/theatrecat--libby-purves.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/thestage--dave-fargnoli.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/thestage--dave-fargnoli.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/guardian--arifa-akbar.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/guardian--arifa-akbar.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/thestage--georgia-luckhurst.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/thestage--georgia-luckhurst.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/times-uk--clive-davis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dugsi-dayz-west-end-2024/times-uk--clive-davis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/standard--nick-curtis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/standard--nick-curtis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/times-uk--donald-hutera.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/times-uk--donald-hutera.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/whatsonstage--miriam-sallon.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/whatsonstage--miriam-sallon.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glass-kill-bluebeard-and-imp-west-end-2019/i-paper--aleks-sierz.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glass-kill-bluebeard-and-imp-west-end-2019/i-paper--aleks-sierz.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5142: real review of this show; BRO-4383 write guard flagged it only because the show row has no cast/creativeTeam (venue never named)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T12:36:19.874Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-semmelweis-west-end-2023/londontheatre1--chris-omaweng.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-semmelweis-west-end-2023/londontheatre1--chris-omaweng.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-semmelweis-west-end-2023/standard--nick-curtis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-semmelweis-west-end-2023/standard--nick-curtis.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-semmelweis-west-end-2023/telegraph--dominic-cavendish.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-semmelweis-west-end-2023/telegraph--dominic-cavendish.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-semmelweis-west-end-2023/theatrecat--libby-purves.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-semmelweis-west-end-2023/theatrecat--libby-purves.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-semmelweis-west-end-2023/thestage--dave-fargnoli.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dr-semmelweis-west-end-2023/thestage--dave-fargnoli.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dugsi-dayz-west-end-2024/guardian--arifa-akbar.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dugsi-dayz-west-end-2024/guardian--arifa-akbar.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dugsi-dayz-west-end-2024/thestage--georgia-luckhurst.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dugsi-dayz-west-end-2024/thestage--georgia-luckhurst.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dugsi-dayz-west-end-2024/times-uk--clive-davis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dugsi-dayz-west-end-2024/times-uk--clive-davis.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/standard--nick-curtis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/standard--nick-curtis.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/times-uk--donald-hutera.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/times-uk--donald-hutera.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "franz-and-marie-west-end-2026/whatsonstage--miriam-sallon.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "franz-and-marie-west-end-2026/whatsonstage--miriam-sallon.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glass-kill-bluebeard-and-imp-west-end-2019/i-paper--aleks-sierz.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glass-kill-bluebeard-and-imp-west-end-2019/i-paper--aleks-sierz.json wrongShow: true -> false"
+    }
+  ]
+}

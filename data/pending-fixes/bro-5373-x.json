@@ -1,0 +1,273 @@
+{
+  "issueNumber": "bro-5373-x",
+  "planId": "137b41a3-b3f8-49a3-8dbf-3536daa6c266",
+  "status": "applied",
+  "createdAt": "2026-10-15T04:05:54.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5373 (x): restore 17 reviews the push ownership gate lost (full-history sweep), each to its own production; 3 text-less stubs removed in the same push.",
+    "steps": [
+      "restores",
+      "stub deletes"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "jack-absolute-flies-again-west-end-2022/times-uk--quentin-letts.json",
+        "fromCommit": "defef5fd0a1ca3af096804a7257746e1df13070e",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). One print column reviewed two shows under one url; each show's file held its own section, and the gate dropped this one. Restored from the commit before the drop (the gate now keeps distinct sections, 48e7e29e0). Letts, Times, July 2022, Olivier."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "much-ado-about-nothing-west-end-2022/times-uk--quentin-letts.json",
+        "fromCommit": "defef5fd0a1ca3af096804a7257746e1df13070e",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). One print column reviewed two shows under one url; each show's file held its own section, and the gate dropped this one. Restored from the commit before the drop (the gate now keeps distinct sections, 48e7e29e0). Letts, Times, July 2022, Lyttelton."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "hex-west-end-2022/times-uk--quentin-letts.json",
+        "fromCommit": "e04fa37088ad304c488362202b8bb9979bbe2fff",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). One print column reviewed two shows under one url; each show's file held its own section, and the gate dropped this one. Restored from the commit before the drop (the gate now keeps distinct sections, 48e7e29e0). Letts, Times, December 2022, Olivier."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "orlando-west-end-2022/times-uk--quentin-letts.json",
+        "fromCommit": "e04fa37088ad304c488362202b8bb9979bbe2fff",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). One print column reviewed two shows under one url; each show's file held its own section, and the gate dropped this one. Restored from the commit before the drop (the gate now keeps distinct sections, 48e7e29e0). Letts, Times, December 2022, Garrick."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "blues-for-an-alabama-sky-west-end-2022/observer--susannah-clapp.json",
+        "fromCommit": "dcf46ff2d0a270f89a87e9b357cc8435e8116180",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). One print column reviewed two shows under one url; each show's file held its own section, and the gate dropped this one. Restored from the commit before the drop (the gate now keeps distinct sections, 48e7e29e0). Clapp, Observer, 9 October 2022, Lyttelton."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "the-crucible-west-end-2022/observer--susannah-clapp.json",
+        "fromCommit": "dcf46ff2d0a270f89a87e9b357cc8435e8116180",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). One print column reviewed two shows under one url; each show's file held its own section, and the gate dropped this one. Restored from the commit before the drop (the gate now keeps distinct sections, 48e7e29e0). Clapp, Observer, 9 October 2022, Olivier."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "the-mongol-khan-west-end-2023/financialtimes--sarah-hemming.json",
+        "fromCommit": "02f1d9c675f8d465131daecaa4578729b8f2453a",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). One print column reviewed two shows under one url; each show's file held its own section, and the gate dropped this one. Restored from the commit before the drop (the gate now keeps distinct sections, 48e7e29e0). Hemming, FT, November 2023, Coliseum."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "the-witches-west-end-2023/financialtimes--sarah-hemming.json",
+        "fromCommit": "02f1d9c675f8d465131daecaa4578729b8f2453a",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). One print column reviewed two shows under one url; each show's file held its own section, and the gate dropped this one. Restored from the commit before the drop (the gate now keeps distinct sections, 48e7e29e0). Hemming, FT, November 2023, Olivier."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "dr-semmelweis-west-end-2023/daily-mail--robert-gore-langton.json",
+        "fromCommit": "1d88887401f7413f499107e55f58ee54c34a200b",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). One print column reviewed two shows under one url; each show's file held its own section, and the gate dropped this one. Restored from the commit before the drop (the gate now keeps distinct sections, 48e7e29e0). Gore-Langton, Mail on Sunday (mailplus 'the wizard of woke...' column), July 2023, Harold Pinter."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "the-wizard-of-oz-west-end-2023/daily-mail--robert-gore-langton.json",
+        "fromCommit": "1d88887401f7413f499107e55f58ee54c34a200b",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). One print column reviewed two shows under one url; each show's file held its own section, and the gate dropped this one. Restored from the commit before the drop (the gate now keeps distinct sections, 48e7e29e0). Gore-Langton, same column, July 2023, Palladium."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "dr-semmelweis-west-end-2023/financialtimes--sarah-hemming.json",
+        "fromCommit": "1d88887401f7413f499107e55f58ee54c34a200b",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). Hemming, FT, Dr Semmelweis at the Harold Pinter (July 2023)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "bonnie-and-clyde-west-end-2022/theatre-weekly--greg-stewart.json",
+        "fromCommit": "1748d12c154537e9aea9b369669e37e3925c4412",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). Review of the 2022 Arts Theatre run (url names the Arts Theatre; show ran 2022-04-09..07-10). The url's only other copy is a text-less wrongProduction stub under bonnie-and-clyde-west-end-2023 (Garrick), which does not own it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "bonnie-and-clyde-west-end-2022/thereviewshub--maryam-philpott.json",
+        "fromCommit": "1748d12c154537e9aea9b369669e37e3925c4412",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). Review of the 2022 Arts Theatre run (url names the Arts Theatre; show ran 2022-04-09..07-10). The url's only other copy is a text-less wrongProduction stub under bonnie-and-clyde-west-end-2023 (Garrick), which does not own it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "bonnie-and-clyde-west-end-2022/thestage--tim-bano.json",
+        "fromCommit": "1748d12c154537e9aea9b369669e37e3925c4412",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). Review of the 2022 Arts Theatre run (url names the Arts Theatre; show ran 2022-04-09..07-10). The url's only other copy is a text-less wrongProduction stub under bonnie-and-clyde-west-end-2023 (Garrick), which does not own it."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "oedipus-west-end-2025/all-that-dazzles-uk--all-that-dazzles.json",
+        "fromCommit": "b59a9140e28fee6e4d12a7e3a6119bd5406a706d",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). All That Dazzles review of the Old Vic production (url review-oedipus-the-old-vic; the 2025 show is the Old Vic run). Other copy: a text-less wrongProduction stub under oedipus-west-end-2024."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "standing-at-the-skys-edge-west-end-2024/telegraph--claire-allfree.json",
+        "description": "BRO-5373: text-less stub of the 2023 National Theatre review, filed under the 2024 West End transfer. It held the url and made the push gate drop the full review from the 2023 show; prior-run reviews belong on the run's own show (BRO-5333). Deleted in the same push as the restore below."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "standing-at-the-skys-edge-west-end-2023/telegraph--claire-allfree.json",
+        "fromCommit": "04980fb01b8960ab5d7d5ed411825bfb48f7d13e",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). National Theatre review (url names the National Theatre) of the 2023 Olivier run (standing-at-the-skys-edge-west-end-2023, Feb-Mar 2023). "
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "standing-at-the-skys-edge-west-end-2024/thestage--sam-marlowe.json",
+        "description": "BRO-5373: text-less stub of the 2023 National Theatre review, filed under the 2024 West End transfer. It held the url and made the push gate drop the full review from the 2023 show; prior-run reviews belong on the run's own show (BRO-5333). Deleted in the same push as the restore below."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "standing-at-the-skys-edge-west-end-2023/thestage--sam-marlowe.json",
+        "fromCommit": "04980fb01b8960ab5d7d5ed411825bfb48f7d13e",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). National Theatre review (url names the National Theatre) of the 2023 Olivier run (standing-at-the-skys-edge-west-end-2023, Feb-Mar 2023). "
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-play-that-goes-wrong-2017/bobs-theater-blog--robert-sholiton.json",
+        "description": "BRO-5373: text-less stub of Robert Sholiton's April 2017 post on the Broadway production; replaced by the full text restored below."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "the-play-that-goes-wrong-off-broadway-2019/bobs-theater-blog--robert-sholiton.json",
+        "fromCommit": "4df5e3133aac7a1a54859f7571ea2e43d24bf9c3",
+        "description": "BRO-5373 loss sweep (audit-ownership-gate-losses.js, full history to the gate's 2026-07-12 start): dropped by the push ownership gate as a cross-show re-creation and found nowhere today (no file with its text or url). The post (bobs-theater-blog 2017/04/the-play-that-goes-wrong) reviews the 2017 Broadway production, not the 2019 Off-Broadway run, so it is restored under the-play-that-goes-wrong-2017.",
+        "destPath": "the-play-that-goes-wrong-2017/bobs-theater-blog--robert-sholiton.json"
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T05:02:30.603Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored jack-absolute-flies-again-west-end-2022/times-uk--quentin-letts.json@defef5fd0a1ca3af096804a7257746e1df13070e -> jack-absolute-flies-again-west-end-2022/times-uk--quentin-letts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored much-ado-about-nothing-west-end-2022/times-uk--quentin-letts.json@defef5fd0a1ca3af096804a7257746e1df13070e -> much-ado-about-nothing-west-end-2022/times-uk--quentin-letts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored hex-west-end-2022/times-uk--quentin-letts.json@e04fa37088ad304c488362202b8bb9979bbe2fff -> hex-west-end-2022/times-uk--quentin-letts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored orlando-west-end-2022/times-uk--quentin-letts.json@e04fa37088ad304c488362202b8bb9979bbe2fff -> orlando-west-end-2022/times-uk--quentin-letts.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored blues-for-an-alabama-sky-west-end-2022/observer--susannah-clapp.json@dcf46ff2d0a270f89a87e9b357cc8435e8116180 -> blues-for-an-alabama-sky-west-end-2022/observer--susannah-clapp.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored the-crucible-west-end-2022/observer--susannah-clapp.json@dcf46ff2d0a270f89a87e9b357cc8435e8116180 -> the-crucible-west-end-2022/observer--susannah-clapp.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored the-mongol-khan-west-end-2023/financialtimes--sarah-hemming.json@02f1d9c675f8d465131daecaa4578729b8f2453a -> the-mongol-khan-west-end-2023/financialtimes--sarah-hemming.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored the-witches-west-end-2023/financialtimes--sarah-hemming.json@02f1d9c675f8d465131daecaa4578729b8f2453a -> the-witches-west-end-2023/financialtimes--sarah-hemming.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored dr-semmelweis-west-end-2023/daily-mail--robert-gore-langton.json@1d88887401f7413f499107e55f58ee54c34a200b -> dr-semmelweis-west-end-2023/daily-mail--robert-gore-langton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored the-wizard-of-oz-west-end-2023/daily-mail--robert-gore-langton.json@1d88887401f7413f499107e55f58ee54c34a200b -> the-wizard-of-oz-west-end-2023/daily-mail--robert-gore-langton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored dr-semmelweis-west-end-2023/financialtimes--sarah-hemming.json@1d88887401f7413f499107e55f58ee54c34a200b -> dr-semmelweis-west-end-2023/financialtimes--sarah-hemming.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored bonnie-and-clyde-west-end-2022/theatre-weekly--greg-stewart.json@1748d12c154537e9aea9b369669e37e3925c4412 -> bonnie-and-clyde-west-end-2022/theatre-weekly--greg-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored bonnie-and-clyde-west-end-2022/thereviewshub--maryam-philpott.json@1748d12c154537e9aea9b369669e37e3925c4412 -> bonnie-and-clyde-west-end-2022/thereviewshub--maryam-philpott.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored bonnie-and-clyde-west-end-2022/thestage--tim-bano.json@1748d12c154537e9aea9b369669e37e3925c4412 -> bonnie-and-clyde-west-end-2022/thestage--tim-bano.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored oedipus-west-end-2025/all-that-dazzles-uk--all-that-dazzles.json@b59a9140e28fee6e4d12a7e3a6119bd5406a706d -> oedipus-west-end-2025/all-that-dazzles-uk--all-that-dazzles.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted standing-at-the-skys-edge-west-end-2024/telegraph--claire-allfree.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored standing-at-the-skys-edge-west-end-2023/telegraph--claire-allfree.json@04980fb01b8960ab5d7d5ed411825bfb48f7d13e -> standing-at-the-skys-edge-west-end-2023/telegraph--claire-allfree.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted standing-at-the-skys-edge-west-end-2024/thestage--sam-marlowe.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored standing-at-the-skys-edge-west-end-2023/thestage--sam-marlowe.json@04980fb01b8960ab5d7d5ed411825bfb48f7d13e -> standing-at-the-skys-edge-west-end-2023/thestage--sam-marlowe.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-play-that-goes-wrong-2017/bobs-theater-blog--robert-sholiton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored the-play-that-goes-wrong-off-broadway-2019/bobs-theater-blog--robert-sholiton.json@4df5e3133aac7a1a54859f7571ea2e43d24bf9c3 -> the-play-that-goes-wrong-2017/bobs-theater-blog--robert-sholiton.json"
+    }
+  ]
+}

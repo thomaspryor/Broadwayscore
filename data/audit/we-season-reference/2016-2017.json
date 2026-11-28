@@ -1,0 +1,836 @@
+{
+  "generatedAt": "2026-10-27T23:55:30.519Z",
+  "season": "2016-2017",
+  "issue": "BRO-6450",
+  "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
+  "sources": [
+    "theatricalia (venue histories)",
+    "wos",
+    "guardian",
+    "wikipedia (venue articles)"
+  ],
+  "counts": {
+    "reference": 52,
+    "theatricaliaOnly": 12,
+    "excludedShortRuns": 4
+  },
+  "reference": [
+    {
+      "title": "No Man's Land",
+      "venue": "Wyndham's Theatre",
+      "start": "2016-09-20",
+      "end": "2016-12-17",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/4xm/no-mans-land/production/wrc"
+    },
+    {
+      "title": "The Libertine",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2016-09-27",
+      "end": "2016-12-03",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fhs/the-libertine/production/108x"
+    },
+    {
+      "title": "No's Knife",
+      "venue": "The Old Vic",
+      "start": "2016-09-29",
+      "end": "2016-10-15",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e7k/nos-knife/production/wrx"
+    },
+    {
+      "title": "The Red Barn",
+      "venue": "Lyttelton Theatre",
+      "start": "2016-10-06",
+      "end": "2017-01-17",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e7n/the-red-barn/production/ws0"
+    },
+    {
+      "title": "The Dresser",
+      "venue": "Duke of York's Theatre",
+      "start": "2016-10-13",
+      "end": "2017-01-14",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/8tm/the-dresser/production/14xt"
+    },
+    {
+      "title": "Peter Pan Goes Wrong",
+      "venue": "Apollo Theatre",
+      "start": "2016-10-20",
+      "end": "2017-01-29",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/egs/peter-pan-goes-wrong/production/xf6"
+    },
+    {
+      "title": "School of Rock",
+      "venue": "Gillian Lynne Theatre",
+      "start": "2016-10-22",
+      "end": "2020-03-01",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/867/school-of-rock/production/14bx"
+    },
+    {
+      "title": "Buried Child",
+      "venue": "Trafalgar Theatre",
+      "start": "2016-11-14",
+      "end": "2017-03-04",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/8pn/buried-child/production/wv0"
+    },
+    {
+      "title": "Nice Fish",
+      "venue": "Harold Pinter Theatre",
+      "start": "2016-11-15",
+      "end": "2017-02-11",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7dn/nice-fish/production/14ck"
+    },
+    {
+      "title": "Half a Sixpence",
+      "venue": "Noël Coward Theatre",
+      "start": "2016-11-17",
+      "end": "2017-09-02",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5bs/half-a-sixpence/production/12nd"
+    },
+    {
+      "title": "The Children",
+      "venue": "Royal Court",
+      "start": "2016-11-17",
+      "end": "2017-01-14",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e84/the-children/production/wt4"
+    },
+    {
+      "title": "This House",
+      "venue": "Garrick Theatre",
+      "start": "2016-11-19",
+      "end": "2017-02-25",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e8x/this-house/production/wv9"
+    },
+    {
+      "title": "Hedda Gabler",
+      "venue": "Lyttelton Theatre",
+      "start": "2016-12-05",
+      "end": "2017-03-21",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/9k/hedda-gabler/production/wvf"
+    },
+    {
+      "title": "Dirty Dancing",
+      "venue": "Phoenix Theatre",
+      "start": "2016-12-06",
+      "end": "2016-12-31",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dnb/dirty-dancing/production/10ex"
+    },
+    {
+      "title": "Art",
+      "venue": "The Old Vic",
+      "start": "2016-12-10",
+      "end": "2017-02-18",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/69j/art/production/141g"
+    },
+    {
+      "title": "Much Ado About Nothing",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2016-12-12",
+      "end": "2017-03-18",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/1/much-ado-about-nothing/production/108y"
+    },
+    {
+      "title": "Dreamgirls",
+      "venue": "Savoy Theatre",
+      "start": "2016-12-14",
+      "end": "2019-01-12",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7dq/dreamgirls/production/14p9"
+    },
+    {
+      "title": "Love's Labour's Lost",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2016-12-16",
+      "end": "2017-03-18",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/15/loves-labours-lost/production/108z"
+    },
+    {
+      "title": "The Kite Runner",
+      "venue": "Wyndham's Theatre",
+      "start": "2017-01-10",
+      "end": "2017-03-11",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7vc/the-kite-runner/production/152d"
+    },
+    {
+      "title": "Dirty Great Love Story",
+      "venue": "Arts Theatre",
+      "start": "2017-01-18",
+      "end": "2017-03-18",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dx3/dirty-great-love-story/production/x3p"
+    },
+    {
+      "title": "The Girls",
+      "venue": "Phoenix Theatre",
+      "start": "2017-01-28",
+      "end": "2017-07-15",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fma/the-girls/production/10f2"
+    },
+    {
+      "title": "The Glass Menagerie",
+      "venue": "Duke of York's Theatre",
+      "start": "2017-02-02",
+      "end": "2017-04-29",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/3sp/the-glass-menagerie/production/14xv"
+    },
+    {
+      "title": "Travesties",
+      "venue": "Apollo Theatre",
+      "start": "2017-02-03",
+      "end": "2017-04-29",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/98/travesties/production/wva"
+    },
+    {
+      "title": "Twelfth Night",
+      "venue": "Olivier Theatre",
+      "start": "2017-02-15",
+      "end": "2017-05-13",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/f/twelfth-night/production/zhh"
+    },
+    {
+      "title": "Who's Afraid of Virginia Woolf?",
+      "venue": "Harold Pinter Theatre",
+      "start": "2017-02-22",
+      "end": "2017-05-27",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7bb/whos-afraid-of-virginia-woolf/production/wwm"
+    },
+    {
+      "title": "Rosencrantz and Guildenstern are Dead",
+      "venue": "The Old Vic",
+      "start": "2017-02-25",
+      "end": "2017-05-06",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/4nd/rosencrantz-and-guildenstern-are-dead/production/wx7"
+    },
+    {
+      "title": "a profoundly affectionate, passionate devotion to someone (-noun)",
+      "venue": "Royal Court",
+      "start": "2017-02-28",
+      "end": "2017-04-01",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fxd/a-profoundly-affectionate-passionate-devotion-to-someone-noun/production/10zx"
+    },
+    {
+      "title": "The Miser",
+      "venue": "Garrick Theatre",
+      "start": "2017-03-01",
+      "end": "2017-06-10",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/3r7/the-miser/production/wwy"
+    },
+    {
+      "title": "The Kid Stays in the Picture",
+      "venue": "Royal Court",
+      "start": "2017-03-11",
+      "end": "2017-04-08",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/jpz/the-kid-stays-in-the-picture/production/1bkn"
+    },
+    {
+      "title": "The Goat, or Who is Sylvia?",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2017-03-14",
+      "end": "2017-06-24",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/far/the-goat-or-who-is-sylvia/production/wvd"
+    },
+    {
+      "title": "42nd Street",
+      "venue": "Theatre Royal Drury Lane",
+      "start": "2017-03-20",
+      "end": "2019-01-05",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5nt/42nd-street/production/zv6"
+    },
+    {
+      "title": "Don Juan in Soho",
+      "venue": "Wyndham's Theatre",
+      "start": "2017-03-28",
+      "end": "2017-06-10",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/9r5/don-juan-in-soho/production/152e"
+    },
+    {
+      "title": "An American in Paris",
+      "venue": "Dominion Theatre",
+      "start": "2017-04-01",
+      "end": "2018-01-27",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/e69/an-american-in-paris/production/wn9"
+    },
+    {
+      "title": "The Philanthropist",
+      "venue": "Trafalgar Theatre",
+      "start": "2017-04-03",
+      "end": "2017-07-22",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/51x/the-philanthropist/production/wwp"
+    },
+    {
+      "title": "Angels in America",
+      "venue": "Lyttelton Theatre",
+      "start": "2017-04-11",
+      "end": "2017-08-19",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/60a/angels-in-america/production/1bn7"
+    },
+    {
+      "title": "The Ferryman",
+      "venue": "Royal Court",
+      "start": "2017-04-24",
+      "end": "2017-05-20",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ebn/the-ferryman/production/x2f"
+    },
+    {
+      "title": "Killology",
+      "venue": "Royal Court",
+      "start": "2017-05-25",
+      "end": "2017-06-24",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fy5/killology/production/1118"
+    },
+    {
+      "title": "Anatomy of a Suicide",
+      "venue": "Royal Court",
+      "start": "2017-06-03",
+      "end": "2017-07-08",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/eqe/anatomy-of-a-suicide/production/1adg"
+    },
+    {
+      "title": "Annie",
+      "venue": "Piccadilly Theatre",
+      "start": "2017-06-05",
+      "end": "2018-02-18",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/57d/annie/production/14h2"
+    },
+    {
+      "title": "Barber Shop Chronicles",
+      "venue": "Dorfman Theatre",
+      "start": "2017-06-07",
+      "end": null,
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fpt/barber-shop-chronicles/production/10kj"
+    },
+    {
+      "title": "The Kite Runner",
+      "venue": "Playhouse Theatre",
+      "start": "2017-06-08",
+      "end": "2017-08-26",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/7vc/the-kite-runner/production/152d"
+    },
+    {
+      "title": "Hamlet",
+      "venue": "Harold Pinter Theatre",
+      "start": "2017-06-09",
+      "end": "2017-09-02",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/2/hamlet/production/12q9"
+    },
+    {
+      "title": "Lady Day At Emerson's Bar And Grill",
+      "venue": "Wyndham's Theatre",
+      "start": "2017-06-17",
+      "end": "2017-09-09",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/86k/lady-day-at-emersons-bar-and-grill/production/152f"
+    },
+    {
+      "title": "Rotterdam",
+      "venue": "Arts Theatre",
+      "start": "2017-06-21",
+      "end": "2017-07-15",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/eg4/rotterdam/production/xdw"
+    },
+    {
+      "title": "The Mentor",
+      "venue": "Vaudeville Theatre",
+      "start": "2017-06-24",
+      "end": "2017-09-02",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ecn/the-mentor/production/x4m"
+    },
+    {
+      "title": "The Ferryman",
+      "venue": "Gielgud Theatre",
+      "start": "2017-06-29",
+      "end": "2018-05-19",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ebn/the-ferryman/production/x2f"
+    },
+    {
+      "title": "Queen Anne",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2017-07-10",
+      "end": "2017-09-30",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/etr/queen-anne/production/109q"
+    },
+    {
+      "title": "Cat on a Hot Tin Roof",
+      "venue": "Apollo Theatre",
+      "start": "2017-07-13",
+      "end": "2017-10-07",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5kr/cat-on-a-hot-tin-roof/production/zkw"
+    },
+    {
+      "title": "Mosquitoes",
+      "venue": "Dorfman Theatre",
+      "start": "2017-07-18",
+      "end": "2017-09-28",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/fwh/mosquitoes/production/10yq"
+    },
+    {
+      "title": "Gangsta Granny",
+      "venue": "Garrick Theatre",
+      "start": "2017-07-26",
+      "end": "2017-09-03",
+      "sources": [
+        "theatricalia",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gwn/gangsta-granny/production/134r"
+    },
+    {
+      "title": "Apologia",
+      "venue": "Trafalgar Theatre",
+      "start": "2017-07-29",
+      "end": "2017-11-18",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ecf/apologia/production/14y3"
+    },
+    {
+      "title": "Follies",
+      "venue": "Olivier Theatre",
+      "start": "2017-08-22",
+      "end": "2018-01-03",
+      "sources": [
+        "theatricalia",
+        "guardian",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/5ca/follies/production/xdg"
+    }
+  ],
+  "uncorroborated": [
+    {
+      "title": "DNA / Pigeon English / Romeo and Juliet",
+      "venue": "Ambassadors Theatre",
+      "start": "2016-09-20",
+      "end": "2016-11-25",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gy8/dna-pigeon-english-romeo-and-juliet/production/137r"
+    },
+    {
+      "title": "It is Easy to be Dead",
+      "venue": "Trafalgar Theatre",
+      "start": "2016-11-09",
+      "end": "2016-12-03",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/fgy/it-is-easy-to-be-dead/production/1075"
+    },
+    {
+      "title": "The Very Hungry Caterpillar",
+      "venue": "Ambassadors Theatre",
+      "start": "2016-12-02",
+      "end": "2017-01-08",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gy5/the-very-hungry-caterpillar/production/137q"
+    },
+    {
+      "title": "Potted Panto",
+      "venue": "Garrick Theatre",
+      "start": "2016-12-10",
+      "end": "2017-01-15",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/b3s/potted-panto/production/1379"
+    },
+    {
+      "title": "Mr Popper's Penguins",
+      "venue": "Criterion Theatre",
+      "start": "2016-12-15",
+      "end": "2016-12-31",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/h2s/mr-poppers-penguins/production/13jk"
+    },
+    {
+      "title": "Escaped Alone",
+      "venue": "Royal Court",
+      "start": "2017-01-25",
+      "end": "2017-02-11",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/e90/escaped-alone/production/wve"
+    },
+    {
+      "title": "Our Ladies of Perpetual Succour",
+      "venue": "Duke of York's Theatre",
+      "start": "2017-05-15",
+      "end": "2017-09-02",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/e6f/our-ladies-of-perpetual-succour/production/14d2"
+    },
+    {
+      "title": "Judy!",
+      "venue": "Arts Theatre",
+      "start": "2017-05-16",
+      "end": "2017-06-17",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/ghe/judy/production/12ek"
+    },
+    {
+      "title": "Tape Face",
+      "venue": "Garrick Theatre",
+      "start": "2017-06-06",
+      "end": "2017-07-22",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gwp/tape-face/production/134s"
+    },
+    {
+      "title": "13, the musical / The Adventures of Pinocchio",
+      "venue": "Ambassadors Theatre",
+      "start": "2017-07-28",
+      "end": "2017-08-31",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gy6/13-the-musical-the-adventures-of-pinocchio/production/137n"
+    },
+    {
+      "title": "Evita",
+      "venue": "Phoenix Theatre",
+      "start": "2017-08-02",
+      "end": "2017-10-14",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/5q1/evita/production/10ez"
+    },
+    {
+      "title": "Horrible Histories: More Best of Barmy Britain",
+      "venue": "Garrick Theatre",
+      "start": "2017-08-04",
+      "end": "2017-09-02",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gwm/horrible-histories-more-best-of-barmy-britain/production/134q"
+    }
+  ],
+  "excluded": [
+    {
+      "title": "Cat – the Play!!!",
+      "venue": "Ambassadors Theatre",
+      "start": "2017-04-25",
+      "end": "2017-04-26",
+      "reason": "run of 2 days < 14"
+    },
+    {
+      "title": "Nina Conti – In Your Face",
+      "venue": "Criterion Theatre",
+      "start": "2016-09-07",
+      "end": "2016-09-17",
+      "reason": "run of 11 days < 14"
+    },
+    {
+      "title": "Sand in the Sandwiches",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2017-05-30",
+      "end": "2017-06-03",
+      "reason": "run of 5 days < 14"
+    },
+    {
+      "title": "The Boys in the Band",
+      "venue": "Vaudeville Theatre",
+      "start": "2017-02-07",
+      "end": "2017-02-18",
+      "reason": "run of 12 days < 14"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+ "city": "san-diego-ca",
+ "week": "2026-W48",
+ "today": "2026-11-24",
+ "findings": 3,
+ "byClass": {
+  "1": 0,
+  "2": 0,
+  "3": 2,
+  "4": 0,
+  "6": 1
+ },
+ "newFindings": 1,
+ "newByClass": {
+  "1": 0,
+  "2": 0,
+  "3": 1,
+  "4": 0,
+  "6": 0
+ },
+ "provenance": 0,
+ "newProvenance": 0,
+ "plan": null,
+ "card": "BRO-8258",
+ "findingKeys": [
+  "review:carrie-the-musical-regional-2026|https://www.broadwayworld.com/louisville/article/review-carrie-the-musical-at-the-carnegie-20261028|taylor clemons:wrong-production",
+  "show:hairspray-regional-2026:opening-date",
+  "show:seussical-regional-2026:venue"
+ ],
+ "fresh": [
+  {
+   "key": "review:carrie-the-musical-regional-2026|https://www.broadwayworld.com/louisville/article/review-carrie-the-musical-at-the-carnegie-20261028|taylor clemons:wrong-production",
+   "cls": 3,
+   "kind": "review",
+   "id": "carrie-the-musical-regional-2026|https://www.broadwayworld.com/louisville/article/review-carrie-the-musical-at-the-carnegie-20261028|taylor clemons",
+   "label": "Carrie: The Musical | BroadwayWorld / Taylor Clemons",
+   "code": "wrong-production",
+   "detail": "The Carnegie 1028 Scott St Covington, KY 41011",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  }
+ ],
+ "provenanceRows": []
+}

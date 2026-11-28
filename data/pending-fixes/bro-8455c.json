@@ -1,0 +1,130 @@
+{
+  "issueNumber": "bro-8455c",
+  "planId": "d63e0127-9932-4f78-82c8-7e1acdf7283c",
+  "status": "applied",
+  "createdAt": "2026-11-28T20:42:11.503Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Delete wrong-production review files on regional rows (frozen Norwell x7, the-cottage Edmonton x1, purpose Deadline roundup x1) (BRO-8455 item 1)",
+    "steps": [
+      "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run",
+      "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run",
+      "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run",
+      "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run",
+      "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run",
+      "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run",
+      "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run",
+      "BRO-8455: review is of the Edmonton production, not this run",
+      "BRO-8455: Deadline 2024-25 Broadway season roundup, not this production"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "frozen-regional-2026/all-that-dazzles-uk--harry-bower.json",
+        "description": "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "frozen-regional-2026/chicagotribune--chris-jones.json",
+        "description": "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "frozen-regional-2026/entertainingchicago--unknown.json",
+        "description": "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "frozen-regional-2026/maryland-theatre-guide--unknown.json",
+        "description": "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "frozen-regional-2026/picksinsix--ed-tracy.json",
+        "description": "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "frozen-regional-2026/rachelsreviewstheatre--unknown.json",
+        "description": "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "frozen-regional-2026/thestage--holly-omahony.json",
+        "description": "BRO-8455: review is of a different production (London, Chicago, Maryland or Utah), not the Company Theatre Norwell run"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-cottage-regional-2026/12thnight--liz-nicholls.json",
+        "description": "BRO-8455: review is of the Edmonton production, not this run"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "purpose-regional-2026/deadline--greg-evans.json",
+        "description": "BRO-8455: Deadline 2024-25 Broadway season roundup, not this production"
+      }
+    ]
+  },
+  "executedAt": "2026-11-28T21:02:18.781Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/all-that-dazzles-uk--harry-bower.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/chicagotribune--chris-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/entertainingchicago--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/maryland-theatre-guide--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/picksinsix--ed-tracy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/rachelsreviewstheatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted frozen-regional-2026/thestage--holly-omahony.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cottage-regional-2026/12thnight--liz-nicholls.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose-regional-2026/deadline--greg-evans.json"
+    }
+  ],
+  "executedIn": "ci"
+}

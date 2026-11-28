@@ -1,0 +1,164 @@
+'use strict';
+
+/**
+ * Pure show-date integrity predicates for validate-data.js.
+ *
+ * Catches the date-bug class fixed 2026-06-28: upcoming revivals that inherited their
+ * historical namesake's opening date (e.g. a-few-good-men-2026 carrying 1989-11-15 and
+ * status=open), and a closed show whose previews date landed AFTER its opening.
+ * See memory/feedback_clone_inherited_dates_yyyy_id.
+ *
+ * Two signal strengths:
+ *  - HARD ERROR: previews-after-opening, and a date that EXACTLY equals a same-title
+ *    sibling's date (unambiguous inheritance — distinct productions never share an
+ *    opening night). Both are 0-false-positive on the real corpus.
+ *  - WARNING: the id-year-gap heuristic (recent `{title}-{YYYY}` id with a decades-older
+ *    opening, still pre-open). Catches clones whose namesake isn't in the DB, but can also
+ *    flag a legit long-runner imported with a recent id-year (e.g. book-of-mormon-west-end-2024
+ *    opened 2013) — so it only warns, never blocks.
+ */
+
+// Statuses the id-year-gap heuristic still applies to. Deliberately NOT named
+// PRE_OPEN_STATUSES: opening-signal.js exports a DIFFERENT set under that name
+// (no 'open' - it is the set of statuses the review-driven catch-up may flip TO
+// open, so including 'open' there would re-flip live shows). Two unequal
+// same-named constants in scripts/lib/ is a footgun; renamed on BRO-3091 after
+// ship-check flagged it. Nothing imported this one.
+const DATE_CHECKED_STATUSES = new Set(['open', 'previews', 'upcoming', 'announced']);
+
+const { foldDiacritics } = require('./title-match');
+
+function normTitle(t) { return foldDiacritics(t || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
+
+// Unambiguous: a production's previews always precede its opening. Anything else is a bug.
+function previewsAfterOpening(show) {
+  return !!(show && show.previewsStartDate && show.openingDate && show.previewsStartDate > show.openingDate);
+}
+
+// COVID-disruption windows — a production whose previews began in the season leading into
+// the March-2020 shutdown and which opened during the staggered 2020-2022 reopening was
+// legitimately delayed (Company/Six/Lehman Trilogy/The Minutes etc.). Bounded windows (not a
+// hard-coded id list) so the carve-out covers only genuinely COVID-affected runs — a show
+// with previews years earlier (sunset-baby 2013→2024) is NOT exempt just because its span
+// happens to cross 2020.
+const COVID_PREVIEW_MIN = '2019-09-01', COVID_PREVIEW_MAX = '2020-03-15';
+const COVID_OPENING_MIN = '2020-09-01', COVID_OPENING_MAX = '2023-01-01';
+
+/**
+ * A previews date implausibly far BEFORE the opening — the wrong-production previews class
+ * (sunset-baby-off-broadway-2026 had previews 2013-12-17 vs opening 2024-02-22, the 2013
+ * original's date). Distinct from previewsAfterOpening (which is previews AFTER opening) and
+ * from inheritedDateFromSibling (which needs an exact sibling-date match). Excludes the
+ * legitimate COVID-delayed class.
+ * @param {object} show
+ * @param {object} [opts] - { maxGapDays = 365 }
+ * @returns {boolean}
+ */
+function excessivePreviewGap(show, opts = {}) {
+  const { maxGapDays = 365 } = opts;
+  if (!show || !show.previewsStartDate || !show.openingDate) return false;
+  const p = show.previewsStartDate, o = show.openingDate;
+  if (p >= o) return false; // previews-after / same handled elsewhere
+  const gapDays = (Date.parse(o + 'T00:00:00Z') - Date.parse(p + 'T00:00:00Z')) / 86400000;
+  if (!(gapDays > maxGapDays)) return false;
+  // COVID carve-out: previews in the pre-shutdown window AND opening in the reopening window.
+  const covidDelayed = p >= COVID_PREVIEW_MIN && p <= COVID_PREVIEW_MAX
+    && o >= COVID_OPENING_MIN && o <= COVID_OPENING_MAX;
+  if (covidDelayed) return false;
+  return true;
+}
+
+/**
+ * WARNING tier below excessivePreviewGap (BRO-7131). A modern run with more than ~4 months of
+ * previews is rare; far more often the record kept an earlier announcement's previews date after
+ * a transfer or postponement (tango-off-west-end-2026: 205 days, a moved venue), or stored the
+ * first preview as opening. The 365-day error missed every one of these. Warning only: a few
+ * long-preview runs are real.
+ * @param {object} show
+ * @param {object} [opts] - { warnGapDays = 120, sinceOpening = '2024-01-01' }
+ */
+function longPreviewGap(show, opts = {}) {
+  const { warnGapDays = 120, sinceOpening = '2024-01-01' } = opts;
+  if (!show || !show.openingDate || show.openingDate < sinceOpening) return false;
+  return excessivePreviewGap(show, { maxGapDays: warnGapDays });
+}
+
+/**
+ * HARD signal: this show's openingDate (or previewsStartDate) is byte-identical to a
+ * DIFFERENT same-title production's. Distinct productions never share an opening night, so
+ * an exact match is the date having been cloned from the namesake.
+ * @param {object} show
+ * @param {object[]} sameTitleSiblings - other shows with the same normalized title (any id)
+ * @returns {{ field: 'openingDate'|'previewsStartDate', siblingId: string }|null}
+ */
+function inheritedDateFromSibling(show, sameTitleSiblings) {
+  if (!show || !Array.isArray(sameTitleSiblings)) return null;
+  for (const sib of sameTitleSiblings) {
+    if (!sib || sib.id === show.id) continue;
+    // BRO-8456: a tour umbrella opens when its first leg opens, so an umbrella and its own
+    // leg legitimately share the date. Only that parent/child pair is exempt.
+    if (sib.tourParent === show.id || show.tourParent === sib.id) continue;
+    if (show.openingDate && sib.openingDate === show.openingDate) return { field: 'openingDate', siblingId: sib.id };
+    if (show.previewsStartDate && sib.previewsStartDate === show.previewsStartDate) return { field: 'previewsStartDate', siblingId: sib.id };
+  }
+  return null;
+}
+
+/**
+ * SOFT signal (warning only): a recently-minted `{title}-{YYYY}` id whose openingDate is
+ * from a much earlier year while the show is still pre-open. Catches clones whose namesake
+ * isn't a separate DB entry; tolerates the occasional legit recent-import long-runner.
+ * @param {object} show
+ * @param {number} currentYear - injected for testability
+ * @param {object} [opts] - { recentWithin=2, gapYears=10 }
+ */
+function suspiciousInheritedYear(show, currentYear, opts = {}) {
+  const { recentWithin = 2, gapYears = 10 } = opts;
+  if (!show || !show.id || !show.openingDate) return false;
+  const m = String(show.id).match(/-(\d{4})$/);
+  if (!m) return false;
+  const idYear = parseInt(m[1], 10);
+  const openYear = parseInt(String(show.openingDate).slice(0, 4), 10);
+  if (!Number.isFinite(idYear) || !Number.isFinite(openYear)) return false;
+  return idYear >= currentYear - recentWithin
+    && idYear - openYear >= gapYears
+    && DATE_CHECKED_STATUSES.has(show.status);
+}
+
+/**
+ * BRO-8234: would applying these enricher changes leave the show failing the
+ * validate-data.js date gates (previews after opening, or a >365d previews gap)?
+ * The West End enricher matched a closed 2014 show to a 2027 listing and wrote
+ * openingDate 2027-07-01; validate-data then failed every scheduled run (and
+ * Check Cron Health went red on the stale cron). The enricher vetoes such
+ * changes instead of writing them. Only judges changes that touch a date field.
+ * @param {object} show
+ * @param {{field:string,new:any}[]} changes
+ * @returns {boolean}
+ */
+function changesBreakDateIntegrity(show, changes) {
+  const dateChanges = (changes || []).filter((c) => c && (c.field === 'openingDate' || c.field === 'previewsStartDate'));
+  if (!show || dateChanges.length === 0) return false;
+  const projected = { ...show };
+  for (const c of dateChanges) projected[c.field] = c.new;
+  // A new opening later than the stored closing date is the same wrong-production
+  // signal when the show has no previews date (validate-data only warns on it).
+  const closedBeforeOpening = !!(projected.openingDate && projected.closingDate && projected.openingDate > projected.closingDate);
+  return previewsAfterOpening(projected) || excessivePreviewGap(projected) || closedBeforeOpening;
+}
+
+/**
+ * Pure veto used by every date writer in the West End enricher (BRO-8234).
+ * Returns the changes to apply (all of them, or none when a date change would
+ * break the gates) plus the discrepancy rows for what was dropped.
+ * @returns {{changes: object[], vetoed: object[]}}
+ */
+function vetoBrokenDateChanges(show, changes, source) {
+  if (!changesBreakDateIntegrity(show, changes)) return { changes: changes || [], vetoed: [] };
+  const vetoed = changes
+    .filter((c) => c.field === 'openingDate' || c.field === 'previewsStartDate')
+    .map((c) => ({ field: c.field, current: c.old, external: c.new, source, reason: 'vetoed: breaks date-integrity gates' }));
+  return { changes: [], vetoed };
+}
+
+module.exports = { previewsAfterOpening, excessivePreviewGap, changesBreakDateIntegrity, vetoBrokenDateChanges, longPreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle, DATE_CHECKED_STATUSES };

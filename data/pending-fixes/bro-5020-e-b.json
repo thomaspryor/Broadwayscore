@@ -1,0 +1,418 @@
+{
+  "issueNumber": "bro-5020-e-b",
+  "planId": "bf30ee61-1376-4f6c-95f1-7a6ce3705c40",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5020 owner policy B backfill, part 2 of 5 (23 shows): every Fizzle/Flop gets designationBasis; silence-based labels on shows closed under 6 months return to TBD with needsLossEvidence; grey-house regains its label on the silence basis (unlocked). Supersedes bro-5020-d, which never executed. Old values read from live commercial.json at 2026-10-11T11:51:28.223Z.",
+    "steps": [
+      "proof: designation, recouped, needsLossEvidence",
+      "tammy-faye-2024: designationBasis",
+      "swept-away-2024: designationBasis",
+      "gypsy-2024: designationBasis",
+      "dead-outlaw-2025: designationBasis",
+      "bob-fosses-dancin-2023: designationBasis",
+      "bad-cinderella-2023: designationBasis",
+      "new-york-new-york-2023: designationBasis",
+      "some-like-it-hot-2022: designationBasis",
+      "a-beautiful-noise-the-neil-diamond-musical-2022: designationBasis",
+      "the-music-man-2022: designationBasis",
+      "paradise-square-2022: designationBasis",
+      "pretty-woman-the-musical-2018: designationBasis",
+      "king-kong-2018: designationBasis",
+      "spamalot: designationBasis",
+      "how-to-dance-in-ohio: designationBasis",
+      "kimberly-akimbo-2022: designationBasis",
+      "tootsie-2019: designationBasis",
+      "tina-2019: designationBasis",
+      "jagged-little-pill-2019: designationBasis",
+      "frozen-2018: designationBasis",
+      "illinoise: designationBasis",
+      "the-whos-tommy: designationBasis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "showId": "proof",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "proof: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "showId": "proof",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "proof: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "showId": "proof",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "proof: needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tammy-faye-2024",
+        "showId": "tammy-faye-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "tammy-faye-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "swept-away-2024",
+        "showId": "swept-away-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "swept-away-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "gypsy-2024",
+        "showId": "gypsy-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "gypsy-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dead-outlaw-2025",
+        "showId": "dead-outlaw-2025",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "dead-outlaw-2025: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "showId": "bob-fosses-dancin-2023",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "bob-fosses-dancin-2023: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bad-cinderella-2023",
+        "showId": "bad-cinderella-2023",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "bad-cinderella-2023: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "new-york-new-york-2023",
+        "showId": "new-york-new-york-2023",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "new-york-new-york-2023: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "some-like-it-hot-2022",
+        "showId": "some-like-it-hot-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "some-like-it-hot-2022: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-music-man-2022",
+        "showId": "the-music-man-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-music-man-2022: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "paradise-square-2022: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pretty-woman-the-musical-2018",
+        "showId": "pretty-woman-the-musical-2018",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "pretty-woman-the-musical-2018: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-kong-2018",
+        "showId": "king-kong-2018",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "king-kong-2018: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "showId": "spamalot",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "spamalot: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "showId": "how-to-dance-in-ohio",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "how-to-dance-in-ohio: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "showId": "kimberly-akimbo-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "kimberly-akimbo-2022: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "showId": "tootsie-2019",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "tootsie-2019: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "showId": "tina-2019",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "tina-2019: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jagged-little-pill-2019",
+        "showId": "jagged-little-pill-2019",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "jagged-little-pill-2019: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frozen-2018",
+        "showId": "frozen-2018",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "frozen-2018: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "illinoise",
+        "showId": "illinoise",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "illinoise: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-whos-tommy",
+        "showId": "the-whos-tommy",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "notes-stated",
+        "description": "the-whos-tommy: designationBasis"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T12:48:58.780Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for tammy-faye-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for swept-away-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for gypsy-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for dead-outlaw-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for bad-cinderella-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for new-york-new-york-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for some-like-it-hot-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for a-beautiful-noise-the-neil-diamond-musical-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-music-man-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for pretty-woman-the-musical-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for kimberly-akimbo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for jagged-little-pill-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for frozen-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for illinoise"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-whos-tommy"
+    }
+  ]
+}

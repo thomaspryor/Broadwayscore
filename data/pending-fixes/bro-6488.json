@@ -1,0 +1,118 @@
+{
+  "issueNumber": "bro-6488",
+  "planId": "589256dd-9fd0-4e4f-b60e-f181f84b8f5d",
+  "status": "applied",
+  "createdAt": "2026-10-29T03:11:38.678Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6488 London outlet census: move 6 reviews filed under the wrong production, delete 1 duplicate",
+    "steps": [
+      "BRO-6488 London outlet census: theartsdesk.com page title reads \"Hadestown, National Theatre review\": the 2018 National Theatre production, not the 2024 Lyric run. The 2018 row holds no Arts Desk file.",
+      "BRO-6488 London outlet census: published 2023-01-25, inside the 2023 Phoenix run (opened 2023-01-19), years after the 2019 run closed.",
+      "BRO-6488 London outlet census: published 2024-02-28, inside the 2024 Gillian Lynne run; the 2023 National run closed 2023-03-25.",
+      "BRO-6488 London outlet census: published 2024-11-22, inside the 2024 Old Vic season; the 2015 season closed 2016-01-30.",
+      "BRO-6488 London outlet census: published 2022-11-24, inside the 2022 Old Vic season (from 2022-11-12).",
+      "BRO-6488 London outlet census: published 2026-07-01, inside the Duke of York's run (2026-06-20 to 2026-09-12); the earlier 2026 run closed 2026-03-21.",
+      "BRO-6488 London outlet census: the 2023 Apollo review (URL prefix 23-, published 2023-04-01) is already held on the 2023 row as thereviewshub--andrew-houghton.json with the same date and length; this copy on the 2022 row is a duplicate."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "hadestown-west-end-2024/artsdesk--marianka-swain.json",
+        "destPath": "hadestown-west-end-2018/artsdesk--marianka-swain.json",
+        "description": "BRO-6488 London outlet census: theartsdesk.com page title reads \"Hadestown, National Theatre review\": the 2018 National Theatre production, not the 2024 Lyric run. The 2018 row holds no Arts Desk file."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "noises-off-west-end-2019/theatre-weekly--greg-stewart.json",
+        "destPath": "noises-off-west-end-2023/theatre-weekly--greg-stewart.json",
+        "description": "BRO-6488 London outlet census: published 2023-01-25, inside the 2023 Phoenix run (opened 2023-01-19), years after the 2019 run closed."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "standing-at-the-skys-edge-west-end-2023/theatre-weekly--greg-stewart.json",
+        "destPath": "standing-at-the-skys-edge-west-end-2024/theatre-weekly--greg-stewart.json",
+        "description": "BRO-6488 London outlet census: published 2024-02-28, inside the 2024 Gillian Lynne run; the 2023 National run closed 2023-03-25."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "a-christmas-carol-west-end-2015/thereviewshub--the-reviews-hub-london.json",
+        "destPath": "a-christmas-carol-west-end-2024/thereviewshub--the-reviews-hub-london.json",
+        "description": "BRO-6488 London outlet census: published 2024-11-22, inside the 2024 Old Vic season; the 2015 season closed 2016-01-30."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "a-christmas-carol-west-end-2020/thereviewshub--the-reviews-hub-london.json",
+        "destPath": "a-christmas-carol-west-end-2022/thereviewshub--the-reviews-hub-london.json",
+        "description": "BRO-6488 London outlet census: published 2022-11-24, inside the 2022 Old Vic season (from 2022-11-12)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "arcadia-west-end-2026/whatsonstage--alex-wood.json",
+        "destPath": "arcadia-duke-of-yorks-west-end-2026/whatsonstage--alex-wood.json",
+        "description": "BRO-6488 London outlet census: published 2026-07-01, inside the Duke of York's run (2026-06-20 to 2026-09-12); the earlier 2026 run closed 2026-03-21."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/thereviewshub--the-reviews-hub-london.json",
+        "description": "BRO-6488 London outlet census: the 2023 Apollo review (URL prefix 23-, published 2023-04-01) is already held on the 2023 row as thereviewshub--andrew-houghton.json with the same date and length; this copy on the 2022 row is a duplicate."
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T13:16:50.417Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved hadestown-west-end-2024/artsdesk--marianka-swain.json → hadestown-west-end-2018/artsdesk--marianka-swain.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved noises-off-west-end-2019/theatre-weekly--greg-stewart.json → noises-off-west-end-2023/theatre-weekly--greg-stewart.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved standing-at-the-skys-edge-west-end-2023/theatre-weekly--greg-stewart.json → standing-at-the-skys-edge-west-end-2024/theatre-weekly--greg-stewart.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved a-christmas-carol-west-end-2015/thereviewshub--the-reviews-hub-london.json → a-christmas-carol-west-end-2024/thereviewshub--the-reviews-hub-london.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved a-christmas-carol-west-end-2020/thereviewshub--the-reviews-hub-london.json → a-christmas-carol-west-end-2022/thereviewshub--the-reviews-hub-london.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved arcadia-west-end-2026/whatsonstage--alex-wood.json → arcadia-duke-of-yorks-west-end-2026/whatsonstage--alex-wood.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022/thereviewshub--the-reviews-hub-london.json"
+    }
+  ],
+  "executedIn": "ci"
+}

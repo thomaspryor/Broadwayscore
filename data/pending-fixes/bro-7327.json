@@ -1,0 +1,176 @@
+{
+  "issueNumber": "bro-7327",
+  "planId": "97fb5d5e-f9fc-4351-aad1-756de3730e37",
+  "status": "applied",
+  "createdAt": "2026-11-12T00:40:23.035Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear 5 self-pointing isSyndicatedDuplicate marks (BRO-4891 class) and Cavendish's stale self-referencing wrongAttribution so 5 complete reviews ship",
+    "steps": [
+      "a-little-night-music-2009/nytimes--charles-isherwood.json: isSyndicatedDuplicate",
+      "a-little-night-music-2009/nytimes--charles-isherwood.json: syndicatedPrimaryFile",
+      "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json: isSyndicatedDuplicate",
+      "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json: syndicatedPrimaryFile",
+      "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json: isSyndicatedDuplicate",
+      "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json: syndicatedPrimaryFile",
+      "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json: isSyndicatedDuplicate",
+      "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json: syndicatedPrimaryFile",
+      "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json: isSyndicatedDuplicate",
+      "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json: syndicatedPrimaryFile",
+      "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json: wrongAttribution"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-little-night-music-2009/nytimes--charles-isherwood.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "a-little-night-music-2009/nytimes--charles-isherwood.json: isSyndicatedDuplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-little-night-music-2009/nytimes--charles-isherwood.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "a-little-night-music-2009/nytimes--charles-isherwood.json",
+        "newValue": null,
+        "description": "a-little-night-music-2009/nytimes--charles-isherwood.json: syndicatedPrimaryFile"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json: isSyndicatedDuplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json",
+        "newValue": null,
+        "description": "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json: syndicatedPrimaryFile"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json: isSyndicatedDuplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json",
+        "newValue": null,
+        "description": "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json: syndicatedPrimaryFile"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json: isSyndicatedDuplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json",
+        "newValue": null,
+        "description": "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json: syndicatedPrimaryFile"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json: isSyndicatedDuplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json",
+        "newValue": null,
+        "description": "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json: syndicatedPrimaryFile"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json",
+        "field": "wrongAttribution",
+        "oldValue": true,
+        "newValue": false,
+        "description": "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json: wrongAttribution"
+      }
+    ]
+  },
+  "executedAt": "2026-11-12T02:11:15.104Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/nytimes--charles-isherwood.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/nytimes--charles-isherwood.json syndicatedPrimaryFile: \"a-little-night-music-2009/nytimes--charles-isherwood.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json syndicatedPrimaryFile: \"cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json syndicatedPrimaryFile: \"catch-me-if-you-can-2011/hollywood-reporter--david-rooney.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json syndicatedPrimaryFile: \"matilda-the-musical-west-end-2021/express-uk--julie-carpenter.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json syndicatedPrimaryFile: \"the-phantom-of-the-opera-west-end-1986/express-uk--stefan-kyriazis.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-at-the-kit-kat-club-west-end-2021/telegraph--dominic-cavendish.json wrongAttribution: true -> false"
+    }
+  ],
+  "executedIn": "ci"
+}

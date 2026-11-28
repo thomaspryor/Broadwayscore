@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-6245-b",
+  "planId": "dbaf4021-bcbd-4d99-908d-d3bf3e5887e6",
+  "status": "applied",
+  "createdAt": "2026-10-25T22:58:18.692Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Closed model-estimate label re-sized from updated estimate inputs; basis stays model-estimate. Locked so the daily model resize keeps it.",
+    "steps": [
+      "commercial.json: a-dolls-house-2023.designation",
+      "commercial.json: a-dolls-house-2023.humanReviewedDesignation"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Trickle",
+        "description": "commercial.json: a-dolls-house-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: a-dolls-house-2023.humanReviewedDesignation"
+      }
+    ]
+  },
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for a-dolls-house-2023"
+    }
+  ],
+  "executedIn": "ci",
+  "executedAt": "2026-10-26T00:43:28.353Z"
+}

@@ -1,0 +1,553 @@
+{
+  "issueNumber": "bro-5521-b",
+  "planId": "8885234d-69fc-4d2b-8180-b03b2b197d14",
+  "status": "applied",
+  "createdAt": "2026-10-17T07:11:36.165Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5521: twelve capitalizations were 4 x the show’s NY tax credit (credit / 25%). The 25% applies to qualified production and running costs, so 4 x overstates: the SEC Form Ds found under the tax-credit recipients’ entity names put nine of these shows at 1.7x to 3.6x their credit (median 2.6). Nine get their filed figure with the filing cited (Hangmen stays an estimate: its 2019 filing predates the pandemic delay). Death of a Salesman (2022), Peter Pan Goes Wrong and Plaza Suite have no usable filing (Plaza Suite’s Suite 719 LLC filing says \"Indefinite\") and are re-estimated at 2.6 x credit with the range stated. Model rerun on apply; no designation conflicts (flops stay negative; Macbeth 52% -> 87%, Good Night Oscar 26% -> 40% central). (part 2 of 2: pictures-from-home-2023, life-of-pi-2023, thoughts-of-a-colored-man-2021, good-night-oscar-2023, death-of-a-salesman-2022, peter-pan-goes-wrong-2023, plaza-suite-2022)",
+    "steps": [
+      "Filed figures: capitalization, a Form D citation, the estimate flag, and the filing in sources; notes that repeated the 4 x figure are corrected.",
+      "Re-estimates: capitalization at 2.6 x credit (rounded to $0.1M) with the method and range in capitalizationSource."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pictures-from-home-2023",
+        "field": "capitalization",
+        "oldValue": 8218052,
+        "newValue": 5975000,
+        "description": "pictures-from-home-2023: the SEC Form D gives 5.975M (was 4 x its NY tax credit, an overstatement: the 25% credit covers running costs too)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pictures-from-home-2023",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (Pictures From Home Ltd Liability Co, CIK 0001951841, filed Feb 22, 2023): \"Entity capitalized at $5,975,000.\" https://www.sec.gov/Archives/edgar/data/1951841/000195184123000001/xslFormDX01/primary_doc.xml",
+        "description": "pictures-from-home-2023: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pictures-from-home-2023",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "pictures-from-home-2023: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pictures-from-home-2023",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-10"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/PICTURES-FROM-HOME",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/nathan-lane-danny-burstein-zo%C3%AB-wanamaker-take-final-bows-in-pictures-from-home-april-30",
+            "date": "2023-04-30"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-10"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/PICTURES-FROM-HOME",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/nathan-lane-danny-burstein-zo%C3%AB-wanamaker-take-final-bows-in-pictures-from-home-april-30",
+            "date": "2023-04-30"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1951841/000195184123000001/xslFormDX01/primary_doc.xml",
+            "date": "2023-02-22"
+          }
+        ],
+        "description": "pictures-from-home-2023: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "life-of-pi-2023",
+        "field": "capitalization",
+        "oldValue": 9341464,
+        "newValue": 7000000,
+        "description": "life-of-pi-2023: the SEC Form D gives 7.00M (was 4 x its NY tax credit, an overstatement: the 25% credit covers running costs too)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "life-of-pi-2023",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Pi Broadway Ltd Liability Co, CIK 0001932838, filed Jun 19, 2022): total offering amount $7,000,000. https://www.sec.gov/Archives/edgar/data/1932838/000193283822000001/xslFormDX01/primary_doc.xml",
+        "description": "life-of-pi-2023: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "life-of-pi-2023",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "life-of-pi-2023: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "life-of-pi-2023",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-10"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.tax.ny.gov/pit/credits/new-york-city-musical-and-theatrical-production-tax-credit.htm",
+            "date": "2024-12-10"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle",
+            "date": "2025-03-10"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-10"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.tax.ny.gov/pit/credits/new-york-city-musical-and-theatrical-production-tax-credit.htm",
+            "date": "2024-12-10"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle",
+            "date": "2025-03-10"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1932838/000193283822000001/xslFormDX01/primary_doc.xml",
+            "date": "2022-06-19"
+          }
+        ],
+        "description": "life-of-pi-2023: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "thoughts-of-a-colored-man-2021",
+        "field": "capitalization",
+        "oldValue": 5558416,
+        "newValue": 5000000,
+        "description": "thoughts-of-a-colored-man-2021: the SEC Form D gives 5.00M (was 4 x its NY tax credit, an overstatement: the 25% credit covers running costs too)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "thoughts-of-a-colored-man-2021",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A filing (More Thoughts Broadway Ltd Liability Co, CIK 0001795549, filed Apr 29, 2021): total offering amount $5,000,000 ($3,100,000 sold by then). https://www.sec.gov/Archives/edgar/data/1795549/000179554921000002/xslFormDX01/primary_doc.xml",
+        "description": "thoughts-of-a-colored-man-2021: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "thoughts-of-a-colored-man-2021",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "thoughts-of-a-colored-man-2021: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "thoughts-of-a-colored-man-2021",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/thoughts-of-a-colored-man-closes-on-broadway/",
+            "date": "2021-12-23"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved",
+            "date": "2023-05-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.backstage.com/magazine/article/broadway-omicron-nyc-surge-74514/",
+            "date": "2022-01-10"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grossescumulative.php?orderby=desc&sortby=revenue.showname",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/thoughts-of-a-colored-man-closes-on-broadway/",
+            "date": "2021-12-23"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved",
+            "date": "2023-05-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.backstage.com/magazine/article/broadway-omicron-nyc-surge-74514/",
+            "date": "2022-01-10"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grossescumulative.php?orderby=desc&sortby=revenue.showname",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1795549/000179554921000002/xslFormDX01/primary_doc.xml",
+            "date": "2021-04-29"
+          }
+        ],
+        "description": "thoughts-of-a-colored-man-2021: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "good-night-oscar-2023",
+        "field": "capitalization",
+        "oldValue": 10665336,
+        "newValue": 4750000,
+        "description": "good-night-oscar-2023: the SEC Form D gives 4.750M (was 4 x its NY tax credit, an overstatement: the 25% credit covers running costs too)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "good-night-oscar-2023",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Goodnight Oscar LLC, CIK 0001932459, filed Jun 15, 2022; the entity that received its NY tax credit): total offering amount $4,750,000. https://www.sec.gov/Archives/edgar/data/1932459/000193245922000001/xslFormDX01/primary_doc.xml",
+        "description": "good-night-oscar-2023: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "good-night-oscar-2023",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "good-night-oscar-2023: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "good-night-oscar-2023",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.nysenate.gov/sites/default/files/open-data/bluebook-2025.pdf",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/GOOD-NIGHTOSCAR",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/good-night-oscar-closes-on-broadway-august-27",
+            "date": "2023-08-27"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "manual",
+            "url": "https://www.nysenate.gov/sites/default/files/open-data/bluebook-2025.pdf",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/GOOD-NIGHTOSCAR",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/good-night-oscar-closes-on-broadway-august-27",
+            "date": "2023-08-27"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1932459/000193245922000001/xslFormDX01/primary_doc.xml",
+            "date": "2022-06-15"
+          }
+        ],
+        "description": "good-night-oscar-2023: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman-2022",
+        "field": "capitalization",
+        "oldValue": 9058744,
+        "newValue": 5900000,
+        "description": "death-of-a-salesman-2022: re-estimated at 2.6 x its $2,264,686 NY tax credit (was 4 x, an overstatement)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman-2022",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Estimate: about 2.6 times its $2,264,686 NY tax credit (range $3.8M to $8.2M), the ratio eight Broadway plays with SEC-filed capitalizations show. The producers have not disclosed it.",
+        "description": "death-of-a-salesman-2022: state the method and range."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman-2022",
+        "field": "notes",
+        "oldValue": "Publicly available sources confirm the run dates and final gross, and a later NYC tax-credit payment strongly suggests a roughly $9.06M capitalization.",
+        "newValue": "Publicly available sources confirm the run dates and final gross; no capitalization has been disclosed (estimated from its NYC tax credit).",
+        "description": "death-of-a-salesman-2022: the note no longer repeats the 4 x figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "capitalization",
+        "oldValue": 8362184,
+        "newValue": 5400000,
+        "description": "peter-pan-goes-wrong-2023: re-estimated at 2.6 x its $2,090,546 NY tax credit (was 4 x, an overstatement)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Estimate: about 2.6 times its $2,090,546 NY tax credit (range $3.6M to $7.5M), the ratio eight Broadway plays with SEC-filed capitalizations show. The producers have not disclosed it.",
+        "description": "peter-pan-goes-wrong-2023: state the method and range."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "notes",
+        "oldValue": "Public sources support an estimated capitalization of $8,362,184 and show $11,049,438 in total Broadway grosses across the run.",
+        "newValue": "No capitalization has been disclosed (estimated from its NYC tax credit); public sources show $11,049,438 in total Broadway grosses across the run.",
+        "description": "peter-pan-goes-wrong-2023: the note no longer repeats the 4 x figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "plaza-suite-2022",
+        "field": "capitalization",
+        "oldValue": 8003548,
+        "newValue": 5200000,
+        "description": "plaza-suite-2022: re-estimated at 2.6 x its $2,000,887 NY tax credit (was 4 x, an overstatement)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "plaza-suite-2022",
+        "field": "capitalizationSource",
+        "oldValue": "Estimate: $2,000,887 NYC theatrical tax credit to Suite 719 LLC (the Plaza Suite production company) at the 25% credit rate implies about $8.0M of production cost.",
+        "newValue": "Estimate: about 2.6 times its $2,000,887 NY tax credit (range $3.4M to $7.2M), the ratio eight Broadway plays with SEC-filed capitalizations show. The producers have not disclosed it.",
+        "description": "plaza-suite-2022: state the method and range."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T07:40:31.771Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for pictures-from-home-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for pictures-from-home-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for pictures-from-home-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for pictures-from-home-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for life-of-pi-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for life-of-pi-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for life-of-pi-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for life-of-pi-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for thoughts-of-a-colored-man-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for thoughts-of-a-colored-man-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for thoughts-of-a-colored-man-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for thoughts-of-a-colored-man-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for good-night-oscar-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for good-night-oscar-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for good-night-oscar-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for good-night-oscar-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for death-of-a-salesman-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for death-of-a-salesman-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for peter-pan-goes-wrong-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for peter-pan-goes-wrong-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for peter-pan-goes-wrong-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for plaza-suite-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for plaza-suite-2022"
+    }
+  ]
+}

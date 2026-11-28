@@ -1,0 +1,85 @@
+{
+  "runDate": "2026-04-07T18:21:50.152Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "cats-the-jellicle-ball-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 3,
+    "failed": 2,
+    "skipped": 0,
+    "successRate": "60.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 1,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 2
+  },
+  "statistics": {
+    "tier1Attempts": 2,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 3,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 10,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "cats-the-jellicle-ball-2026/nytimes--unknown.json",
+    "cats-the-jellicle-ball-2026/vulture--unknown.json",
+    "cats-the-jellicle-ball-2026/timeout--adam-feldman.json"
+  ],
+  "failed": [
+    "cats-the-jellicle-ball-2026/billboard--unknown.json",
+    "cats-the-jellicle-ball-2026/talkinbroadway--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [
+      "cats-the-jellicle-ball-2026/nytimes--unknown.json"
+    ],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "cats-the-jellicle-ball-2026/vulture--unknown.json",
+      "cats-the-jellicle-ball-2026/timeout--adam-feldman.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "copenhagen-west-end-2026/telegraph--suzanne-king.json",
+      "oldUrl": "https://www.telegraph.co.uk/travel/destinations/europe/denmark/copenhagen/hotels/absalon-hotel/",
+      "newUrl": "https://www.telegraph.co.uk/travel/destinations/europe/denmark/copenhagen/hotels/andersen-hotel/"
+    }
+  ]
+}

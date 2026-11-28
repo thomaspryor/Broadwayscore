@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-6332-c",
+  "planId": "e40dd9ac-e3fb-4652-864b-6bf16de892ea",
+  "status": "applied",
+  "createdAt": "2026-10-26T15:35:03.505Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6332: The Audience recoupedDate was a guessed month; store the year only (the closing article gives no month).",
+    "steps": [
+      "commercial.json: the-audience-2015.recoupedDate",
+      "commercial.json: the-audience-2015.notes"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-audience-2015",
+        "field": "recoupedDate",
+        "oldValue": "2015-06",
+        "newValue": "2015",
+        "description": "commercial.json: the-audience-2015.recoupedDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-audience-2015",
+        "field": "notes",
+        "oldValue": "Limited-engagement play (opened Mar 8, 2015). Exact recoupment month was not published; the closing month is used.",
+        "newValue": "Limited-engagement play (opened Mar 8, 2015). The sources say it recouped by its June 2015 close but give no month, so only the year is recorded.",
+        "description": "commercial.json: the-audience-2015.notes"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T15:57:03.149Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for the-audience-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-audience-2015"
+    }
+  ],
+  "executedIn": "ci"
+}
