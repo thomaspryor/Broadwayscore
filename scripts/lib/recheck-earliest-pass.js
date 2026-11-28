@@ -16,10 +16,12 @@
  */
 const path = require('path');
 
-// Script path (as written in a VERIFY line) -> module exporting earliestPassForArgv.
+// Script path (as written in a VERIFY line) -> loader of the module exporting
+// earliestPassForArgv. Static requires: the build-dependency scanner fails
+// closed on a computed load (build-script-dependencies.test.mjs).
 const PROBES = {
-  'scripts/recurrence-detector.js': '../recurrence-detector.js',
-  'scripts/check-alert-condition-absent.js': '../check-alert-condition-absent.js',
+  'scripts/recurrence-detector.js': () => require('../recurrence-detector.js'),
+  'scripts/check-alert-condition-absent.js': () => require('../check-alert-condition-absent.js'),
 };
 
 /**
@@ -34,7 +36,7 @@ function earliestPassFor(cmd, nowMs = Date.now()) {
   const mod = PROBES[script];
   if (!mod) return null;
   try {
-    const probe = require(mod);
+    const probe = mod();
     if (typeof probe.earliestPassForArgv !== 'function') return null;
     return probe.earliestPassForArgv(tokens.slice(2), nowMs) || null;
   } catch {

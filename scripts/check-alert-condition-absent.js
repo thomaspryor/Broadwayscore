@@ -69,13 +69,13 @@ const LEDGER_MAX_AGE_H = 48;
 // needsReviewTexts: an ok verdict means something only if the show's own
 // review-texts dir was read, unless a `settledBy` flag short-circuits the check.
 const REPLAYABLE_OPENING_NIGHT_CHECKS = [
-  { name: 'revival-unverified', needsReviewTexts: true, settledBy: ['isRevival', 'revivalVerifiedNot'] },
-  { name: 'placeholder-synopsis' },
-  { name: 'stale-upcoming-tag' },
-  { name: 'assigned-score-schema' },
-  { name: 'review-cards-complete' },
-  { name: 'orphan-scoresource' },
-  { name: 'wrong-production-bww' },
+  { name: 'revival-unverified', needsReviewTexts: true, settledBy: ['isRevival', 'revivalVerifiedNot'], load: () => require('./lib/opening-night-checks/revival-unverified.check.js') },
+  { name: 'placeholder-synopsis', load: () => require('./lib/opening-night-checks/placeholder-synopsis.check.js') },
+  { name: 'stale-upcoming-tag', load: () => require('./lib/opening-night-checks/stale-upcoming-tag.check.js') },
+  { name: 'assigned-score-schema', load: () => require('./lib/opening-night-checks/assigned-score-schema.check.js') },
+  { name: 'review-cards-complete', load: () => require('./lib/opening-night-checks/review-cards-complete.check.js') },
+  { name: 'orphan-scoresource', load: () => require('./lib/opening-night-checks/orphan-scoresource.check.js') },
+  { name: 'wrong-production-bww', load: () => require('./lib/opening-night-checks/wrong-production-bww.check.js') },
 ];
 
 function replayTarget(key) {
@@ -143,7 +143,7 @@ function replayOpeningNightCheck(key, env = process.env) {
   }
   let result;
   try {
-    const mod = require(`./lib/opening-night-checks/${target.name}.check.js`);
+    const mod = target.load();
     result = mod.run(show, { shows, reviewsDoc, reviewTextsRoot, now: new Date() });
   } catch {
     return null;
