@@ -275,7 +275,7 @@ function findDuplicate(entry, existingShows, city = getCity('chicago'), tourStop
       const win = 120 * 86400000;
       const stops = (tourStopsFor && tourStopsFor(s.id)) || [];
       const visits = Number.isFinite(open) && stops.some((st) => {
-        if (!sameMetro(`${st.venue || 'Theatre'}, ${st.city}`)) return false;
+        if (!sameMetro({ venue: `${st.venue || 'Theatre'}, ${st.city}` })) return false;
         const a = Date.parse(st.start), b = Date.parse(st.end || st.start);
         return Number.isFinite(a) && open >= a - win && open <= (Number.isFinite(b) ? b : a) + win;
       });
