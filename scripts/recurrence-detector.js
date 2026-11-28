@@ -751,6 +751,32 @@ function checkClass(want, quiet, given = null) {
   return 1;
 }
 
+/**
+ * BRO-8426: the earliest moment `--check-class <want>` can pass: QUIET_DAYS
+ * after the class's last case (checkClass passes once floor(quiet) >= QUIET_DAYS).
+ * A lower bound: a new case pushes it out. BRO-7437 was stamped RECHECK-AFTER
+ * 2026-11-28 with its last case on 11-23, so 12-14 at the earliest.
+ * @returns {null | { atMs: number, why: string }} null = no future window known.
+ */
+function earliestClassPass(want, given = null, nowMs = Date.now()) {
+  const { snap, why } = given ? { snap: given, why: null } : loadFreshSnapshot();
+  if (why || !snap) return null;
+  const key = Object.keys(snap.lastSeenByKey || {}).find((k) => k === want || slugOf(k) === slugOf(want));
+  if (!key) return null;
+  const last = Date.parse(snap.lastSeenByKey[key]);
+  if (!Number.isFinite(last)) return null;
+  const atMs = last + QUIET_DAYS * DAY;
+  if (atMs <= nowMs) return null;
+  return { atMs, why: `"${key}" last had a case ${snap.lastSeenByKey[key].slice(0, 10)} and needs ${QUIET_DAYS} quiet days` };
+}
+
+/** earliestClassPass for this script's own argv (scripts/lib/recheck-earliest-pass.js). */
+function earliestPassForArgv(argv, nowMs = Date.now()) {
+  const at = argv.indexOf('--check-class');
+  if (at === -1 || !argv[at + 1] || argv[at + 1].startsWith('--')) return null;
+  return earliestClassPass(argv[at + 1], null, nowMs);
+}
+
 // ---------- main ----------
 
 async function main() {
@@ -850,4 +876,4 @@ if (require.main === module) {
 
 module.exports = {
   applyRefusal, fetchCards, fetchRootCards, loadFilesById, fixCardFiles, ROOT_LOOKUP_SINCE,
-  sample, alreadyNoted, freshCaseIds, statusComment, buildSnapshot, missesFromGrades, missCardTitle, missCardDescription, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll };
+  sample, alreadyNoted, freshCaseIds, statusComment, buildSnapshot, missesFromGrades, missCardTitle, missCardDescription, backtest, rootCardTitle, rootCardDescription, slugOf, checkClass, checkAll, earliestClassPass, earliestPassForArgv };

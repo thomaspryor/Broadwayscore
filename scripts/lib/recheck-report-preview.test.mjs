@@ -63,3 +63,21 @@ test('BRO-7994: the One Tap recheck (test -f) warns that it passes whatever happ
   assert.equal(r.cmd, 'test -f src/lib/google-one-tap.ts');
   assert.match(r.message, /only shows a file exists/);
 });
+
+// BRO-8426: BRO-7437 was stamped RECHECK-AFTER 2026-11-28 for a 21-quiet-day
+// check whose last case was 11-23, so it could not pass before 12-14.
+test('a stamp before the check can possibly pass -> warn with the earliest date', () => {
+  const CMD = 'node scripts/recurrence-detector.js --check-class shows-missing-poster-synopsis-tickets --quiet';
+  const card = { ...issue, identifier: 'BRO-7437', description: `## Acceptance criteria\n\nVERIFY: ${CMD}\n` };
+  const reportBody = `**Session report (paused)**\n\nRECHECK-AFTER: 2026-11-28\n\nVERIFY: ${CMD}\n`;
+  const earliestPass = () => ({ atMs: Date.parse('2026-12-14T12:41:17Z'), why: 'last case 2026-11-23, needs 21 quiet days' });
+  const r = previewRecheckCommand({ issue: card, reportBody, launchEntries: [], now: '2026-11-24T10:58:18Z', earliestPass });
+  assert.equal(r.warn, true);
+  assert.equal(r.cmd, CMD);
+  assert.match(r.message, /before this check can pass/);
+  assert.match(r.message, /RECHECK-AFTER: 2026-12-15/);
+  const late = previewRecheckCommand({ issue: card, reportBody: reportBody.replace('2026-11-28', '2026-12-15'), launchEntries: [], now: '2026-11-24T10:58:18Z', earliestPass });
+  assert.equal(late.warn, false, 'a stamp after the window is fine');
+  const never = previewRecheckCommand({ issue: card, reportBody, launchEntries: [], now: '2026-11-24T10:58:18Z', earliestPass: () => ({ atMs: null, never: true, why: 'needs an explicit resolve' }) });
+  assert.match(never.message, /Waiting cannot make it pass/);
+});

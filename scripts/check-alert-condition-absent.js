@@ -232,6 +232,95 @@ function classifyEntry(entry, nowMs) {
   return { verdict: 'unknown', why: `unrecognised status ${JSON.stringify(entry.status)}` };
 }
 
+function newestActivity(ledgers) {
+  return Math.max(0, ...ledgers.flatMap(l => Object.values(l.conditions).map(activityOf)));
+}
+
+function ledgerIsStale(ledgers, nowMs) {
+  const newest = newestActivity(ledgers);
+  return !newest || (nowMs - newest) / 36e5 > LEDGER_MAX_AGE_H;
+}
+
+/**
+ * Ledger rows `key` answers to: Map<ledgerKey, {entry, path}>, the most
+ * recently active entry per ledger key across ledgers.
+ * "Dispatch a fix" links from the morning digest carry a synthetic
+ * `digest-needs-you:<title>` key that no router ever writes to the ledger, so
+ * the check could never pass for them (BRO-6208). Such a key also matches
+ * every ledger row whose title is that digest line's title, with or without
+ * the router's resurface/escalation decoration (BRO-7685).
+ */
+function matchingRows(ledgers, key) {
+  const target = rowMatchKey(key);
+  const isDigestKey = key.startsWith(DIGEST_PREFIX);
+  const byKey = new Map();
+  for (const l of ledgers) {
+    for (const [k, entry] of Object.entries(l.conditions)) {
+      const titleHit = isDigestKey && entry && digestKeyMatchesTitle(key, entry.title);
+      if (rowMatchKey(k) !== target && !titleHit) continue;
+      const prev = byKey.get(k);
+      if (!prev || activityOf(entry) > activityOf(prev.entry)) byKey.set(k, { entry, path: l.path });
+    }
+  }
+  return byKey;
+}
+
+function defaultQuietHoursFor(key) {
+  return require('./lib/owner-alert-router.js').absenceQuietHoursFor(key);
+}
+
+/**
+ * BRO-8426: the earliest moment this check can pass for `key`, so a
+ * RECHECK-AFTER stamp is not set before it (BRO-7437 and BRO-7669 were
+ * stamped days before their checks could go green). A lower bound: an open
+ * row also needs the router's absence sweep to run (and any linked tracker to
+ * be Done) before it reads resolved.
+ * @returns {null | { atMs: number|null, never?: true, why: string }}
+ *   null = no future window known (passes on today's data, or cannot tell).
+ */
+function earliestPass(ledgers, key, nowMs = Date.now(), { replay = replayOpeningNightCheck, quietHoursFor = defaultQuietHoursFor } = {}) {
+  if (rootCauseIssueNumber(key) != null) return null;
+  // A replay that decides answers on today's data: no window to wait out.
+  if (replay && replay(key)) return null;
+  if (ledgerIsStale(ledgers, nowMs)) return null;
+  let latest = null;
+  for (const [k, { entry }] of matchingRows(ledgers, key)) {
+    if (!entry || entry.status !== 'open') continue;
+    const lastSeen = ts(entry.lastSeen);
+    if (!Number.isFinite(lastSeen)) continue;
+    const quietHours = quietHoursFor(k);
+    if (quietHours == null) {
+      return { atMs: null, never: true, why: `"${k}" is open and the router never resolves it on quiet alone: it needs an explicit resolve, so waiting cannot make this check pass` };
+    }
+    const atMs = lastSeen + quietHours * 36e5;
+    if (!latest || atMs > latest.atMs) latest = { atMs, why: `"${k}" last fired ${entry.lastSeen}; the router resolves it no earlier than ${quietHours}h after that` };
+  }
+  return latest && latest.atMs > nowMs ? latest : null;
+}
+
+/** earliestPass for this script's own argv (scripts/lib/recheck-earliest-pass.js). */
+function earliestPassForArgv(argv, nowMs = Date.now()) {
+  const key = keyFromArgs(argv);
+  if (!key) return null;
+  let ledgers;
+  try { ledgers = loadLedgers(ledgerPaths()); } catch { return null; }
+  return earliestPass(ledgers, key, nowMs);
+}
+
+function keyFromArgs(args) {
+  let key = null;
+  const b64At = args.indexOf('--key-b64');
+  const keyAt = args.indexOf('--key');
+  if (b64At !== -1 && args[b64At + 1]) {
+    const tok = args[b64At + 1];
+    if (/^[A-Za-z0-9_-]+$/.test(tok)) key = Buffer.from(tok, 'base64url').toString('utf8');
+  } else if (keyAt !== -1 && args[keyAt + 1]) {
+    key = args[keyAt + 1];
+  }
+  if (!key || !key.trim() || key.includes('�')) return null;
+  return key.trim();
+}
+
 /**
  * Pure decision over already-loaded ledgers. Exported for tests.
  * @returns {{ code: 0|1|3, message: string }}
@@ -246,28 +335,12 @@ function decide(ledgers, key, nowMs = Date.now(), { replay = replayOpeningNightC
   // BRO-8426: an opening-night check's own key is answered by the check itself.
   const replayed = replay ? replay(key) : null;
   if (replayed) return replayed;
-  const newest = Math.max(0, ...ledgers.flatMap(l => Object.values(l.conditions).map(activityOf)));
-  const newestAgeH = (nowMs - newest) / 36e5;
-  if (!newest || newestAgeH > LEDGER_MAX_AGE_H) {
+  if (ledgerIsStale(ledgers, nowMs)) {
+    const newest = newestActivity(ledgers);
+    const newestAgeH = (nowMs - newest) / 36e5;
     return { code: 3, message: `CANNOT TELL: newest alert-ledger write is ${newest ? newestAgeH.toFixed(1) + 'h' : 'missing'} old (> ${LEDGER_MAX_AGE_H}h) — the ledger is stale, so a quiet condition proves nothing` };
   }
-  const target = rowMatchKey(key);
-  // Per ledger key, the most recently active entry across ledgers wins.
-  // "Dispatch a fix" links from the morning digest carry a synthetic
-  // `digest-needs-you:<title>` key that no router ever writes to the ledger, so
-  // the check could never pass for them (BRO-6208). Such a key also matches
-  // every ledger row whose title is that digest line's title, with or without
-  // the router's resurface/escalation decoration (BRO-7685).
-  const isDigestKey = key.startsWith(DIGEST_PREFIX);
-  const byKey = new Map();
-  for (const l of ledgers) {
-    for (const [k, entry] of Object.entries(l.conditions)) {
-      const titleHit = isDigestKey && entry && digestKeyMatchesTitle(key, entry.title);
-      if (rowMatchKey(k) !== target && !titleHit) continue;
-      const prev = byKey.get(k);
-      if (!prev || activityOf(entry) > activityOf(prev.entry)) byKey.set(k, { entry, path: l.path });
-    }
-  }
+  const byKey = matchingRows(ledgers, key);
   if (!byKey.size) {
     return { code: 3, message: `CANNOT TELL: "${key}" is in no alert ledger (${ledgers.map(l => l.path).join(', ')}) — never a vacuous pass` };
   }
@@ -286,20 +359,11 @@ function main(argv) {
     console.log('Exit 0 not firing, 1 firing, 2 usage, 3 cannot tell (read-only; reads the alert ledger).');
     return 2;
   }
-  let key = null;
-  const b64At = args.indexOf('--key-b64');
-  const keyAt = args.indexOf('--key');
-  if (b64At !== -1 && args[b64At + 1]) {
-    const tok = args[b64At + 1];
-    if (/^[A-Za-z0-9_-]+$/.test(tok)) key = Buffer.from(tok, 'base64url').toString('utf8');
-  } else if (keyAt !== -1 && args[keyAt + 1]) {
-    key = args[keyAt + 1];
-  }
-  if (!key || !key.trim() || key.includes('�')) {
+  const key = keyFromArgs(args);
+  if (!key) {
     console.error('[check-alert-condition-absent] no valid conditionKey given (use --key or --key-b64)');
     return 2;
   }
-  key = key.trim();
   let ledgers;
   try {
     ledgers = loadLedgers(ledgerPaths());
@@ -320,4 +384,4 @@ if (require.main === module) {
     process.exit(3);
   }
 }
-module.exports = { main, decide, classifyEntry, replayOpeningNightCheck, replayTarget, REPLAYABLE_OPENING_NIGHT_CHECKS, undecoratedDigestTitle, digestKeyMatchesTitle, QUIET_WINDOW_H, LEDGER_MAX_AGE_H };
+module.exports = { main, decide, earliestPass, earliestPassForArgv, matchingRows, classifyEntry, replayOpeningNightCheck, replayTarget, REPLAYABLE_OPENING_NIGHT_CHECKS, undecoratedDigestTitle, digestKeyMatchesTitle, QUIET_WINDOW_H, LEDGER_MAX_AGE_H };

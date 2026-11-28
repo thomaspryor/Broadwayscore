@@ -1519,13 +1519,26 @@ const ABSENCE_RESOLVE_RULES = [
   { family: /^(orphan-unscored-requeue:|review-gap:|roundup-gap:|we-aggregator-go-live:|ob-venue-go-live:|express-retry-still-thin:|slug-misroute:|outlet-ground-truth:)/, quietHours: 168 },
 ];
 
+/**
+ * Hours of quiet after which resolveAbsentConditions resolves `key`, or null
+ * when absence never resolves it (never-quiet, or no family rule): such a row
+ * needs an explicit resolveCondition. BRO-8426: check-alert-condition-absent.js
+ * uses this to say the earliest date its check can pass.
+ */
+function absenceQuietHoursFor(key) {
+  if (isNeverQuietCondition(key)) return null;
+  const rule = ABSENCE_RESOLVE_RULES.find(({ family }) => family.test(key));
+  return rule ? rule.quietHours : null;
+}
+
 async function resolveAbsentConditions({ nowMs = Date.now(), getIssueFn = linearClient.getIssue } = {}) {
   const ledger = loadLedger();
   const batches = new Map();
   const trackers = new Map();
   for (const [key, condition] of Object.entries(ledger.conditions)) {
-    if (condition.status !== 'open' || isNeverQuietCondition(key)) continue;
-    const rule = ABSENCE_RESOLVE_RULES.find(({ family }) => family.test(key));
+    if (condition.status !== 'open') continue;
+    const quietHours = absenceQuietHoursFor(key);
+    const rule = quietHours == null ? null : { quietHours };
     const lastSeenMs = Date.parse(condition.lastSeen || '');
     if (!rule || !Number.isFinite(lastSeenMs) || nowMs - lastSeenMs <= rule.quietHours * 3600000) continue;
     if (condition.linearIdentifier) {
@@ -1582,6 +1595,7 @@ function readDispatchAttempts({ days = 7 } = {}) {
 }
 
 module.exports = {
+  absenceQuietHoursFor,
   testIdForDedupe,
   routeAlert,
   carriedRedFirstFields,

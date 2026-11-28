@@ -65,6 +65,7 @@ const { selectRecheckTargets, summarize, decideAutoClose, describeResult, should
 const { closeCardAfterPass } = require('./lib/recheck-autoclose.js');
 const { decideHandoff, handoffCard } = require('./lib/recheck-handoff.js');
 const reopenLib = require('./lib/recheck-reopen.js');
+const { earliestPassFor } = require('./lib/recheck-earliest-pass.js');
 const { routeMode, heldForOwner, buildRouteBatch, fileRouteBatch, buildCoverIndex, coveredBy, selectRewatchTargets, refreshRewatchTargets, MAX_REWATCH } = require('./lib/recheck-route.js');
 const { verifiabilityForCard } = require('./lib/autonomous-recheck-core.js');
 const { mapIssueToCard } = require('./lib/linear-recheck-source.js');
@@ -594,6 +595,15 @@ async function main(argv = process.argv.slice(2)) {
         }
       }
       if (r.status === 'unverifiable' && !r.cause) r.cause = causeOfRecheckRow(r);
+      // BRO-8426 (shadow): a fail whose check cannot pass yet (a quiet window
+      // not over) was stamped too early, not a regression. Recorded only, so
+      // its hit rate can be measured before routing acts on it (CLAUDE.md §19).
+      if (r.status === 'fail' && t.verifyCmd) {
+        try {
+          const early = earliestPassFor(r.ranCmd || t.verifyCmd);
+          if (early) r.earliestPass = { at: early.atMs ? new Date(early.atMs).toISOString() : null, ...(early.never ? { never: true } : {}), why: String(early.why).slice(0, 300) };
+        } catch { /* advisory only */ }
+      }
       results.push(r);
       ledger.appendEntry({
         event: 'recheck', runId, cardId: t.cardId, name: t.name,
@@ -611,6 +621,7 @@ async function main(argv = process.argv.slice(2)) {
         ...(r.cause ? { cause: r.cause } : {}),
         ...(r.ranCmd ? { ranCmd: r.ranCmd } : {}),
         ...(t.retry ? { retry: true } : {}),
+        ...(r.earliestPass ? { earliestPass: r.earliestPass } : {}),
         // BRO-7138: the fresh-main commit this ran on, so a routed failure names it.
         sha: (checkout && checkout.sha) || null,
         // BRO-7138: set when the check failed on something this machine

@@ -17,6 +17,7 @@
 const { mapIssueToCard } = require('./linear-recheck-source.js');
 const { selectRecheckTargets } = require('./autonomous-recheck-core.js');
 const { parseRecheckAfter } = require('./recheck-stamp.js');
+const { earliestPassFor } = require('./recheck-earliest-pass.js');
 
 // A VERIFY directive, not NO-VERIFY:/VERIFY-ONLY prose (ship-check finding).
 const VERIFY_DIRECTIVE_RE = /(?<![-\w])VERIFY(?:[ \t]*\(correction\))?:/;
@@ -37,7 +38,7 @@ function namesCommand(text, cmd) {
  * @returns {null | {warn: boolean, cmd: string|null, message: string}}
  *   null when the report carries no RECHECK-AFTER stamp.
  */
-function previewRecheckCommand({ issue, reportBody, launchEntries = [], now = new Date().toISOString() }) {
+function previewRecheckCommand({ issue, reportBody, launchEntries = [], now = new Date().toISOString(), earliestPass = earliestPassFor }) {
   const stampAt = parseRecheckAfter(reportBody);
   if (stampAt == null || !issue) return null;
   const nodes = ((issue.comments && issue.comments.nodes) || []).concat([{ body: String(reportBody), createdAt: now }]);
@@ -68,6 +69,21 @@ function previewRecheckCommand({ issue, reportBody, launchEntries = [], now = ne
       cmd,
       message: `RECHECK-AFTER preview: on ${new Date(stampAt).toISOString().slice(0, 10)} the nightly recheck will run ${cmd}, which only shows a file exists and passes whatever happens live.\n`
         + 'If the point of the recheck is a live effect, post VERIFY (correction): <safe-form command that reads the live result>.',
+    };
+  }
+  // BRO-8426: a stamp before the check can possibly pass (a quiet window not yet
+  // over) makes the nightly recheck fail it and file a card nobody can act on.
+  const earliest = cmd ? earliestPass(cmd, Date.parse(now)) : null;
+  if (cmd && earliest && (earliest.never || earliest.atMs > stampAt)) {
+    const day = (ms) => new Date(ms).toISOString().slice(0, 10);
+    const suggest = earliest.never
+      ? 'Waiting cannot make it pass: resolve the condition or post VERIFY (correction): <a check of the live condition>.'
+      : `Stamp RECHECK-AFTER: ${day(earliest.atMs + 86400e3)} or later instead.`;
+    return {
+      warn: true,
+      cmd,
+      message: `RECHECK-AFTER ${day(stampAt)} is before this check can pass: on that date the nightly recheck will run ${cmd} and it will fail, because ${earliest.why}`
+        + `${earliest.never ? '' : ` (no earlier than ${day(earliest.atMs)})`}.\n${suggest}`,
     };
   }
   if (cmd) {
