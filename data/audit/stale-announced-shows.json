@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-27T12:09:26.983Z",
+  "generatedAt": "2026-11-28T11:25:17.316Z",
   "staleDaysThreshold": 30,
   "reviewTextsAvailable": true,
-  "flaggedCount": 6,
+  "flaggedCount": 5,
   "flagged": [
     {
-      "id": "a-christmas-carol-off-broadway-2026",
-      "title": "A Christmas Carol",
-      "venue": "Perelman Performing Arts Center (PAC NYC)",
-      "category": "off-broadway",
+      "id": "robin-hood-and-the-merry-mandem-off-west-end-2026",
+      "title": "Robin Hood and the Merry Mandem",
+      "venue": "Theatre Royal Stratford East",
+      "category": "off-west-end",
       "status": "previews",
-      "previewsStartDate": "2026-11-20",
+      "previewsStartDate": "2026-11-21",
       "openingDate": null,
-      "todaytixId": 18743,
+      "todaytixId": null,
       "reasons": [
         "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
       ],
-      "firstFlaggedAt": "2026-11-25T12:04:31.470Z"
+      "firstFlaggedAt": "2026-11-28T11:25:17.316Z"
     },
     {
       "id": "jumpers-off-west-end-2026",
@@ -27,20 +27,6 @@
       "previewsStartDate": "2026-11-25",
       "openingDate": null,
       "todaytixId": 47723,
-      "reasons": [
-        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
-      ],
-      "firstFlaggedAt": "2026-11-26T12:10:23.437Z"
-    },
-    {
-      "id": "jack-and-the-beanstalk-off-west-end-2026",
-      "title": "Jack and The Beanstalk",
-      "venue": "Hackney Empire",
-      "category": "off-west-end",
-      "status": "previews",
-      "previewsStartDate": "2026-11-21",
-      "openingDate": null,
-      "todaytixId": 47299,
       "reasons": [
         "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
       ],
@@ -61,6 +47,20 @@
       "firstFlaggedAt": "2026-11-26T18:44:25.128Z"
     },
     {
+      "id": "fly-you-fools-off-west-end-2026",
+      "title": "Fly You Fools",
+      "venue": "Southwark Playhouse",
+      "category": "off-west-end",
+      "status": "previews",
+      "previewsStartDate": "2026-11-25",
+      "openingDate": null,
+      "todaytixId": 48562,
+      "reasons": [
+        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
+      ],
+      "firstFlaggedAt": "2026-11-28T11:25:17.316Z"
+    },
+    {
       "id": "dick-whittington-and-his-cat-off-west-end-2026",
       "title": "Dick Whittington And His Cat",
       "venue": "King's Head Theatre",
@@ -73,39 +73,9 @@
         "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
       ],
       "firstFlaggedAt": "2026-11-23T21:33:40.179Z"
-    },
-    {
-      "id": "ebony-scrooge-off-west-end-2026",
-      "title": "Ebony Scrooge",
-      "venue": "Sadler's Wells East",
-      "category": "off-west-end",
-      "status": "previews",
-      "previewsStartDate": "2026-11-24",
-      "openingDate": null,
-      "todaytixId": 44904,
-      "reasons": [
-        "status 'previews' with no openingDate, but data/review-texts/ has collected review file(s)"
-      ],
-      "firstFlaggedAt": "2026-11-27T12:09:26.983Z"
     }
   ],
   "firstFlaggedHistory": {
-    "club-nvrlnd-off-west-end-2026": {
-      "firstFlaggedAt": "2026-11-20T10:28:57.817Z",
-      "lastSeenAt": "2026-11-21T10:47:09.570Z"
-    },
-    "peter-pan-off-west-end-2026": {
-      "firstFlaggedAt": "2026-11-19T11:29:45.898Z",
-      "lastSeenAt": "2026-11-21T10:47:09.570Z"
-    },
-    "the-ugly-one-off-west-end-2026": {
-      "firstFlaggedAt": "2026-11-21T10:47:09.570Z",
-      "lastSeenAt": "2026-11-21T10:47:09.570Z"
-    },
-    "santas-first-christmas-off-west-end-2026": {
-      "firstFlaggedAt": "2026-11-18T11:09:41.386Z",
-      "lastSeenAt": "2026-11-21T10:47:09.570Z"
-    },
     "is-anything-ok-off-broadway-2026": {
       "firstFlaggedAt": "2026-11-20T10:28:57.817Z",
       "lastSeenAt": "2026-11-22T10:54:23.790Z"
@@ -145,6 +115,18 @@
     "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026": {
       "firstFlaggedAt": "2026-11-26T12:10:23.437Z",
       "lastSeenAt": "2026-11-26T18:44:25.128Z"
+    },
+    "a-christmas-carol-off-broadway-2026": {
+      "firstFlaggedAt": "2026-11-25T12:04:31.470Z",
+      "lastSeenAt": "2026-11-27T12:09:26.983Z"
+    },
+    "jack-and-the-beanstalk-off-west-end-2026": {
+      "firstFlaggedAt": "2026-11-26T12:10:23.437Z",
+      "lastSeenAt": "2026-11-27T12:09:26.983Z"
+    },
+    "ebony-scrooge-off-west-end-2026": {
+      "firstFlaggedAt": "2026-11-27T12:09:26.983Z",
+      "lastSeenAt": "2026-11-27T12:09:26.983Z"
     }
   },
   "postponedCount": 0,
