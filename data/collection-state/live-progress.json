@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-28T02:40:46.831Z",
-  "processed": 75,
-  "failed": 49,
-  "successRate": "60.5%",
+  "updatedAt": "2026-11-28T02:40:56.978Z",
+  "processed": 146,
+  "failed": 78,
+  "successRate": "65.2%",
   "tierBreakdown": {
-    "playwright": 54,
-    "amp": 2,
+    "playwright": 101,
+    "amp": 3,
     "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 12,
+    "scrapingdog": 18,
     "scrapingbee": 0,
-    "brightdata": 2,
-    "archiveToday": 7,
-    "archive": 9
+    "brightdata": 6,
+    "archiveToday": 13,
+    "archive": 27
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-11-28T01:38:44.544Z",
@@ -60,6 +60,23 @@
       "t": "2026-11-28T02:06:20.354Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-11-28T02:22:50.944Z",
+      "event": "bb-session",
+      "session": "4100026d",
+      "url": "https://deadline.com/slam-frank-off-broadway-closing-date-1237209726"
+    },
+    {
+      "t": "2026-11-28T02:40:42.976Z",
+      "event": "bb-session",
+      "session": "1191cb5a",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-28T02:40:43.604Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
