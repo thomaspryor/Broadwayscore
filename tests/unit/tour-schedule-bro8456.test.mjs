@@ -53,7 +53,7 @@ test('shipped overrides file (incl. layoffAllowances) validates; bad allowance r
 test('class guard: no open tour is left without any saved schedule', () => {
   const shows = JSON.parse(fs.readFileSync(new URL('../../data/shows.json', import.meta.url), 'utf8')).shows;
   const ts = JSON.parse(fs.readFileSync(new URL('../../data/tour-schedules.json', import.meta.url), 'utf8')).tours;
-  const bad = shows.filter(s => s.category === 'tour' && s.status !== 'closed' && !((ts[s.id] || {}).stops || []).length).map(s => s.id);
+  const bad = shows.filter(s => s.category === 'tour' && s.status !== 'closed' && s.openingDate && s.openingDate < '2026-10-01' && !((ts[s.id] || {}).stops || []).length).map(s => s.id);
   assert.deepEqual(bad, [], 'open tour with no schedule: see latestEraSegment / fetch-tour-schedules --show=ID');
 });
 

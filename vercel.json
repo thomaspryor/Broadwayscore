@@ -1,8 +1,16 @@
 {
-  "git": { "deploymentEnabled": false },
+  "git": {
+    "deploymentEnabled": false
+  },
   "rewrites": [
-    { "source": "/ingest/static/:path*", "destination": "https://us-assets.i.posthog.com/static/:path*" },
-    { "source": "/ingest/:path*", "destination": "https://us.i.posthog.com/:path*" }
+    {
+      "source": "/ingest/static/:path*",
+      "destination": "https://us-assets.i.posthog.com/static/:path*"
+    },
+    {
+      "source": "/ingest/:path*",
+      "destination": "https://us.i.posthog.com/:path*"
+    }
   ],
   "redirects": [
     {
@@ -1707,6 +1715,251 @@
     {
       "source": "/off-broadway/theater/the-triad",
       "destination": "/off-broadway/theater/the-triad-theatre",
+      "permanent": true
+    },
+    {
+      "source": "/tours/arlington-va",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/alexandria-va",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/falls-church-va",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/fairfax-va",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/vienna-va",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/reston-va",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/herndon-va",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/mclean-va",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/springfield-va",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/woodbridge-va",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/bethesda-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/north-bethesda-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/chevy-chase-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/rockville-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/silver-spring-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/takoma-park-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/college-park-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/hyattsville-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/mount-rainier-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/olney-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/gaithersburg-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/germantown-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/greenbelt-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/laurel-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/wheaton-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/kensington-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/glen-echo-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/bowie-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/upper-marlboro-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/largo-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/brentwood-md",
+      "destination": "/tours/washington-dc",
+      "permanent": true
+    },
+    {
+      "source": "/tours/hollywood-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/west-hollywood-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/pasadena-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/beverly-hills-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/culver-city-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/santa-monica-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/glendale-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/burbank-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/north-hollywood-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/studio-city-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/long-beach-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/costa-mesa-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/thousand-oaks-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/la-mirada-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/laguna-beach-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/sherman-oaks-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/van-nuys-ca",
+      "destination": "/tours/los-angeles-ca",
+      "permanent": true
+    },
+    {
+      "source": "/tours/northridge-ca",
+      "destination": "/tours/los-angeles-ca",
       "permanent": true
     }
   ],

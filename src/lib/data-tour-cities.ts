@@ -10,7 +10,7 @@
 
 import { getAllShows, isTourListed } from './data-core';
 import { getTourSchedule } from './data-tour-schedule';
-import { cityStops, hubSuburbMap, type CityStop } from './tour-cities';
+import { cityStops, hubSuburbMap, type CityStop, citySlug as citySlugOf } from './tour-cities';
 import registry from '../../data/city-hubs.json';
 import type { ComputedShow } from './engine';
 
@@ -71,4 +71,10 @@ export function getTourCities(on = today()): Map<string, TourCity> {
 
 export function getTourCity(slug: string, on = today()): TourCity | undefined {
   return getTourCities(on).get(slug);
+}
+
+/** The /tours/<slug> page a stop's city lives on: a hub suburb folds into its hub (BRO-8456). */
+export function tourCityPageSlug(city: string): string {
+  const own = citySlugOf(city);
+  return SUBURBS.get(own)?.slug ?? own;
 }
