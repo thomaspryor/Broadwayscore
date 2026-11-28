@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8447",
   "planId": "b1bc8090-8a9b-4341-9b2a-371722aff770",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T15:21:08.401Z",
   "submitter": {
     "name": null,
@@ -45,5 +45,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T16:10:37.211Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added its-a-wonderful-life-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
