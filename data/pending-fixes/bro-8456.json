@@ -45,22 +45,25 @@
       }
     ]
   },
-  "executedAt": "2026-11-28T20:32:09.588Z",
+  "executedAt": "2026-11-28T20:37:15.981Z",
   "results": [
     {
       "action": "data-edit",
       "ok": true,
-      "msg": "shows.json: closingDate updated for and-juliet-tour-2024"
+      "msg": "shows.json: closingDate already \"2026-11-15\", pins refreshed for and-juliet-tour-2024",
+      "noop": true
     },
     {
       "action": "data-edit",
       "ok": true,
-      "msg": "shows.json: status updated for and-juliet-tour-2024"
+      "msg": "shows.json: status already \"closed\", pins refreshed for and-juliet-tour-2024",
+      "noop": true
     },
     {
       "action": "data-edit",
       "ok": true,
-      "msg": "shows.json: openingDate updated for paranormal-activity-national-tour-regional-2025"
+      "msg": "shows.json: openingDate already \"2025-10-16\", pins refreshed for paranormal-activity-national-tour-regional-2025",
+      "noop": true
     }
   ],
   "executedIn": "ci"
