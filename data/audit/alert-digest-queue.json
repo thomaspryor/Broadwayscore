@@ -282,5 +282,36 @@
     "tracked": "BRO-8437",
     "fields": [],
     "queuedAt": "2026-11-28T13:33:48.286Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7207-critic-pairs",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7207-critic-pairs",
+    "description": "land.yml did not land land/bro-7207-critic-pairs: the scripts-lib-tests gate went red at 5cf453f74f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46151775032",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7207-critic-pairs"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "5cf453f74f80fcbeb070a67295a4fe2ddbff2d5e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46151775032"
+      }
+    ],
+    "queuedAt": "2026-11-28T14:11:35.931Z"
   }
 ]
