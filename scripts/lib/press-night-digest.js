@@ -24,7 +24,7 @@ const { draftDeadlineAt } = require('./broadcast-deadline');
 const { SUBREDDIT_BY_MARKET, MIN_REVIEWS, emailedNumbers } = require('./reddit-opening-post');
 const { getOutletDisplayName } = require('./review-normalization');
 const { classifyShowBroadcastState } = require('./missed-broadcasts');
-const { getConfidenceFloors } = require('./score-confidence-gate');
+const { BROADWAY_MIN, WEST_END_MIN } = require('./broadcast-readiness');
 const { foldDiacritics } = require('./title-match');
 // Time helpers and the email block live in a module with no package imports: the morning-email job runs
 // without npm ci (tests/unit/morning-digest-action.test.mjs), and this file reaches the scraper.
@@ -196,9 +196,11 @@ function gradeEmails({ show, sentShows = {}, redditDraft = null, readNumbers, no
       } else out.push({ kind: 'broadcast', status: 'ok', text: 'opening-night email draft ready' });
     } else if (!due) out.push({ kind: 'broadcast', status: 'pending', text: `opening-night email draft not due until ${dueText}` });
     else {
-      // The draft waits for the broadcast's own review floor (score-confidence-gate.js); below it no draft is
-      // owed yet, so the gap is in the reviews, not the email.
-      const floor = getConfidenceFloors(market).total;
+      // The draft waits for the workflow's readiness gate (broadcast-readiness.js: West End 12, Broadway 15
+      // scored reviews; BRO-8188 waived the finer score-confidence floors for drafts). Below it no draft is
+      // owed yet, so the gap is in the reviews, not the email. Using the finer floor here graded a West End
+      // show at 10 reviews a miss while the workflow rightly held it (BRO-8329).
+      const floor = market === 'west-end' ? WEST_END_MIN : BROADWAY_MIN;
       const have = (live && live.reviewCount) || 0;
       if (have < floor) out.push({ kind: 'broadcast', status: 'pending', text: `no opening-night email draft yet (the site has ${have} of the ${floor} reviews a draft needs)` });
       else out.push({ kind: 'broadcast', status: 'miss', text: 'no opening-night email draft', files });
