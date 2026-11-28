@@ -1,13 +1,39 @@
 {
-  "generatedAt": "2026-11-28T15:05:42.771Z",
+  "generatedAt": "2026-11-28T16:40:33.779Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 386,
-  "clean": 386,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 384,
+  "clean": 383,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1,
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "whispering-jack-regional-2026",
+      "title": "Whispering Jack: The John Farnham Musical",
+      "openingDate": "2026-11-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: theatre-thoughts-aus"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 88.21 vs local 87.84 (Δ0.37)"
+        }
+      ],
+      "missingFromProd": [
+        "theatre-thoughts-aus"
+      ],
+      "localCount": 10,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-28T16:40:30.002Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

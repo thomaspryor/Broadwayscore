@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T15:05:43.211Z",
+  "generatedAt": "2026-11-28T16:40:34.228Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -19,11 +19,6 @@
       "openingDate": "2026-11-23"
     },
     {
-      "id": "the-jungle-book-west-end-2026",
-      "title": "The Jungle Book",
-      "openingDate": "2026-11-24"
-    },
-    {
       "id": "samson-et-dalila-off-broadway-2026",
       "title": "Samson et Dalila",
       "openingDate": "2026-11-27"
@@ -34,19 +29,9 @@
       "openingDate": "2026-11-24"
     },
     {
-      "id": "jack-and-the-beanstalk-off-west-end-2026",
-      "title": "Jack and The Beanstalk",
-      "openingDate": "2026-11-27"
-    },
-    {
       "id": "seven-guitars-off-broadway-2026",
       "title": "Seven Guitars",
       "openingDate": "2026-11-23"
-    },
-    {
-      "id": "fourteen-again-off-west-end-2026",
-      "title": "Fourteen Again",
-      "openingDate": "2026-11-24"
     },
     {
       "id": "dick-whittington-adults-only-off-west-end-2026",
@@ -161,13 +146,29 @@
     {
       "showId": "mrs-doubtfire-regional-2026",
       "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 87,
   "feedsFailed": [
     {
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -184,12 +185,29 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "exeunt-magazine",
+      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
+    },
+    {
+      "outletId": "fringereview",
+      "error": "HTTP 403 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 928,
-  "matchedGaps": 4,
-  "possibleGaps": 6,
+  "itemsScanned": 800,
+  "matchedGaps": 5,
+  "possibleGaps": 5,
   "gaps": [
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "level": "matched",
+      "outletId": "afridiziak-theatre-news",
+      "url": "https://www.afridiziak.com/reviews/a-christmas-carol-a-version-by-jack-thorne/",
+      "headline": "A Christmas Carol – review",
+      "publishDate": "2026-11-26"
+    },
     {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
@@ -200,13 +218,13 @@
       "publishDate": "2026-11-26"
     },
     {
-      "showId": "dick-whittington-adults-only-off-west-end-2026",
-      "title": "Dick Whittington: Adults Only",
+      "showId": "ebony-scrooge-off-west-end-2026",
+      "title": "Ebony Scrooge",
       "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/dick-whittington-adults-only-kings-head-theatre-london/",
-      "headline": "Dick Whittington: Adults Only – King’s Head Theatre, London",
-      "publishDate": "2026-11-28"
+      "outletId": "afridiziak-theatre-news",
+      "url": "https://www.afridiziak.com/reviews/ebony-scrooge-sadlers-wells-east/",
+      "headline": "Ebony Scrooge – review",
+      "publishDate": "2026-11-26"
     },
     {
       "showId": "its-a-wonderful-life-a-live-radio-play-2026",
@@ -230,28 +248,19 @@
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
       "level": "possible",
+      "outletId": "afridiziak-theatre-news",
+      "url": "https://www.afridiziak.com/reviews/ebony-scrooge-sadlers-wells-east/",
+      "headline": "Ebony Scrooge – review",
+      "publishDate": "2026-11-26"
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "level": "possible",
       "outletId": "theater-scene",
       "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
       "headline": "It’s a Wonderful Life: A Live Radio Play",
       "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/christmas-carol-shakespeare-north-playhouse-prescot/",
-      "headline": "Christmas Carol &#8211; Shakespeare North Playhouse, Prescot",
-      "publishDate": "2026-11-25"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/zoonation-ebony-scrooge-sadlers-wells-east-london/",
-      "headline": "ZooNation: Ebony Scrooge – Sadler’s Wells East, London.",
-      "publishDate": "2026-11-27"
     },
     {
       "showId": "attention-off-west-end-2026",
