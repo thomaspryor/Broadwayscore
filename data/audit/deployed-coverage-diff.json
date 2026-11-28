@@ -1,52 +1,13 @@
 {
-  "generatedAt": "2026-11-28T04:09:29.984Z",
+  "generatedAt": "2026-11-28T04:39:47.859Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 385,
-  "clean": 383,
-  "defective": 2,
-  "byType": {
-    "missing-from-prod": 2
-  },
-  "shows": [
-    {
-      "showId": "a-room-with-a-view-regional-2026",
-      "title": "A Room with a View",
-      "openingDate": "2026-11-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: melbournise-me"
-        }
-      ],
-      "missingFromProd": [
-        "melbournise-me"
-      ],
-      "localCount": 6,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-11-28T03:07:00.782Z"
-    },
-    {
-      "showId": "the-lion-king-regional-2026",
-      "title": "The Lion King",
-      "openingDate": "2026-11-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: scenestr"
-        }
-      ],
-      "missingFromProd": [
-        "scenestr"
-      ],
-      "localCount": 4,
-      "deployedCount": 3,
-      "firstDefectAt": "2026-11-28T03:07:00.782Z"
-    }
-  ],
+  "clean": 385,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
