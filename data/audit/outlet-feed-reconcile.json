@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T19:40:54.069Z",
+  "generatedAt": "2026-11-28T20:52:27.750Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -183,10 +183,6 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
-    },
-    {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
@@ -201,18 +197,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "fringereview",
-      "error": "Timeout fetching https://fringereview.co.uk/feed/"
-    },
-    {
-      "outletId": "lighting-and-sound-america",
-      "error": "Timeout fetching https://lightingandsoundamerica.com/news/rss.asp"
     }
   ],
-  "itemsScanned": 905,
-  "matchedGaps": 9,
+  "itemsScanned": 924,
+  "matchedGaps": 10,
   "possibleGaps": 13,
   "gaps": [
     {
@@ -228,9 +216,9 @@
       "showId": "fly-you-fools-off-west-end-2026",
       "title": "Fly You Fools",
       "level": "matched",
-      "outletId": "everything-theatre",
-      "url": "https://everything-theatre.co.uk/2026/11/review-fly-you-fools-southwark-playhouse/",
-      "headline": "Review: Fly, You Fools!, Southwark Playhouse",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/fly-you-fools-southwark-playh-26254",
+      "headline": "Fly, You Fools!",
       "publishDate": "2026-11-28"
     },
     {
@@ -291,6 +279,15 @@
       "showId": "its-a-wonderful-life-off-west-end-2026",
       "title": "It’s a Wonderful Life",
       "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/its-a-wonderful-life-a-live-radio-play/",
+      "headline": "&#8216;It’s a Wonderful Life&#8217; &#8211; A Live Radio Play",
+      "publishDate": "2026-11-22"
+    },
+    {
+      "showId": "its-a-wonderful-life-off-west-end-2026",
+      "title": "It’s a Wonderful Life",
+      "level": "matched",
       "outletId": "thewrap",
       "url": "https://www.thewrap.com/creative-content/theater/its-a-wonderful-life-broadway-review-andrew-rannells-lisa-rinna/",
       "headline": "&#8216;It&#8217;s a Wonderful Life&#8217; Broadway Review: Andrew Rannells and Lisa Rinna Shine in Xmas Movie Classic",
@@ -331,15 +328,6 @@
       "url": "https://www.thereviewshub.com/zoonation-ebony-scrooge-sadlers-wells-east-london/",
       "headline": "ZooNation: Ebony Scrooge – Sadler’s Wells East, London.",
       "publishDate": "2026-11-27"
-    },
-    {
-      "showId": "attention-off-west-end-2026",
-      "title": "Attention",
-      "level": "possible",
-      "outletId": "onin",
-      "url": "https://onin.london/tickets-for-the-paddingtonbeartm-experience-are-available-from-www-paddingtonbearexperience-com/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tickets-for-the-paddingtonbeartm-experience-are-available-from-www-paddingtonbearexperience-com",
-      "headline": "TICKETS FOR THE PADDINGTONBEARTM EXPERIENCE ARE AVAILABLE FROM WWW.PADDINGTONBEAREXPERIENCE.COM.",
-      "publishDate": "2026-11-28"
     },
     {
       "showId": "attention-off-west-end-2026",
