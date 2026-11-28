@@ -61,8 +61,28 @@ function rowsFromLaunch(rows, tour) {
 
 /** The stops of the segment that is this tour, or null. Pure. */
 const MAX_LAYOFF_DAYS = 365;
+/** Per-tour layoff allowance from data/tour-stop-overrides.json `layoffAllowances` (BRO-8456). Pure. */
+function layoffFor(allowances, tourId) {
+  const a = (allowances || []).find(x => x.tourId === tourId);
+  return a ? a.maxLayoffDays : undefined;
+}
 
-function tourStops(tour, html, now = new Date()) {
+/**
+ * A tour whose launch is older than anything Tours To You still lists (Spamilton:
+ * 2018 launch, page rows from Dec 2021) can match no segment by its launch.
+ * While it is open and its latest multi-stop leg ran within the last 120 days
+ * (or is still ahead), that leg is its schedule (BRO-8456). Pure.
+ */
+function latestEraSegment(segments, tour, now = new Date()) {
+  if (!tour || tour.closingDate || !tour.openingDate || !segments.length) return null;
+  const launch = Date.parse(`${String(tour.openingDate).slice(0, 10)}T00:00:00Z`);
+  if (Number.isNaN(launch) || launch >= segments[0].start.getTime() - 7 * 86400000) return null;
+  const legs = segments.filter(s => s.rows.length > 1);
+  const last = legs[legs.length - 1];
+  return last && last.end.getTime() >= now.getTime() - 120 * 86400000 ? last : null;
+}
+
+function tourStops(tour, html, now = new Date(), opts = {}) {
   const parsed = parseTourSchedule(html);
   const segments = segmentTourRows(parsed);
   for (const d of unparsedForTour(parsed.unparsedDates, tour)) console.log(`::warning::${tour.id}: could not read date "${d}"; that stop is missing`);
@@ -75,7 +95,8 @@ function tourStops(tour, html, now = new Date()) {
   const launchMs = tour.openingDate ? Date.parse(`${String(tour.openingDate).slice(0, 10)}T00:00:00Z`) : NaN;
   const lag = running ? running.start.getTime() - launchMs : NaN;
   const segment = pickSegment(segments, tour, '')
-    || (running && lag >= 0 && lag <= 120 * 86400000 ? running : null);
+    || (running && lag >= 0 && lag <= 120 * 86400000 ? running : null)
+    || latestEraSegment(segments, tour, now);
   if (!segment) return null;
   // Only the current era: a long-running title's page can run several
   // companies together back to 2020 (Hamilton); stops before this tour's
@@ -95,7 +116,7 @@ function tourStops(tour, html, now = new Date()) {
   // companies in one "Past Seasons" table (Hamilton, Lion King, Six) or list
   // a stop twice in error (Outsiders: DC and Chicago both Aug 2026) leave
   // overlapping rows; keep the single path from the launch stop (BRO-4723).
-  const { kept: rows, dropped } = singleCompanyPath(inRange, pool === segment.rows ? undefined : MAX_LAYOFF_DAYS);
+  const { kept: rows, dropped } = singleCompanyPath(inRange, pool === segment.rows ? undefined : (opts.maxLayoffDays || MAX_LAYOFF_DAYS));
   for (const r of dropped) console.log(`::warning::${tour.id}: dropped overlapping stop ${r.city} ${iso(r.start)}..${iso(r.end)}`);
   return rows.length ? rows.map(r => ({ city: r.city, venue: r.venue, start: iso(r.start), end: iso(r.end) })) : null;
 }
@@ -135,7 +156,7 @@ async function main() {
     if (budget.exceeded()) { console.log(`Time budget reached; ${targets.length - i} tour(s) keep their saved stops until tomorrow`); break; }
     if (i > 0) await sleep(PAUSE_MS);
     const { url, html } = await fetchSchedule(tour, null, { budget });
-    const raw = url ? tourStops(tour, html) : null;
+    const raw = url ? tourStops(tour, html, new Date(), { maxLayoffDays: layoffFor(overrides.layoffAllowances, tour.id) }) : null;
     const stops = raw && applyStopOverrides(tour.id, raw, overrides.overrides, reportOverride);
     if (!stops) { failed++; console.log(`${tour.id}: no schedule (kept ${out.tours[tour.id] ? 'previous' : 'none'})`); continue; }
     // Another show's table on this page (BRO-4601: Come From Away's page showed
@@ -174,4 +195,4 @@ async function main() {
 
 if (require.main === module) main().catch(e => { console.error(e); process.exit(1); });
 
-module.exports = { tourStops, opensWith, rowsFromLaunch };
+module.exports = { tourStops, opensWith, rowsFromLaunch, latestEraSegment, layoffFor };

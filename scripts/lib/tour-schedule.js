@@ -38,7 +38,7 @@ const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 
 // (🜂 "Rescheduled from the 2025/2026 season" dropped Hadestown's Duluth stop,
 // BRO-5066), so they are matched by class rather than listed one by one.
 // The emoji variation selector and joiner ride along ("ℹ️", "⚠️").
-const FOOTNOTE_MARKS = /[§†‡❖◆✦*¤♦^#+ℹ\p{So}\p{Sk}\uFE0F\u200D]/gu;
+const FOOTNOTE_MARKS = /[§¶†‡❖◆✦*¤♦^#+ℹ\p{So}\p{Sk}\uFE0F\u200D]/gu;
 
 // Struck-through text is a cancelled or replaced entry: Tours To You wraps a
 // cancelled stop's cells in <del> and lists the replacement as a new row
@@ -556,6 +556,13 @@ function statedClosedRanges(source) {
     ...(raw.match(/<li[^>]*>[\s\S]{0,200}?(?=<ul|<\/li>)/gi) || []),
   ].map(decode);
   const out = [];
+  // Tours To You's History tab nests the years in the label's child list:
+  // <li><span>North American Tour</span><ul><li>2024–2026</li>... (And Juliet, BRO-8456).
+  for (const m of raw.matchAll(/<li[^>]*>\s*<span[^>]*>\s*([^<]{0,60}?)\s*<\/span>\s*<ul[^>]*>(?:\s*<li[^>]*>\s*<ul[^>]*>)?\s*<li[^>]*>\s*(\d{4})\s*[–-]\s*(\d{4})\s*<\/li>/gi)) {
+    const label = decode(m[1]);
+    if (/\b(uk|west end|london|australia|canad)/i.test(label)) continue;
+    if (/^(?:\d+(?:st|nd|rd|th)\s+)?(north american|national|us)\s+tour$/i.test(label)) out.push({ from: +m[2], to: +m[3] });
+  }
   for (const line of [...wikiHeadings, ...htmlLabels]) {
     const text = decode(line);
     if (/\b(uk|west end|london|australia|canad)/i.test(text)) continue;
