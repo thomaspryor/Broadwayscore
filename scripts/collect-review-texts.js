@@ -688,7 +688,7 @@ const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, routeCapFromBrowserbaseError, applyRouteCapDeferralLimit, isRouteCapCooldownActive, effectiveFailureReason, isOwnCodeException } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
-const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
+const { recordSbCall, sbBilledCredits, withSpendShow } = require('./lib/provider-telemetry');
 const { sbHostCooldown } = require('./lib/scrapingbee-host-cooldown');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt, shouldBypassFetchGate, isFetchHotWindow, shouldRetryBbInsufficientText, isFetchLedgerEntryForOtherUrl } = require('./lib/review-guards');
@@ -7535,7 +7535,13 @@ async function verifyFetchedContent(review, result, validation, { discoveredUrl 
   return contentVerification;
 }
 
-async function processReview(review) {
+// BRO-8325: every provider call a review makes (page, premium, SERP) stamps its
+// showId on the spend ledger, so the SB market gate and spend reports can see it.
+function processReview(review) {
+  return withSpendShow(review && review.showId, () => processReviewInner(review));
+}
+
+async function processReviewInner(review) {
   // BRO-4334: fetchReviewText's partial-text deadline counts from here (main()
   // stamps it just before the REVIEW_TIMEOUT race; this covers other callers).
   if (!Number.isFinite(review._reviewStartedAt)) review._reviewStartedAt = Date.now();

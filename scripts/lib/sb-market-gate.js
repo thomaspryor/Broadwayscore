@@ -47,12 +47,21 @@ function gateDisabled(env = process.env) {
 }
 
 // These are London-specific aggregators, including their archive/API calls
-// that do not belong to a single show. The Stage also covers other markets.
+// that do not belong to a single show.
+const LONDON_AGGREGATOR_HOSTS = new Set(['theatre.reviews', 'westendtheatre.com', 'londonboxoffice.co.uk']);
+// The Stage also prints single reviews of non-London shows (/reviews/<slug>), so only
+// its London aggregator surface is gated (BRO-8325): the review round-ups, every one a
+// London/UK production. Its sitemap stays open: outlet-census-sources.js walks it for
+// the NYC (Broadway) review census.
+const THESTAGE_AGGREGATOR_PATH_RE = /^\/review-round-ups(?:\/|$)/i;
+
 function skipSbAggregator(url, env = process.env) {
   if (gateDisabled(env)) return false;
   try {
-    const host = new URL(url).hostname.toLowerCase().replace(/^www\./, '');
-    return new Set(['theatre.reviews', 'westendtheatre.com', 'londonboxoffice.co.uk']).has(host);
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase().replace(/^www\./, '');
+    if (LONDON_AGGREGATOR_HOSTS.has(host)) return true;
+    return host === 'thestage.co.uk' && THESTAGE_AGGREGATOR_PATH_RE.test(u.pathname);
   } catch (_) { return false; }
 }
 

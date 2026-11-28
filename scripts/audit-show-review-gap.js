@@ -53,6 +53,7 @@ const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { readCrossShowUrlRows } = require('./lib/cross-show-url-ledger'); // BRO-6910
 const { trackedPendingFiles } = require('./lib/pending-coverage'); // BRO-7163 F11
+const { withSpendShow } = require('./lib/provider-telemetry'); // BRO-8325: per-show spend attribution
 const { isOpaqueArticleUrl, headlineAsUrl } = require('./lib/opaque-article-url'); // BRO-7163 F02
 const { weUrlIsPriorRun } = require('./lib/we-prior-run'); // BRO-7163 F09
 const { isAggregatorBlind, majorOutletCountFor } = require('./lib/aggregator-blind'); // BRO-6910
@@ -2811,7 +2812,7 @@ async function main(argv = process.argv.slice(2)) {
       break;
     }
     if (verbose) console.log(`\n${s.id} "${s.title}" (${s.openingDate} ${s.status})`);
-    const r = await auditShow(s, { priorCensusUrls: priorCensusUrls(priorRowById.get(s.id)), lastCensusAt: checkpoint[s.id] && checkpoint[s.id].serpCensusAt, allShows });
+    const r = await withSpendShow(s.id, () => auditShow(s, { priorCensusUrls: priorCensusUrls(priorRowById.get(s.id)), lastCensusAt: checkpoint[s.id] && checkpoint[s.id].serpCensusAt, allShows }));
     // BRO-4765: URLs whose extraction returned 0 chars on several consecutive runs are terminal. They
     // leave missing[] (so no re-ingest and no hold on the Coverage Verdict) but stay in the report.
     const zeroCharStored = checkpoint[s.id] && checkpoint[s.id].zeroChar;

@@ -55,6 +55,7 @@ const { isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
 const { readPageBylineForShow } = require('./lib/page-byline-for-show');
 const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
+const { withSpendShow } = require('./lib/provider-telemetry'); // BRO-8325: per-show spend attribution
 const { isJunkCriticName, nameFromJunkCriticName } = require('./lib/byline-recovery');
 const { extractBylineFromText } = require('./lib/byline-from-text');
 const { extractCriticFromFullText, needsCriticBackfill } = require('./lib/critic-byline-backfill');
@@ -456,7 +457,7 @@ async function phaseB(unknownCritics) {
 
     // Strategy 2: fetch the page (Bright Data → ScrapingBee → Playwright).
     if (skipHttp) { counts.skippedHttp++; continue; }
-    const result = await fetchHtml(u.url);
+    const result = await withSpendShow(u.dir, () => fetchHtml(u.url)); // BRO-8325: u.dir is the show id
     await new Promise(r => setTimeout(r, 1000));
     if (!result.html) {
       counts.fetchError++;

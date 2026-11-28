@@ -34,6 +34,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const { withSpendShow } = require('./lib/provider-telemetry'); // BRO-8325: per-show spend attribution
 // BRO-7798: the shared byline reader (outlet rules first), never extractAuthorFromHtml directly.
 const { readPageBylineWithMetaFallback } = require('./lib/page-byline-for-show');
 const { normalizeCritic } = require('./lib/review-normalization');
@@ -1334,7 +1335,7 @@ if (require.main === module) {
     const reached = { recent: null, other: null };
     let completedPass = true;
     for (const { showId: id, files } of plan) {
-      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, tagged, inspected, lastFile, redundantCopies, alertPromise, candidates } = await processShow(id, { files });
+      const { promoted, kept, rejected, droppedRedundant, budgetExceeded, unrecoverable, refetched, tagged, inspected, lastFile, redundantCopies, alertPromise, candidates } = await withSpendShow(id, () => processShow(id, { files }));
       totalCandidates += candidates || 0;
       for (const [k, n] of Object.entries(redundantCopies || {})) settledTotals[k] = (settledTotals[k] || 0) + n;
       totalPromoted += promoted;

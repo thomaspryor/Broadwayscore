@@ -71,12 +71,33 @@ function currentSpendFallback(explicit) {
   return (store && store.fallbackFrom) || null;
 }
 
-/** Pure-ish: the showId a row recorded now would carry (opts > context > env > null). */
+// BRO-8325: 45% of SB rows carried no showId because single-show CLI runs
+// (ingest-review-from-url.js --show=X, opening-night-lane.js --show=X, every
+// `--show=X` child a per-show loop spawns) never wrapped themselves. A process
+// whose argv names exactly one show is spending for that show. Slug-shaped ids
+// only (lowercase, at least one hyphen), so `--show=a,b`, `--show=all` and
+// placeholders never attribute.
+const SHOW_ID_ARG_RE = /^--shows?=([a-z0-9]+(?:-[a-z0-9]+)+)$/;
+
+/** Pure: the single show id named by `--show=ID` / `--shows=ID` in argv, else null. */
+function showIdFromArgv(argv = process.argv) {
+  let found = null;
+  for (const a of argv || []) {
+    if (typeof a !== 'string' || !/^--shows?=/.test(a)) continue;
+    const m = SHOW_ID_ARG_RE.exec(a);
+    if (!m || (found && found !== m[1])) return null; // a list or two different shows: not one show
+    found = m[1];
+  }
+  return found;
+}
+
+/** Pure-ish: the showId a row recorded now would carry (opts > context > argv > env > null). */
 function currentSpendShowId(explicit) {
   if (explicit) return explicit;
   const store = _spendShow.getStore();
   if (store && store.showId) return store.showId;
-  return process.env.SCRAPER_SPEND_SHOW_ID || null;
+  // argv before env: a `--show=B` child of a parent that exported SCRAPER_SPEND_SHOW_ID=A spends for B.
+  return showIdFromArgv(process.argv) || process.env.SCRAPER_SPEND_SHOW_ID || null;
 }
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -512,6 +533,7 @@ module.exports = {
   withSpendShow,
   withSpendOutlet,
   currentSpendShowId,
+  showIdFromArgv,
   withSpendFallback,
   currentSpendFallback,
   recordBdCall,

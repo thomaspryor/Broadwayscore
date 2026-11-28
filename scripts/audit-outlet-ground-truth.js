@@ -39,6 +39,7 @@ const https = require('https');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { runMain } = require('./lib/run-main');
+const { withSpendShow } = require('./lib/provider-telemetry'); // BRO-8325: per-show spend attribution
 
 const USAGE = `audit-outlet-ground-truth.js — compare outlets' own review listings with our review files.
 
@@ -162,7 +163,7 @@ async function main() {
       const after = new Date(Date.parse(show.openingDate) - 21 * 86400000).toISOString();
       note(src.id, 'queries');
       try {
-        const posts = await fetchJsonList(wpSearchUrl(src.api, show.title, after));
+        const posts = await withSpendShow(show.id, () => fetchJsonList(wpSearchUrl(src.api, show.title, after)));
         for (const p of reviewPostsForShow(posts, show, src)) {
           note(src.id, 'listed');
           listed.push({ source: src.id, showId: show.id, outletId: src.outletId, url: p.url, date: p.date });
@@ -208,10 +209,10 @@ async function main() {
       note('theatre-reviews', 'queries');
       try {
         const after = new Date(Date.parse(show.openingDate) - 7 * 86400000).toISOString();
-        const posts = await fetchJsonList(`https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&after=${encodeURIComponent(after)}&search=${encodeURIComponent(show.title)}`);
+        const posts = await withSpendShow(show.id, () => fetchJsonList(`https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&after=${encodeURIComponent(after)}&search=${encodeURIComponent(show.title)}`));
         const roundup = pickTheatreReviewsRoundup(posts, show.title);
         if (!roundup) continue;
-        const html = await fetchText(roundup);
+        const html = await withSpendShow(show.id, () => fetchText(roundup));
         for (const r of extractReviews(html, show.id)) {
           const outletId = resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet, cachedOutletId: r.outletId });
           if (!outletId || !tracked[outletId]) continue;
