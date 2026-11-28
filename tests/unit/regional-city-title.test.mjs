@@ -5,9 +5,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { join } from 'node:path';
+const { makeTmpDir } = createRequire(import.meta.url)('../../scripts/lib/tmpdir-for-tests.js');
 import { getRegionalTitleCity, getRegionalCityLabel, getMarketCurrency } from '../../src/lib/market-utils';
 
 const run = (code, env = {}) => execFileSync(process.execPath, ['--import', 'tsx', '-e', code], {
@@ -100,7 +101,7 @@ test('whole-word city check: "Bath" is not found inside "Bathsheba"; "Chicago" i
 });
 
 test('real data: no two indexable regional show pages share a <title> or og:title', (t) => {
-  const outFile = join(mkdtempSync(join(tmpdir(), 'bro8439-')), 'sweep.json');
+  const outFile = join(makeTmpDir(t, 'bro8439-'), 'sweep.json');
   run(`${HARNESS}
     const { getAllShows } = require('./src/lib/data-core');
     (async () => {
