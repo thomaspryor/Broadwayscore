@@ -238,4 +238,16 @@ test('a same-title tour only counts as a duplicate when it plays this metro near
   assert.equal(stage.findDuplicate(entry, [tour], chi, stops([])), null);
   assert.equal(stage.findDuplicate(entry, [tour], chi, stops([{ city: 'Chicago, IL', venue: 'CIBC Theatre', start: '2026-02-20', end: '2026-03-02' }])), tour);
   assert.equal(stage.findDuplicate(entry, [tour], chi, stops([{ city: 'Chicago, IL', venue: 'CIBC Theatre', start: '2025-01-01', end: '2025-01-08' }])), null);
+  // Chicago-area suburbs count as the metro, same as the regional rule (review finding).
+  assert.equal(stage.findDuplicate(entry, [tour], chi, stops([{ city: 'Rosemont, IL', venue: 'Rosemont Theatre', start: '2026-02-20', end: '2026-03-02' }])), tour);
+});
+
+test('a backfill row set aside as an annual return never records its synthetic count as the watermark (BRO-8454)', async () => {
+  const la = getCity('la');
+  const pg = { id: 8297, slug: 'a-christmas-carol', empty: false, title: 'A Christmas Carol', venue: 'A Noise Within', closingDate: '2026-12-24', reviews: Array.from({ length: 3 }, (_, i) => ({ outlet: `O${i}`, critic: 'C', verdict: 'recommended', url: `https://e.com/${i}` })) };
+  const io = { page: async () => pg, detail: async () => detailOf('Play', { venue: 'A Noise Within', address: '3352 E Foothill Blvd Pasadena', closingDate: '2026-12-24' }), dates: async () => ({ openingDate: '2025-12-01', samples: ['2025-12-01'] }) };
+  const out = await daily.runDaily({ today: '2026-11-28', listing: daily.withBackfill([], [8297]), shows: [], seen: {}, io, city: la });
+  assert.equal(out.seen[8297].annual, true);
+  assert.equal(out.seen[8297].listed, 0);
+  assert.equal(daily.pickCandidates([{ id: 8297, reviewCount: 4 }], [], out.seen, la).length, 1);
 });

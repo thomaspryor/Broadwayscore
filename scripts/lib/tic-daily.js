@@ -224,7 +224,7 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
       continue; // not remembered: tomorrow retries
     }
     if (res.status === 'rejected') {
-      next[row.id] = { reason: res.reason, retry: res.retry, on: today, rv: RULES_VERSION, ...(res.annual ? { annual: true, listed: row.reviewCount } : {}) };
+      next[row.id] = { reason: res.reason, retry: res.retry, on: today, rv: RULES_VERSION, ...(res.annual ? { annual: true, listed: row.backfill ? 0 : row.reviewCount } : {}) };
       continue;
     }
     const applied = applyAddShow(shows, { type: 'add-show', show: res.show });
