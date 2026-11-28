@@ -308,3 +308,176 @@ test('rollback history is limited to two prior generations without nesting', asy
   assert.deepEqual(history.map((v) => v.generation), [7, 6]);
   assert.equal('previousGenerations' in history[0], false);
 });
+
+// --- BRO-8397: coverage stamp (covered.json) and slice prune ---
+const cov = require('./coverage.js');
+const prune = require('./prune.js');
+
+test('coverageRecord: a verified publish of every changed show is complete', async () => {
+  const f = fixture();
+  const state = fakeState();
+  const plan = f.planWith(null);
+  const w = await writePublish({ storage: fakeStorage(), state, plan, manifest: { ...f.m, publicSha: 'p'.repeat(40) }, sliceFor: f.sliceFor, now: NOW });
+  const dataShas = { 'reviews.json': 'r', 'shows.json': 's', 'critic-consensus.json': 'c' };
+  const reval = { message: 'HTTP 200 for 2 show(s)', pending: [], abandoned: [] };
+  const rec = cov.coverageRecord({ plan, head: { shows: f.headShows }, manifest: { ...f.m, publicSha: 'p'.repeat(40) }, writeResult: w, revalidate: reval, dataShas, now: NOW });
+  assert.equal(rec.complete, true, rec.reasons.join('; '));
+  assert.equal(rec.generation, homeOf(state).generation);
+  assert.equal(rec.homeSig, cov.homeShowsSig(homeOf(state).shows), 'stamp signs exactly the home it verified');
+  // The gate accepts that stamp against that home.
+  assert.equal(cov.evaluateCoverage({
+    readerOn: true, kill: { killed: false }, homeRead: { state: 'ok', value: homeOf(state) }, coveredRead: { state: 'ok', value: rec },
+    nowShas: { 'reviews.json': 'r', 'shows.json': 's', 'critic-consensus.json': 'c' }, dataFiles: { changed: ['reviews.json'], unknown: [] }, baselineSha: 'p'.repeat(40),
+  }).covered, true);
+  // Each doubt flips it to incomplete.
+  const mk = (o) => cov.coverageRecord({ plan, head: { shows: f.headShows }, manifest: f.m, writeResult: w, revalidate: reval, dataShas, now: NOW, ...o });
+  assert.equal(mk({ writeResult: null }).complete, false, 'no write');
+  assert.equal(mk({ writeResult: { ...w, outcome: OUTCOMES.CAS_LOST, generation: null } }).complete, false, 'cas lost');
+  assert.equal(mk({ revalidate: { ...reval, pending: ['x'] } }).complete, false, 'revalidation queued');
+  assert.equal(mk({ revalidate: { message: 'skipped (SHOW_REFRESH_REVALIDATE_SECRET unset)', pending: [], abandoned: [] } }).complete, false, 'no secret');
+  assert.equal(mk({ dataShas: { ...dataShas, 'shows.json': null } }).complete, false, 'unknown data sha');
+});
+
+test('planCoverage: a reveal, a new show or a capped plan is not covered; unchanged and still-held are', () => {
+  const f = fixture();
+  const plan = f.planWith(null);
+  assert.equal(cov.planCoverage({ plan, head: { shows: f.headShows } }).complete, true);
+  const withSkips = (skips, extra = {}) => ({ ...plan, skips, ...extra });
+  assert.equal(cov.planCoverage({ plan: withSkips({ z: 'unchanged' }), head: { shows: f.headShows } }).complete, true);
+  assert.equal(cov.planCoverage({ plan: withSkips({ z: 'held-build' }), head: { shows: { ...f.headShows, z: hshow({ held: true }) } } }).complete, true, 'still held: invisible');
+  assert.equal(cov.planCoverage({ plan: withSkips({ z: 'held-build' }), head: { shows: { ...f.headShows, z: hshow() } } }).complete, false, 'reveal needs a build');
+  assert.equal(cov.planCoverage({ plan: withSkips({ z: 'images-changed' }), head: { shows: f.headShows } }).complete, false);
+  assert.equal(cov.planCoverage({ plan: withSkips({}, { dirty: ['new-show'] }), head: { shows: f.headShows } }).complete, false);
+  assert.equal(cov.planCoverage({ plan: { ...plan, outcome: OUTCOMES.CAP }, head: { shows: f.headShows } }).complete, false);
+});
+
+test('gitBlobSha matches git hash-object', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const buf = Buffer.from('{"a":1}\n');
+  const want = execFileSync('git', ['hash-object', '--stdin'], { input: buf, encoding: 'utf8' }).trim();
+  assert.equal(cov.gitBlobSha(buf), want);
+});
+
+/** Storage with folder listing (Supabase list semantics) and bulk delete. */
+function listingStorage(objects /* { path: createdMs } */) {
+  const objs = new Map(Object.entries(objects).map(([p, t]) => [p, { text: '{}', created: t }]));
+  const calls = { removeMany: [] };
+  return {
+    objs, calls,
+    async get(path) { return objs.has(path) ? { status: 200, text: objs.get(path).text } : { status: 400, text: '{"statusCode":"404","error":"not_found"}' }; },
+    async put(path, text) { objs.set(path, { text, created: NOW }); },
+    async list(prefix, { limit, offset }) {
+      const pre = `${prefix}/`;
+      const names = new Map();
+      for (const [p, o] of objs) {
+        if (!p.startsWith(pre)) continue;
+        const rest = p.slice(pre.length);
+        const [head, ...more] = rest.split('/');
+        if (more.length) names.set(head, { name: head, id: null });
+        else names.set(head, { name: head, id: `id-${p}`, created_at: new Date(o.created).toISOString() });
+      }
+      return [...names.values()].sort((a, b) => a.name.localeCompare(b.name)).slice(offset, offset + limit);
+    },
+    async removeMany(paths) { calls.removeMany.push(paths); for (const p of paths) objs.delete(p); return paths.map((name) => ({ name })); },
+  };
+}
+
+const OLD = NOW - 30 * 24 * 3600e3;
+function pruneFixture() {
+  const home = {
+    schema: 1, manifestId: 'm2', generation: 9,
+    shows: { x: { hash: h('1') } },
+    pending: { y: { since: NOW, expect: h('2') } },
+    previousGenerations: [
+      { schema: 1, manifestId: 'm2', generation: 8, shows: { x: { hash: h('3') } }, pending: {} },
+      { schema: 1, manifestId: 'm1', generation: 7, shows: { x: { hash: h('4') } }, pending: {} },
+    ],
+  };
+  const storage = listingStorage({
+    [`show/x/${h('1')}.json`]: OLD, // current
+    [`show/y/${h('2')}.json`]: OLD, // current pending expect
+    [`show/x/${h('3')}.json`]: OLD, // previous generation 1
+    [`show/x/${h('4')}.json`]: OLD, // previous generation 2
+    [`show/x/${h('5')}.json`]: OLD, // unreferenced, old -> delete
+    [`show/z/${h('6')}.json`]: OLD, // unreferenced, old -> delete
+    [`show/z/${h('7')}.json`]: NOW - 3600e3, // unreferenced but young -> keep
+    'show/z/README.txt': OLD, // unknown name -> keep
+  });
+  return { home, storage, state: fakeState({ home }) };
+}
+
+test('prune: referenced versions are kept, unreferenced old ones deleted', async () => {
+  const { storage, state } = pruneFixture();
+  const r = await prune.pruneSlices({ storage, state, now: NOW, dryRun: false });
+  assert.equal(r.ran, true, r.why);
+  assert.deepEqual(r.deleted.sort(), [`show/x/${h('5')}.json`, `show/z/${h('6')}.json`]);
+  for (const kept of [h('1'), h('3'), h('4')]) assert.ok(storage.objs.has(`show/x/${kept}.json`), `kept ${kept}`);
+  assert.ok(storage.objs.has(`show/y/${h('2')}.json`), 'pending expect kept');
+  assert.ok(storage.objs.has(`show/z/${h('7')}.json`), 'young object kept');
+  assert.ok(storage.objs.has('show/z/README.txt'), 'unknown name kept');
+  assert.ok(storage.objs.has(store.PATHS.pruneLastRun), 'last-run stamp written');
+  // keepGenerations=1 drops the oldest rollback generation.
+  const f2 = pruneFixture();
+  const r2 = await prune.pruneSlices({ storage: f2.storage, state: f2.state, now: NOW, dryRun: false, keepGenerations: 1 });
+  assert.ok(r2.deleted.includes(`show/x/${h('4')}.json`));
+  assert.ok(!r2.deleted.includes(`show/x/${h('3')}.json`));
+});
+
+test('prune: dry-run lists only, and the daily guard holds a second run', async () => {
+  const { storage, state } = pruneFixture();
+  const before = new Set(storage.objs.keys());
+  const r = await prune.pruneSlices({ storage, state, now: NOW });
+  assert.equal(r.dryRun, true);
+  assert.deepEqual(r.deleted, []);
+  assert.deepEqual(r.plan.toDelete.sort(), [`show/x/${h('5')}.json`, `show/z/${h('6')}.json`]);
+  assert.equal(storage.calls.removeMany.length, 0);
+  for (const p of before) assert.ok(storage.objs.has(p), `dry-run kept ${p}`);
+  const again = await prune.pruneSlices({ storage, state, now: NOW + 3600e3, dryRun: false });
+  assert.equal(again.ran, false);
+  assert.match(again.why, /not due/);
+  assert.equal(storage.calls.removeMany.length, 0);
+  assert.equal((await prune.pruneSlices({ storage, state, now: NOW + 25 * 3600e3, dryRun: true })).ran, true, 'due again after a day');
+});
+
+test('prune: never deletes when home is unusable or moves mid-run', async () => {
+  const bad = pruneFixture();
+  bad.state.rows.set('home.json', JSON.stringify({ shows: {} }));
+  const r = await prune.pruneSlices({ storage: bad.storage, state: bad.state, now: NOW, dryRun: false });
+  assert.equal(r.ran, false);
+  assert.equal(bad.storage.calls.removeMany.length, 0);
+  const moving = pruneFixture();
+  const origList = moving.storage.list;
+  moving.storage.list = async (...a) => {
+    moving.state.rows.set('home.json', JSON.stringify({ ...moving.home, generation: 10, shows: { x: { hash: h('5') } } }));
+    return origList(...a);
+  };
+  const r2 = await prune.pruneSlices({ storage: moving.storage, state: moving.state, now: NOW, dryRun: false });
+  assert.match(r2.why, /home moved/);
+  assert.equal(moving.storage.calls.removeMany.length, 0);
+  assert.ok(moving.storage.objs.has(`show/x/${h('5')}.json`));
+  assert.equal(prune.pruneDue({ state: 'error', error: 'status 500' }, NOW).due, false, 'unreadable guard => skip');
+});
+
+test('prune wiring: workflow step is advisory, scheduled only and dry-run unless the variable says true', async () => {
+  const fs = await import('node:fs');
+  const y = fs.readFileSync(new URL('../../../.github/workflows/publish-show-refresh.yml', import.meta.url), 'utf8');
+  const step = y.slice(y.indexOf('- name: Prune old show slices'), y.indexOf('- name: Upload report'));
+  assert.match(step, /continue-on-error: true/);
+  assert.match(step, /github\.event_name == 'schedule'/);
+  assert.match(step, /SHOW_REFRESH_PRUNE_DELETE: \$\{\{ vars\.SHOW_REFRESH_PRUNE_DELETE \}\}/);
+  assert.match(step, /node scripts\/lib\/show-refresh\/prune\.js/);
+});
+
+test('BRO-8397 review: unreadable or unsaved revalidate queue is never settled', () => {
+  const ok = { message: 'revalidated 2', pending: [], abandoned: [], queueNote: 'read; saved' };
+  assert.equal(cov.revalidateSettled(ok), true);
+  for (const queueNote of ['read failed (500); queue left untouched', 'read; save failed: boom', 'no queue store']) {
+    assert.equal(cov.revalidateSettled({ ...ok, queueNote }), false, queueNote);
+  }
+});
+
+test('BRO-8397 review: prune refuses a home with no shows map', () => {
+  assert.equal(!!prune.usableHome({ state: 'ok', value: { generation: 5 } }), false);
+  assert.equal(!!prune.usableHome({ state: 'ok', value: { generation: 5, shows: [] } }), false);
+  assert.equal(!!prune.usableHome({ state: 'ok', value: { generation: 5, shows: {} } }), true);
+});

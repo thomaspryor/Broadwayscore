@@ -525,3 +525,134 @@ test('BRO-8236 wiring: code_changed flows from the gate to the coalesce step', a
   assert.ok(y.includes('code_changed: ${{ steps.check.outputs.code_changed }}'));
   assert.ok(y.includes('GATE_CODE_CHANGED: ${{ needs.should-deploy.outputs.code_changed }}'));
 });
+
+// --- BRO-8397: skip a data-only build the show-refresh store already serves ---
+{
+  const gate = require('./should-deploy-gate.js');
+  const cov = require('./show-refresh/coverage.js');
+  const { blobShaMetaKey } = require('./core-data-blob-meta.js');
+  const sha = (c) => c.repeat(40);
+  // Live deploy stamped reviews=1, shows=2, consensus=3, commercial=4; now reviews moved to 9.
+  const baselineBlobShas = {
+    [blobShaMetaKey('reviews.json')]: sha('1'), [blobShaMetaKey('shows.json')]: sha('2'),
+    [blobShaMetaKey('critic-consensus.json')]: sha('3'), [blobShaMetaKey('commercial.json')]: sha('4'),
+  };
+  const nowShas = { 'reviews.json': sha('9'), 'shows.json': sha('2'), 'critic-consensus.json': sha('3'), 'commercial.json': sha('4') };
+  const homeShows = { x: { hash: 'b'.repeat(16) } };
+  const home = { schema: 1, manifestId: 'm1', generation: 5, shows: homeShows, pending: {} };
+  const stamp = {
+    schema: cov.COVERED_SCHEMA, complete: true, manifestId: 'm1', publicSha: A, generation: 5,
+    homeSig: cov.homeShowsSig(homeShows), dataShas: { 'reviews.json': sha('9'), 'shows.json': sha('2'), 'critic-consensus.json': sha('3') },
+  };
+  const files = (now = nowShas) => cov.changedDataFiles(now, baselineBlobShas, gate.DATA_TRACKED_FILES, blobShaMetaKey);
+  const evalWith = (o = {}) => cov.evaluateCoverage({
+    readerOn: true, kill: { killed: false }, homeRead: { state: 'ok', value: home }, coveredRead: { state: 'ok', value: stamp },
+    nowShas, dataFiles: files(), baselineSha: A, ...o,
+  });
+  // Routine data-only change: HEAD moved by bookkeeping, site diff clean, core data dirty.
+  const dataOnly = { ...base, diffResult: 'clean', dataDiffResult: 'dirty' };
+
+  test('BRO-8397: covered data-only change with the reader on => skip', () => {
+    const r = evalWith();
+    assert.equal(r.covered, true, r.why);
+    assert.deepEqual(decide({ ...dataOnly, showRefreshCovered: r.covered }), { proceed: false, reason: gate.SHOW_REFRESH_COVERED });
+    assert.deepEqual(decide({ ...dataOnly, headSha: A, showRefreshCovered: true }), { proceed: false, reason: gate.SHOW_REFRESH_COVERED }, 'HEAD already live, only core data moved');
+  });
+
+  test('BRO-8397: reader off or unknown => unchanged decision', () => {
+    for (const readerOn of [false, null, undefined]) {
+      const r = evalWith({ readerOn });
+      assert.equal(r.covered, false);
+      assert.deepEqual(decide({ ...dataOnly, showRefreshCovered: r.covered }), decide(dataOnly));
+    }
+    assert.deepEqual(decide(dataOnly), { proceed: true, reason: 'data-changed' });
+    // The lookup itself only runs for a routine data-changed decision.
+    const dc = { proceed: true, reason: 'data-changed' };
+    assert.equal(gate.wantsShowRefreshCheck({ gateDisabled: false, skipDisabled: false, eventName: 'schedule', decision: dc }), true);
+    assert.equal(gate.wantsShowRefreshCheck({ gateDisabled: false, skipDisabled: true, eventName: 'schedule', decision: dc }), false);
+    assert.equal(gate.wantsShowRefreshCheck({ gateDisabled: true, skipDisabled: false, eventName: 'schedule', decision: dc }), false);
+    assert.equal(gate.wantsShowRefreshCheck({ gateDisabled: false, skipDisabled: false, eventName: 'workflow_dispatch', decision: dc }), false);
+    for (const reason of ['content-changed', 'staleness-backstop', 'code-changed', 'explicit-ship']) {
+      assert.equal(gate.wantsShowRefreshCheck({ gateDisabled: false, skipDisabled: false, eventName: 'schedule', decision: { proceed: true, reason } }), false, reason);
+    }
+  });
+
+  test('BRO-8397: reader state comes from the Vercel production env, set before the live deploy', () => {
+    const entry = (o = {}) => ({ key: 'SHOW_REFRESH_READER', target: ['production'], type: 'encrypted', id: 'e1', updatedAt: 1000, ...o });
+    const settled = 1000 + cov.READER_ENV_SETTLE_MS + 1;
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: 'on', deployCreatedMs: settled }).on, true);
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: 'on', deployCreatedMs: 500 }).on, false, 'flipped after the live build: not live yet');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: 'on', deployCreatedMs: settled - 2 }).on, false, 'flipped inside the deploy job window: may not be in the build');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: 'true', deployCreatedMs: 2000 }).on, false, "only exactly 'on' (showRefreshEnabled)");
+    assert.equal(cov.readerOnFromVercel({ entries: [], value: null, deployCreatedMs: 2000 }).on, false, 'unset = off');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: null, deployCreatedMs: 2000 }).on, null, 'unreadable (sensitive) = unknown');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry(), entry({ id: 'e2' })], value: 'on', deployCreatedMs: 2000 }).on, null, 'ambiguous');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry({ target: ['preview'] })], value: 'on', deployCreatedMs: 2000 }).on, false, 'preview-only entry');
+    assert.equal(cov.readerOnFromVercel({ entries: [entry()], value: 'on', deployCreatedMs: null }).on, null);
+    assert.equal(cov.readerOnFromVercel({ entries: 'nope', value: 'on', deployCreatedMs: 2000 }).on, null);
+  });
+
+  test('BRO-8397: fetchReaderOn reads the env list then the decrypted entry; failures are unknown', async () => {
+    const calls = [];
+    const fake = (routes) => async (url) => {
+      calls.push(url);
+      const hit = Object.entries(routes).find(([k]) => url.includes(k));
+      if (!hit) return { ok: false, status: 404, json: async () => ({}) };
+      return { ok: true, status: 200, json: async () => hit[1] };
+    };
+    const envs = [{ key: 'SHOW_REFRESH_READER', target: ['production'], type: 'encrypted', id: 'e1', updatedAt: 1000 }];
+    const on = await gate.fetchReaderOn({ token: 't', deployCreatedMs: 1000 + cov.READER_ENV_SETTLE_MS + 5000, fetchImpl: fake({ '/v9/projects/': { envs }, '/v1/projects/': { value: 'on' } }) });
+    assert.equal(on.on, true, on.why);
+    assert.equal(calls.length, 2);
+    const down = await gate.fetchReaderOn({ token: 't', deployCreatedMs: 5000, fetchImpl: async () => { throw new Error('ECONNRESET'); } });
+    assert.equal(down.on, null);
+    assert.equal((await gate.fetchReaderOn({ token: '', deployCreatedMs: 5000 })).on, null);
+  });
+
+  test('BRO-8397: every doubt about the store means not covered', () => {
+    const notCovered = {
+      killed: { kill: { killed: true } },
+      killUnread: { kill: null },
+      noStamp: { coveredRead: { state: 'missing' } },
+      stampError: { coveredRead: { state: 'error', error: 'status 500' } },
+      incomplete: { coveredRead: { state: 'ok', value: { ...stamp, complete: false } } },
+      otherDeploy: { coveredRead: { state: 'ok', value: { ...stamp, publicSha: B } } },
+      homeMoved: { homeRead: { state: 'ok', value: { ...home, generation: 6 } } },
+      homeOtherShows: { homeRead: { state: 'ok', value: { ...home, shows: { x: { hash: 'c'.repeat(16) } } } } },
+      homeError: { homeRead: { state: 'error' } },
+      dataMovedAgain: { nowShas: { ...nowShas, 'reviews.json': sha('8') }, dataFiles: files({ ...nowShas, 'reviews.json': sha('8') }) },
+      commercialToo: { dataFiles: files({ ...nowShas, 'commercial.json': sha('7') }) },
+      dataUnknown: { dataFiles: files(null) },
+    };
+    for (const [name, o] of Object.entries(notCovered)) assert.equal(evalWith(o).covered, false, name);
+  });
+
+  test('BRO-8397: code change, urgent reveal and the backstop still build when covered', () => {
+    assert.deepEqual(decide({ ...dataOnly, diffResult: 'dirty', showRefreshCovered: true }), { proceed: true, reason: 'content-changed' });
+    assert.equal(decide({ ...dataOnly, diffResult: 'error', showRefreshCovered: true }).proceed, true, 'unknown site diff builds');
+    assert.deepEqual(decide({ ...dataOnly, deployAgeSec: STALENESS_BACKSTOP_SEC + 1, showRefreshCovered: true }), { proceed: true, reason: 'staleness-backstop' });
+    assert.deepEqual(decide({ ...dataOnly, headSha: A, deployAgeSec: STALENESS_BACKSTOP_SEC + 1, showRefreshCovered: true }), { proceed: true, reason: 'data-changed' });
+    assert.equal(decide({ ...dataOnly, deployAgeSec: null, showRefreshCovered: true }).proceed, true, 'unknown age builds');
+    // Urgent (non-schedule) lanes keep ship-now semantics.
+    assert.deepEqual(decide({ ...dataOnly, eventName: 'workflow_dispatch', showRefreshCovered: true }), { proceed: true, reason: 'explicit-ship' });
+    assert.deepEqual(decide({ ...dataOnly, eventName: 'workflow_dispatch', headSha: A, showRefreshCovered: true }), { proceed: true, reason: 'data-changed' });
+    // Inside the min interval a code change still ships at once.
+    assert.deepEqual(decide({ ...dataOnly, minIntervalSec: 3600, codeDiffResult: 'dirty', showRefreshCovered: true }), { proceed: true, reason: 'code-changed' });
+    // Kill switch beats everything.
+    assert.deepEqual(decide({ ...dataOnly, gateDisabled: true, showRefreshCovered: true }), { proceed: true, reason: 'kill-switch' });
+  });
+
+  test('BRO-8397: showRefreshCoverage seam and wiring', async () => {
+    const baseline = { sha: A, blobShas: baselineBlobShas };
+    const env = { GATE_SHOW_REFRESH_JSON: JSON.stringify({ readerOn: true, kill: { killed: false }, home, covered: stamp }) };
+    assert.equal((await gate.showRefreshCoverage({ baseline, nowShas, deployCreatedMs: 1, env })).covered, true);
+    const off = { GATE_SHOW_REFRESH_JSON: JSON.stringify({ readerOn: false, kill: { killed: false }, home, covered: stamp }) };
+    assert.equal((await gate.showRefreshCoverage({ baseline, nowShas, deployCreatedMs: 1, env: off })).covered, false);
+    // No seam, no network: a non-covered file short-circuits before any lookup.
+    const r = await gate.showRefreshCoverage({ baseline, nowShas: { ...nowShas, 'commercial.json': sha('7') }, deployCreatedMs: 1, env: {} });
+    assert.match(r.why, /^not-covered-file/);
+    const fs = await import('node:fs');
+    const y = fs.readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+    assert.ok(y.includes('GATE_SHOW_REFRESH_SKIP_DISABLED: ${{ vars.DEPLOY_SHOW_REFRESH_SKIP_DISABLED }}'));
+  });
+}

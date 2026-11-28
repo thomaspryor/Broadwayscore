@@ -41,6 +41,7 @@ const { coverageInputsFromSlice } = require('./lib/show-refresh/slice');
 const store = require('./lib/show-refresh/store');
 const { writePublish } = require('./lib/show-refresh/publish-write');
 const { revalidateWithQueue } = require('./lib/show-refresh/revalidate-queue');
+const { coverageRecord, dataBlobShas } = require('./lib/show-refresh/coverage');
 const { healShows } = require('./lib/heal-shows');
 /* eslint-enable @typescript-eslint/no-require-imports */
 
@@ -433,6 +434,21 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
     if (r.message !== 'skipped (no slugs)') console.log(`[publish-show-refresh] revalidate: ${r.message}`);
   }
 
+  // BRO-8397: the coverage stamp the deploy gate reads (covered.json). Written on
+  // every write-mode run that got this far (killed, parity-failed and failed
+  // writes included, as complete:false), so a stale "complete" never outlives
+  // the run that disproved it. Never fails the run.
+  let covered: { complete: boolean; reasons: string[] } | null = null;
+  if (write) {
+    covered = coverageRecord({ plan, head, manifest: m, writeResult, revalidate: revalidateQueue && { message: revalidate, ...revalidateQueue }, dataShas: dataBlobShas(dataDir), now: Date.now() });
+    try {
+      await store.putMutable(store.storeFromEnv(env, { timeoutMs: 15000 }), store.PATHS.covered, covered);
+    } catch (e) {
+      console.log(`::warning::show-refresh: coverage stamp not saved (${e instanceof Error ? e.message : e}); the deploy gate builds as before`);
+    }
+    console.log(`[publish-show-refresh] covered complete=${covered!.complete}${covered!.reasons.length ? ` (${covered!.reasons.join('; ')})` : ''}`);
+  }
+
   const ms = Date.now() - t0;
   const report = {
     outcome,
@@ -441,6 +457,7 @@ export async function main(argv = process.argv.slice(2), env: NodeJS.ProcessEnv 
     write: writeResult,
     revalidate,
     revalidateQueue,
+    covered,
     manifestSource: args.manifest,
     manifestId: m.manifestId,
     publicSha: m.publicSha ?? null,

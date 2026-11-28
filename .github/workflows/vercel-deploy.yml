@@ -127,6 +127,11 @@ jobs:
           GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
           # BRO-8281: kill switch. true restores ship-now for reveals in every category, not just Broadway.
           GATE_REVEAL_ALL_CATEGORIES: ${{ vars.DEPLOY_REVEAL_ALL_CATEGORIES }}
+          # BRO-8397: read only when a routine data-only change might already be served by the
+          # show-refresh store (reader on in production). Any lookup failure keeps the old decision.
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GATE_SHOW_REFRESH_SKIP_DISABLED: ${{ vars.DEPLOY_SHOW_REFRESH_SKIP_DISABLED }}
         run: |
           # The gate script fails OPEN internally (API/fetch/diff errors →
           # proceed=true). If the script itself crashes, fail this step LOUDLY

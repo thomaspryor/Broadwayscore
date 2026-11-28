@@ -95,6 +95,21 @@ jobs:
           echo "trigger=$TRIGGER mode=$MODE" | tee -a "$GITHUB_STEP_SUMMARY"
           npx tsx scripts/publish-show-refresh.ts "$MODE" --report="$RUNNER_TEMP/show-refresh-report.json" | tee -a "$GITHUB_STEP_SUMMARY"
 
+      # BRO-8397: delete slices no current or recent home generation points to.
+      # At most once a day (prune-last-run.json guard inside the script), advisory
+      # (rule 19), and a dry run that only lists candidates unless repo variable
+      # SHOW_REFRESH_PRUNE_DELETE is 'true'. Scheduled runs only (no workflow_run burst).
+      - name: Prune old show slices (daily, advisory)
+        if: vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true' && github.event_name == 'schedule'
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SHOW_REFRESH_PRUNE_DELETE: ${{ vars.SHOW_REFRESH_PRUNE_DELETE }}
+        run: |
+          set -o pipefail
+          timeout 300 node scripts/lib/show-refresh/prune.js | tee -a "$GITHUB_STEP_SUMMARY"
+
       - name: Upload report
         if: always() && vars.SHOW_REFRESH_PUBLISH_DISABLED != 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

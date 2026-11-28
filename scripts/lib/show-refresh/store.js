@@ -5,7 +5,9 @@
  * Two homes, chosen by how each object changes:
  *   - Storage bucket `show-refresh` (private): immutable slices
  *     show/<id>/<hash>.json (1-year cache), plus covered.json, health.json,
- *     revalidate-pending.json (BRO-8410) and flagged/<sha>.json (later phases; service role only).
+ *     revalidate-pending.json (BRO-8410), prune-last-run.json (BRO-8397) and
+ *     flagged/<sha>.json (later phases; service role only). covered.json is the
+ *     publisher's coverage stamp the deploy gate reads (BRO-8397, coverage.js).
  *   - Table public.show_refresh_state, read through PostgREST: the MUTABLE
  *     pointers home (index the reader follows) and kill (kill switch), plus a
  *     'probe' row for --selftest.
@@ -45,9 +47,13 @@ const PATHS = Object.freeze({
   health: 'health.json',
   probe: 'probe.json',
   revalidatePending: 'revalidate-pending.json',
+  // BRO-8397: slice prune's daily guard (private, not under show/).
+  pruneLastRun: 'prune-last-run.json',
 });
 const ID_RE = /^[a-z0-9][a-z0-9-]{0,120}$/;
 const HASH_RE = /^[0-9a-f]{16}$/;
+/** A slice object path: show/<id>/<hash>.json (captures id, hash). */
+const SLICE_PATH_RE = /^show\/([a-z0-9][a-z0-9-]{0,120})\/([0-9a-f]{16})\.json$/;
 const HOME_PLACEHOLDER = Object.freeze({ schema: 1, manifestId: null, coreSha: null, generation: 0, shows: {}, pending: {} });
 
 function showObjectPath(id, hash) {
@@ -338,7 +344,7 @@ async function setupStore(storage, state, { by = 'setup' } = {}) {
 }
 
 module.exports = {
-  BUCKET, CACHE, PATHS, HOME_PLACEHOLDER, STATE_TABLE, STATE_KEYS,
+  BUCKET, CACHE, PATHS, HOME_PLACEHOLDER, STATE_TABLE, STATE_KEYS, ID_RE, HASH_RE, SLICE_PATH_RE,
   showObjectPath, isReaderPath, makeStateTable, storeFromEnv, readerStoreFromEnv, stateFromEnv, readerStateFromEnv,
   readJsonObject, isObjectMissing, canonical, putMutable, putShowObject,
   setKill, effectiveKill, setupStore,

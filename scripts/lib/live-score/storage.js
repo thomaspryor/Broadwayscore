@@ -89,7 +89,37 @@ function makeStorage({ baseUrl, serviceKey, bucket = DEFAULT_BUCKET, isPublic = 
     if (!res.ok && res.status !== 404) throw new Error(`remove ${path} ${res.status}`);
   }
 
-  return { ensureBucket, getBucket, put, get, signUrl, remove, bucket, isPublic };
+  /**
+   * BRO-8397: one page of a folder listing (not recursive). Entries are
+   * { name, id, created_at, updated_at, metadata }; a sub-folder has id null.
+   */
+  async function list(prefix, { limit = 1000, offset = 0 } = {}) {
+    const res = await call(`${root}/object/list/${bucket}`, {
+      method: 'POST',
+      headers: { ...auth, 'content-type': 'application/json' },
+      body: JSON.stringify({ prefix, limit, offset, sortBy: { column: 'name', order: 'asc' } }),
+    });
+    const text = await res.text().catch(() => '');
+    if (!res.ok) throw new Error(`list ${prefix} ${res.status} ${text.slice(0, 200)}`);
+    let rows;
+    try { rows = JSON.parse(text); } catch { throw new Error(`list ${prefix}: invalid JSON`); }
+    if (!Array.isArray(rows)) throw new Error(`list ${prefix}: not an array`);
+    return rows;
+  }
+
+  /** BRO-8397: delete several objects in one call. Returns the deleted entries Supabase reports. */
+  async function removeMany(paths) {
+    const res = await call(`${root}/object/${bucket}`, {
+      method: 'DELETE',
+      headers: { ...auth, 'content-type': 'application/json' },
+      body: JSON.stringify({ prefixes: paths }),
+    });
+    const text = await res.text().catch(() => '');
+    if (!res.ok) throw new Error(`removeMany ${paths.length} ${res.status} ${text.slice(0, 200)}`);
+    try { const rows = JSON.parse(text); return Array.isArray(rows) ? rows : []; } catch { return []; }
+  }
+
+  return { ensureBucket, getBucket, put, get, signUrl, remove, list, removeMany, bucket, isPublic };
 }
 
 /**

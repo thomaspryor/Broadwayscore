@@ -17,6 +17,15 @@
  *   - baseline known AND baseline == HEAD AND data unchanged  → skip (no-new-commits)
  *   - baseline known AND site+data diff empty AND deploy younger than the
  *     staleness backstop (default 3h, BRO-8198)                → skip (content-gate)
+ *   - BRO-8397: a routine 'data-changed' (core-data blobs moved, site diff clean)
+ *     inside the backstop window skips (show-refresh-covered) ONLY when the
+ *     per-show store already serves it: SHOW_REFRESH_READER=on in the Vercel
+ *     production env since before the live deploy, kill row readable and not
+ *     killed, every changed tracked file in show-refresh/coverage.js
+ *     COVERED_DATA_FILES, and the publisher's covered.json stamp complete for
+ *     this deploy, the current home generation and these exact blob SHAs.
+ *     Reader off/unknown => the old decision. Off switch: repo variable
+ *     DEPLOY_SHOW_REFRESH_SKIP_DISABLED=true (GATE_SHOW_REFRESH_SKIP_DISABLED).
  * EVERYTHING else proceeds: unknown baseline, Vercel API failure, git fetch or
  * diff failure, deploy older than the backstop (staleness-backstop), any non-schedule
  * event (workflow_dispatch / workflow_run keep their "ship now" semantics,
@@ -229,6 +238,18 @@ function isUrgent({ eventName, source, triggerWorkflow }) {
   return false;
 }
 
+// BRO-8397: skip reason when the show-refresh store already serves the change.
+const SHOW_REFRESH_COVERED = 'show-refresh-covered';
+
+/**
+ * Pure: should main() look up show-refresh coverage at all? Only for a routine
+ * decision of 'data-changed' (so every other outcome, and every run while this
+ * returns false, is byte-for-byte the old decision).
+ */
+function wantsShowRefreshCheck({ gateDisabled, skipDisabled, eventName, decision }) {
+  return !gateDisabled && !skipDisabled && eventName === 'schedule' && !!decision && decision.proceed === true && decision.reason === 'data-changed';
+}
+
 // git diff --quiet exit codes: 0 = no diff, 1 = diff, anything else = error.
 function classifyDiffExit(code) {
   if (code === 0) return 'clean';
@@ -256,9 +277,14 @@ function classifyDiffExit(code) {
  *   only the schedule branch has a staleness backstop to fall back on.
  * @param {number} [i.minIntervalSec] BRO-8028 routine throttle (0 = off)
  * @param {number} [i.backstopSec] staleness backstop (BRO-8198, default 3h)
+ * @param {boolean} [i.showRefreshCovered] BRO-8397: true only when the per-show
+ *   store already serves this data-only change (show-refresh/coverage.js
+ *   evaluateCoverage; never true while the reader is off in production). It can
+ *   turn a routine 'data-changed' inside the backstop window into a skip and
+ *   nothing else: urgent triggers, code/site diffs and the backstop still build.
  * @returns {{proceed: boolean, reason: string}}
  */
-function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, diffResult, dataDiffResult, codeDiffResult = null, minIntervalSec = 0, backstopSec = DEFAULT_STALENESS_BACKSTOP_SEC }) {
+function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, diffResult, dataDiffResult, codeDiffResult = null, minIntervalSec = 0, backstopSec = DEFAULT_STALENESS_BACKSTOP_SEC, showRefreshCovered = false }) {
   if (gateDisabled) return { proceed: true, reason: 'kill-switch' };
 
   if (eventName !== 'schedule') {
@@ -289,7 +315,10 @@ function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, d
     return { proceed: false, reason: 'min-interval' };
   }
   if (baselineSha === headSha) {
-    if (dataDiffResult === 'dirty') return { proceed: true, reason: 'data-changed' };
+    if (dataDiffResult === 'dirty') {
+      if (showRefreshCovered === true && deployAgeSec != null && deployAgeSec <= backstopSec) return { proceed: false, reason: SHOW_REFRESH_COVERED };
+      return { proceed: true, reason: 'data-changed' };
+    }
     // dataDiffResult is 'clean'/'error'/null here. A positively-clean data
     // signal is a genuine no-op — skip immediately (matches pre-BRO-3149
     // behavior for this branch, which had no second signal at all). An
@@ -316,7 +345,10 @@ function decide({ eventName, gateDisabled, baselineSha, deployAgeSec, headSha, d
   if (deployAgeSec == null) return { proceed: true, reason: 'no-age-fail-open' };
   if (deployAgeSec > backstopSec) return { proceed: true, reason: 'staleness-backstop' };
   if (diffResult === 'dirty') return { proceed: true, reason: 'content-changed' };
-  if (dataDiffResult === 'dirty') return { proceed: true, reason: 'data-changed' };
+  if (dataDiffResult === 'dirty') {
+    if (showRefreshCovered === true && diffResult === 'clean') return { proceed: false, reason: SHOW_REFRESH_COVERED };
+    return { proceed: true, reason: 'data-changed' };
+  }
   if (diffResult === 'clean') return { proceed: false, reason: 'content-gate' };
   return { proceed: true, reason: 'diff-error-fail-open' };
 }
@@ -515,6 +547,73 @@ function compareDataShas(nowShas, baselineBlobShas, files = DATA_TRACKED_FILES) 
   return compared > 0 ? 'clean' : null;
 }
 
+// --- BRO-8397: show-refresh coverage lookup (only when wantsShowRefreshCheck) ---
+
+const VERCEL_API = 'https://api.vercel.com';
+
+async function vercelJson(token, url, fetchImpl) {
+  const res = await fetchImpl(`${VERCEL_API}${url}`, { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(8000) });
+  if (!res.ok) throw new Error(`Vercel ${res.status} for ${url.split('?')[0]}`);
+  return res.json();
+}
+
+/** Reader state of the LIVE production deployment from the Vercel project env; unknown on any failure. */
+async function fetchReaderOn({ token, deployCreatedMs, fetchImpl = fetch }) {
+  const cov = require('./show-refresh/coverage.js');
+  if (!token) return { on: null, why: 'no VERCEL_TOKEN' };
+  try {
+    const { PROJECT_ID } = require('./sync-vercel-env.js');
+    const list = await vercelJson(token, `/v9/projects/${PROJECT_ID}/env`, fetchImpl);
+    const entries = list && list.envs;
+    const prod = cov.readerEnvEntries(entries);
+    let value = null;
+    if (prod && prod.length === 1) {
+      const e = prod[0];
+      if (e.type === 'plain' && typeof e.value === 'string') value = e.value;
+      else if (e.type !== 'sensitive' && e.id) {
+        const one = await vercelJson(token, `/v1/projects/${PROJECT_ID}/env/${encodeURIComponent(e.id)}`, fetchImpl);
+        value = one && typeof one.value === 'string' ? one.value : null;
+      }
+    }
+    return cov.readerOnFromVercel({ entries, value, deployCreatedMs });
+  } catch (e) {
+    return { on: null, why: `lookup failed (${e.message})` };
+  }
+}
+
+/**
+ * Is this data-only change already served by the show-refresh store? Never
+ * throws; any failure is { covered: false }. Test seam GATE_SHOW_REFRESH_JSON:
+ * { readerOn, kill: {killed}, home: <value|null>, covered: <value|null> }.
+ */
+async function showRefreshCoverage({ baseline, nowShas, deployCreatedMs, env = process.env }) {
+  try {
+    const cov = require('./show-refresh/coverage.js');
+    const dataFiles = cov.changedDataFiles(nowShas, baseline.blobShas, DATA_TRACKED_FILES, blobShaMetaKey);
+    const asRead = (v) => (v == null ? { state: 'missing' } : { state: 'ok', value: v });
+    if (env.GATE_SHOW_REFRESH_JSON) {
+      const j = JSON.parse(env.GATE_SHOW_REFRESH_JSON);
+      return cov.evaluateCoverage({ readerOn: j.readerOn ?? null, kill: j.kill || null, homeRead: asRead(j.home), coveredRead: asRead(j.covered), nowShas, dataFiles, baselineSha: baseline.sha });
+    }
+    // Cheap checks first: nothing below runs when the change touches other files.
+    const pre = cov.evaluateCoverage({ readerOn: true, kill: { killed: false }, homeRead: null, coveredRead: null, nowShas, dataFiles, baselineSha: baseline.sha });
+    if (/^(data-unknown|no-data-change|not-covered-file)/.test(pre.why)) return pre;
+    const reader = await fetchReaderOn({ token: env.VERCEL_TOKEN, deployCreatedMs });
+    if (reader.on !== true) return { covered: false, why: `${reader.on === false ? 'reader-off' : 'reader-unknown'}: ${reader.why}` };
+    const store = require('./show-refresh/store.js');
+    const state = store.stateFromEnv(env, { timeoutMs: 5000 });
+    const storage = store.storeFromEnv(env, { timeoutMs: 5000 });
+    const [killRead, homeRead, coveredRead] = await Promise.all([
+      store.readJsonObject(state, store.PATHS.kill),
+      store.readJsonObject(state, store.PATHS.home),
+      store.readJsonObject(storage, store.PATHS.covered),
+    ]);
+    return cov.evaluateCoverage({ readerOn: true, kill: store.effectiveKill(killRead), homeRead, coveredRead, nowShas, dataFiles, baselineSha: baseline.sha });
+  } catch (e) {
+    return { covered: false, why: `lookup failed (${e.message})` };
+  }
+}
+
 function git(args, opts = {}) {
   return runGitOrThrow(args, { encoding: 'utf8', ...opts }); // BRO-7458: the fetch below has a timeout
 }
@@ -629,11 +728,13 @@ async function main() {
   // the non-schedule 'already-live' dedup branch needs it too (see decide()).
   // 'dirty' if EITHER tracked file's blob SHA differs from the live baseline.
   let dataDiffResult = null;
+  let nowShas = null;
   if (!gateDisabled) {
-    dataDiffResult = compareDataShas(await getDataBlobShas(), baseline.blobShas);
+    nowShas = await getDataBlobShas();
+    dataDiffResult = compareDataShas(nowShas, baseline.blobShas);
   }
 
-  const { proceed, reason } = decide({
+  const decideInput = {
     eventName,
     gateDisabled,
     baselineSha: baseline.sha,
@@ -644,7 +745,18 @@ async function main() {
     codeDiffResult: codeDiff.result,
     minIntervalSec,
     backstopSec,
-  });
+  };
+  let decision = decide(decideInput);
+  // BRO-8397: a routine data-only change the show-refresh store already serves
+  // skips the build. Looked up only when the decision is 'data-changed', and a
+  // strict no-op unless the reader is on for the live production deployment.
+  let refresh = null;
+  if (wantsShowRefreshCheck({ gateDisabled, skipDisabled: process.env.GATE_SHOW_REFRESH_SKIP_DISABLED === 'true', eventName, decision })) {
+    const deployCreatedMs = baseline.ageSec != null ? baselineFetchedAtMs - Number(baseline.ageSec) * 1000 : null;
+    refresh = await showRefreshCoverage({ baseline, nowShas, deployCreatedMs });
+    if (refresh.covered) decision = decide({ ...decideInput, showRefreshCovered: true });
+  }
+  const { proceed, reason } = decision;
 
   // BRO-8236: the pre-upload redundancy check may only stop a run whose live..HEAD range
   // positively has no CODE_PATHS change (a gate reason of content-changed does not say that:
@@ -660,6 +772,7 @@ async function main() {
   console.log(
     `::notice::[content-gate] ${verb} — reason=${reason} baseline=${short(baseline.sha)} head=${short(headSha)} deployAge=${baseline.ageSec != null ? Math.round(baseline.ageSec / 60) + 'm' : 'unknown'} event=${rawEvent} source=${process.env.GATE_SOURCE || '-'} urgent=${urgent} urgency=${urgency.why} codeChanged=${codeChanged == null ? '-' : codeChanged} dataDiff=${dataDiffResult || 'unknown'} minInterval=${Math.round(minIntervalSec / 60)}m backstop=${Math.round(backstopSec / 60)}m`
   );
+  if (refresh) console.log(`::notice::[content-gate] show-refresh covered=${refresh.covered} (${refresh.why})`);
   if (reveal) console.log(`::notice::[content-gate] reveal=${reveal.reveal} (${reveal.reason}${reveal.file ? ' ' + reveal.file : ''})`);
   if (diff.files.length) console.log(`::notice::[content-gate] changed site files (first ${diff.files.length}): ${diff.files.join(', ')}`);
 
@@ -673,7 +786,7 @@ async function main() {
 
 module.exports = {
   // Back-compat alias (pre-BRO-8198 name); the live value comes from resolveGateTiming().
-  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, isAlwaysShip, CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours, gateOutputLines, codeChangedFlag };
+  STALENESS_BACKSTOP_SEC: DEFAULT_STALENESS_BACKSTOP_SEC, decide, isUrgent, isAlwaysShip, CODE_PATHS, URGENT_SOURCES, ALWAYS_SHIP_SOURCES, DEFAULT_MIN_INTERVAL_MIN, classifyDiffExit, compareDataShas, SITE_PATHS, SITE_DATA_FILES, DEFAULT_STALENESS_BACKSTOP_SEC, DATA_TRACKED_FILES, resolveEnvNumber, resolveGateTiming, diffWindowOpen, freshnessAlertHours, gateOutputLines, codeChangedFlag, SHOW_REFRESH_COVERED, wantsShowRefreshCheck, showRefreshCoverage, fetchReaderOn };
 
 // `--meta-args`: print `<name>BlobSha=<git blob sha>` for each tracked file
 // present in data/, one per line, for vercel-deploy.yml to stamp onto the
