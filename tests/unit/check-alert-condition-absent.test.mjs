@@ -173,13 +173,17 @@ test('send-morning-digest builds digest-needs-you keys from the undecorated titl
 // the check on current data, not by waiting out the 168h ledger window. BRO-7669
 // set isRevival on The Ugly One a day after the alert; the ledger row stayed open
 // and the nightly recheck read the landed fix as "still firing".
-function runReplay(ledgerPath, conditionKey, shows, { texts = true } = {}) {
-  const showsPath = path.join(dir, `shows-${Math.random().toString(36).slice(2)}.json`);
+// reviews.json has the real shape: { _meta, reviews: [flat rows with showId] }.
+const OTHER_REVIEW = { showId: 'some-other-show', outletId: 'nytimes', criticName: 'A', assignedScore: 80, url: 'https://x/1' };
+function runReplay(ledgerPath, conditionKey, shows, { texts = true, reviews = [OTHER_REVIEW] } = {}) {
+  const tag = Math.random().toString(36).slice(2);
+  const showsPath = path.join(dir, `shows-${tag}.json`);
   fs.writeFileSync(showsPath, JSON.stringify({ shows }));
-  const reviewsPath = path.join(dir, 'reviews-empty.json');
-  fs.writeFileSync(reviewsPath, JSON.stringify({ reviews: [] }));
+  const reviewsPath = path.join(dir, `reviews-${tag}.json`);
+  fs.writeFileSync(reviewsPath, JSON.stringify({ _meta: {}, reviews }));
   const textsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-absent-texts-'));
-  if (texts) fs.mkdirSync(path.join(textsDir, 'some-show'));
+  fs.mkdirSync(path.join(textsDir, 'some-other-show'));
+  if (texts) for (const s of shows) fs.mkdirSync(path.join(textsDir, s.id), { recursive: true });
   const argv = alertAbsentCheckCmd(conditionKey).split(' ').slice(2);
   return spawnSync(process.execPath, [SCRIPT, ...argv], {
     env: { ...process.env, ALERT_LEDGER_PATH: ledgerPath, ALERT_REPLAY_SHOWS_PATH: showsPath, ALERT_REPLAY_REVIEWS_PATH: reviewsPath, ALERT_REPLAY_REVIEW_TEXTS_DIR: textsDir },
@@ -209,7 +213,30 @@ test('replay: exit 1 when the owning check still fails on current data', () => {
 
 test('replay: falls back to the ledger when it cannot decide (show gone, or review corpus absent)', () => {
   assert.equal(runReplay(replayLedger, REVIVAL_KEY, [ugly({ id: 'other-show' })]).status, 1, 'show missing -> ledger says firing');
-  assert.equal(runReplay(replayLedger, REVIVAL_KEY, [ugly()], { texts: false }).status, 1, 'no corpus -> no vacuous pass, ledger says firing');
+  assert.equal(runReplay(replayLedger, REVIVAL_KEY, [ugly()], { texts: false }).status, 1, "show's texts absent (partial corpus) -> no vacuous pass, ledger says firing");
+  assert.equal(runReplay(replayLedger, REVIVAL_KEY, [ugly({ isRevival: true })], { texts: false }).status, 0, 'a settling flag needs no texts');
+  assert.equal(runReplay(replayLedger, REVIVAL_KEY, [ugly({ status: 'closed' })]).status, 1, 'closed show: the check skips, so ledger decides');
+  assert.equal(runReplay(replayLedger, REVIVAL_KEY, [ugly({ isRevival: true })], { reviews: [] }).status, 1, 'empty reviews doc -> cannot decide');
+});
+
+// Ship-check P0: the raw reviews.json document was passed as reviewsDoc, so
+// every reviewsDoc[show.id] check read "No reviews yet" and passed vacuously.
+test('replay: reviews are grouped by show, so a violating review still fires', () => {
+  const key = 'opening-night-assigned-score-schema-ugly-2026';
+  const l = writeLedger('schema-ledger.json', { ...FRESH, [key]: { status: 'open', lastSeen: iso(3) } });
+  const bad = { showId: 'ugly-2026', outletId: 'guardian', criticName: 'B', assignedScore: '2/4 stars', url: 'https://x/2' };
+  const firing = runReplay(l, key, [ugly()], { reviews: [OTHER_REVIEW, bad] });
+  assert.equal(firing.status, 1, firing.stderr);
+  assert.match(firing.stderr, /re-ran the assigned-score-schema check.*expected number/);
+  const fixed = runReplay(l, key, [ugly()], { reviews: [OTHER_REVIEW, { ...bad, assignedScore: 50 }] });
+  assert.equal(fixed.status, 0, fixed.stderr);
+  assert.match(fixed.stdout, /All 1 review\(s\) have numeric assignedScore/);
+});
+
+test('replay: ALERT_REPLAY_DISABLED=1 restores the ledger-only verdict', () => {
+  const argv = alertAbsentCheckCmd(REVIVAL_KEY).split(' ').slice(2);
+  const r = spawnSync(process.execPath, [SCRIPT, ...argv], { env: { ...process.env, ALERT_LEDGER_PATH: replayLedger, ALERT_REPLAY_DISABLED: '1' }, encoding: 'utf8' });
+  assert.equal(r.status, 1, 'ledger row is open and fresh');
 });
 
 test('replay: only exact opening-night-<check>-<show> keys of listed checks are replayed', () => {

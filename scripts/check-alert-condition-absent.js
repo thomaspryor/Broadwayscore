@@ -64,9 +64,12 @@ const LEDGER_MAX_AGE_H = 48;
 // today's data. Only checks whose context is shows / reviewsDoc / review texts
 // (no drift state, no score history) and whose conditionKey is exactly
 // `opening-night-<name>-<show.id>` are listed. A replay that cannot decide
-// (show missing, data unreadable, corpus absent) falls back to the ledger.
+// (show missing or closed, data unreadable or stale, the show's review texts
+// absent) falls back to the ledger. Kill switch: ALERT_REPLAY_DISABLED=1.
+// needsReviewTexts: an ok verdict means something only if the show's own
+// review-texts dir was read, unless a `settledBy` flag short-circuits the check.
 const REPLAYABLE_OPENING_NIGHT_CHECKS = [
-  { name: 'revival-unverified', needsReviewTexts: true },
+  { name: 'revival-unverified', needsReviewTexts: true, settledBy: ['isRevival', 'revivalVerifiedNot'] },
   { name: 'placeholder-synopsis' },
   { name: 'stale-upcoming-tag' },
   { name: 'assigned-score-schema' },
@@ -85,36 +88,58 @@ function replayTarget(key) {
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 
+// Same grouping opening-night-checklist.js loadReviewsDoc applies: the checks
+// read context.reviewsDoc[show.id] (opening-night-checks/types.js), never the
+// flat reviews.json document (ship-check P0: the raw doc read "No reviews yet").
+function groupReviewsByShow(reviews) {
+  const doc = {};
+  for (const r of reviews) {
+    if (!r || !r.showId) continue;
+    (doc[r.showId] = doc[r.showId] || []).push(r);
+  }
+  return doc;
+}
+
 /**
  * Re-run the opening-night check that owns `key` against current data.
  * Paths come from ALERT_REPLAY_* env overrides (tests) or the repo defaults.
  * @returns {null | { code: 0|1, message: string }} null = cannot decide here
  */
 function replayOpeningNightCheck(key, env = process.env) {
+  if (env.ALERT_REPLAY_DISABLED === '1') return null;
   const target = replayTarget(key);
   if (!target) return null;
   const dataDir = path.join(__dirname, '..', 'data');
+  const showsPath = env.ALERT_REPLAY_SHOWS_PATH || path.join(dataDir, 'shows.json');
   let shows;
   let reviewsDoc;
   try {
-    const doc = readJson(env.ALERT_REPLAY_SHOWS_PATH || path.join(dataDir, 'shows.json'));
+    // Old core data proves nothing about today (same bound as the ledger).
+    if ((Date.now() - fs.statSync(showsPath).mtimeMs) / 36e5 > LEDGER_MAX_AGE_H) return null;
+    const doc = readJson(showsPath);
     shows = Array.isArray(doc) ? doc : doc.shows;
-    reviewsDoc = readJson(env.ALERT_REPLAY_REVIEWS_PATH || path.join(dataDir, 'reviews.json'));
+    const reviews = readJson(env.ALERT_REPLAY_REVIEWS_PATH || path.join(dataDir, 'reviews.json'));
+    const flat = Array.isArray(reviews) ? reviews : reviews && reviews.reviews;
+    if (!Array.isArray(flat) || flat.length === 0) return null;
+    reviewsDoc = groupReviewsByShow(flat);
   } catch {
     return null;
   }
   if (!Array.isArray(shows)) return null;
   const show = shows.find(s => s && s.id === target.showId);
-  if (!show) return null;
+  // A closed show is skipped by some checks: "ok" there is not "fixed".
+  if (!show || show.status === 'closed') return null;
   let reviewTextsRoot = env.ALERT_REPLAY_REVIEW_TEXTS_DIR || null;
   if (!reviewTextsRoot) {
     try { reviewTextsRoot = require('./lib/review-texts-dir').resolveReviewTextsDir(); } catch { reviewTextsRoot = null; }
   }
-  // A check that reads review texts would pass vacuously on an absent corpus.
-  if (target.needsReviewTexts) {
-    let entries = [];
-    try { entries = reviewTextsRoot ? fs.readdirSync(reviewTextsRoot) : []; } catch { entries = []; }
-    if (!entries.some(e => !e.startsWith('.'))) return null;
+  // A check that reads review texts passes vacuously when this show's texts
+  // are absent (empty or partial corpus), unless a settling flag decides it.
+  const settled = (target.settledBy || []).some(f => show[f] === true);
+  if (target.needsReviewTexts && !settled) {
+    let present = false;
+    try { present = !!reviewTextsRoot && fs.statSync(path.join(reviewTextsRoot, show.id)).isDirectory(); } catch { present = false; }
+    if (!present) return null;
   }
   let result;
   try {

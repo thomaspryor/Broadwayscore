@@ -598,6 +598,8 @@ async function main(argv = process.argv.slice(2)) {
       // BRO-8426 (shadow): a fail whose check cannot pass yet (a quiet window
       // not over) was stamped too early, not a regression. Recorded only, so
       // its hit rate can be measured before routing acts on it (CLAUDE.md §19).
+      // Read from this runner's checkout (ledger, recurrence snapshot), not
+      // checkout.wt: telemetry only, never a verdict, so a few minutes of skew is fine.
       if (r.status === 'fail' && t.verifyCmd) {
         try {
           const early = earliestPassFor(r.ranCmd || t.verifyCmd);
