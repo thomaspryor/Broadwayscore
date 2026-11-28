@@ -675,7 +675,7 @@ function regionalCityTitleKey(s: any): string | null {
   if (s.category !== 'regional') return null;
   const city = getRegionalTitleCity(s);
   if (!city) return null;
-  const year = String(s.id || s.slug || '').match(/-(\d{4})(?:-\d+)?$/)?.[1] || String(s.openingDate || '').slice(0, 4);
+  const year = String(s.id || '').match(/-(\d{4})$/)?.[1] || String(s.openingDate || '').slice(0, 4);
   return `${sharedTitleKey(s)}|${city.toLowerCase()}|${year}`;
 }
 export function getRegionalHouseForTitle(show: { title: string; category?: string; venue?: string; openingDate?: string; id?: string; slug?: string }): string | undefined {

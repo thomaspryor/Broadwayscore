@@ -29,7 +29,7 @@ const HARNESS = `
   };
   const { generateMetadata } = require('./src/app/show/[slug]/page.tsx');
   const base = { type: 'musical', status: 'closed', synopsis: '', criticScore: { score: 94, reviewCount: 20, tier1Count: 6, tier2Count: 6, reviews: [] } };
-  const meta = async (row) => { rows[row.slug] = { ...base, ...row, id: row.slug }; return generateMetadata({ params: Promise.resolve({ slug: row.slug }) }); };
+  const meta = async (row) => { rows[row.slug] = { ...base, ...row, id: row.id ?? row.slug }; return generateMetadata({ params: Promise.resolve({ slug: row.slug }) }); };
 `;
 
 test('city comes from the venue data: AU table, AU state suffix, UK table, US "House, City, ST"', () => {
@@ -84,6 +84,19 @@ test('a title that already names the city is not doubled; a venue with no city k
   `).split('\n').pop());
   assert.doesNotMatch(out.a, /Melbourne.*Melbourne/);
   assert.match(out.b, /^X Reviews: Rave 94\/100 \| Broadway Scorecard$/);
+});
+
+test('whole-word city check: "Bath" is not found inside "Bathsheba"; "Chicago" in Chicago is not doubled', () => {
+  const out = JSON.parse(run(`${HARNESS}
+    (async () => {
+      const a = await meta({ slug: 'bathsheba-regional-2026', title: 'Bathsheba', category: 'regional', venue: 'Theatre Royal, Bath, UK' });
+      const b = await meta({ slug: 'chicago-regional-2026', title: 'Chicago', category: 'regional', venue: 'Drury Lane, Chicago, IL' });
+      console.log(JSON.stringify({ a: a.title.absolute, b: b.title.absolute }));
+      process.exit(0);
+    })().catch(e => { console.error(e); process.exit(1); });
+  `).split('\n').pop());
+  assert.doesNotMatch(out.b, /Chicago Chicago/);
+  assert.match(out.b, /^Chicago Reviews/);
 });
 
 test('real data: no two indexable regional show pages share a <title> or og:title', (t) => {
