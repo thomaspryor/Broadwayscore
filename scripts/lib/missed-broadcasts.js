@@ -315,7 +315,7 @@ function wasCoveredByWeeklyRoundup(issues, showId, openingDate) {
   // same local show data, but never replace an explicitly missing/invalid date.
   if (openingDate === undefined) {
     try {
-      openingDate = require(require('./shows-json-path.js').showsJsonPath()).shows.find(s => s.id === showId)?.openingDate;
+      openingDate = require('./shows-json-path.js').readShowsList().find(s => s.id === showId)?.openingDate;
     } catch { return false; }
   }
   const calendarMs = value => {
