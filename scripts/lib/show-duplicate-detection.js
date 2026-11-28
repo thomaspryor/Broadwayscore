@@ -153,6 +153,7 @@ function findSameRunLeadingTitleDupes(shows) {
         const b = group[j];
         if (orderedTitleWords(a.title).join(' ') === orderedTitleWords(b.title).join(' ')) continue;
         if (isDeclaredTransferPair(a, b)) continue;
+        // venue-write-guard-ok: an audit report key (canonical venue text), never written to shows.json
         if (isSameRunLeadingTitle(a, b)) out.push({ a: a.id, b: b.id, venue: canonicalVenue(a) });
       }
     }
