@@ -95,6 +95,9 @@ function inheritedDateFromSibling(show, sameTitleSiblings) {
   if (!show || !Array.isArray(sameTitleSiblings)) return null;
   for (const sib of sameTitleSiblings) {
     if (!sib || sib.id === show.id) continue;
+    // BRO-8456: a tour umbrella opens when its first leg opens, so an umbrella and its own
+    // leg legitimately share the date. Only that parent/child pair is exempt.
+    if (sib.tourParent === show.id || show.tourParent === sib.id) continue;
     if (show.openingDate && sib.openingDate === show.openingDate) return { field: 'openingDate', siblingId: sib.id };
     if (show.previewsStartDate && sib.previewsStartDate === show.previewsStartDate) return { field: 'previewsStartDate', siblingId: sib.id };
   }

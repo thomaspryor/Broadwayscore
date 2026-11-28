@@ -143,3 +143,13 @@ test('enrich-west-end-dates.js routes BOTH change writers through the veto (wiri
   assert.match(src, /vetoBrokenDateChanges\(show, mergePressNightChanges/);
   assert.match(src, /vetoBrokenDateChanges\(infShow, inf\.changes/);
 });
+
+test('a tour umbrella and its own leg may share an openingDate; unrelated namesakes may not (BRO-8456)', async () => {
+  const { inheritedDateFromSibling } = await import('./show-date-integrity.js');
+  const umbrella = { id: 'pa-tour', openingDate: '2025-10-16' };
+  const leg = { id: 'pa-chicago', openingDate: '2025-10-16', tourParent: 'pa-tour' };
+  assert.equal(inheritedDateFromSibling(umbrella, [leg]), null);
+  assert.equal(inheritedDateFromSibling(leg, [umbrella]), null);
+  const other = { id: 'pa-other', openingDate: '2025-10-16' };
+  assert.ok(inheritedDateFromSibling(leg, [other]), 'a non-parent namesake still errors');
+});
