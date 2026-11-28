@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8455d",
   "planId": "51c1d539-f132-4cd4-baa4-949964c3c926",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T22:03:33.687Z",
   "submitter": {
     "name": null,
@@ -39,5 +39,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T22:19:49.181Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added job-cygnet-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
