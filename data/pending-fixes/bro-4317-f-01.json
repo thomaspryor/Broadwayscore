@@ -1,0 +1,343 @@
+{
+  "issueNumber": "bro-4317-f-01",
+  "planId": "f52e5afb-7591-410d-92c0-9ca834c38368",
+  "status": "applied",
+  "createdAt": "2026-10-13T03:28:25.640Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 1/3: clear location-only flags (orphaned-directory wrongShow, showId/directory wrongProduction, write-time ambiguous-production) on review files already rehomed to their production by publish date",
+    "steps": [
+      "set wrongShowManualClear on and-juliet-2022/theater-life--paulanne-simmons.json",
+      "set wrongProductionManualClear on and-juliet-2022/theater-life--paulanne-simmons.json",
+      "set wrongShowManualClear on appropriate-2023/theater-life--patrick-christiano.json",
+      "set wrongProductionManualClear on appropriate-2023/theater-life--patrick-christiano.json",
+      "set wrongShowManualClear on bug-2026/theater-life--david-sheward.json",
+      "set wrongProductionManualClear on bug-2026/theater-life--david-sheward.json",
+      "set wrongShowManualClear on doubt-2024/theater-life--paulanne-simmons.json",
+      "set wrongProductionManualClear on doubt-2024/theater-life--paulanne-simmons.json",
+      "set wrongProductionManualClear on heathers-the-musical-off-broadway-2025/theater-life--david-sheward.json",
+      "set wrongShowManualClear on just-in-time-2025/theater-life--samuel-l-leiter.json",
+      "set wrongProductionManualClear on just-in-time-2025/theater-life--samuel-l-leiter.json",
+      "set wrongShowManualClear on moulin-rouge-2019/theater-life--isa-goldberg.json",
+      "set wrongProductionManualClear on moulin-rouge-2019/theater-life--isa-goldberg.json",
+      "set wrongShowManualClear on once-upon-a-one-more-time-2023/theater-life--david-sheward.json",
+      "set wrongProductionManualClear on once-upon-a-one-more-time-2023/theater-life--david-sheward.json",
+      "set wrongShowManualClear on our-town-2024/theater-life--carol-rocamora.json",
+      "set wrongProductionManualClear on our-town-2024/theater-life--carol-rocamora.json",
+      "set wrongShowManualClear on our-town-2024/theater-life--isa-goldberg.json",
+      "set wrongProductionManualClear on our-town-2024/theater-life--isa-goldberg.json",
+      "set wrongShowManualClear on ragtime-2025/theater-life--david-sheward.json",
+      "set wrongProductionManualClear on ragtime-2025/theater-life--david-sheward.json",
+      "set wrongShowManualClear on ragtime-2025/theater-life--isa-goldberg.json",
+      "set wrongProductionManualClear on ragtime-2025/theater-life--isa-goldberg.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "and-juliet-2022/theater-life--paulanne-simmons.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into and-juliet-2022 by publishDate 2022-11-22T22:37:03 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "and-juliet-2022/theater-life--paulanne-simmons.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into and-juliet-2022 by publishDate 2022-11-22T22:37:03 against the run window; the flag only described the old folder (stale showId and-juliet would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "appropriate-2023/theater-life--patrick-christiano.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into appropriate-2023 by publishDate 2024-02-05T18:42:44 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "appropriate-2023/theater-life--patrick-christiano.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into appropriate-2023 by publishDate 2024-02-05T18:42:44 against the run window; the flag only described the old folder (stale showId appropriate would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bug-2026/theater-life--david-sheward.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into bug-2026 by publishDate 2026-01-08T22:48:20 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bug-2026/theater-life--david-sheward.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into bug-2026 by publishDate 2026-01-08T22:48:20 against the run window; the flag only described the old folder (stale showId bug would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "doubt-2024/theater-life--paulanne-simmons.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into doubt-2024 by publishDate 2024-03-13T22:28:28 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "doubt-2024/theater-life--paulanne-simmons.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into doubt-2024 by publishDate 2024-03-13T22:28:28 against the run window; the flag only described the old folder (stale showId doubt would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heathers-the-musical-off-broadway-2025/theater-life--david-sheward.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into heathers-the-musical-off-broadway-2025 by publishDate 2025-07-11T09:27:08 against the run window; the flag only described the old folder (stale showId heathers-the-musical-off-broadway would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-in-time-2025/theater-life--samuel-l-leiter.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into just-in-time-2025 by publishDate 2025-05-03T19:28:02 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-in-time-2025/theater-life--samuel-l-leiter.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into just-in-time-2025 by publishDate 2025-05-03T19:28:02 against the run window; the flag only described the old folder (stale showId just-in-time would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-2019/theater-life--isa-goldberg.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into moulin-rouge-2019 by publishDate 2019-08-09T08:00:41 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moulin-rouge-2019/theater-life--isa-goldberg.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into moulin-rouge-2019 by publishDate 2019-08-09T08:00:41 against the run window; the flag only described the old folder (stale showId moulin-rouge would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-upon-a-one-more-time-2023/theater-life--david-sheward.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into once-upon-a-one-more-time-2023 by publishDate 2023-06-22T21:00:00 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "once-upon-a-one-more-time-2023/theater-life--david-sheward.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into once-upon-a-one-more-time-2023 by publishDate 2023-06-22T21:00:00 against the run window; the flag only described the old folder (stale showId once-upon-a-one-more-time would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "our-town-2024/theater-life--carol-rocamora.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into our-town-2024 by publishDate 2024-10-18T08:57:22 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "our-town-2024/theater-life--carol-rocamora.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into our-town-2024 by publishDate 2024-10-18T08:57:22 against the run window; the flag only described the old folder (stale showId our-town would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "our-town-2024/theater-life--isa-goldberg.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into our-town-2024 by publishDate 2024-10-18T13:07:29 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "our-town-2024/theater-life--isa-goldberg.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into our-town-2024 by publishDate 2024-10-18T13:07:29 against the run window; the flag only described the old folder (stale showId our-town would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ragtime-2025/theater-life--david-sheward.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into ragtime-2025 by publishDate 2025-10-16T23:00:00 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ragtime-2025/theater-life--david-sheward.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into ragtime-2025 by publishDate 2025-10-16T23:00:00 against the run window; the flag only described the old folder (stale showId ragtime would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ragtime-2025/theater-life--isa-goldberg.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into ragtime-2025 by publishDate 2025-10-16T23:00:00 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ragtime-2025/theater-life--isa-goldberg.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into ragtime-2025 by publishDate 2025-10-16T23:00:00 against the run window; the flag only described the old folder (stale showId ragtime would otherwise re-trip the showId/directory audit)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T04:21:08.298Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "and-juliet-2022/theater-life--paulanne-simmons.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "and-juliet-2022/theater-life--paulanne-simmons.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "appropriate-2023/theater-life--patrick-christiano.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "appropriate-2023/theater-life--patrick-christiano.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bug-2026/theater-life--david-sheward.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bug-2026/theater-life--david-sheward.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "doubt-2024/theater-life--paulanne-simmons.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "doubt-2024/theater-life--paulanne-simmons.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heathers-the-musical-off-broadway-2025/theater-life--david-sheward.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-in-time-2025/theater-life--samuel-l-leiter.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-in-time-2025/theater-life--samuel-l-leiter.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "moulin-rouge-2019/theater-life--isa-goldberg.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "moulin-rouge-2019/theater-life--isa-goldberg.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-upon-a-one-more-time-2023/theater-life--david-sheward.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "once-upon-a-one-more-time-2023/theater-life--david-sheward.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "our-town-2024/theater-life--carol-rocamora.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "our-town-2024/theater-life--carol-rocamora.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "our-town-2024/theater-life--isa-goldberg.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "our-town-2024/theater-life--isa-goldberg.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ragtime-2025/theater-life--david-sheward.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ragtime-2025/theater-life--david-sheward.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ragtime-2025/theater-life--isa-goldberg.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ragtime-2025/theater-life--isa-goldberg.json wrongProductionManualClear: null -> true"
+    }
+  ]
+}

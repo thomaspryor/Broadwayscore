@@ -1,0 +1,198 @@
+{
+  "issueNumber": "bro-6716-c",
+  "planId": "9651cfb1-e124-4b02-9725-6bf4946e0d27",
+  "status": "applied",
+  "createdAt": "2026-11-01T12:18:13.434Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6716: refetch or re-ingest 10 last-year reviews whose stored body is empty, a banner, or a different article",
+    "steps": [
+      "Fill the empty TheaterScene body (refetch returns the 5,011-char review)",
+      "Rejection judged an aggregator excerpt; the full review is now on file (BRO-6716)",
+      "Rejection judged an aggregator excerpt; the full review is now on file (BRO-6716)",
+      "Rejection judged an aggregator excerpt; the full review is now on file (BRO-6716)",
+      "Rejection judged an aggregator excerpt; the full review is now on file (BRO-6716)",
+      "Replace the cookie-banner body with the review (BRO-6747 path)",
+      "Replace the stored travel article with the review (BRO-6716 wrong-body path)",
+      "Replace the stored hotel-advert body with the review (BRO-6716 wrong-body path)",
+      "Stored body is a Standard NT Live news story, not the review at this URL; delete so the re-ingest below writes the real review (\"A strong turn from Nicola Coughlan\")",
+      "Re-ingest the real Standard review",
+      "Stored body is The Stage's review of a Mischief Theatre Dickens spoof, not Avenue Q; delete so the re-ingest writes the Avenue Q review (paywalled: 4/5 stars, no text)",
+      "Re-ingest The Stage Avenue Q review (score-only 4/5)",
+      "Slot holds Gary Graff's 2026-10-09 feature interview (rejected not_a_review), which blocks his 2026-10-15 review of the Fisher Theatre stop",
+      "Ingest the Oakland Press review"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Fill the empty TheaterScene body (refetch returns the 5,011-char review)",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=titanique-2026 --url=https://theaterscene.com/reviews/titanique/ --outlet=theater-scene --critic=\"Deirdre Donovan\""
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/theater-scene--deirdre-donovan.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Rejection judged an aggregator excerpt; the full review is now on file (BRO-6716)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/theater-scene--deirdre-donovan.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-07-26T20:40:11.447Z",
+        "newValue": null,
+        "description": "Rejection judged an aggregator excerpt; the full review is now on file (BRO-6716)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/theater-scene--deirdre-donovan.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "Rejection judged an aggregator excerpt; the full review is now on file (BRO-6716)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titanique-2026/theater-scene--deirdre-donovan.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: The text is a plot summary/promotional description with no evaluative content whatsoever. It describes the premise of the show but contains no critical assessment, recommendation, or opinion about the production.; openai: The text provided is a brief plot description without any evaluative content or critical opinion.; gemini: The provided text is a plot summary or setup, not an evaluation of the show. It describes what happens in the show but offers no critical opinion or recommendation.",
+        "newValue": null,
+        "description": "Rejection judged an aggregator excerpt; the full review is now on file (BRO-6716)"
+      },
+      {
+        "type": "run-script",
+        "description": "Replace the cookie-banner body with the review (BRO-6747 path)",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=john-proctor-is-the-villain-west-end-2026 --url=https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/ --outlet=whatsonstage --critic=\"Sarah Crompton\""
+      },
+      {
+        "type": "run-script",
+        "description": "Replace the stored travel article with the review (BRO-6716 wrong-body path)",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=high-noon-west-end-2025 --url=https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html --outlet=standard --critic=\"Nick Curtis\""
+      },
+      {
+        "type": "run-script",
+        "description": "Replace the stored hotel-advert body with the review (BRO-6716 wrong-body path)",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-unlikely-pilgrimage-of-harold-fry-west-end-2026 --url=https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html --outlet=standard --critic=\"Nick Curtis\""
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-playboy-of-the-western-world-west-end-2025/standard--nick-curtis.json",
+        "description": "Stored body is a Standard NT Live news story, not the review at this URL; delete so the re-ingest below writes the real review (\"A strong turn from Nicola Coughlan\")"
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest the real Standard review",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-playboy-of-the-western-world-west-end-2025 --url=https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html --outlet=standard --critic=\"Nick Curtis\""
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "avenue-q-west-end-2026/thestage--tom-wicker.json",
+        "description": "Stored body is The Stage's review of a Mischief Theatre Dickens spoof, not Avenue Q; delete so the re-ingest writes the Avenue Q review (paywalled: 4/5 stars, no text)"
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest The Stage Avenue Q review (score-only 4/5)",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=avenue-q-west-end-2026 --url=https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london --outlet=thestage --critic=\"Tom Wicker\""
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "dirty-dancing-tour-2026/the-oakland-press--gary-graff.json",
+        "description": "Slot holds Gary Graff's 2026-10-09 feature interview (rejected not_a_review), which blocks his 2026-10-15 review of the Fisher Theatre stop"
+      },
+      {
+        "type": "run-script",
+        "description": "Ingest the Oakland Press review",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dirty-dancing-tour-2026 --url=https://www.theoaklandpress.com/2026/10/15/dirty-dancing-brings-iconic-film-to-stage-life-at-the-fisher-theatre/ --outlet=the-oakland-press --critic=\"Gary Graff\""
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T13:16:09.147Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/theater-scene--deirdre-donovan.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/theater-scene--deirdre-donovan.json rejectedAt: \"2026-07-26T20:40:11.447Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/theater-scene--deirdre-donovan.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/theater-scene--deirdre-donovan.json rejectionReasoning: \"claude: The text is a plot summary/promotional description with no evaluative content whatsoever. It describes the premise of the show but contains no critical assessment, recommendation, or opinion about the production.; openai: The text provided is a brief plot description without any evaluative content or critical opinion.; gemini: The provided text is a plot summary or setup, not an evaluation of the show. It describes what happens in the show but offers no critical opinion or recommendation.\" -> null"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-playboy-of-the-western-world-west-end-2025/standard--nick-curtis.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted avenue-q-west-end-2026/thestage--tom-wicker.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dirty-dancing-tour-2026/the-oakland-press--gary-graff.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

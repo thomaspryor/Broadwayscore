@@ -1,0 +1,51 @@
+{
+  "ccr": {
+    "id": "session_01RUGH9md1SaUKqCSSkvcDZt",
+    "title": "TRIAL (BRO-7370): guidance-change landing recipe",
+    "session_status": "SESSION_STATUS_PENDING",
+    "created_at": "2026-11-11T13:43:13.812090Z",
+    "updated_at": "2026-11-11T13:44:18.772745Z",
+    "environment_id": "env_017Yu6gFsuRJVhYFKhn1A15D",
+    "session_context": {
+      "sources": [
+        {
+          "git_repository": {
+            "url": "https://github.com/thomaspryor/Broadwayscore",
+            "revision": "claude/loving-curie-3n5ewk"
+          }
+        }
+      ],
+      "model": "claude-sonnet-5-5",
+      "permission_mode": "auto"
+    },
+    "origin": "claude_code_mcp_seed",
+    "permission_mode": "PERMISSION_MODE_AUTO",
+    "connection_status": "disconnected",
+    "tags": [
+      "bro-7370",
+      "config:auto-create-pr:draft",
+      "config:meta-mcp-own-entry",
+      "config:session-created",
+      "rule-trial"
+    ],
+    "external_metadata": {
+      "container_cc_version": "2.1.322",
+      "last_init_error": {
+        "at": "2026-11-11T13:44:18Z",
+        "error_kind": "init_script",
+        "error_type": "init_script",
+        "message": "Setup script failed",
+        "recoverable": "false",
+        "source_type": "<nil>",
+        "worker_epoch": "1"
+      },
+      "permission_mode": "auto",
+      "permission_mode_seq": "1"
+    },
+    "environment_kind": "anthropic_cloud",
+    "parent_session_id": "session_01RUGH9mJFaSmrzU6nEQnMPk",
+    "status_bucket": "SESSION_STATUS_BUCKET_WORKING",
+    "configured_model": "claude-sonnet-5-5"
+  },
+  "_note": "REAL get_session result (ccr wrapper kept) for trial child session_01RUGH9md1SaUKqCSSkvcDZt, read 2026-11-11 13:52Z. Its setup script exited 128 at 13:44:18Z. status_bucket still says WORKING; external_metadata.last_init_error is the only failure signal. BRO-7377."
+}

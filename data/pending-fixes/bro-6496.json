@@ -1,0 +1,124 @@
+{
+  "issueNumber": "bro-6496",
+  "planId": "1fb02431-3912-492b-a2e5-ecf56140eb99",
+  "status": "applied",
+  "createdAt": "2026-10-29T15:25:18.940Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6496 pre-COVID OB trial: add 3 Playbill-validated 2019 shows",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-bright-room-called-day-off-broadway-2019",
+          "title": "A Bright Room Called Day",
+          "slug": "a-bright-room-called-day-off-broadway-2019",
+          "venue": "Public Theater/Anspacher Theater",
+          "previewsStartDate": "2019-10-29",
+          "openingDate": "2019-11-19",
+          "closingDate": "2019-12-22",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/a-bright-room-called-daypublic-theater-anspacher-theater-2019-2020",
+            "https://nystagereview.com/2019/11/25/a-bright-room-called-day-a-call-to-action-refreshed/",
+            "https://www.newyorktheatreguide.com/reviews/review-of-tony-kushners-a-bright-room-called-day-at-the-public-theater",
+            "https://www.theatermania.com/news/tony-kushners-a-bright-room-called-day-corrects-its-past-mistakes-and-hopes-america-will-too_90219/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "fefu-and-her-friends-off-broadway-2019",
+          "title": "Fefu and Her Friends",
+          "slug": "fefu-and-her-friends-off-broadway-2019",
+          "venue": "Theatre for a New Audience @ Polonsky Shakespeare Center",
+          "previewsStartDate": "2019-11-16",
+          "openingDate": "2019-11-24",
+          "closingDate": "2019-12-12",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/fefu-and-her-friendstheatre-for-a-new-audience-polonsky-shakespeare-center-2019-2020",
+            "https://nystagereview.com/2019/11/24/fefu-and-her-friends-ahead-of-its-time/",
+            "https://www.theatermania.com/news/fefu-and-her-friends-can-misogyny-exist-in-a-play-without-any-men_90215/",
+            "https://exeuntnyc.com/reviews/review-fefu-friends-polonsky-shakespeare-center/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "rock-of-ages-off-broadway-2019",
+          "title": "Rock of Ages",
+          "slug": "rock-of-ages-off-broadway-2019",
+          "venue": "New World Stages Stage 3",
+          "previewsStartDate": null,
+          "openingDate": "2019-06-19",
+          "closingDate": "2020-03-11",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:census",
+          "discoveredAt": "2026-10-29T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/rock-of-ages-off-broadway-new-world-stages-stage-3-2019",
+            "https://nystagereview.com/2019/07/05/rock-of-ages-i-hate-myself-for-loving-you/",
+            "https://www.newyorktheatreguide.com/reviews/review-of-rock-of-ages-at-new-world-stages",
+            "https://www.theatermania.com/news/rock-of-ages-still-rocks_89228/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T17:22:12.813Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-bright-room-called-day-off-broadway-2019"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fefu-and-her-friends-off-broadway-2019"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added rock-of-ages-off-broadway-2019"
+    }
+  ],
+  "executedIn": "ci"
+}

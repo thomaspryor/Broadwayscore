@@ -1,0 +1,242 @@
+{
+  "issueNumber": "bro-5647-p-b",
+  "planId": "19f3f086-43f3-4b04-a412-9eebc58a0a24",
+  "status": "applied",
+  "createdAt": "2026-10-21T17:19:54.978Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From Dots' audit of the four Oct 21 ChatGPT reports and two Gemini reports, each quote re-read at its page (Forbes items rest on Dots' read of the publisher's text; Forbes blocks this machine). Old values from the private core data at ede3b1d. Dorian Gray's amended Form D: $8,297,262 raised of an $8.75M maximum, with Broadway News as the recoupment source. SpongeBob $800K weekly operating costs (Forbes). New: The Inheritance (up to $9.85M, did not recoup per Forbes, author a co-producer) and West Side Story 2020 (up to $16M, budget only).",
+    "steps": [
+      "Dorian Gray SEC amount, SpongeBob weekly cost",
+      "Add The Inheritance and West Side Story 2020"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-picture-of-dorian-gray-2025",
+        "showId": "the-picture-of-dorian-gray-2025",
+        "field": "capitalization",
+        "oldValue": 8750000,
+        "newValue": 8297262,
+        "description": "the-picture-of-dorian-gray-2025: the amount the amended filing says was raised"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-picture-of-dorian-gray-2025",
+        "showId": "the-picture-of-dorian-gray-2025",
+        "field": "capitalizationSource",
+        "oldValue": "SEC filing cited by Deadline (Jul 2025)",
+        "newValue": "SEC Form D/A (Dorian Broadway Limited Partnership, CIK 0002035619, signed Apr 21, 2025): total offering $8,750,000, total sold $8,297,262; \"Maximum capitalization was $8,750,000/Minimum capitalization was $7,750,000/Offering capitalized at $8,297,262\". Broadway News reported the $8.75 million maximum as its capitalization. https://www.sec.gov/Archives/edgar/data/2035619/000203561925000001/primary_doc.xml",
+        "description": "the-picture-of-dorian-gray-2025: quote the amended filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-picture-of-dorian-gray-2025",
+        "showId": "the-picture-of-dorian-gray-2025",
+        "field": "recoupedSource",
+        "oldValue": "Playbill article stating the show recouped its investment in its final week on Broadway",
+        "newValue": "Broadway News (Jul 2, 2025): \"The Broadway mounting of 'The Picture of Dorian Gray' has recouped its investment.\" It recouped in its final week (ended Jun 29, 2025). https://www.broadwaynews.com/the-picture-of-dorian-gray-recoups-broadway-investment/",
+        "description": "the-picture-of-dorian-gray-2025: cite the recoupment report"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-picture-of-dorian-gray-2025",
+        "showId": "the-picture-of-dorian-gray-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1lrqvuh/dorian_gray_recouped_the_investment_what_does/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1kge7ci/posttony_nominations_grosses_analysis_week_ending/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/07/picture-of-dorian-gray-sarah-snook-recoups-1236448100/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2035619/000203561925000001/primary_doc.xml",
+            "date": "2025-04-21"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/the-picture-of-dorian-gray-recoups-broadway-investment/",
+            "date": "2025-07-02"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/07/picture-of-dorian-gray-sarah-snook-recoups-1236448100/",
+            "date": null
+          }
+        ],
+        "description": "the-picture-of-dorian-gray-2025: SEC and trade sources replace the Reddit threads"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spongebob-squarepants-2017",
+        "showId": "spongebob-squarepants-2017",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 800000,
+        "description": "spongebob-squarepants-2017: Forbes weekly operating costs"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spongebob-squarepants-2017",
+        "showId": "spongebob-squarepants-2017",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Forbes (Lee Seymour, Sep 20, 2018, 'Three Broadway musicals closed last week'): weekly operating costs of $800,000 for SpongeBob SquarePants. https://www.forbes.com/sites/leeseymour/2018/09/20/three-broadway-musicals-closed-last-week-what-happened/",
+        "description": "spongebob-squarepants-2017: cost source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spongebob-squarepants-2017",
+        "showId": "spongebob-squarepants-2017",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "spongebob-squarepants-2017: operating costs, not an all-in break-even"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spongebob-squarepants-2017",
+        "showId": "spongebob-squarepants-2017",
+        "field": "costMethodology",
+        "oldValue": null,
+        "newValue": "trade-reported",
+        "description": "spongebob-squarepants-2017: trade-reported"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-inheritance-2019",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "designationBasis": "reported-loss",
+          "recouped": false,
+          "recoupedSource": "Forbes (Lee Seymour, Jun 29, 2021): The Inheritance did not recoup its Broadway capital. The author discloses he was one of its producers. https://www.forbes.com/sites/leeseymour/2021/06/29/harry-potter-returns-to-broadway-with-a-facelift/",
+          "capitalization": 9850000,
+          "capitalizationBasis": "maximum",
+          "capitalizationSource": "Broadway News (Feb 20, 2020): \"The play was capitalized for up to $9.85 million, according to a filing with the Securities and Exchange Commission.\" TheaterMania (Mar 13, 2020) put it at around $9 million; Broadway Journal reported a $10 million budget. https://www.broadwaynews.com/the-inheritance-will-end-its-broadway-run-in-march/",
+          "notes": "Matthew Lopez's two-part play at the Ethel Barrymore (opened Nov 17, 2019), Tony winner for Best Play. It had already set a Mar 15, 2020 closing when the shutdown ended the run on Mar 11. Capitalized for up to $9.85 million; it did not recoup.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-inheritance-will-end-its-broadway-run-in-march/",
+              "date": "2020-02-20"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.theatermania.com/news/why-wasnt-the-inheritance-a-hit-in-new-york_90748/",
+              "date": "2020-03-13"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/leeseymour/2021/06/29/harry-potter-returns-to-broadway-with-a-facelift/",
+              "date": "2021-06-29"
+            }
+          ]
+        },
+        "description": "the-inheritance-2019: add (did not recoup)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "west-side-story-2020",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 16000000,
+          "capitalizationBasis": "maximum",
+          "capitalizationSource": "Broadway News (Jul 13, 2021): \"The show was capitalized for up to $16 million.\" CBS's 60 Minutes (Feb 16, 2020) said the production cost more than $15 million. https://www.broadwaynews.com/west-side-story-hangmen-receive-government-boost-for-reopening/",
+          "notes": "Ivo van Hove's revival at the Broadway Theatre (opened Feb 20, 2020), stopped by the Mar 2020 shutdown after 24 regular performances and never reopened. Capitalized for up to $16 million; it received a $10 million Shuttered Venue Operators Grant. No investor outcome has been reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/west-side-story-hangmen-receive-government-boost-for-reopening/",
+              "date": "2021-07-13"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.cbsnews.com/news/west-side-story-broadway-behind-scenes-60-minutes-2020-02-16/",
+              "date": "2020-02-16"
+            }
+          ]
+        },
+        "description": "west-side-story-2020: add (budget only)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T17:27:12.518Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for spongebob-squarepants-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for spongebob-squarepants-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for spongebob-squarepants-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for spongebob-squarepants-2017"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-inheritance-2019 (Did Not Recoup)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added west-side-story-2020 (TBD)"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-5192",
+  "planId": "e200b03c-d7b6-40ac-89cf-4520560cd61f",
+  "status": "applied",
+  "createdAt": "2026-10-17T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the 2022 Roundabout Theatre Company production of You Will Get Sick (Noah Diaz) at the Laura Pels Theatre as a closed Off-Broadway show. Playbill: previews Oct 14, opened Nov 6, closed Dec 11, 2022.",
+    "steps": [
+      "Append you-will-get-sick-off-broadway-2022"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "you-will-get-sick-off-broadway-2022",
+          "title": "You Will Get Sick",
+          "slug": "you-will-get-sick-off-broadway-2022",
+          "venue": "Laura Pels Theatre",
+          "openingDate": "2022-11-06",
+          "closingDate": "2022-12-11",
+          "previewsStartDate": "2022-10-14",
+          "status": "closed",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "A young man with a life-changing medical diagnosis hires an older woman to break the news to his loved ones, and the arrangement changes both their lives. Noah Diaz's New York debut, presented by Roundabout Theatre Company.",
+          "openingDateSource": "playbill",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [
+            {
+              "name": "Linda Lavin",
+              "role": "Performer"
+            },
+            {
+              "name": "Daniel K. Isaac",
+              "role": "Performer"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Noah Diaz",
+              "role": "Playwright"
+            },
+            {
+              "name": "Sam Pinkleton",
+              "role": "Director"
+            }
+          ],
+          "ibdbRevivalChecked": true
+        },
+        "description": "Add the 2022 Laura Pels run of You Will Get Sick (Playbill-verified)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T11:29:51.285Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added you-will-get-sick-off-broadway-2022"
+    }
+  ]
+}

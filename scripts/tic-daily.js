@@ -1,0 +1,130 @@
+#!/usr/bin/env node
+/**
+ * Daily pickup of new productions from theatreinchicago.com / theatreindc.com (BRO-6518, BRO-6771).
+ *
+ *   node scripts/tic-daily.js [--dry-run] [--max=15]      # stage + write data/shows.json
+ *   node scripts/tic-daily.js --dispatch-ingest          # after the core-data push: ingest + score
+ *   node scripts/tic-daily.js --city=dc [...]            # theatreindc.com (BRO-6771); default is chicago
+ *
+ * Step 1 reads /reviewlistings.php, evaluates ids not yet in shows.json with the
+ * same rules as the backfill (scripts/lib/tic-stage.js), appends accepted
+ * productions to data/shows.json through applyAddShow, and records what it
+ * decided in data/audit/tic-daily-seen.json. Step 2 runs only once the new rows
+ * are in the private repo (ingest-urls checks out core data), and dispatches one
+ * ingest-urls run per new show; scoring follows automatically.
+ * Wired into scrape-new-aggregators.yml (advisory, continue-on-error).
+ */
+
+require('./lib/cli-help').exitOnHelp(module);
+const fs = require('fs');
+const path = require('path');
+const { fetchPage, cleanup } = require('./lib/scraper');
+const tic = require('./lib/theatreinchicago');
+const { runDaily, saveAddedShows, drainIngestQueue, withBackfill } = require('./lib/tic-daily');
+const { getCity, assertRunnable } = require('./lib/tic-cities');
+const { openingDateFor } = require('./tic-stage-shows');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
+
+const ROOT = path.join(__dirname, '..');
+const PROMOTED = path.join(ROOT, 'data', 'audit', 'last-promotion-ids.json');
+
+const flag = (n) => process.argv.includes(`--${n}`);
+function arg(name, def) {
+  const hit = process.argv.slice(2).find((a) => a.startsWith(`--${name}=`));
+  return hit ? hit.split('=').slice(1).join('=') : def;
+}
+const CITY = getCity(arg('city', 'chicago'));
+assertRunnable(CITY, flag('dry-run'));
+const SEEN = path.join(ROOT, CITY.files.seen);
+const ADDED = path.join(ROOT, CITY.files.added);
+const readJson = (f, def) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return def; } };
+
+async function stageAndAdd() {
+  // Through the write guard (BRO-8054): it locks against concurrent writers and repairs
+  // title artifacts on the rows this run adds. A bare writeFileSync skipped both.
+  // A missing file is a quiet no-op; a file that exists but will not load (corrupt JSON, lock
+  // timeout) is a failure and must say so instead of looking like a quiet day.
+  let doc = null;
+  try { doc = loadShows(); } catch (e) { if (e && e.code !== 'ENOENT') throw e; }
+  if (!doc || !Array.isArray(doc.shows)) { console.log('[tic-daily] data/shows.json missing, nothing to do'); return; }
+  const shows = doc.shows;
+  const seen = readJson(SEEN, {});
+  const today = new Date().toISOString().slice(0, 10);
+  // Reset first so a failure below can never leave yesterday's list for the ingest step.
+  // `pending` = shows whose ingest dispatch was deferred by the ingest-urls cap on an earlier run.
+  const pending = readJson(ADDED, {}).pending || [];
+  if (!flag('dry-run')) { fs.mkdirSync(path.dirname(ADDED), { recursive: true }); fs.writeFileSync(ADDED, JSON.stringify({ on: today, added: [], pending }) + '\n'); }
+  // --ids=1,2: evaluate specific production ids that the live listing no longer shows (BRO-8454 backfill).
+  const only = arg('ids') ? arg('ids').split(',').map(Number).filter(Boolean) : null;
+  // data/audit/tic-backfill-ids.json {"dc":[...]}: past runs the pickup missed, drained under the daily cap.
+  const backfill = (readJson(path.join(ROOT, 'data', 'audit', 'tic-backfill-ids.json'), {})[CITY.key]) || [];
+  const live = only ? [] : tic.parseListing((await fetchPage(`${CITY.base}/reviewlistings.php`)).content);
+  const listing = withBackfill(live, only || backfill);
+  console.log(`[tic-daily] ${listing.length} listed`);
+  let reviewUrls = null;
+  const loadReviewUrls = () => {
+    const m = new Map();
+    const r = readJson(path.join(ROOT, 'data', 'reviews.json'), {}).reviews || [];
+    for (const x of (Array.isArray(r) ? r : Object.values(r))) { if (!x || !x.url) continue; if (!m.has(x.showId)) m.set(x.showId, new Set()); m.get(x.showId).add(x.url); }
+    return m;
+  };
+  const io = {
+    page: async (id) => tic.parseReviewsPage((await fetchPage(tic.reviewsUrl(id, 'show', CITY.base), { skipVerify: true })).content, id, CITY.base),
+    detail: async (page) => tic.parseDetailPage((await fetchPage(tic.detailUrl(page.id, page.slug, CITY.base), { skipVerify: true })).content),
+    dates: (page) => openingDateFor(page),
+    // URLs already ingested for a show (derived reviews.json): lets the remount check tell a new season from a late review.
+    knownUrls: (showId) => { reviewUrls = reviewUrls || loadReviewUrls(); return reviewUrls.get(showId) || new Set(); },
+  };
+  const { added, topups = [], seen: nextSeen } = await runDaily({ listing, shows, seen, today, io, max: Number(arg('max', 15)), log: console.log, city: CITY });
+  console.log(`[tic-daily] added ${added.length}, topped up ${topups.length}`);
+  // Top-ups ride the ingest queue (ingest-urls skips links it already has); they are not new shows, so no image promotion.
+  // A top-up already waiting for a slot is replaced by the newer, longer link list (its listing count is what we just recorded).
+  for (const t of topups) { const i = pending.findIndex((p) => p.id === t.id); if (i >= 0) pending[i] = t; else pending.push(t); }
+  if (flag('dry-run')) return;
+  fs.mkdirSync(path.dirname(SEEN), { recursive: true });
+  // shows.json first: a crash after it only re-evaluates the ids (dedupe catches them),
+  // whereas audit files written first would claim shows that never landed.
+  // Rows the guard refused or could not write drop out of `landed`; the rest still ship, and their
+  // seen entries are settled per row (see saveAddedShows).
+  const landed = added.length ? saveAddedShows(doc, added, { save: (d) => saveShows(d, { reason: 'tic-daily' }), nextSeen, today, log: (m) => console.log(`::warning::tic-daily: ${m}`) }) : added;
+  fs.writeFileSync(SEEN, JSON.stringify(nextSeen, null, 1) + '\n');
+  fs.writeFileSync(ADDED, JSON.stringify({ on: today, added: landed, pending }, null, 1) + '\n');
+  if (!landed.length) return;
+  // Let the existing image-fetch step pick the new ids up.
+  const prev = readJson(PROMOTED, { promoted: [] });
+  prev.promoted = (prev.promoted || []).concat(landed.map((a) => ({ id: a.id, source: CITY.discoverySource })));
+  fs.writeFileSync(PROMOTED, JSON.stringify(prev, null, 2) + '\n');
+}
+
+// Entries are {url, critic}; plain strings are URLs left in `pending` by runs before BRO-6518.
+function ingestLines(entries) {
+  const { formatIngestLine } = require('./lib/ingest-url-line');
+  return entries.map((e) => (typeof e === 'string' ? e : formatIngestLine({ url: e.url, critic: e.critic }))).join('\n');
+}
+
+async function dispatchIngest() {
+  const { dispatch } = require('./lib/rest-dispatch');
+  const { checkCap } = require('./lib/workflow-queue-cap');
+  const rec = readJson(ADDED, { added: [] });
+  const today = new Date().toISOString().slice(0, 10);
+  // Today's additions plus anything an earlier run had to defer (the ingest-urls cap, BRO-6532).
+  const queue = [...(rec.pending || []), ...(rec.on === today ? rec.added : [])];
+  // BRO-8454: wait for a slot instead of giving up at the first deferral (LA starved behind Chicago).
+  const { left } = await drainIngestQueue({
+    queue,
+    check: () => checkCap({ workflow: 'ingest-urls.yml' }),
+    dispatchOne: (a) => dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: a.id, urls: ingestLines(a.urls), caller: 'tic-daily' } }),
+    maxWaitMs: Number(process.env.TIC_INGEST_MAX_WAIT_MIN || 7) * 60000,
+    log: (m) => console.log(`[tic-daily] ${m}`),
+  });
+  fs.writeFileSync(ADDED, JSON.stringify({ on: rec.on, added: rec.added, pending: left }, null, 1) + '\n');
+  console.log(`[tic-daily] ${queue.length - left.length} dispatched, ${left.length} left for the next run`);
+}
+
+async function main() {
+  if (flag('dispatch-ingest')) return dispatchIngest();
+  await stageAndAdd();
+  await cleanup();
+}
+
+if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

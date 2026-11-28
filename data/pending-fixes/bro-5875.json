@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5875",
+  "planId": "dea77be9-c27e-49b0-898c-b338c1831ee5",
+  "status": "applied",
+  "createdAt": "2026-10-21T22:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5875: strip the Time Out icon-chevron breadcrumb and Chronicle Toggle Search drawer the BRO-5859 strip missed, and flag the Scottish Ballet Bachtrack review filed under Oh, Mary! West End as wrongShow",
+    "steps": [
+      "Run strip-leading-site-nav.js --apply (dry run: 4 rows, 3 Time Out + 1 Chronicle)",
+      "Set wrongShow true on oh-mary-west-end-2025/bachtrack--unknown.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "strip-leading-site-nav.js",
+        "args": "--apply",
+        "description": "BRO-5875: cut the two nav prefixes the first strip missed; no verdict text is touched"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-west-end-2025/bachtrack--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5875: the Bachtrack text is a Scottish Ballet 'Mary Queen of Scots' review from New York, not Oh, Mary!"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T21:48:23.615Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-leading-site-nav.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-west-end-2025/bachtrack--unknown.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

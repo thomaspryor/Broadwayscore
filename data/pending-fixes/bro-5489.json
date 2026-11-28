@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-5489",
+  "planId": "1478588e-d76a-45b5-8043-d4c7a640e13b",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5489: loureviews--louise-penn.json holds the 10/18 'show focus' interview (rejected not_a_review) after the url flip-flopped off the real 10/16 review; delete it so the 10/16 review can be ingested as its own file.",
+    "steps": [
+      "delete cadel-lungs-on-legs-west-end-2026/loureviews--louise-penn.json (interview text, rejected not_a_review)",
+      "dispatch ingest-urls.yml for https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cadel-lungs-on-legs-west-end-2026/loureviews--louise-penn.json",
+        "destPath": null,
+        "description": "Interview/promo text, rejected not_a_review; the real 10/16 review is missing and cannot ingest while this file holds the url"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T19:34:23.508Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cadel-lungs-on-legs-west-end-2026/loureviews--louise-penn.json"
+    }
+  ],
+  "executedIn": "ci"
+}

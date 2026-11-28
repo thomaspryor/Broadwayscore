@@ -1,0 +1,1121 @@
+{
+  "schemaVersion": 1,
+  "showId": "now-you-see-me-live-2026",
+  "night": "2026-11-11",
+  "market": "broadway",
+  "embargoAt": "2026-11-12T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-12T02:30:04.503Z",
+    "endedAt": "2026-11-12T09:00:42.203Z",
+    "intervalMin": 5,
+    "samples": 77,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-12T08:55:05.994Z",
+    "lastOkSampleAt": "2026-11-12T08:55:05.994Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": 0,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-12T04:00:08.587Z",
+    "2h": "2026-11-12T05:04:58.152Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-12T05:00:26.840Z",
+      "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-12T09:00:32.203Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-12T05:00:26.921Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "no live lane lease"
+      },
+      {
+        "at": "2026-11-12T09:00:32.296Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-12T09:00:35.682Z",
+    "files": [
+      {
+        "file": "broadwaynews--unknown.json",
+        "outletId": "broadwaynews",
+        "outlet": "Broadway News",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-11T01:34:35.695Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-10",
+        "url": "broadwaynews.com/now-you-see-me-live-will-play-the-al-hirschfeld-theatre-this-fall",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "deadline--anthony-dalessandro.json",
+        "outletId": "deadline",
+        "outlet": "Deadline",
+        "critic": "Anthony D'Alessandro",
+        "firstSeenAt": "2026-11-11T02:27:36.112Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-21",
+        "url": "deadline.com/2026/10/you-can-see-everything-clayface-box-office-1237168607",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "stagezine--scott-harrah.json",
+        "outletId": "stagezine",
+        "outlet": "StageZine",
+        "critic": "Scott Harrah",
+        "firstSeenAt": "2026-11-11T01:08:06.890Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-12",
+        "url": "stagezine.com/now-you-see-me-live-broadway",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "theatermania--david-gordon.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "David Gordon",
+        "firstSeenAt": "2026-11-11T01:08:14.547Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-10",
+        "url": "theatermania.com/news/now-you-see-me-live-sets-eight-week-broadway-run-for-the-holidays_1853183",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      }
+    ]
+  },
+  "pipelineRuns": {
+    "capturedAt": "2026-11-12T09:00:42.140Z",
+    "window": {
+      "from": "2026-11-12T01:00:00Z",
+      "to": "2026-11-12T06:00:00Z"
+    },
+    "complete": true,
+    "runs": [
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-12T00:06:56Z",
+        "updatedAt": "2026-11-12T04:24:27Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T00:08:06Z",
+        "updatedAt": "2026-11-12T01:00:28Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T00:50:21Z",
+        "updatedAt": "2026-11-12T01:01:07Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T00:50:54Z",
+        "updatedAt": "2026-11-12T01:03:59Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — hamlet-hail-to-the-thief-off-west-end-2026",
+        "startedAt": "2026-11-12T00:50:55Z",
+        "updatedAt": "2026-11-12T01:10:16Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-12T00:51:11Z",
+        "updatedAt": "2026-11-12T01:18:18Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — cloud-9-national-west-end-2026",
+        "startedAt": "2026-11-12T00:51:20Z",
+        "updatedAt": "2026-11-12T01:00:15Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator targeted now-you-see-me-live-2026 (broadway)",
+        "startedAt": "2026-11-12T01:00:08Z",
+        "updatedAt": "2026-11-12T04:35:18Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T01:01:16Z",
+        "updatedAt": "2026-11-12T01:09:24Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T01:03:57Z",
+        "updatedAt": "2026-11-12T01:19:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T01:05:50Z",
+        "updatedAt": "2026-11-12T01:17:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T01:09:16Z",
+        "updatedAt": "2026-11-12T01:18:27Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T01:17:37Z",
+        "updatedAt": "2026-11-12T01:24:42Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T01:25:05Z",
+        "updatedAt": "2026-11-12T01:34:15Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T01:26:27Z",
+        "updatedAt": "2026-11-12T01:36:17Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T01:33:35Z",
+        "updatedAt": "2026-11-12T02:37:39Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-12T01:33:44Z",
+        "updatedAt": "2026-11-12T02:02:18Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — cloud-9-national-west-end-2026",
+        "startedAt": "2026-11-12T01:33:53Z",
+        "updatedAt": "2026-11-12T01:42:05Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator targeted now-you-see-me-live-2026 (broadway)",
+        "startedAt": "2026-11-12T01:35:42Z",
+        "updatedAt": "2026-11-12T04:35:19Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T01:36:35Z",
+        "updatedAt": "2026-11-12T02:56:46Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T01:37:09Z",
+        "updatedAt": "2026-11-12T01:47:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T01:37:10Z",
+        "updatedAt": "2026-11-12T01:47:05Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T01:47:13Z",
+        "updatedAt": "2026-11-12T01:57:05Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-12T01:47:29Z",
+        "updatedAt": "2026-11-12T01:48:18Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T01:49:23Z",
+        "updatedAt": "2026-11-12T01:57:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T01:52:50Z",
+        "updatedAt": "2026-11-12T02:03:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T01:54:53Z",
+        "updatedAt": "2026-11-12T02:05:24Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-12T02:00:04Z",
+        "updatedAt": "2026-11-12T04:35:16Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T02:01:21Z",
+        "updatedAt": "2026-11-12T03:23:11Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T02:01:30Z",
+        "updatedAt": "2026-11-12T02:10:59Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T02:03:02Z",
+        "updatedAt": "2026-11-12T02:20:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T02:03:50Z",
+        "updatedAt": "2026-11-12T02:13:30Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T02:06:38Z",
+        "updatedAt": "2026-11-12T02:16:47Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-12T02:07:01Z",
+        "updatedAt": "2026-11-12T02:07:49Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T02:11:48Z",
+        "updatedAt": "2026-11-12T02:26:55Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T02:12:51Z",
+        "updatedAt": "2026-11-12T02:28:54Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-12T02:18:24Z",
+        "updatedAt": "2026-11-12T02:48:31Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — cloud-9-national-west-end-2026",
+        "startedAt": "2026-11-12T02:18:33Z",
+        "updatedAt": "2026-11-12T02:27:39Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T02:19:23Z",
+        "updatedAt": "2026-11-12T02:29:26Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T02:20:42Z",
+        "updatedAt": "2026-11-12T02:30:58Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T02:27:13Z",
+        "updatedAt": "2026-11-12T02:37:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T02:28:34Z",
+        "updatedAt": "2026-11-12T02:38:20Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — curtains-off-broadway-2026",
+        "startedAt": "2026-11-12T02:32:10Z",
+        "updatedAt": "2026-11-12T02:45:16Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — tosca-english-national-opera-west-end-2026",
+        "startedAt": "2026-11-12T02:32:11Z",
+        "updatedAt": "2026-11-12T02:46:09Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — curtains-off-broadway-2026",
+        "startedAt": "2026-11-12T02:32:12Z",
+        "updatedAt": "2026-11-12T02:55:10Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — tango-after-dark-off-west-end-2026",
+        "startedAt": "2026-11-12T02:32:14Z",
+        "updatedAt": "2026-11-12T02:49:39Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — tosca-english-national-opera-west-end-2026",
+        "startedAt": "2026-11-12T02:32:15Z",
+        "updatedAt": "2026-11-12T02:54:12Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T02:36:33Z",
+        "updatedAt": "2026-11-12T02:46:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T02:38:37Z",
+        "updatedAt": "2026-11-12T02:49:57Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T02:44:15Z",
+        "updatedAt": "2026-11-12T02:55:50Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T02:45:13Z",
+        "updatedAt": "2026-11-12T02:58:16Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T02:46:06Z",
+        "updatedAt": "2026-11-12T02:49:37Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T02:49:35Z",
+        "updatedAt": "2026-11-12T03:12:35Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T02:53:19Z",
+        "updatedAt": "2026-11-12T03:03:36Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T02:56:43Z",
+        "updatedAt": "2026-11-12T04:02:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T02:57:22Z",
+        "updatedAt": "2026-11-12T03:07:31Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T03:02:26Z",
+        "updatedAt": "2026-11-12T03:14:09Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T03:02:47Z",
+        "updatedAt": "2026-11-12T03:53:13Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-12T03:02:57Z",
+        "updatedAt": "2026-11-12T03:32:22Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — cloud-9-national-west-end-2026",
+        "startedAt": "2026-11-12T03:03:06Z",
+        "updatedAt": "2026-11-12T03:10:22Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T03:11:52Z",
+        "updatedAt": "2026-11-12T03:24:28Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T03:12:32Z",
+        "updatedAt": "2026-11-12T03:22:33Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T03:12:34Z",
+        "updatedAt": "2026-11-12T04:02:43Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T03:13:50Z",
+        "updatedAt": "2026-11-12T03:24:29Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T03:19:28Z",
+        "updatedAt": "2026-11-12T03:32:51Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T03:22:49Z",
+        "updatedAt": "2026-11-12T03:32:57Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T03:28:46Z",
+        "updatedAt": "2026-11-12T03:38:33Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T03:30:03Z",
+        "updatedAt": "2026-11-12T03:42:06Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-12T03:33:14Z",
+        "updatedAt": "2026-11-12T03:34:03Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T03:40:38Z",
+        "updatedAt": "2026-11-12T03:50:50Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T03:44:17Z",
+        "updatedAt": "2026-11-12T03:52:06Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — act-of-god-off-west-end-2026",
+        "startedAt": "2026-11-12T03:47:41Z",
+        "updatedAt": "2026-11-12T04:09:01Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — cloud-9-national-west-end-2026",
+        "startedAt": "2026-11-12T03:47:50Z",
+        "updatedAt": "2026-11-12T03:55:15Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T03:49:11Z",
+        "updatedAt": "2026-11-12T04:36:25Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T03:49:20Z",
+        "updatedAt": "2026-11-12T03:57:28Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T03:50:01Z",
+        "updatedAt": "2026-11-12T03:59:21Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T03:57:23Z",
+        "updatedAt": "2026-11-12T04:04:56Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T04:00:15Z",
+        "updatedAt": "2026-11-12T04:10:15Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T04:02:40Z",
+        "updatedAt": "2026-11-12T04:35:36Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — adaku-part-2-off-broadway-2026",
+        "startedAt": "2026-11-12T04:04:30Z",
+        "updatedAt": "2026-11-12T04:16:45Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — adirondack-chair-circle-regional-2026",
+        "startedAt": "2026-11-12T04:04:32Z",
+        "updatedAt": "2026-11-12T04:18:01Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — adaku-part-2-off-broadway-2026",
+        "startedAt": "2026-11-12T04:04:33Z",
+        "updatedAt": "2026-11-12T04:23:37Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — adirondack-chair-circle-regional-2026",
+        "startedAt": "2026-11-12T04:04:35Z",
+        "updatedAt": "2026-11-12T04:25:40Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T04:05:56Z",
+        "updatedAt": "2026-11-12T04:14:35Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-morbs-off-broadway-2026",
+        "startedAt": "2026-11-12T04:06:50Z",
+        "updatedAt": "2026-11-12T04:17:32Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T04:13:13Z",
+        "updatedAt": "2026-11-12T04:22:20Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T04:16:42Z",
+        "updatedAt": "2026-11-12T04:32:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T04:16:53Z",
+        "updatedAt": "2026-11-12T04:27:27Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T04:17:29Z",
+        "updatedAt": "2026-11-12T04:17:59Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T04:17:57Z",
+        "updatedAt": "2026-11-12T04:47:22Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T04:20:09Z",
+        "updatedAt": "2026-11-12T04:30:37Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T04:27:59Z",
+        "updatedAt": "2026-11-12T04:36:52Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T04:28:01Z",
+        "updatedAt": "2026-11-12T04:38:04Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — as-you-like-it-regional-2026",
+        "startedAt": "2026-11-12T04:29:11Z",
+        "updatedAt": "2026-11-12T04:41:50Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T04:29:46Z",
+        "updatedAt": "2026-11-12T04:38:06Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T04:34:13Z",
+        "updatedAt": "2026-11-12T04:44:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T04:37:02Z",
+        "updatedAt": "2026-11-12T04:44:47Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T04:41:47Z",
+        "updatedAt": "2026-11-12T04:42:05Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T04:42:02Z",
+        "updatedAt": "2026-11-12T04:42:19Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-12T04:42:16Z",
+        "updatedAt": "2026-11-12T04:59:48Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T04:48:27Z",
+        "updatedAt": "2026-11-12T04:54:14Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T04:52:19Z",
+        "updatedAt": "2026-11-12T05:02:55Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T04:53:00Z",
+        "updatedAt": "2026-11-12T05:03:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T04:57:37Z",
+        "updatedAt": "2026-11-12T05:08:48Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-12T05:10:43Z",
+        "updatedAt": "2026-11-12T08:48:33Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "displayTitle": "Opening Night Orchestrator targeted now-you-see-me-live-2026 (broadway)",
+        "startedAt": "2026-11-12T05:10:44Z",
+        "updatedAt": "2026-11-12T05:10:48Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T05:10:46Z",
+        "updatedAt": "2026-11-12T05:19:35Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T05:10:48Z",
+        "updatedAt": "2026-11-12T05:57:10Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T05:11:49Z",
+        "updatedAt": "2026-11-12T05:12:05Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-12T05:11:54Z",
+        "updatedAt": "2026-11-12T06:02:34Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T05:12:02Z",
+        "updatedAt": "2026-11-12T05:27:18Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T05:12:49Z",
+        "updatedAt": "2026-11-12T05:23:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T05:26:40Z",
+        "updatedAt": "2026-11-12T05:36:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T05:37:44Z",
+        "updatedAt": "2026-11-12T05:47:29Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T05:38:01Z",
+        "updatedAt": "2026-11-12T05:38:37Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T05:39:56Z",
+        "updatedAt": "2026-11-12T05:46:25Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — now-you-see-me-live-2026",
+        "startedAt": "2026-11-12T05:42:23Z",
+        "updatedAt": "2026-11-12T05:50:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T05:51:34Z",
+        "updatedAt": "2026-11-12T06:01:38Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-12T05:51:39Z",
+        "updatedAt": "2026-11-12T05:56:25Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T05:52:55Z",
+        "updatedAt": "2026-11-12T06:02:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-12T05:59:27Z",
+        "updatedAt": "2026-11-12T06:08:47Z"
+      }
+    ]
+  }
+}

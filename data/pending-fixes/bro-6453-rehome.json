@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-6453-rehome",
+  "planId": "6bd9d69e-34e0-4e7c-8610-75f49116bdb6",
+  "status": "applied",
+  "createdAt": "2026-11-15T16:58:07.768Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6453: re-home the one 2016 National Theatre Hedda Gabler review (Sunday Express, Michael Arditti) still misfiled under the 2012 Old Vic production; the other 12 misfiled 2016 texts already exist in hedda-gabler-west-end-2016",
+    "steps": [
+      "BRO-6453: text opens by beginning the new year after the Dec 2016 NT press night; Sunday Express ran Sunday 2017-01-01. 2016-01-01 predates the 2016-12-12 opening and would re-trip the date guard",
+      "BRO-6453: the flag was the 2012 folder's date guard; the text is the 2016 NT production it now lives under",
+      "BRO-6453: clear evidence so the rebuild retiers the stale 'Wrong production' invalid tier",
+      "BRO-6453: Theatre Record vol 36 p1383 text reviews Ivo van Hove's 2016 National Theatre Hedda Gabler (Ruth Wilson); the only one of the 13 misfiled 2016 texts in the 2012 Old Vic folder with no copy in the 2016 folder"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "hedda-gabler-west-end-2012/sunday-express--michael-arditti.json",
+        "field": "publishDate",
+        "oldValue": "2016-01-01",
+        "newValue": "2017-01-01",
+        "description": "BRO-6453: text opens by beginning the new year after the Dec 2016 NT press night; Sunday Express ran Sunday 2017-01-01. 2016-01-01 predates the 2016-12-12 opening and would re-trip the date guard"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hedda-gabler-west-end-2012/sunday-express--michael-arditti.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6453: the flag was the 2012 folder's date guard; the text is the 2016 NT production it now lives under"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hedda-gabler-west-end-2012/sunday-express--michael-arditti.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6453: clear evidence so the rebuild retiers the stale 'Wrong production' invalid tier"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "hedda-gabler-west-end-2012/sunday-express--michael-arditti.json",
+        "destPath": "hedda-gabler-west-end-2016/sunday-express--michael-arditti.json",
+        "description": "BRO-6453: Theatre Record vol 36 p1383 text reviews Ivo van Hove's 2016 National Theatre Hedda Gabler (Ruth Wilson); the only one of the 13 misfiled 2016 texts in the 2012 Old Vic folder with no copy in the 2016 folder"
+      }
+    ]
+  },
+  "executedAt": "2026-11-15T18:09:58.097Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedda-gabler-west-end-2012/sunday-express--michael-arditti.json publishDate: \"2016-01-01\" -> \"2017-01-01\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedda-gabler-west-end-2012/sunday-express--michael-arditti.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedda-gabler-west-end-2012/sunday-express--michael-arditti.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved hedda-gabler-west-end-2012/sunday-express--michael-arditti.json → hedda-gabler-west-end-2016/sunday-express--michael-arditti.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

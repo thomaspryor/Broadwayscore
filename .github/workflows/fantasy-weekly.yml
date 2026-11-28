@@ -1,0 +1,130 @@
+name: Fantasy Weekly Pipeline
+
+on:
+  schedule:
+    # Daily 6 PM UTC (1 PM EST). Scores and audience-grade stamps refresh every
+    # day, so a grade that appears in previews locks audience points within a
+    # day (BRO-5424); the player email draft is still made only on Wednesdays.
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no draft created, no data committed)'
+        required: false
+        type: boolean
+        default: false
+      force:
+        description: 'Run even outside the season window'
+        required: false
+        type: boolean
+        default: false
+      email:
+        description: 'Also create the weekly email draft (otherwise Wednesday runs only)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: fantasy-weekly
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  fantasy-weekly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      # Window from src/config/fantasy-season.json (the generated league file
+      # can be a run behind): two weeks before the draft opens through two
+      # weeks after Tony night. Logic in fantasy-helpers fantasyJobWindow (tested).
+      - name: Season date guard
+        id: season-check
+        env:
+          FORCE: ${{ inputs.force == true }}
+          EVENT: ${{ github.event_name }}
+          EMAIL_INPUT: ${{ inputs.email == true }}
+        run: |
+          node -e "
+            const h = require('./scripts/lib/fantasy-helpers');
+            const today = h.nyDate(new Date().toISOString());
+            const w = h.fantasyJobWindow(today);
+            console.log('today=' + today + ' window=' + w.start + '..' + w.end + ' pricesProvisional=' + w.pricesProvisional);
+            const run = w.run || process.env.FORCE === 'true';
+            if (!run) console.log('Outside the fantasy job window. Skipping.');
+            const wednesday = new Date().getUTCDay() === 3;
+            const email = run && (process.env.EVENT === 'schedule' ? wednesday : process.env.EMAIL_INPUT === 'true');
+            require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'in_season=' + run + '\nsend_email=' + email + '\n');
+          "
+
+      # Until the day before the draft opens, every run reprices the whole
+      # catalog from fresh data (prices are provisional while nobody can hold
+      # a pick). From then on prices are frozen for the season:
+      # generate-fantasy-config.js reads data/fantasy-league-frozen.json and
+      # emits those prices verbatim. The catalog is append-only: a show
+      # announced after the freeze is priced once (scripts/lib/fantasy-pricing.js
+      # + data/fantasy-preseason-priors.json) and appended to the frozen file;
+      # nothing frozen is ever removed or repriced.
+      - name: Regenerate fantasy config (frozen prices, append new shows)
+        if: steps.season-check.outputs.in_season == 'true'
+        run: node scripts/generate-fantasy-config.js
+
+      - name: Compute fantasy scores
+        if: steps.season-check.outputs.in_season == 'true'
+        run: node scripts/compute-fantasy-scores.js
+
+      - name: Commit updated fantasy data
+        if: steps.season-check.outputs.in_season == 'true' && inputs.dry_run != true
+        run: |
+          git add data/fantasy-league.json data/fantasy-scores.json data/fantasy-league-frozen.json data/fantasy-ev.json
+          if git diff --staged --quiet; then
+            echo "No fantasy data changes to commit"
+          else
+            git commit -m "data: Update fantasy scores (week of $(date -u +%Y-%m-%d))"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Create email draft
+        if: steps.season-check.outputs.send_email == 'true' && inputs.dry_run != true
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FANTASY_AUDIENCE_ID: ${{ secrets.RESEND_FANTASY_AUDIENCE_ID }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/fantasy-weekly-email.js --draft
+
+      - name: Dry run summary
+        if: steps.season-check.outputs.in_season == 'true' && inputs.dry_run == true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          echo "## Fantasy Weekly Dry Run" >> $GITHUB_STEP_SUMMARY
+          node scripts/fantasy-weekly-email.js --dry-run 2>&1 | tail -5 >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fantasy Weekly Pipeline Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

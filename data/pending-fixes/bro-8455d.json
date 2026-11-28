@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-8455d",
+  "planId": "51c1d539-f132-4cd4-baa4-949964c3c926",
+  "status": "applied",
+  "createdAt": "2026-11-28T22:03:33.687Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the missing San Diego production Cygnet JOB (BRO-8455 item 3)",
+    "steps": [
+      "add job-cygnet-regional-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add job-cygnet-regional-2026",
+        "show": {
+          "id": "job-cygnet-regional-2026",
+          "title": "JOB",
+          "slug": "job-cygnet-regional-2026",
+          "venue": "Cygnet Theatre, San Diego, CA",
+          "status": "closed",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-07",
+          "openingDateSource": "earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-28",
+          "evidenceUrls": [
+            "https://stageandcinema.com/2026/10/26/job-cygnet-review/"
+          ],
+          "closingDateSource": "estimated"
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-28T22:19:49.181Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added job-cygnet-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

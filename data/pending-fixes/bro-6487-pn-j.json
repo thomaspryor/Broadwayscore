@@ -1,0 +1,367 @@
+{
+  "issueNumber": "bro-6487-pn-j",
+  "planId": "ddedddd8-7105-4c03-b07c-6a4311a3c0f3",
+  "status": "applied",
+  "createdAt": "2026-10-29T02:36:48.601Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights, set j of 11 (2012-13..2015-16 opening rows)",
+    "steps": [
+      "shows.json: henry-v-west-end-2013.openingDate",
+      "shows.json: henry-v-west-end-2013.openingDateSource",
+      "shows.json: fatal-attraction-west-end-2014.previewsStartDate",
+      "shows.json: fatal-attraction-west-end-2014.openingDate",
+      "shows.json: fatal-attraction-west-end-2014.openingDateSource",
+      "shows.json: wolf-hall-west-end-2014.openingDate",
+      "shows.json: wolf-hall-west-end-2014.openingDateSource",
+      "shows.json: daytona-west-end-2014.previewsStartDate",
+      "shows.json: daytona-west-end-2014.openingDate",
+      "shows.json: daytona-west-end-2014.openingDateSource",
+      "shows.json: nevilles-island-west-end-2014.previewsStartDate",
+      "shows.json: nevilles-island-west-end-2014.openingDate",
+      "shows.json: nevilles-island-west-end-2014.openingDateSource",
+      "shows.json: man-and-superman-west-end-2015.previewsStartDate",
+      "shows.json: man-and-superman-west-end-2015.openingDate",
+      "shows.json: man-and-superman-west-end-2015.openingDateSource",
+      "shows.json: high-society-west-end-2015.openingDate",
+      "shows.json: high-society-west-end-2015.openingDateSource",
+      "shows.json: the-mentalists-west-end-2015.previewsStartDate",
+      "shows.json: the-mentalists-west-end-2015.openingDate",
+      "shows.json: the-mentalists-west-end-2015.openingDateSource",
+      "shows.json: the-winters-tale-west-end-2015.openingDate",
+      "shows.json: the-winters-tale-west-end-2015.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "henry-v-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-11-23",
+        "newValue": "2013-12-03",
+        "description": "shows.json: henry-v-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "henry-v-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-12-03 (londontheatredirect.com; BRO-6487)",
+        "description": "shows.json: henry-v-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fatal-attraction-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-03-25",
+        "newValue": "2014-03-08",
+        "description": "shows.json: fatal-attraction-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fatal-attraction-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-03-25",
+        "newValue": "2014-03-25",
+        "description": "shows.json: fatal-attraction-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fatal-attraction-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-03-25 (en.wikipedia.org; BRO-6487)",
+        "description": "shows.json: fatal-attraction-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wolf-hall-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-05-01",
+        "newValue": "2014-05-17",
+        "description": "shows.json: wolf-hall-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wolf-hall-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-05-17 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: wolf-hall-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "daytona-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-07-07",
+        "newValue": "2014-06-30",
+        "description": "shows.json: daytona-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "daytona-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-07-07",
+        "newValue": "2014-07-07",
+        "description": "shows.json: daytona-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "daytona-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-07-07 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: daytona-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nevilles-island-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-10-21",
+        "newValue": "2014-10-10",
+        "description": "shows.json: nevilles-island-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nevilles-island-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-10-21",
+        "newValue": "2014-10-21",
+        "description": "shows.json: nevilles-island-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nevilles-island-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-10-21 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: nevilles-island-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-and-superman-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-02-01",
+        "newValue": "2015-02-17",
+        "description": "shows.json: man-and-superman-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-and-superman-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-02-01",
+        "newValue": "2015-02-25",
+        "description": "shows.json: man-and-superman-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-and-superman-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-02-25 (playbill.com; BRO-6487)",
+        "description": "shows.json: man-and-superman-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-society-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-04-30",
+        "newValue": "2015-05-14",
+        "description": "shows.json: high-society-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-society-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-05-14 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: high-society-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mentalists-west-end-2015",
+        "field": "previewsStartDate",
+        "oldValue": "2015-07-13",
+        "newValue": "2015-07-03",
+        "description": "shows.json: the-mentalists-west-end-2015.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mentalists-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-07-13",
+        "newValue": "2015-07-13",
+        "description": "shows.json: the-mentalists-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mentalists-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-07-13 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: the-mentalists-west-end-2015.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-winters-tale-west-end-2015",
+        "field": "openingDate",
+        "oldValue": "2015-10-17",
+        "newValue": "2015-11-07",
+        "description": "shows.json: the-winters-tale-west-end-2015.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-winters-tale-west-end-2015",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2015-11-07 (playbill.com; BRO-6487)",
+        "description": "shows.json: the-winters-tale-west-end-2015.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T14:51:06.114Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for henry-v-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for henry-v-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for fatal-attraction-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for fatal-attraction-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for fatal-attraction-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for wolf-hall-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for wolf-hall-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for daytona-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for daytona-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for daytona-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for nevilles-island-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for nevilles-island-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for nevilles-island-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for man-and-superman-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for man-and-superman-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for man-and-superman-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for high-society-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for high-society-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-mentalists-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-mentalists-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-mentalists-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-winters-tale-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-winters-tale-west-end-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

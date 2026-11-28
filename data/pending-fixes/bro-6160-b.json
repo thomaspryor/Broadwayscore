@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6160-b",
+  "planId": "97d1edb0-b664-4409-9045-9e8d78936d08",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6160 follow-up: In Transit AG-budget figures (entry already existed)",
+    "steps": [
+      "Append the AG-filed budget breakeven to the existing in-transit-2016 notes."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "in-transit-2016",
+        "field": "notes",
+        "oldValue": "In Transit (Circle in the Square, opened 2016-12-11, closed 2017-04-16). No readable source reports it recouping before closing; this designation rests on that silence and on its closing coverage. No readable source states a capitalization, so none is shown.",
+        "newValue": "In Transit (Circle in the Square, opened 2016-12-11, closed 2017-04-16). No readable source reports it recouping before closing; this designation rests on that silence and on its closing coverage. No readable source states a capitalization, so none is shown. Per a budget filed with the NY AG in summer 2016 (Broadway Journal, Feb 2 2017, https://www.broadwayjournal.com/p/economical-in-transit-seeks-boost-from-clinton-endorsement): the production needed minimum weekly sales of $439,000 to pay expenses (including credit card commissions and other extras that count toward League grosses); lead producer Janet Rosen said actual breakeven was below $400,000 because of conservative budgeting. Sales the week before were $338,000. The post describes the show as capitalized at just under $7M (not attributed to the filing, so capitalization is left unset).",
+        "description": "in-transit-2016: record AG-budget weekly sales minimum (BRO-6160)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T22:28:11.015Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for in-transit-2016"
+    }
+  ],
+  "executedIn": "ci"
+}

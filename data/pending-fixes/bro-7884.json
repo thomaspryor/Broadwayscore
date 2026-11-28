@@ -1,0 +1,42 @@
+{
+  "issueNumber": "bro-7884",
+  "planId": "9d0b2b00-ca95-4ccb-b02b-493e58907cdf",
+  "status": "applied",
+  "createdAt": "2026-11-20T04:34:55.379Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Much Ado opening night: owner-supplied Columbia Spectator text (page body is client-rendered) + owner floor of 20 on Vulture pan",
+    "steps": [
+      "Ingest much-ado-about-nothing-2026 from handed-off HTML: https://www.columbiaspectator.com/arts-and-culture/2026/11/19/review-jamie-lloyds-much-ado-about-nothing-is-the-times-square-of-shakespeare/"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "ingest-html-handoff",
+        "showId": "much-ado-about-nothing-2026",
+        "url": "https://www.columbiaspectator.com/arts-and-culture/2026/11/19/review-jamie-lloyds-much-ado-about-nothing-is-the-times-square-of-shakespeare/",
+        "critic": "Light Dohrn",
+        "publishDate": "2026-11-19",
+        "description": "Columbia Spectator review, text pasted by the owner in chat 2026-11-20 because the page renders its body client-side",
+        "htmlBytes": 6934,
+        "html": {
+          "kid": "ecc142c27b1b7f86",
+          "sha256": "221d0c0d848eeae06ef431f87860ba2ee713f4c3547c1dac74da1c5ab9e44aee",
+          "scrubbed": true
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-20T06:46:10.739Z",
+  "results": [
+    {
+      "action": "ingest-html-handoff",
+      "ok": true,
+      "msg": "Ingested https://www.columbiaspectator.com/arts-and-culture/2026/11/19/review-jamie-lloyds-much-ado-about-nothing-is-the-times-square-of-shakespeare/ for much-ado-about-nothing-2026 from handed-off HTML (6802 chars)"
+    }
+  ],
+  "executedIn": "ci"
+}

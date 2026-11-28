@@ -1,0 +1,106 @@
+{
+  "issueNumber": "bro-7344-c",
+  "planId": "ae1d3816-da90-4a3e-ad7c-29a8e440738e",
+  "status": "applied",
+  "createdAt": "2026-11-13T00:56:34.795Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7344: clear 2 stale CV-promoted isNonReview flags on genuine Chicago Reader reviews (read full text)",
+    "steps": [
+      "seagulls-regional-2023/chicago-reader--jack-helbig.json: nonReviewManualClear",
+      "seagulls-regional-2023/chicago-reader--jack-helbig.json: isNonReview",
+      "seagulls-regional-2023/chicago-reader--jack-helbig.json: rejectionReason",
+      "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json: nonReviewManualClear",
+      "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json: isNonReview",
+      "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json: rejectionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "seagulls-regional-2023/chicago-reader--jack-helbig.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "seagulls-regional-2023/chicago-reader--jack-helbig.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "seagulls-regional-2023/chicago-reader--jack-helbig.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "seagulls-regional-2023/chicago-reader--jack-helbig.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "seagulls-regional-2023/chicago-reader--jack-helbig.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "seagulls-regional-2023/chicago-reader--jack-helbig.json: rejectionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json: isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json: rejectionReason"
+      }
+    ]
+  },
+  "executedAt": "2026-11-13T01:08:55.221Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seagulls-regional-2023/chicago-reader--jack-helbig.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seagulls-regional-2023/chicago-reader--jack-helbig.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seagulls-regional-2023/chicago-reader--jack-helbig.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-matchbox-magic-flute-regional-2024/chicago-reader--irene-hsiao.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

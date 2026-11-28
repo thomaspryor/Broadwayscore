@@ -1,0 +1,336 @@
+{
+  "issueNumber": "bro-5858-b",
+  "planId": "073ccf8d-7d4e-41a5-94e3-cbb9e36fdf86",
+  "status": "applied",
+  "createdAt": "2026-10-21T19:35:07.444Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5858 (part 2/3): two live review files held one article url (a url writer moved one critic's file onto another critic's article). Each loser is marked duplicateOf the file whose critic the page byline, aggregator excerpt attribution or same-critic identity shows wrote the article; where the article's critic is none of the members, the kept file's criticName is corrected.",
+    "steps": [
+      "Mark the surplus file in each same-url group duplicateOf the kept file",
+      "Correct criticName on kept files whose page byline names a different critic"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2024/deadline--pete-hammond.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "deadline--greg-evans.json",
+        "description": "same article url as deadline--greg-evans.json; one review by Greg Evans (live page byline \"Greg Evans\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamlet-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatermania--dan-rubins.json",
+        "description": "same article url as theatermania--dan-rubins.json; one review by Dan Rubins (live page byline \"Dan Rubins\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hand-to-god-2015/variety--gordon-cox.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--marilyn-stasio.json",
+        "description": "same article url as variety--marilyn-stasio.json; one review by Marilyn Stasio (live page byline \"Marilyn Stasio\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hedwig-and-the-angry-inch-2014/guardian--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--alexis-soloski.json",
+        "description": "same article url as guardian--alexis-soloski.json; one review by Alexis Soloski (live page byline \"Alexis Soloski\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-we-are-west-end-2025/all-that-dazzles-uk--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "all-that-dazzles-uk--all-that-dazzles.json",
+        "description": "same article url as all-that-dazzles-uk--all-that-dazzles.json; one review by All That Dazzles (live page credits the outlet \"All That Dazzles\"; other file is Unknown (no named critic either way))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-i-learned-to-drive-2022/deadline--pete-hammond.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "deadline--greg-evans.json",
+        "description": "same article url as deadline--greg-evans.json; one review by Greg Evans (live page byline \"Greg Evans\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hughie-2016/ew--melissa-rose-bernardo.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ew--jessica-derschowitz.json",
+        "description": "same article url as ew--jessica-derschowitz.json; one review by Jessica Derschowitz (registry: Derschowitz=ew, Bernardo=nysr; search-grounded byline Derschowitz (medium))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ifthen-2014/nbcny--david-cote.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nbcny--dave-quinn.json",
+        "description": "same article url as nbcny--dave-quinn.json; one review by Dave Quinn (live page byline \"Dave Quinn\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-transit-2016/theater-pizzazz--sandi-durelljk-clarke.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theater-pizzazz--sandi-durell.json",
+        "description": "same article url as theater-pizzazz--sandi-durell.json; one review by Sandi Durell (live page \"by JK Clarke & Sandi Durell\" (one co-review))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-transit-2016/variety--marilyn-stasio.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--frank-rizzo.json",
+        "description": "same article url as variety--frank-rizzo.json; one review by Frank Rizzo (live page byline \"Frank Rizzo\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/deadline--pete-hammond.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "deadline--greg-evans.json",
+        "description": "same article url as deadline--greg-evans.json; one review by Greg Evans (live page byline \"Greg Evans\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kinky-boots-2013/guardian--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--alexis-soloski.json",
+        "description": "same article url as guardian--alexis-soloski.json; one review by Alexis Soloski (BWW reviews + BWW roundup quote this text under Alexis Soloski)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kpop-2022/variety--aramide-tinubu.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--ad-amorosi.json",
+        "description": "same article url as variety--ad-amorosi.json; one review by A.D. Amorosi (live page byline \"A.D. Amorosi\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "life-of-pi-2023/theatrely--kobi-kassal.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatrely--juan-a-ramirez.json",
+        "description": "same article url as theatrely--juan-a-ramirez.json; one review by Juan A. Ramirez (live page byline \"Juan A. Ramirez\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "little-bear-ridge-road-2025/theatrely--kobi-kassal.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatrely--juan-a-ramirez.json",
+        "description": "same article url as theatrely--juan-a-ramirez.json; one review by Juan A. Ramirez (live page byline \"Juan A. Ramirez\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2016/deadline--pete-hammond.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "deadline--greg-evans.json",
+        "description": "same article url as deadline--greg-evans.json; one review by Jeremy Gerard (live page byline + JSON-LD author \"Jeremy Gerard\" (neither member))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2016/deadline--greg-evans.json",
+        "field": "criticName",
+        "oldValue": "Greg Evans",
+        "newValue": "Jeremy Gerard",
+        "description": "critic of this article is Jeremy Gerard, not Greg Evans (live page byline + JSON-LD author \"Jeremy Gerard\" (neither member))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "whatsonstage--matt-trueman.json",
+        "description": "same article url as whatsonstage--matt-trueman.json; one review by Aliya Al-Hassan (live page byline \"Aliya Al-Hassan\" (neither member))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json",
+        "field": "criticName",
+        "oldValue": "Matt Trueman",
+        "newValue": "Aliya Al-Hassan",
+        "description": "critic of this article is Aliya Al-Hassan, not Matt Trueman (live page byline \"Aliya Al-Hassan\" (neither member))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "lyonesse-west-end-2023/theatre-weekly--theatre-weekly.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theatre-weekly--greg-stewart.json",
+        "description": "same article url as theatre-weekly--greg-stewart.json; one review by Greg Stewart (live page byline \"Greg Stewart\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "machinal-2014/nytimes--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "same article url as nytimes--ben-brantley.json; one review by Ben Brantley (BWW reviews, BWW roundup and DTLI quote this text under Ben Brantley)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "master-class-2011/timeout--rossilynne-skena-culgan.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "timeout--adam-feldman.json",
+        "description": "same article url as timeout--adam-feldman.json; one review by Adam Feldman (BWW reviews, BWW roundup and DTLI quote this text under Adam Feldman (live page author field \"Rossilynne Skena Culgan\" is a Time Out migration byline))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mauritius-2007/nytimes--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "same article url as nytimes--ben-brantley.json; one review by Ben Brantley (DTLI quotes this text under Ben Brantley)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mean-girls-2018/deadline--pete-hammond.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "deadline--greg-evans.json",
+        "description": "same article url as deadline--greg-evans.json; one review by Greg Evans (live page byline \"Greg Evans\")"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T20:22:20.916Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2024/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamlet-off-broadway-2026/theatermania--zachary-stewart.json duplicateOf: null -> \"theatermania--dan-rubins.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hand-to-god-2015/variety--gordon-cox.json duplicateOf: null -> \"variety--marilyn-stasio.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hedwig-and-the-angry-inch-2014/guardian--jesse-green.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-we-are-west-end-2025/all-that-dazzles-uk--unknown.json duplicateOf: null -> \"all-that-dazzles-uk--all-that-dazzles.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-i-learned-to-drive-2022/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hughie-2016/ew--melissa-rose-bernardo.json duplicateOf: null -> \"ew--jessica-derschowitz.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ifthen-2014/nbcny--david-cote.json duplicateOf: null -> \"nbcny--dave-quinn.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "in-transit-2016/theater-pizzazz--sandi-durelljk-clarke.json duplicateOf: null -> \"theater-pizzazz--sandi-durell.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "in-transit-2016/variety--marilyn-stasio.json duplicateOf: null -> \"variety--frank-rizzo.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kinky-boots-2013/guardian--jesse-green.json duplicateOf: null -> \"guardian--alexis-soloski.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kpop-2022/variety--aramide-tinubu.json duplicateOf: null -> \"variety--ad-amorosi.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "life-of-pi-2023/theatrely--kobi-kassal.json duplicateOf: null -> \"theatrely--juan-a-ramirez.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-bear-ridge-road-2025/theatrely--kobi-kassal.json duplicateOf: null -> \"theatrely--juan-a-ramirez.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/deadline--greg-evans.json criticName: \"Greg Evans\" -> \"Jeremy Gerard\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "loves-labours-lost-globe-west-end-2026/whatsonstage--sarah-crompton.json duplicateOf: null -> \"whatsonstage--matt-trueman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "loves-labours-lost-globe-west-end-2026/whatsonstage--matt-trueman.json criticName: \"Matt Trueman\" -> \"Aliya Al-Hassan\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lyonesse-west-end-2023/theatre-weekly--theatre-weekly.json duplicateOf: null -> \"theatre-weekly--greg-stewart.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "machinal-2014/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "master-class-2011/timeout--rossilynne-skena-culgan.json duplicateOf: null -> \"timeout--adam-feldman.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mauritius-2007/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mean-girls-2018/deadline--pete-hammond.json duplicateOf: null -> \"deadline--greg-evans.json\""
+    }
+  ],
+  "executedIn": "ci"
+}

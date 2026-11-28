@@ -1,0 +1,47 @@
+{
+  "issueNumber": "bro-4656-e",
+  "planId": "94425824-4092-412b-9f5a-d94172d0172c",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4656: a review of the Melbourne, Australia season of Spamalot (Athenaeum Theatre, Sept-Oct 2026), ingested by the first scheduled tour-stop discovery run, is flagged wrongProduction on the US national tour.",
+    "steps": [
+      "Flag wrongProduction on spamalot-tour-2025/australianpridenetwork--rohan.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-tour-2025/australianpridenetwork--rohan.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Australian Pride Network review of Monty Python's Spamalot at the Athenaeum Theatre, Melbourne (performance 19 Sept 2026, season to 11 Oct, then Sydney). The US tour was in Tulsa then. Discovery now drops overseas country domains for tours (tourCandidateIsTour)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-tour-2025/australianpridenetwork--rohan.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Melbourne, Australia production (Athenaeum Theatre), not the US national tour (BRO-4656)",
+        "description": "Reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-06T05:09:43.357Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/australianpridenetwork--rohan.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/australianpridenetwork--rohan.json wrongProductionReason: null -> \"Melbourne, Australia production (Athenaeum Theatre), not the US national tour (BRO-4656)\""
+    }
+  ]
+}

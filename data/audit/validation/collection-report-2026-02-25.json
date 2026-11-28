@@ -1,0 +1,77 @@
+{
+  "runDate": "2026-02-25T23:05:40.472Z",
+  "config": {
+    "batchSize": 3,
+    "maxReviews": 3,
+    "priority": "all",
+    "showFilter": "hamilton-2015",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 2,
+    "failed": 1,
+    "skipped": 0,
+    "successRate": "66.7%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 1,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 1,
+    "scrapingBeeCreditsUsed": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "hamilton-2015/chicago-tribune--chris-jones.json",
+    "hamilton-2015/dc-theatre-scene--jonathan-mandell.json"
+  ],
+  "failed": [
+    "hamilton-2015/bww--michael-dale.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "hamilton-2015/dc-theatre-scene--jonathan-mandell.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/hamilton-2015/bww--michael-dale.json"
+    ],
+    "archive": [
+      "hamilton-2015/chicago-tribune--chris-jones.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}

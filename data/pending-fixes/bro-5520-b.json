@@ -1,0 +1,367 @@
+{
+  "issueNumber": "bro-5520-b",
+  "planId": "ff40901c-5ded-4b9c-b5f3-942690da67ce",
+  "status": "applied",
+  "createdAt": "2026-10-17T07:08:13.940Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5520: checked results from the owner’s Gemini and ChatGPT deep research runs (2026-27 season and long-running hits; 2025-26 season; nonprofit shows). Each figure below was opened at its source. New: Joe Turner’s Come and Gone $8M (producers’ investor Q&A), Here There Are Blueberries $7M max (SEC Form D), Paddington $31M, Purple Rain $29.5M and Galileo $23M (Broadway Journal, new records), Dolly $30M now cited to Broadway Journal, CATS: The Jellicle Ball’s running cost ~$1M (Playbill, replacing an $850K Reddit estimate), Little Bear Ridge Road’s $4.1M now cited to its SEC Form D ($4,095,000). Cleared: Dog Day Afternoon $9.5M and Damn Yankees $19M (no source; message-board guesses). Flagged as enhancements: A Few Good Men and School Girls (named commercial co-producers). Not applied (could not open the source from here): The Washington Post’s Oedipus $6.5M, The Lion King ~$20M (NYT 2003), Aladdin $12-15M projected (LA Times 2014), Variety’s Cats \"failed to recoup\", NYT’s Beaches investor losses, IBDB’s Jun 23 2026 Rocky Horror producer change. Rejected: Celebrity Autobiography \"recouped $2.3M\", All Out $31.5M, Beaches $12.5M recoupment, Rocky Horror \"fully recouped\". (part 2 of 2: cats-the-jellicle-ball, book-of-mormon, a-few-good-men, school-girls-or-the-african-mean-girls-play, the-imaginary-invalid, paddington-the-musical, purple-rain, galileo)",
+    "steps": [
+      "Edits read every oldValue from live data; three add-commercial-entry actions create the new records as TBD.",
+      "productionType becomes plan-editable in the same change (scripts/lib/feedback-pipeline-fields.js); the record checks validate its values."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "weeklyRunningCost",
+        "oldValue": 850000,
+        "newValue": 1000000,
+        "description": "cats-the-jellicle-ball: Playbill reports weekly running costs of around $1 million (was an $850K Reddit analyst estimate)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "weeklyRunningCostSource",
+        "oldValue": "Estimate by u/Boring_Waltz_9545 on r/Broadway, \"GROSSES ANALYSIS- Week Ending August 9\" (2026-08-11) https://www.reddit.com/r/Broadway/comments/1vloonj/grosses_analysis_week_ending_august_9/",
+        "newValue": "Playbill (Logan Culwell-Block, Aug 11, 2026): \"With weekly running costs reported to be around $1 million\". https://playbill.com/article/cats-the-jellicle-ball-closes-to-200-ticket-average-and-more-from-last-weeks-broadway-grosses",
+        "description": "cats-the-jellicle-ball: cite Playbill."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "costMethodology",
+        "oldValue": "reddit-standard",
+        "newValue": "trade-reported",
+        "description": "cats-the-jellicle-ball: a trade-reported figure (also keeps the Reddit gap-fill from replacing it)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/cats-the-jellicle-ball-broadway-closing-date-1236643213/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/07/cats-jellicle-ball-broadway-closing-1236983195/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/cats-the-jellicle-ball-broadway-closing-date-1236643213/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/07/cats-jellicle-ball-broadway-closing-1236983195/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/cats-the-jellicle-ball-closes-to-200-ticket-average-and-more-from-last-weeks-broadway-grosses",
+            "date": "2026-08-11"
+          }
+        ],
+        "description": "cats-the-jellicle-ball: add Playbill to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "cats-the-jellicle-ball: Playbill calls it weekly running costs."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "capitalizationSource",
+        "oldValue": "Industry sources",
+        "newValue": "Estimate (industry sources; other reports say up to $18 million). The producers have not disclosed it.",
+        "description": "cats-the-jellicle-ball: the $16M has no citation; other reports say up to $18M."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "isEstimate",
+        "oldValue": {
+          "weeklyRunningCost": true
+        },
+        "newValue": {
+          "weeklyRunningCost": false,
+          "capitalization": true
+        },
+        "description": "cats-the-jellicle-ball: the uncited $16M prints as an estimate (\"~\"); the Playbill-reported cost prints plain like every other trade-reported cost (its source line says \"around\")."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "notes",
+        "oldValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalized at about $16M.",
+        "newValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalization not disclosed; estimated at $16M to $18M.",
+        "description": "cats-the-jellicle-ball: the note gives the range."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "book-of-mormon",
+        "field": "capitalizationSource",
+        "oldValue": "Press announcement",
+        "newValue": "The Hollywood Reporter (Nov 29, 2011): \"has recouped its capitalization of $11.4 million in just eight months\". https://www.hollywoodreporter.com/news/general-news/book-of-mormon-recoup-267128/",
+        "description": "book-of-mormon: the bare label \"Press announcement\" becomes the cited quote already in recoupedSource."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "field": "productionType",
+        "oldValue": null,
+        "newValue": "enhancement",
+        "description": "a-few-good-men: produced by LCT in association with No Guarantees Productions, Tom Kirdahy, Kevin Ryan, Lamar Richardson and Mary Sullivan (O&M/DKC release, Sep 1 2026): an enhancement, like Ragtime."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "field": "notes",
+        "oldValue": "Lincoln Center Theater (nonprofit) production at the Vivian Beaumont (TheaterMania, Jun 23, 2026); no capitalization reported.",
+        "newValue": "Lincoln Center Theater (nonprofit) production at the Vivian Beaumont (TheaterMania, Jun 23, 2026), in association with No Guarantees Productions, Tom Kirdahy, Kevin Ryan, Lamar Richardson and Mary Sullivan (O&M/DKC, Sep 1, 2026); no capitalization reported.",
+        "description": "a-few-good-men: name the co-producers."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/bradley-whitford-and-aaron-sorkin-to-team-up-for-broadway-revival-of-a-few-good-men_1842777/",
+            "date": "2026-06-23",
+            "excerpt": "Tom Blyth will also star in the Lincoln Center Theater production at the Beaumont."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/bradley-whitford-and-aaron-sorkin-to-team-up-for-broadway-revival-of-a-few-good-men_1842777/",
+            "date": "2026-06-23",
+            "excerpt": "Tom Blyth will also star in the Lincoln Center Theater production at the Beaumont."
+          },
+          {
+            "type": "trade",
+            "url": "https://omdkc.com/a-few-good-men-at-lincoln-center-theater-announces-complete-cast-creative-team/",
+            "date": "2026-09-01"
+          }
+        ],
+        "description": "a-few-good-men: add the release to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-girls-or-the-african-mean-girls-play",
+        "field": "productionType",
+        "oldValue": null,
+        "newValue": "enhancement",
+        "description": "school-girls-or-the-african-mean-girls-play: MTC: \"Produced in association with Chase This Productions and Susan Kelechi Watson.\""
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-girls-or-the-african-mean-girls-play",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Manhattan Theatre Club",
+        "description": "school-girls-or-the-african-mean-girls-play: the presenting nonprofit, missing on the record."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-girls-or-the-african-mean-girls-play",
+        "field": "notes",
+        "oldValue": "A Manhattan Theatre Club production at the Samuel J. Friedman Theatre, MTC's Broadway home, in a limited engagement. MTC is a nonprofit, so the production runs on a subscriber-funded model with no investor recoupment. No capitalization, weekly running cost or recoupment figures have been published.",
+        "newValue": "A Manhattan Theatre Club production at the Samuel J. Friedman Theatre, MTC's Broadway home, in a limited engagement. Produced in association with Chase This Productions and Susan Kelechi Watson (MTC). No capitalization, weekly running cost or recoupment figures have been published.",
+        "description": "school-girls-or-the-african-mean-girls-play: the note named no co-producers and said there were no investors."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-imaginary-invalid",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company",
+        "description": "the-imaginary-invalid: the presenting nonprofit, missing on the record (its note already says Roundabout)."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "paddington-the-musical",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 31000000,
+          "capitalizationSource": "Broadway Journal (Philip Boroff, Aug 12, 2026): \"Paddington ($31 million)\". https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+          "notes": "Capitalized at $31 million (Broadway Journal, Aug 2026); upcoming, no weekly running cost reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+              "date": "2026-08-12"
+            }
+          ]
+        },
+        "description": "paddington-the-musical: no commercial record yet; Broadway Journal reports its capitalization."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "purple-rain",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 29500000,
+          "capitalizationSource": "Broadway Journal (Philip Boroff, Aug 12, 2026): \"Purple Rain ($29.5 million)\"; the figure includes its out-of-town tryout. https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+          "notes": "Capitalized at $29.5 million, including its out-of-town tryout (Broadway Journal, Aug 2026); upcoming, no weekly running cost reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+              "date": "2026-08-12"
+            }
+          ]
+        },
+        "description": "purple-rain: no commercial record yet; Broadway Journal reports its capitalization."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "galileo",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 23000000,
+          "capitalizationSource": "Broadway Journal (Philip Boroff, Aug 12, 2026): \"Galileo ($23 million)\". https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+          "notes": "Capitalized at $23 million (Broadway Journal, Aug 2026); upcoming, no weekly running cost reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+              "date": "2026-08-12"
+            }
+          ]
+        },
+        "description": "galileo: no commercial record yet; Broadway Journal reports its capitalization."
+      }
+    ]
+  },
+  "executedAt": "2026-10-17T07:48:37.207Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for book-of-mormon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: productionType updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: productionType updated for school-girls-or-the-african-mean-girls-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for school-girls-or-the-african-mean-girls-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for school-girls-or-the-african-mean-girls-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for the-imaginary-invalid"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added paddington-the-musical (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added purple-rain (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added galileo (TBD)"
+    }
+  ]
+}

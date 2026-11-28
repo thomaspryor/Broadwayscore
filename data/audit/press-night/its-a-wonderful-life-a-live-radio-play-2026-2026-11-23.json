@@ -1,0 +1,2973 @@
+{
+  "schemaVersion": 1,
+  "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+  "night": "2026-11-23",
+  "market": "broadway",
+  "embargoAt": "2026-11-24T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-24T02:30:04.926Z",
+    "endedAt": "2026-11-24T09:00:58.251Z",
+    "intervalMin": 5,
+    "samples": 77,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-24T08:57:44.318Z",
+    "lastOkSampleAt": "2026-11-24T08:57:44.318Z"
+  },
+  "firstLiveAt": "2026-11-24T02:30:04.926Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-24T07:27:38.507Z",
+  "liveCount": 19,
+  "liveCountAt": {
+    "1h": 17,
+    "2h": 17,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-24T04:00:10.734Z",
+    "2h": "2026-11-24T05:07:30.505Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-23",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "the new york times|laura collins-hughes",
+      "outlet": "The New York Times",
+      "critic": "Laura Collins-Hughes",
+      "tier": 1,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T20:31:20.022Z"
+    },
+    {
+      "key": "time out new york|adam feldman",
+      "outlet": "Time Out New York",
+      "critic": "Adam Feldman",
+      "tier": 1,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T23:00:00.294Z"
+    },
+    {
+      "key": "new york daily news|chris jones",
+      "outlet": "New York Daily News",
+      "critic": "Chris Jones",
+      "tier": 1,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T19:45:09.755Z"
+    },
+    {
+      "key": "theater scene|samuel l. leiter",
+      "outlet": "Theater Scene",
+      "critic": "Samuel L. Leiter",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-19T05:00:36.302Z"
+    },
+    {
+      "key": "new york stage review|michael sommers",
+      "outlet": "New York Stage Review",
+      "critic": "Michael Sommers",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T20:31:04.380Z"
+    },
+    {
+      "key": "theatermania|zachary stewart",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T17:26:18.223Z"
+    },
+    {
+      "key": "new york stage review|david finkle",
+      "outlet": "New York Stage Review",
+      "critic": "David Finkle",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T19:45:15.258Z"
+    },
+    {
+      "key": "new york theater|jonathan mandell",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T20:31:09.028Z"
+    },
+    {
+      "key": "new york theatre guide|joe dziemianowicz",
+      "outlet": "New York Theatre Guide",
+      "critic": "Joe Dziemianowicz",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T20:31:14.694Z"
+    },
+    {
+      "key": "entertainment weekly|dalton ross",
+      "outlet": "Entertainment Weekly",
+      "critic": "Dalton Ross",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T19:44:58.454Z"
+    },
+    {
+      "key": "thewrap|robert hofler",
+      "outlet": "TheWrap",
+      "critic": "Robert Hofler",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T20:31:24.921Z"
+    },
+    {
+      "key": "the independent|caitlin hornik",
+      "outlet": "The Independent",
+      "critic": "Caitlin Hornik",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T19:45:04.945Z"
+    },
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T19:44:53.231Z"
+    },
+    {
+      "key": "1 minute critic|bobby mcguire",
+      "outlet": "1 Minute Critic",
+      "critic": "Bobby McGuire",
+      "tier": 3,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T17:58:35.689Z"
+    },
+    {
+      "key": "theater pizzazz|alix cohen",
+      "outlet": "Theater Pizzazz",
+      "critic": "Alix Cohen",
+      "tier": 3,
+      "publishAt": "2026-11-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "the contending|frank j. avella",
+      "outlet": "The Contending",
+      "critic": "Frank J. Avella",
+      "tier": 4,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:30:04.926Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true,
+      "scoredAt": "2026-11-23T20:43:05.933Z"
+    },
+    {
+      "key": "talkin' broadway|howard miller",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "tier": 2,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T02:45:06.016Z",
+      "prevOkSampleAt": "2026-11-24T02:40:05.623Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-24T02:30:52.603Z"
+    },
+    {
+      "key": "vulture|sara holdren",
+      "outlet": "Vulture",
+      "critic": "Sara Holdren",
+      "tier": 1,
+      "publishAt": "2026-11-23",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T05:17:31.027Z",
+      "prevOkSampleAt": "2026-11-24T05:12:30.698Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-24T05:04:47.082Z"
+    },
+    {
+      "key": "times square chronicles|suzanna bowling",
+      "outlet": "Times Square Chronicles",
+      "critic": "Suzanna Bowling",
+      "tier": 3,
+      "publishAt": "2026-11-24",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-24T07:27:38.507Z",
+      "prevOkSampleAt": "2026-11-24T07:22:38.182Z",
+      "baseline": false,
+      "liveNow": true,
+      "scoredAt": "2026-11-24T07:04:01.443Z"
+    }
+  ],
+  "dropped": [
+    {
+      "key": "talkin' broadway|howard miller",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "firstLiveAt": "2026-11-24T02:45:06.016Z",
+      "droppedAt": "2026-11-24T06:22:35.035Z",
+      "restoredAt": "2026-11-24T06:42:36.324Z"
+    }
+  ],
+  "reference": {
+    "2h": {
+      "status": "incomplete",
+      "source": [
+        "bww-roundup",
+        "dtli",
+        "show-score"
+      ],
+      "count": 14,
+      "covered": 13,
+      "coverage": 0.929,
+      "missing": [
+        "pages-on-stages"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 16,
+      "fetchedAt": "2026-11-24T09:00:43.630Z",
+      "asOf": "2026-11-24T05:00:00.000Z",
+      "method": "timeline",
+      "notYetPublished": [],
+      "discoveredAfter": [],
+      "censusNote": "archive only"
+    },
+    "end": {
+      "status": "incomplete",
+      "source": [
+        "bww-roundup",
+        "dtli",
+        "show-score"
+      ],
+      "count": 14,
+      "covered": 13,
+      "coverage": 0.929,
+      "missing": [
+        "pages-on-stages"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 19,
+      "fetchedAt": "2026-11-24T09:00:43.630Z",
+      "censusNote": "archive only"
+    },
+    "2h-live": {
+      "status": "incomplete",
+      "source": [
+        "bww-roundup",
+        "show-score"
+      ],
+      "count": 11,
+      "covered": 10,
+      "coverage": 0.909,
+      "missing": [
+        "pages-on-stages"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 17,
+      "fetchedAt": "2026-11-24T05:00:32.076Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "lane",
+    "method": "lane-only-decision",
+    "holder": "gha-45264490281",
+    "stoodDownSeenAt": "2026-11-24T05:00:32.156Z",
+    "checks": [
+      {
+        "at": "2026-11-24T05:00:32.156Z",
+        "label": "2h",
+        "standDown": true,
+        "reason": "lane gha-45264490281 holds its-a-wonderful-life-a-live-radio-play-2026 2026-11-23",
+        "holder": "gha-45264490281"
+      },
+      {
+        "at": "2026-11-24T09:00:43.725Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "no live lane lease"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-24T09:00:44.489Z",
+    "files": [
+      {
+        "file": "around-the-town-chicago--unknown.json",
+        "outletId": "around-the-town-chicago",
+        "outlet": "Around the Town Chicago",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-23T21:48:48.714Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-23",
+        "url": "aroundthetownchicago.com/theatre-reviews/its-a-wonderful-life-a-live-radio-play-oil-lamp-glenview-reviewed-by-wayne-mell",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "broadwaynews--unknown.json",
+        "outletId": "broadwaynews",
+        "outlet": "Broadway News",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-19T08:38:24.451Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "broadwaynews.com/andrew-rannells-megan-hilty-and-tituss-burgess-to-star-in-broadways-its-a-wonderful-life-a-live-radio-play.md",
+        "includable": false,
+        "reason": "nonReview",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "buzznews--ken-payne.json",
+        "outletId": "buzznews",
+        "outlet": "Buzznews",
+        "critic": "Ken Payne",
+        "firstSeenAt": "2026-11-19T20:11:59.513Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-14",
+        "url": "buzznews.net/theatre/theatre-reviews/item/6841-citadel-theatre-captures-the-magic-of-old-time-radio-in-it-s-a-wonderful-life-a-live-radio-play.html",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "calgary-herald--louis-b-hobson.json",
+        "outletId": "calgary-herald",
+        "outlet": "Calgary Herald",
+        "critic": "Louis B. Hobson",
+        "firstSeenAt": "2026-11-18T17:22:14.957Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-12",
+        "url": "calgaryherald.com/entertainment/theatre/review-rosebuds-a-wonderful-life-a-perfect-holiday-show-bursting-with-nostalgia",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "chicago-reader--justin-hayford.json",
+        "outletId": "chicago-reader",
+        "outlet": "Chicago Reader",
+        "critic": "Justin Hayford",
+        "firstSeenAt": "2026-11-19T11:24:29.792Z",
+        "scoredAt": null,
+        "publishDate": "2005-12-08",
+        "url": "chicagoreader.com/arts-culture/its-a-wonderful-life-a-live-radio-play",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-23T19:21:28.172Z",
+        "scoredAt": "2026-11-23T19:44:53.231Z",
+        "publishDate": "2026-11-23",
+        "url": "culturesauce.com/its-a-wonderful-life-radio-play-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "daily-herald--unknown.json",
+        "outletId": "daily-herald",
+        "outlet": "Daily Herald",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-21T15:39:49.846Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "dailyherald.com/20261102/submitted-content/citadel-theatre-presents-its-a-wonderful-life-a-live-radio-play-nov-13-to-dec-13",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "ew--dalton-ross.json",
+        "outletId": "ew",
+        "outlet": "Entertainment Weekly",
+        "critic": "Dalton Ross",
+        "firstSeenAt": "2026-11-23T19:21:36.995Z",
+        "scoredAt": "2026-11-23T19:44:58.454Z",
+        "publishDate": "2026-11-23",
+        "url": "ew.com/its-a-wonderful-life-a-live-radio-play-review-static-on-broadway-12258601",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "independent--caitlin-hornik.json",
+        "outletId": "independent",
+        "outlet": "The Independent",
+        "critic": "Caitlin Hornik",
+        "firstSeenAt": "2026-11-23T19:21:46.184Z",
+        "scoredAt": "2026-11-23T19:45:04.945Z",
+        "publishDate": "2026-11-23",
+        "url": "the-independent.com/arts-entertainment/theatre-dance/reviews/wonderful-life-radio-play-review-broadway-b3089962.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "irish-times--max-mcguinness.json",
+        "outletId": "irish-times",
+        "outlet": "Irish Times",
+        "critic": "Max McGuinness",
+        "firstSeenAt": "2026-11-23T21:02:08.625Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-22",
+        "url": "irishtimes.com/culture/stage/review/2026/11/22/its-a-wonderful-life-review-gates-christmas-show-leans-into-joyous-moments-of-jimmy-stewart-classic",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "nydailynews--chris-jones.json",
+        "outletId": "nydailynews",
+        "outlet": "New York Daily News",
+        "critic": "Chris Jones",
+        "firstSeenAt": "2026-11-23T19:21:53.304Z",
+        "scoredAt": "2026-11-23T19:45:09.755Z",
+        "publishDate": "2026-11-23",
+        "url": "nydailynews.com/2026/11/23/broadway-review-its-a-wonderful-life-fails-to-earn-its-wings",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "nydailynews--unknown.json",
+        "outletId": "nydailynews",
+        "outlet": "New York Daily News",
+        "critic": null,
+        "firstSeenAt": null,
+        "scoredAt": "2026-11-23T23:17:54.130Z",
+        "publishDate": null,
+        "url": null,
+        "includable": false,
+        "reason": "crossOutletDuplicate",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "nysr--david-finkle.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle",
+        "firstSeenAt": "2026-11-23T19:22:00.808Z",
+        "scoredAt": "2026-11-23T19:45:15.258Z",
+        "publishDate": "2026-11-23",
+        "url": "nystagereview.com/2026/11/23/its-a-wonderful-life-its-a-generally-wonderful-show",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "nysr--michael-sommers.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Michael Sommers",
+        "firstSeenAt": "2026-11-23T20:27:41.162Z",
+        "scoredAt": "2026-11-23T20:31:04.380Z",
+        "publishDate": "2026-11-23",
+        "url": "nystagereview.com/2026/11/23/its-a-wonderful-life-a-broadway-broadcast-about-bedford-falls",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outletId": "nyt-theater",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell",
+        "firstSeenAt": "2026-11-23T20:27:43.024Z",
+        "scoredAt": "2026-11-23T20:31:09.028Z",
+        "publishDate": "2026-11-23",
+        "url": "newyorktheater.me/2026/11/23/its-a-wonderful-life-a-live-radio-show-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "nytg--joe-dziemianowicz.json",
+        "outletId": "nytg",
+        "outlet": "New York Theatre Guide",
+        "critic": "Joe Dziemianowicz",
+        "firstSeenAt": "2026-11-23T20:27:44.009Z",
+        "scoredAt": "2026-11-23T20:31:14.694Z",
+        "publishDate": "2026-11-23",
+        "url": "newyorktheatreguide.com/reviews/its-a-wonderful-life-a-live-radio-play-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "nytimes--laura-collins-hughes.json",
+        "outletId": "nytimes",
+        "outlet": "The New York Times",
+        "critic": "Laura Collins-Hughes",
+        "firstSeenAt": "2026-11-23T20:28:54.303Z",
+        "scoredAt": "2026-11-23T20:31:20.022Z",
+        "publishDate": "2026-11-23",
+        "url": "nytimes.com/2026/11/23/theater/its-a-wonderful-life-blue-man-group-now-you-see-me-review.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "one-minute-critic--bobby-mcguire.json",
+        "outletId": "one-minute-critic",
+        "outlet": "1 Minute Critic",
+        "critic": "Bobby McGuire",
+        "firstSeenAt": "2026-11-23T17:41:06.387Z",
+        "scoredAt": "2026-11-23T17:58:35.689Z",
+        "publishDate": "2026-11-23",
+        "url": "1minutecritic.com/its-a-wonderful-life-radio-play-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "pages-on-stages--mason-pilevsky.json",
+        "outletId": "pages-on-stages",
+        "outlet": "Pages on Stages",
+        "critic": "Mason Pilevsky",
+        "firstSeenAt": "2026-11-19T06:27:12.676Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-18",
+        "url": "pagesonstages.com/2026/11/18/its-a-wonderful-life-bway",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "stagezine--scott-harrah.json",
+        "outletId": "stagezine",
+        "outlet": "StageZine",
+        "critic": "Scott Harrah",
+        "firstSeenAt": "2026-11-18T18:36:23.027Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-01",
+        "url": "stagezine.com/its-a-wonderful-life-a-live-radio-play-sets-broadway-premiere-with-all-star-cast",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      },
+      {
+        "file": "talkinbroadway--howard-miller--on-2026-11-23.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "Howard Miller",
+        "firstSeenAt": "2026-11-24T02:30:46.311Z",
+        "scoredAt": "2026-11-24T02:30:52.603Z",
+        "publishDate": "2026-11-23",
+        "url": "talkinbroadway.com/page/world/itsawonderfullifealiveradioplay.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "talkinbroadway--matthew-murray.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "Matthew Murray",
+        "firstSeenAt": "2026-11-24T00:40:48.867Z",
+        "scoredAt": null,
+        "publishDate": "2015-12-20",
+        "url": "talkinbroadway.com/page/world/index.html",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": null
+      },
+      {
+        "file": "talkinbroadway--unknown.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-24T00:40:48.867Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "talkinbroadway.com/page/world/index.html",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": null
+      },
+      {
+        "file": "the-contending--frank-j-avella.json",
+        "outletId": "the-contending",
+        "outlet": "The Contending",
+        "critic": "Frank J. Avella",
+        "firstSeenAt": "2026-11-23T20:33:25.891Z",
+        "scoredAt": "2026-11-23T20:43:05.933Z",
+        "publishDate": "2026-11-23",
+        "url": "thecontending.com/broadways-its-a-wonderful-life-a-live-radio-play-poor-sacrificial-george-in-pleasing-production",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "theater-pizzazz--alix-cohen.json",
+        "outletId": "theater-pizzazz",
+        "outlet": "Theater Pizzazz",
+        "critic": "Alix Cohen",
+        "firstSeenAt": "2026-11-22T18:11:00.398Z",
+        "scoredAt": "2026-11-22T18:39:18.033Z",
+        "publishDate": "2026-11-22",
+        "url": "theaterpizzazz.com/its-a-wonderful-life-a-live-radio-play",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "theater-pizzazz--unknown.json",
+        "outletId": "theater-pizzazz",
+        "outlet": "Theater Pizzazz",
+        "critic": "Alix Cohen",
+        "firstSeenAt": "2026-11-22T18:11:00.398Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-22",
+        "url": "theaterpizzazz.com/its-a-wonderful-life-a-live-radio-play",
+        "includable": false,
+        "reason": "duplicateOf",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "theater-scene--samuel-l-leiter--on-2026-11-18.json",
+        "outletId": "theater-scene",
+        "outlet": "Theater Scene",
+        "critic": "Samuel L. Leiter",
+        "firstSeenAt": "2026-11-19T05:00:30.924Z",
+        "scoredAt": "2026-11-19T05:00:36.302Z",
+        "publishDate": "2026-11-23",
+        "url": "theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "theatermania--zachary-stewart.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Zachary Stewart",
+        "firstSeenAt": "2026-11-23T17:14:55.535Z",
+        "scoredAt": "2026-11-23T17:26:18.223Z",
+        "publishDate": "2026-11-23",
+        "url": "theatermania.com/news/review-its-a-wonderful-life-a-live-radio-play-on-broadway_1860171",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "thewrap--robert-hofler.json",
+        "outletId": "thewrap",
+        "outlet": "TheWrap",
+        "critic": "Robert Hofler",
+        "firstSeenAt": "2026-11-23T20:27:46.213Z",
+        "scoredAt": "2026-11-23T20:31:24.921Z",
+        "publishDate": "2026-11-23",
+        "url": "thewrap.com/creative-content/theater/its-a-wonderful-life-broadway-review-andrew-rannells-lisa-rinna",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "timeout--adam-feldman.json",
+        "outletId": "timeout",
+        "outlet": "Time Out New York",
+        "critic": "Adam Feldman",
+        "firstSeenAt": "2026-11-23T22:44:11.309Z",
+        "scoredAt": "2026-11-23T23:00:00.294Z",
+        "publishDate": "2026-11-23",
+        "url": "timeout.com/newyork/news/broadway-review-its-a-wonderful-lifea-live-radio-play-112326",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "times-square-chronicles--suzanna-bowling.json",
+        "outletId": "times-square-chronicles",
+        "outlet": "Times Square Chronicles",
+        "critic": "Suzanna Bowling",
+        "firstSeenAt": "2026-11-24T06:52:33.702Z",
+        "scoredAt": "2026-11-24T07:04:01.443Z",
+        "publishDate": "2026-11-24",
+        "url": "t2conline.com/its-a-wonderful-life-a-little-christmas-magic-on-broadway",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "vulture--sara-holdren.json",
+        "outletId": "vulture",
+        "outlet": "Vulture",
+        "critic": "Sara Holdren",
+        "firstSeenAt": "2026-11-24T05:04:41.480Z",
+        "scoredAt": "2026-11-24T05:04:47.082Z",
+        "publishDate": "2026-11-23",
+        "url": "vulture.com/article/its-a-wonderful-life-on-broadway-god-help-us-every-one.html",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null,
+        "inCoreAtEnd": true
+      },
+      {
+        "file": "whatsonstage--unknown.json",
+        "outletId": "whatsonstage",
+        "outlet": "WhatsOnStage",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-19T20:54:47.138Z",
+        "scoredAt": null,
+        "publishDate": "2024-10-08",
+        "url": "whatsonstage.com/shows/nottingham-theatre/its-a-wonderful-life-a-live-radio-play_368993648",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null,
+        "inCoreAtEnd": false
+      }
+    ]
+  },
+  "pipelineRuns": {
+    "capturedAt": "2026-11-24T09:00:58.180Z",
+    "window": {
+      "from": "2026-11-24T01:00:00Z",
+      "to": "2026-11-24T06:00:00Z"
+    },
+    "complete": true,
+    "runs": [
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted seven-guitars-off-broadway-2026 (broadway)",
+        "startedAt": "2026-11-23T22:30:16Z",
+        "updatedAt": "2026-11-24T01:33:12Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-23T23:55:19Z",
+        "updatedAt": "2026-11-24T01:03:01Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:22:28Z",
+        "updatedAt": "2026-11-24T01:04:45Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:23:11Z",
+        "updatedAt": "2026-11-24T02:08:14Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:25:34Z",
+        "updatedAt": "2026-11-24T01:12:39Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45297180142)",
+        "startedAt": "2026-11-24T00:28:53Z",
+        "updatedAt": "2026-11-24T01:20:59Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T00:29:10Z",
+        "updatedAt": "2026-11-24T01:15:08Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted the-afronauts-west-end-2026 (west-end)",
+        "startedAt": "2026-11-24T00:31:48Z",
+        "updatedAt": "2026-11-24T05:22:19Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-24T00:31:50Z",
+        "updatedAt": "2026-11-24T04:49:12Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-24T00:31:52Z",
+        "updatedAt": "2026-11-24T05:04:24Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T00:31:54Z",
+        "updatedAt": "2026-11-24T01:14:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:34:11Z",
+        "updatedAt": "2026-11-24T01:30:47Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:38:02Z",
+        "updatedAt": "2026-11-24T01:30:20Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "failure",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T00:38:16Z",
+        "updatedAt": "2026-11-24T01:22:44Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T00:38:24Z",
+        "updatedAt": "2026-11-24T01:21:42Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T00:39:33Z",
+        "updatedAt": "2026-11-24T01:49:05Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — engines-and-instruments-of-flight-a-fantasia-in-three-acts-by-calamity-west-regional-2026",
+        "startedAt": "2026-11-24T00:41:25Z",
+        "updatedAt": "2026-11-24T01:07:34Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — adia-and-clora-snatch-joy-regional-2026",
+        "startedAt": "2026-11-24T00:41:28Z",
+        "updatedAt": "2026-11-24T01:10:25Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — desire-under-the-elms-off-west-end-2026",
+        "startedAt": "2026-11-24T00:41:29Z",
+        "updatedAt": "2026-11-24T01:07:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — eurotrash-off-west-end-2026",
+        "startedAt": "2026-11-24T00:41:31Z",
+        "updatedAt": "2026-11-24T01:08:06Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:44:53Z",
+        "updatedAt": "2026-11-24T01:39:01Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:45:36Z",
+        "updatedAt": "2026-11-24T01:42:56Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:45:59Z",
+        "updatedAt": "2026-11-24T01:43:54Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45298617845)",
+        "startedAt": "2026-11-24T00:46:16Z",
+        "updatedAt": "2026-11-24T01:40:23Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:46:53Z",
+        "updatedAt": "2026-11-24T01:58:54Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:48:48Z",
+        "updatedAt": "2026-11-24T02:00:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-24T00:49:03Z",
+        "updatedAt": "2026-11-24T01:11:26Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T00:50:05Z",
+        "updatedAt": "2026-11-24T01:17:16Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T00:53:34Z",
+        "updatedAt": "2026-11-24T01:15:11Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T00:56:21Z",
+        "updatedAt": "2026-11-24T01:17:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026",
+        "startedAt": "2026-11-24T00:56:38Z",
+        "updatedAt": "2026-11-24T01:23:14Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — engines-and-instruments-of-flight-a-fantasia-in-three-acts-by-calamity-west-regional-2026",
+        "startedAt": "2026-11-24T00:56:39Z",
+        "updatedAt": "2026-11-24T01:22:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:58:34Z",
+        "updatedAt": "2026-11-24T02:04:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T00:59:08Z",
+        "updatedAt": "2026-11-24T02:05:55Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted its-a-wonderful-life-a-live-radio-play-2026 (broadway)",
+        "startedAt": "2026-11-24T01:00:07Z",
+        "updatedAt": "2026-11-24T01:09:59Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator targeted seven-guitars-off-broadway-2026 (broadway)",
+        "startedAt": "2026-11-24T01:00:15Z",
+        "updatedAt": "2026-11-24T05:04:21Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — julius-caesar-globe-off-west-end-2026",
+        "startedAt": "2026-11-24T01:00:22Z",
+        "updatedAt": "2026-11-24T01:18:20Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — little-shop-of-horrors-biograph-regional-2026",
+        "startedAt": "2026-11-24T01:00:23Z",
+        "updatedAt": "2026-11-24T01:16:09Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — peter-pan-goes-wrong-regional-2026",
+        "startedAt": "2026-11-24T01:00:24Z",
+        "updatedAt": "2026-11-24T01:20:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "failure",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:02:57Z",
+        "updatedAt": "2026-11-24T02:41:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:03:43Z",
+        "updatedAt": "2026-11-24T02:15:40Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T01:07:30Z",
+        "updatedAt": "2026-11-24T01:15:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:07:41Z",
+        "updatedAt": "2026-11-24T02:18:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45301174119)",
+        "startedAt": "2026-11-24T01:09:01Z",
+        "updatedAt": "2026-11-24T02:08:51Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:09:09Z",
+        "updatedAt": "2026-11-24T02:18:02Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — julius-caesar-globe-off-west-end-2026",
+        "startedAt": "2026-11-24T01:10:10Z",
+        "updatedAt": "2026-11-24T01:34:51Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — little-shop-of-horrors-biograph-regional-2026",
+        "startedAt": "2026-11-24T01:10:12Z",
+        "updatedAt": "2026-11-24T01:26:54Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "failure",
+        "displayTitle": "LLM Ensemble Score Reviews — peter-pan-goes-wrong-regional-2026",
+        "startedAt": "2026-11-24T01:10:13Z",
+        "updatedAt": "2026-11-24T01:34:16Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:11:08Z",
+        "updatedAt": "2026-11-24T02:26:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:11:59Z",
+        "updatedAt": "2026-11-24T02:27:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:13:21Z",
+        "updatedAt": "2026-11-24T02:38:58Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T01:15:05Z",
+        "updatedAt": "2026-11-24T01:31:10Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T01:15:08Z",
+        "updatedAt": "2026-11-24T02:00:30Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T01:16:20Z",
+        "updatedAt": "2026-11-24T01:47:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:17:02Z",
+        "updatedAt": "2026-11-24T02:40:55Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T01:18:17Z",
+        "updatedAt": "2026-11-24T01:45:40Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:19:19Z",
+        "updatedAt": "2026-11-24T02:40:34Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:20:10Z",
+        "updatedAt": "2026-11-24T02:44:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:20:42Z",
+        "updatedAt": "2026-11-24T02:47:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45303609786)",
+        "startedAt": "2026-11-24T01:20:59Z",
+        "updatedAt": "2026-11-24T02:38:56Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T01:22:52Z",
+        "updatedAt": "2026-11-24T02:26:34Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T01:23:01Z",
+        "updatedAt": "2026-11-24T01:31:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:25:28Z",
+        "updatedAt": "2026-11-24T02:53:26Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:27:45Z",
+        "updatedAt": "2026-11-24T02:56:25Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:31:00Z",
+        "updatedAt": "2026-11-24T03:02:10Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T01:31:05Z",
+        "updatedAt": "2026-11-24T01:47:33Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — into-the-woods-off-west-end-2025",
+        "startedAt": "2026-11-24T01:31:26Z",
+        "updatedAt": "2026-11-24T01:45:59Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:31:35Z",
+        "updatedAt": "2026-11-24T03:01:39Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T01:34:10Z",
+        "updatedAt": "2026-11-24T01:49:54Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-clockwork-orange-a-play-with-music-regional-2026",
+        "startedAt": "2026-11-24T01:34:11Z",
+        "updatedAt": "2026-11-24T01:53:27Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — candide-regional-2026",
+        "startedAt": "2026-11-24T01:34:13Z",
+        "updatedAt": "2026-11-24T01:58:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T01:34:14Z",
+        "updatedAt": "2026-11-24T01:44:33Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — a-clockwork-orange-a-play-with-music-regional-2026",
+        "startedAt": "2026-11-24T01:34:15Z",
+        "updatedAt": "2026-11-24T01:44:19Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — candide-regional-2026",
+        "startedAt": "2026-11-24T01:34:16Z",
+        "updatedAt": "2026-11-24T01:44:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:34:56Z",
+        "updatedAt": "2026-11-24T03:01:08Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T01:35:01Z",
+        "updatedAt": "2026-11-24T02:05:15Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45304034891)",
+        "startedAt": "2026-11-24T01:36:23Z",
+        "updatedAt": "2026-11-24T03:02:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:37:41Z",
+        "updatedAt": "2026-11-24T03:01:22Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:38:30Z",
+        "updatedAt": "2026-11-24T03:06:34Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:40:06Z",
+        "updatedAt": "2026-11-24T03:09:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:42:19Z",
+        "updatedAt": "2026-11-24T03:12:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — a-clockwork-orange-a-play-with-music-regional-2026",
+        "startedAt": "2026-11-24T01:44:17Z",
+        "updatedAt": "2026-11-24T01:44:35Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — candide-regional-2026",
+        "startedAt": "2026-11-24T01:44:18Z",
+        "updatedAt": "2026-11-24T01:44:36Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-christmas-carol-west-end-2026",
+        "startedAt": "2026-11-24T01:44:31Z",
+        "updatedAt": "2026-11-24T02:03:08Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-clockwork-orange-a-play-with-music-regional-2026",
+        "startedAt": "2026-11-24T01:44:32Z",
+        "updatedAt": "2026-11-24T02:05:46Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — candide-regional-2026",
+        "startedAt": "2026-11-24T01:44:33Z",
+        "updatedAt": "2026-11-24T02:09:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:45:30Z",
+        "updatedAt": "2026-11-24T03:13:45Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T01:45:55Z",
+        "updatedAt": "2026-11-24T01:49:53Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T01:47:31Z",
+        "updatedAt": "2026-11-24T02:38:21Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T01:49:50Z",
+        "updatedAt": "2026-11-24T01:53:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:50:46Z",
+        "updatedAt": "2026-11-24T03:14:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45306099283)",
+        "startedAt": "2026-11-24T01:51:55Z",
+        "updatedAt": "2026-11-24T03:06:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:52:05Z",
+        "updatedAt": "2026-11-24T03:17:40Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T01:53:24Z",
+        "updatedAt": "2026-11-24T01:58:51Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:55:58Z",
+        "updatedAt": "2026-11-24T03:16:58Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T01:58:49Z",
+        "updatedAt": "2026-11-24T02:29:58Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — a-clockwork-orange-a-play-with-music-regional-2026",
+        "startedAt": "2026-11-24T01:59:04Z",
+        "updatedAt": "2026-11-24T02:19:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — candide-regional-2026",
+        "startedAt": "2026-11-24T01:59:06Z",
+        "updatedAt": "2026-11-24T02:23:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T01:59:30Z",
+        "updatedAt": "2026-11-24T03:21:13Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-24T02:00:04Z",
+        "updatedAt": "2026-11-24T02:06:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:01:33Z",
+        "updatedAt": "2026-11-24T03:21:34Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T02:02:50Z",
+        "updatedAt": "2026-11-24T02:17:56Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T02:02:52Z",
+        "updatedAt": "2026-11-24T02:15:14Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T02:03:19Z",
+        "updatedAt": "2026-11-24T02:32:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — constellations-regional-2026",
+        "startedAt": "2026-11-24T02:04:18Z",
+        "updatedAt": "2026-11-24T02:17:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:04:59Z",
+        "updatedAt": "2026-11-24T03:28:31Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — les-miserables-regional-2026",
+        "startedAt": "2026-11-24T02:05:01Z",
+        "updatedAt": "2026-11-24T02:27:36Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T02:05:11Z",
+        "updatedAt": "2026-11-24T03:07:47Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-24T02:05:19Z",
+        "updatedAt": "2026-11-24T02:31:50Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T02:05:27Z",
+        "updatedAt": "2026-11-24T03:05:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:08:12Z",
+        "updatedAt": "2026-11-24T03:26:47Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:08:35Z",
+        "updatedAt": "2026-11-24T03:29:38Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — my-english-persian-kitchen-regional-2026",
+        "startedAt": "2026-11-24T02:12:52Z",
+        "updatedAt": "2026-11-24T02:34:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:14:48Z",
+        "updatedAt": "2026-11-24T03:33:22Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T02:15:11Z",
+        "updatedAt": "2026-11-24T02:30:47Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:16:17Z",
+        "updatedAt": "2026-11-24T03:33:56Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T02:17:17Z",
+        "updatedAt": "2026-11-24T02:17:55Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T02:17:53Z",
+        "updatedAt": "2026-11-24T02:27:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:18:19Z",
+        "updatedAt": "2026-11-24T04:05:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45308973561)",
+        "startedAt": "2026-11-24T02:18:54Z",
+        "updatedAt": "2026-11-24T03:25:02Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T02:22:14Z",
+        "updatedAt": "2026-11-24T02:35:39Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — constellations-regional-2026",
+        "startedAt": "2026-11-24T02:22:15Z",
+        "updatedAt": "2026-11-24T02:36:23Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:23:11Z",
+        "updatedAt": "2026-11-24T03:36:38Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — les-miserables-regional-2026",
+        "startedAt": "2026-11-24T02:23:16Z",
+        "updatedAt": "2026-11-24T02:38:53Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — my-english-persian-kitchen-regional-2026",
+        "startedAt": "2026-11-24T02:23:17Z",
+        "updatedAt": "2026-11-24T02:40:33Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — othello-bedlam-off-broadway-2026",
+        "startedAt": "2026-11-24T02:23:18Z",
+        "updatedAt": "2026-11-24T02:46:43Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:24:43Z",
+        "updatedAt": "2026-11-24T04:59:15Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:25:06Z",
+        "updatedAt": "2026-11-24T03:33:13Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T02:27:32Z",
+        "updatedAt": "2026-11-24T02:46:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:28:43Z",
+        "updatedAt": "2026-11-24T03:33:31Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:29:48Z",
+        "updatedAt": "2026-11-24T03:33:18Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T02:30:44Z",
+        "updatedAt": "2026-11-24T03:13:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:31:06Z",
+        "updatedAt": "2026-11-24T03:33:18Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T02:31:43Z",
+        "updatedAt": "2026-11-24T03:17:26Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T02:34:16Z",
+        "updatedAt": "2026-11-24T03:00:44Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45312513443)",
+        "startedAt": "2026-11-24T02:37:11Z",
+        "updatedAt": "2026-11-24T03:32:28Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:38:39Z",
+        "updatedAt": "2026-11-24T03:32:42Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — other-bodies-off-broadway-2026",
+        "startedAt": "2026-11-24T02:40:58Z",
+        "updatedAt": "2026-11-24T02:52:04Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:45:21Z",
+        "updatedAt": "2026-11-24T03:32:52Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:46:05Z",
+        "updatedAt": "2026-11-24T03:32:39Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:46:31Z",
+        "updatedAt": "2026-11-24T03:32:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:47:07Z",
+        "updatedAt": "2026-11-24T03:32:34Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T02:47:56Z",
+        "updatedAt": "2026-11-24T03:39:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45313358210)",
+        "startedAt": "2026-11-24T02:48:15Z",
+        "updatedAt": "2026-11-24T03:40:04Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:51:25Z",
+        "updatedAt": "2026-11-24T03:32:33Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T02:52:00Z",
+        "updatedAt": "2026-11-24T03:13:27Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T02:54:18Z",
+        "updatedAt": "2026-11-24T03:45:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T02:55:16Z",
+        "updatedAt": "2026-11-24T03:36:56Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T02:58:10Z",
+        "updatedAt": "2026-11-24T03:12:36Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:00:33Z",
+        "updatedAt": "2026-11-24T03:52:47Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:02:24Z",
+        "updatedAt": "2026-11-24T03:47:11Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:02:56Z",
+        "updatedAt": "2026-11-24T03:57:03Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:03:24Z",
+        "updatedAt": "2026-11-24T03:58:16Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45315458324)",
+        "startedAt": "2026-11-24T03:04:04Z",
+        "updatedAt": "2026-11-24T04:01:32Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:05:50Z",
+        "updatedAt": "2026-11-24T04:04:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:06:59Z",
+        "updatedAt": "2026-11-24T04:05:12Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T03:07:59Z",
+        "updatedAt": "2026-11-24T03:22:13Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — nine-night-off-west-end-2026",
+        "startedAt": "2026-11-24T03:08:00Z",
+        "updatedAt": "2026-11-24T03:21:56Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T03:08:03Z",
+        "updatedAt": "2026-11-24T03:16:34Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — nine-night-off-west-end-2026",
+        "startedAt": "2026-11-24T03:08:04Z",
+        "updatedAt": "2026-11-24T03:25:54Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T03:08:05Z",
+        "updatedAt": "2026-11-24T03:18:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:13:18Z",
+        "updatedAt": "2026-11-24T03:56:41Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T03:15:09Z",
+        "updatedAt": "2026-11-24T03:29:10Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:16:23Z",
+        "updatedAt": "2026-11-24T03:59:29Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — all-the-world-regional-2026",
+        "startedAt": "2026-11-24T03:16:31Z",
+        "updatedAt": "2026-11-24T03:27:44Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T03:17:04Z",
+        "updatedAt": "2026-11-24T04:33:34Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-24T03:17:13Z",
+        "updatedAt": "2026-11-24T03:28:04Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T03:17:21Z",
+        "updatedAt": "2026-11-24T04:13:39Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T03:18:02Z",
+        "updatedAt": "2026-11-24T03:30:19Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:18:56Z",
+        "updatedAt": "2026-11-24T04:04:58Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:19:48Z",
+        "updatedAt": "2026-11-24T04:08:00Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45318528064)",
+        "startedAt": "2026-11-24T03:20:13Z",
+        "updatedAt": "2026-11-24T04:11:05Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:20:34Z",
+        "updatedAt": "2026-11-24T04:15:36Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T03:21:52Z",
+        "updatedAt": "2026-11-24T03:22:12Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T03:22:09Z",
+        "updatedAt": "2026-11-24T03:25:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:24:44Z",
+        "updatedAt": "2026-11-24T04:17:32Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T03:25:50Z",
+        "updatedAt": "2026-11-24T03:42:50Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:28:05Z",
+        "updatedAt": "2026-11-24T04:18:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:28:48Z",
+        "updatedAt": "2026-11-24T04:19:03Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T03:28:54Z",
+        "updatedAt": "2026-11-24T03:35:19Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T03:29:05Z",
+        "updatedAt": "2026-11-24T04:13:00Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:30:01Z",
+        "updatedAt": "2026-11-24T04:26:00Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:30:29Z",
+        "updatedAt": "2026-11-24T04:24:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45319448671)",
+        "startedAt": "2026-11-24T03:31:46Z",
+        "updatedAt": "2026-11-24T04:29:14Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:32:12Z",
+        "updatedAt": "2026-11-24T04:24:59Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:35:56Z",
+        "updatedAt": "2026-11-24T04:22:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:39:10Z",
+        "updatedAt": "2026-11-24T04:25:12Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T03:39:16Z",
+        "updatedAt": "2026-11-24T04:33:59Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:39:47Z",
+        "updatedAt": "2026-11-24T04:23:08Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T03:42:40Z",
+        "updatedAt": "2026-11-24T04:25:49Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-24T03:51:04Z",
+        "updatedAt": "2026-11-24T05:04:22Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T03:55:07Z",
+        "updatedAt": "2026-11-24T04:50:37Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T03:56:14Z",
+        "updatedAt": "2026-11-24T05:08:19Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T03:56:21Z",
+        "updatedAt": "2026-11-24T04:39:12Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:01:34Z",
+        "updatedAt": "2026-11-24T04:15:28Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:02:34Z",
+        "updatedAt": "2026-11-24T04:34:43Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:03:20Z",
+        "updatedAt": "2026-11-24T04:35:27Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:05:14Z",
+        "updatedAt": "2026-11-24T04:18:19Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:09:36Z",
+        "updatedAt": "2026-11-24T04:27:29Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-24T04:13:51Z",
+        "updatedAt": "2026-11-24T04:33:48Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T04:14:00Z",
+        "updatedAt": "2026-11-24T05:07:13Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:21:27Z",
+        "updatedAt": "2026-11-24T04:35:47Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T04:21:33Z",
+        "updatedAt": "2026-11-24T04:25:20Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:23:08Z",
+        "updatedAt": "2026-11-24T04:42:06Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:23:31Z",
+        "updatedAt": "2026-11-24T04:42:04Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — the-afronauts-west-end-2026",
+        "startedAt": "2026-11-24T04:28:25Z",
+        "updatedAt": "2026-11-24T05:06:51Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:29:40Z",
+        "updatedAt": "2026-11-24T04:48:30Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:30:07Z",
+        "updatedAt": "2026-11-24T04:49:14Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:30:29Z",
+        "updatedAt": "2026-11-24T04:39:42Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-24T04:34:38Z",
+        "updatedAt": "2026-11-24T04:37:36Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:34:47Z",
+        "updatedAt": "2026-11-24T04:50:39Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T04:40:08Z",
+        "updatedAt": "2026-11-24T04:45:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:41:36Z",
+        "updatedAt": "2026-11-24T04:54:06Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:47:41Z",
+        "updatedAt": "2026-11-24T05:46:23Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator targeted its-a-wonderful-life-a-live-radio-play-2026 (broadway)",
+        "startedAt": "2026-11-24T04:50:08Z",
+        "updatedAt": "2026-11-24T04:51:30Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Orchestrator targeted seven-guitars-off-broadway-2026 (broadway)",
+        "startedAt": "2026-11-24T04:50:13Z",
+        "updatedAt": "2026-11-24T05:04:23Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T04:51:30Z",
+        "updatedAt": "2026-11-24T05:32:39Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:57:18Z",
+        "updatedAt": "2026-11-24T05:13:38Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:57:56Z",
+        "updatedAt": "2026-11-24T05:04:14Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T04:58:26Z",
+        "updatedAt": "2026-11-24T05:11:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:59:10Z",
+        "updatedAt": "2026-11-24T05:04:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T04:59:13Z",
+        "updatedAt": "2026-11-24T05:08:58Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T04:59:18Z",
+        "updatedAt": "2026-11-24T05:08:50Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T05:01:02Z",
+        "updatedAt": "2026-11-24T05:04:09Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T05:02:38Z",
+        "updatedAt": "2026-11-24T05:10:09Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:05:01Z",
+        "updatedAt": "2026-11-24T05:17:57Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — constellations-regional-2026",
+        "startedAt": "2026-11-24T05:06:59Z",
+        "updatedAt": "2026-11-24T05:16:41Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:07:43Z",
+        "updatedAt": "2026-11-24T05:12:08Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-24T05:08:15Z",
+        "updatedAt": "2026-11-24T05:10:06Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T05:09:54Z",
+        "updatedAt": "2026-11-24T05:15:05Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T05:10:04Z",
+        "updatedAt": "2026-11-24T05:25:35Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:10:35Z",
+        "updatedAt": "2026-11-24T05:26:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:11:19Z",
+        "updatedAt": "2026-11-24T05:23:04Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:11:37Z",
+        "updatedAt": "2026-11-24T05:25:33Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45331363833)",
+        "startedAt": "2026-11-24T05:13:13Z",
+        "updatedAt": "2026-11-24T05:33:07Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — death-and-the-maiden-regional-2026",
+        "startedAt": "2026-11-24T05:16:30Z",
+        "updatedAt": "2026-11-24T05:26:12Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "LLM Ensemble Score Reviews — death-and-the-maiden-regional-2026",
+        "startedAt": "2026-11-24T05:16:32Z",
+        "updatedAt": "2026-11-24T05:24:30Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T05:16:33Z",
+        "updatedAt": "2026-11-24T05:19:48Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T05:16:38Z",
+        "updatedAt": "2026-11-24T05:38:07Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:20:10Z",
+        "updatedAt": "2026-11-24T05:33:17Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:22:55Z",
+        "updatedAt": "2026-11-24T05:35:46Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — constellations-regional-2026",
+        "startedAt": "2026-11-24T05:24:04Z",
+        "updatedAt": "2026-11-24T05:28:29Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews — death-and-the-maiden-regional-2026",
+        "startedAt": "2026-11-24T05:24:27Z",
+        "updatedAt": "2026-11-24T05:31:55Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:25:49Z",
+        "updatedAt": "2026-11-24T05:40:36Z"
+      },
+      {
+        "workflow": "rebuild-fast.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Rebuild Reviews (Fast)",
+        "startedAt": "2026-11-24T05:26:08Z",
+        "updatedAt": "2026-11-24T05:50:45Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45332167522)",
+        "startedAt": "2026-11-24T05:26:23Z",
+        "updatedAt": "2026-11-24T05:48:12Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T05:35:28Z",
+        "updatedAt": "2026-11-24T05:45:21Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel (pre-warm for run 45333293596)",
+        "startedAt": "2026-11-24T05:38:58Z",
+        "updatedAt": "2026-11-24T06:01:04Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:39:44Z",
+        "updatedAt": "2026-11-24T05:43:23Z"
+      },
+      {
+        "workflow": "llm-ensemble-score.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "LLM Ensemble Score Reviews",
+        "startedAt": "2026-11-24T05:39:50Z",
+        "updatedAt": "2026-11-24T05:43:00Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:42:36Z",
+        "updatedAt": "2026-11-24T06:21:51Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:46:19Z",
+        "updatedAt": "2026-11-24T05:51:53Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:47:08Z",
+        "updatedAt": "2026-11-24T05:58:48Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:50:59Z",
+        "updatedAt": "2026-11-24T05:56:25Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "displayTitle": "Opening Night Orchestrator targeted seven-guitars-off-broadway-2026 (broadway)",
+        "startedAt": "2026-11-24T05:54:53Z",
+        "updatedAt": "2026-11-24T05:54:58Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-24T05:54:55Z",
+        "updatedAt": "2026-11-24T05:54:59Z"
+      },
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "in_progress",
+        "conclusion": null,
+        "displayTitle": "Opening Night Orchestrator (broadway)",
+        "startedAt": "2026-11-24T05:54:56Z",
+        "updatedAt": "2026-11-24T05:55:03Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T05:54:58Z",
+        "updatedAt": "2026-11-24T06:07:33Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T05:55:00Z",
+        "updatedAt": "2026-11-24T06:44:24Z"
+      },
+      {
+        "workflow": "vercel-deploy.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Deploy to Vercel",
+        "startedAt": "2026-11-24T05:55:32Z",
+        "updatedAt": "2026-11-24T06:03:04Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T05:56:05Z",
+        "updatedAt": "2026-11-24T06:50:37Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T05:56:15Z",
+        "updatedAt": "2026-11-24T05:56:38Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — auto",
+        "startedAt": "2026-11-24T05:56:19Z",
+        "updatedAt": "2026-11-24T06:46:52Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — its-a-wonderful-life-a-live-radio-play-2026",
+        "startedAt": "2026-11-24T05:56:27Z",
+        "updatedAt": "2026-11-24T06:11:55Z"
+      },
+      {
+        "workflow": "opening-night-poller.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Poller — seven-guitars-off-broadway-2026",
+        "startedAt": "2026-11-24T05:56:36Z",
+        "updatedAt": "2026-11-24T06:36:28Z"
+      }
+    ]
+  }
+}

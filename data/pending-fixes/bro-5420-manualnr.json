@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5420-manualnr",
+  "planId": "e496512d-74e7-4499-803d-b65e0b657e8a",
+  "status": "applied",
+  "createdAt": "2026-10-16T11:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (manualnr): two hand-checked isNonReview flags (Brighton Beach 2009 LA Times, America Who Hurt You Guardian interview) were ignored live because a fresh high-confidence CV called each a review and the flag lacked the manual marker. Prefix their reasons with 'manual (not a review)'.",
+    "steps": [
+      "mark"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "brighton-beach-memoirs-2009/latimes--james-c-taylor.json",
+        "field": "isNonReviewReason",
+        "oldValue": "BRO-5442: news piece, not a review. Deciding sentence: the headline ('What really happened with Broadway's Brighton Beach Memoirs') and the opening paragraph are about why the revival closed after nine performances. This overrules the 2026-08-15 nonReviewOverride (reverify-nulled-cv-promoted.js), which read it as a review of the staging.",
+        "newValue": "manual (not a review): BRO-5442: news piece, not a review. Deciding sentence: the headline ('What really happened with Broadway's Brighton Beach Memoirs') and the opening paragraph are about why the revival closed after nine performances. This overrules the 2026-08-15 nonReviewOverride (reverify-nulled-cv-promoted.js), which read it as a review of the staging.",
+        "description": "BRO-5420: mark the hand-checked flag manual so isNonReviewDemotedByFreshCV stops ignoring it (row stayed live with isNonReview true)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "america-who-hurt-you-off-broadway-2026/guardian--morgan-jerkins.json",
+        "field": "isNonReviewReason",
+        "oldValue": "BRO-5442: Guardian interview with Sarah Jones (url .../sarah-jones-america-who-hurt-you-interview-...); not a review.",
+        "newValue": "manual (not a review): BRO-5442: Guardian interview with Sarah Jones (url .../sarah-jones-america-who-hurt-you-interview-...); not a review.",
+        "description": "BRO-5420: mark the hand-checked flag manual so isNonReviewDemotedByFreshCV stops ignoring it (row stayed live with isNonReview true)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T11:52:39.626Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brighton-beach-memoirs-2009/latimes--james-c-taylor.json isNonReviewReason: \"BRO-5442: news piece, not a review. Deciding sentence: the headline ('What really happened with Broadway's Brighton Beach Memoirs') and the opening paragraph are about why the revival closed after nine performances. This overrules the 2026-08-15 nonReviewOverride (reverify-nulled-cv-promoted.js), which read it as a review of the staging.\" -> \"manual (not a review): BRO-5442: news piece, not a review. Deciding sentence: the headline ('What really happened with Broadway's Brighton Beach Memoirs') and the opening paragraph are about why the revival closed after nine performances. This overrules the 2026-08-15 nonReviewOverride (reverify-nulled-cv-promoted.js), which read it as a review of the staging.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "america-who-hurt-you-off-broadway-2026/guardian--morgan-jerkins.json isNonReviewReason: \"BRO-5442: Guardian interview with Sarah Jones (url .../sarah-jones-america-who-hurt-you-interview-...); not a review.\" -> \"manual (not a review): BRO-5442: Guardian interview with Sarah Jones (url .../sarah-jones-america-who-hurt-you-interview-...); not a review.\""
+    }
+  ]
+}

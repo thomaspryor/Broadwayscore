@@ -1,0 +1,358 @@
+{
+  "issueNumber": "bro-7207-2",
+  "planId": "71c2d8b1-5c28-4176-9f8d-408086f01d4b",
+  "status": "applied",
+  "createdAt": "2026-11-28T13:25:40.036Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7207: resolve same-critic outlet pairs (syndicated copies, wrong bylines, wrong-show texts) (part 1 of 3)",
+    "steps": [
+      "absolute-hell-west-end-2018/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)",
+      "absolute-hell-west-end-2018/sierz-co-uk--aleks-sierz.json: duplicateReason",
+      "apologia-west-end-2017/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)",
+      "apologia-west-end-2017/sierz-co-uk--aleks-sierz.json: duplicateReason",
+      "goats-west-end-2017/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)",
+      "goats-west-end-2017/sierz-co-uk--aleks-sierz.json: duplicateReason",
+      "nine-night-west-end-2018/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)",
+      "nine-night-west-end-2018/sierz-co-uk--aleks-sierz.json: duplicateReason",
+      "small-island-west-end-2019/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)",
+      "small-island-west-end-2019/sierz-co-uk--aleks-sierz.json: duplicateReason",
+      "the-great-wave-west-end-2018/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)",
+      "the-great-wave-west-end-2018/sierz-co-uk--aleks-sierz.json: duplicateReason",
+      "hope-has-a-happy-meal-west-end-2023/sierz-co-uk--aleks-sierz.json: same article as artsdesk--aleks-sierz.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)",
+      "hope-has-a-happy-meal-west-end-2023/sierz-co-uk--aleks-sierz.json: duplicateReason",
+      "glass-kill-bluebeard-and-imp-west-end-2019/sierz-co-uk--unknown.json: same article as i-paper--aleks-sierz.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)",
+      "glass-kill-bluebeard-and-imp-west-end-2019/sierz-co-uk--unknown.json: duplicateReason",
+      "hansard-west-end-2019/sierz-co-uk--aleks-sierz.json: same article as i-paper--aleks-sierz.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)",
+      "hansard-west-end-2019/sierz-co-uk--aleks-sierz.json: duplicateReason",
+      "labour-of-love-west-end-2017/sierz-co-uk--aleks-sierz.json: same article as tribune--aleks-sierz.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)",
+      "labour-of-love-west-end-2017/sierz-co-uk--aleks-sierz.json: duplicateReason",
+      "a-taste-of-honey-west-end-2019/times-uk--thomas-w-hodgkinson.json: same article as sunday-times--thomas-w-hodgkinson.json (url-less Theatre Record copy whose text is wholly contained in the Sunday Times file)",
+      "a-taste-of-honey-west-end-2019/times-uk--thomas-w-hodgkinson.json: duplicateReason",
+      "fiorello-off-broadway-2016/zeal-nyc--chris-caggiano.json: same article as huffpost--christopher-caggiano.json (HuffPost printed the ZEALnyc review in full, byline credits ZEALnyc; the ZEALnyc file is an excerpt of it)",
+      "fiorello-off-broadway-2016/zeal-nyc--chris-caggiano.json: duplicateReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "absolute-hell-west-end-2018/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "artsdesk--unknown.json",
+        "description": "absolute-hell-west-end-2018/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "absolute-hell-west-end-2018/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)",
+        "description": "absolute-hell-west-end-2018/sierz-co-uk--aleks-sierz.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "apologia-west-end-2017/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "artsdesk--unknown.json",
+        "description": "apologia-west-end-2017/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "apologia-west-end-2017/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)",
+        "description": "apologia-west-end-2017/sierz-co-uk--aleks-sierz.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "goats-west-end-2017/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "artsdesk--unknown.json",
+        "description": "goats-west-end-2017/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "goats-west-end-2017/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)",
+        "description": "goats-west-end-2017/sierz-co-uk--aleks-sierz.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nine-night-west-end-2018/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "artsdesk--unknown.json",
+        "description": "nine-night-west-end-2018/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nine-night-west-end-2018/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)",
+        "description": "nine-night-west-end-2018/sierz-co-uk--aleks-sierz.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "small-island-west-end-2019/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "artsdesk--unknown.json",
+        "description": "small-island-west-end-2019/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "small-island-west-end-2019/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)",
+        "description": "small-island-west-end-2019/sierz-co-uk--aleks-sierz.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-wave-west-end-2018/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "artsdesk--unknown.json",
+        "description": "the-great-wave-west-end-2018/sierz-co-uk--aleks-sierz.json: same article as artsdesk--unknown.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-wave-west-end-2018/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)",
+        "description": "the-great-wave-west-end-2018/sierz-co-uk--aleks-sierz.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "artsdesk--aleks-sierz.json",
+        "description": "hope-has-a-happy-meal-west-end-2023/sierz-co-uk--aleks-sierz.json: same article as artsdesk--aleks-sierz.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hope-has-a-happy-meal-west-end-2023/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)",
+        "description": "hope-has-a-happy-meal-west-end-2023/sierz-co-uk--aleks-sierz.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glass-kill-bluebeard-and-imp-west-end-2019/sierz-co-uk--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "i-paper--aleks-sierz.json",
+        "description": "glass-kill-bluebeard-and-imp-west-end-2019/sierz-co-uk--unknown.json: same article as i-paper--aleks-sierz.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glass-kill-bluebeard-and-imp-west-end-2019/sierz-co-uk--unknown.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)",
+        "description": "glass-kill-bluebeard-and-imp-west-end-2019/sierz-co-uk--unknown.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hansard-west-end-2019/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "i-paper--aleks-sierz.json",
+        "description": "hansard-west-end-2019/sierz-co-uk--aleks-sierz.json: same article as i-paper--aleks-sierz.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hansard-west-end-2019/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)",
+        "description": "hansard-west-end-2019/sierz-co-uk--aleks-sierz.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "labour-of-love-west-end-2017/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "tribune--aleks-sierz.json",
+        "description": "labour-of-love-west-end-2017/sierz-co-uk--aleks-sierz.json: same article as tribune--aleks-sierz.json (sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "labour-of-love-west-end-2017/sierz-co-uk--aleks-sierz.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)",
+        "description": "labour-of-love-west-end-2017/sierz-co-uk--aleks-sierz.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-taste-of-honey-west-end-2019/times-uk--thomas-w-hodgkinson.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "sunday-times--thomas-w-hodgkinson.json",
+        "description": "a-taste-of-honey-west-end-2019/times-uk--thomas-w-hodgkinson.json: same article as sunday-times--thomas-w-hodgkinson.json (url-less Theatre Record copy whose text is wholly contained in the Sunday Times file)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-taste-of-honey-west-end-2019/times-uk--thomas-w-hodgkinson.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: url-less Theatre Record copy whose text is wholly contained in the Sunday Times file (BRO-7207)",
+        "description": "a-taste-of-honey-west-end-2019/times-uk--thomas-w-hodgkinson.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fiorello-off-broadway-2016/zeal-nyc--chris-caggiano.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "huffpost--christopher-caggiano.json",
+        "description": "fiorello-off-broadway-2016/zeal-nyc--chris-caggiano.json: same article as huffpost--christopher-caggiano.json (HuffPost printed the ZEALnyc review in full, byline credits ZEALnyc; the ZEALnyc file is an excerpt of it)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fiorello-off-broadway-2016/zeal-nyc--chris-caggiano.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "syndicated: HuffPost printed the ZEALnyc review in full, byline credits ZEALnyc; the ZEALnyc file is an excerpt of it (BRO-7207)",
+        "description": "fiorello-off-broadway-2016/zeal-nyc--chris-caggiano.json: duplicateReason"
+      }
+    ]
+  },
+  "executedAt": "2026-11-28T16:04:00.713Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "absolute-hell-west-end-2018/sierz-co-uk--aleks-sierz.json duplicateOf: null -> \"artsdesk--unknown.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "absolute-hell-west-end-2018/sierz-co-uk--aleks-sierz.json duplicateReason: null -> \"syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "apologia-west-end-2017/sierz-co-uk--aleks-sierz.json duplicateOf: null -> \"artsdesk--unknown.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "apologia-west-end-2017/sierz-co-uk--aleks-sierz.json duplicateReason: null -> \"syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "goats-west-end-2017/sierz-co-uk--aleks-sierz.json duplicateOf: null -> \"artsdesk--unknown.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "goats-west-end-2017/sierz-co-uk--aleks-sierz.json duplicateReason: null -> \"syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nine-night-west-end-2018/sierz-co-uk--aleks-sierz.json duplicateOf: null -> \"artsdesk--unknown.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nine-night-west-end-2018/sierz-co-uk--aleks-sierz.json duplicateReason: null -> \"syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "small-island-west-end-2019/sierz-co-uk--aleks-sierz.json duplicateOf: null -> \"artsdesk--unknown.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "small-island-west-end-2019/sierz-co-uk--aleks-sierz.json duplicateReason: null -> \"syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-wave-west-end-2018/sierz-co-uk--aleks-sierz.json duplicateOf: null -> \"artsdesk--unknown.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-great-wave-west-end-2018/sierz-co-uk--aleks-sierz.json duplicateReason: null -> \"syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hope-has-a-happy-meal-west-end-2023/sierz-co-uk--aleks-sierz.json duplicateOf: null -> \"artsdesk--aleks-sierz.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hope-has-a-happy-meal-west-end-2023/sierz-co-uk--aleks-sierz.json duplicateReason: null -> \"syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glass-kill-bluebeard-and-imp-west-end-2019/sierz-co-uk--unknown.json duplicateOf: null -> \"i-paper--aleks-sierz.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glass-kill-bluebeard-and-imp-west-end-2019/sierz-co-uk--unknown.json duplicateReason: null -> \"syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hansard-west-end-2019/sierz-co-uk--aleks-sierz.json duplicateOf: null -> \"i-paper--aleks-sierz.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hansard-west-end-2019/sierz-co-uk--aleks-sierz.json duplicateReason: null -> \"syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "labour-of-love-west-end-2017/sierz-co-uk--aleks-sierz.json duplicateOf: null -> \"tribune--aleks-sierz.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "labour-of-love-west-end-2017/sierz-co-uk--aleks-sierz.json duplicateReason: null -> \"syndicated: sierz.co.uk reposts the review Aleks Sierz filed for the publisher; most sentences shared (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-taste-of-honey-west-end-2019/times-uk--thomas-w-hodgkinson.json duplicateOf: null -> \"sunday-times--thomas-w-hodgkinson.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-taste-of-honey-west-end-2019/times-uk--thomas-w-hodgkinson.json duplicateReason: null -> \"syndicated: url-less Theatre Record copy whose text is wholly contained in the Sunday Times file (BRO-7207)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fiorello-off-broadway-2016/zeal-nyc--chris-caggiano.json duplicateOf: null -> \"huffpost--christopher-caggiano.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fiorello-off-broadway-2016/zeal-nyc--chris-caggiano.json duplicateReason: null -> \"syndicated: HuffPost printed the ZEALnyc review in full, byline credits ZEALnyc; the ZEALnyc file is an excerpt of it (BRO-7207)\""
+    }
+  ],
+  "executedIn": "ci"
+}

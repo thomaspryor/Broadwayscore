@@ -1,0 +1,860 @@
+{
+  "generatedAt": "2026-11-23T23:04:04.412Z",
+  "naivePages": 2,
+  "settlingHours": 24,
+  "totals": {
+    "shows": 5,
+    "excluded": [],
+    "undatedCandidates": 6,
+    "truthUrls": 42,
+    "scopedUrls": 9,
+    "naiveUrls": 12,
+    "onDiskUrls": 30,
+    "newFromNaive": 7,
+    "perArm": {
+      "naive-p0": {
+        "found": 8,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.19
+      },
+      "naive-p1": {
+        "found": 4,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.095
+      },
+      "onDisk": {
+        "found": 30,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.714
+      },
+      "scoped-q0": {
+        "found": 3,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.071
+      },
+      "scoped-q1": {
+        "found": 3,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.071
+      },
+      "scoped-q2": {
+        "found": 4,
+        "queries": 1,
+        "failed": 0,
+        "recall": 0.095
+      }
+    },
+    "perFamily": {
+      "naive": {
+        "found": 12,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.286
+      },
+      "onDisk": {
+        "found": 30,
+        "arms": 1,
+        "failed": 0,
+        "recall": 0.714
+      },
+      "scoped": {
+        "found": 9,
+        "arms": 3,
+        "failed": 0,
+        "recall": 0.214
+      }
+    },
+    "byCategory": {
+      "off-west-end": {
+        "shows": 2,
+        "truthUrls": 31,
+        "families": {
+          "naive": {
+            "found": 10,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.323
+          },
+          "onDisk": {
+            "found": 25,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.806
+          },
+          "scoped": {
+            "found": 3,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.097
+          }
+        }
+      },
+      "regional": {
+        "shows": 2,
+        "truthUrls": 11,
+        "families": {
+          "naive": {
+            "found": 2,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.182
+          },
+          "onDisk": {
+            "found": 5,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.455
+          },
+          "scoped": {
+            "found": 6,
+            "arms": 3,
+            "failed": 0,
+            "recall": 0.545
+          }
+        }
+      },
+      "tour": {
+        "shows": 1,
+        "truthUrls": 0,
+        "families": {
+          "naive": {
+            "found": 0,
+            "arms": 2,
+            "failed": 0,
+            "recall": null
+          },
+          "onDisk": {
+            "found": 0,
+            "arms": 1,
+            "failed": 0,
+            "recall": null
+          },
+          "scoped": {
+            "found": 0,
+            "arms": 2,
+            "failed": 0,
+            "recall": null
+          }
+        }
+      }
+    },
+    "scopedRecall": 0.214,
+    "naiveRecall": 0.286
+  },
+  "shows": [
+    {
+      "showId": "a-midsummer-nights-dream-jentes-regional-2026",
+      "title": "A Midsummer Night's Dream",
+      "market": "regional",
+      "openingDate": "2026-11-21",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "us",
+      "naiveQuery": "A Midsummer Night's Dream Jentes Family Courtyard Theater, Chicago, IL review",
+      "counts": {
+        "truth": 10,
+        "scoped": 5,
+        "naive": 2,
+        "onDisk": 4
+      },
+      "recall": {
+        "scoped": 0.5,
+        "naive": 0.2,
+        "onDisk": 0.4,
+        "censusPlusDisk": 0.9
+      },
+      "newFromNaive": [
+        "https://perform.ink/review-midsummer-nights-dream-chicago-shakespeare-theater"
+      ],
+      "missedByCensus": [
+        "https://perform.ink/review-midsummer-nights-dream-chicago-shakespeare-theater",
+        "https://www.broadwayworld.com/chicago/article/Review-A-MIDSUMMER-NIGHTS-DREAM-at-Chicago-Shakespeare-Theater-20261121",
+        "https://chicagoreader.com/performing-arts/theater/theater-review/midsummer-nights-dream-chicago-shakespeare-2026-repertory/",
+        "https://www.conversationswithedtracy.com/picksinsix/2026/11/17/picksinsix-review-a-midsummer-nights-dream",
+        "https://www.thewrap.com/a-midsummer-nights-dream-review-rachael-leigh-cook-lily-rabe-finn-wittrock/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"A Midsummer Night's Dream\" Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 3,
+          "accepted": 1,
+          "urls": [
+            "https://www.chicagotribune.com/2026/11/23"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"A Midsummer Night's Dream\" review jentes",
+          "page": 0,
+          "geo": null,
+          "raw": 1,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"A Midsummer Night's Dream\" Shakespeare review",
+          "page": 0,
+          "geo": null,
+          "raw": 5,
+          "accepted": 4,
+          "urls": [
+            "https://www.chicagotribune.com/2026/11/23/review-midsummer-nights-dream-chicago-shakes/",
+            "https://aroundthetownchicago.com/theatre-reviews/a-midsummer-nights-dream-reviewed-by-julia-w-rath/",
+            "https://eulaliemagazine.com/2026/11/chicago-shakespeare-theaters-a-midsummer-nights-dream-review/",
+            "https://www.letsplaytheatricalreview.com/blog/a-midsummer-nights-dream"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "A Midsummer Night's Dream Jentes Family Courtyard Theater, Chicago, IL review",
+          "page": 0,
+          "geo": "us",
+          "raw": 1,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "A Midsummer Night's Dream Jentes Family Courtyard Theater, Chicago, IL review",
+          "page": 1,
+          "geo": "us",
+          "raw": 3,
+          "accepted": 2,
+          "urls": [
+            "https://aroundthetownchicago.com/theatre-reviews/a-midsummer-nights-dream-reviewed-by-julia-w-rath/",
+            "https://perform.ink/review-midsummer-nights-dream-chicago-shakespeare-theater"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 4,
+          "accepted": 4,
+          "urls": [
+            "https://www.broadwayworld.com/chicago/article/Review-A-MIDSUMMER-NIGHTS-DREAM-at-Chicago-Shakespeare-Theater-20261121",
+            "https://chicagoreader.com/performing-arts/theater/theater-review/midsummer-nights-dream-chicago-shakespeare-2026-repertory/",
+            "https://www.conversationswithedtracy.com/picksinsix/2026/11/17/picksinsix-review-a-midsummer-nights-dream",
+            "https://www.thewrap.com/a-midsummer-nights-dream-review-rachael-leigh-cook-lily-rabe-finn-wittrock/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "arrowhead-regional-2026",
+      "title": "Arrowhead",
+      "market": "regional",
+      "openingDate": "2026-11-21",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "us",
+      "naiveQuery": "Arrowhead Diversionary Theatre, San Diego, CA review",
+      "counts": {
+        "truth": 1,
+        "scoped": 1,
+        "naive": 0,
+        "onDisk": 1
+      },
+      "recall": {
+        "scoped": 1,
+        "naive": 0,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Arrowhead\" Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 3,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Arrowhead\" review diversionary",
+          "page": 0,
+          "geo": null,
+          "raw": 6,
+          "accepted": 1,
+          "urls": [
+            "https://www.sandiegouniontribune.com/2026/11/19/in-diversionary-theatres-arrowhead-who-we-love-and-how-we-live-is-complicated/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Arrowhead Diversionary Theatre, San Diego, CA review",
+          "page": 0,
+          "geo": "us",
+          "raw": 4,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Arrowhead Diversionary Theatre, San Diego, CA review",
+          "page": 1,
+          "geo": "us",
+          "raw": 4,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 1,
+          "accepted": 1,
+          "urls": [
+            "https://www.sandiegouniontribune.com/2026/11/19/in-diversionary-theatres-arrowhead-who-we-love-and-how-we-live-is-complicated/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
+      "title": "Cinderella",
+      "market": "off-west-end",
+      "openingDate": "2026-11-21",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "gb",
+      "naiveQuery": "Cinderella Lyric Hammersmith Theatre review",
+      "counts": {
+        "truth": 23,
+        "scoped": 3,
+        "naive": 7,
+        "onDisk": 20
+      },
+      "recall": {
+        "scoped": 0.13,
+        "naive": 0.304,
+        "onDisk": 0.87,
+        "censusPlusDisk": 0.87
+      },
+      "newFromNaive": [
+        "https://www.timeout.com/london/theatre/cinderella-59",
+        "https://www.londontheatre1.com/reviews/cinderella-lyric-hammersmith-theatre",
+        "https://www.thetimes.com/travel/destinations/asia-travel/china/cinderella-lyric-hammersmith-w6-the-sunday-times-review-jnsw9n70m0v"
+      ],
+      "missedByCensus": [
+        "https://www.pinkprincetheatre.com/post/review-cinderella-lyric-hammersmith",
+        "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-26230",
+        "https://theatreandtonic.co.uk/blog/cinderella-at-lyric-hammersmith-review-2026",
+        "https://www.timeout.com/london/theatre/cinderella-59",
+        "https://www.londontheatre1.com/reviews/cinderella-lyric-hammersmith-theatre",
+        "https://www.thetimes.com/travel/destinations/asia-travel/china/cinderella-lyric-hammersmith-w6-the-sunday-times-review-jnsw9n70m0v",
+        "https://www.allthatdazzles.co.uk/post/panto-review-cinderella-lyric-hammersmith",
+        "https://www.britishtheatreguide.info/reviews/matthew-bourne-the-lyric-thea-26224",
+        "https://ew.com/theater/theater-reviews/bad-cinderella-review-andrew-lloyd-webber-musical/",
+        "https://www.theguardian.com/stage/2026/nov/20/northern-ballet-cinderella-review-norwich-theatre",
+        "https://www.londontheatre1.com/reviews/cinderella-lyric-hammersmith-theatre/",
+        "https://northwestend.com/cinderella-lyric-hammersmith-2/",
+        "https://observer.com/2023/03/review-bad-cinderellas-glass-slipper-more-like-a-moldy-croc/",
+        "https://oxfordshireguardian.co.uk/blenheim-palace-christmas-2026-review-cinderella-and-a-spectacular-light-trail/",
+        "https://www.pinkprincetheatre.com/post/review-matthew-bourne-s-cinderella-theatre-royal-plymouth",
+        "https://theatreweekly.com/review-cinderella-at-lyric-hammersmith-theatre/",
+        "https://www.thereviewshub.com/cinderella-lyric-hammersmith-london/",
+        "https://thestage.co.uk/reviews/cinderella-review-at-lyric-hammersmith-theatre-london-joel-horwood",
+        "https://variety.com/2026/film/reviews/steps-review-1236952706/",
+        "https://www.whatsonstage.com/news/cinderella-pantomime-at-lyric-hammersmith-theatre-review_1738043/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Cinderella\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 4,
+          "accepted": 2,
+          "urls": [
+            "https://www.londontheatre.co.uk/reviews/cinderella-review-lyric-hammersmith-2026",
+            "https://www.londonboxoffice.co.uk/news/post/review-cinderella-lyric-hammersmith"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Cinderella\" review lyric",
+          "page": 0,
+          "geo": null,
+          "raw": 3,
+          "accepted": 2,
+          "urls": [
+            "https://www.londontheatre.co.uk/reviews/cinderella-review-lyric-hammersmith-2026",
+            "https://www.broadwayworld.com/westend/article/Review-CINDERELLA-Lyric-Hammersmith-20261123"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Cinderella Lyric Hammersmith Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 7,
+          "accepted": 6,
+          "urls": [
+            "https://www.pinkprincetheatre.com/post/review-cinderella-lyric-hammersmith",
+            "https://www.londontheatre.co.uk/reviews/cinderella-review-lyric-hammersmith-2026",
+            "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-26230",
+            "https://theatreandtonic.co.uk/blog/cinderella-at-lyric-hammersmith-review-2026",
+            "https://www.timeout.com/london/theatre/cinderella-59",
+            "https://www.londontheatre1.com/reviews/cinderella-lyric-hammersmith-theatre"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Cinderella Lyric Hammersmith Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 4,
+          "accepted": 1,
+          "urls": [
+            "https://www.thetimes.com/travel/destinations/asia-travel/china/cinderella-lyric-hammersmith-w6-the-sunday-times-review-jnsw9n70m0v"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 20,
+          "accepted": 20,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/panto-review-cinderella-lyric-hammersmith",
+            "https://www.britishtheatreguide.info/reviews/matthew-bourne-the-lyric-thea-26224",
+            "https://www.britishtheatreguide.info/reviews/cinderella-lyric-hammersmi-26230",
+            "https://www.broadwayworld.com/westend/article/Review-CINDERELLA-Lyric-Hammersmith-20261123",
+            "https://ew.com/theater/theater-reviews/bad-cinderella-review-andrew-lloyd-webber-musical/",
+            "https://www.theguardian.com/stage/2026/nov/20/northern-ballet-cinderella-review-norwich-theatre",
+            "https://www.londonboxoffice.co.uk/news/post/review-cinderella-lyric-hammersmith",
+            "https://www.londontheatre.co.uk/reviews/cinderella-review-lyric-hammersmith-2026",
+            "https://www.londontheatre1.com/reviews/cinderella-lyric-hammersmith-theatre/",
+            "https://northwestend.com/cinderella-lyric-hammersmith-2/",
+            "https://observer.com/2023/03/review-bad-cinderellas-glass-slipper-more-like-a-moldy-croc/",
+            "https://oxfordshireguardian.co.uk/blenheim-palace-christmas-2026-review-cinderella-and-a-spectacular-light-trail/",
+            "https://www.pinkprincetheatre.com/post/review-cinderella-lyric-hammersmith",
+            "https://www.pinkprincetheatre.com/post/review-matthew-bourne-s-cinderella-theatre-royal-plymouth",
+            "https://theatreweekly.com/review-cinderella-at-lyric-hammersmith-theatre/",
+            "https://theatreandtonic.co.uk/blog/cinderella-at-lyric-hammersmith-review-2026",
+            "https://www.thereviewshub.com/cinderella-lyric-hammersmith-london/",
+            "https://thestage.co.uk/reviews/cinderella-review-at-lyric-hammersmith-theatre-london-joel-horwood",
+            "https://variety.com/2026/film/reviews/steps-review-1236952706/",
+            "https://www.whatsonstage.com/news/cinderella-pantomime-at-lyric-hammersmith-theatre-review_1738043/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "the-snowman-off-west-end-2026",
+      "title": "The Snowman",
+      "market": "off-west-end",
+      "openingDate": "2026-11-21",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "gb",
+      "naiveQuery": "The Snowman Peacock Theatre review",
+      "counts": {
+        "truth": 8,
+        "scoped": 0,
+        "naive": 3,
+        "onDisk": 5
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0.375,
+        "onDisk": 0.625,
+        "censusPlusDisk": 0.625
+      },
+      "newFromNaive": [
+        "https://www.londontheatre1.com/reviews/childrenstheatre/5-star-review-the-snowman-peacock-theatre/",
+        "https://www.timewellspentmag.com/post/review-the-snowman-peacock-theatre",
+        "https://theatreandtonic.co.uk/blog/the-snowman-peacock-theatre-review"
+      ],
+      "missedByCensus": [
+        "https://www.londontheatre1.com/reviews/childrenstheatre/5-star-review-the-snowman-peacock-theatre/",
+        "https://www.timewellspentmag.com/post/review-the-snowman-peacock-theatre",
+        "https://theatreandtonic.co.uk/blog/the-snowman-peacock-theatre-review",
+        "https://www.broadwayworld.com/westend/article/Review-THE-SNOWMAN-Peacock-Theatre-20231120",
+        "https://www.express.co.uk/entertainment/theatre/144094/The-Snowman-Peacock-Theatre-London",
+        "https://www.londontheatre.co.uk/reviews/the-snowman-review-peacock-theatre",
+        "https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-snowman-manchester-opera-house-13872438",
+        "https://www.timeout.com/london/theatre/the-snowman-review"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"The Snowman\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 4,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"The Snowman\" review peacock",
+          "page": 0,
+          "geo": null,
+          "raw": 3,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "The Snowman Peacock Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 5,
+          "accepted": 2,
+          "urls": [
+            "https://www.londontheatre1.com/reviews/childrenstheatre/5-star-review-the-snowman-peacock-theatre/",
+            "https://www.timewellspentmag.com/post/review-the-snowman-peacock-theatre"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "The Snowman Peacock Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 3,
+          "accepted": 1,
+          "urls": [
+            "https://theatreandtonic.co.uk/blog/the-snowman-peacock-theatre-review"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 5,
+          "accepted": 5,
+          "urls": [
+            "https://www.broadwayworld.com/westend/article/Review-THE-SNOWMAN-Peacock-Theatre-20231120",
+            "https://www.express.co.uk/entertainment/theatre/144094/The-Snowman-Peacock-Theatre-London",
+            "https://www.londontheatre.co.uk/reviews/the-snowman-review-peacock-theatre",
+            "https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-snowman-manchester-opera-house-13872438",
+            "https://www.timeout.com/london/theatre/the-snowman-review"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
+      "title": "The Unauthorized Hallmark(ish) Parody Musical",
+      "market": "tour",
+      "openingDate": "2026-11-20",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "us",
+      "naiveQuery": "The Unauthorized Hallmark(ish) Parody Musical North American Tour review",
+      "counts": {
+        "truth": 0,
+        "scoped": 0,
+        "naive": 0,
+        "onDisk": 0
+      },
+      "recall": {
+        "scoped": 1,
+        "naive": 1,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"The Unauthorized Hallmark(ish) Parody Musical\" Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 3,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"The Unauthorized Hallmark(ish) Parody Musical\" review american",
+          "page": 0,
+          "geo": null,
+          "raw": 3,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "The Unauthorized Hallmark(ish) Parody Musical North American Tour review",
+          "page": 0,
+          "geo": "us",
+          "raw": 5,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "The Unauthorized Hallmark(ish) Parody Musical North American Tour review",
+          "page": 1,
+          "geo": "us",
+          "raw": 2,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "providerOutage": false,
+  "onDiskUnavailable": false,
+  "trend": {
+    "entry": {
+      "date": "2026-11-23",
+      "generatedAt": "2026-11-23T23:04:04.412Z",
+      "naivePages": 2,
+      "shows": 5,
+      "informativeShows": 4,
+      "excluded": {
+        "settling": 4
+      },
+      "truthUrls": 42,
+      "onDiskUrls": 30,
+      "newFromNaive": 7,
+      "families": {
+        "naive": 0.286,
+        "onDisk": 0.714,
+        "scoped": 0.214
+      },
+      "arms": {
+        "naive-p0": 0.19,
+        "naive-p1": 0.095,
+        "onDisk": 0.714,
+        "scoped-q0": 0.071,
+        "scoped-q1": 0.071,
+        "scoped-q2": 0.095
+      },
+      "combinedRecall": 0.833,
+      "familyYield": {
+        "naive": 2.4,
+        "onDisk": 6,
+        "scoped": 1.8
+      },
+      "armYield": {
+        "naive-p0": 1.6,
+        "naive-p1": 0.8,
+        "onDisk": 6,
+        "scoped-q0": 0.6,
+        "scoped-q1": 0.6,
+        "scoped-q2": 0.8
+      },
+      "armsFailed": {
+        "naive-p0": 0,
+        "naive-p1": 0,
+        "onDisk": 0,
+        "scoped-q0": 0,
+        "scoped-q1": 0,
+        "scoped-q2": 0
+      },
+      "unavailableArms": [],
+      "byCategory": {
+        "off-west-end": {
+          "shows": 2,
+          "truthUrls": 31,
+          "families": {
+            "naive": 0.323,
+            "onDisk": 0.806,
+            "scoped": 0.097
+          }
+        },
+        "regional": {
+          "shows": 2,
+          "truthUrls": 11,
+          "families": {
+            "naive": 0.182,
+            "onDisk": 0.455,
+            "scoped": 0.545
+          }
+        },
+        "tour": {
+          "shows": 1,
+          "truthUrls": 0,
+          "families": {
+            "naive": null,
+            "onDisk": null,
+            "scoped": null
+          }
+        }
+      },
+      "sampleIds": [
+        "a-midsummer-nights-dream-jentes-regional-2026",
+        "arrowhead-regional-2026",
+        "cinderella-lyric-hammersmith-off-west-end-2026",
+        "the-snowman-off-west-end-2026",
+        "the-unauthorized-hallmark-ish-parody-musical-tour-2026"
+      ]
+    },
+    "judgement": {
+      "verdict": "ok",
+      "reason": "3 search method(s) within their noise-adjusted threshold (floor 0.15) of their 4-run median",
+      "regressions": [],
+      "latest": {
+        "date": "2026-11-23",
+        "generatedAt": "2026-11-23T23:04:04.412Z",
+        "naivePages": 2,
+        "shows": 5,
+        "informativeShows": 4,
+        "excluded": {
+          "settling": 4
+        },
+        "truthUrls": 42,
+        "onDiskUrls": 30,
+        "newFromNaive": 7,
+        "families": {
+          "naive": 0.286,
+          "onDisk": 0.714,
+          "scoped": 0.214
+        },
+        "arms": {
+          "naive-p0": 0.19,
+          "naive-p1": 0.095,
+          "onDisk": 0.714,
+          "scoped-q0": 0.071,
+          "scoped-q1": 0.071,
+          "scoped-q2": 0.095
+        },
+        "combinedRecall": 0.833,
+        "familyYield": {
+          "naive": 2.4,
+          "onDisk": 6,
+          "scoped": 1.8
+        },
+        "armYield": {
+          "naive-p0": 1.6,
+          "naive-p1": 0.8,
+          "onDisk": 6,
+          "scoped-q0": 0.6,
+          "scoped-q1": 0.6,
+          "scoped-q2": 0.8
+        },
+        "armsFailed": {
+          "naive-p0": 0,
+          "naive-p1": 0,
+          "onDisk": 0,
+          "scoped-q0": 0,
+          "scoped-q1": 0,
+          "scoped-q2": 0
+        },
+        "unavailableArms": [],
+        "byCategory": {
+          "off-west-end": {
+            "shows": 2,
+            "truthUrls": 31,
+            "families": {
+              "naive": 0.323,
+              "onDisk": 0.806,
+              "scoped": 0.097
+            }
+          },
+          "regional": {
+            "shows": 2,
+            "truthUrls": 11,
+            "families": {
+              "naive": 0.182,
+              "onDisk": 0.455,
+              "scoped": 0.545
+            }
+          },
+          "tour": {
+            "shows": 1,
+            "truthUrls": 0,
+            "families": {
+              "naive": null,
+              "onDisk": null,
+              "scoped": null
+            }
+          }
+        },
+        "sampleIds": [
+          "a-midsummer-nights-dream-jentes-regional-2026",
+          "arrowhead-regional-2026",
+          "cinderella-lyric-hammersmith-off-west-end-2026",
+          "the-snowman-off-west-end-2026",
+          "the-unauthorized-hallmark-ish-parody-musical-tour-2026"
+        ]
+      },
+      "comparedArms": 3,
+      "skipped": []
+    }
+  }
+}

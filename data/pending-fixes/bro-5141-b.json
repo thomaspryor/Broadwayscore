@@ -1,0 +1,209 @@
+{
+  "issueNumber": "bro-5141-b",
+  "planId": "cb4ae3ed-1b18-410a-85c5-944c8b6add0e",
+  "status": "applied",
+  "createdAt": "2026-10-12T06:58:46.964Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5141 batch b, after the 5-action test (bro-5141) applied cleanly: delete the remaining Anna X / FRIEND copies the Theatre Record PDF parser filed under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 (each Anna X review already exists in anna-x-west-end-2021), re-ingest the Daily Mail 2021 Joseph review from its url, and restore uncle-vanya-west-end-2020 Telegraph to the Jan 2020 stage review (a url upgrade had swapped it to the Oct 2020 filmed-version review).",
+    "steps": [
+      "Apply the listed review-file deletes and the two ingests."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/camdennewjournal--lucy-popescu.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/daily-mail--patrick-marmion.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021. Its url is the real 2021 Joseph review, re-ingested next."
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 --url=https://www.dailymail.co.uk/tvshowbiz/article-9836935/PATRICK-MARMION-reviews-Joseph-Amazing-Technicolor-Dreamcoat-theatres-finally-reopen.html --outlet=daily-mail --critic=\"Patrick Marmion\" --publish-date=2021-07-28 --stub-on-failure",
+        "description": "BRO-5141: ingest the real 2021 Joseph review this file's url points at (Patrick Marmion, daily-mail)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/daily-mail--robert-gore-langton.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/financialtimes--sarah-hemming.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/independent--paul-taylor.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/london-theatre--matt-wolf.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/observer--susannah-clapp.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/telegraph--dominic-cavendish.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/theatre-weekly--bethany-jane-christian.json",
+        "description": "BRO-5141: FRIEND (The One With Gunther) review misfiled by the Theatre Record PDF parser; not a production on the site."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/theatre-weekly--greg-stewart.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/thestage--dave-fargnoli.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/times-uk--dominic-maxwell.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/whatsonstage--alex-wood.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/standard--nick-curtis.json",
+        "description": "BRO-5141: Holds Anna X review text (merged in by the Theatre Record run) under a 2019 Palladium-run url; the Anna X review is already in anna-x-west-end-2021 and the 2019 review belongs to the 2019 production."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "uncle-vanya-west-end-2020/telegraph--dominic-cavendish.json",
+        "description": "BRO-5141: A url upgrade on 2026-10-10 swapped this record from the Jan 2020 stage review to the Oct 2020 review of the filmed version (theatreonline) and wiped the stage text; it scored the film. Recreated next on the stage-review url."
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=uncle-vanya-west-end-2020 --url=https://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-review-harold-pinter-theatre-toby-jones-stunning/ --outlet=telegraph --critic=\"Dominic Cavendish\" --stub-on-failure",
+        "description": "BRO-5141: recreate the Telegraph (Dominic Cavendish) review of the Jan 2020 Harold Pinter stage run on its own url; paywalled, so a retry stub until the Theatre Record re-run fills its text."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T08:17:27.505Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/camdennewjournal--lucy-popescu.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/daily-mail--patrick-marmion.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/daily-mail--robert-gore-langton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/financialtimes--sarah-hemming.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/independent--paul-taylor.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/london-theatre--matt-wolf.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/observer--susannah-clapp.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/theatre-weekly--bethany-jane-christian.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/theatre-weekly--greg-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/thestage--dave-fargnoli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/times-uk--dominic-maxwell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/whatsonstage--alex-wood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted uncle-vanya-west-end-2020/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

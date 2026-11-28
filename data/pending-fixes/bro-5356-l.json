@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5356-l",
+  "planId": "4b6756d8-c81b-4a74-9ccb-23460e36d3c9",
+  "status": "applied",
+  "createdAt": "2026-10-14T18:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5356 (l): recompute contentTier on 2 NYSR rows whose wrong-content flags were cleared but kept their invalid tier.",
+    "steps": [
+      "reclassify-invalid-reviews --file on 2 rows"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "reclassify-invalid-reviews.js",
+        "args": "--file=spamalot-2023/nysr--sandy-macdonald.json,the-whos-tommy-2024/nysr--david-finkle.json --apply",
+        "description": "BRO-5356: plans j/k cleared wrongProduction and wrongShow on these NYSR opening-night reviews, but contentTier stayed 'invalid' ('Wrong show') and the rebuild drops invalid rows, so neither is on the site. Recompute the tier from the stored text (2,821 and 5,488 chars; classifyContentTier gives complete) and drop the stale wrong_content reason."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T19:52:50.239Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ]
+}

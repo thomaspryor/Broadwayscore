@@ -1,0 +1,60 @@
+{
+  "issueNumber": "bro-7745-followup",
+  "planId": "ba10c472-0d48-4bc0-9709-4b3a539cd87d",
+  "status": "applied",
+  "createdAt": "2026-11-18T07:04:46.173Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7745 follow-up: two TheaterMania duplicates left by the re-credit (same article now has two same-critic files), and the Rent Theatre and Tonic row restored to the critic its stored text credits",
+    "steps": [
+      "duplicate of clydes-2021/theatermania--david-gordon.json (same article _93040, now credited Zachary Stewart; that file has the longer text)",
+      "duplicate of jitney-2017/theatermania--zachary-stewart.json (same article _79744, same text length, now both credited Zachary Stewart)",
+      "rent-west-end-2026/theatreandtonic--penny-walshe.json: criticName back to Penny Walshe. The stored text credits \"Written by Penny for Theatre and Tonic\" (the live page was later edited to Roby); the rebuild re-reads the stored credit and showed a first name only"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "clydes-2021/theatermania--zachary-stewart.json",
+        "description": "duplicate of clydes-2021/theatermania--david-gordon.json (same article _93040, now credited Zachary Stewart; that file has the longer text)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "jitney-2017/theatermania--david-gordon.json",
+        "description": "duplicate of jitney-2017/theatermania--zachary-stewart.json (same article _79744, same text length, now both credited Zachary Stewart)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/theatreandtonic--penny-walshe.json",
+        "field": "criticName",
+        "oldValue": "Roby",
+        "newValue": "Penny Walshe",
+        "description": "rent-west-end-2026/theatreandtonic--penny-walshe.json: criticName back to Penny Walshe. The stored text credits \"Written by Penny for Theatre and Tonic\" (the live page was later edited to Roby); the rebuild re-reads the stored credit and showed a first name only"
+      }
+    ]
+  },
+  "executedAt": "2026-11-18T07:22:18.540Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted clydes-2021/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted jitney-2017/theatermania--david-gordon.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/theatreandtonic--penny-walshe.json criticName: \"Roby\" -> \"Penny Walshe\""
+    }
+  ],
+  "executedIn": "ci"
+}

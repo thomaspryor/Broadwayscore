@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-8209",
+  "planId": "3ad34edc-339f-4577-b8fa-a48c7d60d8e1",
+  "status": "applied",
+  "createdAt": "2026-11-23T23:36:10.985Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Falls for Jodie: remove the Alix Cohen review misfiled under Talking Broadway. The same review is already filed under Theater Pizzazz (same critic, same text, Theater Pizzazz url).",
+    "steps": [
+      "Delete falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json (duplicate of theater-pizzazz--alix-cohen.json)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json",
+        "description": "Duplicate of theater-pizzazz--alix-cohen.json filed under the wrong outlet (feedback #1203)"
+      }
+    ]
+  },
+  "executedIn": "ci",
+  "executedAt": "2026-11-24T01:33:47.146Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted falls-for-jodie-off-broadway-2026/talkinbroadway--alix-cohen.json"
+    }
+  ]
+}

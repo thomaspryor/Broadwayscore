@@ -1,0 +1,142 @@
+{
+  "issueNumber": "bro-7594-f",
+  "planId": "773b4900-7b15-4cb2-b203-5704ed819406",
+  "status": "applied",
+  "createdAt": "2026-11-16T14:06:00.779Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct 5 runtimes that disagree with the show's TodayTix page (found by the BRO-7594 350-show scan)",
+    "steps": [
+      "shows.json: new-owner-off-broadway-2026.runtime",
+      "shows.json: new-owner-off-broadway-2026.intermissions",
+      "shows.json: the-verge-off-broadway-2026.runtime",
+      "shows.json: trial-by-jury-and-the-zoo-english-national-opera-west-end-2026.runtime",
+      "shows.json: trial-by-jury-and-the-zoo-english-national-opera-west-end-2026.intermissions",
+      "shows.json: clifford-odets-waiting-for-lefty-off-broadway-2026.runtime",
+      "shows.json: dead-centre-deaf-republic-off-broadway-2026.runtime",
+      "shows.json: dead-centre-deaf-republic-off-broadway-2026.intermissions"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-owner-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 20m",
+        "newValue": "50m",
+        "description": "shows.json: new-owner-off-broadway-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-owner-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: new-owner-off-broadway-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-verge-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "2h 30m",
+        "newValue": "2h",
+        "description": "shows.json: the-verge-off-broadway-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "trial-by-jury-and-the-zoo-english-national-opera-west-end-2026",
+        "field": "runtime",
+        "oldValue": "2h 50m",
+        "newValue": "1h 25m",
+        "description": "shows.json: trial-by-jury-and-the-zoo-english-national-opera-west-end-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "trial-by-jury-and-the-zoo-english-national-opera-west-end-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: trial-by-jury-and-the-zoo-english-national-opera-west-end-2026.intermissions"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 30m",
+        "newValue": "1h 15m",
+        "description": "shows.json: clifford-odets-waiting-for-lefty-off-broadway-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dead-centre-deaf-republic-off-broadway-2026",
+        "field": "runtime",
+        "oldValue": "1h 10m",
+        "newValue": "2h",
+        "description": "shows.json: dead-centre-deaf-republic-off-broadway-2026.runtime"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dead-centre-deaf-republic-off-broadway-2026",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 0,
+        "description": "shows.json: dead-centre-deaf-republic-off-broadway-2026.intermissions"
+      }
+    ]
+  },
+  "executedAt": "2026-11-16T16:10:21.792Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for new-owner-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for new-owner-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for the-verge-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for trial-by-jury-and-the-zoo-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for trial-by-jury-and-the-zoo-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for clifford-odets-waiting-for-lefty-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for dead-centre-deaf-republic-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for dead-centre-deaf-republic-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

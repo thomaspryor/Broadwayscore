@@ -1,0 +1,879 @@
+// BRO-7741: a review missing on an opening night is added through the lane's manual inbox, which the running lane
+// reads every pass, instead of a full lane rollback. These tests fail with the change reverted.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const inbox = require('../../scripts/lib/opening-night-lane/manual-inbox.js');
+const { ingestRouteDecision, settleAfterInboxWrite } = require('../../scripts/lib/lane-inbox-routing.js');
+const { PROVISIONAL_DATE_SOURCES, isProvisionalPublishDate } = require('../../scripts/lib/publish-date-provenance.js');
+const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
+const trust = require('../../scripts/lib/opening-night-lane/trust-model.js');
+const { strandedCorrections, drainPlan, drainAllowed, liveLease, sweepPlan, STALE_OPEN_MS, RECHECK_MS, MAX_DRAINS } = require('../../scripts/opening-night-lane-inbox.js');
+
+const NIGHT = new Date().toISOString().slice(0, 10);
+const SHOW = { id: 'test-show-2026', title: 'Test Show', openingDate: NIGHT };
+const URL1 = 'https://www.theatermania.com/news/reviews/blue-review_99999/';
+const T0 = Date.parse(`${NIGHT}T12:00:00Z`);
+
+test('addEntries: dedupes by normalized URL, re-queues only a failed or rejected entry', () => {
+  let r = inbox.addEntries({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1, critic: 'A Critic' }, { url: 'nope' }], addedBy: 't', now: T0 });
+  assert.equal(r.ok, true); assert.equal(r.added.length, 1); assert.deepEqual(r.invalid, ['nope']);
+  const id = r.added[0];
+  r = inbox.addEntries(r.state, { show: SHOW.id, lines: [{ url: URL1.replace('www.', '').replace(/\/$/, '') + '#x' }], now: T0 });
+  assert.deepEqual(r.duplicates, [id], 'same page, different spelling');
+  const failed = inbox.markStatus(r.state, { updates: [{ id, status: 'failed', reason: 'fetch 403' }], now: T0 }).state;
+  r = inbox.addEntries(failed, { show: SHOW.id, lines: [{ url: URL1, force: true }], now: T0 });
+  assert.deepEqual(r.added, [id]); assert.equal(r.state.leases[id].status, undefined); assert.equal(r.state.leases[id].force, true);
+  assert.equal(inbox.addEntries({ leases: {} }, { show: 'Bad Id', lines: [{ url: URL1 }] }).ok, false);
+});
+
+test('markStatus: a late "queued" never reopens a published entry', () => {
+  const s = inbox.addEntries({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1 }], now: T0 });
+  const id = s.added[0];
+  const pub = inbox.markStatus(s.state, { updates: [{ id, status: 'published' }], now: T0 }).state;
+  const again = inbox.markStatus(pub, { updates: [{ id, status: 'queued' }, { id: 'gone', status: 'failed' }], now: T0 });
+  assert.equal(again.state.leases[id].status, 'published'); assert.deepEqual(again.applied, []);
+});
+
+test('git store: add and mark by compare-and-swap, read by the lane, missing branch reads empty', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7741-inbox-'));
+  try {
+    const bare = path.join(root, 'remote.git'); const work = path.join(root, 'work');
+    execFileSync('git', ['init', '-q', '--bare', bare]);
+    execFileSync('git', ['init', '-q', work]);
+    execFileSync('git', ['remote', 'add', 'origin', bare], { cwd: work });
+    const env = { GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' };
+    Object.assign(process.env, env);
+    assert.deepEqual(await inbox.readForShow({ repoDir: work, show: SHOW.id }), []);
+    const add = inbox.addSync({ repoDir: work }, { show: SHOW.id, lines: [{ url: URL1 }], addedBy: 'test' });
+    assert.equal(add.ok, true, JSON.stringify(add));
+    const rows = await inbox.readForShow({ repoDir: work, show: SHOW.id });
+    assert.equal(rows.length, 1); assert.equal(rows[0].url, URL1);
+    assert.equal(inbox.markSync({ repoDir: work }, [{ id: rows[0].id, status: 'published' }]).ok, true);
+    assert.equal((await inbox.readForShow({ repoDir: work, show: SHOW.id }))[0].status, 'published');
+    assert.deepEqual(await inbox.readForShow({ repoDir: work, show: 'other-show' }), []);
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('markStatus: a status for an earlier generation never lands on a re-added entry', () => {
+  const s = inbox.addEntries({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1 }], now: T0 });
+  const id = s.added[0]; const firstAt = s.state.leases[id].addedAt;
+  const rej = inbox.markStatus(s.state, { updates: [{ id, addedAt: firstAt, status: 'rejected' }], now: T0 }).state;
+  const readded = inbox.addEntries(rej, { show: SHOW.id, lines: [{ url: URL1, force: true }], now: T0 + 60000 }).state;
+  const late = inbox.markStatus(readded, { updates: [{ id, addedAt: firstAt, status: 'rejected', reason: 'late' }], now: T0 + 61000 });
+  assert.equal(late.state.leases[id].status, undefined, 'the re-added entry stays open');
+  assert.deepEqual(late.applied, []);
+});
+
+test('settleAfterInboxWrite: a lane that ended mid-write hands the URLs to the regular ingest', () => {
+  const marked = [];
+  let synced = 0; const syncLocal = () => { synced += 1; };
+  const held = settleAfterInboxWrite({ showId: SHOW.id, ids: ['a'], readLease: () => ({ holder: 'gha-1' }), mark: (u) => marked.push(...u), syncLocal });
+  assert.equal(held.ingestNow, false); assert.equal(marked.length, 0); assert.equal(synced, 0);
+  const gone = settleAfterInboxWrite({ showId: SHOW.id, ids: ['a'], readLease: () => null, mark: (u) => marked.push(...u), syncLocal });
+  assert.equal(gone.ingestNow, true); assert.deepEqual(marked.map((m) => m.status), ['drained']); assert.equal(synced, 1, 'local lease file refreshed before ingesting');
+  const noSync = settleAfterInboxWrite({ showId: SHOW.id, ids: ['b'], readLease: () => null, mark: (u) => marked.push(...u), syncLocal: () => { throw new Error('git down'); } });
+  assert.equal(noSync.ingestNow, false, 'a failed refresh leaves the URLs queued'); assert.equal(marked.length, 1);
+});
+
+test('a manual row: its add-day date is provisional and no guard outside the lane trusts it', () => {
+  assert.ok(PROVISIONAL_DATE_SOURCES.has('manual-inbox'));
+  assert.equal(isProvisionalPublishDate({ publishDate: NIGHT, dateSource: 'manual-inbox' }), true);
+  const row = { showId: SHOW.id, [trust.PROVENANCE_KEY]: { source: 'manual' } };
+  assert.equal(trust.isAggregatorVerifiedLaneReview(row, { openingDate: NIGHT }), false);
+  const src = fs.readFileSync(new URL('../../scripts/lib/preopening-interview-signal.js', import.meta.url), 'utf8');
+  assert.ok(!/\bisLaneReview\(/.test(src), 'preopening-interview-signal stands down only for aggregator-verified lane rows');
+});
+
+test('ingest-urls routing: a hand dispatch for a leased show goes to the inbox; automation and partial runs do not', () => {
+  assert.equal(ingestRouteDecision({ lease: null }).action, 'ingest');
+  assert.equal(ingestRouteDecision({ lease: { holder: 'gha-1' } }).action, 'inbox');
+  assert.equal(ingestRouteDecision({ lease: { holder: 'gha-1' }, caller: 'lane-inbox-drain' }).action, 'refuse');
+  assert.equal(ingestRouteDecision({ lease: { holder: 'gha-1' }, dryRun: true }).action, 'refuse');
+  assert.equal(ingestRouteDecision({ lease: { unknown: true } }).action, 'refuse');
+});
+
+test('drain waits while any lease holds the show, the lane\'s own included, read live from the store', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7741-drain-'));
+  try {
+    const bare = path.join(root, 'remote.git'); const work = path.join(root, 'work');
+    execFileSync('git', ['init', '-q', '--bare', bare]);
+    execFileSync('git', ['init', '-q', work]);
+    execFileSync('git', ['remote', 'add', 'origin', bare], { cwd: work });
+    Object.assign(process.env, { GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' });
+    assert.equal(liveLease(SHOW.id, work), null);
+    assert.equal(drainAllowed(liveLease(SHOW.id, work)), true);
+    const store = require('../../scripts/lib/opening-night-lane/lease-store.js');
+    const leaseLib = require('../../scripts/lib/opening-night-lane/lease.js');
+    const holder = 'gha-12345';
+    const prev = process.env.OPENING_NIGHT_LANE_HOLDER; process.env.OPENING_NIGHT_LANE_HOLDER = holder; // the night job sets this
+    try {
+      const res = store.casTransition({ repoDir: work }, (st) => leaseLib.acquire(st, { show: SHOW.id, night: '2026-11-17', holder, now: Date.now() }));
+      assert.equal(res.ok, true, JSON.stringify(res));
+      const held = liveLease(SHOW.id, work);
+      assert.equal(held && held.holder, holder);
+      assert.equal(drainAllowed(held), false);
+    } finally { if (prev === undefined) delete process.env.OPENING_NIGHT_LANE_HOLDER; else process.env.OPENING_NIGHT_LANE_HOLDER = prev; }
+    assert.equal(drainAllowed(liveLease(SHOW.id, path.join(root, 'no-such-repo'))), false, 'an unreadable store holds the drain');
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('drainPlan: only entries the lane did not finish go back to ingest-urls', () => {
+  const { open, lines } = drainPlan([
+    { id: 'a', url: URL1, critic: 'A Critic' }, { id: 'b', url: 'https://x.com/b', status: 'failed' },
+    { id: 'c', url: 'https://x.com/c', status: 'published' }, { id: 'd', url: 'https://x.com/d', status: 'rejected' },
+  ]);
+  assert.deepEqual(open.map((e) => e.id), ['a', 'b']);
+  assert.equal(lines.length, 2); assert.ok(lines[0].includes(URL1));
+});
+
+function laneNight({ entries, fetchDate, maxPasses = 1, fetchOutletId = 'theatermania' }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7741-night-'));
+  let doc = { reviews: [] };
+  const marks = [];
+  const run = runLaneNight({
+    show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses, passIntervalMs: 0,
+    adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => [] }],
+    fetchText: async () => '',
+    fetchReview: async () => ({ ...(fetchOutletId ? { outletId: fetchOutletId } : {}), outlet: 'TheaterMania', criticName: '', fullText: 'A full review of the production. '.repeat(40), publishDate: fetchDate }),
+    scoreReview: async () => 72,
+    readInbox: async () => (typeof entries === 'function' ? entries() : entries),
+    markInbox: async (updates) => { marks.push(...updates); },
+    publishPorts: {
+      updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; return out; },
+      regenShow: async () => ({}),
+      deploy: async () => {},
+      fetchLiveShow: async () => ({ rv: doc.reviews.map((r) => ({ u: r.url })) }),
+    },
+    now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+  });
+  return run.then((res) => ({ res, doc, marks })).finally(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+}
+
+const entry = (extra = {}) => ({ id: `${SHOW.id}|abc`, holder: 'manual-inbox', show: SHOW.id, url: URL1, critic: 'A Critic', addedAt: new Date().toISOString(), addedBy: 'test', ...extra });
+
+test('the lane publishes an inbox URL no adapter found, stamped manual, and marks it published', async () => {
+  const { doc, marks, res } = await laneNight({ entries: [entry()], fetchDate: NIGHT });
+  const row = doc.reviews.find((r) => r.url === URL1);
+  assert.ok(row, 'manual URL published: ' + JSON.stringify({ marks, n: doc.reviews.length, res: { p: res.published, u: res.unpublished, inbox: res.inbox, rej: res.rejected } }).slice(0, 1500));
+  assert.equal(row.criticName, 'A Critic', 'critic from the inbox entry');
+  assert.equal(row[trust.PROVENANCE_KEY].source, 'manual');
+  assert.ok(row.laneManualInbox && row.laneManualInbox.addedBy === 'test');
+  assert.equal(trust.isLaneReview(row, { openingDate: NIGHT }), true, 'publish.js accepts it');
+  for (const g of trust.LANE_BYPASSED_GUARDS) assert.equal(trust.laneBypasses(row, g, { openingDate: NIGHT }), false, `no ${g} bypass for a manual row`);
+  assert.ok(marks.some((m) => m.id === entry().id && m.status === 'published'), JSON.stringify(marks));
+});
+
+// BRO-7781 (simulated opening night): the real fetchReview (inline-score.js) returns no outletId; a bare inbox URL, the way
+// a person adds one with no --outlet, must still publish with the outlet its URL names.
+test('a bare inbox URL (no --outlet) publishes with the outlet resolved from its URL', async () => {
+  const { doc, marks } = await laneNight({ entries: [entry()], fetchDate: NIGHT, fetchOutletId: null });
+  const row = doc.reviews.find((r) => r.url === URL1);
+  assert.ok(row, 'published: ' + JSON.stringify(marks));
+  assert.equal(row.outletId, 'theatermania');
+  assert.ok(marks.some((m) => m.status === 'published'), JSON.stringify(marks));
+});
+
+test('an inbox URL dated far from the night is rejected and recorded, not published', async () => {
+  const { doc, marks } = await laneNight({ entries: [entry()], fetchDate: '2019-03-01' });
+  assert.equal(doc.reviews.length, 0);
+  const m = marks.find((x) => x.status === 'rejected');
+  assert.ok(m && /night-window/.test(m.reason), JSON.stringify(marks));
+});
+
+test('force publishes an off-date page; an undated page takes the inbox add date', async () => {
+  const forced = await laneNight({ entries: [entry({ force: true })], fetchDate: '2019-03-01' });
+  assert.equal(forced.doc.reviews.length, 1, JSON.stringify({ m: forced.marks, u: forced.res.unpublished, i: forced.res.inbox }));
+  const undated = await laneNight({ entries: [entry()], fetchDate: null });
+  const row = undated.doc.reviews[0];
+  assert.ok(row, JSON.stringify(undated.marks));
+  // The add date in the show's time zone (New York), so it can be the UTC day before.
+  assert.ok(Math.abs(Date.parse(row.publishDate) - Date.parse(NIGHT)) <= 86400000, row.publishDate);
+});
+
+test('a URL re-added with force during the night is worked again on the next pass', async () => {
+  let reads = 0;
+  const first = entry();
+  const second = entry({ force: true, addedAt: new Date(Date.parse(first.addedAt) + 60000).toISOString() });
+  const { doc, marks } = await laneNight({ entries: () => (++reads === 1 ? [first] : [second]), fetchDate: '2019-03-01', maxPasses: 2 });
+  assert.ok(marks.some((m) => m.status === 'rejected' && m.addedAt === first.addedAt), JSON.stringify(marks));
+  assert.equal(doc.reviews.length, 1, 'the forced re-add is published: ' + JSON.stringify(marks));
+  assert.ok(marks.some((m) => m.status === 'published' && m.addedAt === second.addedAt), JSON.stringify(marks));
+});
+
+test('sweepPlan: sends what the night left behind, re-sends a drained URL that never reached the site, leaves held shows', () => {
+  const now = T0 + 24 * 3600000;
+  const ago = (ms) => new Date(now - ms).toISOString();
+  const e = (url, extra) => ({ holder: inbox.HOLDER, show: SHOW.id, url, addedAt: ago(STALE_OPEN_MS + 1000), ...extra });
+  const state = { leases: {
+    open: e('https://x.com/open'),
+    fresh: e('https://x.com/fresh', { addedAt: ago(60000) }),
+    drainedLost: e('https://x.com/lost', { status: 'drained', statusAt: ago(RECHECK_MS + 1000), drainCount: 1 }),
+    drainedLanded: e('https://x.com/landed', { status: 'drained', statusAt: ago(RECHECK_MS + 1000) }),
+    drainedGiveUp: e('https://x.com/giveup', { status: 'drained', statusAt: ago(RECHECK_MS + 1000), drainCount: MAX_DRAINS }),
+    alreadyNotThere: e('https://x.com/ghost', { status: 'already-in', statusAt: ago(RECHECK_MS + 1000) }),
+    published: e('https://x.com/pub', { status: 'published', statusAt: ago(RECHECK_MS + 1000) }),
+    handRejected: e('https://x.com/hand', { status: 'rejected', addedBy: 'ingest-urls:someone' }),
+    cliRejected: e('https://x.com/cli', { status: 'rejected', addedBy: 'cli' }),
+    otherShow: { ...e('https://x.com/held'), show: 'held-show' },
+  } };
+  const plan = sweepPlan(state, { now, onSite: (s, u) => u.endsWith('/landed') || u.endsWith('/pub'), held: (s) => s === 'held-show' });
+  assert.equal(plan.length, 1);
+  assert.deepEqual(plan[0].open.map((x) => x.id).sort(), ['alreadyNotThere', 'drainedLost', 'handRejected', 'open']);
+});
+
+test('markStatus counts drains; a drained URL can be queued again', () => {
+  const s = inbox.addEntries({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1 }], now: T0 });
+  const id = s.added[0];
+  let st = inbox.markStatus(s.state, { updates: [{ id, status: 'drained' }], now: T0 }).state;
+  st = inbox.markStatus(st, { updates: [{ id, status: 'drained' }], now: T0 }).state;
+  assert.equal(st.leases[id].drainCount, 2);
+  assert.deepEqual(inbox.addEntries(st, { show: SHOW.id, lines: [{ url: URL1 }], now: T0 + 1000 }).added, [id]);
+});
+
+// ---------------------------------------------------------------------------------------------------------------------
+// BRO-7891 (Much Ado press night follow-ups): an inbox entry is 'already-in' only for a review a reader can see; a URL
+// the lane already scored this run rides along with it (no second score); a syndicated copy is 'held-copy' (final,
+// skipped by drain and sweep), not 'already-in'; a dropped row is 'failed', not 'published'; failed/rejected alert.
+const { realManualInbox } = require('../../scripts/lib/opening-night-lane/driver.js');
+
+function laneNight2({ entries, fetchFor, maxPasses = 1, isLive = () => true, regenMissing = () => [], onDiskRows = [], onDiskUrls = [], initialDoc = null }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-night-'));
+  let doc = initialDoc || { reviews: [] };
+  const marks = []; const scored = [];
+  const run = runLaneNight({
+    show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses, passIntervalMs: 0, publishTimeoutMs: 5, pollMs: 1,
+    adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => [] }],
+    fetchText: async () => '',
+    fetchReview: async (c) => ({ fullText: 'A full review of the production. '.repeat(40), publishDate: NIGHT, ...fetchFor(c.url) }),
+    scoreReview: async (row) => { scored.push(row.url); return 72; },
+    readInbox: async () => (typeof entries === 'function' ? entries() : entries),
+    markInbox: async (updates) => { marks.push(...updates); },
+    onDiskRows, onDiskUrls,
+    publishPorts: {
+      updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; return out; },
+      regenShow: async (s, urls) => ({ missing: regenMissing(urls) }),
+      deploy: async () => {},
+      fetchLiveShow: async () => ({ rv: isLive() ? doc.reviews.map((r) => ({ u: r.url })) : [] }),
+    },
+    now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+  });
+  return run.then((res) => ({ res, doc, marks, scored })).finally(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+}
+const tm = () => ({ outletId: 'theatermania', outlet: 'TheaterMania', criticName: 'A Critic' });
+
+test('BRO-7891: a URL re-added while its scored row is not yet live rides along (queued -> published), scored once', async () => {
+  let reads = 0; let live = false;
+  const first = entry();
+  const second = entry({ addedAt: new Date(Date.parse(first.addedAt) + 60000).toISOString() });
+  const { marks, scored } = await laneNight2({
+    entries: () => { reads += 1; if (reads >= 3) live = true; return reads === 1 ? [first] : [second]; },
+    fetchFor: tm, maxPasses: 3, isLive: () => live,
+  });
+  const forSecond = marks.filter((m) => m.addedAt === second.addedAt).map((m) => m.status);
+  assert.ok(!forSecond.includes('already-in'), `not 'already-in' while not live: ${JSON.stringify(marks)}`);
+  assert.deepEqual(forSecond, ['queued', 'published'], JSON.stringify(marks));
+  assert.equal(scored.length, 1, 'the review is scored once');
+});
+
+test('BRO-7891: a URL already in reviews.json is already-in without a fetch or score', async () => {
+  const { marks, scored } = await laneNight2({ entries: [entry()], fetchFor: tm, onDiskUrls: [URL1] });
+  assert.deepEqual(marks.map((m) => m.status), ['already-in']);
+  assert.equal(scored.length, 0);
+});
+
+test('BRO-7891: a re-run lane re-scores a ledger-scored URL that never went live, instead of calling it already-in', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-ledger-'));
+  try {
+    const ledger = require('../../scripts/lib/opening-night-lane/ledger.js');
+    const discovery = require('../../scripts/lib/opening-night-lane/discovery.js');
+    ledger.appendEvent(dir, { show: SHOW.id, night: NIGHT, reviewKey: discovery.canonicalUrl(URL1), stage: 'scored', at: Date.now() });
+    const marks = []; let doc = { reviews: [] };
+    await runLaneNight({
+      show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses: 1, passIntervalMs: 0,
+      adapters: [], fetchText: async () => '',
+      fetchReview: async () => ({ ...tm(), fullText: 'A full review of the production. '.repeat(40), publishDate: NIGHT }),
+      scoreReview: async () => 70, readInbox: async () => [entry()], markInbox: async (u) => { marks.push(...u); },
+      publishPorts: { updateReviews: async (fn) => { const o = fn(doc); doc = o.doc; return o; }, regenShow: async () => ({}), deploy: async () => {}, fetchLiveShow: async () => ({ rv: doc.reviews.map((r) => ({ u: r.url })) }) },
+      now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+    });
+    assert.deepEqual(marks.map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+const TRIB = 'https://www.chicagotribune.com/2026/11/19/review-test-show/';
+const DN = 'https://www.nydailynews.com/2026/11/19/review-test-show/';
+const jones = (url) => (url.includes('chicagotribune')
+  ? { outletId: 'chicagotribune', outlet: 'Chicago Tribune', criticName: 'Chris Jones' }
+  : { outletId: 'nydailynews', outlet: 'New York Daily News', criticName: 'Chris Jones' });
+
+test('BRO-7891: a syndicated copy whose original is queued tonight is held-copy once the original is live, never already-in', async () => {
+  const p = entry({ id: `${SHOW.id}|trib`, url: TRIB, critic: 'Chris Jones' });
+  const c = entry({ id: `${SHOW.id}|dn`, url: DN, critic: 'Chris Jones' });
+  const { marks, doc } = await laneNight2({ entries: [p, c], fetchFor: jones });
+  const copy = marks.filter((m) => m.id === c.id).map((m) => m.status);
+  assert.ok(!copy.includes('already-in'), JSON.stringify(marks));
+  assert.equal(copy.at(-1), 'held-copy', JSON.stringify(marks));
+  assert.ok(doc.reviews.some((r) => r.url === TRIB) && !doc.reviews.some((r) => r.url === DN));
+});
+
+test('BRO-7891: a syndicated copy whose original is on the site is held-copy at once', async () => {
+  const c = entry({ id: `${SHOW.id}|dn`, url: DN, critic: 'Chris Jones' });
+  const { marks } = await laneNight2({ entries: [c], fetchFor: jones, onDiskRows: [{ criticName: 'Chris Jones', outletId: 'chicagotribune' }] });
+  assert.deepEqual(marks.map((m) => m.status), ['held-copy'], JSON.stringify(marks));
+});
+
+test('BRO-7891: held-copy is final; drain and sweep never send it to ingest-urls', () => {
+  assert.ok(inbox.FINAL_STATUSES.includes('held-copy'));
+  assert.deepEqual(drainPlan([{ id: 'h', url: DN, status: 'held-copy' }]).open, []);
+  const now = T0 + 24 * 3600000;
+  const state = { leases: { h: { holder: inbox.HOLDER, show: SHOW.id, url: DN, addedAt: new Date(now - STALE_OPEN_MS - 1).toISOString(), status: 'held-copy', statusAt: new Date(now - RECHECK_MS - 1).toISOString() } } };
+  assert.deepEqual(sweepPlan(state, { now, onSite: () => false, held: () => false }), []);
+  const s = inbox.addEntries({ leases: {} }, { show: SHOW.id, lines: [{ url: DN }], now: T0 });
+  const st = inbox.markStatus(s.state, { updates: [{ id: s.added[0], status: 'held-copy' }], now: T0 }).state;
+  assert.equal(inbox.markStatus(st, { updates: [{ id: s.added[0], status: 'queued' }], now: T0 }).state.leases[s.added[0]].status, 'held-copy');
+});
+
+test('BRO-7891: an inbox row dropped by the show regen is failed, not published', async () => {
+  const { marks } = await laneNight2({ entries: [entry()], fetchFor: tm, regenMissing: (urls) => urls });
+  assert.deepEqual(marks.map((m) => m.status), ['queued', 'failed'], JSON.stringify(marks));
+});
+
+test('BRO-7891: failed and rejected inbox URLs alert per generation; a failing or hung alert never fails the write', async () => {
+  const a = inbox.inboxAlertFor({ id: `${SHOW.id}|abc`, addedAt: 'g1', status: 'rejected', reason: 'night-window', url: URL1, show: SHOW.id });
+  const b = inbox.inboxAlertFor({ id: `${SHOW.id}|abc`, addedAt: 'g2', status: 'failed', url: URL1, show: SHOW.id });
+  assert.equal(a.conditionKey, `opening-night-lane-inbox:${SHOW.id}|abc@g1`);
+  assert.notEqual(a.conditionKey, b.conditionKey, 'a re-added generation is its own condition');
+  assert.ok(a.description.includes('--force') && a.description.includes(URL1));
+  for (const s of ['queued', 'published', 'already-in', 'held-copy', 'drained']) assert.equal(inbox.inboxAlertFor({ id: 'x', status: s }), null);
+
+  const sent = []; const logs = [];
+  const store = { readForShow: async () => [], markSync: (_o, ups) => ({ ok: true, applied: ups.map((u) => u.id) }) };
+  const ok = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: (l) => logs.push(l), store, alert: async (items) => { sent.push(...items.map((x) => x.p)); } });
+  await ok.markInbox([{ id: 'x|1', addedAt: 'g1', status: 'failed', url: URL1, show: SHOW.id }, { id: 'x|2', status: 'published' }]);
+  await new Promise((r) => setTimeout(r, 5));
+  assert.deepEqual(sent.map((p) => p.conditionKey), ['opening-night-lane-inbox:x|1@g1']);
+
+  const throwing = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: (l) => logs.push(l), store, alert: async () => { throw new Error('router down'); } });
+  await throwing.markInbox([{ id: 'x|1', status: 'rejected' }]);
+  const hung = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: (l) => logs.push(l), store, alertTimeoutMs: 5, alert: () => new Promise(() => {}) });
+  const t = Date.now();
+  await hung.markInbox([{ id: 'x|1', status: 'failed' }]);
+  assert.ok(Date.now() - t < 1000, 'the write never waits on the alert');
+  await new Promise((r) => setTimeout(r, 20));
+  assert.ok(logs.some((l) => /alert failed \(router down\)/.test(l)) && logs.some((l) => /alert timed out/.test(l)), JSON.stringify(logs));
+  const failingWrite = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: () => {}, store: { markSync: () => ({ ok: false, reason: 'push' }) }, alert: async (items) => { sent.push(...items.map((x) => x.p)); } });
+  await assert.rejects(failingWrite.markInbox([{ id: 'x|9', status: 'failed' }]));
+  assert.ok(!sent.some((p) => p.conditionKey.includes('x|9')), 'no alert for a status that was not written');
+});
+
+// BRO-7891 item 3: aggregators listed reviews before the lane had them live. The lane reads the roundups every pass; a
+// parity alert now says when the aggregators' count of cited reviews is ahead of what is live, once per count.
+const nearMiss = require('../../scripts/lib/opening-night-lane/near-miss.js');
+
+test('BRO-7891: aggregatorParity reports cited reviews not live after 15 min, keyed by the aggregator count', () => {
+  const now = T0;
+  const cited = new Map([
+    ['a.com/1', { firstSeenMs: now - 20 * 60000, url: 'https://a.com/1', outletId: 'guardian', via: 'bww-roundup' }],
+    ['a.com/2', { firstSeenMs: now - 20 * 60000, url: 'https://a.com/2', outletId: 'nypost', via: 'dtli' }],
+    ['a.com/3', { firstSeenMs: now - 60000, url: 'https://a.com/3' }], // too fresh: publish is still working on it
+  ]);
+  assert.equal(nearMiss.aggregatorParity(cited, new Set(['a.com/1', 'a.com/2']), { now }), null, 'all due ones are live');
+  const p = nearMiss.aggregatorParity(cited, new Set(['a.com/1']), { now });
+  assert.match(p.key, /^aggregator-parity\|[0-9a-f]{12}$/); assert.equal(p.aggregatorCount, 2); assert.equal(p.ours, 1);
+  assert.deepEqual(p.newKeys, ['a.com/2']);
+  assert.deepEqual(p.missing.map((m) => m.url), ['https://a.com/2']);
+  const msg = nearMiss.formatPressSignals({ id: SHOW.id }, NIGHT, { sourceHealth: [p] });
+  assert.match(msg.title, /aggregators ahead \(1\/2 live\)/);
+  assert.ok(!/source problem/.test(msg.title), 'parity is not counted as a source problem');
+  assert.match(msg.description, /AGGREGATORS AHEAD/); assert.ok(msg.description.includes('https://a.com/2'));
+});
+
+test('BRO-7891: the lane runner sends one aggregator-parity alert for a roundup-cited review not live after 15 min', async () => {
+  const night = '2026-11-17';
+  const show = { id: 'test-show-2026', title: 'Test Show', category: 'broadway', market: 'broadway', openingDate: night, venue: 'Nowhere Theatre' };
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-parity-'));
+  const CITED = 'https://www.theguardian.com/stage/2026/nov/17/test-show-review-broadway';
+  let t = Date.parse(`${night}T23:00:00Z`);
+  const calls = [];
+  try {
+    await runLaneNight({
+      show, night, openingDate: night, ledgerDir: dir, maxPasses: 4,
+      fetchText: async () => '<html><body>no date here</body></html>',
+      adapters: [{ name: 'bww-roundup', kind: 'aggregator', phase: 'main', discover: async () => [
+        { url: CITED, title: 'Test Show review', outletId: 'guardian', source: 'aggregator', aggregatorCited: true, via: 'bww-roundup' },
+      ] }],
+      fetchReview: async () => { throw new Error('not admitted in this test'); }, scoreReview: async () => 80,
+      publishPorts: { updateReviews: async () => {}, regenShow: async () => {}, deploy: async () => {}, fetchLiveShow: async () => ({ rv: [] }) },
+      now: () => t, wait: async (ms) => { t += Math.max(ms || 0, 8 * 60000); }, abandonPending: () => true,
+      onPressSignals: async (sig) => { calls.push(sig); },
+    });
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  const parity = calls.flatMap((c) => c.sourceHealth || []).filter((h) => h.kind === 'aggregator-parity');
+  assert.equal(parity.length, 1, JSON.stringify(calls).slice(0, 1500));
+  assert.equal(parity[0].aggregatorCount, 1); assert.equal(parity[0].ours, 0);
+});
+
+test('BRO-7891 (self-review): a copy pulled from the queue by its original, then added again, is held-copy, not stuck queued', async () => {
+  // Pass 1: the Daily News copy is scored first (held in the queue as a possible copy), then the Tribune original pulls
+  // it. Pass 2: the copy is added again (a new generation). Admitted-but-pulled must not ride along as 'queued'.
+  let reads = 0;
+  const c1 = entry({ id: `${SHOW.id}|dn`, url: DN, critic: 'Chris Jones' });
+  const p = entry({ id: `${SHOW.id}|trib`, url: TRIB, critic: 'Chris Jones' });
+  const c2 = { ...c1, addedAt: new Date(Date.parse(c1.addedAt) + 120000).toISOString() };
+  const { marks, doc } = await laneNight2({ entries: () => (++reads === 1 ? [c1, p] : [p, c2]), fetchFor: jones, maxPasses: 2 });
+  const last = (e) => marks.filter((m) => m.id === e.id && m.addedAt === e.addedAt).at(-1);
+  assert.equal(last(c1) && last(c1).status, 'held-copy', JSON.stringify(marks));
+  assert.equal(last(c2) && last(c2).status, 'held-copy', JSON.stringify(marks));
+  assert.equal(last(p).status, 'published');
+  assert.ok(!doc.reviews.some((r) => r.url === DN));
+});
+
+// ---- BRO-7891 independent review of 8b70c9d70 ----
+const { inboxAlertRoute } = require('../../scripts/lib/opening-night-lane/driver.js');
+
+test('BRO-7891 review 1: inbox failed/rejected alerts go to the press-night channel the same night, not the morning digest', async () => {
+  const sig = []; const routed = [];
+  const notifier = async (x) => { sig.push(x); return { discord: true, comment: false, text: 'x' }; };
+  const route = inboxAlertRoute({ show: SHOW, night: NIGHT, notifyPressSignals: notifier, routeAlert: async (p) => { routed.push(p); } });
+  const p = inbox.inboxAlertFor({ id: `${SHOW.id}|abc`, addedAt: 'g1', status: 'rejected', reason: 'night-window', url: URL1, show: SHOW.id });
+  await route([{ p, u: { url: URL1, status: 'rejected', reason: 'night-window' } }]);
+  assert.equal(routed.length, 0, 'not the digest');
+  assert.equal(sig.length, 1); assert.equal(sig[0].sourceHealth[0].kind, 'inbox-problem');
+  const msg = nearMiss.formatPressSignals(SHOW, NIGHT, sig[0]);
+  assert.match(msg.title, /1 inbox URL\(s\) not published/); assert.ok(!/source problem/.test(msg.title));
+  assert.ok(msg.description.includes('INBOX URL REJECTED') && msg.description.includes(URL1) && msg.description.includes('--force'));
+  // No notifier wired (a replay): still recorded through the router.
+  await inboxAlertRoute({ show: SHOW, night: NIGHT, notifyPressSignals: null, routeAlert: async (x) => { routed.push(x); } })([{ p, u: {} }]);
+  assert.equal(routed.length, 1); assert.equal(routed[0].conditionKey, p.conditionKey);
+});
+
+test('BRO-7891 review 2: parity alerts once per newly missing review, not again as the count grows or a gap persists', () => {
+  const now = T0; const old = now - 20 * 60000;
+  const alerted = new Set();
+  const cited = new Map([['k1', { firstSeenMs: old, url: 'https://a.com/1' }], ['k2', { firstSeenMs: old, url: 'https://a.com/2' }]]);
+  const live = new Set(['k1']);
+  const first = nearMiss.aggregatorParity(cited, live, { now, alerted });
+  assert.deepEqual(first.newKeys, ['k2']); for (const k of first.newKeys) alerted.add(k);
+  assert.equal(nearMiss.aggregatorParity(cited, live, { now: now + 600000, alerted }), null, 'same gap, next pass: quiet');
+  cited.set('k3', { firstSeenMs: old, url: 'https://a.com/3' }); live.add('k3');
+  assert.equal(nearMiss.aggregatorParity(cited, live, { now, alerted }), null, 'count grew but nothing new is missing: quiet');
+  cited.set('k4', { firstSeenMs: old, url: 'https://a.com/4' });
+  const again = nearMiss.aggregatorParity(cited, live, { now, alerted });
+  assert.deepEqual(again.newKeys, ['k4']); assert.notEqual(again.key, first.key);
+  // Liveness is a predicate: the runner counts a key live by critic+outlet (publish's merge key) as well as by URL.
+  assert.equal(nearMiss.aggregatorParity(cited, (k) => k !== 'k9', { now, alerted: new Set() }), null);
+});
+
+test('BRO-7891 review 4: only statuses the store applied alert', async () => {
+  const sent = [];
+  const box = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: () => {}, alert: async (items) => { sent.push(...items.map((x) => x.p)); },
+    store: { markSync: () => ({ ok: true, applied: ['x|1'] }) } });
+  await box.markInbox([{ id: 'x|1', addedAt: 'g2', status: 'failed' }, { id: 'x|2', addedAt: 'g1', status: 'failed' }]);
+  await new Promise((r) => setTimeout(r, 5));
+  assert.deepEqual(sent.map((p) => p.conditionKey), ['opening-night-lane-inbox:x|1@g2']);
+});
+
+test('BRO-7891 review 5: an inbox URL the merge folds into an existing same-critic row says so, not "this URL"', async () => {
+  const existing = { showId: SHOW.id, outlet: 'TheaterMania', outletId: 'theatermania', criticName: 'A Critic', url: 'https://www.theatermania.com/other-url/', assignedScore: 70, manualEntry: true };
+  const { marks } = await laneNight2({ entries: [entry()], fetchFor: tm, initialDoc: { reviews: [existing] } });
+  const m = marks.find((x) => x.status === 'already-in');
+  assert.ok(m, JSON.stringify(marks));
+  assert.match(m.reason, /by this critic for this outlet/);
+});
+
+// ---- BRO-7891 ship-check of 68e03e941 ----
+test('BRO-7891 ship-check 1: a ride-along entry never stays queued all night (merge kept the row, or the lane stood down)', async () => {
+  // (a) The merge kept the site's row in pass 1; the URL re-added in pass 2 is already-in at once, not queued.
+  const existing = { showId: SHOW.id, outlet: 'TheaterMania', outletId: 'theatermania', criticName: 'A Critic', url: 'https://www.theatermania.com/other-url/', assignedScore: 70, manualEntry: true };
+  let reads = 0;
+  const first = entry(); const second = entry({ addedAt: new Date(Date.parse(first.addedAt) + 60000).toISOString() });
+  const kept = await laneNight2({ entries: () => (++reads === 1 ? [first] : [second]), fetchFor: tm, maxPasses: 2, initialDoc: { reviews: [existing] } });
+  const s2 = kept.marks.filter((m) => m.addedAt === second.addedAt).map((m) => m.status);
+  assert.deepEqual(s2, ['already-in'], JSON.stringify(kept.marks));
+  assert.equal(kept.scored.length, 1, 'not scored again');
+
+  // (b) A stand-down drops the queue: the entry ends 'failed' (alerted, drained), not 'queued'.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-standdown-'));
+  const marks = []; let stood = false;
+  try {
+    await runLaneNight({
+      show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses: 1, passIntervalMs: 0,
+      adapters: [], fetchText: async () => '',
+      fetchReview: async () => ({ ...tm(), fullText: 'A full review of the production. '.repeat(40), publishDate: NIGHT }),
+      scoreReview: async () => { stood = true; return 70; }, abandonPending: () => stood,
+      readInbox: async () => [entry()], markInbox: async (u) => { marks.push(...u); },
+      publishPorts: { updateReviews: async () => { throw new Error('should not publish'); }, regenShow: async () => ({}), deploy: async () => {}, fetchLiveShow: async () => ({ rv: [] }) },
+      now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+    });
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  assert.deepEqual(marks.map((m) => m.status), ['queued', 'failed'], JSON.stringify(marks));
+  assert.match(marks[1].reason, /stood down/);
+  assert.equal(drainPlan([{ id: 'x', url: URL1, status: 'failed' }]).open.length, 1, 'the drain picks it up');
+});
+
+test('BRO-7891 ship-check 3: one flush with several failed URLs is ONE alert listing them, capped', async () => {
+  const calls = [];
+  const box = realManualInbox({ repoDir: '.', show: SHOW, env: {}, log: () => {}, alert: async (items) => { calls.push(items); },
+    store: { markSync: (_o, ups) => ({ ok: true, applied: ups.map((u) => u.id) }) } });
+  const ups = Array.from({ length: 14 }, (_, i) => ({ id: `x|${i}`, addedAt: 'g', status: 'failed', url: `https://x.com/${i}`, show: SHOW.id }));
+  await box.markInbox(ups);
+  await new Promise((r) => setTimeout(r, 5));
+  assert.equal(calls.length, 1); assert.equal(calls[0].length, 14);
+  const msg = nearMiss.formatPressSignals(SHOW, NIGHT, { sourceHealth: calls[0].map(({ p, u }) => ({ kind: 'inbox-problem', url: u.url, status: u.status, description: p.description })) });
+  assert.equal((msg.description.match(/^INBOX URL/gm) || []).length, 10);
+  assert.match(msg.description, /and 4 more inbox URL/);
+  // The run-log label for an inbox-only message is not "source problem".
+  const logs = []; const orig = console.log; console.log = (l) => logs.push(String(l));
+  try {
+    const { createPressSignalsNotifier } = require('../../scripts/lib/press-night-signals-notify.js');
+    await createPressSignalsNotifier({ env: {}, log: () => {}, card: null, fetchPage: async () => '' })({ show: SHOW, night: NIGHT, sourceHealth: [{ kind: 'inbox-problem', url: URL1, status: 'failed', description: 'd' }] });
+  } finally { console.log = orig; }
+  assert.ok(logs.some((l) => /::warning title=Press-night inbox URL not published::/.test(l)), logs.join('\n'));
+});
+
+test('BRO-7891 ship-check 4: with PRESS_SIGNALS_OFF (or no channel reached) inbox alerts fall back to the router', async () => {
+  const routed = [];
+  const { createPressSignalsNotifier } = require('../../scripts/lib/press-night-signals-notify.js');
+  const off = createPressSignalsNotifier({ env: { PRESS_SIGNALS_OFF: '1' }, log: () => {}, card: null });
+  const route = inboxAlertRoute({ show: SHOW, night: NIGHT, notifyPressSignals: off, routeAlert: async (x) => { routed.push(x); } });
+  const p1 = inbox.inboxAlertFor({ id: 'x|1', addedAt: 'g', status: 'failed', url: URL1, show: SHOW.id });
+  const p2 = inbox.inboxAlertFor({ id: 'x|2', addedAt: 'g', status: 'rejected', url: 'https://x.com/2', show: SHOW.id });
+  await route([{ p: p1, u: {} }, { p: p2, u: {} }]);
+  assert.equal(routed.length, 1, 'one routed alert for the batch');
+  assert.match(routed[0].conditionKey, /^opening-night-lane-inbox:batch:/);
+  assert.ok(routed[0].description.includes(URL1) && routed[0].description.includes('https://x.com/2'));
+});
+
+test('BRO-7891 ship-check 7: the retry command quotes the URL safely', () => {
+  const p = inbox.inboxAlertFor({ id: 'x|1', status: 'failed', url: "https://x.com/it's-a-review", show: SHOW.id });
+  assert.ok(p.description.includes("--url='https://x.com/it'\\''s-a-review'"), p.description);
+});
+
+// ---- BRO-7891 item 2: corrections while the lane holds the show ----
+const { laneHeldEditProblem } = require('../../scripts/lib/lane-inbox-routing.js');
+const { planCorrection, laneCardRow } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
+
+test('BRO-7891 item 2: addCorrections takes only lane-correctable fields with valid values; a re-add replaces the first', () => {
+  const bad = inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [
+    { url: URL1, field: 'urlDead', value: true }, { url: URL1, field: 'humanReviewScore', value: 150 }, { url: 'ftp://x', field: 'humanReviewScore', value: 80 }] });
+  assert.equal(bad.ok, false);
+  assert.equal(bad.invalid.length, 3, JSON.stringify(bad.invalid));
+  const a = inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [{ url: URL1, field: 'humanReviewScore', value: 80 }], now: T0 });
+  assert.equal(a.ok, true);
+  const e = a.state.leases[a.added[0]];
+  assert.ok(inbox.isCorrection(e) && e.field === 'humanReviewScore' && e.value === 80 && !('expect' in e));
+  const b = inbox.addCorrections(inbox.markStatus(a.state, { updates: [{ id: a.added[0], status: 'published' }] }).state,
+    { show: SHOW.id, lines: [{ url: `${URL1}#x`, field: 'humanReviewScore', value: 82, expect: 80 }], now: T0 + 1000 });
+  assert.deepEqual(b.added, a.added, 'same URL + field = same entry');
+  const e2 = b.state.leases[b.added[0]];
+  assert.equal(e2.value, 82); assert.equal(e2.expect, 80); assert.equal(e2.status, undefined, 'the replacement is open again');
+  assert.notEqual(inbox.entryId(SHOW.id, URL1), a.added[0], 'a correction never collides with the URL entry');
+});
+
+test('BRO-7891 item 2: drain and sweep never send a correction to ingest-urls', () => {
+  const c = { id: `${SHOW.id}|fix|abc`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: URL1, field: 'humanReviewScore', value: 80,
+    addedAt: new Date(Date.now() - STALE_OPEN_MS - 1000).toISOString() };
+  assert.equal(drainPlan([c, { ...c, status: 'failed' }]).open.length, 0);
+  assert.equal(sweepPlan({ leases: { [c.id]: c } }, { onSite: () => false, held: () => false }).length, 0);
+});
+
+test('BRO-7891 item 2: a rejected correction alerts with the regular fix path, not the --force re-add', () => {
+  const a = inbox.inboxAlertFor({ id: `${SHOW.id}|fix|abc`, addedAt: 't', status: 'rejected', kind: 'correction', field: 'humanReviewScore', url: URL1, show: SHOW.id, reason: 'not a review the lane published tonight' });
+  assert.match(a.title, /correction/);
+  assert.match(a.description, /new-fix-plan\.js --review-edit/);
+  assert.doesNotMatch(a.description, /--force/);
+});
+
+test('BRO-7891 item 2: new-fix-plan refuses a lane-correctable edit on a held show and prints the lane command', () => {
+  const act = { type: 'review-field-edit', file: `${SHOW.id}/theatermania--a-critic.json`, field: 'humanReviewScore', newValue: 85 };
+  const p = laneHeldEditProblem(act, { holder: 'opening-night-lane' }, { url: URL1 });
+  assert.equal(p.level, 'refuse');
+  assert.match(p.message, /opening-night-lane-inbox\.js correct --show=test-show-2026 --url='https:\/\/www\.theatermania\.com[^']*' --field=humanReviewScore --value='85'/);
+  // BRO-7958: a byline is lane-correctable now, with a valid name; a field the lane still cannot change, or a value it
+  // would refuse (a take-down only ever goes true), stays a warning that the edit lands after the lane.
+  assert.equal(laneHeldEditProblem({ ...act, field: 'criticName', newValue: 'Jesse Green' }, { holder: 'x' }).level, 'refuse');
+  assert.equal(laneHeldEditProblem({ ...act, field: 'urlDead', newValue: true }, { holder: 'x' }).level, 'warn');
+  assert.equal(laneHeldEditProblem({ ...act, field: 'wrongShow', newValue: false }, { holder: 'x' }).level, 'warn');
+  assert.equal(laneHeldEditProblem(act, null), null, 'no lease: the regular plan');
+});
+
+test('BRO-7891 item 2: planCorrection honours expect and refuses a score the rebuild would not publish', () => {
+  const rec = { url: URL1, assignedScore: 72, criticName: 'A Critic', outletId: 'theatermania' };
+  assert.equal(planCorrection(rec, { id: 'x', field: 'humanReviewScore', value: 85 }, 't').record.humanReviewScore, 85);
+  assert.match(planCorrection(rec, { id: 'x', field: 'humanReviewScore', value: 85, expect: 60 }, 't').reject, /not the 60/);
+  // A printed 2/5 caps the score at its band (31-50): an 85 would be clamped by the rebuild, so it is refused here.
+  assert.match(planCorrection({ ...rec, originalScore: '2/5' }, { id: 'x', field: 'humanReviewScore', value: 85 }, 't').reject, /would publish 40, not 85/);
+  // A provisional human score is ignored by the rebuild: refused too.
+  assert.match(planCorrection({ ...rec, humanReviewScoreProvisional: true }, { id: 'x', field: 'humanReviewScore', value: 85 }, 't').reject, /would publish 72/);
+  // An override the rebuild does not honour (out of the printed band) leaves the lane's own score: no other rebuild step leaks in.
+  assert.equal(laneCardRow({ ...rec, originalScore: '2/5', humanReviewScore: 85 }, SHOW).assignedScore, 72);
+  // Already applied (a restarted lane re-reading a 'queued' correction): unchanged, not an expect conflict.
+  assert.equal(planCorrection({ ...rec, humanReviewScore: 85 }, { id: 'x', field: 'humanReviewScore', value: 85, expect: 72 }, 't').unchanged, true);
+  assert.equal(laneCardRow({ ...rec, humanReviewScore: 90 }, SHOW).assignedScore, 90, 'the published row carries the human score');
+});
+
+function laneNightFiles({ entries, maxPasses = 2, scoreOf = () => 72 }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7891-fix-'));
+  const rt = path.join(dir, 'review-texts'); fs.mkdirSync(rt);
+  let doc = { reviews: [] };
+  const marks = []; const fetched = [];
+  const run = runLaneNight({
+    show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses, passIntervalMs: 0, publishTimeoutMs: 200, pollMs: 1,
+    reviewTextsDir: rt,
+    adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => [] }],
+    fetchText: async () => '',
+    fetchReview: async (c) => { fetched.push(c.url); return { outletId: 'theatermania', outlet: 'TheaterMania', criticName: 'A Critic', fullText: 'A full review of the production. '.repeat(40), publishDate: NIGHT }; },
+    scoreReview: async () => scoreOf(),
+    readInbox: async () => (typeof entries === 'function' ? entries() : entries),
+    markInbox: async (updates) => { marks.push(...updates); },
+    publishPorts: {
+      updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; return out; },
+      regenShow: async () => ({}),
+      deploy: async () => {},
+      fetchLiveShow: async () => ({ rv: doc.reviews.map((r) => ({ u: r.url, s: r.assignedScore })) }),
+    },
+    now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+  });
+  const files = () => (fs.existsSync(path.join(rt, SHOW.id)) ? fs.readdirSync(path.join(rt, SHOW.id)) : []).map((f) => JSON.parse(fs.readFileSync(path.join(rt, SHOW.id, f), 'utf8')));
+  return run.then((res) => ({ res, doc, marks, fetched, files: files() })).finally(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+}
+
+test('BRO-7891 item 2: the lane applies a score correction to its review file and republishes it, verified with the new score', async () => {
+  const urlEntry = entry();
+  const fix = { id: `${SHOW.id}|fix|abc`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: URL1, field: 'humanReviewScore', value: 85, addedAt: new Date().toISOString(), addedBy: 'test' };
+  let reads = 0;
+  const { doc, marks, fetched, files } = await laneNightFiles({ entries: () => { reads += 1; return reads === 1 ? [urlEntry] : [{ ...urlEntry, status: 'published' }, fix]; } });
+  assert.equal(fetched.filter((u) => u === URL1).length, 1, 'the correction is never fetched as a review');
+  const fixMarks = marks.filter((m) => m.id === fix.id).map((m) => m.status);
+  assert.deepEqual(fixMarks, ['queued', 'published'], JSON.stringify(marks));
+  const row = doc.reviews.find((r) => r.url === URL1);
+  assert.equal(row.assignedScore, 85, 'the site row carries the corrected score');
+  assert.equal(doc.reviews.filter((r) => r.url === URL1).length, 1, 'replaced, not added twice');
+  assert.equal(files[0].humanReviewScore, 85, 'the review file carries it, so the rebuild after the lane keeps it');
+  assert.ok(JSON.stringify(files[0]).includes(`lane-inbox:${fix.id}`), 'provenance stamp on the file');
+});
+
+test('BRO-7891 item 2: a correction for a review the lane did not publish tonight is rejected, never fetched', async () => {
+  const other = 'https://www.nytimes.com/2026/11/19/theater/other-review.html';
+  const fix = { id: `${SHOW.id}|fix|def`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: other, field: 'humanReviewScore', value: 85, addedAt: new Date().toISOString(), addedBy: 'test' };
+  const { marks, fetched } = await laneNightFiles({ entries: [fix], maxPasses: 1 });
+  assert.equal(fetched.length, 0);
+  assert.deepEqual(marks.map((m) => [m.status, m.kind]), [['rejected', 'correction']]);
+  assert.match(marks[0].reason, /not a review the lane published tonight/);
+});
+
+test('BRO-7891 item 2 ship-check: a correction on a syndicated copy the lane keeps off the site is rejected, never re-published', async () => {
+  const fix = { id: `${SHOW.id}|fix|dn`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: DN, field: 'humanReviewScore', value: 85, addedAt: new Date().toISOString(), addedBy: 'test' };
+  let reads = 0;
+  const { doc, marks } = await laneNight2({
+    entries: () => { reads += 1; return reads === 1 ? [entry({ url: TRIB, id: `${SHOW.id}|t` }), entry({ url: DN, id: `${SHOW.id}|d` })] : [fix]; },
+    fetchFor: jones, maxPasses: 2,
+  });
+  assert.ok(!doc.reviews.some((r) => r.url === DN), 'the copy stays off the site');
+  const m = marks.filter((x) => x.id === fix.id);
+  assert.deepEqual(m.map((x) => x.status), ['rejected'], JSON.stringify(marks));
+  assert.match(m[0].reason, /syndicated copy/);
+});
+
+test('BRO-7891 item 2 ship-check: a correction added after the last pass is rejected at lane end; the sweep closes stranded ones', async () => {
+  const fix = { id: `${SHOW.id}|fix|late`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: URL1, field: 'humanReviewScore', value: 85, addedAt: new Date().toISOString(), addedBy: 'test' };
+  let reads = 0;
+  const { marks } = await laneNight2({ entries: () => { reads += 1; return reads === 1 ? [] : [fix]; }, fetchFor: tm, maxPasses: 1 });
+  assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['rejected'], JSON.stringify(marks));
+  const state = { leases: { [fix.id]: fix, [`${SHOW.id}|fix|done`]: { ...fix, status: 'published' } } };
+  assert.deepEqual(strandedCorrections(state, { held: () => false }).map((e) => e.id), [fix.id]);
+  assert.equal(strandedCorrections(state, { held: () => true }).length, 0, 'a held show is the lane\'s');
+});
+
+// ---- BRO-7958: corrections v2 (take-downs, date, byline, pull quote) ---------------------------------------------------
+const { mergeShowRows, publishLaneReviews } = require('../../scripts/lib/opening-night-lane/publish.js');
+const { createDeployPort } = require('../../scripts/lib/opening-night-lane/deploy-port.js');
+const { FIELD_VALUE_CHECKS } = require('../../scripts/lib/review-field-edit.js');
+const QUOTE = 'Nothing prepares you for the stunning second act, a thrilling piece of storytelling that earns every standing ovation.';
+const FULL = `${QUOTE} The production is directed with confidence and the cast delivers throughout the evening. `.repeat(6);
+const mkFix = (field, value, extra = {}) => ({ id: `${SHOW.id}|fix|${field}`, holder: 'manual-inbox', kind: 'correction', show: SHOW.id, url: URL1, field, value, addedAt: new Date().toISOString(), addedBy: 'test', ...extra });
+
+test('BRO-7958: addCorrections takes the v2 fields; a take-down only goes true; bad values are refused at the CLI', () => {
+  const ok = inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [
+    { url: URL1, field: 'wrongShow', value: true }, { url: URL1, field: 'wrongProduction', value: true }, { url: URL1, field: 'isNonReview', value: true },
+    { url: URL1, field: 'publishDate', value: NIGHT }, { url: URL1, field: 'criticName', value: 'Jesse Green' }, { url: URL1, field: 'llmPullQuote', value: QUOTE }], now: T0 });
+  assert.equal(ok.ok, true); assert.equal(ok.added.length, 6, JSON.stringify(ok.invalid));
+  const bad = inbox.addCorrections({ leases: {} }, { show: SHOW.id, lines: [
+    { url: URL1, field: 'wrongShow', value: false }, { url: URL1, field: 'isNonReview', value: 'yes' }, { url: URL1, field: 'publishDate', value: `${NIGHT}T03:00:00Z` },
+    { url: URL1, field: 'publishDate', value: '2026-02-30' }, { url: URL1, field: 'criticName', value: 'Unknown' }, { url: URL1, field: 'llmPullQuote', value: 'Too short.' }] });
+  assert.equal(bad.ok, false); assert.equal(bad.invalid.length, 6, JSON.stringify(bad.invalid));
+  assert.equal(FIELD_VALUE_CHECKS.publishDate('2026-11-19'), null);
+  assert.match(FIELD_VALUE_CHECKS.publishDate('Nov 19'), /YYYY-MM-DD/);
+});
+
+test('BRO-7958: planCorrection: date relabels the provisional source and refuses an implausible date; byline and quote are checked against the record; isNonReview carries its manual reason', () => {
+  const rec = { url: URL1, assignedScore: 72, criticName: 'A Critic', outletId: 'theatermania', publishDate: NIGHT, dateSource: 'manual-inbox', fullText: FULL, showId: SHOW.id };
+  const d = planCorrection(rec, { id: 'x', field: 'publishDate', value: '2026-11-18' }, 't', { show: { ...SHOW, openingDate: '2026-11-19' } });
+  assert.equal(d.record.publishDate, '2026-11-18'); assert.equal(d.record.dateSource, 'manual-correction', 'no longer provisional, so the next fetch keeps it');
+  const old = planCorrection(rec, { id: 'x', field: 'publishDate', value: '2019-03-01' }, 't', { show: { ...SHOW, openingDate: '2026-11-19', previewsStartDate: '2026-10-20' } });
+  assert.match(old.reject, /wrongProduction/, 'a date the write guard would flag is refused in words');
+  assert.equal(planCorrection(rec, { id: 'x', field: 'criticName', value: 'Jesse Green' }, 't').record.criticName, 'Jesse Green');
+  const q = planCorrection(rec, { id: 'x', field: 'llmPullQuote', value: QUOTE }, 't', { show: SHOW });
+  assert.ok(q.record && q.record.llmPullQuote === QUOTE, JSON.stringify(q.reject));
+  assert.match(planCorrection(rec, { id: 'x', field: 'llmPullQuote', value: 'A line that is long enough but appears nowhere in the review text at all.' }, 't', { show: SHOW }).reject, /verbatim/);
+  const n = planCorrection(rec, { id: 'x', field: 'isNonReview', value: true }, 't');
+  assert.equal(n.record.isNonReview, true); assert.match(n.record.isNonReviewReason, /^manual \(not a review\)/i);
+  assert.equal(planCorrection(rec, { id: 'x', field: 'wrongShow', value: true }, 't').record.wrongShow, true);
+});
+
+// Real-world shaped end to end: a lane night that publishes URL1, then a correction read on pass 2.
+function laneNightV2({ fix, maxPasses = 3, stuckLive = false, fullText = FULL, publishDate = NIGHT }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7958-'));
+  const rt = path.join(dir, 'review-texts'); fs.mkdirSync(rt);
+  let doc = { reviews: [] };
+  const marks = []; const merges = []; const fetchedLive = [];
+  const urlEntry = entry();
+  let reads = 0;
+  const run = runLaneNight({
+    show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, dryRun: true, maxPasses, passIntervalMs: 0, publishTimeoutMs: 150, pollMs: 1,
+    reviewTextsDir: rt,
+    adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => [] }],
+    fetchText: async () => '',
+    fetchReview: async () => ({ outletId: 'theatermania', outlet: 'TheaterMania', criticName: 'A Critic', fullText, publishDate }),
+    scoreReview: async () => 72,
+    readInbox: async () => { reads += 1; return reads === 1 ? [urlEntry] : [{ ...urlEntry, status: 'published' }, fix]; },
+    markInbox: async (updates) => { marks.push(...updates); },
+    publishPorts: {
+      updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; merges.push(out); return out; },
+      regenShow: async () => ({}),
+      deploy: async () => {},
+      // generate-mobile-show-details' rv shape: u url, s score, cn critic, d date, q pull quote
+      fetchLiveShow: async () => { const rv = doc.reviews.map((r) => ({ u: r.url, s: r.assignedScore, cn: r.criticName, d: r.publishDate, q: r.pullQuote })); fetchedLive.push(rv.length); return { rv: stuckLive ? [...rv, { u: URL1, s: 72 }].filter((x, i, a) => a.findIndex((y) => y.u === x.u) === i) : rv }; },
+    },
+    now: () => Date.now(), wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+  });
+  const files = () => (fs.existsSync(path.join(rt, SHOW.id)) ? fs.readdirSync(path.join(rt, SHOW.id)) : []).map((f) => ({ f, d: JSON.parse(fs.readFileSync(path.join(rt, SHOW.id, f), 'utf8')) }));
+  return run.then((res) => ({ res, doc, marks, merges, fetchedLive, files: files() })).finally(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+}
+
+for (const field of ['wrongShow', 'wrongProduction', 'isNonReview']) {
+  test(`BRO-7958: ${field} = true takes a published lane review off the site, verified gone live, and keeps it off`, async () => {
+    const fix = mkFix(field, true);
+    const { doc, marks, files, res } = await laneNightV2({ fix });
+    assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
+    assert.ok(!doc.reviews.some((r) => r.url === URL1), 'the row is off reviews.json');
+    assert.equal(files.length, 1); assert.equal(files[0].d[field], true, 'the review file carries the flag, so the rebuild after the lane keeps it off');
+    assert.equal(files[0].d.laneRevoked, true, 'lane trust is revoked: otherwise the rebuild after the night ignores the flag (laneBypasses) and the review returns');
+    assert.equal(trust.isLaneReview(files[0].d, { openingDate: NIGHT }), false);
+    assert.ok(res.takedownDone.some((t) => /verified gone/.test(t.reason)), JSON.stringify(res.takedownDone));
+  });
+}
+
+test('BRO-7958: a take-down the live site still shows is not claimed done: failed after the retries, row stays flagged on file', async () => {
+  const fix = mkFix('wrongShow', true);
+  const { marks } = await laneNightV2({ fix, stuckLive: true, maxPasses: 4 });
+  const st = marks.filter((m) => m.id === fix.id).map((m) => m.status);
+  assert.deepEqual(st, ['queued', 'failed'], JSON.stringify(marks));
+  assert.match(marks.find((m) => m.id === fix.id && m.status === 'failed').reason, /still showed the review/);
+});
+
+test('BRO-7958: a date correction is republished and verified once the live entry carries the new date', async () => {
+  const fix = mkFix('publishDate', '2026-11-18');
+  const { doc, marks, files } = await laneNightV2({ fix });
+  assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
+  assert.equal(doc.reviews.find((r) => r.url === URL1).publishDate, '2026-11-18');
+  assert.equal(files[0].d.publishDate, '2026-11-18'); assert.equal(files[0].d.dateSource, 'manual-correction');
+  assert.notEqual(files[0].d.wrongProduction, true, 'the republish is not silently dropped by a date-guard flag');
+});
+
+test('BRO-7958: a byline correction replaces the old row in one merge and moves the review file', async () => {
+  const fix = mkFix('criticName', 'Jesse Green');
+  const { doc, marks, files } = await laneNightV2({ fix });
+  assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
+  const rows = doc.reviews.filter((r) => r.url === URL1);
+  assert.equal(rows.length, 1, 'the old byline row is gone, not left beside the new one');
+  assert.equal(rows[0].criticName, 'Jesse Green');
+  assert.equal(files.length, 1, 'one review file, under the new byline');
+  assert.match(files[0].f, /jesse-green/); assert.equal(files[0].d.criticName, 'Jesse Green');
+  assert.ok(!files[0].d.duplicateOf, 'the new file is not marked a duplicate of the old byline file (both on disk at once would)');
+});
+
+test('BRO-7958: a pull-quote correction is applied from the review text and verified live', async () => {
+  const fix = mkFix('llmPullQuote', QUOTE);
+  const { doc, marks, files } = await laneNightV2({ fix });
+  assert.deepEqual(marks.filter((m) => m.id === fix.id).map((m) => m.status), ['queued', 'published'], JSON.stringify(marks));
+  assert.equal(doc.reviews.find((r) => r.url === URL1).pullQuote, QUOTE);
+  assert.equal(files[0].d.llmPullQuote, QUOTE);
+});
+
+test('BRO-7958: a quote that is not in the review text is rejected, nothing republished', async () => {
+  const fix = mkFix('llmPullQuote', 'A line that is long enough but appears nowhere in the review text at all.');
+  const { marks } = await laneNightV2({ fix });
+  const m = marks.filter((x) => x.id === fix.id);
+  assert.deepEqual(m.map((x) => x.status), ['rejected']); assert.match(m[0].reason, /verbatim/);
+});
+
+const laneDocRow = (extra = {}) => ({ showId: SHOW.id, url: URL1, criticName: 'A Critic', outletId: 'theatermania', assignedScore: 70, productionVerified: 'aggregator',
+  openingNightLane: trust.buildLaneProvenance({ show: SHOW.id, night: NIGHT, source: trust.MANUAL_SOURCE, seenAt: new Date().toISOString() }), ...extra });
+
+test('BRO-7958: mergeShowRows takes a lane row down by URL (and only a lane row of this show)', () => {
+  const lane = laneDocRow();
+  assert.ok(trust.isLaneReview(lane, { openingDate: NIGHT }), 'fixture is a real lane row');
+  const pipeline = { showId: SHOW.id, url: URL1, criticName: 'B Critic', outletId: 'theatermania', assignedScore: 70 };
+  const other = { ...lane, showId: 'other-show', openingNightLane: { ...lane.openingNightLane, show: 'other-show' } };
+  const out = mergeShowRows({ reviews: [lane, pipeline, other] }, SHOW.id, [], { openingDate: NIGHT, takedown: [{ url: `${URL1}#frag` }] });
+  assert.equal(out.takedownRemoved.length, 1);
+  assert.deepEqual(out.doc.reviews, [pipeline, other], 'the pipeline row and the other show\'s row stay');
+});
+
+test('BRO-7958: publish: a removal-only batch merges, deploys, and waits for the URL to leave the live site; a failed poll is not "gone"', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7958-pub-'));
+  try {
+    let doc = { reviews: [laneDocRow()] }; let polls = 0; const deployed = [];
+    const ports = {
+      updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; return out; }, regenShow: async () => ({}),
+      deploy: async (a) => { deployed.push(a); },
+      fetchLiveShow: async () => { polls += 1; if (polls === 1) throw new Error('503'); return { rv: polls < 4 ? [{ u: URL1 }] : [] }; },
+    };
+    const res = await publishLaneReviews({ show: SHOW.id, night: NIGHT, rows: [], takedown: [{ url: URL1, key: 'k1', verifyAbsent: true }], ledgerDir: dir, ports, dryRun: true, pollMs: 1, timeoutMs: 2000, openingDate: NIGHT });
+    assert.deepEqual(res.gone, ['k1']); assert.equal(res.timedOut, false);
+    assert.ok(polls >= 4, `kept polling while the site still showed it (${polls})`);
+    assert.equal(doc.reviews.length, 0);
+    assert.equal(deployed.length, 1, 'a removal-only publish is a real publish');
+    assert.deepEqual(deployed[0].absentUrls, [URL1]);
+    // never gone live inside the timeout: stillLive, not gone
+    doc = { reviews: [laneDocRow()] };
+    const stuck = await publishLaneReviews({ show: SHOW.id, night: NIGHT, rows: [], takedown: [{ url: URL1, key: 'k2', verifyAbsent: true }], ledgerDir: dir, dryRun: true, pollMs: 1, timeoutMs: 30, openingDate: NIGHT,
+      ports: { ...ports, fetchLiveShow: async () => ({ rv: [{ u: URL1 }] }) } });
+    assert.deepEqual(stuck.stillLive, ['k2']); assert.deepEqual(stuck.gone, []); assert.equal(stuck.timedOut, true);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('BRO-7958: deploy port: an absent URL keeps the dispatch open until the live site stops showing it, then closes', async () => {
+  let t = 0; const sent = [];
+  const port = createDeployPort({ show: SHOW.id, dispatch: async () => { sent.push(t); return { ok: true }; }, now: () => t, log: () => {} });
+  port.deploy({ expectedUrls: [], absentUrls: [URL1] });
+  await port.idle();
+  assert.equal(sent.length, 1, 'a removal-only publish dispatches a deploy (before: "nothing landed")');
+  port.observe({ rv: [{ u: URL1 }] });
+  assert.equal(port.isOpen(), true, 'still live: the deploy has not shipped the removal');
+  port.observe({ rv: [] });
+  assert.equal(port.isOpen(), false, 'gone live: closed');
+});
+
+test('BRO-7958 review: a retry after the removal already merged still waits for the live site to drop the URL (never "not on the site")', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7958-retry-'));
+  try {
+    const doc = { reviews: [] }; // an earlier publish already removed the row, then threw before the site caught up
+    const ports = { updateReviews: async (fn) => fn(doc), regenShow: async () => ({}), deploy: async () => {}, fetchLiveShow: async () => ({ rv: [{ u: URL1 }] }) };
+    const res = await publishLaneReviews({ show: SHOW.id, night: NIGHT, rows: [], takedown: [{ url: URL1, key: 'k', verifyAbsent: true }], ledgerDir: dir, ports, dryRun: true, pollMs: 1, timeoutMs: 30, openingDate: NIGHT });
+    assert.deepEqual(res.gone, []); assert.deepEqual(res.stillLive, ['k']); assert.equal(res.timedOut, true);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('BRO-7958 review: a publishDate clear stays possible on the regular path; the lane refuses it', () => {
+  assert.equal(FIELD_VALUE_CHECKS.publishDate(null), null);
+  assert.match(inbox.laneValueError('publishDate', null), /cannot be cleared/);
+});

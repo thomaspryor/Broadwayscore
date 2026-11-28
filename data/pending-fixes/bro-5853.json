@@ -1,0 +1,168 @@
+{
+  "issueNumber": "bro-5853",
+  "planId": "2204d6ca-c382-48a4-ae6b-74397409349c",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5853: King of the Yees (Signature, Oct 2026) cast was scraped from profiletheatre.org (another company's production). 13 full reviews name Francis Jue, Kelly Marie Tran, Maureen Sebastian, David Shih and Jon Norman Schneider; none name the five on file. Also adds the director and designers credited in the reviews, corrects closingDate to Nov 15 (NYT, New York Theater, Culture Sauce, Talkin' Broadway, Signature), and deletes a duplicate TheaterMania file (same url and text as theatermania--dan-rubins.json).",
+    "steps": [
+      "Replace cast with the five actors credited in the reviews.",
+      "Add director and design credits named in the reviews.",
+      "closingDate 2026-11-22 -> 2026-11-15.",
+      "Delete duplicate theatermania--unknown.json."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-of-the-yees-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Sandra Lee",
+            "role": "Lauren Yee"
+          },
+          {
+            "name": "Rob Narita",
+            "role": "Larry Yee"
+          },
+          {
+            "name": "Nick Ong",
+            "role": "Actor 1"
+          },
+          {
+            "name": "Madeleine Tran",
+            "role": "Actor 2"
+          },
+          {
+            "name": "Heath Hyun Houghton",
+            "role": "Actor 3"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Francis Jue",
+            "role": "Larry Yee"
+          },
+          {
+            "name": "Kelly Marie Tran",
+            "role": "Lauren Yee"
+          },
+          {
+            "name": "Maureen Sebastian",
+            "role": "Maureen"
+          },
+          {
+            "name": "David Shih",
+            "role": "Dave"
+          },
+          {
+            "name": "Jon Norman Schneider",
+            "role": "Danny Ma"
+          }
+        ],
+        "description": "BRO-5853: cast from the reviews; the list on file came from another company's production"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-of-the-yees-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Lauren Yee",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Lauren Yee",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Joshua Kahan Brody",
+            "role": "Director",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Krit Robinson",
+            "role": "Scenic Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Michelle J. Li",
+            "role": "Costume Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Jiyoun Chang",
+            "role": "Lighting Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Fan Zhang",
+            "role": "Sound Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Steve Cuiffo",
+            "role": "Illusions Design",
+            "_source": "BRO-5853-reviews"
+          },
+          {
+            "name": "Tommy Kurzman",
+            "role": "Wig, Hair & Makeup Design",
+            "_source": "BRO-5853-reviews"
+          }
+        ],
+        "description": "BRO-5853: director and designers credited in the reviews (NYT, Vulture, New York Theater)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-of-the-yees-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": "2026-11-22",
+        "newValue": "2026-11-15",
+        "description": "BRO-5853: NYT, New York Theater, Culture Sauce, Talkin' Broadway all say through Nov. 15"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "king-of-the-yees-off-broadway-2026/theatermania--unknown.json",
+        "destinationPath": null,
+        "description": "BRO-5853: duplicate of theatermania--dan-rubins.json (same url, identical text)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T18:14:43.784Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for king-of-the-yees-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for king-of-the-yees-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for king-of-the-yees-off-broadway-2026"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted king-of-the-yees-off-broadway-2026/theatermania--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7647",
+  "planId": "a4db65bb-13e9-42ac-9e1a-bb61fbf93c9e",
+  "status": "applied",
+  "createdAt": "2026-11-17T06:40:29.766Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Fantasticks: set Slant pull quote to the verdict sentence (duplicateOf already set by fix-unflagged-same-url-clusters; refreshed oldValue after data moved)",
+    "steps": [
+      "the-fantasticks-2026/slantmagazine--dan-rubins.json: llmPullQuote"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-fantasticks-2026/slantmagazine--dan-rubins.json",
+        "field": "llmPullQuote",
+        "oldValue": "After 66 years of The Fantasticks, Lewis and Matt’s very gay love story feels strangely necessary to the show’s continued legacy.",
+        "newValue": "But this Fantasticks remains unshowy: Music director Rick Hip-Flores notably coaxes his cast to under-sing Harvey Schmidt’s warm-hug melodies, wisely prioritizing characterization over sound in every measure.",
+        "description": "the-fantasticks-2026/slantmagazine--dan-rubins.json: llmPullQuote"
+      }
+    ]
+  },
+  "executedAt": "2026-11-17T08:51:08.941Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fantasticks-2026/slantmagazine--dan-rubins.json llmPullQuote: \"After 66 years of The Fantasticks, Lewis and Matt’s very gay love story feels strangely necessary to the show’s continued legacy.\" -> \"But this Fantasticks remains unshowy: Music director Rick Hip-Flores notably coaxes his cast to under-sing Harvey Schmidt’s warm-hug melodies, wisely prioritizing characterization over sound in every measure.\""
+    }
+  ],
+  "executedIn": "ci"
+}

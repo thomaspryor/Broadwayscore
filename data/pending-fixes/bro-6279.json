@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-6279",
+  "planId": "6279a1b2-0c4d-4e5f-9a6b-7c8d9e0f1a2b",
+  "status": "applied",
+  "createdAt": "2026-10-26T18:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6279: checked the 7 Broadway shows stored as closing 2020-03-10..11 against IBDB. All 7 closing dates agree with IBDB, so no date changes. One stored ibdbUrl is wrong: whos-afraid-of-virginia-woolf-2020 pointed at the 1964 production (closing May 16, 1964); the 2020 Booth Theatre production is IBDB 524177 (closing Mar 11, 2020).",
+    "steps": [
+      "shows.json: whos-afraid-of-virginia-woolf-2020.ibdbUrl"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "field": "ibdbUrl",
+        "oldValue": "https://www.ibdb.com/broadway-production/whos-afraid-of-virginia-woolf-2919",
+        "newValue": "https://www.ibdb.com/broadway-production/whos-afraid-of-virginia-woolf-524177",
+        "description": "IBDB https://www.ibdb.com/broadway-production/whos-afraid-of-virginia-woolf-524177 is the 2020 Booth Theatre production (previews Mar 3, closing Mar 11, 2020, never officially opened); the old URL is the 1964 production. Stored closingDate 2020-03-11 matches IBDB, unchanged.",
+        "showId": "whos-afraid-of-virginia-woolf-2020"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T19:24:00.416Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: ibdbUrl updated for whos-afraid-of-virginia-woolf-2020"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,94 @@
+#!/usr/bin/env node
+/**
+ * Generate public/data/stats-reviews.json — compact per-show scored reviews
+ * for the Show Stats "Aisle Mates" / "Your Paper of Record" modules
+ * (design-ios-show-stats.md §5.1, §8.3). Per-critic and per-outlet alignment
+ * against the user's diary is computed on-device/client-side; ratings never
+ * leave the phone.
+ *
+ * Source: public/data/shows/{id}.json `rv` arrays — the SAME per-review data
+ * the live site already renders publicly (critic name, outlet, score, tier),
+ * so this artifact is parity-by-definition with show pages and adds no new
+ * exposure. It must run AFTER generate-mobile-show-details.js (it does, via
+ * scripts/generate-mobile-artifacts.sh).
+ *
+ * Format (interned string tables to keep the payload ~100KB gzipped):
+ *   {
+ *     _v: 1,
+ *     critics: ["Ben Brantley", ...],          // index = criticIdx
+ *     outlets: [["The New York Times", 1], …], // [name, tier]; index = outletIdx
+ *     shows: { "hamilton-2015": [[criticIdx, outletIdx, score], ...] }
+ *   }
+ * criticIdx is -1 for reviews with no byline (excluded from per-critic
+ * alignment, still counted for outlet-level Paper of Record).
+ *
+ * Run: node scripts/generate-stats-reviews.js
+ */
+
+const fs = require('fs');
+const path = require('path');
+const zlib = require('zlib');
+
+const detailDir = path.join(__dirname, '../public/data/shows');
+const outputPath = path.join(__dirname, '../public/data/stats-reviews.json');
+
+const SCHEMA_VERSION = 1;
+const MIN_EXPECTED_REVIEWS = 12000; // corpus is ~19k scored reviews; guard against a broken/partial detail dir
+
+function main() {
+  // Detail files only — public/data/shows/ also holds *.social.json sidecars
+  const files = fs.readdirSync(detailDir).filter((f) => /^[^.]+\.json$/.test(f));
+  if (files.length < 1000) throw new Error(`only ${files.length} show detail files — detail dir looks incomplete`);
+
+  const critics = [];
+  const criticIdx = new Map();
+  const outlets = [];
+  const outletIdx = new Map();
+  const showsOut = {};
+  let total = 0;
+
+  const internCritic = (name) => {
+    if (!name || name === 'Unknown') return -1;
+    if (!criticIdx.has(name)) {
+      criticIdx.set(name, critics.length);
+      critics.push(name);
+    }
+    return criticIdx.get(name);
+  };
+  const internOutlet = (name, tier) => {
+    const key = `${name}\0${tier}`;
+    if (!outletIdx.has(key)) {
+      outletIdx.set(key, outlets.length);
+      outlets.push([name, tier]);
+    }
+    return outletIdx.get(key);
+  };
+
+  for (const file of files.sort()) {
+    const detail = JSON.parse(fs.readFileSync(path.join(detailDir, file), 'utf-8'));
+    if (!detail.id) throw new Error(`${file} has no id — not a show detail file`);
+    if (!Array.isArray(detail.rv) || detail.rv.length === 0) continue;
+    const rows = [];
+    for (const r of detail.rv) {
+      if (typeof r.s !== 'number' || !r.o) continue;
+      rows.push([internCritic(r.cn), internOutlet(r.o, r.t ?? 3), r.s]);
+    }
+    if (rows.length > 0) {
+      showsOut[detail.id] = rows;
+      total += rows.length;
+    }
+  }
+
+  if (total < MIN_EXPECTED_REVIEWS) {
+    throw new Error(`only ${total} scored reviews collected (expected ≥${MIN_EXPECTED_REVIEWS}) — upstream detail files look wrong`);
+  }
+
+  const out = { _v: SCHEMA_VERSION, critics, outlets, shows: showsOut };
+  const json = JSON.stringify(out);
+  fs.writeFileSync(outputPath, json + '\n');
+  const rawKb = (json.length / 1024).toFixed(0);
+  const gzKb = (zlib.gzipSync(json).length / 1024).toFixed(0);
+  console.log(`✓ stats-reviews.json: ${total} reviews across ${Object.keys(showsOut).length} shows, ${critics.length} critics, ${outlets.length} outlets (${rawKb} KB raw / ${gzKb} KB gz)`);
+}
+
+main();

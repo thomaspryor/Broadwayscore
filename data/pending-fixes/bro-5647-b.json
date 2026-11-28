@@ -1,0 +1,64 @@
+{
+  "issueNumber": "bro-5647-b",
+  "planId": "0e82a55c-a23a-4193-af42-736ea801b634",
+  "status": "applied",
+  "createdAt": "2026-10-18T22:57:20.119Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5647: checked the owner's ChatGPT and Gemini Deep Research claims against their cited pages (scripts/verify-deep-research-claims.js, then by hand). One correction: CATS: The Jellicle Ball's capitalization was a $16M estimate; The Hollywood Reporter (Jul 13, 2026) reports it was capitalized for up to $18M according to securities filings, matching the record's own note of a Form D range of $15M-$18M. Not changed: Here There Are Blueberries ($7M Form D maximum) and Real Women Have Curves (Flop, $16.5M) already match their sources. Rejected: CATS 'did not recoup' from Variety (the sentence is about Sunset Blvd.); Stranger Things $1M weekly from a NY Post opinion column (an unnamed-insider floor; the record already holds $1M); Leap of Faith $14M (the record's $14.65M is the more precise filing figure).",
+    "steps": [
+      "Three data-edit actions on cats-the-jellicle-ball: capitalization, its source, and the notes sentence that called it an estimate."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "capitalization",
+        "oldValue": 16000000,
+        "newValue": 18000000,
+        "description": "cats-the-jellicle-ball: the $16M estimate becomes the $18M reported by The Hollywood Reporter (securities filings)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "capitalizationSource",
+        "oldValue": "Estimate (industry sources; other reports say up to $18 million). The producers have not disclosed it.",
+        "newValue": "The Hollywood Reporter (Jul 13, 2026): \"The musical was capitalized for up to $18 million, according to securities filings, and has not announced recoupment.\" This is the Form D maximum. https://www.hollywoodreporter.com/lifestyle/arts/cats-the-jellicle-ball-broadway-closing-date-1236643213/",
+        "description": "cats-the-jellicle-ball: the quote behind the figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "notes",
+        "oldValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalization not disclosed; estimated at $16M to $18M.",
+        "newValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalized for up to $18M according to securities filings (The Hollywood Reporter, Jul 13, 2026).",
+        "description": "cats-the-jellicle-ball: the notes no longer call the capitalization an estimate."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T00:42:27.661Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cats-the-jellicle-ball"
+    }
+  ]
+}

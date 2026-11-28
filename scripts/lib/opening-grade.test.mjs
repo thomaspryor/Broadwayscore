@@ -1,0 +1,290 @@
+// BRO-7147: an opening whose review window closed with aggregator-cited reviews
+// still missing must not grade "on-its-own", and "known" must not be the census
+// candidate count (which includes other productions).
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const og = require('./opening-grade.js');
+// The real inclusion rule loads data/shows.json for its multi-production guards; seed
+// them empty so this blocking test never reads live core data (live-data-lane).
+require('./review-guards.js').setMultiProdGuardShows([]);
+
+const show = { id: 'medea-off-broadway-2026', title: 'Medea', category: 'off-broadway', openingDate: '2026-10-20' };
+const files = Array.from({ length: 6 }, (_, i) => ({ _file: `${show.id}/r${i}.json`, firstSeenAt: '2026-10-21T03:00:00Z', fullText: 'A sharp, funny and moving night at the theater. '.repeat(20) }));
+const embargo = og.estimateEmbargoMs(show.openingDate, show.category);
+const closed = embargo + (og.AFTER_H + 24) * 3600000;
+const open = embargo + 24 * 3600000;
+const gapResult = { showId: show.id, censusVerdict: { candidateCount: 11 }, computedAt: new Date(closed - 3600000).toISOString() };
+
+test('closed window with cited reviews still missing grades incomplete, not on-its-own', () => {
+  const g = og.gradeOpening({ show, files, gapResult, missingCited: 2, nowMs: closed });
+  assert.equal(g.verdict, 'incomplete');
+  assert.equal(g.known, 8);
+  assert.equal(g.missing, 2);
+  assert.match(og.gradeLine(g), /6 reviews live of 8 cited, opening week ended with 2 cited reviews still missing/);
+  const s = og.summarize([g])['off-broadway'];
+  assert.equal(s.onItsOwn, 0);
+  assert.equal(s.incomplete, 1);
+  assert.match(og.tallyLine(og.summarize([g]), 14), /Off-Broadway 0 of 1/);
+});
+
+test('census candidates (other productions) never inflate known', () => {
+  const g = og.gradeOpening({ show, files, gapResult, missingCited: 0, nowMs: closed });
+  assert.equal(g.verdict, 'on-its-own');
+  assert.equal(g.known, 6);
+  assert.equal(g.censusCandidates, 11);
+  assert.doesNotMatch(og.gradeLine(g), /cited/);
+});
+
+test('open window with missing reviews still reads on-its-own so far', () => {
+  const g = og.gradeOpening({ show, files, gapResult, missingCited: 3, nowMs: open });
+  assert.equal(g.verdict, 'on-its-own');
+  assert.match(og.gradeLine(g), /6 reviews live of 9 cited, ran on its own so far/);
+});
+
+test('no audit row leaves known unknown', () => {
+  const g = og.gradeOpening({ show, files, gapResult: null, missingCited: null, nowMs: closed });
+  assert.equal(g.known, null);
+  assert.equal(g.verdict, 'coverage-unknown'); // BRO-7161 F18: unknown is not "nothing missing"
+});
+
+test('digest block colours an incomplete opening and older summaries without the field still tally', () => {
+  const g = og.gradeOpening({ show, files, gapResult, missingCited: 1, nowMs: closed });
+  const html = og.renderOpeningGradesBlock({ from: '2026-10-15', to: '2026-10-29', grades: [g] }, { nowMs: Date.parse('2026-10-25T00:00:00Z') });
+  assert.match(html, /#b91c1c/);
+  const legacy = { 'off-broadway': { openings: 1, onItsOwn: 1, neededHands: 0, noReviews: 0, notGradable: 0 } };
+  assert.match(og.tallyLine(legacy, 14), /Off-Broadway 1 of 1/);
+});
+
+test('hand fixes outrank incomplete; a closed window with none live but cited ones out is incomplete', () => {
+  const hand = og.gradeOpening({ show, files: [{ ...files[0], ingestOrigin: 'manual', firstSeenAt: new Date(embargo + 3600000).toISOString() }, ...files.slice(1)],
+    gapResult, missingCited: 2, nowMs: closed });
+  assert.equal(hand.verdict, 'needed-hands');
+  const none = og.gradeOpening({ show, files: [], gapResult, missingCited: 2, nowMs: closed });
+  assert.equal(none.verdict, 'incomplete');
+  assert.match(og.gradeLine(none), /0 reviews live of 2 cited, opening week ended with 2 cited reviews still missing/);
+  const stillOpen = og.gradeOpening({ show, files: [], gapResult, missingCited: 2, nowMs: embargo + 3600000 });
+  assert.equal(stillOpen.verdict, 'no-reviews');
+  assert.match(og.gradeLine(stillOpen), /cited reviews are out but none are on the site yet/);
+});
+
+test('no gap audit row means missing and known are unknown, not zero', () => {
+  const g = og.gradeOpening({ show, files, gapResult: null, missingCited: null, nowMs: closed });
+  assert.equal(g.missing, null);
+  assert.equal(g.known, null);
+  assert.equal(g.verdict, 'coverage-unknown'); // BRO-7161 F18: unknown is not "nothing missing"
+});
+
+// ---- BRO-7161 class guards (F17-F20) ----
+const BODY = 'A sharp, funny and moving night at the theater. '.repeat(20);
+const iso = (ms) => new Date(ms).toISOString();
+const good = (i, extra = {}) => ({ _file: `${show.id}/g${i}.json`, firstSeenAt: iso(embargo + 3600000), fullText: BODY, ...extra });
+
+test('F17: live counts only rebuild-includable files (stubs, non-reviews, placeholders are not live)', () => {
+  const junk = [
+    { _file: `${show.id}/s1.json`, firstSeenAt: iso(embargo + 3600000) }, // no body, no score
+    { _file: `${show.id}/s2.json`, firstSeenAt: iso(embargo + 3600000), fullText: BODY, isNonReview: true },
+    { _file: `${show.id}/s3.json`, firstSeenAt: iso(embargo + 3600000), fullText: BODY, isPreviewPlaceholder: true },
+  ];
+  const g = og.gradeOpening({ show, files: [good(1), ...junk], gapResult, missingCited: 0, nowMs: closed });
+  assert.equal(g.live, 1, 'only the real review is live');
+  const none = og.gradeOpening({ show, files: junk, gapResult, missingCited: 0, nowMs: closed });
+  assert.equal(none.verdict, 'no-reviews', 'three bodiless/non-review files must not read as on-its-own');
+  assert.equal(og.isLiveFile(good(2), show), true);
+});
+
+test('F18: no audit row, or a stale one, never grades on-its-own; closed empty weeks stay visible', () => {
+  assert.equal(og.gradeOpening({ show, files: [good(1)], gapResult: null, missingCited: null, nowMs: closed }).verdict, 'coverage-unknown');
+  const stale = { ...gapResult, computedAt: iso(closed - (og.STALE_AUDIT_H + 1) * 3600000) };
+  const g = og.gradeOpening({ show, files: [good(1)], gapResult: stale, missingCited: 0, nowMs: closed });
+  assert.equal(g.verdict, 'coverage-unknown');
+  assert.equal(og.gradeOpening({ show, files: [good(1)], gapResult: { ...gapResult, computedAt: undefined }, missingCited: 0, nowMs: closed }).verdict, 'coverage-unknown', 'row without a timestamp cannot vouch');
+  assert.equal(og.gradeOpening({ show, files: [], gapResult: null, missingCited: null, nowMs: closed }).verdict, 'no-reviews', 'closed empty week with no audit row stays visible');
+  const empty = og.gradeOpening({ show, files: [], gapResult, missingCited: 0, nowMs: closed });
+  assert.equal(empty.verdict, 'no-reviews');
+  const sum = og.summarize([empty, g]);
+  assert.equal(sum['off-broadway'].noReviewsClosed, 1);
+  assert.equal(sum['off-broadway'].coverageUnknown, 1);
+  assert.match(og.tallyLine(sum, 14), /Not counted: 1 ended opening week with no reviews found; 1 not graded clean/);
+  const html = og.renderOpeningGradesBlock({ from: '2026-10-15', to: '2026-10-29', grades: [{ ...empty, openingDate: '2026-10-25' }] }, { nowMs: Date.parse('2026-10-26T00:00:00Z') });
+  assert.match(html, /no reviews were found/);
+});
+
+test('F19: a person fixing four shows in one commit is hand work; a named maintenance sweep or a 13-show commit is not', () => {
+  const mk = (subject, n) => ({ sha: 'eeeeeeee55', at: iso(embargo + 2 * 86400000), author: 'Tom Pryor', email: 'x@example.com', subject,
+    files: [`${show.id}/a--b.json`, ...Array.from({ length: n - 1 }, (_, i) => `other-${i}/a--b.json`)] });
+  const run = (c) => og.gradeOpening({ show, files: [good(1)], commits: [c], gapResult, missingCited: 0, nowMs: closed });
+  assert.equal(run(mk('add missed reviews for four shows', 4)).verdict, 'needed-hands');
+  assert.equal(run(mk('BRO-6745 reverify', 4)).verdict, 'on-its-own');
+  for (const subj of ['fix: refresh reviews for hamlet, cats, x, y', 'Fix Hamlet, Cats, Evita, Annie reviews: stamp dates', 'Restore 4 shows reviews after migration bug', 'cleanup']) {
+    assert.equal(run(mk(subj, 4)).verdict, 'needed-hands', subj);
+  }
+  assert.equal(run(mk('add missed reviews', og.SWEEP_CEILING + 1)).verdict, 'on-its-own');
+});
+
+test('F20: files first seen after opening week are late rescues, not part of the week; they cannot erase a gap', () => {
+  const lateAt = iso(embargo + (og.AFTER_H + 48) * 3600000);
+  const files2 = [good(1), good(2, { firstSeenAt: lateAt }), good(3, { firstSeenAt: lateAt })];
+  const g = og.gradeOpening({ show, files: files2, gapResult, missingCited: 2, nowMs: closed + 5 * 86400000 });
+  assert.equal(g.live, 3);
+  assert.equal(g.openingWeekLive, 1);
+  assert.equal(g.lateLive, 2);
+  assert.equal(g.known, 3, 'late rescues are already included in the opening-week missing count');
+  assert.equal(g.verdict, 'incomplete', 'the week ended with cited reviews missing, whatever was rescued later');
+  assert.match(og.gradeLine(g), /including 2 added after opening week/);
+  assert.doesNotMatch(og.gradeLine(g), /of 5 cited/, 'the owner line must not double-count late rescues');
+  // Audit re-run after the rescue shows nothing missing: still not on-its-own.
+  const rerun = og.gradeOpening({ show, files: files2, gapResult, missingCited: 0, nowMs: closed + 5 * 86400000 });
+  assert.equal(rerun.verdict, 'incomplete');
+  assert.match(og.gradeLine(rerun), /ended before 2 reviews were found/);
+});
+
+test('BRO-7471: a sweep-added file that is not a live review (show-listing page, wrong production) is no first-pass miss', () => {
+  const sweep = (outlet) => ({ sha: 'abcdef1234', at: iso(embargo + 20 * 3600000), author: 'github-actions[bot]', email: 'github-actions[bot]@users.noreply.github.com',
+    subject: 'ingest: audit-aggregator-gap auto-ingested review-texts', files: [`${show.id}/${outlet}--x.json`], added: [`${show.id}/${outlet}--x.json`] });
+  const run = (fs, outlet) => og.gradeOpening({ show, files: fs, commits: [sweep(outlet)], gapResult, missingCited: 0, nowMs: closed });
+  // whatsonstage /shows/ listing page (julius-caesar-globe-off-west-end-2026): present, but never includable.
+  const listing = { _file: `${show.id}/whatsonstage--x.json`, outletId: 'whatsonstage', firstSeenAt: '2026-10-21T03:00:00Z', url: 'https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/julius-caesar-remixed_1735359/', contentTier: 'invalid', wrongProduction: true, fullText: '' };
+  assert.equal((run([good(1), listing], 'whatsonstage').sweepFinds || []).length, 0);
+  // a real live review added by the sweep is still a miss
+  const real = { ...good(2), _file: `${show.id}/whatsonstage--x.json`, outletId: 'whatsonstage' };
+  assert.equal((run([good(1), real], 'whatsonstage').sweepFinds || []).length, 1);
+});
+
+test('BRO-7471 review: judge the added file itself (live sibling does not rescue it) and filename outlet wins over stored outletId', () => {
+  const mk = (name) => ({ sha: 'abcdef9999', at: iso(embargo + 20 * 3600000), author: 'github-actions[bot]', email: 'github-actions[bot]@users.noreply.github.com',
+    subject: 'ingest: audit-aggregator-gap auto-ingested review-texts', files: [`${show.id}/${name}`], added: [`${show.id}/${name}`] });
+  const run = (fs, c) => og.gradeOpening({ show, files: fs, commits: [c], gapResult, missingCited: 0, nowMs: closed });
+  const sibling = { ...good(2), _file: `${show.id}/whatsonstage--a.json`, outletId: 'whatsonstage' };
+  const listing = { _file: `${show.id}/whatsonstage--b.json`, outletId: 'whatsonstage', firstSeenAt: '2026-10-21T03:00:00Z', contentTier: 'invalid', wrongProduction: true, fullText: '' };
+  assert.equal((run([good(1), sibling, listing], mk('whatsonstage--b.json')).sweepFinds || []).length, 0);
+  const renamed = { ...good(3), _file: `${show.id}/timeout--x.json`, outletId: 'timeout-london' };
+  assert.equal((run([good(1), renamed], mk('timeout--x.json')).sweepFinds || []).length, 1);
+});
+
+test('BRO-7145: scheduled gap-recovery driver checkpoints are automation, not hand-commits; a person fixing the same file still counts', () => {
+  const mk = (subject) => ({ sha: 'dddd111122', at: iso(embargo + 30 * 3600000), author: 'Tom Pryor', email: 'owner@example.com', subject, files: [`${show.id}/guardian--x.json`], added: [] });
+  const run = (c) => og.gradeOpening({ show, files, commits: [c], gapResult, missingCited: 0, nowMs: closed });
+  assert.notEqual(run(mk('feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)')).verdict, 'needed-hands');
+  assert.notEqual(run(mk('feat: gap-recovery driver final - 4 accepted (BRO-7171 Stage 2)')).verdict, 'needed-hands');
+  assert.equal(run(mk('BRO-7041: re-credit Guardian review to the page byline')).verdict, 'needed-hands');
+});
+
+test('BRO-7145 parity: the grader recognises the exact subject gap-recovery-driver.js writes', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8');
+  const m = src.match(/message: `([^`]*gap-recovery driver[^`]*)`/);
+  assert.ok(m, 'driver checkpoint message not found; update AUTOMATED_RECOVERY_SUBJECT');
+  const labels = ['checkpoint 3', 'final', ...[...src.matchAll(/flush\('([a-z-]+)'\)/g)].map((x) => x[1])];
+  assert.ok(labels.includes('adopt-orphans') && labels.includes('after-error'), 'driver flush labels changed');
+  for (const label of labels) {
+    const subject = m[1].replace(/\$\{label\}/, label).replace(/\$\{accepted\}/, '3');
+    assert.ok(og.isAutomatedRecoveryCommit({ subject }), subject);
+  }
+});
+
+test('BRO-7145: subject families that used to fall into "other" get a cause class', () => {
+  const cases = {
+    'gather-reviews: 9 review-text files + 3 pending stubs for safe-house-of': 'discovery-gap',
+    'data: Into the Woods West End review fixes (BRO-4875)': 'wrong-label',
+    'Manual clear of 3 hand-verified false flags on 2026-09-27': 'wrong-label',
+    'fix: adjudicate 2 Data Validation blockers (BRO-3092)': 'wrong-label',
+    'fix(BRO-5484): move WEBF Jane Eyre review to Rose Kingston production': 'wrong-label',
+    'data: School Girls 2026 - blocklist the New Yorker Goings On listing': 'content-tier',
+    'fix(jane-eyre): delete LBO stars-80 empty placeholder': 'content-tier',
+    'data: restore NYSR America Who Hurt You review (3/5) wrongly rejected': 'text-gap',
+    'data: Catarina - fill The Reviews Hub review body (3749 chars)': 'text-gap',
+    'data: School Girls 2026 - name the Chicago Tribune stub after its critic': 'content-tier',
+    'reclean-truncated --apply: 3 complete reviews mislabelled truncated': 'content-tier',
+    'fix: stubborn enlisting of mirrors': 'other',
+    'chore: unrelated tidy': 'other',
+  };
+  for (const [subject, cause] of Object.entries(cases)) assert.equal(og.causeOfSubject(subject), cause, subject);
+});
+
+test('BRO-7145: hand deletions and approved-fix ingests get a cause class, not "other"', () => {
+  const del = (source) => og.causeOfSignal({ kind: 'hand-commit', source, fileChange: 'deleted' });
+  assert.equal(del('1ad5333b BRO-5823: delete Time Out mirror ingested as outlet harunaenterprisesltd'), 'content-tier');
+  assert.equal(del('f2d868d6 on-monitor: drop same-URL duplicate nyt-theater--jonathan.json'), 'duplicate-identity');
+  assert.equal(del('1bdad414 on-monitor: drop Vulture slam-frank stub superseded by full-text vulture--jackson'), 'duplicate-identity');
+  assert.equal(del('773ff6ed fix(reviews): remove Air Mail event-listing page mis-ingested as PEC review'), 'content-tier');
+  assert.equal(del('on-monitor: ingest cleanup, drop old file'), 'other'); // unlabelled: say so, do not guess
+  assert.ok(!['discovery-gap', 'text-gap'].includes(del('x'))); // a deletion is never a first-pass miss
+  assert.equal(del('on-monitor: drop cross-outlet duplicate'), 'attribution');
+  assert.equal(og.causeOfSubject('drop cross-outlet duplicate'), 'attribution');
+  assert.equal(og.causeOfSubject('14b07e94 BRO-4695: triage 5 more cross-outlet suspects'), 'attribution');
+  assert.equal(og.causeOfSubject('4a77e3b5 revert: cloud-9 times-uk was an interview, not a review (BRO-7569 non_review_url gate)'), 'content-tier');
+  assert.equal(og.causeOfFields(['ingest:execute-approved-fix']), 'discovery-gap');
+  // mixed-intent subjects: the specific family wins over ingest/refetch words
+  assert.equal(og.causeOfSubject('refetch cross-outlet review'), 'attribution');
+  assert.equal(og.causeOfSubject('revert ingested interview, not a review'), 'content-tier');
+  assert.equal(og.causeOfSubject('drop same-URL copy'), 'duplicate-identity');
+  // a hand step's cause is for the grade line; it never feeds the first-pass recurrence classes
+  const g = { showId: 's', category: 'off-broadway', signals: [{ kind: 'hand-step', outletId: 'x', cause: 'discovery-gap', at: '2026-11-01T00:00:00Z' }] };
+  assert.equal(og.firstPassMisses([g]).length, 0);
+  assert.equal(og.causeOfFields(['approvedFix:publishDate', 'ingest:execute-approved-fix']), 'date-guard');
+});
+
+test('BRO-7145 review: driver commits stay first-pass-miss evidence (text-gap / discovery-gap) without making the opening needed-hands', () => {
+  const mk = (added) => ({ sha: 'eeee222233', at: iso(embargo + 30 * 3600000), author: 'Tom Pryor', email: 'owner@example.com', subject: 'feat: gap-recovery driver checkpoint 2 - 2 accepted (BRO-7171 Stage 2)', files: [`${show.id}/guardian--x.json`], added: added ? [`${show.id}/guardian--x.json`] : [] });
+  const run = (c) => og.gradeOpening({ show, files, commits: [c], gapResult, missingCited: 0, nowMs: closed });
+  const mod = run(mk(false));
+  assert.notEqual(mod.verdict, 'needed-hands');
+  assert.deepEqual(og.firstPassMisses([{ ...mod, category: show.category }]).map((r) => [r.outletId, r.cause]), [['guardian', 'text-gap']]);
+  assert.deepEqual(og.firstPassMisses([{ ...run(mk(true)), category: show.category }]).map((r) => [r.outletId, r.cause]), [['guardian', 'discovery-gap']]);
+});
+
+test('BRO-7145: a hand ingest that only re-adds an outlet already live (false alarm) is not hands; real finds still are', () => {
+  // Desire Under the Elms 2026-11-19: Guardian live from the listing poller (text fetched) the day
+  // before; a probe-driven ingest-urls dispatch added a stub that was later deleted.
+  const T = embargo + 40 * 3600000;
+  const ingest = (names, extraFiles = []) => ({ sha: 'ffff333344', at: iso(T), author: 'github-actions[bot]', email: 'github-actions[bot]@users.noreply.github.com',
+    subject: `ingest-urls: 1 review(s) for ${show.id}`, files: [...names, ...extraFiles].map((n) => `${show.id}/${n}`), added: names.map((n) => `${show.id}/${n}`) });
+  const run = (fs, c) => og.gradeOpening({ show, files: fs, commits: [c], gapResult, missingCited: 0, nowMs: closed });
+  const live = { ...good(1), _file: `${show.id}/guardian--arifa-akbar.json`, outletId: 'guardian', ingestOrigin: 'automated', source: 'outlet-listing-poller',
+    firstSeenAt: iso(T - 21 * 3600000), textFetchedAt: iso(T - 20 * 3600000) };
+  const stubAdd = ingest(['guardian--unknown.json']);
+  // added file since deleted: redundant
+  const gone = run([...files, live], stubAdd);
+  assert.notEqual(gone.verdict, 'needed-hands');
+  assert.equal(gone.redundantHands.length, 1);
+  assert.equal(gone.redundantHands[0].cause, 'false-alarm');
+  assert.match(og.gradeLine(gone), /ran on its own\. A person also re-added guardian, already live, not counted\./);
+  // added file kept as a duplicate OF the live review: redundant; duplicate of something else: hands
+  const dup = (target) => ({ ...good(2), _file: `${show.id}/guardian--unknown.json`, outletId: 'guardian', duplicateOf: target, firstSeenAt: iso(T) });
+  assert.notEqual(run([...files, live, dup('guardian--arifa-akbar.json')], stubAdd).verdict, 'needed-hands');
+  assert.equal(run([...files, live, dup('guardian--someone-else.json')], stubAdd).verdict, 'needed-hands');
+  // a hand-created duplicate of the live review is also redundant
+  assert.notEqual(run([...files, live, { ...dup('guardian--arifa-akbar.json'), ingestOrigin: 'manual' }], stubAdd).verdict, 'needed-hands');
+  // the ingest added a live second critic: real hands
+  const second = { ...good(3), _file: `${show.id}/guardian--other.json`, outletId: 'guardian', firstSeenAt: iso(T) };
+  assert.equal(run([...files, live, second], ingest(['guardian--other.json'])).verdict, 'needed-hands');
+  // ...even after that second critic is renamed (added path gone, renamed file first seen at the commit)
+  const renamed = { ...second, _file: `${show.id}/guardian--jane-doe.json` };
+  assert.equal(run([...files, live, renamed], stubAdd).verdict, 'needed-hands');
+  // a commit that also modified the live file carries a repair: hands
+  assert.equal(run([...files, live], ingest(['guardian--unknown.json'], ['guardian--arifa-akbar.json'])).verdict, 'needed-hands');
+  // earlier file only a stub at ingest time (text fetched after): hands
+  assert.equal(run([...files, { ...live, textFetchedAt: iso(T + 3600000) }], stubAdd).verdict, 'needed-hands');
+  // earlier file not the pipeline's own: hands
+  assert.equal(run([...files, { ...live, ingestOrigin: 'manual' }], stubAdd).verdict, 'needed-hands');
+  // margin edge: text fetched 1.9h before is too close, 2.1h is enough
+  assert.equal(run([...files, { ...live, firstSeenAt: iso(T - 1.9 * 3600000), textFetchedAt: iso(T - 1.9 * 3600000) }], stubAdd).verdict, 'needed-hands');
+  assert.notEqual(run([...files, { ...live, firstSeenAt: iso(T - 2.1 * 3600000), textFetchedAt: iso(T - 2.1 * 3600000) }], stubAdd).verdict, 'needed-hands');
+  // earlier file not live (wrong production): hands
+  assert.equal(run([...files, { ...live, wrongProduction: true }], stubAdd).verdict, 'needed-hands');
+  // no earlier file for the outlet: hands
+  assert.equal(run(files, stubAdd).verdict, 'needed-hands');
+});
+
+test('BRO-7145 review: the ingest run\'s own file (first seen minutes before its commit, then renamed) is not an earlier live review', () => {
+  const ingest = { sha: 'ffff555566', at: iso(embargo + 40 * 3600000), author: 'github-actions[bot]', email: 'github-actions[bot]@users.noreply.github.com',
+    subject: `ingest-urls: 1 review(s) for ${show.id}`, files: [`${show.id}/whatsonstage--unknown.json`], added: [`${show.id}/whatsonstage--unknown.json`] };
+  const run = (fs) => og.gradeOpening({ show, files: fs, commits: [ingest], gapResult, missingCited: 0, nowMs: closed });
+  const renamed = { ...good(4), _file: `${show.id}/whatsonstage--sarah-crompton.json`, outletId: 'whatsonstage', firstSeenAt: iso(embargo + 40 * 3600000 - 46000) };
+  assert.equal(run([...files, renamed]).verdict, 'needed-hands');
+  const handMade = { ...renamed, firstSeenAt: iso(embargo + 20 * 3600000), source: 'ingest-urls' };
+  assert.equal(run([...files, handMade]).verdict, 'needed-hands');
+});

@@ -1,0 +1,398 @@
+{
+  "issueNumber": "bro-5815-a",
+  "planId": "75316f7b-fa9f-4897-bc06-d1e19b32b3ab",
+  "status": "applied",
+  "createdAt": "2026-10-21T04:23:25.859Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5815: tag capitalizationBasis on 25 records whose capitalizationSource names a publication but quotes nothing (part 1 of 4). \"reported\" = the figure is press-reported with no stated raise/ceiling nature; \"sold\" = source wording says it was raised. Neither prints \"up to\", so no displayed figure changes. Records whose only source is an SEC filing without stated wording stay untagged until the Form D is read.",
+    "steps": [
+      "Set capitalizationBasis on 25 commercial.json records"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "wicked",
+        "showId": "wicked",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $14M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "showId": "chicago",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $2.5M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hadestown",
+        "showId": "hadestown",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $11.5M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mj",
+        "showId": "mj",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $22.5M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "moulin-rouge",
+        "showId": "moulin-rouge",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $28M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "and-juliet",
+        "showId": "and-juliet",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $17M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harry-potter",
+        "showId": "harry-potter",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $35.5M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-mary",
+        "showId": "oh-mary",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $4.53M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hells-kitchen",
+        "showId": "hells-kitchen",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $22M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "showId": "cabaret-2024",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "BRO-5815: the source wording says the $24.25M was capitalized/raised; tag it sold (prints as the amount raised, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "showId": "suffs",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "BRO-5815: the source wording says the $19M was capitalized/raised; tag it sold (prints as the amount raised, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-notebook",
+        "showId": "the-notebook",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $15M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "our-town",
+        "showId": "our-town",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "BRO-5815: the source wording says the $5.98M was capitalized/raised; tag it sold (prints as the amount raised, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $31.5M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-gatsby",
+        "showId": "the-great-gatsby",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $25M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-in-time",
+        "showId": "just-in-time",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $12.5M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "two-strangers",
+        "showId": "two-strangers",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $8M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mamma-mia-2001",
+        "showId": "mamma-mia-2001",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $10M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "queen-of-versailles",
+        "showId": "queen-of-versailles",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $22.5M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "art-2025",
+        "showId": "art-2025",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $6.75M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waiting-for-godot-2025",
+        "showId": "waiting-for-godot-2025",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $7.5M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "showId": "parade-2023",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $6.5M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sunset-boulevard-2024",
+        "showId": "sunset-boulevard-2024",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $15M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "an-enemy-of-the-people",
+        "showId": "an-enemy-of-the-people",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $5.5M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "romeo-juliet-2024",
+        "showId": "romeo-juliet-2024",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $7M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T05:49:21.781Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for wicked"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for hadestown"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for mj"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for moulin-rouge"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for and-juliet"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for harry-potter"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for oh-mary"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for hells-kitchen"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-notebook"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for our-town"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for just-in-time"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for mamma-mia-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for queen-of-versailles"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for art-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for waiting-for-godot-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for parade-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for sunset-boulevard-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for an-enemy-of-the-people"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for romeo-juliet-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,63 @@
+{
+  "issueNumber": "bro-4233",
+  "planId": "a6299b65-cd6e-4106-afe7-f1c583c3f9cd",
+  "status": "applied",
+  "createdAt": "2026-10-13T21:25:55.184Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Keep Miriam Sallon, the verified WhatsOnStage byline for Devil Wears Prada (West End), and mark the misattributed Sarah Crompton sibling as its duplicate. BRO-4898 already excluded Sarah but its canonical pointer clear was refused.",
+    "steps": [
+      "Verify the outlet byline at https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/",
+      "Clear Miriam’s stale pointer before pointing Sarah at Miriam, avoiding a duplicate cycle.",
+      "Rebuild reviews after applying these private review-text edits."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json",
+        "field": "duplicateClearReason",
+        "oldValue": "BRO-4898: this is the genuine review text; the row it pointed at holds only a cookie banner and is now flagged",
+        "newValue": "BRO-4233: outlet page byline verified as Miriam Sallon on 2026-10-13; Sarah Crompton is the incorrect same-URL sibling.",
+        "description": "BRO-4233: outlet page byline verified as Miriam Sallon on 2026-10-13; Sarah Crompton is the incorrect same-URL sibling."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json",
+        "field": "duplicateOf",
+        "oldValue": "whatsonstage--sarah-crompton.json",
+        "newValue": null,
+        "description": "BRO-4233: outlet page byline verified as Miriam Sallon on 2026-10-13; Sarah Crompton is the incorrect same-URL sibling."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "whatsonstage--miriam-sallon.json",
+        "description": "BRO-4233: outlet page byline verified as Miriam Sallon on 2026-10-13; Sarah Crompton is the incorrect same-URL sibling."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T07:01:36.475Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json duplicateClearReason: \"BRO-4898: this is the genuine review text; the row it pointed at holds only a cookie banner and is now flagged\" -> \"BRO-4233: outlet page byline verified as Miriam Sallon on 2026-10-13; Sarah Crompton is the incorrect same-URL sibling.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/whatsonstage--miriam-sallon.json duplicateOf: \"whatsonstage--sarah-crompton.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/whatsonstage--sarah-crompton.json duplicateOf: null -> \"whatsonstage--miriam-sallon.json\""
+    }
+  ]
+}

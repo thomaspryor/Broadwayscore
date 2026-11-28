@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-8251",
+  "planId": "771069f5-1a0b-4c83-af44-3d5cbe0fc19e",
+  "status": "applied",
+  "createdAt": "2026-11-24T14:55:55.453Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Little Mermaid Bristol Old Vic: opening date to Dec 2024 (Bristol247 12/12, The Stage 12/16)",
+    "steps": [
+      "Bristol247 reviewed 2024-12-12 and The Stage 2024-12-16; Guardian 2025-01-03 was the seed",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so a press-night source can still refine this date"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-mermaid-bristol-old-vic-regional-2025",
+        "field": "openingDate",
+        "oldValue": "2025-01-03",
+        "newValue": "2024-12-12",
+        "description": "Bristol247 reviewed 2024-12-12 and The Stage 2024-12-16; Guardian 2025-01-03 was the seed"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-mermaid-bristol-old-vic-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-mermaid-bristol-old-vic-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-12-12",
+        "newValue": null,
+        "description": "Clear the pin so a press-night source can still refine this date"
+      }
+    ]
+  },
+  "executedAt": "2026-11-24T15:16:26.035Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-little-mermaid-bristol-old-vic-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-little-mermaid-bristol-old-vic-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for the-little-mermaid-bristol-old-vic-regional-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,89 @@
+{
+  "issueNumber": "bro-2618",
+  "planId": "bbf5022e-e864-4420-8b59-5d4dec2e969d",
+  "status": "applied",
+  "createdAt": "2026-10-13T05:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2618: the Globe Midsummer (a-midsummer-nights-dream-globe-west-end-2026) scores Dominic Cavendish's Telegraph review off a westendtheatre.com round-up digest (excluded as a round-up, so the Telegraph is missing from the Globe score). His real review (3/5, 'Shakespeare's Globe, London SE1, until Aug 29') sits misfiled under the Regent's Park Midsummer, already flagged wrongProduction, with a 93 derived from Regent's Park's 5/5 theatre.reviews stars. Keep the Globe file and point it at the Telegraph review; delete the misfiled duplicate (Regent's Park's own Telegraph review is Claire Allfree's, at the regents-park url).",
+    "steps": [
+      "Misfiled duplicate of Cavendish's Globe review under the Regent's Park show; Regent's Park's Telegraph slot is Claire Allfree's review.",
+      "Globe file's url is the westendtheatre.com round-up; repair to the Telegraph review url (the collector refetches it).",
+      "Byline of the Telegraph review is Dominic Cavendish; Julianna Barnaby is the round-up author.",
+      "Cavendish rates it 3/5 (51-70 band): warm on the ensemble, reservations about the audience participation and lost darkness. 60.",
+      "Provenance for the score override."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json",
+        "description": "Misfiled duplicate of Cavendish's Globe review under the Regent's Park show; Regent's Park's Telegraph slot is Claire Allfree's review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json",
+        "field": "url",
+        "oldValue": "https://www.westendtheatre.com/352874/news/reviews/a-midsummer-nights-dream-globe-reviews/",
+        "newValue": "https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-shakespeares-globe/",
+        "description": "Globe file's url is the westendtheatre.com round-up; repair to the Telegraph review url (the collector refetches it)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json",
+        "field": "criticName",
+        "oldValue": "Julianna Barnaby",
+        "newValue": "Dominic Cavendish",
+        "description": "Byline of the Telegraph review is Dominic Cavendish; Julianna Barnaby is the round-up author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 60,
+        "description": "Cavendish rates it 3/5 (51-70 band): warm on the ensemble, reservations about the audience participation and lost darkness. 60."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Telegraph 3/5 by Dominic Cavendish (Shakespeare's Globe, until Aug 29), read in full 2026-10-13. The file held a westendtheatre.com round-up digest scored 65 off an excerpt; a misfiled copy under the Regent's Park show carried 93 from that show's 5/5 stars. BRO-2618.",
+        "description": "Provenance for the score override."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T06:20:12.924Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-midsummer-nights-dream-west-end-2026/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json url: \"https://www.westendtheatre.com/352874/news/reviews/a-midsummer-nights-dream-globe-reviews/\" -> \"https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-shakespeares-globe/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json criticName: \"Julianna Barnaby\" -> \"Dominic Cavendish\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json humanReviewScore: null -> 60"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-globe-west-end-2026/telegraph--dominic-cavendish.json humanReviewNote: null -> \"Telegraph 3/5 by Dominic Cavendish (Shakespeare's Globe, until Aug 29), read in full 2026-10-13. The file held a westendtheatre.com round-up digest scored 65 off an excerpt; a misfiled copy under the Regent's Park show carried 93 from that show's 5/5 stars. BRO-2618.\""
+    }
+  ]
+}

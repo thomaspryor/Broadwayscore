@@ -1,0 +1,79 @@
+{
+  "issueNumber": "bro-5631",
+  "planId": "dc818f04-5a03-4ba1-b496-cd2286f72b30",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5631: 1536-off-west-end-2026 is the 2025 Almeida premiere of Ava Pickett's 1536, filed as 'announced' with no dates. Give it its real run so the slug matcher stops routing the 2026 Ambassadors transfer's reviews to it.",
+    "steps": [
+      "Genesis Foundation press releases (genesisfoundation.org.uk/?p=7327, ?p=7549): Almeida world premiere, previews Tue 6 May 2025, opening Tue 13 May 2025, run to Sat 7 June 2025.",
+      "The West End transfer is a separate entry (1536-west-end-2026, Ambassadors, 2 May to 1 Aug 2026, Playbill 'West End Transfer of 1536 Opens May 12').",
+      "Undated, the stub won the matcher's prefer-non-closed tiebreak for every '1536' slug when no article year was passed (ship-check finding, BRO-5631)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1536-off-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2025-05-06",
+        "description": "Almeida previews began 6 May 2025 (Genesis Foundation press release)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1536-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-05-13",
+        "description": "Almeida press night 13 May 2025 (Genesis Foundation press release)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1536-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2025-06-07",
+        "description": "Almeida run ended 7 June 2025 (Genesis Foundation press release)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1536-off-west-end-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "The Almeida run closed 7 June 2025; the 2026 transfer is 1536-west-end-2026."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T15:59:44.751Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for 1536-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for 1536-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for 1536-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for 1536-off-west-end-2026"
+    }
+  ]
+}

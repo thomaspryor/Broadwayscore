@@ -1,0 +1,57 @@
+{
+  "issueNumber": "bro-7250-d261128-r20",
+  "planId": "ae43a0d0-9f95-46b2-893e-daaad5e938c7",
+  "status": "applied",
+  "createdAt": "2026-11-28T18:40:01.694Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7250: 1 local productions from theatre season pages",
+    "steps": [
+      "add a-christmas-story-regional-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add a-christmas-story-regional-2026",
+        "show": {
+          "id": "a-christmas-story-regional-2026",
+          "title": "A Christmas Story",
+          "slug": "a-christmas-story-regional-2026",
+          "venue": "San Diego Musical Theatre, San Diego, CA",
+          "status": "open",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-27",
+          "openingDateSource": "production page \"664,40665&ismenuhid%20e=true) November 27 - December 27, 2026 Book by:\" (https://www.sdmt.org/shows/a-christmas-story-2026/)",
+          "closingDate": "2026-12-27",
+          "closingDateSource": "production page \"664,40665&ismenuhid%20e=true) November 27 - December 27, 2026 Book by:\" (https://www.sdmt.org/shows/a-christmas-story-2026/)",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-28",
+          "evidenceUrls": [
+            "https://www.sdmt.org/shows/a-christmas-story-2026/"
+          ],
+          "images": {
+            "poster": "/images/shows/a-christmas-story-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/a-christmas-story-regional-2026/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-11-28T18:45:10.127Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-christmas-story-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

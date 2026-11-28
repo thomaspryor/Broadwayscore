@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-5851-ans",
+  "planId": "e7323f1f-8f9e-43af-bbf4-ac8d32b0cf65",
+  "status": "applied",
+  "createdAt": "2026-10-23T05:04:38.504Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5851: anatomy-of-a-suicide-west-end-2017 Evening Standard (Fiona Mountford) publishDate 2017-12-13 is not the review date (Royal Court run 2017-06-08 to 2017-07-08; the Royal Court press page quotes this review for the 2017 production). No source gives the true date, so clear it rather than keep a wrong one.",
+    "steps": [
+      "anatomy-of-a-suicide-west-end-2017/standard--fiona-mountford.json: publishDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "anatomy-of-a-suicide-west-end-2017/standard--fiona-mountford.json",
+        "field": "publishDate",
+        "oldValue": "2017-12-13",
+        "newValue": null,
+        "description": "anatomy-of-a-suicide-west-end-2017/standard--fiona-mountford.json: publishDate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T05:24:01.146Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anatomy-of-a-suicide-west-end-2017/standard--fiona-mountford.json publishDate: \"2017-12-13\" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5243-d",
+  "planId": "fbd0f0a4-aa80-44ad-a9e7-d6538b24d04b",
+  "status": "applied",
+  "createdAt": "2026-10-13T21:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5243 (d): pin the-nance-2013 WSJ score to its current excerpt-based 77 so the pending rescore cannot read the Motown half of Teachout's two-show column.",
+    "steps": [
+      "humanReviewScore (locked) = current live score, with note"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-nance-2013/wsj--terry-teachout.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 77,
+        "description": "BRO-5243: the stored body (stream.wsj.com archive, 4,923 chars) is Teachout's two-show column: The Nance, then from about char 3,656 his Motown: The Musical pan. The scorer's multi-show detector misses it (Motown appears 3 times; it needs 5+ title mentions), so the pending rescore (needsRescore=true) would score both halves. This pins the current live score, 77, which was read from The Nance's own DTLI/BWW excerpts. It is not a new judgment. Remove once the body is isolated to The Nance section."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-nance-2013/wsj--terry-teachout.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5243: pinned to the existing excerpt-based score (77); stored body also contains Teachout's Motown review (two-show column), so an LLM rescore of the body would mix shows",
+        "description": "Why the score is pinned."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T21:44:40.427Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-nance-2013/wsj--terry-teachout.json humanReviewScore: null -> 77"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-nance-2013/wsj--terry-teachout.json humanReviewNote: null -> \"BRO-5243: pinned to the existing excerpt-based score (77); stored body also contains Teachout's Motown review (two-show column), so an LLM rescore of the body would mix shows\""
+    }
+  ]
+}

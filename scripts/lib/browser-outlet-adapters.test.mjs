@@ -1,0 +1,232 @@
+// BRO-7171 Stage 4: shared subscriber-browser adapters (all six recover-*-browser.js outlets).
+// Run: node --test scripts/lib/browser-outlet-adapters.test.mjs
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const A = require('./browser-outlet-adapters.js');
+
+/** Minimal Playwright page double. */
+function fakePage({ status = 200, evalResult = { text: 'x'.repeat(2000), title: 'T' }, html = '<html></html>', title = 'T' } = {}) {
+  const calls = { waitForSelector: 0 };
+  return {
+    calls,
+    goto: async () => ({ status: () => status }),
+    waitForTimeout: async () => {},
+    waitForSelector: async () => { calls.waitForSelector++; },
+    evaluate: async () => evalResult,
+    content: async () => html,
+    title: async () => title,
+  };
+}
+
+test('every recover-*-browser.js outlet has an adapter, keyed by its persistent profile name', () => {
+  assert.deepEqual(Object.keys(A.ADAPTERS).sort(), ['ft', 'newyorker', 'nyt', 'telegraph', 'thestage', 'thetimes', 'wapo', 'wsj']);
+  for (const id of ['thestage', 'nytimes', 'newyorker', 'washpost', 'wsj', 'times-uk', 'sunday-times', 'financialtimes', 'telegraph', 'sunday-telegraph']) {
+    assert.ok(A.adapterFor(id), `no adapter for ${id}`);
+  }
+  assert.equal(A.adapterFor('guardian'), null);
+  for (const a of Object.values(A.ADAPTERS)) {
+    assert.ok(a.testUrl && a.cookieDomain && a.minAuthChars > 0 && a.labels.fetchMethod);
+  }
+});
+
+test('30% rule per adapter: a nightly:false adapter is planned only when the run names its outlet', () => {
+  assert.equal(A.ADAPTERS.nyt.nightly, false, 'NYT measured 4/20 live (20%)');
+  assert.equal(A.ADAPTERS.wapo.nightly, false, 'WaPo measured 0/40 live');
+  assert.equal(A.ADAPTERS.thetimes.nightly, true, 'Times re-measured 9/16 live after the footer fix (BRO-7943)');
+  assert.equal(A.ADAPTERS.wsj.nightly, false, 'WSJ measured 1/20 live');
+  assert.equal(A.ADAPTERS.newyorker.nightly, false, 'New Yorker measured 0/20 live');
+  assert.equal(A.adapterUsable('nytimes'), false);
+  assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['nytimes']) }), true);
+  assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['thestage']) }), false);
+  assert.equal(A.adapterUsable('thestage'), true, 'The Stage measured 18/20');
+  // Telegraph: measured 4/8 live (BRO-7943), subscription kept: nightly on.
+  assert.equal(A.ADAPTERS.telegraph.nightly, true);
+  assert.equal(A.adapterUsable('telegraph'), true);
+  assert.equal(A.adapterUsable('wsj', { explicitOutlets: new Set(['wsj']) }), true);
+  assert.equal(A.adapterUsable('guardian', { explicitOutlets: new Set(['guardian']) }), false);
+});
+
+test('the driver plans BROWSER_SESSION through adapterUsable, not bare adapterFor', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8');
+  assert.match(src, /hasAdapter:\s*adapterUsable\(review\.outletId,\s*\{\s*explicitOutlets:\s*OPTS\.outlets\s*\}\)/);
+});
+
+test('a 404/410 is reported as notFound (dead url), before any body read', async () => {
+  for (const name of Object.keys(A.ADAPTERS)) {
+    const page = fakePage({ status: 404 });
+    const r = await A.ADAPTERS[name].extract(page, 'https://example.com/a');
+    assert.equal(r.notFound, true, name);
+    assert.equal(r.status, 404);
+    assert.equal(r.text, undefined);
+  }
+});
+
+test('DOM adapters return text + html; WSJ waits for its client-rendered <article>', async () => {
+  const page = fakePage();
+  const r = await A.ADAPTERS.wsj.extract(page, 'https://www.wsj.com/a?gaa_x=1');
+  assert.equal(r.len, 2000);
+  assert.equal(page.calls.waitForSelector, 1);
+  const nytPage = fakePage();
+  await A.ADAPTERS.nyt.extract(nytPage, 'https://www.nytimes.com/a');
+  assert.equal(nytPage.calls.waitForSelector, 0);
+  const bot = await A.ADAPTERS.wsj.extract(fakePage({ evalResult: { bot: true } }), 'https://www.wsj.com/a');
+  assert.equal(bot.error, 'DataDome challenge detected');
+  const empty = await A.ADAPTERS.wapo.extract(fakePage({ evalResult: { text: '', title: 'x' } }), 'https://www.washingtonpost.com/a');
+  assert.match(empty.error, /No article body/);
+});
+
+test('FT adapter (BRO-7943): reads #article-body, waits for it, nightly-planned, profile keyed ft', async () => {
+  const page = fakePage();
+  const r = await A.ADAPTERS.ft.extract(page, 'https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa');
+  assert.equal(r.len, 2000);
+  assert.equal(page.calls.waitForSelector, 1);
+  assert.equal(A.adapterFor('financialtimes').name, 'ft');
+  assert.equal(A.adapterUsable('financialtimes'), true);
+  assert.equal(A.ADAPTERS.ft.cookieDomain, 'ft.com');
+});
+
+// BRO-7171 follow-up: The Stage's registration wall (markup copied from a
+// logged-out page, 2026-11-10) is an access wall, not "no body" / "too short".
+const STAGE_WALL_HTML = '<html><body><div class="aos-ArticleTitle">X review</div>'
+  + '<p dir="ltr" style="text-align: center;">Join over 100,000 theatremakers who rely on The Stage for trusted news, reviews, and insight.</p>'
+  + '<p dir="ltr" style="text-align: center;"><strong>🔓 Sign in below or <a href="https://www.thestage.co.uk/registration?utm_source=Reggate"><span style="color: #00929e;">create a free account</span> </a>to read 5 free articles.</strong></p>'
+  + '</body></html>';
+
+test('The Stage registration wall is reported as authWall, not a missing body', async () => {
+  const r = await A.ADAPTERS.thestage.extract(fakePage({ html: STAGE_WALL_HTML }), 'https://www.thestage.co.uk/reviews/x');
+  assert.equal(r.authWall, true);
+  assert.match(r.error, /access wall/);
+  const plain = await A.ADAPTERS.thestage.extract(fakePage({ html: '<html><body><p>nothing</p></body></html>' }), 'https://www.thestage.co.uk/reviews/x');
+  assert.equal(plain.authWall, undefined);
+  assert.match(plain.error, /No article body/);
+});
+
+test('resolveBrowserMiss: lost session stops the run; wall and bot check are never evidence', async () => {
+  const live = async () => ({ text: 'x'.repeat(900), len: 900 });
+  const dead = async () => ({ error: 'access wall (sign-in/registration) in place of the body', authWall: true });
+  const short = async () => ({ text: 'x'.repeat(100), len: 100 });
+  const o = (probe, refusalCode = null) => ({ probe, minAuthChars: 500, refusalCode });
+  // 404 is evidence without probing.
+  let probed = false;
+  assert.equal((await A.resolveBrowserMiss({ error: 'HTTP 404 not found', notFound: true }, o(async () => { probed = true; return {}; }))).action, 'evidence');
+  assert.equal(probed, false);
+  assert.equal((await A.resolveBrowserMiss({ error: 'Bot-check challenge detected' }, o(live))).action, 'skip');
+  // Wall: session dead -> stop; session live (e.g. metered) -> skip, never stamped.
+  assert.equal((await A.resolveBrowserMiss({ error: 'wall', authWall: true }, o(dead))).action, 'stop');
+  assert.equal((await A.resolveBrowserMiss({ error: 'wall', authWall: true }, o(live))).action, 'skip');
+  // No body: evidence only while the probe still passes its floor.
+  assert.equal((await A.resolveBrowserMiss({ error: 'No article body' }, o(live))).action, 'evidence');
+  assert.equal((await A.resolveBrowserMiss({ error: 'No article body' }, o(short))).action, 'stop');
+  assert.equal((await A.resolveBrowserMiss({ error: 'No article body' }, o(async () => { throw new Error('closed'); }))).action, 'stop');
+  // Extracted but refused too short: probe decides; other refusals never probe.
+  assert.equal((await A.resolveBrowserMiss({ text: 'short' }, o(dead, 'too_short'))).action, 'stop');
+  assert.equal((await A.resolveBrowserMiss({ text: 'short' }, o(live, 'too_short'))).action, 'evidence');
+  probed = false;
+  assert.equal((await A.resolveBrowserMiss({ text: 'y'.repeat(4000) }, o(async () => { probed = true; return {}; }, 'show_not_mentioned'))).action, 'evidence');
+  assert.equal(probed, false);
+});
+
+// BRO-7171: Telegraph fixtures (markup shapes from live pages, placeholder prose).
+const fs = require('fs');
+const path = require('path');
+const fx = (n) => fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '__fixtures__', 'telegraph', n), 'utf8');
+
+test('extractTelegraphBody joins every article-body-text block and drops furniture between and after', () => {
+  const t = A.extractTelegraphBody(fx('logged-in.html'));
+  for (let i = 1; i <= 5; i++) assert.match(t, new RegExp(`Fixture paragraph ${['one', 'two', 'three', 'four', 'five'][i - 1]}\\.`));
+  assert.match(t, /linked phrase/);
+  assert.match(t, /until Jun 20$/, 'ends at the listing line, before the Recommended teaser');
+  assert.doesNotMatch(t, /Fixture caption|Credit|Recommended|best plays and musicals|Join the conversation|Published/);
+  assert.doesNotMatch(t, /^Share$/m, 'page-furniture strips the share token');
+  assert.equal(t.split('\n\n').length, 6, 'paragraph breaks kept');
+  assert.equal(A.extractTelegraphBody('<html><body><p>no body</p></body></html>'), null);
+});
+
+test('Telegraph adapter: subscriber page -> text; walled page -> authWall; Akamai page -> bot check', async () => {
+  const ok = await A.ADAPTERS.telegraph.extract(fakePage({ html: fx('logged-in.html') }), 'https://www.telegraph.co.uk/theatre/what-to-see/x/');
+  assert.equal(ok.error, undefined);
+  assert.ok(ok.len > 1000 && ok.text.startsWith('Fixture paragraph one'));
+
+  const walled = await A.ADAPTERS.telegraph.extract(fakePage({ html: fx('walled.html') }), 'https://www.telegraph.co.uk/theatre/what-to-see/x/');
+  assert.equal(walled.authWall, true);
+  assert.equal(walled.text, undefined, 'the teaser is never handed on as a body');
+  // The blurred column is a wall even when the teaser runs long.
+  const longTeaser = fx('walled.html').replace('Fixture teaser.', 'Fixture teaser. ' + 'More teaser words here. '.repeat(80));
+  assert.equal((await A.ADAPTERS.telegraph.extract(fakePage({ html: longTeaser }), 'https://www.telegraph.co.uk/x/')).authWall, true);
+
+  // A wall variant with no blur class and a long "…" preview is still a wall.
+  const noBlurLong = longTeaser.replace(/martech-paywall__blur(?:--short)?/g, '');
+  assert.equal((await A.ADAPTERS.telegraph.extract(fakePage({ html: noBlurLong }), 'https://www.telegraph.co.uk/x/')).authWall, true);
+  // The class name inside an inline script is not a wall on a subscriber page.
+  const scriptMention = fx('logged-in.html').replace('</head>', '<script>var c="martech-paywall__blur";</script></head>');
+  assert.equal((await A.ADAPTERS.telegraph.extract(fakePage({ html: scriptMention }), 'https://www.telegraph.co.uk/x/')).authWall, undefined);
+
+  const bot = await A.ADAPTERS.telegraph.extract(fakePage({ html: fx('bot-block.html') }), 'https://www.telegraph.co.uk/x/');
+  assert.match(bot.error, /Bot-check/);
+  assert.equal(bot.authWall, undefined);
+
+  // The lost-session policy: a walled row with a walled probe stops the run;
+  // a bot check is skipped. Neither is evidence about the review.
+  const probeWalled = async () => A.ADAPTERS.telegraph.extract(fakePage({ html: fx('walled.html') }), A.ADAPTERS.telegraph.testUrl);
+  assert.equal((await A.resolveBrowserMiss(walled, { probe: probeWalled, minAuthChars: A.ADAPTERS.telegraph.minAuthChars })).action, 'stop');
+  assert.equal((await A.resolveBrowserMiss(bot, { probe: probeWalled, minAuthChars: A.ADAPTERS.telegraph.minAuthChars })).action, 'skip');
+});
+
+// BRO-7705: re-subscribed 2026-11-11, so telegraph now has an automatic
+// (Keychain) login like the others; it stays local-only (Akamai blocks CI).
+test('renew-cookies: telegraph is local-only with an automatic login, and a browser-only probe on the adapter testUrl', () => {
+  const { RENEW_OUTLETS, loginAdapterFor } = require('./cookie-renew.js');
+  const { COOKIE_PROBES, classifyWalledProbe } = require('./cookie-probes.js');
+  const cfg = RENEW_OUTLETS.telegraph;
+  assert.equal(cfg.manualOnly, undefined);
+  assert.equal(cfg.localOnly, true);
+  assert.equal(loginAdapterFor('telegraph').kind, 'telegraph-otp'); // emailed code since 2026-11-19
+  assert.match(cfg.loginUrl, /^https:\/\/secure\.telegraph\.co\.uk\/customer\/secure\/login\//);
+  const p = COOKIE_PROBES.telegraph;
+  assert.equal(p.url, A.ADAPTERS.telegraph.testUrl);
+  assert.equal(p.browserOnly, true);
+  const cls = (html) => classifyWalledProbe({ withCookies: { html, body: p.extractBody(html) || '' }, minBody: p.minBody, wallMarker: p.wallMarker, gateMarker: p.gateMarker, subscriberMarker: p.subscriberMarker });
+  // The captured fixture predates the reader class; live subscriber pages
+  // carry it on the article renderer (measured 2026-11-19).
+  const sub = fx('logged-in.html').replace('<body', '<body><div class="articleRendererHTML logged-in--true is-subscriber--true"></div');
+  assert.equal(cls(sub), 'logged-in');
+  assert.equal(cls(fx('logged-in.html')), 'error', 'full body without the subscriber class is not proof of a login');
+  assert.equal(cls(fx('walled.html')), 'logged-out');
+  assert.equal(cls(fx('bot-block.html')), 'error', 'a bot page is never read as logged out');
+});
+
+test('a Stage wall page that still yields a short teaser is an access wall too', async () => {
+  const teaser = '<div class="aos-Article-IntroText"><p>' + 'Teaser sentence about the production that the page shows above the wall. '.repeat(4) + '</p></div>';
+  const html = STAGE_WALL_HTML.replace('<body>', '<body>' + teaser);
+  const r = await A.ADAPTERS.thestage.extract(fakePage({ html }), 'https://www.thestage.co.uk/reviews/x');
+  assert.equal(r.authWall, true);
+});
+
+// BRO-8096: the Times browser read "not_longer" on reviews we already held in full.
+// Root cause: the stored text read truncated because (a) the run time ("155 minutes")
+// sat between the last sentence and the listing footer, so the body did not end on a
+// sentence, and (b) older saves carried the related-articles block after the
+// "Follow @timesculture" line. The tier classifier must see the real ending.
+test('BRO-8096: Times footer strip handles a run-time token and a related-articles tail', () => {
+  const T = require('./trailer-signatures.js');
+  const BODY = 'The company sings well and the second act moves quickly, though the book sags in places and the staging never quite earns its final image. '.repeat(14).trim();
+  const withDuration = `${BODY} 155 minutes To January 20, millatsonning.com Follow @timesculture on Twitter to read the latest reviews`;
+  assert.equal(T.stripTimesFooter(withDuration), BODY);
+  const withRelated = `${BODY}★☆☆☆☆120 minutesTo June 14, royalcourttheatre.com\n\nFollow @timesculture to read the latest reviews\n\nFIRST NIGHTMrs Warren’s Profession — Imelda Staunton battles with Bernard ShawMay 23 2025, 12.00amClive DavisGoing out or staying in? Our critics pick the best things to do this weekMay 23 2025, 12.00amDebra Craine | Clive DavisMore from Theatre & DanceFive things to see in Scotland this weekMay 24 2025, 12.00am\n\nClive Davis, Chief Theatre Critic`;
+  assert.equal(T.stripTimesFooter(withRelated), BODY);
+  // a cut-off review with a run time stays truncated
+  const cut = `${BODY.slice(0, -1)} and the lead brings a snarl 155 minutes To January 20, millatsonning.com`;
+  assert.equal(T.stripTimesFooter(cut), cut);
+  // prose after the follow line is never eaten (no related-block marker)
+  const prose = `${BODY} Follow @timesculture to read the latest reviews\n\nThe second review of the night was better and ran long, with a fine cast.`;
+  assert.ok(T.stripTimesFooter(prose).includes('second review of the night'));
+  // ship-check: a long blank run after the follow line must not backtrack
+  const blanks = `${BODY} Follow @timesculture to read the latest reviews${'\n'.repeat(5000)}x`;
+  const t0 = Date.now();
+  T.stripTimesFooter(blanks);
+  assert.ok(Date.now() - t0 < 1000, 'stripTimesFooter backtracks on a long newline run');
+});

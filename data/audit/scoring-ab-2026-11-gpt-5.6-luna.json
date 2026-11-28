@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-11-15T16:36:31.779Z",
+  "leg": "openai",
+  "sampled": 1153,
+  "usable": 1139,
+  "paired": 1139,
+  "controlFailed": 14,
+  "scoredBoth": 1044,
+  "sharesControl": {
+    "Rave": 0.30067964735809344,
+    "Positive": 0.3357024249191151,
+    "Mixed": 0.17893062974842378,
+    "Negative": 0.09980297780120907,
+    "Pan": 0.021467078898148563,
+    "rejected": 0.06341724127501579
+  },
+  "sharesShadow": {
+    "Rave": 0.3224387299642972,
+    "Positive": 0.3348287528127474,
+    "Mixed": 0.15360296314239869,
+    "Negative": 0.10792241022034596,
+    "Pan": 0.025165233626139677,
+    "rejected": 0.056041910234076904
+  },
+  "movedOver5Pts": 0.0469,
+  "bucketFlips": 0.092,
+  "gates": {
+    "bucketShiftPp": {
+      "pass": true,
+      "value": {
+        "Rave": 2.18,
+        "Positive": -0.09,
+        "Mixed": -2.53,
+        "Negative": 0.81,
+        "Pan": 0.37
+      },
+      "limit": 5
+    },
+    "meanDrift": {
+      "pass": true,
+      "value": 0.39,
+      "limit": 2
+    },
+    "rejectionDelta": {
+      "pass": true,
+      "value": -0.74,
+      "limit": 2
+    },
+    "showDrift": {
+      "pass": false,
+      "value": {
+        "showsChecked": 3,
+        "showsOver": 0,
+        "worst": []
+      },
+      "limit": 0.1
+    },
+    "legAccuracy": {
+      "pass": true,
+      "value": {
+        "control": 2.47,
+        "shadow": 3.17,
+        "n": 220
+      },
+      "limit": 1
+    },
+    "shadowErrors": {
+      "pass": true,
+      "value": {
+        "shadow": 0,
+        "control": 0
+      },
+      "limit": 0.01
+    }
+  },
+  "allPass": false
+}

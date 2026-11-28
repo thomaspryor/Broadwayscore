@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-7440",
+  "planId": "4f23d263-63e0-409e-9400-3dcf38489778",
+  "status": "applied",
+  "createdAt": "2026-11-13T09:42:12.612Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7440: flag openingnight link-card stub as non-review (NYTG review already on file)",
+    "steps": [
+      "Set isNonReviewReason (manual) then isNonReview=true on midnight-off-broadway-2026/openingnight--edward-a-kliszus.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): openingnight.online page is a Google News link card to the New York Theatre Guide review (no review text of its own); NYTG review is already ingested as nytg--kyle-turner/complete. Not a separate review.",
+        "description": "openingnight.online page is a Google News link card to the New York Theatre Guide review (no review text of its own); NYTG review is already ingested as nytg--kyle-turner/complete. Not a separate review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "openingnight.online page is a Google News link card to the New York Theatre Guide review (no review text of its own); NYTG review is already ingested as nytg--kyle-turner/complete. Not a separate review."
+      }
+    ]
+  },
+  "executedAt": "2026-11-13T10:32:15.004Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json isNonReviewReason: null -> \"manual (not a review): openingnight.online page is a Google News link card to the New York Theatre Guide review (no review text of its own); NYTG review is already ingested as nytg--kyle-turner/complete. Not a separate review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

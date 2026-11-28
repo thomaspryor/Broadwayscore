@@ -1,0 +1,52 @@
+{
+  "issueNumber": 1187,
+  "planId": "d6d69b9c-6624-48c9-8370-a4efee481017",
+  "status": "pending",
+  "createdAt": "2026-11-16T08:36:49.296Z",
+  "diagnosis": {
+    "fixType": "data",
+    "confidence": "high",
+    "showId": "awake-and-sing-2026",
+    "showSlug": "awake-and-sing",
+    "showIds": [
+      "awake-and-sing-2006",
+      "awake-and-sing-1984",
+      "awake-and-sing-2026",
+      "gemini-1977"
+    ]
+  },
+  "submitter": {
+    "name": null,
+    "email": null,
+    "show": "Awake and Sing!",
+    "message": ""
+  },
+  "plan": {
+    "summary": "The 2026 production of Awake and Sing! has an obviously erroneous runtime of '4h' (four hours) with no intermissions. This fix clears that bad value by setting both runtime and intermissions to null until accurate data is confirmed.",
+    "steps": [
+      "Set runtime for awake-and-sing-2026 from '4h' to null, removing the incorrect four-hour runtime from the live page",
+      "Set intermissions for awake-and-sing-2026 from null to null (no change needed, but confirming it stays null since runtime is being cleared)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "awake-and-sing-2026",
+        "field": "runtime",
+        "oldValue": "4h",
+        "newValue": null,
+        "description": "Remove the clearly erroneous four-hour runtime. No confirmed runtime data exists for this upcoming production; setting to null prevents the bad value from being surfaced by Google/Gemini."
+      }
+    ]
+  },
+  "verification": {
+    "passed": false,
+    "skipped": false,
+    "issues": [
+      "The proposed fix claims the runtime for the 2026 production of Awake and Sing! is '4h', which is confirmed in the show data. However, the fix suggests this value is erroneous without providing evidence of a standard runtime for this play.",
+      "The director for the 2026 production is listed as Harold Clurman in the show data, but the proposed fix does not mention this, which could lead to confusion."
+    ],
+    "confidence": "medium"
+  }
+}

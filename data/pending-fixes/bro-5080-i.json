@@ -1,0 +1,106 @@
+{
+  "issueNumber": "bro-5080-i",
+  "planId": "63b48470-3af8-4d6e-93ad-c5c7710fa69b",
+  "status": "applied",
+  "createdAt": "2026-10-12T05:27:21.096Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5080 part 9: three West End press nights the sample found wrong outside the first-performance class (rows that had a preview date): sourced values.",
+    "steps": [
+      "openingDate -> sourced press night"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-grapes-of-wrath-west-end-2024",
+        "field": "openingDate",
+        "oldValue": "2024-07-25",
+        "newValue": "2024-07-31",
+        "description": "the-grapes-of-wrath-west-end-2024: openingDate -> 2024-07-31: other: official opening was 31 July 2024; 25 July was an earlier press/preview date (Theatre Weekly), previews began 17 July. (https://playbill.com/article/cherry-jones-led-grapes-of-wrath-opens-at-londons-national-july-31-get-an-exclusive-1st-look-at-the-revival)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-grapes-of-wrath-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage",
+        "newValue": "press-night-correction-bro-5080",
+        "description": "the-grapes-of-wrath-west-end-2024: sourced press night"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2023",
+        "field": "openingDate",
+        "oldValue": "2023-11-13",
+        "newValue": "2023-11-22",
+        "description": "a-christmas-carol-west-end-2023: openingDate -> 2023-11-22: other: Old Vic 2023 run began 11 Nov and opened 22 Nov; stored 13 Nov matches neither. (https://playbill.com/article/christopher-eccleston-will-be-ebenezer-scrooge-at-londons-old-vic-in-2023-a-christmas-carol)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2023",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage-first-performance",
+        "newValue": "press-night-correction-bro-5080",
+        "description": "a-christmas-carol-west-end-2023: sourced press night"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-enfield-haunting-west-end-2023",
+        "field": "openingDate",
+        "oldValue": "2023-12-06",
+        "newValue": "2024-01-10",
+        "description": "the-enfield-haunting-west-end-2023: openingDate -> 2024-01-10: opening=first-preview: press night was delayed to 10 Jan 2024. (https://playbill.com/article/david-threlfall-and-catherine-tate-star-in-the-enfield-haunting-opening-january-10-in-londons-west-end)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-enfield-haunting-west-end-2023",
+        "field": "openingDateSource",
+        "oldValue": "whatsonstage",
+        "newValue": "press-night-correction-bro-5080",
+        "description": "the-enfield-haunting-west-end-2023: sourced press night"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T06:24:49.237Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-grapes-of-wrath-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-grapes-of-wrath-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-christmas-carol-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-christmas-carol-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-enfield-haunting-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-enfield-haunting-west-end-2023"
+    }
+  ]
+}

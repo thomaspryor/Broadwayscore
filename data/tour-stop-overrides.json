@@ -1,0 +1,39 @@
+{
+  "overrides": [
+    {
+      "tourId": "hells-kitchen-tour-2025",
+      "start": "2026-11-24",
+      "set": {
+        "end": "2026-12-06"
+      },
+      "was": {
+        "end": "2026-11-29"
+      },
+      "reason": "BRO-7256 audit: National Theatre (Washington, DC) official site lists Nov 24 to Dec 6; Tours To You ends Nov 29."
+    },
+    {
+      "tourId": "maybe-happy-ending-tour-2026",
+      "start": "2027-01-05",
+      "set": {
+        "venue": "Nederlander Theatre"
+      },
+      "was": {
+        "venue": "CIBC Theatre"
+      },
+      "reason": "BRO-8456: Broadway In Chicago's own show page (broadwayinchicago.com/shows/maybe-happy-ending/) lists the Nederlander Theatre, 24 W Randolph; Tours To You says CIBC Theatre. Oh Mary (Jan 19-Feb 7) is the CIBC booking."
+    }
+  ],
+  "layoffAllowances": [
+    {
+      "tourId": "all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024",
+      "maxLayoffDays": 700,
+      "reason": "BRO-8456: Tours To You lists this tour's 2024 Guthrie/Klein engagements and then eight stops from 2026-06-03 to 2027-08-07 on one page; the 17-month pause read as a new company and the 2026-27 stops were dropped."
+    }
+  ],
+  "latestEraTours": [
+    {
+      "tourId": "spamilton-an-american-parody-tour-2018",
+      "reason": "BRO-8456: launched 2018 but Tours To You lists rows only from Dec 2021; the page's latest multi-stop leg is this tour's current run, which no launch-date match can pick."
+    }
+  ]
+}

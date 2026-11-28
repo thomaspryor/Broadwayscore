@@ -1,0 +1,829 @@
+// AI subject lines for the weekly newsletter (owner, 2026-11-08, BRO-7168).
+//
+// The template subjects read like a database ("Speculations opens to rough
+// reviews, The Bridge opens to strong reviews.", "8 shows open in London, with
+// three scoring over 80 with critics") and opened every issue the same way.
+// Owner chose option A: the system writes the subject, preview text and
+// opening paragraph like an editor, picks the best, and the owner's [DRAFT]
+// preview lists the runners-up to swap in by hand.
+//
+// Same shape as social-autopost/ai-captions.js (BRO-6959):
+//   1. generate.mjs builds a fact sheet of THIS issue (only shows the email
+//      renders, including well-reviewed shows closing soon whatever week they
+//      opened: owner, 2026-11-08).
+//   2. Claude writes several candidates, each from a different angle.
+//   3. Code checks each one: length, banned template phrasing, every number and
+//      weekday must be in the facts, no repeat of recent subjects.
+//   4. GPT-5.5 fact-checks the survivors against the sheet.
+//   5. Claude ranks what is left; the best goes in the draft, two more become
+//      alternates.
+// Any failure returns null and generate.mjs keeps its template subject, so a
+// draft is never held up. Kill switch: NEWSLETTER_AI_SUBJECT_DISABLED=true.
+//
+// Pure except for the two network calls, which tests replace via deps.
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
+import { createRequire } from 'node:module';
+const require_ = createRequire(import.meta.url);
+const { SOCIAL_WRITER, GPT55 } = require_('../lib/models.js');
+const { finalResponseText, firstJsonObject } = require_('../lib/anthropic-response-text.js');
+const { callWithTimeout } = require_('../lib/llm-call-budget.js');
+const { foldDiacritics } = require_('../lib/title-match.js');
+
+export const SUBJECT_MAX = 60;      // phones show about 40; hard stop at 60
+export const PREHEADER_MAX = 110;
+export const LEDE_MAX = 380;
+const CALL_MS = 90000;
+const MAX_ROUNDS = 3;               // two rewrites with the problems listed (stricter lead and ranking checks, BRO-8064)
+const DEADLINE_MS = 4 * 60 * 1000;  // whole pass; the draft job has 25 minutes
+
+const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+// First sentence of a lede. Does not split after an abbreviation ("St. Ann's
+// Warehouse", "Ms. Blakk for President"), which would cut the sentence before
+// its Critic Score and reject a good lede (ship-check, 2026-11-15).
+// A sentence ends at . ! or ? followed by a space and a word that is not lowercase,
+// so a title like "Oh, Mary!" mid-sentence ("Oh, Mary! was the best ...") does not end it.
+export const SENTENCE_BREAK = /(?<!\b(?:St|Mr|Ms|Mrs|Dr|Mt|Jr|Sr|vs|No|Co|Inc|Ltd)\.)(?<=[.!?])\s+(?![a-z])/;
+/** Sentences of a text. A known title with ". ! ?" in it ("Oh, Mary!") never ends one. */
+export function splitSentences(text, titles = []) {
+  let t = String(text || '');
+  const held = [];
+  for (const title of [...titles].filter(x => x && /[.!?]/.test(x)).sort((a, b) => b.length - a.length)) {
+    t = t.replace(new RegExp(`(^|[^\\p{L}\\p{N}])${escRe(title)}(?![\\p{L}\\p{N}])`, 'gu'), (m, pre) => { held.push(title); return `${pre}\u0001${held.length - 1}\u0001`; });
+  }
+  return t.split(SENTENCE_BREAK).map(x => x.replace(/\u0001(\d+)\u0001/g, (_, i) => held[Number(i)]));
+}
+export function firstSentence(text, titles = []) {
+  return splitSentences(text, titles)[0] || '';
+}
+
+// How the critics as a group received a show, from its per-review scores
+// (owner, 2026-11-22: "Eurotrash splits the room at 77" when 23 of 26 reviews
+// were 70+ and one was a pan). The writer only saw the week's single rave and
+// pan, both for Eurotrash, and read them as a split. Words, not numbers, so the
+// line never lends a stray number to the writer.
+export const RECEPTION_POSITIVE = 71; // 4 or 5 stars (71-100)
+export const RECEPTION_NEGATIVE = 50; // 2 stars or less (0-50)
+export function receptionOf(scores) {
+  const xs = (scores || []).filter(x => typeof x === 'number' && Number.isFinite(x));
+  const n = xs.length;
+  if (n < 3) return null;
+  const posN = xs.filter(x => x >= RECEPTION_POSITIVE).length;
+  const negN = xs.filter(x => x <= RECEPTION_NEGATIVE).length;
+  const pos = posN / n, neg = negN / n;
+  // Split: a real share on each side (2+ reviews each), not one outlier.
+  if (n >= 4 && posN >= 2 && negN >= 2 && pos >= 0.25 && neg >= 0.25) return { verdict: 'split', pos, neg, n };
+  // One outlier never undoes a consensus (a single pan among six reviews).
+  if (pos >= 0.5 && (neg <= 0.15 || negN <= 1)) return { verdict: 'liked', pos, neg, n };
+  if (neg >= 0.5 && (pos <= 0.15 || posN <= 1)) return { verdict: 'disliked', pos, neg, n };
+  return { verdict: 'mixed', pos, neg, n, mid: (n - posN - negN) / n };
+}
+
+const share = (x) => (x >= 0.9 ? 'nearly every review' : x >= 0.75 ? 'most reviews' : x > 0.5 ? 'more than half the reviews' : x === 0.5 ? 'half the reviews' : x >= 0.25 ? 'a sizeable minority of reviews' : x > 0 ? 'a few reviews' : 'no reviews');
+
+/** One plain fact-sheet sentence about a show's reception, or null. */
+export function receptionLine(title, scores) {
+  const r = receptionOf(scores);
+  if (!r) return null;
+  const desc = `${share(r.pos)} positive, ${share(r.neg)} negative`;
+  if (r.verdict === 'split') return `Reception: ${title}: critics were split (${desc}).`;
+  const word = r.verdict === 'liked' ? 'critics broadly liked it' : r.verdict === 'disliked' ? 'critics broadly disliked it' : (r.pos >= 0.5 ? 'critics leaned positive with real reservations' : r.neg >= 0.5 ? 'critics leaned negative' : r.mid > Math.max(r.pos, r.neg) ? 'reviews were mostly middling' : 'reviews were mixed');
+  return `Reception: ${title}: ${word} (${desc}); not split.`;
+}
+
+// Words that say critics disagreed. Allowed only about a show whose reception
+// line says split.
+export const SPLIT_RE = new RegExp([
+  // split/divide aimed at the critics or the room, not a plot ("a family divided")
+  String.raw`\b(?:split(?:s|ting)?|divid(?:ed|es|ing)|polari[sz](?:es|ed|ing))\s+(?:the\s+)?(?:room|critics?|reviewers?|opinions?|verdicts?|the press|press)\b`,
+  String.raw`\b(?:critics?|reviewers?|reviews?|verdicts?|opinions?|the press|the room)[,]?\s+(?:(?:were|are|was|is|seem(?:ed)?|stay(?:ed)?|remain(?:ed)?)\s+)?(?:split|divided|torn|polari[sz]ed|at odds|at loggerheads|in two camps|all over the (?:map|place))\b`,
+  String.raw`\b(?:critics?|reviewers?)\s+(?:disagree[ds]?|clash(?:ed|es)?|can'?t agree|couldn'?t agree|could not agree)\b`,
+  String.raw`\b(?:split (?:verdict|decision|reviews?)|love[- ]it[- ]or[- ](?:hate|loathe)[- ]it|love it or (?:hate|loathe) it|hot and cold)\b`,
+  String.raw`\b(?:divisive|polari[sz]ing|contentious)\s+(?:with|among|for)\s+(?:the\s+)?(?:critics|reviewers|the press)\b|\b(?:proved|proves|was|is|remains|seemed)\s+(?:divisive|polari[sz]ing|contentious)\b`,
+  String.raw`\bnot (?:every|all)(?: the| of the)? (?:critics?|reviewers?)\b|\b(?:not|wasn'?t|weren'?t) unanimous\b|\bfar from (?:settled|unanimous)\b`,
+  String.raw`\bnot (?:everyone|everybody) was (?:won over|on board|convinced|a fan)\b|\b(?:wasn'?t|weren'?t|was not|were not) (?:all )?on board\b|\bsome critics\b[^.]{0,40}\bothers\b`,
+  String.raw`\bone to read up on\b`,
+].join('|'), 'i');
+
+// Phrasing the template used, plus AI tells. Any hit rejects the candidate.
+const BANNED = [
+  [/[–—]|\s-\s|--/, 'a dash used as punctuation'],
+  [/\p{Extended_Pictographic}/u, 'an emoji'],
+  [/["“”]/, 'a quotation mark'],
+  [/\bopens? to (?:rave|strong|solid|decent|mixed|rough|poor|warm|glowing|positive|negative) reviews\b/i, 'the template phrase "opens to X reviews"'],
+  [/\bwith critics\b/i, 'the template phrase "with critics"'],
+  [/\b(?:big|busy|packed|huge|bumper) week\b/i, 'a week-size claim (generate.mjs decides those)'],
+  [/\bscor(?:ing|ed) (?:\d+ )?(?:or )?(?:higher|more|over|above)\b/i, 'a score band ("scoring 75 or higher")'],
+  [/\b(?:reviews|verdict|votes|results) (?:are|is) in\b/i, 'a stock opener ("the reviews are in")'],
+  [/\b(?:you won'?t believe|must[- ]see|don'?t miss|act now|hurry|breaking)\b/i, 'clickbait'],
+  [/\b(?:delve|robust|leverage|unlock|tapestry|realm|landscape|navigate|deep dive|buckle up|game[- ]changer|truly|genuinely|moreover|furthermore|additionally)\b/i, 'an AI-sounding word'],
+  [/\bit'?s not\b[^.]{0,60}\bit'?s\b|\bnot (?:just )?\w+(?: \w+)?, but\b/i, 'the "not X, but Y" construction'],
+  // The Critic Score is the product, not our tier label (owner, 2026-11-15:
+  // "Cloud 9 (77) is Recommended from 33 reviews" and "Dogstar gets a Mixed 64").
+  // Titles are stripped before this runs, so a show called "Mixed Feelings" is safe.
+  [/\b(?:Recommended|Critical Gold|Critical Miss|Worth Seeing)\b|\bMixed\s*\(?\d|\bmixed\s+\d{2,3}\b/, 'one of our tier labels (Recommended, Worth Seeing, Mixed, Critical Gold or Miss); state the Critic Score number instead'],
+  [/\brecommend(?:s|ed|ing|ation|ations)?\b/i, 'the word "recommend" standing in for the score; state the Critic Score number instead'],
+  [/!/, 'an exclamation mark'],
+  // The send day moves (late owner sends, recovery runs): name the weekday.
+  [/\b(?:today|tonight|tomorrow|yesterday|this weekend|next weekend|this morning|this evening)\b/i, 'a relative date (name the weekday instead)'],
+];
+
+const ONES = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+const MONTH = '(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\\.?';
+const DATE_RE = new RegExp(`\\b${MONTH}\\s+(\\d{1,2})\\b|\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+${MONTH}`, 'g');
+
+/** Calendar dates a text names ("Nov 14", "14 November"), as "M-D"-ish keys. */
+export function datesIn(text) {
+  return [...String(text || '').matchAll(DATE_RE)].map(m => `${(m[0].match(/[A-Za-z]{3}/) || [''])[0].toLowerCase()}|${Number(m[1] || m[2])}`);
+}
+
+/** Every number a text states outside dates, as exact strings ("2.35", "13", "83"). */
+export function numbersIn(text) {
+  const t = String(text || '').replace(DATE_RE, ' ')
+    .replace(/\b(?:no one|one of|one another|one critic|one more|the one|one show|one to)\b/gi, ' ');
+  const out = (t.match(/\d+(?:\.\d+)?/g) || []).map(n => String(Number(n)));
+  for (const m of t.matchAll(new RegExp(`\\b(${ONES.join('|')})\\b`, 'gi'))) out.push(String(ONES.indexOf(m[1].toLowerCase())));
+  return out;
+}
+
+const escRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/** Remove whole-title mentions (word boundaries, so "Tru" never eats "Truly"). */
+function stripTitles(text, titles) {
+  let out = String(text || '');
+  for (const t of [...titles].sort((x, y) => y.length - x.length)) {
+    if (!t) continue;
+    out = out.replace(new RegExp(`(^|[^\\p{L}\\p{N}])${escRe(t)}(?![\\p{L}\\p{N}])`, 'gu'), '$1 ');
+  }
+  return out;
+}
+const mentions = (text, title) => !!title && new RegExp(`(^|[^\\p{L}\\p{N}])${escRe(title)}(?![\\p{L}\\p{N}])`, 'u').test(String(text || ''));
+
+const weekdaysIn = (text) => WEEKDAYS.filter(d => new RegExp(`\\b${d}s?\\b`, 'i').test(String(text || '')));
+const words = (t) => new Set(foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').split(/\s+/).filter(w => w.length > 2));
+function jaccard(a, b) {
+  const A = words(a), B = words(b);
+  if (!A.size || !B.size) return 0;
+  let n = 0; for (const w of A) if (B.has(w)) n++;
+  return n / (A.size + B.size - n);
+}
+const firstWords = (t, n = 2) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').trim().split(/\s+/).slice(0, n).join(' ');
+
+/**
+ * The fact pool behind one issue.
+ * @param {{edition: 'broadway'|'west-end', lines: string[], titles: Array<{id, slug, title}>}} facts
+ *   lines are complete, true sentences built by generate.mjs from data the
+ *   email renders; titles are the shows those lines name.
+ */
+/** A title plus its short forms: "School Girls; Or, The African Mean Girls Play" -> also "School Girls". */
+export function titleForms(title) {
+  const t = String(title || '').trim();
+  // Also before a quoted subtitle: Blue Man Group "A New Holiday Surprise" -> Blue Man Group (BRO-8064).
+  const short = t.split(/\s*[:;(]\s*|\s+-\s+|\s+["“]/)[0].trim();
+  const forms = short && short !== t && short.length >= 4 ? [t, short] : [t];
+  // Writers drop a leading "The" ("Fantasticks and Much Ado both score 79/100").
+  for (const f of [...forms]) { const m = f.match(/^The\s+(.{4,})$/); if (m && !forms.includes(m[1])) forms.push(m[1]); }
+  return forms;
+}
+
+/** The fact line for a show the sheet names whose run is over (BRO-8053). buildPool keys on it exactly. */
+export const NOT_STILL_ON = ' Never write that readers can still see it or that it is closing.';
+export const closedFactLine = (title) => `Already closed: ${title}.${NOT_STILL_ON}`;
+
+// Wording that treats a run as still going (BRO-8053).
+const WEEKDAY_OR_MONTH = String.raw`(?:(?:mon|tues|wednes|thurs|fri|satur|sun)day|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*)`;
+const STILL_ON_RE = new RegExp(String.raw`\b(?:` + [
+  String.raw`(?<!\b(?:played|gave|had|staged) (?:its|their) )(?:final (?:performances?|shows?|curtain|week(?:end)?|days?|chance)|last (?:performances?|shows?|curtain|weekend|days|chance))\b(?! (?:was|were|came|played|fell))`,
+  String.raw`(?:its|the) last week`, String.raw`before it (?:closes|ends)`, 'closes', 'closing',
+  String.raw`(?:still|now|currently) (?:playing|running|on)`, 'extended', 'wrapping up', 'wraps',
+  String.raw`(?:is )?leaving`, String.raw`leaves (?:on |this |next )?` + WEEKDAY_OR_MONTH,
+  String.raw`(?:plays|runs|run|playing|running|on|continues) (?:until|through|to) (?:` + WEEKDAY_OR_MONTH + String.raw`|\d|next|this|the end)`,
+  String.raw`ends (?:its (?:[\w'-]+ ){0,3}run|on|this|tonight|today|tomorrow|` + WEEKDAY_OR_MONTH + ')',
+  String.raw`book(?:ing)? (?:now|it|tickets|before)`, 'tickets', 'catch', 'while you can', "don'?t miss", 'hurry', String.raw`(?:you )?(?:have|has) until`,
+].join('|') + String.raw`)\b`, 'i');
+
+// ---- Weekly roundup lead (BRO-8064, owner 2026-11-22) ----
+// West End 2026-11-16: "Goblin posts a solid 75/100 from 5 critics", a thinly
+// reviewed show, not the top score, in a week of seven openings; the Broadway
+// lede said a show "tops every New York opening at 82" with a 91 card below it.
+// A show needs this many critics before the subject or the first sentence may
+// single it out.
+export const WELL_REVIEWED_MIN = 10;
+// From this many openings the subject covers the week, not one show. With two,
+// a subject about the lead alone is fine ("Cloud 9 lands at a solid 77/100").
+export const ROUNDUP_MIN = 3;
+const COUNT_WORD = `(\\d{1,2}|${ONES.join('|')})`;
+// "Seven London openings", "New York's six openings", "4 new shows".
+const OPENING_COUNT_RE = new RegExp(String.raw`(?<!\b(?:its|their|both)\s)\b` + COUNT_WORD
+  + String.raw`\s+(new\s+)?(?:(?:London|New York|NYC|Broadway|Off-Broadway|West End|Off West End|Off-West End)(?:'s)?\s+)?(?:openings|premieres|(?:shows|productions|plays|musicals)\b(?:(?<=\bnew\s+(?!york\b)(?:\S+\s+){0,3}\S+)|(?=\s+(?:opened|open|opening|debuted|premiered))))\b`, 'gi');
+// "Two shows close Saturday" is not an opening count (review, BRO-8064): a bare
+// "N shows" counts only as "N new shows" or "N shows opened".
+// Ranking words. A show may be called the top (or the bottom) only when it holds
+// the highest (lowest) Critic Score of every show the email lists.
+// Plain uses stay legal: "led by a starry cast", "leads its audience", "at its best", "trails only X".
+// "led by <masked title>" is a ranking; "led by Sarah Snook" (a person, unmasked) is not.
+const TOP_RE = /\b(?:tops|topped|topping|top(?! form| billing)|highest|(?<!\b(?:its|their|at) )best(?:-(?:reviewed|scoring|received))?|(?<!\b(?:two|three|four|its|the|their|both|romantic|male|female) )leads?(?! (?:its|their|audiences?|by)\b)|led(?! by \S)(?! the box office)|leading(?! (?:a|an|its|the|role|roles|man|men|lady|ladies|performances?|actors?|actress)\b)|the (?:[\w'’-]+ )?high|(?<!\b(?:comic|emotional|story|its|the) )beats?|outscor\w*|strongest|(?<!\ba )standout(?! (?:cast|performances?|turns?|sets?|numbers?|songs?)\b)|No\.?\s?1|number one)\b/i;
+const BOTTOM_RE = /\b(?:trails?(?! only\b)|trailing(?! only\b)|trailed(?! only\b)|lowest|worst|bottom|weakest|last place|low point|the (?:[\w'’-]+ )?low)\b/i;
+const toNum = (w) => /^\d+$/.test(w) ? Number(w) : ONES.indexOf(String(w).toLowerCase());
+
+/**
+ * The template subject for a roundup week (3+ openings) when the AI subject is
+ * off or failed: the week, never one show (owner, 2026-11-22/23), e.g.
+ * "How NYC's six openings scored this week, from 48 to 82". Null otherwise.
+ */
+export function weekSubject(pool) {
+  const o = pool.weekOpenings || [];
+  if (o.length < ROUNDUP_MIN) return null;
+  const sc = o.map(t => (pool.showStats || new Map()).get(t)).filter(Boolean).map(s => s.score);
+  if (sc.length < 2) return null;
+  const where = pool.edition === 'west-end' ? "London's" : "NYC's";
+  const n = ONES[o.length] || String(o.length);
+  const lo = Math.min(...sc), hi = Math.max(...sc);
+  const range = lo === hi ? `all at ${lo}` : `from ${lo} to ${hi}`;
+  // London names its West End lead first when one opened (owner, 2026-11-15), still covering the week.
+  const L = pool.edition === 'west-end' && (pool.topLeadTitles || []).length && (pool.leadShows || [])[0];
+  const more = ONES[o.length - 1] || String(o.length - 1);
+  const opts = L
+    ? [`${L} and ${more} more London openings, ${lo} to ${hi}`, `${L} and ${more} more London openings`]
+    : [`How ${where} ${n} openings scored this week, ${range}`, `How ${where} ${n} openings scored, ${range}`];
+  return opts.find(x => x.length <= SUBJECT_MAX) || null;
+}
+
+/** Each show's Critic Score and critic count, read from its Opening or Closing soon line. */
+export function showStatsOf(facts) {
+  const out = new Map();
+  for (const { title } of facts.titles || []) {
+    const l = (facts.lines || []).find(x => x.startsWith(`Opening: ${title},`) || x.startsWith(`Closing soon: ${title},`));
+    const m = l && l.match(/Critic Score (\d{1,3})\/100 from (\d+) critics/);
+    if (m) out.set(title, { score: Number(m[1]), count: Number(m[2]) });
+  }
+  return out;
+}
+
+/**
+ * The opening(s) a roundup may lead with: the edition's main market first when
+ * it had any (owner, 2026-11-15), then the highest Critic Score among shows with
+ * WELL_REVIEWED_MIN+ critics, ties kept; with none that well reviewed, the most
+ * reviewed. A show that has already closed leads only when nothing else can.
+ */
+export function pickLead(openings, stats, { main = [], closed = [] } = {}) {
+  let ok = openings.filter(t => stats.has(t));
+  if (ok.some(t => !closed.includes(t))) ok = ok.filter(t => !closed.includes(t));
+  if (ok.some(t => main.includes(t))) ok = ok.filter(t => main.includes(t));
+  if (!ok.length) return [];
+  const well = ok.filter(t => stats.get(t).count >= WELL_REVIEWED_MIN);
+  if (!well.length) return [[...ok].sort((a, b) => stats.get(b).count - stats.get(a).count || stats.get(b).score - stats.get(a).score)[0]];
+  const top = Math.max(...well.map(t => stats.get(t).score));
+  return well.filter(t => stats.get(t).score === top).sort((a, b) => stats.get(b).count - stats.get(a).count);
+}
+
+/** Title mentions in a text, with positions, longest form first; forms map back to the full title. */
+function titleHits(text, formTitle) {
+  const hits = [];
+  for (const [form, title] of [...formTitle].sort((x, y) => y[0].length - x[0].length)) {
+    for (const m of String(text).matchAll(new RegExp(`(^|[^\\p{L}\\p{N}])${escRe(form)}(?![\\p{L}\\p{N}])`, 'gu'))) {
+      const at = m.index + m[1].length, end = m.index + m[0].length;
+      if (!hits.some(h => at < h.end && end > h.at)) hits.push({ title, at, end });
+    }
+  }
+  return hits.sort((a, b) => a.at - b.at);
+}
+const maskHits = (text, hits) => hits.reduce((s, h) => s.slice(0, h.at) + ' '.repeat(h.end - h.at) + s.slice(h.end), String(text));
+// The show a number or ranking word at position i is about: the last show named
+// before it in the clause, else the first named after it.
+const aboutAt = (hits, i) => { const b = hits.filter(h => h.end <= i); return b.length ? b[b.length - 1].title : (hits.find(h => h.at >= i) || {}).title; };
+
+/** Problems with how a candidate leads the roundup, ranks shows and states numbers (BRO-8064). */
+export function roundupProblems({ subject, preheader, lede }, pool) {
+  const p = [];
+  const stats = pool.showStats || new Map();
+  if (!stats.size) return p;
+  const ft = pool.formTitle || new Map();
+  const sentencesOf = (t) => splitSentences(t, pool.titleNames || []);
+  const clausesOf = (t) => sentencesOf(t).flatMap(x => x.split(/,\s+(?:and|but|while|as|with)\s+|;\s+|:\s+|\s+(?:while|whereas)\s+/));
+  const fields = [['subject', subject], ['preheader', preheader], ['lede', lede]];
+  // A clause that names no show but says "it"/"its" is about the last show named
+  // before it ("Then there is The Good Thief. It tops every opening at 82.").
+  const withCarry = (text) => { let last = null; return clausesOf(text).map(c => {
+    let hits = titleHits(c, ft);
+    const pron = /^\W*(?:it|its|it's|it’s|the (?:show|play|musical|production|revival))\b/i.test(c) || (!hits.length && /\b(?:it|its|it's|it’s|the (?:show|play|musical|production|revival))\b/i.test(c));
+    const carried = last && pron ? [{ title: last, at: 0, end: 0 }] : [];
+    if (hits.length) last = hits[hits.length - 1].title;
+    hits = [...carried, ...hits];
+    return [c, hits];
+  }); };
+  // 1. Every score and critic count sits with its own show: a stored subject
+  // whose numbers went stale ("Goblin ... 75/100 from 5 critics" after Goblin
+  // moved to 77 from 6) fails here, so it is rewritten instead of reused.
+  for (const [field, text] of fields) {
+    let done = false;
+    // Per clause: "X lands at 82, while Y's special trails at 48" binds 48 to Y or to nothing, never X.
+    for (const [sentence, hits] of withCarry(text)) {
+      if (done) break;
+      if (!hits.length) continue;
+      const bare = maskHits(sentence, hits).replace(DATE_RE, (m) => ' '.repeat(m.length));
+      const claims = [
+        ...[...bare.matchAll(/\b(\d{1,3})\s*(?:\/\s*100|out of 100)/g)].map(m => ({ n: +m[1], i: m.index, kind: 'score' })),
+        ...[...bare.matchAll(/\((\d{1,3})(?:\/100)?\)/g)].map(m => ({ n: +m[1], i: m.index, kind: 'score' })),
+        ...[...bare.matchAll(/\bat (?:a |an )?(?:[a-z]+ )?(\d{1,3})\b(?!\s*(?:\/|out of|%|critics|reviews|reviewers|new|openings|shows|productions))/g)].map(m => ({ n: +m[1], i: m.index, kind: 'score' })),
+        ...[...bare.matchAll(/\b(?:scores?|scored|scoring|hits?|posts?|posted|earns?|earned|sits?|lands?|landed|comes in|came in|gets?|got) (?:a |an )?(?:[a-z]+ )?(\d{1,3})\b(?!\s*(?:\/|out of|%|critics|reviews|reviewers|openings|shows|productions))/g)].map(m => ({ n: +m[1], i: m.index, kind: 'score' })),
+        ...[...bare.matchAll(/\bfrom (\d{1,3}|[a-z]+) (?:critics|reviews|reviewers)\b/g)].map(m => ({ n: toNum(m[1]), i: m.index, kind: 'count' })),
+      ];
+      for (const c of claims) {
+        const t = aboutAt(hits, c.i), s = t && stats.get(t);
+        if (!s || c.n < 0) continue;
+        const want = c.kind === 'score' ? s.score : s.count;
+        if (c.n !== want) { p.push(`${field} gives ${t} ${c.kind === 'score' ? `a score of ${c.n}; its Critic Score is ${s.score}` : `${c.n} critics; it has ${s.count}`}`); done = true; break; }
+      }
+    }
+  }
+  // 2. Ranking words only for the real top or bottom of every show listed.
+  const scores = [...stats.values()].map(s => s.score);
+  const max = Math.max(...scores), min = Math.min(...scores);
+  for (const [field, text] of fields) {
+    const bad = withCarry(text).map(([clause, hits]) => {
+      if (!hits.length) return null;
+      const bare = maskHits(clause, hits);
+      for (const [re, want, word] of [[TOP_RE, max, 'top'], [BOTTOM_RE, min, 'bottom']]) {
+        const m = re.exec(bare);
+        if (!m) continue;
+        const before = hits.filter(h => h.end <= m.index);
+        const about = (before.length ? before : hits.slice(0, 1)).map(h => h.title).filter(t => stats.has(t));
+        const wrong = about.find(t => stats.get(t).score !== want);
+        if (wrong) return `${field} ranks ${wrong} (${stats.get(wrong).score}) as the ${word} ("${m[0]}"), but the email lists a show at ${want}; state the score without ranking it`;
+      }
+      return null;
+    }).find(Boolean);
+    if (bad) p.push(bad);
+  }
+  // 2b. Editorial, not a recap of the cards (owner, 2026-11-23).
+  const ledeScores = (stripTitles(String(lede || '').replace(DATE_RE, ' '), pool.titleNames || []).match(/(?<![\/.]\s*)\b\d{1,3}\b(?!\s*(?:critics|reviews|reviewers|openings|shows|productions|%|\.\d))/g) || []).length;
+  if (ledeScores > 3) p.push(`the opening paragraph gives ${ledeScores} scores; it is editorial, not a recap of the cards below it: tell the story of the week and give at most three`);
+  // 3. Opening counts must be ones the facts give.
+  const allowed = pool.openingCounts || new Set();
+  for (const [field, text] of fields) {
+    const bare = stripTitles(text, pool.titleNames || []);
+    const wrong = [...bare.matchAll(OPENING_COUNT_RE)].find(m => !allowed.has(toNum(m[1])));
+    if (wrong) p.push(`${field} says "${wrong[0]}", but the facts count ${[...allowed].join(' or ') || 'no'} openings this week`);
+  }
+  // 4. A week of several openings is a roundup: the subject covers the week,
+  // and whatever show it or the first sentence names first is the lead.
+  const opens = pool.weekOpenings || [], lead = pool.leadShows || [], thin = pool.thinTitles || [];
+  if (opens.length >= 2 && lead.length) {
+    const sHits = titleHits(subject, ft);
+    const named = [...new Set(sHits.map(h => h.title).filter(t => opens.includes(t)))];
+    const statesCount = [...stripTitles(subject, pool.titleNames || []).matchAll(OPENING_COUNT_RE)].some(m => allowed.has(toNum(m[1])));
+    if (opens.length >= ROUNDUP_MIN && !statesCount && named.length < 2) p.push(`${opens.length} shows opened this week, so the subject must cover the week (say how many opened, or name at least two), not one show`);
+    const firstS = sHits.find(h => stats.has(h.title));
+    if (firstS && !lead.includes(firstS.title)) p.push(`the subject names ${firstS.title} first; the lead opening is ${lead.join(' or ')}`);
+    const thinS = named.filter(t => thin.includes(t));
+    if (thinS.length) p.push(`the subject names ${thinS.join(', ')}, which too few critics have reviewed to single out`);
+    const first = firstSentence(lede, pool.titleNames || []);
+    const fHits = titleHits(first, ft).filter(h => stats.has(h.title));
+    if (fHits.length && !lead.includes(fHits[0].title)) p.push(`the opening paragraph must start with the lead opening (${lead.join(' or ')}), not ${fHits[0].title}`);
+    const thinF = [...new Set(fHits.map(h => h.title).filter(t => thin.includes(t)))];
+    if (thinF.length) p.push(`the opening paragraph's first sentence names ${thinF.join(', ')}, which too few critics have reviewed to single out`);
+  }
+  return p;
+}
+
+export function buildPool(facts) {
+  // BRO-8064: lead, thin-review and ranking facts, worked out here so the
+  // writer is told them and the checks below enforce the same answer.
+  const showStats = showStatsOf(facts);
+  const isClosed = ({ title }) => facts.lines.includes(closedFactLine(title));
+  const closedFull = (facts.titles || []).filter(isClosed).map(t => t.title);
+  const weekOpenings = [...new Set(facts.leadTitles || [])].filter(t => showStats.has(t));
+  const mainOpenings = [...new Set(facts.topLeadTitles || [])].filter(t => weekOpenings.includes(t));
+  // New York roundups cover every NYC opening: each Broadway opening already got
+  // its own email earlier in the week (owner, 2026-11-23), so Broadway does not
+  // get first claim on the lead there. London keeps West End first.
+  const nycWide = facts.edition !== 'west-end';
+  const leadShows = pickLead(weekOpenings, showStats, { main: nycWide ? [] : mainOpenings, closed: closedFull });
+  const thinTitles = weekOpenings.filter(t => showStats.get(t).count < WELL_REVIEWED_MIN && !leadShows.includes(t));
+  const openingCounts = new Set([weekOpenings.length, mainOpenings.length, weekOpenings.length - mainOpenings.length].filter(n => n > 0));
+  const derived = [];
+  if (weekOpenings.length >= 2 && leadShows.length) {
+    const mk = facts.edition === 'west-end' ? ['London', 'West End', 'Off West End'] : ['New York', 'Broadway', 'Off-Broadway'];
+    derived.push(`Openings this week: ${weekOpenings.length} ${mk[0]} productions opened this week (${mainOpenings.length} ${mk[1]}, ${weekOpenings.length - mainOpenings.length} ${mk[2]}). Those are the only opening counts you may state.`);
+    derived.push(`Lead opening: ${leadShows.join(' and ')}. ${leadShows.length > 1 ? 'They are' : 'It is'} the highest-scoring of this week's openings with at least ${WELL_REVIEWED_MIN} critics. A subject or opening paragraph that names a show names ${leadShows.length > 1 ? 'one of these' : 'this one'} first.`);
+    if (thinTitles.length) derived.push(`Too few critics so far to single out: ${thinTitles.join('; ')}. Never name them in the subject or the first sentence.`);
+  }
+  if (showStats.size) {
+    const all = [...showStats];
+    const max = Math.max(...all.map(([, s]) => s.score)), min = Math.min(...all.map(([, s]) => s.score));
+    derived.push(`Highest Critic Score of any show in this email: ${all.filter(([, s]) => s.score === max).map(([t]) => t).join('; ')}. Lowest: ${all.filter(([, s]) => s.score === min).map(([t]) => t).join('; ')}. Only those may be called the top, best, highest, the leader, the lowest or trailing, even within one market or one week; for any other show give its score without ranking it.`);
+  }
+  const sheet = [...facts.lines, ...derived].map(l => `- ${l}`).join('\n');
+  const titleNames = facts.titles.flatMap(t => titleForms(t.title));
+  // Show lines only: the coverage-dates line would vouch for any weekday.
+  const showLines = facts.lines.filter(l => titleNames.some(t => mentions(l, t))).join('\n');
+  const bare = stripTitles(sheet, titleNames);
+  return {
+    sheet,
+    numbers: new Set(numbersIn(bare)),
+    // Critic Scores the facts state ("Critic Score 77/100"): a subject that
+    // names a show must carry one of them.
+    scoreNumbers: new Set([...facts.lines.join('\n').matchAll(/Critic Score (\d{1,3})\/100/g)].map(m => String(Number(m[1])))),
+    dates: new Set(datesIn(bare)),
+    weekdays: new Set(weekdaysIn(stripTitles(showLines, titleNames))),
+    titles: facts.titles,
+    // Every show title the site knows (generate.mjs passes them): naming one
+    // that is not in the facts rejects the candidate.
+    // A known title that sits inside one of this email's titles ("Mean Girls"
+    // in "School Girls; Or, The African Mean Girls Play") is not another show.
+    otherTitles: (facts.knownTitles || []).filter(t => t && t.length >= 4 && !titleNames.includes(t)
+      && !facts.titles.some(x => mentions(x.title, t))),
+    titleNames,
+    // This week's primary-market openings, the roundup's main story (owner,
+    // 2026-11-09). When there are any, the subject and the first sentence of
+    // the opening paragraph must be about them.
+    leadTitles: (facts.leadTitles || []).flatMap(t => titleForms(t)),
+    // The edition's main-market openings (Broadway / West End). When there are
+    // any, the lede leads with one, never with an off-market show (owner, 2026-11-15).
+    // London only, and only West End openings still running when one is the lead:
+    // a lone West End opening that already closed must not deadlock the checks.
+    topLeadTitles: facts.edition === 'west-end' && leadShows.some(t => mainOpenings.includes(t))
+      ? (facts.topLeadTitles || []).filter(t => !closedFull.includes(t)).flatMap(t => titleForms(t)) : [],
+    edition: facts.edition,
+    showStats,
+    formTitle: new Map((facts.titles || []).flatMap(({ title }) => titleForms(title).map(f => [f, title]))),
+    weekOpenings, leadShows, thinTitles, openingCounts,
+    // Venues, critics and outlets the facts name: the cards already show the
+    // venue, and the lede is not the place for a critic (owner, 2026-11-15).
+    venueNames: [...new Set(facts.lines.flatMap(l => [...l.matchAll(/(?:^|[ ,])at ([A-Z][^,.]*?)(?:, opened|\. |\.$|, [a-z])/g)].flatMap(m => m[1].split('/')).map(v => v.trim()).filter(v => v.length >= 5)))],
+    // Openings whose run ended before the email goes out (BRO-8053).
+    // Matched against the known titles, not parsed, so a comma in a title is fine.
+    closedTitles: (() => {
+      const isClosed = ({ title }) => facts.lines.includes(closedFactLine(title));
+      const open = new Set(facts.titles.filter(t => !isClosed(t)).flatMap(({ title }) => titleForms(title)));
+      return facts.titles.filter(isClosed).flatMap(({ title }) => titleForms(title)).filter(t => !open.has(t));
+    })(),
+    // Shows whose reception line says critics split (owner, 2026-11-22).
+    splitTitles: (facts.reception || []).filter(r => r.verdict === 'split').flatMap(r => titleForms(r.title)),
+    // Single-review scores that misrepresent their show: the pan of a show
+    // critics liked, the rave of one they disliked.
+    // Each show's own Critic Score, so a pan number that equals it is not the pan.
+    criticScoreOf: new Map(facts.titles.flatMap(({ title }) => {
+      const l = facts.lines.find(x => x.startsWith(`Opening: ${title},`) || x.startsWith(`Closing soon: ${title},`));
+      const m = l && l.match(/Critic Score (\d{1,3})\/100/);
+      return m ? [[title, String(Number(m[1]))]] : [];
+    })),
+    misleadingReviewScores: new Map(facts.lines.flatMap(l => {
+      const m = l.match(/^(Rave|Pan) of the week: .*'s review of (.+) is (\d{1,3}) out of 100\.$/);
+      if (!m) return [];
+      const r = (facts.reception || []).find(x => x.title === m[2]);
+      if (!r) return [];
+      return (m[1] === 'Pan' && r.verdict === 'liked') || (m[1] === 'Rave' && r.verdict === 'disliked') ? [[String(Number(m[3])), m[2]]] : [];
+    })),
+    criticNames: [...new Set(facts.lines.flatMap(l => [...l.matchAll(/(?:Rave|Pan) of the week: our score for (.+?) \((.+?)\)'s review of /g)].flatMap(m => [m[1], m[2]])))].filter(n => n.trim().toLowerCase() !== 'a critic'),
+  };
+}
+
+/**
+ * Detail the show cards below the lede already carry (owner, 2026-11-15: "we
+ * already say the theater and the date it opened, that's not editorial"). The
+ * lede is the voice: a score, a verdict, a point of view. Returns the reasons a
+ * lede repeats card detail; empty means it does not.
+ */
+export function cardDetailRepeats(lede, { venues = [], critics = [] } = {}) {
+  const t = String(lede || '');
+  const why = [];
+  // "opened at <Place>" / "opened on <day>" / "opened Nov 9", past tense only: "opens at 77/100"
+  // is a score, and "opens Monday" is an upcoming show, neither is card detail.
+  if (/\b(?:opened|premiered)\s+(?:at|in)\s+(?:the\s+)?[A-Z]/.test(t) || /\b(?:opened|premiered)\s+(?:on\s+)?(?:(?:this|last)\s+)?(?:Mon|Tues?|Wednes|Thurs?|Fri|Satur|Sun)(?:day)?\b/i.test(t)
+    || /\b(?:opened|premiered)\s+(?:on\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2}\b/.test(t)) why.push('says where or when a show opened; the cards show that');
+  if (/\bat (?:the )?[A-Z][\w'.&-]*(?: [A-Z][\w'.&-]*)* (?:Theatre|Theater|Playhouse|Horizons|Center|Centre|Hall|House|Rep)\b/.test(t)) why.push('names a theatre; the cards show that');
+  const v = venues.find(x => x && t.includes(x));
+  if (v) why.push(`names a venue (${v}); the cards show that`);
+  // The cards carry the critic count; the lede is the voice (owner, 2026-11-15).
+  if (/\b\d{1,3}\s+(?:critics|reviews|reviewers)\b/i.test(t)) why.push('states a review or critic count; the cards show that');
+  return why.concat(criticRepeats(t, critics));
+}
+
+/**
+ * A critic named or credited with a score. Runs on the subject and preview
+ * text too: the Nov 9 preview went out as "Frank Scheck gave it 98 out of 100"
+ * because only the lede was checked.
+ */
+export function criticRepeats(text, critics = []) {
+  const t = String(text || '');
+  const why = [];
+  if (/\b(?:gave|gives|give|giving|awarded|awards|handed)\b[^.]{0,60}?\b\d{1,3}(?: out of 100|\/100)/i.test(t)
+    || /\b(?:critics?|reviewers?)\b[^.]{0,40}\b(?:gave|gives|awarded|rated)\b[^.]{0,30}\b\d{2,3}\b/i.test(t)) why.push("says a critic gave a score; the Critic Score is ours, critics do not give one");
+  const c = critics.find(x => x && t.includes(x));
+  if (c) why.push(`names a critic or outlet (${c}); keep to our Critic Score`);
+  return why;
+}
+
+/** Everything code can check about one candidate. Empty means it passed. */
+export function checkCandidate(c, pool, recent = []) {
+  const p = [];
+  if (!c || typeof c.subject !== 'string' || typeof c.preheader !== 'string' || typeof c.lede !== 'string') return ['not {"angle", "subject", "preheader", "lede"}'];
+  const subject = c.subject.trim(), pre = c.preheader.trim(), lede = c.lede.trim();
+  if (subject.length < 15 || subject.length > SUBJECT_MAX) p.push(`subject is ${subject.length} characters; keep it 15 to ${SUBJECT_MAX} (30 to 50 is best)`);
+  if (pre.length < 30 || pre.length > PREHEADER_MAX) p.push(`preheader is ${pre.length} characters; keep it 30 to ${PREHEADER_MAX}`);
+  if (lede.length < 80 || lede.length > LEDE_MAX) p.push(`lede is ${lede.length} characters; keep it 80 to ${LEDE_MAX}`);
+  for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
+    // Titles out first: a dash, "!" or number inside a title ("Iphigenie en
+    // Tauride - English National Opera", "2:22") is not our prose.
+    const body = stripTitles(text, pool.titleNames || pool.titles.map(t => t.title));
+    for (const [re, what] of BANNED) if (re.test(body)) p.push(`${field} contains ${what}`);
+    const stray = [...new Set(numbersIn(body).filter(n => !pool.numbers.has(n)))];
+    if (stray.length) p.push(`${field} has numbers that are not in the facts: ${stray.join(', ')}`);
+    const badDates = datesIn(body).filter(d => !pool.dates.has(d));
+    if (badDates.length) p.push(`${field} names a date the facts do not`);
+    const others = (pool.otherTitles || []).filter(t => mentions(body, t));
+    if (others.length) p.push(`${field} names a show that is not in this email: ${others.slice(0, 3).join(', ')}`);
+    const days = weekdaysIn(body).filter(d => !pool.weekdays.has(d));
+    if (days.length) p.push(`${field} names a day the facts do not: ${days.join(', ')}`);
+  }
+  for (const why of cardDetailRepeats(lede, { venues: pool.venueNames, critics: pool.criticNames })) p.push(`lede ${why}`);
+  for (const [field, text] of [['subject', subject], ['preheader', pre]]) {
+    for (const why of criticRepeats(text, pool.criticNames || [])) p.push(`${field} ${why}`);
+  }
+  // Critics split only when a reception line says so (owner, 2026-11-22).
+  // The sentence must name a split show and no other show.
+  const splits = pool.splitTitles || [];
+  const sentencesOf = (t) => splitSentences(t, pool.titleNames || []);
+  for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
+    for (const sentence of sentencesOf(text)) {
+      if (!SPLIT_RE.test(stripTitles(sentence, pool.titleNames || []))) continue;
+      const named = (pool.titleNames || []).filter(t => mentions(sentence, t));
+      if (named.length && named.every(t => splits.includes(t))) continue;
+      p.push(`${field} says critics were split or not all on board, but the facts do not say that about the show it describes: "${sentence.slice(0, 80)}"`);
+      break;
+    }
+  }
+  // A show that has already closed is never "closing" or still on (BRO-8053:
+  // "its final performance is Saturday, Nov 21", sent Sunday the 22nd).
+  const closed = pool.closedTitles || [];
+  if (closed.length) {
+    for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
+      // Closing words are about the show named just before them in the same
+      // clause ("X hits 79 and Y closes Saturday" is about Y), else the first
+      // named after them. A clause that names no show is about the last show
+      // named before it, or every show so far for "both"/"they".
+      const names = pool.titleNames || [];
+      let last = names.filter(t => mentions(subject, t));
+      let sofar = [...last];
+      const clausesOf = (t) => sentencesOf(t).flatMap(x => x.split(/,\s+(?:and|but|while|as)\s+|;\s+|\s+(?:while|whereas)\s+/));
+      const bad = clausesOf(text).find(clause => {
+        const hits = names.flatMap(t => [...clause.matchAll(new RegExp(`(^|[^\\p{L}\\p{N}])${escRe(t)}(?![\\p{L}\\p{N}])`, 'gu'))]
+          .map(m => ({ t, at: m.index + m[1].length, end: m.index + m[0].length })));
+        let masked = clause;
+        for (const h of hits) masked = masked.slice(0, h.at) + ' '.repeat(h.end - h.at) + masked.slice(h.end);
+        const m = STILL_ON_RE.exec(masked);
+        let about = last;
+        if (m && hits.length) {
+          const before = hits.filter(h => h.end <= m.index);
+          const at = before.length ? Math.max(...before.map(h => h.at)) : Math.min(...hits.map(h => h.at));
+          about = hits.filter(h => h.at === at).map(h => h.t);
+        } else if (m && /\b(?:both|all|they|each|the two)\b/i.test(clause)) about = sofar;
+        if (hits.length) { last = [...new Set(hits.map(h => h.t))]; sofar = [...new Set([...sofar, ...last])]; }
+        return !!m && about.some(t => closed.includes(t));
+      });
+      if (bad) { p.push(`${field} talks about a show that has already closed as if it were still running or about to close: "${bad.slice(0, 80)}"`); }
+    }
+  }
+  // A single pan of a show critics liked is not a headline (both editions led
+  // with one on 2026-11-16).
+  // Only when the show is named (here or in the subject) and the number is not
+  // also a real Critic Score in the facts (another show at 16/100).
+  // Per sentence: the number must sit with that show (named in the sentence,
+  // or the sentence names no show and the subject does), and must not be the
+  // show's own Critic Score, a critic count or the /100 denominator.
+  const misleading = pool.misleadingReviewScores || new Map();
+  if (misleading.size) {
+    for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
+      const hit = sentencesOf(text).map(sentence => {
+        const named = (pool.titleNames || []).filter(t => mentions(sentence, t));
+        const bare = stripTitles(sentence, pool.titleNames || []).replace(/\s*(?:\/|out of )100\b/gi, ' ').replace(/\b\d{1,3}\s+(?:critics|reviews|reviewers)\b/gi, ' ');
+        return numbersIn(bare).find(n => {
+          const show = misleading.get(n);
+          if (!show) return false;
+          const forms = titleForms(show);
+          const about = named.length ? forms.some(f => named.includes(f)) : forms.some(f => mentions(subject, f));
+          return about && (pool.criticScoreOf || new Map()).get(show) !== n;
+        });
+      }).find(Boolean);
+      if (hit) p.push(`${field} uses one review's score (${hit}) that runs against how most critics felt; the Critic Score is the story`);
+    }
+  }
+  const leads = pool.leadTitles || [];
+  if (leads.length) {
+    const namesLead = (t) => leads.some(l => mentions(t, l));
+    if (!namesLead(subject) && !/\b(?:open(?:s|ed|ing|ings)?|premieres?|debuts?|new shows?)\b/i.test(subject)) {
+      p.push("subject must be about this week's openings (name one, or say how the openings went); closings and other news go in the preview text or later in the paragraph");
+    }
+    const first = firstSentence(lede, pool.titleNames || []);
+    if (!namesLead(first)) p.push("the opening paragraph's first sentence must name one of this week's openings");
+    const tops = pool.topLeadTitles || [];
+    if (tops.length) {
+      const namesTop = (t) => tops.some(l => mentions(t, l));
+      const mainMkt = pool.edition === 'west-end' ? 'West End' : 'Broadway';
+      if (!namesTop(first)) p.push(`the opening paragraph must lead with a ${mainMkt} opening (${[...new Set(tops)].slice(0, 3).join(', ')}), not an off-market show`);
+      if (namesLead(subject) && !namesTop(subject)) p.push(`a subject that names an opening must name a ${mainMkt} one, not an off-market show`);
+    }
+  }
+  for (const why of roundupProblems({ subject, preheader: pre, lede }, pool)) p.push(why);
+  // Score first: a subject that names a show leads with its Critic Score
+  // ("Cloud 9 lands at a solid 77/100 from 33 critics"). Group subjects that
+  // name no show ("Four London openings, one standout") are exempt.
+  if (pool.scoreNumbers && pool.scoreNumbers.size && (pool.titleNames || []).some(t => mentions(subject, t))) {
+    const subjNums = numbersIn(stripTitles(subject, pool.titleNames || []));
+    if (!subjNums.some(n => pool.scoreNumbers.has(n))) p.push("a subject that names a show must state that show's Critic Score number (e.g. 77/100)");
+  }
+  if (lede.length >= 80) {
+    const first = firstSentence(lede, pool.titleNames || []);
+    if (pool.scoreNumbers && pool.scoreNumbers.size && (pool.titleNames || []).some(t => mentions(first, t))
+      && !numbersIn(stripTitles(first, pool.titleNames || [])).some(n => pool.scoreNumbers.has(n))) {
+      p.push("the opening paragraph's first sentence names a show, so it must give that show's Critic Score number");
+    }
+  }
+  if (jaccard(subject, pre) > 0.5) p.push('preheader repeats the subject; it should add the next thing a reader wants to know');
+  for (const r of recent) {
+    if (!r) continue;
+    if (firstWords(subject) === firstWords(r)) p.push(`subject starts like a recent one ("${r}")`);
+    else if (jaccard(subject, r) > 0.5) p.push(`subject is too close to a recent one ("${r}")`);
+  }
+  return p;
+}
+
+export function writerPrompt(pool, { recent = [], feedback = null, count = 6 } = {}) {
+  const brand = pool.edition === 'west-end' ? 'West End Scorecard (London theatre)' : 'Broadway Scorecard (New York theatre)';
+  return `You write the subject line, inbox preview text and opening paragraph for this week's ${brand} email newsletter. Subscribers are theatregoers deciding what to see. Never say today, tonight, tomorrow or this weekend: the send day can move, so name the weekday the facts give.
+
+This is the weekly opening-night roundup. Its main story is THIS WEEK'S OPENINGS and how critics received them.${pool.leadTitles && pool.leadTitles.length ? ` Every subject line must be about this week's openings (lines starting "Opening:" that say "opened this week" in the ${pool.edition === 'west-end' ? 'West End or Off West End' : 'Broadway or Off-Broadway'}), and the opening paragraph must start with them.` : ''} ${pool.edition === 'west-end' ? 'A West End opening outranks an Off West End one; ' : 'In New York, Broadway and Off-Broadway openings count equally here (each Broadway opening already had its own email); '}a widely reviewed show outranks a thinly reviewed one. Closings, the rave and pan, box office and what's coming next are supporting news: use them in the preview text or later in the paragraph, never as the lead${pool.leadTitles && pool.leadTitles.length ? '' : ' unless the week had no openings'}.
+
+${(pool.weekOpenings || []).length >= ROUNDUP_MIN ? `${pool.weekOpenings.length} shows opened this week, so every subject covers the WEEK (owner, 2026-11-22: a roundup subject about one show reads oddly): say how many opened ("Seven London openings") or name at least two of them. When a subject or opening paragraph names a show first, it is the Lead opening from the facts; never lead with a show the facts say has too few critics to single out.
+
+Write ${count} candidates, each from a DIFFERENT angle on the week: how many opened and how they did as a group, the Lead opening and the rest of the week, ${pool.edition === 'west-end' ? 'the West End openings side by side,' : 'Broadway and Off-Broadway side by side,'}${pool.splitTitles && pool.splitTitles.length ? ' the split verdict (only for a show whose Reception line says critics were split),' : ''} a famous title or name among the openings, the week's warmest reception next to its coolest.` : `Write ${count} candidates, each from a DIFFERENT angle on the openings: the best-reviewed opening, the most-talked-about opening,${pool.splitTitles && pool.splitTitles.length ? ' the split verdict (only for a show whose Reception line says critics were split),' : ''} a perfect or record score, a famous title or name, how the week's openings went.`}
+
+Rules:
+1. Every claim, number, name and day must come from the facts below. Don't round, don't embellish, don't add context the facts don't give. Opinions belong to critics ("critics loved it"), never to us.
+2. Subject: 30 to 50 characters is best, never over ${SUBJECT_MAX}. One story. Sound like a friend who reads every review, not a database. Specific beats clever. Name a show when it helps.
+   THE CRITIC SCORE IS THE STAR. It is our own number, 0 to 100, built from every critic's review. Lead with it as "77/100 from 33 critics" (the critic count belongs in the subject only, never in the opening paragraph). Never use our tier labels (Recommended, Worth Seeing, Mixed, Critical Gold, Critical Miss) and never write "recommended" or "recommend": the label is not the news, the number is. You may add ONE plain word that fits the number (solid for the 70s, strong for the 80s, exceptional for 90+, middling for the 60s, weak below 55). A subject that names a show must carry that show's score. Good: "Cloud 9 lands at a solid 77/100 from 33 critics". "Hamlet Hail to the Thief hits 78/100 from 26 critics". Bad: "Critics recommend Cloud 9", "Dogstar gets a Mixed 64", "Cloud 9 (77) is Recommended from 33 reviews".
+3. Preview text (shown after the subject in the inbox): 40 to ${PREHEADER_MAX} characters. It adds the next thing a reader wants to know; never repeat the subject.
+4. Opening paragraph: the editorial voice, 2 or 3 short sentences, like a friend telling you what happened this week. It is EDITORIAL, not a recap of the cards below it (owner, 2026-11-23): never walk through the openings one by one with their scores. Pick the story of the week (what critics loved, what fell flat, what the week says as a whole) and give at most three scores. Lead with the Critic Score as a number out of 100, then say what it means or what stood out. Do NOT give the number of critics or reviews: the cards show it. ${pool.edition === 'west-end' ? 'Lead with a West End opening whenever one opened this week, never an Off West End show.' : 'Cover the week across ALL New York openings, Broadway and Off-Broadway alike: each Broadway opening already had its own email earlier in the week, so do not lead with Broadway alone. Good subject: "How NYC\'s six openings scored this week, from 48 to 82".'} Scores are OURS: never say a critic or reviewer "gave", "awarded" or "rated" a show a score. If a critic matters, name no critic: say the show "scores" or "lands at" a number. The show cards below it already show every theatre, opening date, score and critic count, so NEVER repeat venues, opening dates or days of the week for an opening ("opened at the Lyttelton Theatre on Tuesday"), and never name a critic or outlet or quote a critic's score. Use plain words and contractions; no stiff phrases like "the only Broadway opening this week" or "the most of any". Good: "Cloud 9 lands at a solid 77/100 in a quiet week. Dogstar comes in at 64." Bad: "Cloud 9 opened at the Lyttelton Theatre on Tuesday and scores 77/100 from 33 critics, the most of any London opening this week." Bad: "The pan of the week went to Nero, which a critic gave 13 out of 100." Later mentions can use parentheses, e.g. The Bridge (76). Do not describe a score with a tier label.
+5. Never use: "opens to X reviews", "with critics", "big/busy/packed week", "scoring 75 or higher", "the reviews are in", dashes as punctuation, quotation marks, exclamation marks, emoji, clickbait, "not X, but Y".
+6. HOW CRITICS FELT comes only from the "Reception" lines. Describe a show's reception exactly as its Reception line does. Never call a show split, divided or polarizing, and never say not every critic liked it, unless its Reception line says critics were split. The rave and the pan of the week are ONE review each: they say nothing about the other critics, so never build the subject or preview text on one, and never quote the spread between a show's best and worst review.
+7. RANKINGS: never call a show the top, best, highest, the leader or the high, or say it tops, leads or beats anything (nor lowest, trailing, the bottom), unless the facts' Highest (or Lowest) Critic Score line names it. Readers see every card's score; a show that "tops" the week with a higher number on the page below is a mistake. Give scores without ranking them.
+8. Every score and critic count you state must be that show's own, exactly as its Opening or Closing soon line gives it. Opening counts come only from the Openings this week line.
+9. Vary the shape between candidates: a statement, a verdict, a score-first line, a question only if it is specific.
+${recent.length ? `\nRecent subject lines. Do not resemble these in wording, shape or opening words:\n${recent.map(r => `- ${r}`).join('\n')}\n` : ''}
+FACTS:
+${pool.sheet}
+${feedback ? `\nYour previous candidates were rejected for these reasons. Fix every one:\n${feedback.map(f => `- ${f}`).join('\n')}\n` : ''}
+Reply with only a JSON object: {"candidates": [{"angle": "<short angle name>", "subject": "...", "preheader": "...", "lede": "..."}]}`;
+}
+
+export function checkerPrompt(pool, c) {
+  return `You fact-check a newsletter's subject line, preview text and opening paragraph against the facts they were written from. The facts are correct by definition. Flag any claim, number, name, day, ranking or comparison the facts do not support, including small embellishments ("sold out", "every critic", "the best of the year", "closes tomorrow" when the facts give a weekday). Flag an opinion stated as the newsletter's own rather than the critics'. Flag any description of how critics felt as a group (split, divided, polarizing, not every critic on board, loved, panned) that the show's "Reception" line does not support; a single rave or pan never shows a split. One plain word describing a Critic Score is allowed (solid for the 70s, strong for the 80s, exceptional for 90+, middling for the 60s, weak below 55). "From N critics" is the same fact as "from N reviews". Do not flag style, tone or omissions.
+
+FACTS:
+${pool.sheet}
+
+SUBJECT: ${c.subject}
+PREVIEW: ${c.preheader}
+OPENING: ${c.lede}
+
+Reply with only a JSON object: {"supported": true|false, "problems": ["<each unsupported claim and why>"]}`;
+}
+
+export function judgePrompt(pool, cands) {
+  return `You are the editor of a theatre newsletter choosing this week's subject line. This is the weekly opening-night roundup, so this week's openings are the story; prefer candidates that lead with them.${(pool.weekOpenings || []).length >= ROUNDUP_MIN ? ` ${pool.weekOpenings.length} shows opened this week: prefer a subject about the week as a whole over one about a single show, and prefer the Lead opening the facts name over thinly reviewed shows.` : ''} Rank these candidates by how likely a theatregoer is to open the email AND feel it was worth it: a clear, specific reason to open now, natural human voice, short enough for a phone, honest. Penalize anything vague, generic, mechanical or that oversells, and anything whose tone misleads about the score (a cautionary or doubtful line about a show most critics liked, or a warm one about a show they disliked).
+
+FACTS (for context):
+${pool.sheet}
+
+CANDIDATES:
+${cands.map((c, i) => `${i}. SUBJECT: ${c.subject}\n   PREVIEW: ${c.preheader}`).join('\n')}
+
+Reply with only a JSON object: {"ranking": [<candidate numbers, best first>], "why": "<one sentence on the winner>"}`;
+}
+
+async function postJson(url, body, headers, ms, label) {
+  return callWithTimeout(async () => {
+    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body), signal: AbortSignal.timeout(ms) });
+    const txt = await res.text();
+    if (!res.ok) throw new Error(`${label} HTTP ${res.status}`); // status only: error bodies can echo key fragments
+    return JSON.parse(txt);
+  }, ms + 5000, label);
+}
+
+async function claude(prompt, env = process.env) {
+  const j = await postJson('https://api.anthropic.com/v1/messages', { model: SOCIAL_WRITER, max_tokens: 8000, messages: [{ role: 'user', content: prompt }] },
+    { 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' }, CALL_MS, 'Claude');
+  const json = firstJsonObject(finalResponseText(j.content));
+  if (!json) throw new Error(`Claude: no JSON in reply (stop_reason ${j.stop_reason})`);
+  return JSON.parse(json);
+}
+
+async function gptChecker(prompt, env = process.env) {
+  const j = await postJson('https://api.openai.com/v1/responses', { model: GPT55, input: prompt, reasoning: { effort: 'low' } },
+    { Authorization: `Bearer ${env.OPENAI_API_KEY}` }, CALL_MS, 'GPT checker');
+  const text = (j.output || []).filter(o => o.type === 'message').flatMap(o => o.content || []).map(c => c.text || '').join('');
+  const json = firstJsonObject(text);
+  if (!json) throw new Error('GPT checker: no JSON in reply');
+  const v = JSON.parse(json);
+  if (typeof v.supported !== 'boolean') throw new Error('GPT checker: reply has no "supported" field');
+  return { supported: v.supported, problems: Array.isArray(v.problems) ? v.problems.map(String) : [] };
+}
+
+/** Why the AI writer is off for this run, or null when it may run. */
+export function aiSubjectDisabledReason(env = process.env) {
+  if (/^(1|true|yes)$/i.test(env.NEWSLETTER_AI_SUBJECT_DISABLED || '')) return 'NEWSLETTER_AI_SUBJECT_DISABLED';
+  if (env.SUBJECT_OVERRIDE || env.LEDE_OVERRIDE) return 'hand-written SUBJECT_OVERRIDE / LEDE_OVERRIDE';
+  if (!env.ANTHROPIC_API_KEY) return 'no ANTHROPIC_API_KEY';
+  if (!env.OPENAI_API_KEY) return 'no OPENAI_API_KEY (subjects are never used unchecked)';
+  return null;
+}
+
+/** Shows (from the pool) a text names, for the lede-in-body gate. */
+export function showsNamed(text, pool) {
+  return pool.titles.filter(t => titleForms(t.title).some(f => mentions(text, f))).map(({ id, slug, title }) => ({ id, slug, title }));
+}
+
+/**
+ * Reuse a subject written earlier for this same issue when it still passes
+ * every code check against today's facts (the Sunday refresh must not
+ * replace what the owner already previewed). Returns it, or null.
+ */
+export function reusable(prev, facts) {
+  if (!prev || !prev.subject || !prev.lede) return null;
+  try {
+    const pool = buildPool(facts);
+    if (checkCandidate(prev, pool, []).length) return null;
+    // Saved alternates face today's checks too (with the kept lede), so a rule added
+    // since they were written drops them from the owner's preview (BRO-8053).
+    const alternates = (prev.alternates || []).filter(a => a && a.subject && !checkCandidate({ ...a, lede: prev.lede }, pool, []).length);
+    return { ...prev, showRefs: showsNamed(`${prev.subject} ${prev.preheader} ${prev.lede}`, pool), reused: true, alternates };
+  } catch { return null; }
+}
+
+/**
+ * @returns {Promise<null | {subject, preheader, lede, angle, why, alternates: Array<{subject, preheader, angle}>, attempts, rejected: number}>}
+ *   null on any failure or when nothing survives; never throws.
+ */
+export async function writeSubject(facts, { recent = [], deps = {}, log = () => {} } = {}) {
+  const write = deps.writer || claude, check = deps.checker || gptChecker, judge = deps.judge || claude;
+  let pool;
+  try { pool = buildPool(facts); } catch (e) { log(`[subject-writer] fact pool: ${e.message}`); return null; }
+  if (!pool.titles.length) return null; // no show facts, nothing to write about
+  const deadline = Date.now() + (deps.deadlineMs || DEADLINE_MS);
+  const late = () => Date.now() > deadline;
+  let feedback = null, attempts = 0, rejected = 0;
+  try {
+    while (attempts < MAX_ROUNDS) {
+      if (late()) { log('[subject-writer] out of time'); return null; }
+      attempts++;
+      const reply = await write(writerPrompt(pool, { recent, feedback }));
+      const cands = (Array.isArray(reply && reply.candidates) ? reply.candidates : [])
+        .map(c => ({ angle: String(c.angle || ''), subject: String(c.subject || '').trim(), preheader: String(c.preheader || '').trim(), lede: String(c.lede || '').trim() }));
+      if (late()) { log('[subject-writer] out of time'); return null; }
+      const problemsAll = [];
+      const passed = [];
+      // Code checks first, then GPT on the survivors in parallel. A checker
+      // error rejects that candidate only.
+      const results = await Promise.all(cands.map(async (c) => {
+        let problems = checkCandidate(c, pool, recent);
+        if (!problems.length) {
+          try {
+            const v = await check(checkerPrompt(pool, c));
+            if (!v.supported || v.problems.length) problems = v.problems.length ? v.problems.map(x => `fact check: ${x}`) : ['fact check: unsupported'];
+          } catch (e) { problems = [`fact check failed: ${String(e.message || e).slice(0, 80)}`]; }
+        }
+        return { c, problems };
+      }));
+      for (const { c, problems } of results) {
+        if (problems.length) { rejected++; problemsAll.push(`"${c.subject}": ${problems.join('; ')}`); log(`[subject-writer] rejected "${c.subject}": ${problems.join(' | ')}`); }
+        else passed.push(c);
+      }
+      if (passed.length) {
+        let order = passed.map((_, i) => i), why = '';
+        if (passed.length > 1 && !late()) {
+          try {
+            const r = await judge(judgePrompt(pool, passed));
+            const rank = (Array.isArray(r && r.ranking) ? r.ranking : []).map(Number).filter(i => Number.isInteger(i) && i >= 0 && i < passed.length);
+            order = [...new Set([...rank, ...order])];
+            why = String((r && r.why) || '');
+          } catch (e) { log(`[subject-writer] judge failed, keeping writer order: ${e.message}`); }
+        }
+        const ranked = order.map(i => passed[i]);
+        const best = ranked[0];
+        return {
+          subject: best.subject, preheader: best.preheader, lede: best.lede, angle: best.angle, why,
+          alternates: ranked.slice(1, 3).map(({ subject, preheader, angle }) => ({ subject, preheader, angle })),
+          showRefs: showsNamed(`${best.subject} ${best.preheader} ${best.lede}`, pool),
+          attempts, rejected,
+        };
+      }
+      feedback = problemsAll.slice(0, 12);
+    }
+    log('[subject-writer] no candidate passed; keeping the template subject');
+    return null;
+  } catch (e) {
+    log(`[subject-writer] ${String(e.message || e).slice(0, 200)}; keeping the template subject`);
+    return null;
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "note": "BRO-134 known direct api.github.com callers; shrink only",
+  "files": [
+    "scripts/audit-workflow-hygiene.js",
+    "scripts/check-bd-blacklist.js",
+    "scripts/check-secrets-health.js",
+    "scripts/check-workflow-run-status.js",
+    "scripts/execute-approved-fix.js",
+    "scripts/gh-api-usage-report.js",
+    "scripts/lib/done-evidence-remote.js",
+    "scripts/lib/e2e-await-deploy.js",
+    "scripts/lib/github-api-budget.js",
+    "scripts/lib/github-public-api.js",
+    "scripts/lib/global-instructions.js",
+    "scripts/lib/opening-night-budget.js",
+    "scripts/lib/pr-command.mjs",
+    "scripts/lib/rebuild-in-flight.js",
+    "scripts/lib/should-deploy-gate.js",
+    "scripts/posthog-weekly-insights.js",
+    "scripts/process-commercial-tip.js",
+    "scripts/process-review-formspree.js",
+    "scripts/route-main-streak-signatures.js",
+    "scripts/triage-sentry.js",
+    "scripts/update-commercial-data.js"
+  ]
+}

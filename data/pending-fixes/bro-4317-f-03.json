@@ -1,0 +1,189 @@
+{
+  "issueNumber": "bro-4317-f-03",
+  "planId": "e92ea557-abab-4c50-8179-66d225b9e2b1",
+  "status": "applied",
+  "createdAt": "2026-10-13T03:28:25.646Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 3/3: clear location-only flags (orphaned-directory wrongShow, showId/directory wrongProduction, write-time ambiguous-production) on review files already rehomed to their production by publish date",
+    "steps": [
+      "set wrongShowManualClear on the-whos-tommy-2024/theater-life--david-sheward.json",
+      "set wrongProductionManualClear on the-whos-tommy-2024/theater-life--david-sheward.json",
+      "set wrongShowManualClear on water-for-elephants-2024/theater-life--paulanne-simmons.json",
+      "set wrongProductionManualClear on water-for-elephants-2024/theater-life--paulanne-simmons.json",
+      "set wrongShowManualClear on operation-mincemeat-2025/theater-life--paulanne-simmons.json",
+      "set wrongProductionManualClear on operation-mincemeat-2025/theater-life--paulanne-simmons.json",
+      "set wrongShowManualClear on paranormal-activity-2026/theater-life--samuel-l-leiter.json",
+      "set wrongProductionManualClear on paranormal-activity-2026/theater-life--samuel-l-leiter.json",
+      "set wrongShowManualClear on punch-2025/theater-life--isa-goldberg.json",
+      "set wrongProductionManualClear on punch-2025/theater-life--isa-goldberg.json",
+      "set wrongShowManualClear on stranger-things-2024/theater-life--samuel-l-leiter.json",
+      "set wrongProductionManualClear on stranger-things-2024/theater-life--samuel-l-leiter.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/theater-life--david-sheward.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-whos-tommy-2024 by publishDate 2024-04-05T15:37:29 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-whos-tommy-2024/theater-life--david-sheward.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into the-whos-tommy-2024 by publishDate 2024-04-05T15:37:29 against the run window; the flag only described the old folder (stale showId the-whos-tommy would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-2024/theater-life--paulanne-simmons.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into water-for-elephants-2024 by publishDate 2024-03-31T12:26:00 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-2024/theater-life--paulanne-simmons.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into water-for-elephants-2024 by publishDate 2024-03-31T12:26:00 against the run window; the flag only described the old folder (stale showId water-for-elephants would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/theater-life--paulanne-simmons.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into operation-mincemeat-2025 by publishDate 2025-03-23T15:02:13 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "operation-mincemeat-2025/theater-life--paulanne-simmons.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into operation-mincemeat-2025 by publishDate 2025-03-23T15:02:13 against the run window; the flag only described the old folder (stale showId operation-mincemeat would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-2026/theater-life--samuel-l-leiter.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into paranormal-activity-2026 by publishDate 2026-08-28T17:24:27 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-2026/theater-life--samuel-l-leiter.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into paranormal-activity-2026 by publishDate 2026-08-28T17:24:27 against the run window; the flag only described the old folder (stale showId paranormal-activity would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/theater-life--isa-goldberg.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into punch-2025 by publishDate 2025-09-30T16:10:02 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/theater-life--isa-goldberg.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into punch-2025 by publishDate 2025-09-30T16:10:02 against the run window; the flag only described the old folder (stale showId punch would otherwise re-trip the showId/directory audit)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-2024/theater-life--samuel-l-leiter.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into stranger-things-2024 by publishDate 2025-04-27T17:22:55 against the run window; the flag only described the old folder"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-2024/theater-life--samuel-l-leiter.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4317: file was rehomed from a folder with no shows.json id into stranger-things-2024 by publishDate 2025-04-27T17:22:55 against the run window; the flag only described the old folder (stale showId stranger-things would otherwise re-trip the showId/directory audit)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T04:28:19.490Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/theater-life--david-sheward.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-whos-tommy-2024/theater-life--david-sheward.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "water-for-elephants-2024/theater-life--paulanne-simmons.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "water-for-elephants-2024/theater-life--paulanne-simmons.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/theater-life--paulanne-simmons.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "operation-mincemeat-2025/theater-life--paulanne-simmons.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-2026/theater-life--samuel-l-leiter.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-2026/theater-life--samuel-l-leiter.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/theater-life--isa-goldberg.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/theater-life--isa-goldberg.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-2024/theater-life--samuel-l-leiter.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-2024/theater-life--samuel-l-leiter.json wrongProductionManualClear: null -> true"
+    }
+  ]
+}

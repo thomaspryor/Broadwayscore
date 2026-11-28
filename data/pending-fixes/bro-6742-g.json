@@ -1,0 +1,46 @@
+{
+  "issueNumber": "bro-6742-g",
+  "planId": "0cd83542-5147-4d88-825f-9b199b83cc5a",
+  "status": "partial",
+  "createdAt": "2026-11-01T04:02:14.756Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6742: ingest two West End reviews unblocked by the theatre.reviews own-review exemption and the Newsquest sister-site alias",
+    "steps": [
+      "Ingest theatre.reviews' own Cherry Orchard review (now exempt from the aggregator-URL guard for this outlet only)",
+      "Ingest London Now Martin Guerre review (News Shopper canonical now accepted as a Newsquest sister site)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Ingest theatre.reviews' own Cherry Orchard review (now exempt from the aggregator-URL guard for this outlet only)",
+        "script": "scripts/ingest-review-from-url.js",
+        "args": "--show=the-cherry-orchard-west-end-2026 --url=https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/ --outlet=theatre-reviews-paul-seven --critic=\"Paul Lewis\""
+      },
+      {
+        "type": "run-script",
+        "description": "Ingest London Now Martin Guerre review (News Shopper canonical now accepted as a Newsquest sister site)",
+        "script": "scripts/ingest-review-from-url.js",
+        "args": "--show=martin-guerre-west-end-2026 --url=https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/"
+      }
+    ]
+  },
+  "executedAt": "2026-11-01T04:24:23.752Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script \"scripts/ingest-review-from-url.js\" not in allowlist"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script \"scripts/ingest-review-from-url.js\" not in allowlist"
+    }
+  ],
+  "executedIn": "ci"
+}

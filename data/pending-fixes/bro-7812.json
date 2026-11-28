@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7812",
+  "planId": "92e3979b-48b9-40d3-9365-e6af0c781507",
+  "status": "applied",
+  "createdAt": "2026-11-19T05:58:54.564Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear a stale wrongProduction flag on the Slant Magazine review of the 2024 Broadway Romeo + Juliet (Dan Rubins): the text reviews the Circle in the Square production, a cross-show URL flag wrongly moved it to the 2026 West End show",
+    "steps": [
+      "romeo-juliet-2024/slantmagazine--dan-rubins.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "romeo-juliet-2024/slantmagazine--dan-rubins.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "romeo-juliet-2024/slantmagazine--dan-rubins.json: wrongProduction"
+      }
+    ]
+  },
+  "executedAt": "2026-11-19T06:08:34.508Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "romeo-juliet-2024/slantmagazine--dan-rubins.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    }
+  ],
+  "executedIn": "ci"
+}

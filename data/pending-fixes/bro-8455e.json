@@ -1,0 +1,53 @@
+{
+  "issueNumber": "bro-8455e",
+  "planId": "3b84f67c-fcd6-4ac0-a368-33d4f3ed8fbd",
+  "status": "pending",
+  "createdAt": "2026-11-28T22:31:03.194Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Delete 5 Stage West files holding the archive sidebar, for re-ingest (BRO-8455 item 2)",
+    "steps": [
+      "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest",
+      "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest",
+      "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest",
+      "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest",
+      "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-room-in-the-castle-regional-2026/stage-west--unknown.json",
+        "description": "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "arcadia-regional-2026/stage-west--unknown.json",
+        "description": "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cyrano-regional-2026/stage-west--unknown.json",
+        "description": "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hairspray-regional-2026/stage-west--unknown.json",
+        "description": "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kims-convenience-regional-2026/stage-west--unknown.json",
+        "description": "BRO-8455: first re-ingest stored the site archive sidebar instead of the review; delete so the fixed fetch can re-ingest"
+      }
+    ]
+  }
+}

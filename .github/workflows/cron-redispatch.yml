@@ -1,0 +1,74 @@
+name: Cron re-dispatch
+
+# BRO-4282: GitHub drops most of this repo's scheduled runs (2026-10-11/12:
+# `*/5` crons got 4-5 scheduled runs a day, hourly audit-aggregator-gap 4).
+# Events are delivered reliably, so this sweep rides every main Test Suite
+# completion (~100/day), throttled in-script to one sweep per 30-min window,
+# with its own cron as a backstop. Each sweep re-dispatches opted-in
+# CRITICAL_CRONS workflows (check-cron-health.yml) that had no run of any kind
+# created within their band, with inputs.redispatched=true so the run behaves
+# like its scheduled one. Opt-in rules and decision logic:
+# scripts/lib/re-dispatcher.js (+ .test.mjs).
+# A sweep that re-dispatches a workflow whose own schedule has not fired in 7
+# days fails (red run, morning digest): re-dispatch keeps it alive, but the
+# dead schedule needs a look.
+# Kill switch: repo variable CRON_REDISPATCH_DISABLED=true.
+on:
+  workflow_run:
+    workflows: ['Test Suite']
+    types: [completed]
+    branches: [main]
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report what would be dispatched, dispatch nothing'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: cron-redispatch
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    if: vars.CRON_REDISPATCH_DISABLED != 'true'
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+      - name: Sweep
+        id: sweep
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Same PAT check-cron-health's self-heal dispatches with, so a
+          # re-dispatched run can start its own workflow_run chains.
+          DISPATCH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run && 'true' || 'false' }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/cron-redispatch.js --dry-run
+          else
+            node scripts/cron-redispatch.js
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Cron re-dispatch failed'
+          description: 'a dispatch failed, or a re-dispatched cron has had no scheduled run in 7 days (see the run summary)'
+          severity: 'warning'

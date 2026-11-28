@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "showId": "222-a-ghost-story-off-broadway-2026",
+  "night": "2026-11-05",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-06T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-06T02:30:04.921Z",
+    "endedAt": "2026-11-06T05:06:15.519Z",
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-06T04:55:13.086Z",
+    "lastOkSampleAt": "2026-11-06T04:55:13.086Z"
+  },
+  "firstLiveAt": "2026-11-06T03:30:08.291Z",
+  "firstLiveBaseline": false,
+  "lastLiveAt": "2026-11-06T04:40:12.305Z",
+  "liveCount": 4,
+  "liveCountAt": {
+    "1h": 1,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-06T04:00:10.081Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-05",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T03:30:08.291Z",
+      "prevOkSampleAt": "2026-11-06T03:25:07.975Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "1 minute critic|jerry portwood",
+      "outlet": "1 Minute Critic",
+      "critic": "Jerry Portwood",
+      "tier": 3,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T04:30:11.839Z",
+      "prevOkSampleAt": "2026-11-06T04:25:11.339Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|frank scheck",
+      "outlet": "New York Stage Review",
+      "critic": "Frank Scheck",
+      "tier": 2,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T04:40:12.305Z",
+      "prevOkSampleAt": "2026-11-06T04:35:12.070Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "mashable|kristy puchko",
+      "outlet": "Mashable",
+      "critic": "Kristy Puchko",
+      "tier": 3,
+      "publishAt": "2026-11-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-06T04:40:12.305Z",
+      "prevOkSampleAt": "2026-11-06T04:35:12.070Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 4,
+      "fetchedAt": "2026-11-06T05:00:30.126Z",
+      "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 4,
+      "fetchedAt": "2026-11-06T05:06:15.213Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-06T05:00:30.201Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-06T05:06:15.213Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "show unknown"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-06T05:00:33.292Z",
+    "files": [
+      {
+        "file": "_blocklist.json",
+        "outletId": null,
+        "outlet": null,
+        "critic": null,
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": null,
+        "url": null,
+        "includable": false,
+        "reason": "noTextOrScoreSignal",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-06T02:15:19.429Z",
+        "scoredAt": "2026-11-06T03:05:48.535Z",
+        "publishDate": "2026-11-05",
+        "url": "culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "frontmezzjunkies--unknown.json",
+        "outletId": "frontmezzjunkies",
+        "outlet": "Front Mezz Junkies",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-20T15:37:27.326Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-20",
+        "url": "frontmezzjunkies.com/2026/10/20/222-a-ghost-story-is-coming-to-off-broadway-and-im-already-watching-that-damn-clock",
+        "includable": false,
+        "reason": "nonReview",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "mashable--kristy-puchko.json",
+        "outletId": "mashable",
+        "outlet": "Mashable",
+        "critic": "Kristy Puchko",
+        "firstSeenAt": "2026-11-06T03:44:25.494Z",
+        "scoredAt": "2026-11-06T04:05:10.912Z",
+        "publishDate": "2026-11-05",
+        "url": "sea.mashable.com/entertainment/56657/222-a-ghost-story-is-scarier-than-paranormal-activity-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "mixuptheatre--mix-up-theatre-stewart.json",
+        "outletId": "mixuptheatre",
+        "outlet": "Mix Up Theatre",
+        "critic": "Mix Up Theatre (Stewart)",
+        "firstSeenAt": "2026-10-20T16:07:10.801Z",
+        "scoredAt": null,
+        "publishDate": "2026-04-29",
+        "url": "mixuptheatre.com/post/theatre-review-2-22-a-ghost-story-1",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--frank-scheck.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Frank Scheck",
+        "firstSeenAt": "2026-11-06T03:44:25.019Z",
+        "scoredAt": "2026-11-06T04:05:16.650Z",
+        "publishDate": "2026-11-05",
+        "url": "nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytg--gillian-russo.json",
+        "outletId": "nytg",
+        "outlet": "New York Theatre Guide",
+        "critic": "Gillian Russo",
+        "firstSeenAt": "2026-11-06T03:44:24.596Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-05",
+        "url": "newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "one-minute-critic--jerry-portwood.json",
+        "outletId": "one-minute-critic",
+        "outlet": "1 Minute Critic",
+        "critic": "Jerry Portwood",
+        "firstSeenAt": "2026-11-06T03:44:23.244Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-05",
+        "url": "1minutecritic.com/222-a-ghost-story-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "rhombus-rota--unknown.json",
+        "outletId": "rhombus-rota",
+        "outlet": "Rhombus Rota",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-24T14:18:52.008Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-22",
+        "url": "rhombusrota.co.uk/2026/10/22/discover-222-a-ghost-story-by-dads-theatre-company-qa-with-the-cast-and-creatives",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--david-gordon.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "David Gordon",
+        "firstSeenAt": "2026-10-20T16:07:05.208Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-19",
+        "url": "theatermania.com/news/interview-danny-robins-on-how-222-a-ghost-story-escaped-dear-evan-hansens-theater-and-took-over-the-world_1855474",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatrely--kobi-kassal.json",
+        "outletId": "theatrely",
+        "outlet": "Theatrely",
+        "critic": "Kobi Kassal",
+        "firstSeenAt": "2026-10-20T15:34:25.170Z",
+        "scoredAt": null,
+        "publishDate": "2026-06-18",
+        "url": "theatrely.com/post/2-22-a-ghost-story-sets-new-york-premiere-this-fall",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatrely--unknown.json",
+        "outletId": "theatrely",
+        "outlet": "Theatrely",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-20T15:34:25.170Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-16",
+        "url": "theatrely.com/post/finn-jones-is-ready-for-2-22-a-ghost-story-to-scare-audiences-into-the-present",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
