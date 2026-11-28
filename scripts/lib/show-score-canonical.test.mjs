@@ -36,6 +36,18 @@ test('pageRatingOf / storedRatingMatchesPage prove a stored rating came from the
   assert.equal(storedRatingMatchesPage(null, page), false);
 });
 
+test('storedRatingMatchesPage: a small page whose score moved with one new rating still matches (BRO-7434)', () => {
+  const { storedRatingMatchesPage } = require('./show-score-canonical');
+  // the-other-place-2013: stored 71%/14 from the London page; one later 26% rating made it 68%/15.
+  assert.equal(storedRatingMatchesPage({ score: 71, reviewCount: 14 }, { score: 68, count: 15 }), true);
+  // Same count: the score may not move beyond rounding.
+  assert.equal(storedRatingMatchesPage({ score: 71, reviewCount: 15 }, { score: 68, count: 15 }), false);
+  // One rating cannot move a 200-rating page from 71% to 60%.
+  assert.equal(storedRatingMatchesPage({ score: 71, reviewCount: 200 }, { score: 60, count: 201 }), false);
+  // One added rating can only raise or lower toward 0..100: 50%/10 -> 90%/11 is unreachable.
+  assert.equal(storedRatingMatchesPage({ score: 50, reviewCount: 10 }, { score: 90, count: 11 }), false);
+});
+
 test('allowsUkShowScorePage: London shows and UK regional houses yes; US regional and NYC no', () => {
   const { allowsUkShowScorePage } = require('./show-score-canonical');
   assert.equal(allowsUkShowScorePage({ category: 'west-end', market: 'west-end' }), true);

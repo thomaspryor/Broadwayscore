@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-7434-c",
+  "planId": "ce3a5ef2-29d1-49e0-b9c2-db5a7fe30fce",
+  "status": "pending",
+  "createdAt": "2026-11-28T16:35:59.547Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove UK Show Score audience rating from the-other-place-2013",
+    "steps": [
+      "Remove UK Show Score 71%/14 from the-other-place-2013 (archived page canonical is /uk/london/off-west-end-shows/the-other-place, now 68%/15); combined score 73.64 to 77."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Remove UK Show Score 71%/14 from the-other-place-2013 (archived page canonical is /uk/london/off-west-end-shows/the-other-place, now 68%/15); combined score 73.64 to 77.",
+        "script": "purge-uk-show-score-audience.js",
+        "args": "--apply"
+      }
+    ]
+  }
+}

@@ -48,14 +48,24 @@ function pageRatingOf(html) {
 }
 
 /**
- * Does a stored audience rating match what this page shows? (Scores equal, counts within
- * a few ratings: the page moves between the scrape and the archive.) Used to prove a stored
- * rating CAME FROM a UK page rather than merely sitting next to one.
+ * Does a stored audience rating match what this page shows? Used to prove a stored rating CAME
+ * FROM a UK page rather than merely sitting next to one. The page moves between the scrape and the
+ * archive, so counts may differ by a few ratings; the score may then move too, but only as far as
+ * those few ratings (each 0-100) can push it. BRO-7434: the-other-place-2013 stored 71%/14 from the
+ * London page, which one later rating moved to 68%/15; a flat "scores within 1" test missed it.
+ * Same counts: scores must be within 1 (both are rounded percentages).
  */
 function storedRatingMatchesPage(stored, page) {
   if (!stored || !page) return false;
-  return Math.abs(stored.score - page.score) <= 1
-    && Math.abs((stored.reviewCount || 0) - page.count) <= Math.max(3, Math.round(page.count * 0.02));
+  const rc = stored.reviewCount || 0;
+  const d = page.count - rc;
+  if (Math.abs(d) > Math.max(3, Math.round(page.count * 0.02))) return false;
+  // Sum of the ratings added (d > 0) or removed (d < 0), given both percentages are rounded (+-0.5).
+  const lo = (page.score - 0.5) * page.count - (stored.score + 0.5) * rc;
+  const hi = (page.score + 0.5) * page.count - (stored.score - 0.5) * rc;
+  const reachLo = Math.min(0, 100 * d);
+  const reachHi = Math.max(0, 100 * d);
+  return hi >= reachLo && lo <= reachHi;
 }
 
 /**
