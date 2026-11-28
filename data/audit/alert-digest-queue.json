@@ -2243,20 +2243,6 @@
     "queuedAt": "2026-11-28T01:04:45.213Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-28.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-28T01:05:10.654Z"
-  },
-  {
     "conditionKey": "watchdog-park:linear:BRO-8416",
     "title": "Watchdog parked #linear:BRO-8416 — redispatch never produced a launch",
     "description": "Watchdog: card \"Bundle Size Check is red on main\" was claimed for redispatch at 2026-11-28T00:03:52.203Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-8416), then re-arm with node scripts/linear-next.js --id BRO-8416 --force once fixed.",
@@ -2300,5 +2286,19 @@
       }
     ],
     "queuedAt": "2026-11-28T01:08:32.864Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-28.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T03:06:49.781Z"
   }
 ]

@@ -1,55 +1,76 @@
 {
-  "generatedAt": "2026-11-28T01:05:28.206Z",
+  "generatedAt": "2026-11-28T03:07:11.183Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 385,
-  "clean": 383,
-  "defective": 2,
+  "clean": 382,
+  "defective": 3,
   "byType": {
-    "missing-from-prod": 2,
+    "missing-from-prod": 3,
     "score-drift": 1
   },
   "shows": [
     {
-      "showId": "midnight-off-broadway-2026",
-      "title": "Midnight",
-      "openingDate": "2026-10-15",
+      "showId": "a-room-with-a-view-regional-2026",
+      "title": "A Room with a View",
+      "openingDate": "2026-11-19",
       "ok": false,
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: theatre-reviews-limited"
-        }
-      ],
-      "missingFromProd": [
-        "theatre-reviews-limited"
-      ],
-      "localCount": 27,
-      "deployedCount": 26,
-      "firstDefectAt": "2026-11-28T01:05:22.178Z"
-    },
-    {
-      "showId": "the-whos-tommy-tour-2026",
-      "title": "The Who's Tommy",
-      "openingDate": "2026-10-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: stageandcinema"
+          "detail": "4 scored outlet(s) absent from the deployed payload: arts-review-au, i-tell-you-what-i-think, keith-gow, the-blurb-au"
         },
         {
           "type": "score-drift",
-          "detail": "deployed cs 63.94 vs local 66.65 (Δ2.71)"
+          "detail": "deployed payload has no numeric cs (local 91.33)"
         }
       ],
       "missingFromProd": [
-        "stageandcinema"
+        "arts-review-au",
+        "i-tell-you-what-i-think",
+        "keith-gow",
+        "the-blurb-au"
       ],
-      "localCount": 9,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-28T01:05:22.178Z"
+      "localCount": 6,
+      "deployedCount": 2,
+      "firstDefectAt": "2026-11-28T03:07:00.782Z"
+    },
+    {
+      "showId": "the-lion-king-regional-2026",
+      "title": "The Lion King",
+      "openingDate": "2026-11-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: indaily-qld"
+        }
+      ],
+      "missingFromProd": [
+        "indaily-qld"
+      ],
+      "localCount": 3,
+      "deployedCount": 2,
+      "firstDefectAt": "2026-11-28T03:07:00.782Z"
+    },
+    {
+      "showId": "les-miserables-regional-2026",
+      "title": "Les Miserables",
+      "openingDate": "2026-11-10",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: oazis"
+        }
+      ],
+      "missingFromProd": [
+        "oazis"
+      ],
+      "localCount": 4,
+      "deployedCount": 3,
+      "firstDefectAt": "2026-11-28T03:07:00.782Z"
     }
   ],
   "persistentDefective": 0,

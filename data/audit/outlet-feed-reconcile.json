@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-28T01:05:28.522Z",
+  "generatedAt": "2026-11-28T03:07:11.496Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -166,29 +166,37 @@
   "feedsChecked": 87,
   "feedsFailed": [
     {
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
+    },
+    {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+      "outletId": "exeunt-magazine",
+      "error": "HTTP 403 for https://exeuntnyc.com/reviews/feed/"
     },
     {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
     },
     {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 925,
-  "matchedGaps": 1,
-  "possibleGaps": 6,
+  "itemsScanned": 780,
+  "matchedGaps": 2,
+  "possibleGaps": 4,
   "gaps": [
     {
       "showId": "a-christmas-carol-west-end-2026",
@@ -200,6 +208,15 @@
       "publishDate": "2026-11-26"
     },
     {
+      "showId": "its-a-wonderful-life-a-live-radio-play-2026",
+      "title": "It’s A Wonderful Life: A Live Radio Play",
+      "level": "matched",
+      "outletId": "totaltheater1",
+      "url": "https://totaltheater1.wordpress.com/2026/11/27/its-a-wonderful-life-a-live-radio-play/",
+      "headline": "It’s a Wonderful Life: A Live Radio Play",
+      "publishDate": "2026-11-27"
+    },
+    {
       "showId": "a-christmas-carol-west-end-2026",
       "title": "A Christmas Carol",
       "level": "possible",
@@ -207,24 +224,6 @@
       "url": "https://www.theaterscene.net/plays/broadway-plays/its-a-wonderful-life-a-live-radio-play/samuel-l-leiter/",
       "headline": "It’s a Wonderful Life: A Live Radio Play",
       "publishDate": "2026-11-23"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/christmas-carol-shakespeare-north-playhouse-prescot/",
-      "headline": "Christmas Carol &#8211; Shakespeare North Playhouse, Prescot",
-      "publishDate": "2026-11-25"
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "title": "A Christmas Carol",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/zoonation-ebony-scrooge-sadlers-wells-east-london/",
-      "headline": "ZooNation: Ebony Scrooge – Sadler’s Wells East, London.",
-      "publishDate": "2026-11-27"
     },
     {
       "showId": "a-christmas-carol-west-end-2026",
