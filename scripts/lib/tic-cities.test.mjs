@@ -106,12 +106,14 @@ test('DC lists a production from its first outlet; Chicago still needs 3', () =>
   assert.equal(stage.prefilter(pg(2), getCity('chicago')).reason, 'under-3-outlets');
 });
 
-test('DC keeps Comedy-typed plays; Chicago drops them', () => {
+test('DC keeps Comedy-typed plays; Chicago drops stand-up/improv Comedy but keeps scripted ones (BRO-8454)', () => {
   const pg = { id: 1, venue: 'Keegan Theatre' };
   const det = { venue: 'Keegan Theatre', address: '1742 Church St NW Washington, DC', showType: 'Comedy' };
   assert.equal(stage.detailFilter(det, pg, getCity('dc')).ok, true);
   assert.equal(stage.detailFilter({ ...det, showType: 'Childrens' }, pg, getCity('dc')).reason, 'type:Childrens');
-  assert.equal(stage.detailFilter({ ...det, address: '10 Wacker Dr Chicago, IL' }, pg, getCity('chicago')).reason, 'type:Comedy');
+  const chi = { ...det, address: '10 Wacker Dr Chicago, IL' };
+  assert.equal(stage.detailFilter({ ...chi, description: 'An evening of stand-up and improv.' }, pg, getCity('chicago')).reason, 'type:Comedy');
+  assert.equal(stage.detailFilter({ ...chi, description: 'A new play by a local writer.' }, pg, getCity('chicago')).ok, true);
 });
 
 test('DC top-up: a show added on 1 review is re-linked when the listing credits more (BRO-6771)', async () => {

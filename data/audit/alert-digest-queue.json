@@ -14,20 +14,6 @@
     "queuedAt": "2026-11-28T16:39:36.487Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-28.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-28T17:52:19.936Z"
-  },
-  {
     "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain",
     "title": "Live-data test failing: no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed T1/T2 fullText-present cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed T1/T2 fullText-present cross-outlet suspects remain (first 5): [\n{\n\"file\": \"the-phantom-of-the-opera-west-end-1986/thestage--aleks-sierz.json\",\n\"criticName\": \"Aleks Sierz\",\n\"defaultCriticOf\": [\n\"sierz-co-uk\"\n],\n\"source\": \"show-score\",\n\"url\": \"https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/\",\n\"mode\": \"fulltext\"\n}\n]\n\n1 !== 0\n",
@@ -112,5 +98,112 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-28T17:52:48.744Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Ms. Blakk for President (guardian), Rope (talkinbroadway)). Checked 2026-11-28.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T19:08:17.922Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8449-url-place",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8449-url-place",
+    "description": "land.yml did not land land/bro-8449-url-place: the scripts-lib-tests gate went red at 35b19add30. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46176171321",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8449-url-place"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "35b19add30cb8852207fffc4e756711b1874fc5c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46176171321"
+      }
+    ],
+    "queuedAt": "2026-11-28T18:35:50.907Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8455-regional-cleanup",
+    "title": "Landing blocked: lint-workflows red on land/bro-8455-regional-cleanup",
+    "description": "land.yml did not land land/bro-8455-regional-cleanup: the lint-workflows gate went red at 57e35f8fff. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46175460167",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8455-regional-cleanup"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "57e35f8fffbb6319e940b837c374285db43bee02"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46175460167"
+      }
+    ],
+    "queuedAt": "2026-11-28T18:42:36.181Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8456-tours-suburbs",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-8456-tours-suburbs",
+    "description": "land.yml did not land land/bro-8456-tours-suburbs: the unit-tests-tsx gate went red at cd71bd1bd3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46178300629",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8456-tours-suburbs"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "cd71bd1bd3628198c98880f3ef747490b4820582"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46178300629"
+      }
+    ],
+    "queuedAt": "2026-11-28T18:59:02.279Z"
   }
 ]

@@ -1754,6 +1754,27 @@ async function fetchPage(url, options = {}) {
     }
   }
 
+  // BRO-8455 item 2: Stage West (davidcoddon.com) answers a plain GET with the full review; the paid chain
+  // timed out on it. One free direct attempt; anything unusable falls through to the normal chain.
+  if (!preferPlaywright && requestedUrl && /^https?:$/.test(requestedUrl.protocol) &&
+      process.env.STAGE_WEST_DIRECT_DISABLED !== '1' &&
+      require('./free-first-fetch').isStageWestHost(requestedUrl.hostname)) {
+    console.log('  → Trying direct Stage West fetch...');
+    try {
+      const response = await fetch(url, { headers: { 'User-Agent': DIRECT_USER_AGENT }, signal: AbortSignal.timeout(15000), redirect: 'follow' });
+      const content = await response.text();
+      if (!_isChallengeOrGarbage(content) &&
+          require('./free-first-fetch').stageWestDirectAcceptable(requestedUrl.pathname, response.status, content)) {
+        const checked = _checkAndReturn({ content, format: 'html', source: 'direct' }, 'Direct');
+        if (checked) return checked;
+      } else {
+        console.log(`  ⚠️  Direct Stage West fetch not usable (HTTP ${response.status}), trying provider chain...`);
+      }
+    } catch (error) {
+      console.log(`  ⚠️  Direct Stage West fetch failed: ${error.message}`);
+    }
+  }
+
   // Live re-check at chain-build time — matches the original code's gate
   // conditions exactly, reproduced again (unchanged) inside the scrapingdog/
   // scrapingbee tier functions below. Scrapingdog/ScrapingBee gate on
@@ -2369,6 +2390,15 @@ function verifyFetchedUrl(html, expectedUrl) {
   const normActual = normalizeForVerify(actualUrl);
 
   if (normExpected === normActual) return { verified: true };
+
+  // BRO-8455 item 2: Stage West serves /theatre-reviews/<slug> with og:url /2/post/YYYY/MM/<slug>.html (its old
+  // blog address for the same page). Every provider rejected the page as url_mismatch, so all 17 in-window
+  // reviews were stored as scraper_timeout stubs. The slug must match exactly.
+  {
+    const sw = /^(?:www\.)?davidcoddon\.com\/theatre-reviews\/([a-z0-9-]+)$/i.exec(normExpected);
+    const sa = /^(?:www\.)?davidcoddon\.com\/\d+\/post\/\d{4}\/\d{2}\/([a-z0-9-]+?)(?:\.html)?$/i.exec(normActual);
+    if (sw && sa && sw[1].toLowerCase() === sa[1].toLowerCase()) return { verified: true, reason: 'stage_west_blog_alias' };
+  }
 
   // Allow if actual is a subdomain/alias of expected (e.g., amp. prefix) but only
   // when the domains actually differ — same-domain path differences are still mismatches.

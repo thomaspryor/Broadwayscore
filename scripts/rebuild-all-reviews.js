@@ -80,6 +80,7 @@ const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
 const { regionalVenueMismatch } = require('./lib/regional-venue-mismatch');
+const { isNycRoundupExcerptOnLocalShow } = require('./lib/regional-roundup-excerpt-guard');
 const { otherFitsReviewYearBetter, showRunYears } = require('./lib/url-cross-production');
 const { shouldPromoteViaStaleCvReasonFallback, decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isRefusedSubmissionUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
@@ -4396,6 +4397,14 @@ showDirs.forEach(showId => {
         }
         logExclusion("skippedRegionalVenue", showId, file, data);
         stats.skippedRegionalVenue = (stats.skippedRegionalVenue || 0) + 1;
+        return;
+      }
+
+      // BRO-8455 item 1: a URL-less NYC Theatre / NYSR roundup excerpt on a regional or tour row is the New York
+      // run of the same title. Excluded in the build (the file is left as is; a pending-fix plan removes it).
+      if (isNycRoundupExcerptOnLocalShow(data, showById[showId])) {
+        logExclusion("skippedRegionalRoundupExcerpt", showId, file, data);
+        stats.skippedRegionalRoundupExcerpt = (stats.skippedRegionalRoundupExcerpt || 0) + 1;
         return;
       }
 

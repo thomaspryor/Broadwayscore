@@ -1,96 +1,13 @@
 {
-  "generatedAt": "2026-11-28T17:52:43.481Z",
+  "generatedAt": "2026-11-28T19:08:42.707Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 390,
-  "clean": 385,
-  "defective": 5,
-  "byType": {
-    "score-drift": 5
-  },
-  "shows": [
-    {
-      "showId": "whispering-jack-regional-2026",
-      "title": "Whispering Jack: The John Farnham Musical",
-      "openingDate": "2026-11-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 88.57 vs local 87.51 (Δ1.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-11-28T16:40:30.002Z"
-    },
-    {
-      "showId": "a-room-with-a-view-regional-2026",
-      "title": "A Room with a View",
-      "openingDate": "2026-11-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.57 vs local 91.67 (Δ9.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-28T17:52:34.527Z"
-    },
-    {
-      "showId": "fiddler-on-the-roof-melbourne-regional-2026",
-      "title": "Fiddler on the Roof",
-      "openingDate": "2026-11-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.72 vs local 79.38 (Δ4.34)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-28T17:52:34.527Z"
-    },
-    {
-      "showId": "sinatra-the-musical-west-end-2026",
-      "title": "Sinatra The Musical",
-      "openingDate": "2026-06-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 64.54 vs local 64.74 (Δ0.2)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 44,
-      "deployedCount": 44,
-      "firstDefectAt": "2026-11-28T17:52:34.527Z"
-    },
-    {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "title": "The Devil Wears Prada",
-      "openingDate": "2024-12-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 58.71 vs local 58.15 (Δ0.56)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30,
-      "firstDefectAt": "2026-11-28T17:52:34.527Z"
-    }
-  ],
+  "clean": 390,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

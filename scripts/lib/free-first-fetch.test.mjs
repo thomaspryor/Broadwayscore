@@ -4,6 +4,9 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+// BRO-8455: scraper.js (loaded by the verifyFetchedUrl test) reads shows.json; pin it to a fixture so a bot data commit cannot turn main red.
+const { useShowsFixture } = require('./shows-json-fixture.js');
+process.on('exit', useShowsFixture([]));
 const f = require('./free-first-fetch.js');
 const { SITE_SEARCH_ENDPOINTS } = require('./site-search-discovery.js');
 const { urlLooksLikeReview } = require('./review-guards');
@@ -199,4 +202,32 @@ test('BRO-7532 recheck: dtliDirectOutcome trusts only a real page or DTLI\'s own
   assert.equal(f.dtliDirectOutcome(403, notFound), 'fallback', '403 is a block, not a miss');
   assert.equal(f.dtliDirectOutcome(503, page), 'fallback');
   assert.equal(f.dtliDirectOutcome(404, undefined), 'fallback');
+});
+
+// BRO-8455 item 2: Stage West direct fetch (class guard: the scraper wires the free-first tier for the host)
+import { readFileSync as _rf } from 'node:fs';
+import { createRequire as _cr } from 'node:module';
+{
+  const { isStageWestHost, stageWestDirectAcceptable } = _cr(import.meta.url)('./free-first-fetch.js');
+  test('Stage West: host match and acceptance gate', () => {
+    assert.equal(isStageWestHost('www.davidcoddon.com'), true);
+    assert.equal(isStageWestHost('davidcoddon.com'), true);
+    assert.equal(isStageWestHost('example.com'), false);
+    const page = '<html>' + 'x'.repeat(4000) + '</html>';
+    assert.equal(stageWestDirectAcceptable('/theatre-reviews/stage-west-x', 200, page), true);
+    assert.equal(stageWestDirectAcceptable('/theatre-reviews/stage-west-x', 403, page), false);
+    assert.equal(stageWestDirectAcceptable('/other', 200, page), false);
+    assert.equal(stageWestDirectAcceptable('/theatre-reviews/x', 200, '<html>tiny</html>'), false);
+  });
+  test('class guard: scraper.js routes Stage West through the direct tier', () => {
+    assert.match(_rf(new URL('./scraper.js', import.meta.url), 'utf8'), /isStageWestHost\(requestedUrl\.hostname\)/);
+  });
+}
+
+test('Stage West: verifyFetchedUrl accepts the /2/post/ blog alias of the same slug and rejects a different slug', () => {
+  const { verifyFetchedUrl } = require('./scraper.js');
+  const page = (u) => `<html><head><meta property="og:url" content="${u}" /><title>t</title></head><body>${'x'.repeat(100)}</body></html>`;
+  const want = 'http://davidcoddon.com/theatre-reviews/stage-west-3-summers-of-lincoln-at-la-jolla-playhouse';
+  assert.equal(verifyFetchedUrl(page('http://www.davidcoddon.com/2/post/2025/03/stage-west-3-summers-of-lincoln-at-la-jolla-playhouse.html'), want).verified, true);
+  assert.equal(verifyFetchedUrl(page('http://www.davidcoddon.com/2/post/2025/03/some-other-review.html'), want).verified, false);
 });

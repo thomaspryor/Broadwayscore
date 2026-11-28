@@ -132,7 +132,7 @@ const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash, isCvVer
 const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-registry');
 
 // Content quality detection (garbage/invalid content filter)
-const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
+const { isolateMultiShowSection, applySectionCritic, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
 const { readPageBylineForShow } = require('./lib/page-byline-for-show');
 const { columnSectionAfterRoundupRejection } = require('./lib/column-section-extract');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
@@ -4723,6 +4723,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // Remove the banner lines isGarbageContent() exempts as trailing/leading junk (BRO-2860)
   // Shared with verifyFetchedContent so the verifier judges the stored body (BRO-5243).
   let preCleanedText = preCleanForStorage(text);
+  // True when an isolated multi-show item was credited to its own section byline (Nine wrap):
+  // the page-author overrides below must not re-credit it to the page's (first item's) critic.
+  let sectionCredited = false;
+  let sectionRenameTo = null; // file rename waits until the body is accepted (below, before the author overrides)
 
   // Multi-show blog posts (interestedbystander): keep only THIS show's
   // section, or store nothing (BRO-4387 follow-up: until 2026-09-29 only
@@ -4751,6 +4755,12 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     if (iso.action === 'isolated') {
       console.log(`    [MULTI-SHOW] kept this show's section (${iso.text.length} of ${preCleanedText.length} chars)`);
       preCleanedText = iso.text;
+      const sc = applySectionCritic(data, data.url || review.url, iso);
+      sectionCredited = sc.creditsSection;
+      if (sc.changed) {
+        console.log(`    → Section byline: "${data._priorCriticName || 'Unknown'}" → "${sc.criticName}"`);
+        sectionRenameTo = sc.criticName;
+      }
     }
   }
 
@@ -5424,7 +5434,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   //
   // Guards: HTML available, not manually set, stored name is concrete (not
   // Unknown), HC author differs from stored.
-  if (html && !data.criticNameManual) {
+  if (sectionRenameTo) renameReviewFileForCriticOverride(review, data, sectionRenameTo);
+  if (html && !data.criticNameManual && !sectionCredited) {
     const hcAuthor = extractHighConfidenceAuthor(html);
     const storedCritic = data.criticName || review.critic || '';
     // BRO-7745: JSON-LD names whoever POSTED the article (All That Dazzles' "Sam Woodward",
@@ -5485,7 +5496,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // byline, (b) HC author matches byline, (c) manual flag not set.
       const hcAuthor = html ? extractHighConfidenceAuthor(html) : null;
       const hcConfirmsByline = hcAuthor && matchesCritic(hcAuthor.name, bylineResult.name);
-      if (bylineResult.position === 'start' && hcConfirmsByline && !data.criticNameManual) {
+      if (bylineResult.position === 'start' && hcConfirmsByline && !data.criticNameManual && !sectionCredited) {
         console.log(`    → Author override: "${expectedCritic}" → "${hcAuthor.name}" (byline=start + ${hcAuthor.source})`);
         data.criticName = hcAuthor.name;
         data.criticEnrichedFrom = `html-override:${hcAuthor.source}`;
@@ -5528,7 +5539,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
   // 1B-iii. AUTHOR ENRICHMENT — resolve "Unknown" critics from HTML metadata
   // Skip if criticNameManual is set — this means the name was manually verified and should not be overwritten
-  if ((!data.criticName || data.criticName === 'Unknown') && html && !data.criticNameManual) {
+  if ((!data.criticName || data.criticName === 'Unknown') && html && !data.criticNameManual && !sectionCredited) {
     // BRO-7792: the shared reader (outlet rules, printed credit) that ingest, the sweep and the lane use.
     let extractedAuthor = null;
     try {

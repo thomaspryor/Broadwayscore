@@ -74,12 +74,20 @@ function deriveShowTitle(showId) {
 /** cleanText + trailer strip + multi-show isolation. */
 function cleanCandidateText(rawText, { url, showId }) {
   const { cleanText, stripTrailingJunk } = require('./text-cleaning');
-  const { isolateMultiShowSectionForShowId } = require('./multi-show-section-extract');
+  const { isolateMultiShowSectionForShowId, sectionCriticFor } = require('./multi-show-section-extract');
   let text = stripTrailingJunk(cleanText(String(rawText || '')));
   const iso = isolateMultiShowSectionForShowId(url || '', text, showId);
   if (iso.action === 'refuse') return { refused: true };
   text = iso.text;
-  return { refused: false, text };
+  // creditsSection: the text is one item of a wrap whose items each name a critic,
+  // so criticName (null = Unknown) replaces the page byline for this text.
+  const { creditsSection, criticName } = sectionCriticFor(url || '', iso, null);
+  return { refused: false, text, creditsSection, criticName };
+}
+
+/** The byline identity proof should test: the section's own for an isolated Nine item, else the page's. */
+function bylineForCleaned(cleaned, pageBylineValue) {
+  return cleaned && cleaned.creditsSection ? (cleaned.criticName || null) : (pageBylineValue || null);
 }
 
 const { novelProseChars, novelProseVerdict, MIN_NOVEL_PROSE_CHARS, MIN_NOVEL_PROSE_FRAC } = require('./novel-prose');
@@ -398,13 +406,13 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
     // must not pull in a later revival's review).
     const late = pageDateRefusal(candidate.pageDate, existing, ctx.show);
     if (late) return refuse('date_implausible', `date implausible: ${late} (likely another production)`);
-    identity = proveIdentity(existing, text, newUrl, { ...ctx, pageByline: candidate.pageByline || null });
+    identity = proveIdentity(existing, text, newUrl, { ...ctx, pageByline: bylineForCleaned(cleaned, candidate.pageByline) });
     if (!identity.proven) return refuse('identity_unproven', `identity unproven for new url: ${identity.missing.join('; ')}`, { identity });
   } else if (existing.fabricatedEntry === true) {
     // The stored url and critic of an invented row were an LLM's guess: a
     // page at that url (a Wayback capture, a live page) proves nothing until
     // the same identity rule as a new url passes; the accept clears the flag.
-    identity = proveIdentity(existing, text, newUrl, { ...ctx, pageByline: candidate.pageByline || null });
+    identity = proveIdentity(existing, text, newUrl, { ...ctx, pageByline: bylineForCleaned(cleaned, candidate.pageByline) });
     if (!identity.proven) return refuse('identity_unproven', `identity unproven at the invented stored url: ${identity.missing.join('; ')}`, { identity });
   }
 
@@ -666,8 +674,9 @@ function fabricatedFlagClearDecision({ filePath, preDiscovery, fetchedText, url,
   const late = pageDateRefusal(pagePublishDate(html, url), preDiscovery, ctx.show);
   if (late) return { clear: false, via: null, reason: `date implausible: ${late}` };
   const showId = path.basename(path.dirname(filePath)) || preDiscovery.showId;
-  const cleaned = cleanCandidateText(fetchedText, { url, showId }).text || '';
-  const p = proveIdentity(preDiscovery, cleaned, url, ctx);
+  const cleanedObj = cleanCandidateText(fetchedText, { url, showId });
+  const cleaned = cleanedObj.text || '';
+  const p = proveIdentity(preDiscovery, cleaned, url, { ...ctx, pageByline: bylineForCleaned(cleanedObj, ctx.pageByline) });
   return p.proven
     ? { clear: true, via: p.via, reason: 'identity proven' }
     : { clear: false, via: null, reason: `identity unproven: ${(p.missing || []).join('; ')}` };
@@ -891,6 +900,7 @@ module.exports = {
   buildAcceptanceContext,
   deriveShowTitle,
   cleanCandidateText,
+  bylineForCleaned,
   proveIdentity,
   landedAsRecovered,
   pinnedUrl, isTrivialUrlVariant, pinnedUrlRoute,

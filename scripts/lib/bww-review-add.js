@@ -15,6 +15,7 @@ const { displayTitle } = require('./bww-local-reviews');
 const { resolveMetroInfo, norm } = require('./venue-metro');
 const { sanitizeVenueForWrite } = require('./venue-classification');
 const S = require('./city-season');
+const { closingFields } = require('./run-end-from-text');
 
 const MAX_RUN_DAYS = 150;
 // A run with no closing date that started this long ago is treated as closed (regional runs are weeks long;
@@ -144,7 +145,8 @@ function buildShow(facts, ctx) {
     openingDate: start,
     openingDateSource: facts.openingDate ? 'bww-review-text' : facts.firstPerformance ? 'bww-review-text:first-performance' : 'bww-first-review',
     ...(facts.firstPerformance && facts.firstPerformance < start ? { previewsStartDate: facts.firstPerformance } : {}),
-    ...(end ? { closingDate: end, closingDateSource: 'bww-review-text' } : {}),
+    // BRO-8455: no printed closing date means the run length is a guess; say so, so the hub retires the row.
+    ...(end ? { closingDate: end, closingDateSource: 'bww-review-text' } : closingFields(null, null)),
     discoverySource: 'bww-local-reviews',
     ...(metro && metro.hub ? { localOnly: true } : {}),
     city: (metro && metro.slug) || hubSlug,

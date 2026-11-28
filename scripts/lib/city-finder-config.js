@@ -112,6 +112,10 @@ const FINDERS = {
       { name: 'Arlekin Players Theatre', city: 'Boston', aliases: ['calderwood pavilion'], pro: true },
       { name: 'Boston Playwrights\' Theatre', city: 'Boston', pro: true },
       { name: 'Hub Theatre Company of Boston', city: 'Boston', pro: true },
+      // BRO-8455: both produced 2026 seasons the allowlist silently dropped (Gloucester Stage: Bad Books, Betrayal,
+      // Dalloway: First Love, Moon Man Walk; Wheelock: Finding Nemo).
+      { name: 'Gloucester Stage Company', city: 'Gloucester', aliases: ['gloucester stage'], pro: true },
+      { name: 'Wheelock Family Theatre', city: 'Boston', aliases: ['wheelock family'], pro: true },
       { name: 'Sullivan Rep', city: 'Dedham', pro: false },
       { name: 'Treehouse Collective', city: 'Chelsea', pro: false },
     ],
@@ -154,6 +158,7 @@ const SEASON_SOURCES = {
   'Greater Boston Stage Company': { pages: ['https://www.greaterbostonstage.org/shows'] },
   'North Shore Music Theatre': { pages: ['https://nsmt.org/'] },
   'Merrimack Repertory Theatre': { pages: ['https://mrt.org/'] },
+  'Gloucester Stage Company': { pages: ['https://www.gloucesterstage.com/'] },
   'Commonwealth Shakespeare Company': { pages: ['https://commshakes.org/'] },
   'Company One Theatre': { pages: ['https://companyone.org/'] },
   "Actors' Shakespeare Project": { pages: ['https://actorsshakespeareproject.org/'] },
