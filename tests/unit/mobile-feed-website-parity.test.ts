@@ -29,6 +29,7 @@ import { resolve } from 'path';
 
 import { getScoreTier } from '../../src/components/show-cards/ScoreBadge';
 import { getScoreLabel, getGoldThreshold as siteGoldThreshold } from '../../src/config/score-buckets';
+import { getTierMarket } from '../../src/lib/market-utils';
 
 const require = createRequire(import.meta.url);
 const tiers = require('../../scripts/lib/score-tiers');
@@ -118,7 +119,7 @@ describe('cr.q, cr.pq and cr.l: app feed == website, every show', () => {
         cs.reviewCount || 0, show.category, (cs.tier1Count || 0) + (cs.tier2Count || 0), scoreGateArg(show),
       ) ? 1 : 0;
       if (siteQ === 0) gated++;
-      const siteL = getScoreTier(Math.round(cs.score), show.category)?.label;
+      const siteL = getScoreTier(Math.round(cs.score), getTierMarket(show))?.label;
       // Same expression as the show page's showTBD.
       const sitePageTBD = applyCoverageFloor(
         !siteQ || show.status === 'previews' || show.status === 'upcoming',

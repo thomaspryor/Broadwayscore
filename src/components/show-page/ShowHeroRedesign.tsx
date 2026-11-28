@@ -80,7 +80,7 @@ import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { newPhotoId } from '@/lib/review-photo-model';
 import { featureFlags } from '@/config/feature-flags';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { getCurrencySymbol, getRegionalLabel } from '@/lib/market-utils';
+import { getCurrencySymbol, getRegionalLabel, getTierMarket } from '@/lib/market-utils';
 import { isOperaShow, getOperaMarketLabel } from '@/lib/show-market';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
@@ -292,7 +292,7 @@ function Inner({
   const arrivalLineCentered = reviewArrival && arrivalActive ? <ReviewArrivalLine arrival={reviewArrival} className="items-center" /> : null;
   const tier1And2Count = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const criticReviewsForBar = show.criticScore?.reviews ?? [];
-  const tier = score !== null ? getScoreTier(score, show.category) : null;
+  const tier = score !== null ? getScoreTier(score, getTierMarket(show)) : null;
   const isClosed = show.status === 'closed';
   const isPreviews = show.status === 'previews' || show.status === 'upcoming';
   // Not opened yet and no reviews (BRO-7426). The hero puts a one-line review
@@ -703,7 +703,7 @@ function Inner({
           {hasEnoughCriticReviews && (
             <div className="hidden lg:flex items-center flex-wrap gap-4 pt-3">
               <a href="#critic-reviews" className="flex items-center gap-4 hover:opacity-90 transition-opacity">
-                <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} tier1And2Count={tier1And2Count} isCuratedHistorical={scoreGateArg(show)} size="lg" showCrown />
+                <ScoreBadge score={score} reviewCount={reviewCount} category={getTierMarket(show)} tier1And2Count={tier1And2Count} isCuratedHistorical={scoreGateArg(show)} size="lg" showCrown />
                 <div>
                   {tier && (
                     <p className="text-2xl font-extrabold leading-tight tracking-tight" style={{ color: tier.color }}>
@@ -744,7 +744,7 @@ function Inner({
       ) : (
         <div className={`lg:hidden grid gap-2.5 ${dualScoreCards ? 'grid-cols-2' : 'grid-cols-1'}`}>
           <a href="#critic-reviews" className={`card p-3 sm:p-4 flex ${scoreCardLayout} hover:bg-surface-overlay transition-colors`}>
-            <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} tier1And2Count={tier1And2Count} isCuratedHistorical={scoreGateArg(show)} size="lg" showCrown />
+            <ScoreBadge score={score} reviewCount={reviewCount} category={getTierMarket(show)} tier1And2Count={tier1And2Count} isCuratedHistorical={scoreGateArg(show)} size="lg" showCrown />
             <div className={scoreCardTextClass}>
               {tier && (
                 <p className="text-xs sm:text-sm font-bold leading-tight break-normal" style={{ color: tier.color }}>
@@ -802,7 +802,7 @@ function Inner({
 
       {/* Distribution bar — both modes; spans full width under the header. */}
       {hasEnoughCriticReviews && criticReviewsForBar.length > 0 && (
-        <ScoreBreakdownBar reviews={criticReviewsForBar} category={show.category} />
+        <ScoreBreakdownBar reviews={criticReviewsForBar} category={getTierMarket(show)} />
       )}
 
       {/* Critics' Take — inline directly below the breakdown bar with NO

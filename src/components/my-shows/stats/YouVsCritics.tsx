@@ -6,6 +6,7 @@
  */
 
 import { ScoreBadge } from '@/components/show-cards';
+import { getTierMarket } from '@/lib/market-utils';
 import { Poster } from '@/components/user/upcoming-cards';
 import MiniStars from '@/components/user/Stars';
 import type { StatsBundle } from '@/lib/stats-ui/bundle';
@@ -38,7 +39,7 @@ function PickRow({ pick, onClick }: { pick: ContrarianPick; onClick: () => void 
           </span>
         </span>
       </span>
-      <ScoreBadge size="xs" score={pick.criticScore} category={pick.category ?? undefined} />
+      <ScoreBadge size="xs" score={pick.criticScore} category={getTierMarket(pick)} />
     </button>
   );
 }

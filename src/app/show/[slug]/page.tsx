@@ -36,7 +36,7 @@ import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { featureFlags } from '@/config/feature-flags';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/venue-classification';
-import { getCurrencySymbol, isAuRegionalShow, isUkRegionalShow, londonTitleNeedsSuffix } from '@/lib/market-utils';
+import { getCurrencySymbol, getTierMarket, isAuRegionalShow, isUkRegionalShow, londonTitleNeedsSuffix } from '@/lib/market-utils';
 import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
 import { liveInHdLine, liveInHdDescription } from '@/lib/met-live-in-hd';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -166,7 +166,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // Sentiment label maps tier → SEO-friendly phrase used in title + description.
   // Suppressed for TBD shows (previews/upcoming or below review-count threshold)
   // so metadata never broadcasts a verdict the show page itself doesn't show.
-  const tier = (!isTBD && roundedScore) ? getScoreTier(roundedScore, show.category) : null;
+  const tier = (!isTBD && roundedScore) ? getScoreTier(roundedScore, getTierMarket(show)) : null;
   const SEO_SENTIMENT: Record<string, string> = {
     'Critical Gold': 'Rave Reviews',
     'Recommended': 'Positive Reviews',
@@ -549,7 +549,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
     ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
     : 0;
   const criticsTakeMode = getCriticsTakeDisplayMode(!!consensus, !!show.criticScore, reviewCount, !!show.synopsis);
-  const sentiment = score ? getSentimentLabel(score, show.category) : null;
+  const sentiment = score ? getSentimentLabel(score, getTierMarket(show)) : null;
   const hasAudience = !showTBD && audienceBuzz != null && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz);
   const audienceGrade = hasAudience ? getAudienceGrade(audienceBuzz!.combinedScore!) : null;
   // One set of FAQ inputs for both the visible FAQ and its FAQPage JSON-LD
@@ -582,7 +582,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
       />
 
       {/* Sticky Score Header */}
-      <LiveStickyScoreHeader title={show.title} score={score} category={show.category} backHref={homeHref} />
+      <LiveStickyScoreHeader title={show.title} score={score} category={getTierMarket(show)} backHref={homeHref} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         <Breadcrumb items={isOpera ? [
@@ -709,7 +709,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 const tier1Count = show.criticScore?.tier1Count || 0;
                 const tier2Count = show.criticScore?.tier2Count || 0;
                 const showTBD = computeShowTBD(show);
-                const sentiment = score ? getSentimentLabel(score, show.category) : null;
+                const sentiment = score ? getSentimentLabel(score, getTierMarket(show)) : null;
 
                 // The page has already applied the coverage floor. Rechecking
                 // raw counts here would hide scores that the floor protects.
@@ -717,7 +717,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                   <ScoreBadge
                     score={score}
                     size="lg"
-                    category={show.category}
+                    category={getTierMarket(show)}
                     reviewCount={showTBD ? 0 : undefined}
                   />
                 );
@@ -792,7 +792,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                     {!showTBD && show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
                       <ScoreBreakdownBar
                         reviews={show.criticScore.reviews}
-                        category={show.category}
+                        category={getTierMarket(show)}
                         className="hidden sm:block"
                       />
                     )}
@@ -866,7 +866,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             return (
               <ScoreBreakdownBar
                 reviews={show.criticScore.reviews}
-                category={show.category}
+                category={getTierMarket(show)}
                 className="sm:hidden mt-3"
                 ariaHidden
               />
@@ -1025,7 +1025,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 <LiveBreakdownBar
                   staticTBD={showTBD}
                   reviews={show.criticScore.reviews}
-                  category={show.category}
+                  category={getTierMarket(show)}
                   className="sm:hidden mb-4"
                 />
               </RedesignOn>
@@ -1042,7 +1042,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 hasStops: reviewItems.some(r => r.stopLabel),
               } : undefined}
               initialCount={REVIEWS_INLINE_COUNT}
-              category={show.category}
+              category={getTierMarket(show)}
               showTiers={!isOpera}
             />
 
@@ -1090,7 +1090,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 <>Reviews coming after {isWestEnd ? 'press night' : 'opening night'}.</>
               )}
             </p>
-            <CallTheScore show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount: show.criticScore?.reviewCount ?? 0 }} />
+            <CallTheScore show={{ id: show.id, category: show.category, venue: show.venue, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate, reviewCount: show.criticScore?.reviewCount ?? 0 }} />
           </section>
           </LiveHideWhenOverlay>
         ) : (
@@ -1112,7 +1112,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           </LiveHideWhenOverlay>
         )}
 
-        <LiveReviewsSectionIfAbsent category={show.category ?? ''} showId={show.id} showTiers={!isOpera} staticHasReviews={!!(show.criticScore && show.criticScore.reviews.length > 0)} />
+        <LiveReviewsSectionIfAbsent category={getTierMarket(show) ?? ''} showId={show.id} showTiers={!isOpera} staticHasReviews={!!(show.criticScore && show.criticScore.reviews.length > 0)} />
 
         <RelatedShowsCompactAB shows={compactRelated} sourceShowId={show.id} />
 

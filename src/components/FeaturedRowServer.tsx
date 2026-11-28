@@ -6,6 +6,7 @@
  * Uses plain <img> tags instead of ShowImage (which is 'use client').
  */
 import Link from 'next/link';
+import { getTierMarket } from '@/lib/market-utils';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getServerImageSrcSet } from '@/lib/show-image-srcset.server';
 import { getMarketLabel } from '@/lib/venue-classification';
@@ -41,6 +42,7 @@ function ServerMiniShowCard({ show, priority, eager, caption }: { show: ServerSh
   const rawScore = show.criticScore?.score;
   const score = rawScore != null && hasEnoughReviews(reviewCount, show.category, t1t2, scoreGateArg(show)) ? rawScore : null;
   const category = show.category ?? 'broadway';
+  const tierMarket = getTierMarket(show) ?? 'broadway';
   const imgSrc = show.images?.poster
     ? getOptimizedImageUrl(show.images.poster, 'card')
     : show.images?.thumbnail
@@ -82,11 +84,11 @@ function ServerMiniShowCard({ show, priority, eager, caption }: { show: ServerSh
         {/* Score overlay */}
         <div className="absolute bottom-1.5 right-1.5">
           <div className="relative overflow-visible">
-            {isCriticalGold(score, category) && (
+            {isCriticalGold(score, tierMarket) && (
               <MustSeeCrown size="mini" />
             )}
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
-              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, category)
+              score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, tierMarket)
             }`}>
               {score !== undefined && score !== null ? Math.round(score) : '–'}
             </div>

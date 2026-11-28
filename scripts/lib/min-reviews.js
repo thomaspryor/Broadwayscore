@@ -29,6 +29,7 @@ function getMarketMinReviews(category) {
     case 'off-broadway':
     case 'off-off-broadway':
     case 'regional':
+    case 'regional-au': // tier-market key (score-tiers.js): same review gate as regional
     case 'tour':
       return MIN_REVIEWS_OFF_BROADWAY;
     case 'off-west-end':
