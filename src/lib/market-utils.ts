@@ -180,6 +180,29 @@ export function getUsVenueCity(venue?: string): string | undefined {
   return m ? m[1].trim() : undefined;
 }
 
+/**
+ * The city a `regional` show plays in, for its <title>, meta description and OG title
+ * (BRO-8439). Read from the venue data (AU/UK venue tables, or the "House, City, ST"
+ * venue string for US houses), never from the URL slug. Undefined when the venue names
+ * no city, so the caller leaves the title as it was.
+ */
+export function getRegionalTitleCity(show: { category?: string; venue?: string }): string | undefined {
+  if (show.category !== 'regional') return undefined;
+  const country = getRegionalCountry(show);
+  const city = country === 'AU' ? getAuRegionalVenueCity(show.category, show.venue)
+    : country === 'UK' ? getUkRegionalVenueCity(show.category, show.venue)
+    : getUsVenueCity(show.venue);
+  return city || undefined;
+}
+
+/** "Melbourne, Australia" / "Leeds, UK" / "Chicago": the city with its country for a description. */
+export function getRegionalCityLabel(show: { category?: string; venue?: string }): string | undefined {
+  const city = getRegionalTitleCity(show);
+  if (!city) return undefined;
+  const country = getRegionalCountry(show);
+  return country === 'AU' ? `${city}, Australia` : country === 'UK' ? `${city}, UK` : city;
+}
+
 /** Country code for a market category. `venue` disambiguates UK-regional shows. */
 export function getMarketCountry(category?: string, venue?: string): 'US' | 'GB' | 'AU' {
   if (isLondonMarket(category)) return 'GB';

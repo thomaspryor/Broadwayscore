@@ -8,7 +8,7 @@ import { cache, Suspense } from 'react';
 import { LazyChunkBoundary } from '@/components/ui/LazyChunk';
 import { isCategoryEnabled } from '@/lib/markets';
 import { HIDDEN_LONDON_IDS } from '../../../../scripts/lib/page-name-sources';
-import { getRecentShowSlugs, getDataFreshness, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
+import { getRecentShowSlugs, getDataFreshness, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear, getRegionalHouseForTitle } from '@/lib/data-core';
 import { getTourReviewYears } from '@/lib/tour-display';
 import { isLiveTour } from '@/lib/tour-listing';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
@@ -36,7 +36,7 @@ import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { featureFlags } from '@/config/feature-flags';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/venue-classification';
-import { getCurrencySymbol, isAuRegionalShow, isUkRegionalShow, londonTitleNeedsSuffix } from '@/lib/market-utils';
+import { getCurrencySymbol, getRegionalCityLabel, getRegionalTitleCity, isAuRegionalShow, isUkRegionalShow, londonTitleNeedsSuffix } from '@/lib/market-utils';
 import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
 import { liveInHdLine, liveInHdDescription } from '@/lib/met-live-in-hd';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -150,11 +150,21 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // A London production gets "London" the same way (BRO-8085: "[show] london reviews").
   // London opera keeps its opera-house label instead.
   const addsLondon = !isTourMeta && !isOperaMeta && londonTitleNeedsSuffix(show.title, show.category);
-  const seoTitle = isTourMeta ? `${show.title} National Tour` : addsLondon ? `${show.title} London` : show.title;
+  // A regional production names its city from the venue data (BRO-8439): two "My Fair Lady (2026)"
+  // pages, one in Melbourne and one in Chichester, otherwise share one <title>. Skipped when the
+  // title already names the city. A tour has no single city; "National Tour" tells it apart.
+  const regionalCity = getRegionalTitleCity(show);
+  const addsCity = !!regionalCity && !show.title.toLowerCase().includes(regionalCity.toLowerCase());
+  const cityTitle = addsCity ? `${show.title} ${regionalCity}` : show.title;
+  const cityLabel = addsCity ? getRegionalCityLabel(show) : undefined;
+  const seoTitle = isTourMeta ? `${show.title} National Tour` : addsLondon ? `${show.title} London` : cityTitle;
   // Revivals share a title with their other productions: add the production year so
   // each <title> is distinct, keeping "[Show] Reviews" front-loaded (BRO-5970).
   const sharedYear = getSharedTitleYear(show);
-  const titleYearSuffix = sharedYear ? ` (${sharedYear})` : '';
+  // Two regional productions of one show in one city and year (two Chicago fringe houses) still
+  // share a title after the city is in it, so those name the house: "Richard III Chicago (Factory Theater, 2022)".
+  const regionalHouse = addsCity ? getRegionalHouseForTitle(show) : undefined;
+  const titleYearSuffix = regionalHouse ? ` (${regionalHouse}${sharedYear ? `, ${sharedYear}` : ''})` : sharedYear ? ` (${sharedYear})` : '';
   // The <title> name: the year goes before "London" so "[show] London Reviews" stays together.
   const titleName = addsLondon ? `${show.title}${titleYearSuffix} London` : `${seoTitle}${titleYearSuffix}`;
   // Regional shows roll up under the Broadway Scorecard brand (site name), but must NOT be
@@ -193,12 +203,14 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // to a neutral title that doesn't broadcast a negative signal in shares.
   const OG_POSITIVE_TIERS = new Set(['Critical Gold', 'Recommended']);
   const ogShowsSentiment = !!(tier && roundedScore && sentimentLabel && OG_POSITIVE_TIERS.has(tier.label));
+  // A regional share title carries its year/house too, so two productions in one city differ in a share card as well.
+  const ogName = addsCity ? `${seoTitle}${titleYearSuffix}` : seoTitle;
   const ogTitle = ogShowsSentiment
-    ? `${seoTitle}: ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
-    : `${seoTitle} - ${siteName}`;
+    ? `${ogName}: ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
+    : `${ogName} - ${siteName}`;
   const twitterTitle = ogShowsSentiment
-    ? `${seoTitle}: ${sentimentLabel} (${roundedScore}/100)`
-    : `${seoTitle} - CriticScore ${(!isTBD && roundedScore) ? `${roundedScore}/100` : 'TBD'}`;
+    ? `${ogName}: ${sentimentLabel} (${roundedScore}/100)`
+    : `${ogName} - CriticScore ${(!isTBD && roundedScore) ? `${roundedScore}/100` : 'TBD'}`;
 
   // Sentiment-aware description: lead with verdict, not database dump
   // "Now Playing at North American Tour." reads wrong; a tour has no single house.
@@ -208,20 +220,22 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     ? ` Now in ${tourNow.city} (${tourNow.venue}) through ${formatShowDate(tourNow.end, { month: 'short', day: 'numeric' })}.`
     : isTourMeta ? ` ${label} on tour.` : show.venue ? ` ${label} at ${show.venue}.` : ` ${label}.`);
   const statusPart = statusLabel ? venuePhrase(statusLabel) : '';
+  // A regional production's description names its city too ("My Fair Lady in Melbourne, Australia").
+  const descTitle = cityLabel ? `${show.title} in ${cityLabel}` : show.title;
   const SENTIMENT_PHRASES: Record<string, string> = {
-    'Critical Gold': `Critics rave about ${show.title}: ${roundedScore}/100 from ${reviewCount} reviews.`,
-    'Recommended': `${show.title} earns positive reviews: ${roundedScore}/100 from ${reviewCount} critics.`,
-    'Worth Seeing': `Critics say ${show.title} is worth seeing: ${roundedScore}/100 from ${reviewCount} reviews.`,
-    'Mixed': `Critics are mixed on ${show.title}: ${roundedScore}/100 from ${reviewCount} reviews.`,
-    'Critical Miss': `${show.title} gets poor reviews from critics: ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Critical Gold': `Critics rave about ${descTitle}: ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Recommended': `${descTitle} earns positive reviews: ${roundedScore}/100 from ${reviewCount} critics.`,
+    'Worth Seeing': `Critics say ${descTitle} is worth seeing: ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Mixed': `Critics are mixed on ${descTitle}: ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Critical Miss': `${descTitle} gets poor reviews from critics: ${roundedScore}/100 from ${reviewCount} reviews.`,
   };
   const descriptionLead = (score && roundedScore && tier
-    ? SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`
+    ? SENTIMENT_PHRASES[tier.label] ?? `${descTitle}${cityLabel ? '' : ` ${marketLabel}`} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`
     : `${noCriticReviewsExpected(show, reviewCount)
-      ? `${show.title} ${marketLabel}: no critic reviews were found for this event.`
+      ? `${descTitle}${cityLabel ? '' : ` ${marketLabel}`}: no critic reviews were found for this event.`
       : isLiveTour(show) && reviewCount === 0
-      ? `Reviews of ${show.title} ${marketLabel} are coming in as local critics see it in each city.`
-      : `Read ${reviewCount > 0 ? `${reviewCount} ` : ''}critic reviews for ${show.title} ${marketLabel}.`}`
+      ? `Reviews of ${descTitle} ${marketLabel} are coming in as local critics see it in each city.`
+      : `Read ${reviewCount > 0 ? `${reviewCount} ` : ''}critic reviews for ${descTitle}${cityLabel ? '' : ` ${marketLabel}`}.`}`
   ).trim();
   // Put the date immediately after the verdict, ahead of venue and synopsis.
   const hd = await getLiveInHdForRender(params.slug);
