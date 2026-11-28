@@ -44,6 +44,7 @@
 
 const fs = require('fs');
 const path = require('path');
+require('./lib/provider-telemetry').adoptArgvShow(); // BRO-8325: single-show script, its spend belongs to --show=ID
 const { fetchPage } = require('./lib/scraper');
 const { classifyTimeoutPage, isTimeoutUrl } = require('./lib/timeout-capsule');
 const { applyExplicitCriticToUnknown } = require('./lib/explicit-critic-rename');

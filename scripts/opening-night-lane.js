@@ -13,6 +13,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+require('./lib/provider-telemetry').adoptArgvShow(); // BRO-8325: single-show script, its spend belongs to --show=ID
 const { hasHelpFlag } = require('./lib/cli-help');
 const driver = require('./lib/opening-night-lane/driver');
 

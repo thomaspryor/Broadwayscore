@@ -38,9 +38,9 @@ test('showIdFromArgv: exactly one slug-shaped show attributes, anything else doe
 
 // Real process, real ledger write: what ingest-review-from-url.js --show=X and
 // opening-night-lane.js --show=X rows now carry. Fails with the argv fallback reverted.
-function rowFromChild(args, env = {}) {
+function rowFromChild(args, env = {}, adopt = true) {
   const ledger = path.join(os.tmpdir(), `spend-attr-${process.pid}-${Math.random().toString(36).slice(2)}.jsonl`);
-  const code = `require(${JSON.stringify(path.join(HERE, 'provider-telemetry.js'))}).recordSbCall({ host: 'theatre.reviews', fn: 'page', success: true, credits: 1 });`;
+  const code = `const t = require(${JSON.stringify(path.join(HERE, 'provider-telemetry.js'))}); ${adopt ? 't.adoptArgvShow();' : ''} t.recordSbCall({ host: 'theatre.reviews', fn: 'page', success: true, credits: 1 });`;
   const childEnv = { ...process.env, SCRAPER_SPEND_LEDGER_PATH: ledger, ...env };
   delete childEnv.SCRAPER_SPEND_SHOW_ID;
   if (env.SCRAPER_SPEND_SHOW_ID) childEnv.SCRAPER_SPEND_SHOW_ID = env.SCRAPER_SPEND_SHOW_ID;
@@ -55,8 +55,10 @@ test('a --show=ID process stamps that show on its SB ledger rows', (t) => {
   assert.equal(rowFromChild(['--show=hamlet-2026']).showId, 'hamlet-2026');
   assert.equal(rowFromChild(['--show=a-b,c-d']).showId, null, 'a show list stays unattributed');
   assert.equal(rowFromChild([]).showId, null);
-  // argv beats an inherited env id: a --show=B child of a show-A parent spends for B.
-  assert.equal(rowFromChild(['--show=show-b'], { SCRAPER_SPEND_SHOW_ID: 'show-a' }).showId, 'show-b');
+  // Opt-in (BRO-8325 review): without adoptArgvShow() a --show=ID filter never attributes.
+  assert.equal(rowFromChild(['--show=hamlet-2026'], {}, false).showId, null);
+  // env wins over adopted argv: an orchestrator that exported an id keeps it.
+  assert.equal(rowFromChild(['--show=show-b'], { SCRAPER_SPEND_SHOW_ID: 'show-a' }).showId, 'show-a');
   assert.equal(rowFromChild([], { SCRAPER_SPEND_SHOW_ID: 'show-a' }).showId, 'show-a');
 });
 
@@ -81,4 +83,11 @@ test('per-show collector loops run their provider calls inside withSpendShow', (
   // collect-review-texts has a single per-review entry; no raw call may bypass the wrapper.
   const crt = fs.readFileSync(path.join(SCRIPTS, 'collect-review-texts.js'), 'utf8');
   assert.equal((crt.match(/processReviewInner\(/g) || []).length, 2, 'processReviewInner is only defined and called by processReview');
+});
+
+test('single-show scripts opt in to argv attribution', () => {
+  for (const file of ['ingest-review-from-url.js', 'opening-night-lane.js']) {
+    const src = fs.readFileSync(path.join(SCRIPTS, file), 'utf8');
+    assert.match(src, /require\(['"]\.\/lib\/provider-telemetry['"]\)\.adoptArgvShow\(\)/, `${file}: must call adoptArgvShow() (BRO-8325)`);
+  }
 });

@@ -91,13 +91,23 @@ function showIdFromArgv(argv = process.argv) {
   return found;
 }
 
-/** Pure-ish: the showId a row recorded now would carry (opts > context > argv > env > null). */
+// Opt-in only (review of BRO-8325): the SB market gate keys on the ledger showId,
+// so a process that takes `--show=X` as a filter but also fetches shared pages
+// (scrape-theatre-reviews --shows=X, audit-outlet-ground-truth --show=X) must not
+// be stamped X implicitly. A single-show script that spends only for its show
+// calls adoptArgvShow() once at startup.
+let _argvShowId = null;
+function adoptArgvShow(argv = process.argv) {
+  _argvShowId = showIdFromArgv(argv);
+  return _argvShowId;
+}
+
+/** Pure-ish: the showId a row recorded now would carry (opts > context > env > adopted argv > null). */
 function currentSpendShowId(explicit) {
   if (explicit) return explicit;
   const store = _spendShow.getStore();
   if (store && store.showId) return store.showId;
-  // argv before env: a `--show=B` child of a parent that exported SCRAPER_SPEND_SHOW_ID=A spends for B.
-  return showIdFromArgv(process.argv) || process.env.SCRAPER_SPEND_SHOW_ID || null;
+  return process.env.SCRAPER_SPEND_SHOW_ID || _argvShowId || null;
 }
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -534,6 +544,7 @@ module.exports = {
   withSpendOutlet,
   currentSpendShowId,
   showIdFromArgv,
+  adoptArgvShow,
   withSpendFallback,
   currentSpendFallback,
   recordBdCall,
