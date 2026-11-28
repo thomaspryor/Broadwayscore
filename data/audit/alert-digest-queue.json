@@ -186,6 +186,20 @@
     "queuedAt": "2026-11-28T12:16:10.952Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 26 (backfill-everybodys-talking-about-jamie-show-exists, aggregator-truth, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, +20 more). Checked 2026-11-28.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T13:17:33.017Z"
+  },
+  {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:jack-and-the-beanstalk-off-west-end-2026",
     "title": "Auto-remediation gave up on jack-and-the-beanstalk-off-west-end-2026",
     "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"jack-and-the-beanstalk-off-west-end-2026\"}",
