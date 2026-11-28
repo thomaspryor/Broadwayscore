@@ -49601,13 +49601,13 @@
       "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.296Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.296Z",
-      "lastSeen": "2026-11-28T11:10:24.416Z",
+      "lastSeen": "2026-11-28T12:16:11.023Z",
       "lastNotifiedAt": "2026-11-27T20:24:01.221Z",
       "lastSurfacedAt": "2026-11-27T20:24:01.221Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 20
+      "silentRefires": 21
     },
     "land-preexisting:scripts/tests/research-prompts.test.mjs::build refuses to splice without Form D files unless --no-fo#bc2635ad4c": {
       "status": "open",
@@ -49615,13 +49615,13 @@
       "title": "Test red on main: build refuses to splice without Form D files unless --no-formd [testCodeFailure]",
       "firstSeen": "2026-11-23T17:11:27.324Z",
       "incidentOpenedAt": "2026-11-23T17:11:27.324Z",
-      "lastSeen": "2026-11-28T11:10:24.443Z",
+      "lastSeen": "2026-11-28T12:16:11.044Z",
       "lastNotifiedAt": "2026-11-27T20:24:01.250Z",
       "lastSurfacedAt": "2026-11-27T20:24:01.250Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 20
+      "silentRefires": 21
     },
     "land:land/job/linear-BRO-8167-mwtgpag4": {
       "status": "resolved",
@@ -50205,13 +50205,13 @@
       "title": "Test red on main: the same week in the Broadway edition does not get the West End exception [testCodeFailure]",
       "firstSeen": "2026-11-24T07:28:53.020Z",
       "incidentOpenedAt": "2026-11-24T07:28:53.020Z",
-      "lastSeen": "2026-11-28T11:10:24.384Z",
+      "lastSeen": "2026-11-28T12:16:11.002Z",
       "lastNotifiedAt": "2026-11-28T07:56:19.886Z",
       "lastSurfacedAt": "2026-11-28T07:56:19.886Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "live-data-test:scripts/newsletter/editorial-overrides.generate.test.mjs::the same week in the Broadway edition does not get the West End exception": {
       "status": "open",
@@ -51173,13 +51173,13 @@
       "title": "Test red on main: real data loads and gives the expected answers for the four JS outlets [testCodeFailure]",
       "firstSeen": "2026-11-25T21:15:32.320Z",
       "incidentOpenedAt": "2026-11-25T21:15:32.320Z",
-      "lastSeen": "2026-11-28T11:10:24.541Z",
+      "lastSeen": "2026-11-28T12:16:10.982Z",
       "lastNotifiedAt": "2026-11-27T22:10:41.140Z",
       "lastSurfacedAt": "2026-11-27T22:10:41.140Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 17
+      "silentRefires": 18
     },
     "live-data-test:tests/unit/site-search-market-history-live.test.mjs::real data loads and gives the expected answers for the four JS outlets": {
       "status": "open",
@@ -51622,13 +51622,12 @@
       "title": "Test red on main: real shows.json: zero un-reviewed hits [testCodeFailure]",
       "firstSeen": "2026-11-27T12:14:42.889Z",
       "incidentOpenedAt": "2026-11-27T12:14:42.889Z",
-      "lastSeen": "2026-11-28T11:10:24.470Z",
-      "lastNotifiedAt": "2026-11-27T12:14:42.889Z",
-      "lastSurfacedAt": "2026-11-27T12:14:42.889Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-28T12:16:10.919Z",
+      "lastNotifiedAt": "2026-11-28T12:16:10.919Z",
+      "lastSurfacedAt": "2026-11-28T12:16:10.919Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 37
+      "linearIdentifier": null
     },
     "land-preexisting:tests/unit/id-year-drift.test.mjs::ingestion-year stamp (BRO-2829)": {
       "status": "open",
@@ -51636,13 +51635,12 @@
       "title": "Test red on main: ingestion-year stamp (BRO-2829)",
       "firstSeen": "2026-11-27T12:14:42.921Z",
       "incidentOpenedAt": "2026-11-27T12:14:42.921Z",
-      "lastSeen": "2026-11-28T11:10:24.509Z",
-      "lastNotifiedAt": "2026-11-27T12:14:42.921Z",
-      "lastSurfacedAt": "2026-11-27T12:14:42.921Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-28T12:16:10.952Z",
+      "lastNotifiedAt": "2026-11-28T12:16:10.952Z",
+      "lastSurfacedAt": "2026-11-28T12:16:10.952Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 37
+      "linearIdentifier": null
     },
     "broadcast:never-sent:a-christmas-carol-west-end-2026": {
       "status": "open",
@@ -52008,6 +52006,19 @@
       "lastSeen": "2026-11-28T11:25:17.116Z",
       "lastNotifiedAt": "2026-11-28T11:25:17.116Z",
       "lastSurfacedAt": "2026-11-28T11:25:17.116Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-8426-mx0bit8z": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-8426-mx0bit8z",
+      "firstSeen": "2026-11-28T12:16:10.771Z",
+      "incidentOpenedAt": "2026-11-28T12:16:10.771Z",
+      "lastSeen": "2026-11-28T12:16:10.771Z",
+      "lastNotifiedAt": "2026-11-28T12:16:10.771Z",
+      "lastSurfacedAt": "2026-11-28T12:16:10.771Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
