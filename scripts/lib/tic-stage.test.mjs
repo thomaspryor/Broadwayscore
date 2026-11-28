@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const s = require('./tic-stage.js');
+const { getCity } = require('./tic-cities.js');
 
 const rev = (o, u) => ({ outlet: o, url: u });
 const page = (over = {}) => ({ id: 1, slug: 'x', title: 'Topdog/Underdog', venue: 'Steppenwolf Theatre Company', reviews: [rev('A', 'http://a/1'), rev('B', 'http://b/1'), rev('C', 'http://c/1')], ...over });
@@ -55,6 +56,30 @@ test('findDuplicate: a same-title production in another market or metro is not a
   assert.equal(s.findDuplicate(e, others), null);
   // The same metro still dedupes, whatever the stored category.
   assert.ok(s.findDuplicate(e, [{ id: 'acc-chi', title: 'A Christmas Carol', category: 'regional', venue: 'Goodman Theatre, Chicago, IL', openingDate: '2026-11-15' }]));
+  // A non-regional row in this metro reaches the final check and still dedupes.
+  assert.equal(s.findDuplicate(e, [{ id: 'acc-try', title: 'A Christmas Carol', category: 'off-broadway', venue: 'Goodman Theatre, Chicago, IL', openingDate: '2026-11-15' }])?.id, 'acc-try');
+  // Outside the 120-day window it is a different run.
+  assert.equal(s.findDuplicate(e, [{ id: 'acc-old', title: 'A Christmas Carol', category: 'regional', venue: 'Goodman Theatre, Chicago, IL', openingDate: '2025-11-15' }]), null);
+});
+
+test('findDuplicate: the stored metro slug wins over the venue string (BRO-8450)', () => {
+  const e = { title: 'Hamlet', openingDate: '2026-03-01' };
+  // Venue text the Chicago pattern cannot read, but the row is stored as Chicago.
+  assert.ok(s.findDuplicate(e, [{ id: 'h1', title: 'Hamlet', category: 'regional', city: 'chicago-il', venue: 'Writers Theatre', openingDate: '2026-03-05' }]));
+  // Venue text that looks like Illinois/Indiana, but the row is stored in another metro.
+  assert.equal(s.findDuplicate(e, [{ id: 'h2', title: 'Hamlet', category: 'regional', city: 'indianapolis-in', venue: 'Phoenix Theatre, Indianapolis, IN', openingDate: '2026-03-05' }]), null);
+});
+
+test('findDuplicate: DC and LA match by metro, not by market label (BRO-8450)', () => {
+  const dc = getCity('dc');
+  const la = getCity('la');
+  const e = { title: 'Candide', openingDate: '2026-04-01' };
+  assert.ok(s.findDuplicate(e, [{ id: 'c-dc', title: 'Candide', category: 'regional', city: dc.metro, venue: 'Arena Stage, Washington, DC', openingDate: '2026-04-03' }], dc));
+  // No stored slug: placed from the venue through the metro table.
+  assert.ok(s.findDuplicate(e, [{ id: 'c-dc2', title: 'Candide', category: 'off-broadway', venue: 'Arena Stage, Washington, DC', openingDate: '2026-04-03' }], dc));
+  assert.equal(s.findDuplicate(e, [{ id: 'c-la', title: 'Candide', category: 'regional', city: la.metro, venue: 'LA Opera, Los Angeles, CA', openingDate: '2026-04-03' }], dc), null);
+  assert.equal(s.findDuplicate(e, [{ id: 'c-we', title: 'Candide', category: 'west-end', venue: 'Old Vic, London', openingDate: '2026-04-03' }], la), null);
+  assert.equal(s.findDuplicate(e, [{ id: 'c-chi', title: 'Candide', category: 'regional', city: 'chicago-il', venue: 'Goodman Theatre, Chicago, IL', openingDate: '2026-04-03' }], la), null);
 });
 
 test('dedupeId: venue suffix on an id collision', () => {

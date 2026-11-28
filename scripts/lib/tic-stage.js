@@ -233,13 +233,17 @@ function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chi
 function findDuplicate(entry, existingShows, city = getCity('chicago')) {
   const nt = normTitle(entry.title);
   const open = Date.parse(entry.openingDate);
-  const sameMetro = (venue) => (city.requireMetro
-    ? resolveMetro(venue) === city.metro
-    : /, (chicago|[a-z. ]+), (il|in)\b/i.test(venue || ''));
+  // A row's stored metro slug wins (every US regional row has one); only a row without one is
+  // placed from its venue string, which is free text and can be formatted any way (BRO-8450).
+  const sameMetro = (row) => (row.city
+    ? row.city === city.metro
+    : city.requireMetro
+      ? resolveMetro(row.venue) === city.metro
+      : /, (chicago|[a-z. ]+), (il|in)\b/i.test(row.venue || ''));
   for (const s of existingShows) {
     if (normTitle(s.title) !== nt) continue;
     const so = Date.parse(s.openingDate || '');
-    if (s.category === 'regional' && sameMetro(s.venue) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
+    if (s.category === 'regional' && sameMetro(s) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
     if (s.category === 'tour') {
       if (Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 400 * 86400000) return s;
       continue;
@@ -248,7 +252,7 @@ function findDuplicate(entry, existingShows, city = getCity('chicago')) {
     // Manchester or other-city regional row is a different production, and a duplicate verdict
     // is final, so the old any-market fallthrough silently dropped real local productions
     // (Paramount A Christmas Carol vs the West End row, Citadel It's a Wonderful Life vs Broadway).
-    if (sameMetro(s.venue) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
+    if (sameMetro(s) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
   }
   return null;
 }
