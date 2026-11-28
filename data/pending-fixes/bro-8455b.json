@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8455b",
   "planId": "7c6191cd-f900-479b-bfec-00bcb2c52fb0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T20:41:05.186Z",
   "submitter": {
     "name": null,
@@ -189,5 +189,134 @@
         "description": "BRO-8455: NYC Theatre roundup excerpt attached to a regional or tour production (wrong production); rebuild guard already skips it, this removes the file"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T20:51:29.350Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/deadline--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/ew--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/guardian--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/hollywood-reporter--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/nypost--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/nysr--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/nytimes--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/theatrely--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/timeout--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/usatoday--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/variety--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/vulture--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted and-juliet-tour-2024/washpost--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-becomes-her-tour-2026/deadline--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-becomes-her-tour-2026/ew--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-becomes-her-tour-2026/guardian--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-becomes-her-tour-2026/nysr--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-becomes-her-tour-2026/nytg--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-becomes-her-tour-2026/theatermania--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-becomes-her-tour-2026/variety--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted maybe-happy-ending-tour-2026/deadline--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted maybe-happy-ending-tour-2026/nytg--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted maybe-happy-ending-tour-2026/nytimes--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted maybe-happy-ending-tour-2026/theatermania--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted maybe-happy-ending-tour-2026/variety--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
