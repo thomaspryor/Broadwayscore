@@ -1,7 +1,7 @@
 // BRO-8439: a regional production's <title>, meta description and og:title name its city, taken from
 // the venue data (never the URL), so "My Fair Lady" in Melbourne and in Chichester stop sharing one title.
 // The sweep runs the REAL generateMetadata (CLAUDE.md rule 15), so reverting the page fix reddens it.
-// LIVE-DATA-LANE for the sweep: it reads data/shows.json (private core data); fixtures run everywhere.
+// LIVE-DATA-LANE: the sweep reads data/shows.json (private core data); the fixtures import data-core, which loads it too.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
