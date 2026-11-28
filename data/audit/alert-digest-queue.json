@@ -396,6 +396,20 @@
     "queuedAt": "2026-11-28T20:12:46.205Z"
   },
   {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 2 review(s) flagged for anchored re-score",
+    "description": "{\"unanchored\":2} across the whole corpus, by market {\"broadway\":178,\"west-end\":334,\"regional\":44,\"tour\":8}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] the-thanksgiving-play-2023/nyt-theater--jonathan-mandell.json A band 89-94\n- [unanchored] dark-of-the-moon-off-west-end-2026/whatsonstage--maygan-forbes.json 2/5 stars band 31-50",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-28T20:40:54.380Z"
+  },
+  {
     "conditionKey": "land-preexisting:scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure]",
     "title": "Test red on main: live build yields season and deep-dive prompts with shows [testCodeFailure]",
     "description": "scripts/tests/research-prompts.test.mjs::live build yields season and deep-dive prompts with shows [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8454-limelight-followup. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46184895876",
