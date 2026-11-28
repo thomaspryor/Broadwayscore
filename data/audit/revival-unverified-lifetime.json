@@ -1,16 +1,33 @@
 {
-  "updatedAt": "2026-11-27T12:09:19.141Z",
-  "scanned": 4982,
-  "showsWithViolations": 0,
-  "totalViolations": 0,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-11-28T11:24:16.137Z",
+  "scanned": 4989,
+  "showsWithViolations": 1,
+  "totalViolations": 1,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "candide-regional-2026"
+  ],
   "actionableViolations": 0,
   "newActionableSinceLastRun": 0,
   "newActionableKeys": [],
   "openActionableCount": 0,
   "actionableOpen": {},
   "actionableKeys": [],
-  "violationKeys": [],
-  "hits": []
+  "violationKeys": [
+    "candide-regional-2026"
+  ],
+  "hits": [
+    {
+      "showId": "candide-regional-2026",
+      "title": "Candide",
+      "openingDate": "2026-11-22",
+      "message": "candide-regional-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {
+          "titleMatch": false,
+          "mentionCount": 6
+        }
+      ]
+    }
+  ]
 }

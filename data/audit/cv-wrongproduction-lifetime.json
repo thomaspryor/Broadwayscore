@@ -1,23 +1,27 @@
 {
-  "updatedAt": "2026-11-27T12:06:25.809Z",
-  "scanned": 4982,
-  "showsWithViolations": 122,
-  "totalViolations": 150,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-11-28T11:21:44.017Z",
+  "scanned": 4989,
+  "showsWithViolations": 123,
+  "totalViolations": 151,
+  "newSinceLastRun": 3,
   "handled": {
     "not-shipped": 65,
-    "temporal-override-low-confidence": 1000,
-    "duplicate-not-shipped": 57,
-    "rebuild-skip-audit": 31,
+    "temporal-override-low-confidence": 1010,
+    "duplicate-not-shipped": 56,
+    "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
-    "self-healed": 75,
+    "self-healed": 76,
     "prior-run-or-tour-leg": 48
   },
   "newViolationKeys": [
-    "ebony-scrooge-off-west-end-2026::the-spy-in-the-stalls--sammi-xing.json"
+    "titanique-2026::pages-on-stages--mason-pilevsky.json",
+    "swept-away-2024::pages-on-stages--mason-pilevsky.json",
+    "jack-and-the-beanstalk-off-west-end-2026::thestage--tracey-sinclair.json"
   ],
   "violationKeys": [
+    "titanique-2026::pages-on-stages--mason-pilevsky.json",
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
+    "swept-away-2024::pages-on-stages--mason-pilevsky.json",
     "the-hills-of-california-2024::broadway-and-me--janice-c-simpson.json",
     "hells-kitchen-2024::theater-life--samuel-l-leiter.json",
     "appropriate-2023::pages-on-stages--mason-pilevsky.json",
@@ -53,7 +57,6 @@
     "mj-the-musical-west-end-2024::timeout-london--andrzej-lukowski.json",
     "oliver-west-end-2024::sunday-telegraph--dominic-cavendish.json",
     "grace-pervades-west-end-2026::whatsonstage--kris-hallett.json",
-    "shadowlands-west-end-2026::islingtontribune--unknown.json",
     "all-my-sons-west-end-2025::guardian--arifa-akbar.json",
     "sinatra-the-musical-west-end-2026::musical-theatre-review--unknown.json",
     "cyrano-de-bergerac-west-end-2026::london-theatre--matt-wolf.json",
@@ -91,6 +94,7 @@
     "the-first-year-off-west-end-2026::a-youngish-perspective--unknown.json",
     "the-first-year-off-west-end-2026::liamodell--liam-odell.json",
     "the-first-year-off-west-end-2026::thereviewshub--maryam-philpott.json",
+    "jack-and-the-beanstalk-off-west-end-2026::thestage--tracey-sinclair.json",
     "iceboy-regional-2026::around-the-town-chicago--alan-bresloff.json",
     "vanya-off-broadway-2025::theater-scene--joel-benjamin.json",
     "vanya-off-broadway-2025::thewrap--robert-hofler.json",
@@ -161,7 +165,6 @@
     "the-importance-of-being-earnest-west-end-2024::broadwayworld--unknown.json",
     "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json",
     "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json",
-    "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json",
     "the-blood-quilt-off-broadway-2024::theater-scene--deirdre-donovan.json",
     "sunny-afternoon-west-end-2014::standard--fiona-mountford.json",
     "oppenheimer-west-end-2015::standard--fiona-mountford.json",
@@ -169,6 +172,27 @@
     "marie-and-rosetta-west-end-2025::standard--nick-curtis.json"
   ],
   "hits": [
+    {
+      "showId": "titanique-2026",
+      "title": "Titanique",
+      "openingDate": "2026-04-12",
+      "message": "pages-on-stages/Mason Pilevsky (pages-on-stages--mason-pilevsky.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This review is evaluating a Titanique production, but the publish date of 08 April 2026 is 4 days before the expected Br — https://pagesonstages.com/2026/04/12/titanique/",
+      "violations": [
+        {
+          "filename": "pages-on-stages--mason-pilevsky.json",
+          "url": "https://pagesonstages.com/2026/04/12/titanique/",
+          "outletId": "pages-on-stages",
+          "criticName": "Mason Pilevsky",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This review is evaluating a Titanique production, but the publish date of 08 April 2026 is 4 days before the expected Br",
+          "cvIssues": [
+            "Review publish date (08 April 2026) is 4 days BEFORE the expected Broadway opening date (12 April 2026). The review describes a completed performance attended by the critic, but Broadway had not yet opened.",
+            "No Broadway venue is named in the scraped text. The review contains no reference to St. James Theatre or any Broadway theater."
+          ]
+        }
+      ]
+    },
     {
       "showId": "cats-the-jellicle-ball-2026",
       "title": "CATS: The Jellicle Ball",
@@ -186,6 +210,27 @@
           "cvIssues": [
             "Wrong production: Review is of an Off-Broadway production at the Perelman Performing Arts Center.",
             "Truncated: The scraped content ends mid-sentence."
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "swept-away-2024",
+      "title": "Swept Away",
+      "openingDate": "2024-11-19",
+      "message": "pages-on-stages/Mason Pilevsky (pages-on-stages--mason-pilevsky.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This review was published on 2024-11-16, three days before the expected Broadway opening on 2024-11-19. The review conta — https://pagesonstages.com/2024/11/19/swept-away/",
+      "violations": [
+        {
+          "filename": "pages-on-stages--mason-pilevsky.json",
+          "url": "https://pagesonstages.com/2024/11/19/swept-away/",
+          "outletId": "pages-on-stages",
+          "criticName": "Mason Pilevsky",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This review was published on 2024-11-16, three days before the expected Broadway opening on 2024-11-19. The review conta",
+          "cvIssues": [
+            "Review publish date (2024-11-16) is 3 days BEFORE the expected Broadway opening date (2024-11-19)",
+            "No Broadway venue is named in the review text"
           ]
         }
       ]
@@ -873,27 +918,6 @@
           "cvReasoning": "The review explicitly states the production is at 'Theatre Royal Bath', which is a regional UK theatre, not a West End v",
           "cvIssues": [
             "wrong production"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "shadowlands-west-end-2026",
-      "title": "Shadowlands",
-      "openingDate": "2026-02-12",
-      "message": "islingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre's 2019 production of Shadowlands. Although the article mentions the  — https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
-      "violations": [
-        {
-          "filename": "islingtontribune--unknown.json",
-          "url": "https://www.islingtontribune.co.uk/article/review-shadowlands-at-aldwych-theatre",
-          "outletId": "islingtontribune",
-          "criticName": "Unknown",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a review of the Chichester Festival Theatre's 2019 production of Shadowlands. Although the article mentions the ",
-          "cvIssues": [
-            "Review evaluates the 2019 Chichester Festival Theatre production, not the West End Aldwych Theatre production",
-            "Opening sentence states 'CHICHESTER Festival Theatre's 2019 production of Shadowlands arrives at the Aldwych' — this is a preview/announcement of a transfer, not a review of the West End performance itself"
           ]
         }
       ]
@@ -1602,6 +1626,27 @@
       ]
     },
     {
+      "showId": "jack-and-the-beanstalk-off-west-end-2026",
+      "title": "Jack and The Beanstalk",
+      "openingDate": "2026-11-27",
+      "message": "thestage/Tracey Sinclair (thestage--tracey-sinclair.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid theater review with critical assessment of the production's quality, cast, and direction. However, the r — https://thestage.co.uk/reviews/jack-and-the-beanstalk-review-newcastle-theatre-royal-newcastle-upon-tyne",
+      "violations": [
+        {
+          "filename": "thestage--tracey-sinclair.json",
+          "url": "https://thestage.co.uk/reviews/jack-and-the-beanstalk-review-newcastle-theatre-royal-newcastle-upon-tyne",
+          "outletId": "thestage",
+          "criticName": "Tracey Sinclair",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "This is a valid theater review with critical assessment of the production's quality, cast, and direction. However, the r",
+          "cvIssues": [
+            "Review is of a production at The Theatre Royal (a regional UK venue, not an Off-West End London theater), not at Hackney Empire",
+            "Expected venue is Hackney Empire; the reviewed production is at The Theatre Royal (panto venue described as a 'local institution'), which is a different theater entirely"
+          ]
+        }
+      ]
+    },
+    {
       "showId": "iceboy-regional-2026",
       "title": "Iceboy!",
       "openingDate": "2026-06-29",
@@ -1923,7 +1968,7 @@
     {
       "showId": "ebony-scrooge-off-west-end-2026",
       "title": "Ebony Scrooge",
-      "openingDate": null,
+      "openingDate": "2026-11-27",
       "message": "the-spy-in-the-stalls/Sammi Xing (the-spy-in-the-stalls--sammi-xing.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review of Ebony Scrooge evaluating a performance with detailed critical assessment (praise and criticism — https://thespyinthestalls.com/2026/11/ebony-scrooge-2/",
       "violations": [
         {
@@ -2912,27 +2957,6 @@
           "cvIssues": [
             "Venue mismatch: Review describes performance at Irene Diamond Stage, but expected venue is Signature Center",
             "No critic byline found in scraped content (expected: David Roberts from Theatre Reviews Limited)"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "angry-alan-off-broadway-2025",
-      "title": "Angry Alan",
-      "openingDate": "2025-06-11",
-      "message": "pages-on-stages/Mason Pilevsky (pages-on-stages--mason-pilevsky.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 37d of opening, likely correct production] This is a genuine review (critic attended and evalua — https://pagesonstages.com/2025/07/18/angry-alan/",
-      "violations": [
-        {
-          "filename": "pages-on-stages--mason-pilevsky.json",
-          "url": "https://pagesonstages.com/2025/07/18/angry-alan/",
-          "outletId": "pages-on-stages",
-          "criticName": "Mason Pilevsky",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 37d of opening, likely correct production] This is a genuine review (critic attended and evalua",
-          "cvIssues": [
-            "Review describes John Krasinski in the lead role; Krasinski is a major film/TV star and any Off-Broadway production with him would be extensively documented and cross-verifiable. No credible Off-Broadway production of 'Angry Alan' with Krasinski exists in records for June 2025.",
-            "The review contains detailed performance analysis of a specific actor in a specific staging, but the production details do not match any known Off-Broadway 'Angry Alan' production."
           ]
         }
       ]
