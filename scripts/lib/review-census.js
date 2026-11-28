@@ -376,22 +376,15 @@ function publishedRoundupWithoutArchive(reviewFiles, sourcesPresent, showTitle) 
  * @param {string} showId
  * @param {object} [opts] { archiveDir, sources } injectable for tests
  */
-/** Days a roundup post may predate the show's first preview/opening and still be this run's (previews + press-night lag). */
-const WET_POST_MAX_PREDATE_DAYS = 45;
-
 /**
- * BRO-8419: true when a WET archive's post date is more than WET_POST_MAX_PREDATE_DAYS before the show's
- * earliest preview/opening date, i.e. the post reviews an earlier production of the same title.
- * Fails open (false) on a missing or unparseable date on either side. Pure.
+ * BRO-8419: the write-time WET guard (wet-archive-guard.js, BRO-6682) only ran in the scraper, so an archive
+ * already on disk never got re-checked. True when it says the archive is another production's. Fails open
+ * on unparseable content.
  */
-function wetPostPredatesRun(content, show) {
-  let postDate;
-  try { postDate = JSON.parse(content).postDate; } catch (_) { return false; }
-  const post = /^\d{4}-\d{2}-\d{2}/.test(String(postDate || '')) ? Date.parse(String(postDate).slice(0, 10)) : NaN;
-  const dates = [show && show.previewsStartDate, show && show.openingDate]
-    .filter((d) => /^\d{4}-\d{2}-\d{2}/.test(String(d || ''))).map((d) => Date.parse(String(d).slice(0, 10)));
-  if (!Number.isFinite(post) || !dates.length) return false;
-  return (Math.min(...dates) - post) / 864e5 > WET_POST_MAX_PREDATE_DAYS;
+function wetArchiveRejected(content, show) {
+  let archive;
+  try { archive = JSON.parse(content); } catch (_) { return false; }
+  return !!require('./wet-archive-guard').postPredatesRun(show, archive);
 }
 
 function buildCensusFromArchives(showId, opts = {}) {
@@ -479,7 +472,7 @@ function buildCensusFromArchives(showId, opts = {}) {
     // BRO-8419: a WET roundup post is matched to our show by title alone, so a same-title panto/revival
     // (Jack and The Beanstalk 2026 at Hackney Empire vs the 2022 Lyric Hammersmith post) fed other
     // productions' Telegraph/Times rows into the census as reviews owed tonight, failing the night forever.
-    if (s.validatePostDate && opts.show && wetPostPredatesRun(html, opts.show)) { wrongProductionPage.push(s.name); continue; }
+    if (s.validatePostDate && opts.show && wetArchiveRejected(html, opts.show)) { wrongProductionPage.push(s.name); continue; }
     if (s.productionWindow && opts.show && (opts.show.openingDate || opts.show.previewsStartDate)) {
       const { checkPageProductionWindow } = require('./show-score-production-window');
       // Its own list, not wrongRoundup: the scraper already records the page as another production's and
@@ -619,5 +612,5 @@ function censusVerdict(census, coveredScoredOutlets, opts = {}) {
 module.exports = {
   buildCensusFromArchives, publishedRoundupWithoutArchive, unionCensus, isLegacyArchiveUrl, censusVerdict, CI_UNFETCHABLE_OUTLETS,
   sourceExtractors, parseBwwRoundup, parseDtli, parsePlaybillVerdict, parseShowScore,
-  standingOutletsSource, candidateStatesFor, outletVariants, outletInSet, wetPostPredatesRun,
+  standingOutletsSource, candidateStatesFor, outletVariants, outletInSet, wetArchiveRejected,
 };

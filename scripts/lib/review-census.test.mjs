@@ -8,7 +8,7 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { unionCensus, censusVerdict, buildCensusFromArchives, CI_UNFETCHABLE_OUTLETS,
-  sourceExtractors, parseBwwRoundup, parseShowScore, wetPostPredatesRun } = require('./review-census.js');
+  sourceExtractors, parseBwwRoundup, parseShowScore, wetArchiveRejected } = require('./review-census.js');
 
 test('unionCensus dedups by normalized outlet, merges sources, keeps URL + real critic', () => {
   const c = unionCensus([
@@ -542,14 +542,14 @@ test('previous-production labels exclude older-year tiles even for claimed prior
 });
 
 // BRO-8419: a same-title WET post from an earlier production must not feed the census.
-test('wetPostPredatesRun: 2022 post vs 2026 run is stale; current-run and missing dates fail open', () => {
-  const show = { previewsStartDate: '2026-11-21', openingDate: '2026-11-27' };
-  assert.equal(wetPostPredatesRun(JSON.stringify({ postDate: '2022-11-28' }), show), true);
-  assert.equal(wetPostPredatesRun(JSON.stringify({ postDate: '2026-11-28' }), show), false);
-  assert.equal(wetPostPredatesRun(JSON.stringify({ postDate: '2026-10-20' }), show), false, 'within the 45-day margin');
-  assert.equal(wetPostPredatesRun(JSON.stringify({}), show), false);
-  assert.equal(wetPostPredatesRun('not json', show), false);
-  assert.equal(wetPostPredatesRun(JSON.stringify({ postDate: '2022-11-28' }), {}), false);
+test('wetArchiveRejected: 2022 post vs 2026 run is stale; current-run and missing dates fail open', () => {
+  const show = { category: 'off-west-end', previewsStartDate: '2026-11-21', openingDate: '2026-11-27' };
+  assert.equal(wetArchiveRejected(JSON.stringify({ postDate: '2022-11-28' }), show), true);
+  assert.equal(wetArchiveRejected(JSON.stringify({ postDate: '2026-11-28' }), show), false);
+  assert.equal(wetArchiveRejected(JSON.stringify({ postDate: '2026-10-20' }), show), false, 'within the 120-day guard');
+  assert.equal(wetArchiveRejected(JSON.stringify({}), show), false);
+  assert.equal(wetArchiveRejected('not json', show), false);
+  assert.equal(wetArchiveRejected(JSON.stringify({ postDate: '2022-11-28' }), {}), false);
 });
 
 test('buildCensusFromArchives drops a stale-production WET archive (Jack and The Beanstalk 2026)', () => {
@@ -557,7 +557,7 @@ test('buildCensusFromArchives drops a stale-production WET archive (Jack and The
   fs.mkdirSync(path.join(dir, 'westendtheatre'));
   const mk = (postDate) => JSON.stringify({ extractedTitle: 'Jack and the Beanstalk', postDate,
     ratings: [{ outlet: 'The Telegraph', stars: 4, critic: 'Claire Allfree', reviewUrl: 'https://telegraph.co.uk/x' }] });
-  const show = { title: 'Jack and The Beanstalk', previewsStartDate: '2026-11-21', openingDate: '2026-11-27' };
+  const show = { title: 'Jack and The Beanstalk', category: 'off-west-end', previewsStartDate: '2026-11-21', openingDate: '2026-11-27' };
   fs.writeFileSync(path.join(dir, 'westendtheatre', 'jb.json'), mk('2022-11-28'));
   const stale = buildCensusFromArchives('jb', { archiveDir: dir, show, market: 'off-west-end' });
   assert.equal(stale.count, 0);

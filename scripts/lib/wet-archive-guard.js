@@ -19,16 +19,10 @@ const { isUkRegionalVenue } = require('./market-label');
 // previous run.
 const POST_BEFORE_OPENING_MAX_DAYS = 120;
 
-function wetArchiveProblem(show, archive) {
-  if (!show) return { code: 'unknown-show', detail: 'no show row for archive' };
-  // A UK regional feeder house (RSC Stratford) is somewhere WET really reviews:
-  // exempt from the market check, not from the date check below (BRO-6694).
-  const ukRegional = show.category === 'regional' && isUkRegionalVenue(show.venue);
-  if (!ukRegional && !isLondonMarket(show.category)) {
-    return { code: 'non-london-show', detail: `${show.id} is category "${show.category || 'broadway'}"; WET only covers West End productions` };
-  }
+/** Date half of the guard (BRO-8419: the census reuses it on archives already on disk). Null when the post is this run's. */
+function postPredatesRun(show, archive) {
   const postDate = archive && (archive.postDate || archive.date);
-  const opening = show.openingDate;
+  const opening = show && show.openingDate;
   if (postDate && opening) {
     const p = Date.parse(postDate);
     const o = Date.parse(opening);
@@ -40,6 +34,17 @@ function wetArchiveProblem(show, archive) {
     }
   }
   return null;
+}
+
+function wetArchiveProblem(show, archive) {
+  if (!show) return { code: 'unknown-show', detail: 'no show row for archive' };
+  // A UK regional feeder house (RSC Stratford) is somewhere WET really reviews:
+  // exempt from the market check, not from the date check below (BRO-6694).
+  const ukRegional = show.category === 'regional' && isUkRegionalVenue(show.venue);
+  if (!ukRegional && !isLondonMarket(show.category)) {
+    return { code: 'non-london-show', detail: `${show.id} is category "${show.category || 'broadway'}"; WET only covers West End productions` };
+  }
+  return postPredatesRun(show, archive);
 }
 
 /**
@@ -65,4 +70,4 @@ function auditWetArchives(shows, archives) {
   return out;
 }
 
-module.exports = { wetArchiveProblem, auditWetArchives, showsFromJson, POST_BEFORE_OPENING_MAX_DAYS };
+module.exports = { wetArchiveProblem, postPredatesRun, auditWetArchives, showsFromJson, POST_BEFORE_OPENING_MAX_DAYS };
