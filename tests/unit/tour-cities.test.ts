@@ -38,3 +38,31 @@ test('seasonLabel spans the stops it is given', () => {
   // The latest end wins even when an earlier-starting stop runs longest.
   assert.equal(seasonLabel([st('2026-10-01', '2027-02-01'), st('2026-11-01', '2026-11-05')]), '2026–27');
 });
+
+// BRO-8456: a hub lists tours playing its suburbs (Costa Mesa / Segerstrom is LA).
+import registry from '../../data/city-hubs.json';
+import { hubSuburbMap } from '../../src/lib/tour-cities';
+
+test('hubSuburbMap folds Costa Mesa into the LA hub and Arlington VA into DC, not Arlington TX', () => {
+  const m = hubSuburbMap(registry.hubs as Parameters<typeof hubSuburbMap>[0]);
+  assert.deepEqual(m.get('costa-mesa-ca'), { slug: 'los-angeles-ca', city: 'Los Angeles, CA' });
+  assert.equal(m.get('arlington-va')!.slug, 'washington-dc');
+  assert.equal(m.get('arlington-tx'), undefined);
+  assert.equal(m.get('los-angeles-ca'), undefined);
+});
+
+test('cityStops puts suburb stops under the hub slug', () => {
+  const m = hubSuburbMap(registry.hubs as Parameters<typeof hubSuburbMap>[0]);
+  const g = cityStops([
+    { id: 'bom', stops: [{ city: 'Costa Mesa, CA', venue: 'Segerstrom Hall', start: '2026-12-29', end: '2027-01-03' }] },
+    { id: 'jb', stops: [{ city: 'Los Angeles, CA', venue: 'Pantages', start: '2026-12-01', end: '2026-12-13' }] },
+  ], m);
+  assert.deepEqual(Array.from(g.keys()), ['los-angeles-ca']);
+  assert.deepEqual(g.get('los-angeles-ca')!.stops.map(s => s.showId), ['jb', 'bom']);
+});
+
+test('class guard: every suburb in the registry resolves to a launched hub page', () => {
+  const m = hubSuburbMap(registry.hubs as Parameters<typeof hubSuburbMap>[0]);
+  for (const [k, t] of Array.from(m)) assert.ok((registry.hubs as Record<string, { launched?: boolean }>)[t.slug]?.launched, `${k} -> ${t.slug}`);
+  assert.ok(m.size >= 40);
+});
