@@ -489,5 +489,32 @@
       }
     ],
     "queuedAt": "2026-11-28T20:58:51.387Z"
+  },
+  {
+    "conditionKey": "land-preexisting:tests/unit/hub-closing-dates-live-data.test.mjs::hub shows with a closingDate carry a closingDateSou#ad3822e302",
+    "title": "Test red on main: hub shows with a closingDate carry a closingDateSource [testCodeFailure]",
+    "description": "tests/unit/hub-closing-dates-live-data.test.mjs::hub shows with a closingDate carry a closingDateSource [testCodeFailure] fails on origin/main itself (unit-tests-node), so landings pass it as pre-existing. It stays red until someone fixes it. Seen on land/bro-8451-v2. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46190238924",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "test",
+        "value": "tests/unit/hub-closing-dates-live-data.test.mjs::hub shows with a closingDate carry a closingDateSource [testCodeFailure]"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46190238924"
+      }
+    ],
+    "queuedAt": "2026-11-28T21:35:40.452Z"
   }
 ]
