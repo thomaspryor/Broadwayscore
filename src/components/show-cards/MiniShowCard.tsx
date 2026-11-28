@@ -7,7 +7,7 @@ import ShowImage from '@/components/ShowImage';
 import { getScoreColorClass, MustSeeCrown } from '@/components/show-cards';
 import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
 import { scoreGateArg } from '@/config/scoring';
-import { getMarketLabel } from '@/lib/market-utils';
+import { getMarketLabel, getTierMarket } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import HoverRateStars from '@/components/user/HoverRateStars';
 import type { ShowCardShow } from './types';
@@ -25,6 +25,7 @@ export interface MiniShowCardProps {
 // Never use a landscape/hero image as a poster — source proper portrait images instead
 const MiniShowCard = memo(function MiniShowCard({ show, priority = false, eager = false }: MiniShowCardProps) {
   const category = show.category ?? 'broadway';
+  const tierMarket = getTierMarket(show) ?? 'broadway';
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const rawScore = show.criticScore?.score;
@@ -90,7 +91,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false, eager 
         {/* Score / date overlay — outside overflow-hidden so crown can escape */}
         <div className="absolute bottom-1.5 right-1.5">
           <div className="relative overflow-visible">
-            {isCriticalGold(score, category) && (
+            {isCriticalGold(score, tierMarket) && (
               <MustSeeCrown size="mini" />
             )}
             {dateBadge ? (
@@ -111,7 +112,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false, eager 
               </div>
             ) : (
               <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold ${
-                score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, category)
+                score === undefined || score === null ? 'bg-surface-overlay text-gray-400' : getScoreColorClass(score, tierMarket)
               }`}>
                 {score !== undefined && score !== null ? Math.round(score) : '–'}
               </div>

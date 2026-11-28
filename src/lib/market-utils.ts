@@ -4,6 +4,7 @@
  * For venue classification (requires data/west-end-venues.json), use venue-classification.ts.
  */
 
+import { TIER_MARKET_REGIONAL_AU } from '../../scripts/lib/score-tiers';
 import {
   MIN_REVIEWS_FOR_SCORE,
   MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY,
@@ -77,6 +78,7 @@ export function getMarketMinReviews(category?: string): number {
     case 'off-broadway':
     case 'off-off-broadway':
     case 'regional':
+    case 'regional-au': // tier-market key (score-tiers.js): same review gate as regional
     case 'tour':
       return MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY;
     case 'off-west-end':
@@ -147,6 +149,18 @@ export function isUkRegionalShow(show: { category?: string; venue?: string }): b
 /** A `regional` show at an Australian house (Sydney/Melbourne/Brisbane...). Not a Broadway tryout (BRO-8389). */
 export function isAuRegionalShow(show: { category?: string; venue?: string }): boolean {
   return getRegionalCountry(show) === 'AU';
+}
+
+/**
+ * The market key the Critic Score TIER functions take (getScoreTier, getScoreBucket,
+ * isCriticalGold, getGoldThreshold, ...): the show's category, except an Australian regional
+ * production, which reads 'regional-au' (Gold 85, BRO-8451). Pass this to tier functions ONLY;
+ * review-count gates and every other category check keep the raw category.
+ * JS twin: getTierMarket in scripts/lib/market-label.js (parity: tests/unit/au-regional-country.test.mjs).
+ */
+export function getTierMarket(show: { category?: string | null; venue?: string | null }): string | undefined {
+  const category = show.category ?? undefined;
+  return isAuRegionalShow({ category, venue: show.venue ?? undefined }) ? TIER_MARKET_REGIONAL_AU : category;
 }
 
 /** A `regional` show that is a US tryout/feeder: neither UK nor AU. */

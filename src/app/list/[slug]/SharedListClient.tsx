@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { getTierMarket } from '@/lib/market-utils';
 import Link from 'next/link';
 import { getSupabaseClient } from '@/lib/supabase';
 import { ScoreBadge } from '@/components/show-cards';
@@ -346,7 +347,7 @@ function SharedListItem({
             size="sm"
             reviewCount={show.reviewCount}
             status={show.status}
-            category={show.category}
+            category={getTierMarket(show)}
           />
         </div>
       )}

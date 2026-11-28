@@ -52,7 +52,7 @@ test('app feed cr.l is the DISPLAY label from the shared tier module (no local l
   const tiers = require('./score-tiers.js');
   assert.equal(tiers.SCORE_TIER_LABELS.skippable, 'Mixed', 'score-tiers.js 55-64 label must be the display label');
   assert.ok(!Object.values(tiers.SCORE_TIER_LABELS).includes('Skippable'), 'score-tiers.js must not carry the data label');
-  assert.match(read('scripts/lib/mobile-critic-score.js'), /l: getScoreTierLabel\(result\.s, show\.category\)/,
+  assert.match(read('scripts/lib/mobile-critic-score.js'), /l: getScoreTierLabel\(result\.s, getTierMarket\(show\)\)/,
     'mobile-critic-score.js must label cr with the shared, market-aware getScoreTierLabel');
   assert.match(read('scripts/generate-mobile-data.js'), /buildMobileCriticScore\(/,
     'generate-mobile-data.js must build cr with the shared buildMobileCriticScore');

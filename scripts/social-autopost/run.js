@@ -29,6 +29,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getScoreTierId, getScoreTierLabel, getReviewBreakdownTierId } = require('../lib/score-tiers');
+const { getTierMarket } = require("../lib/market-label");
 const { roundupFillOrder, findBackfillEvents, findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosingSoonEvents, roundupLookback, closingSoonLookback, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
 const { buildCaptions, postMarkers, compareMarkers, movedMarkers, pathMarker, validateHook, strayNumbers, productionLabel, monthDay, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers } = require('./captions');
 const { resolvePoster, minPosterWidth } = require('./art');
@@ -121,11 +122,11 @@ function describe(show, ctx) {
   if (!Number.isFinite(pub.cs)) throw new Error(`${show.id}: no Critic Score in public/data/shows`);
   // Rounded the way the site badge shows it (scripts/lib/canonical-critic-scores.ts).
   const score = Math.round(pub.cs);
-  const breakdown = breakdownFor(pub.rv || [], show.category);
+  const breakdown = breakdownFor(pub.rv || [], getTierMarket(show));
   const counted = breakdown.rave + breakdown.positive + breakdown.mixed + breakdown.negative;
   // The caption says "from N critics' reviews" next to the tally: they must agree.
   if (counted !== pub.rc) throw new Error(`${show.id}: breakdown counts ${counted} reviews, the site says ${pub.rc}`);
-  return { show, score, tierId: getScoreTierId(score, show.category), tierLabel: getScoreTierLabel(score, show.category), reviewCount: pub.rc, breakdown };
+  return { show, score, tierId: getScoreTierId(score, getTierMarket(show)), tierLabel: getScoreTierLabel(score, getTierMarket(show)), reviewCount: pub.rc, breakdown };
 }
 
 // venue-write-guard-ok: show.venue is only read here (card text / vision-check context), never written back

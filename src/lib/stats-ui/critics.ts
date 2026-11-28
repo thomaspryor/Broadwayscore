@@ -8,7 +8,7 @@
 
 import { parseRating, ratingToHundred } from '@/lib/stats';
 import type { DiaryRow } from '@/lib/stats';
-import { getMarketMinReviews } from '@/lib/market-utils';
+import { getMarketMinReviews, getTierMarket } from '@/lib/market-utils';
 import { isCriticalGold } from '@/config/score-buckets';
 
 /** |your ★×20 − critic score| at or below this counts as agreement. */
@@ -41,6 +41,7 @@ export interface ContrarianPick {
   rating: number;
   criticScore: number;
   category?: string | null;
+  venue?: string | null;
   /** your★×20 − criticScore. Positive = you liked it more. */
   delta: number;
 }
@@ -130,6 +131,7 @@ export function youVsCritics(
       rating,
       criticScore: theirs,
       category: meta.category ?? null,
+      venue: meta.venue ?? null,
       delta: yours - theirs,
     });
   });
@@ -155,7 +157,7 @@ export function youVsCritics(
 export function goldCoverage(rows: DiaryRow[], openShows: CriticShowMeta[]): GoldCoverage {
   const seenIds = new Set(rows.map((r) => r.show_id));
   const gold = openShows.filter(
-    (s) => hasDisplayableScore(s) && isCriticalGold(s.compositeScore, s.category ?? undefined),
+    (s) => hasDisplayableScore(s) && isCriticalGold(s.compositeScore, getTierMarket(s)),
   );
   const seen = gold.filter((s) => seenIds.has(s.id));
   const unseen = gold
