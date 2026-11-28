@@ -9,15 +9,15 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { tourAggregateProblems, directorsOf } = require('./tour-aggregate-rules.js');
+const { tourAggregateProblems, directorsOf, aggregateProblems } = require('./tour-aggregate-rules.js');
 const { planUnlink, applyUnlink } = require('./tour-aggregate-unlink.js');
 
-const gpAgg = { id: 'gun-and-powder-regional-2020', slug: 'gun-and-powder-regional-2020', category: 'regional', tags: ['regional', 'national-tour'], transferredTo: 'wanted-2022' };
+const gpAgg = { id: 'gun-and-powder-regional-2020', openingDate: '2020-02-05', slug: 'gun-and-powder-regional-2020', category: 'regional', tags: ['regional', 'national-tour'], transferredTo: 'wanted-2022' };
 const gpSig = { id: 'gun-and-powder-signature-regional-2020', slug: 'gun-and-powder-signature-regional-2020', category: 'regional', tourParent: gpAgg.id, openingDate: '2020-02-05', creativeTeam: [{ name: 'Robert O’Hara', role: 'Director' }] };
 const gpMill = { id: 'gun-and-powder-paper-mill-regional-2024', slug: 'gun-and-powder-paper-mill-regional-2024', category: 'regional', tourParent: gpAgg.id, openingDate: '2024-04-14', creativeTeam: [{ name: 'Stevie Walker-Webb', role: 'Director' }] };
 const wanted = { id: 'wanted-2022', slug: 'wanted', category: 'broadway', transferOf: gpAgg.id };
 
-const paAgg = { id: 'paranormal-activity-national-tour-regional-2025', category: 'regional' };
+const paAgg = { id: 'paranormal-activity-national-tour-regional-2025', category: 'regional', openingDate: '2025-10-16' };
 const paLeg = (id, opens) => ({ id, category: 'regional', tourParent: paAgg.id, openingDate: opens, creativeTeam: [{ name: 'Felix Barrett', role: 'Director' }] });
 const paranormal = [paAgg, paLeg('pa-chicago', '2025-10-16'), paLeg('pa-la', '2025-11-14'), paLeg('pa-dc', '2026-01-28'), paLeg('pa-sf', '2026-02-24'), paLeg('pa-boston', '2026-07-15')];
 
@@ -94,4 +94,11 @@ test('planUnlink refuses a real tour, an orphan review row, and a bad transfer l
 
   const badLeg = planUnlink({ shows: structuredClone([gpAgg, gpSig, gpMill, wanted]), reviews, aggregateId: gpAgg.id, transferLegId: 'wanted-2022' });
   assert.equal(badLeg.ok, false);
+});
+
+test('an aggregate with no openingDate is reported with its first leg\'s date (BRO-8456)', () => {
+  const legs = [{ id: 'a', openingDate: '2025-10-16' }, { id: 'b', openingDate: '2025-11-14' }];
+  const p = aggregateProblems({ id: 'agg', openingDate: null }, legs);
+  assert.ok(p.some((x) => /no openingDate: its first leg opens 2025-10-16/.test(x)), p.join('|'));
+  assert.deepEqual(aggregateProblems({ id: 'agg', openingDate: '2025-10-16' }, legs), []);
 });
