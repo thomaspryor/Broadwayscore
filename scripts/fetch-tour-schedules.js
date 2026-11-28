@@ -70,7 +70,9 @@ function layoffFor(allowances, tourId) {
 /**
  * A tour whose launch is older than anything Tours To You still lists (Spamilton:
  * 2018 launch, page rows from Dec 2021) can match no segment by its launch.
- * While it is open and its latest multi-stop leg ran within the last 120 days
+ * Only for tours listed in tour-stop-overrides.json `latestEraTours` (an open tour
+ * with an old launch otherwise takes no schedule: a new company's page is not
+ * its own). While it is open and its latest multi-stop leg ran within the last 120 days
  * (or is still ahead), that leg is its schedule (BRO-8456). Pure.
  */
 function latestEraSegment(segments, tour, now = new Date()) {
@@ -96,7 +98,7 @@ function tourStops(tour, html, now = new Date(), opts = {}) {
   const lag = running ? running.start.getTime() - launchMs : NaN;
   const segment = pickSegment(segments, tour, '')
     || (running && lag >= 0 && lag <= 120 * 86400000 ? running : null)
-    || latestEraSegment(segments, tour, now);
+    || (opts.latestEra ? latestEraSegment(segments, tour, now) : null);
   if (!segment) return null;
   // Only the current era: a long-running title's page can run several
   // companies together back to 2020 (Hamilton); stops before this tour's
@@ -156,7 +158,7 @@ async function main() {
     if (budget.exceeded()) { console.log(`Time budget reached; ${targets.length - i} tour(s) keep their saved stops until tomorrow`); break; }
     if (i > 0) await sleep(PAUSE_MS);
     const { url, html } = await fetchSchedule(tour, null, { budget });
-    const raw = url ? tourStops(tour, html, new Date(), { maxLayoffDays: layoffFor(overrides.layoffAllowances, tour.id) }) : null;
+    const raw = url ? tourStops(tour, html, new Date(), { maxLayoffDays: layoffFor(overrides.layoffAllowances, tour.id), latestEra: (overrides.latestEraTours || []).some(x => x.tourId === tour.id) }) : null;
     const stops = raw && applyStopOverrides(tour.id, raw, overrides.overrides, reportOverride);
     if (!stops) { failed++; console.log(`${tour.id}: no schedule (kept ${out.tours[tour.id] ? 'previous' : 'none'})`); continue; }
     // Another show's table on this page (BRO-4601: Come From Away's page showed

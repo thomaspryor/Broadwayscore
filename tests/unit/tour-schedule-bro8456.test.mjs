@@ -64,3 +64,18 @@ test('a pilcrow footnote mark does not hide a stop date (Devils: "January 15-25,
   assert.ok(a && a.start && a.end, 'parsed');
   assert.equal(a.start.toISOString().slice(0, 10), '2026-01-15');
 });
+
+test('latestEraTours: the fallback applies only to a listed tour, never to a bare old launch (tour-schedule-now-next guard)', () => {
+  const { tourStops } = require('../../scripts/fetch-tour-schedules.js');
+  const { validateOverrides } = require('../../scripts/lib/tour-stop-overrides.js');
+  const row = (c, v, d) => `<tr><td>${c}</td><td>${v}</td><td>${d}</td></tr>`;
+  const html = `<table>${[row('Fayetteville, AR', 'Walton Arts Center', 'August 16-25, 2024'), row('Tulsa, OK', 'Tulsa PAC', 'August 27-September 8, 2024')].join('')}</table>`;
+  const now = new Date('2024-10-05T00:00:00Z');
+  const tour = { id: 'x-tour-2019', openingDate: '2019-06-01' };
+  assert.equal(tourStops(tour, html, now), null, 'default: an old tour takes no new company schedule');
+  assert.ok(tourStops(tour, html, now, { latestEra: true }), 'listed tour takes its latest leg');
+  const doc = JSON.parse(fs.readFileSync(new URL('../../data/tour-stop-overrides.json', import.meta.url), 'utf8'));
+  assert.ok((doc.latestEraTours || []).some(t => t.tourId === 'spamilton-an-american-parody-tour-2018'));
+  assert.deepEqual(validateOverrides(doc), []);
+  assert.ok(validateOverrides({ overrides: [], latestEraTours: [{ tourId: 't' }] }).length);
+});
