@@ -6,6 +6,9 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+// BRO-8107: the heal reads shows.json; point it at a fixture so this test never reads live data.
+const { useShowsFixture } = require('./shows-json-fixture.js');
+process.on('exit', useShowsFixture([{ id: 'rename-fixture-2026', title: 'Rename Fixture', venue: 'Fixture Theatre' }]));
 const { executeReviewFieldEditIn } = require('./review-field-edit');
 const { runOutletMismatchCleanup } = require('./outlet-mismatch-heal');
 const { safeRenameReview } = require('./review-write-guard');
