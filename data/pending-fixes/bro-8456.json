@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-8456",
+  "planId": "d5b7893a-419a-4b29-a916-8336fa4873ca",
+  "status": "pending",
+  "createdAt": "2026-11-28T18:12:45.826Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8456: close and-juliet-tour-2024 (TTY History says 2024-2026; last stop 2026-11-15); backfill the Paranormal Activity tour aggregate openingDate to its first leg (2025-10-16)",
+    "steps": [
+      "shows.json: and-juliet-tour-2024.closingDate",
+      "shows.json: and-juliet-tour-2024.status",
+      "shows.json: paranormal-activity-national-tour-regional-2025.openingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "and-juliet-tour-2024",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-11-15",
+        "description": "shows.json: and-juliet-tour-2024.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "and-juliet-tour-2024",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "shows.json: and-juliet-tour-2024.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "paranormal-activity-national-tour-regional-2025",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2025-10-16",
+        "description": "shows.json: paranormal-activity-national-tour-regional-2025.openingDate"
+      }
+    ]
+  }
+}

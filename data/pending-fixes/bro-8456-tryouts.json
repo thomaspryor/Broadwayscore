@@ -1,0 +1,192 @@
+{
+  "issueNumber": "bro-8456-tryouts",
+  "planId": "82b1e589-40ea-4abd-8915-e183326532ee",
+  "status": "pending",
+  "createdAt": "2026-11-28T18:19:00.678Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8456 item 6: add four missing US tryout rows (Nikola, Purple Rain Minneapolis, The Princess Bride, August Rush)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "nikola-regional-2026",
+          "title": "Nikola",
+          "slug": "nikola-regional-2026",
+          "venue": "Arena Stage, Washington, DC",
+          "city": "washington-dc",
+          "openingDate": "2026-10-02",
+          "previewsStartDate": null,
+          "closingDate": "2026-11-29",
+          "status": "open",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://playbill.com/article/purpose-prima-facie-nikola-musical-and-2-works-from-step-afrika-will-be-part-of-arena-season"
+          ],
+          "synopsis": "A new musical about Nikola Tesla and his rivalry with Thomas Edison, in its world premiere at Arena Stage's Kreeger Theater. The date shown is the announced start of the run; the official opening night was not confirmed.",
+          "creativeTeam": [
+            {
+              "name": "Marshall Pailet",
+              "role": "Director"
+            },
+            {
+              "name": "Nikko Benson",
+              "role": "Music, Book & Lyrics"
+            },
+            {
+              "name": "Benjamin Halstead",
+              "role": "Book & Lyrics"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "purple-rain-regional-2025",
+          "title": "Purple Rain",
+          "slug": "purple-rain-regional-2025",
+          "venue": "State Theatre, Minneapolis, MN",
+          "city": "minneapolis-mn",
+          "openingDate": "2025-11-05",
+          "previewsStartDate": "2025-10-16",
+          "closingDate": "2025-11-23",
+          "status": "closed",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://hennepinarts.org/press/purple-rain-adds-an-extra-week-of-pre-broadway-performances-in-minneapolis",
+            "https://www.broadwayworld.com/article/Review-PURPLE-RAIN-at-State-Theatre-Minneapolis-20251106"
+          ],
+          "synopsis": "The world premiere of the stage musical of Prince's Purple Rain at Minneapolis's State Theatre, a pre-Broadway run before its 2027 Majestic Theatre engagement.",
+          "creativeTeam": [
+            {
+              "name": "Saheem Ali",
+              "role": "Director"
+            },
+            {
+              "name": "Peter Duchan",
+              "role": "Book"
+            },
+            {
+              "name": "Prince",
+              "role": "Music"
+            }
+          ]
+        },
+        "crossLinkFrom": "purple-rain-2026"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-princess-bride-regional-2027",
+          "title": "The Princess Bride",
+          "slug": "the-princess-bride-regional-2027",
+          "venue": "Nederlander Theatre, Chicago, IL",
+          "city": "chicago-il",
+          "openingDate": null,
+          "previewsStartDate": "2027-07-19",
+          "closingDate": "2027-08-22",
+          "status": "upcoming",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://chicago.suntimes.com/theater/2026/09/15/the-princess-bride-musical-chicago-broadway-2027-nederlander-creative-team-jeffrey-seller"
+          ],
+          "synopsis": "A musical adaptation of the 1987 film, with a score by Kristen Anderson-Lopez and Robert Lopez, in its pre-Broadway world premiere presented by Broadway In Chicago.",
+          "creativeTeam": [
+            {
+              "name": "Alex Timbers",
+              "role": "Director"
+            },
+            {
+              "name": "Andy Blankenbuehler",
+              "role": "Choreographer"
+            },
+            {
+              "name": "Bob Martin",
+              "role": "Book"
+            },
+            {
+              "name": "Rick Elice",
+              "role": "Book"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "august-rush-regional-2027",
+          "title": "August Rush",
+          "slug": "august-rush-regional-2027",
+          "venue": "The Old Globe, San Diego, CA",
+          "city": "san-diego-ca",
+          "openingDate": "2027-04-04",
+          "previewsStartDate": "2027-03-27",
+          "closingDate": "2027-05-02",
+          "status": "upcoming",
+          "type": "musical",
+          "isRevival": false,
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "openingDateSource": "manual",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theatermania.com/news/old-globe-season-to-feature-jay-o-sanders-as-king-lear_1851775/"
+          ],
+          "synopsis": "A pre-Broadway world premiere of the musical adaptation of the film August Rush on the Old Globe's Shiley Stage.",
+          "creativeTeam": [
+            {
+              "name": "Kathleen Marshall",
+              "role": "Director"
+            },
+            {
+              "name": "Nick Blaemire",
+              "role": "Book"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
