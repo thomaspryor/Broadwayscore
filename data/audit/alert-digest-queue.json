@@ -112,5 +112,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-28T17:52:48.744Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8449-url-place",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-8449-url-place",
+    "description": "land.yml did not land land/bro-8449-url-place: the scripts-lib-tests gate went red at 35b19add30. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46176171321",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8449-url-place"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "35b19add30cb8852207fffc4e756711b1874fc5c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46176171321"
+      }
+    ],
+    "queuedAt": "2026-11-28T18:35:50.907Z"
   }
 ]
