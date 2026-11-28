@@ -53,14 +53,16 @@
       "market": "west-end",
       "queuedAt": "2026-11-27T19:06:41.498Z",
       "dueAt": "2026-11-28T11:06:41.498Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-28T13:07:06.229Z"
     },
     {
       "showId": "a-christmas-carol-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-11-27T18:55:10.438Z",
       "dueAt": "2026-11-28T10:55:10.438Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-28T13:07:06.229Z"
     },
     {
       "showId": "samson-et-dalila-off-broadway-2026",
@@ -75,7 +77,8 @@
       "market": "broadway",
       "queuedAt": "2026-11-27T18:44:22.698Z",
       "dueAt": "2026-11-28T10:44:22.698Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-28T13:07:06.229Z"
     },
     {
       "showId": "trilogies-triathlon-off-broadway-2026",
@@ -90,7 +93,8 @@
       "market": "broadway",
       "queuedAt": "2026-11-27T18:40:55.096Z",
       "dueAt": "2026-11-28T10:40:55.096Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-28T13:07:06.229Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -132,7 +136,10 @@
       "outletIds": [
         "thestage"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-11-28T13:07:06.229Z"
     }
   ]
 }
