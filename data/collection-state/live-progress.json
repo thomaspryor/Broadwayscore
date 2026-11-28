@@ -1,38 +1,21 @@
 {
-  "updatedAt": "2026-11-28T04:36:58.681Z",
-  "processed": 270,
-  "failed": 126,
-  "successRate": "68.2%",
+  "updatedAt": "2026-11-28T04:45:58.707Z",
+  "processed": 325,
+  "failed": 137,
+  "successRate": "70.3%",
   "tierBreakdown": {
-    "playwright": 185,
+    "playwright": 219,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 24,
+    "scrapingdog": 26,
     "scrapingbee": 0,
-    "brightdata": 9,
-    "archiveToday": 22,
-    "archive": 60
+    "brightdata": 14,
+    "archiveToday": 25,
+    "archive": 74
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-11-28T02:44:52.763Z",
-      "event": "bb-session",
-      "session": "e389e408",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-11-28T02:48:02.697Z",
-      "event": "bb-session",
-      "session": "50358a9b",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
-    {
-      "t": "2026-11-28T02:48:03.369Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-11-28T02:54:58.365Z",
       "event": "bb-session",
@@ -127,6 +110,24 @@
       "t": "2026-11-28T03:51:28.613Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-28T04:31:30.069Z",
+      "event": "bb-session",
+      "session": "2ed51a5d",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-11-28T04:40:01.099Z",
+      "event": "bb-session",
+      "session": "e8bed591",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-11-28T04:43:09.730Z",
+      "event": "bb-session",
+      "session": "4450a7d2",
+      "url": "https://deadline.com/2026/02/the-only-living-pickpocket-in-new-york-sony-picture"
     }
   ]
 }
