@@ -531,6 +531,18 @@
     {
       "outletId": "noise11",
       "reason": "Australian regional-pilot outlet (BRO-8389); no archived byline page yet. Add a fixture when one is available."
+    },
+    {
+      "outletId": "age",
+      "reason": "BRO-8433: The Age reviews mostly appear inside Nine review-wrap pages, one byline per item; nine-review-wrap.test.mjs covers that byline with synthetic fixtures"
+    },
+    {
+      "outletId": "herald-sun",
+      "reason": "BRO-8433: News Corp paywall, page not fetchable from CI or cloud containers to capture a fixture"
+    },
+    {
+      "outletId": "daily-telegraph-au",
+      "reason": "BRO-8433: News Corp paywall, page not fetchable from CI or cloud containers to capture a fixture"
     }
   ]
 }

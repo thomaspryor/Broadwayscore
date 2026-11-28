@@ -149,6 +149,10 @@ function findNineWrapHeadings(text) {
     // A title made only of genre words ("THEATRE OPERA ★") is not one. All-caps
     // show titles (SIX, RENT, MJ) are.
     if (!title || new RegExp(`^(?:(?:${NINE_GENRES.join('|')})\\s*)+$`).test(title)) continue;
+    // Real item headings open the page (after the "Share A A A" furniture) or
+    // follow the previous item's "Advertisement" break. A caps genre word in a
+    // body ("the ART Gallery rated ★★★★") is not a heading.
+    if (out.length && !/(?:Advertisement|A A A)\s*$/.test(String(text).slice(Math.max(0, start - 40), start))) continue;
     out.push({ start, title });
   }
   return out;
@@ -156,7 +160,13 @@ function findNineWrapHeadings(text) {
 
 /** "Reviewed by <Name>" of one isolated Nine wrap item, or null. */
 function nineWrapSectionByline(sectionText) {
-  const m = String(sectionText || '').match(/Reviewed by ([A-Z][\p{L}'’.-]+(?: (?!Advertisement\b)[A-Z][\p{L}'’.-]+){0,3})/u);
+  // Name tokens: an initial ("J.") or a capitalised word with a lowercase
+  // letter (so a following all-caps genre heading never joins the name), with
+  // lowercase particles between them ("Anna de Souza"). Stops at ". Next".
+  const tok = "[A-Z](?:\\.|[\\p{L}'’-]*\\p{Ll}[\\p{L}'’-]*)";
+  const particle = '(?:de|da|di|del|della|den|der|des|dos|du|la|le|van|von)';
+  const re = new RegExp(`Reviewed by (${tok}(?: (?:${particle} )*(?!Advertisement\\b)${tok}){0,3})`, 'u');
+  const m = String(sectionText || '').match(re);
   return m ? m[1].trim() : null;
 }
 

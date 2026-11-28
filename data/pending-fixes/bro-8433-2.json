@@ -1,0 +1,60 @@
+{
+  "issueNumber": "bro-8433-2",
+  "planId": "e0a8de56-caf7-4c23-b88b-9f292fc135b2",
+  "status": "pending",
+  "createdAt": "2026-11-28T15:44:24.923Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8433: remove whole-page Age wraps and critic-less AU review files so they re-ingest isolated and credited",
+    "steps": [
+      "BRO-8433: whole Age review wrap stored; re-ingest isolates the My Fair Lady item",
+      "BRO-8433: whole Age review wrap stored; re-ingest isolates the Fiddler item",
+      "BRO-8433: whole Age review wrap stored under the first item's critic; the Room item is by Thuy On",
+      "BRO-8433: critic missing (Guy Webster); re-ingest with the byline",
+      "BRO-8433: critic missing (Jansson J. Antmann); re-ingest with the byline",
+      "BRO-8433: fetch failed (scraper breaker), textless stub; re-ingest Richard Cotter's review"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "my-fair-lady-regional-2026/age--thuy-on.json",
+        "description": "BRO-8433: whole Age review wrap stored; re-ingest isolates the My Fair Lady item"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fiddler-on-the-roof-melbourne-regional-2026/age--thuy-on.json",
+        "description": "BRO-8433: whole Age review wrap stored; re-ingest isolates the Fiddler item"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-room-with-a-view-regional-2026/age--giselle-au-nhien-nguyen.json",
+        "description": "BRO-8433: whole Age review wrap stored under the first item's critic; the Room item is by Thuy On"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-room-with-a-view-regional-2026/limelight-magazine-au--unknown.json",
+        "description": "BRO-8433: critic missing (Guy Webster); re-ingest with the byline"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "whispering-jack-regional-2026/limelight-magazine-au--unknown.json",
+        "description": "BRO-8433: critic missing (Jansson J. Antmann); re-ingest with the byline"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-beautiful-noise-regional-2026/australian-stage--unknown.json",
+        "description": "BRO-8433: fetch failed (scraper breaker), textless stub; re-ingest Richard Cotter's review"
+      }
+    ]
+  }
+}

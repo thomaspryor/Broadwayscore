@@ -95,3 +95,24 @@ test('a wrap item with no byline is Unknown, never the page (first item) byline'
   assert.equal(cut.isolated, true);
   assert.equal(cut.criticName, null);
 });
+
+test('bylines: particle surnames kept, a following caps heading or ". Next" never joins the name', () => {
+  assert.equal(m.nineWrapSectionByline('Reviewed by Anna de Souza Advertisement'), 'Anna de Souza');
+  assert.equal(m.nineWrapSectionByline('Reviewed by Ben van der Berg Advertisement'), 'Ben van der Berg');
+  assert.equal(m.nineWrapSectionByline('Reviewed by Mary Smith THEATRE Hamlet'), 'Mary Smith');
+  assert.equal(m.nineWrapSectionByline('Reviewed by Mary Smith. Next Para'), 'Mary Smith');
+  assert.equal(m.nineWrapSectionByline('Reviewed by Jansson J. Antmann Advertisement'), 'Jansson J. Antmann');
+});
+
+test('a caps genre word plus stars inside a body is not a heading', () => {
+  const t = 'A A A Share MUSIC Band ★★★ body says the ART Gallery rated ★★★★ ok. Reviewed by Al Bo Advertisement DANCE Swan ★★★ b. Reviewed by Cy Do Advertisement';
+  assert.deepEqual(m.findNineWrapHeadings(t).map((h) => h.title), ['Band', 'Swan']);
+});
+
+test('isolation plan: a Nine wrap verdict naming another item is judged with the Nine detector', async () => {
+  const plan = require('../../scripts/lib/multi-show-isolation-plan.js');
+  const own = m.isolateMultiShowSection(WRAP_URL, WRAP, 'A Room with a View').text;
+  const reason = 'CV-promoted: The scraped content reviews "My Fair Lady"';
+  assert.equal(plan.verdictCitesOtherSection(reason, WRAP, own, { url: WRAP_URL }), true);
+  assert.equal(plan.needsRefetch({ url: WRAP_URL, wrongShow: true, fullText: own }), true);
+});

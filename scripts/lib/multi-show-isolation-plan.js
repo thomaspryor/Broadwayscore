@@ -21,7 +21,7 @@ function countWords(t) { return (t.match(/\S+/g) || []).length; }
  * Musical"'. A reason about venue/production (two-strangers regional page vs
  * the Broadway Lyceum review) names no other section and is left standing.
  */
-function verdictCitesOtherSection(reason, fullPost, ownSectionText, { requireQuoted = false } = {}) {
+function verdictCitesOtherSection(reason, fullPost, ownSectionText, { requireQuoted = false, url = null } = {}) {
   // Automated verdicts only (content verifier, collector LLM); a human reason stands.
   // Cross-show URL collision: the same post URL sits under several shows.
   // BRO-6742: 'Retroactive LLM verify' is the same automated verifier run later (chess-2025
@@ -33,7 +33,9 @@ function verdictCitesOtherSection(reason, fullPost, ownSectionText, { requireQuo
   const r = requireQuoted
     ? ` ${quotedTitles(reason).map(normSectionText).join(' | ')} `
     : ` ${normSectionText(reason)} `;
-  return findSectionHeadings(fullPost)
+  // BRO-8433: each multi-show host has its own heading detector (Nine wraps
+  // have no bystander captions); the bystander detector stays the default.
+  return (url ? findHeadingsForUrl(url, fullPost) : findSectionHeadings(fullPost))
     .filter((h) => !ownSectionText.startsWith(fullPost.slice(h.start, h.start + 40)))
     .some((h) => {
       const name = headingShowName(h.title); // "bug", "chinese republicans"
@@ -77,7 +79,7 @@ function verdictReasonSource(data, flag) {
 function citesOtherSection(data, flag, fullPost, ownSectionText, strict) {
   const { reason, own } = verdictReasonSource(data, flag);
   const requireQuoted = strict || !own || /^Retroactive LLM verify/.test(reason);
-  return verdictCitesOtherSection(reason, fullPost, ownSectionText, { requireQuoted });
+  return verdictCitesOtherSection(reason, fullPost, ownSectionText, { requireQuoted, url: data.url });
 }
 
 /**
