@@ -154,7 +154,9 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // pages, one in Melbourne and one in Chichester, otherwise share one <title>. Skipped when the
   // title already names the city. A tour has no single city; "National Tour" tells it apart.
   const regionalCity = getRegionalTitleCity(show);
-  const addsCity = !!regionalCity && !show.title.toLowerCase().includes(regionalCity.toLowerCase());
+  // Whole-word match, so "Bath" is not found inside "Bathsheba".
+  const titleWords = ` ${show.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ')} `;
+  const addsCity = !!regionalCity && !titleWords.includes(` ${regionalCity.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `);
   const cityTitle = addsCity ? `${show.title} ${regionalCity}` : show.title;
   const cityLabel = addsCity ? getRegionalCityLabel(show) : undefined;
   const seoTitle = isTourMeta ? `${show.title} National Tour` : addsLondon ? `${show.title} London` : cityTitle;
@@ -163,7 +165,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const sharedYear = getSharedTitleYear(show);
   // Two regional productions of one show in one city and year (two Chicago fringe houses) still
   // share a title after the city is in it, so those name the house: "Richard III Chicago (Factory Theater, 2022)".
-  const regionalHouse = addsCity ? getRegionalHouseForTitle(show) : undefined;
+  const regionalHouse = regionalCity ? getRegionalHouseForTitle(show) : undefined;
   const titleYearSuffix = regionalHouse ? ` (${regionalHouse}${sharedYear ? `, ${sharedYear}` : ''})` : sharedYear ? ` (${sharedYear})` : '';
   // The <title> name: the year goes before "London" so "[show] London Reviews" stays together.
   const titleName = addsLondon ? `${show.title}${titleYearSuffix} London` : `${seoTitle}${titleYearSuffix}`;
@@ -204,7 +206,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const OG_POSITIVE_TIERS = new Set(['Critical Gold', 'Recommended']);
   const ogShowsSentiment = !!(tier && roundedScore && sentimentLabel && OG_POSITIVE_TIERS.has(tier.label));
   // A regional share title carries its year/house too, so two productions in one city differ in a share card as well.
-  const ogName = addsCity ? `${seoTitle}${titleYearSuffix}` : seoTitle;
+  const ogName = regionalCity ? `${seoTitle}${titleYearSuffix}` : seoTitle;
   const ogTitle = ogShowsSentiment
     ? `${ogName}: ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
     : `${ogName} - ${siteName}`;
