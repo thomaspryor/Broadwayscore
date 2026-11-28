@@ -547,15 +547,40 @@ function checkShowPage({ url, page, show, parent, schedule, tickets = [], todays
 /** A tour's public slim JSON carries `cs` only once it has enough reviews for a score. */
 function isScoredSlim(json) { return !!json && json.cs != null; }
 
+/** Mirror of src/lib/tour-cities.ts hubSuburbMap: suburb slug -> { slug, city } of its launched hub (BRO-8456). */
+function hubSuburbMap(hubs) {
+  const out = new Map();
+  for (const [slug, h] of Object.entries(hubs || {})) {
+    if (!h || h.launched !== true) continue;
+    for (const [city, st] of ((h.tic && h.tic.venueCities) || [])) {
+      const key = citySlug(`${city}, ${st}`);
+      if (key && key !== slug && !out.has(key)) out.set(key, { slug, city: h.name });
+    }
+  }
+  return out;
+}
+let SUBURBS_CACHE;
+function suburbs() {
+  if (!SUBURBS_CACHE) SUBURBS_CACHE = hubSuburbMap(require('../../data/city-hubs.json').hubs);
+  return SUBURBS_CACHE;
+}
+/** The page slug a stop's city belongs to: its hub when it is a hub suburb. */
+function stopPageSlug(city) {
+  const own = citySlug(city);
+  const hub = suburbs().get(own);
+  return hub ? hub.slug : own;
+}
+
 function expectedCities({ tours, schedules, listedIds, today, minTours = 3, indexMinTours = 5, recentDays = 365 }) {
   const since = addDays(today, -recentDays);
   const open = tours.filter(t => t.status !== 'closed');
   const byCity = new Map();
   for (const t of open) {
     for (const s of ((schedules[t.id] && schedules[t.id].stops) || [])) {
-      const slug = citySlug(s.city);
+      const slug = stopPageSlug(s.city);
       if (!slug) continue;
-      if (!byCity.has(slug)) byCity.set(slug, { city: s.city, stops: [] });
+      const hubT = suburbs().get(citySlug(s.city));
+      if (!byCity.has(slug)) byCity.set(slug, { city: hubT ? hubT.city : s.city, stops: [] });
       byCity.get(slug).stops.push({ ...s, showId: t.id });
     }
   }
@@ -637,7 +662,7 @@ function checkCityPage({ url, page, expected, tours, schedules, tickets, todays,
       continue;
     }
     if (show.status === 'closed') err('city-row-closed-tour', `${show.title} is closed but listed`);
-    const stops = ((schedules[r.showId] && schedules[r.showId].stops) || []).filter(s => citySlug(s.city) === expected.slug);
+    const stops = ((schedules[r.showId] && schedules[r.showId].stops) || []).filter(s => stopPageSlug(s.city) === expected.slug);
     const s = stops.find(x => rangeMatchesStop(r.when, x));
     if (!s) { err('city-row-no-stop', `${show.title} "${r.when}" matches no ${expected.city} stop in its schedule`); continue; }
     if (s.venue !== r.venue) err('city-row-venue', `${show.title} ${r.when}: venue "${r.venue}", schedule "${s.venue}"`);
@@ -734,7 +759,7 @@ async function runAlerts({ findings, router, runContext = {}, previousCodes = nu
 }
 
 module.exports = {
-  citySlug, nowNext, normTitle, addDays, unwrapTicketUrl,
+  citySlug, hubSuburbMap, stopPageSlug, nowNext, normTitle, addDays, unwrapTicketUrl,
   parseShowPage, parseListPage, parseCityPage, rangeMatchesStop,
   checkTourData, checkShowPage, checkCityPage, expectedCities, withHubs, localSection, isScoredSlim,
   validateEvent, eventsIn, runAlerts, CONDITION_PREFIX,

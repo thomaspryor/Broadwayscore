@@ -10,7 +10,8 @@
 
 import { getAllShows, isTourListed } from './data-core';
 import { getTourSchedule } from './data-tour-schedule';
-import { cityStops, type CityStop } from './tour-cities';
+import { cityStops, hubSuburbMap, type CityStop } from './tour-cities';
+import registry from '../../data/city-hubs.json';
 import type { ComputedShow } from './engine';
 
 export { citySlug } from './tour-cities';
@@ -37,6 +38,8 @@ function addDays(d: string, n: number) {
   return new Date(Date.parse(`${d}T00:00:00Z`) + n * 86400000).toISOString().slice(0, 10);
 }
 
+const SUBURBS = hubSuburbMap(registry.hubs as Parameters<typeof hubSuburbMap>[0]);
+
 const cache = new Map<string, Map<string, TourCity>>();
 
 /** Every city with a page, keyed by slug, as of `on` (YYYY-MM-DD). */
@@ -45,7 +48,7 @@ export function getTourCities(on = today()): Map<string, TourCity> {
   if (hit) return hit;
   const tours = getAllShows().filter(s => s.category === 'tour' && s.status !== 'closed');
   const byShow = new Map(tours.map(s => [s.id, s]));
-  const grouped = cityStops(tours.map(s => ({ id: s.id, stops: getTourSchedule(s.id) })));
+  const grouped = cityStops(tours.map(s => ({ id: s.id, stops: getTourSchedule(s.id) })), SUBURBS);
   const since = addDays(on, -RECENT_DAYS);
   const out = new Map<string, TourCity>();
   grouped.forEach(({ city, stops }, slug) => {

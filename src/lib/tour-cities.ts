@@ -16,14 +16,45 @@ export function citySlug(city: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-/** Every tour's stops grouped by city slug, each city's stops in date order. */
-export function cityStops(tours: Array<{ id: string; stops: TourStop[] }>): Map<string, { city: string; stops: CityStop[] }> {
+/** A suburb stop's hub: the hub's page slug and display name ("los-angeles-ca", "Los Angeles, CA"). */
+export interface HubTarget { slug: string; city: string }
+
+/**
+ * Suburb city slug -> its hub, from the registry's per-hub `tic.venueCities`
+ * ("Costa Mesa", "CA" -> los-angeles-ca). A tour at Segerstrom plays the Los
+ * Angeles market, so the LA hub lists it (BRO-8456). A hub's own city is not
+ * in the map: it already slugs to the hub slug.
+ */
+export function hubSuburbMap(
+  hubs: Record<string, { name: string; launched?: boolean; tic?: { venueCities?: string[][] } }>,
+): Map<string, HubTarget> {
+  const out = new Map<string, HubTarget>();
+  for (const [slug, h] of Object.entries(hubs)) {
+    if (h.launched !== true) continue;
+    for (const [city, st] of h.tic?.venueCities ?? []) {
+      const key = citySlug(`${city}, ${st}`);
+      if (key && key !== slug && !out.has(key)) out.set(key, { slug, city: h.name });
+    }
+  }
+  return out;
+}
+
+/**
+ * Every tour's stops grouped by city slug, each city's stops in date order.
+ * `suburbs` folds a hub's suburb stops into the hub's group (hubSuburbMap).
+ */
+export function cityStops(
+  tours: Array<{ id: string; stops: TourStop[] }>,
+  suburbs?: Map<string, HubTarget>,
+): Map<string, { city: string; stops: CityStop[] }> {
   const out = new Map<string, { city: string; stops: CityStop[] }>();
   for (const t of tours) {
     for (const s of t.stops) {
-      const slug = citySlug(s.city);
+      const own = citySlug(s.city);
+      const hub = suburbs?.get(own);
+      const slug = hub ? hub.slug : own;
       if (!slug) continue;
-      if (!out.has(slug)) out.set(slug, { city: s.city, stops: [] });
+      if (!out.has(slug)) out.set(slug, { city: hub ? hub.city : s.city, stops: [] });
       out.get(slug)!.stops.push({ ...s, showId: t.id });
     }
   }
