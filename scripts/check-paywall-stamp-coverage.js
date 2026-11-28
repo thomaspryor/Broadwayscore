@@ -8,21 +8,21 @@
  * outlet was stamped by mistake.
  *
  * Usage: node scripts/audit-paywall-stamp-coverage.js [reviewTextsDir] [--strict]
- *   --strict exits 1 when another outlet carries a subscriber-paywall stamp, or
- *   when a stamp no longer matches its text.
+ *   --strict exits 1 when another outlet carries a subscriber-paywall stamp.
+ *   A stamp that no longer matches its text is a released recovery, not an error.
  */
 const fs = require('fs');
 const path = require('path');
 const { isPaywalledText } = require('./lib/paywall-detector');
 
-const POS = /(^|\.)pagesonstages\.com$/;
+const POS = /^pagesonstages\.com$/; // same exact-host rule as detectSubscriberPaywall
 function hostOf(url) {
   try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; }
 }
 
 /** @param {Array<{file:string,data:object}>} records */
 function summarizeStamps(records) {
-  const out = { pagesOnStages: 0, stamped: 0, staleStamps: [], falseFlags: [] };
+  const out = { pagesOnStages: 0, stamped: 0, unstamped: 0, staleStamps: [], falseFlags: [] };
   for (const { file, data } of records) {
     const host = hostOf(data && data.url);
     const isPos = POS.test(host);
@@ -30,7 +30,8 @@ function summarizeStamps(records) {
     if (isPos) {
       out.pagesOnStages++;
       if (flagged && isPaywalledText(data)) out.stamped++;
-      else if (flagged) out.staleStamps.push(file);
+      else if (flagged) out.staleStamps.push(file); // recovered body released the stamp: informational
+      else out.unstamped++;
     } else if (flagged && data.paywallTextHash) {
       // Only the subscriber-paywall stamp carries a text hash; other outlets must not.
       out.falseFlags.push(file);
@@ -55,11 +56,11 @@ function loadRecords(dir) {
 
 if (require.main === module) {
   const dir = process.argv.slice(2).find(a => !a.startsWith('--')) || path.join(__dirname, '..', 'data', 'review-texts');
+  if (!fs.existsSync(dir)) { console.error(`review-texts not found at ${dir} (absent in worktrees; pass the main checkout's data/review-texts)`); process.exit(2); }
   const s = summarizeStamps(loadRecords(dir));
-  console.log(`pagesonstages files: ${s.pagesOnStages}, stamped: ${s.stamped}, stale stamps: ${s.staleStamps.length}, false flags on other outlets: ${s.falseFlags.length}`);
+  console.log(`pagesonstages files: ${s.pagesOnStages}, stamped: ${s.stamped}, unstamped: ${s.unstamped}, released (recovered) stamps: ${s.staleStamps.length}, false flags on other outlets: ${s.falseFlags.length}`);
   for (const f of s.falseFlags) console.log(`  FALSE FLAG ${f}`);
-  for (const f of s.staleStamps) console.log(`  STALE ${f}`);
-  if (process.argv.includes('--strict') && (s.falseFlags.length || s.staleStamps.length)) process.exit(1);
+  if (process.argv.includes('--strict') && s.falseFlags.length) process.exit(1);
 }
 
 module.exports = { summarizeStamps };

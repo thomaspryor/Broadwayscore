@@ -157,6 +157,7 @@ test('BRO-8418: stamp-coverage audit counts stamped POS files and flags other ou
   ]);
   assert.equal(s.pagesOnStages, 3);
   assert.equal(s.stamped, 1);
+  assert.equal(s.unstamped, 1);
   assert.deepEqual(s.falseFlags, ['c/nyt.json']);
   assert.deepEqual(s.staleStamps, ['d/stale.json']);
 });
