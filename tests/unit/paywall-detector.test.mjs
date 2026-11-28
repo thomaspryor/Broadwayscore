@@ -142,3 +142,21 @@ test('BRO-8264: walled body is skipped but independent excerpts still score', as
   const sel = selectScorableText(base);
   assert.equal(sel && sel.isExcerpt, true, 'falls back to the excerpt, never the walled fullText');
 });
+
+test('BRO-8418: stamp-coverage audit counts stamped POS files and flags other outlets', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { summarizeStamps } = req('../../scripts/audit-paywall-stamp-coverage');
+  const data = { fullText: teaser, url: pagesUrl };
+  paywall.stampSubscriberPaywall(data, paidHtml, pagesUrl, teaser);
+  const clean = { fullText: teaser, url: pagesUrl };
+  const other = { fullText: 'x', url: 'https://nytimes.com/a', paywalled: true, paywallTextHash: 'abc' };
+  const s = summarizeStamps([
+    { file: 'a/pos.json', data }, { file: 'b/pos.json', data: clean }, { file: 'c/nyt.json', data: other },
+    { file: 'd/stale.json', data: { ...data, fullText: teaser + ' recovered body' } },
+  ]);
+  assert.equal(s.pagesOnStages, 3);
+  assert.equal(s.stamped, 1);
+  assert.deepEqual(s.falseFlags, ['c/nyt.json']);
+  assert.deepEqual(s.staleStamps, ['d/stale.json']);
+});
