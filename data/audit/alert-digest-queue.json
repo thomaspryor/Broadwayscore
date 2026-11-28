@@ -2300,5 +2300,36 @@
     "testId": "tests/unit/outlet-registry-live-data.test.mjs::no census host is an unresolved probable move of a registered outlet",
     "fields": [],
     "queuedAt": "2026-11-28T04:24:25.544Z"
+  },
+  {
+    "conditionKey": "land:land/bro-8409-v2",
+    "title": "Landing blocked: lint-workflows red on land/bro-8409-v2",
+    "description": "land.yml did not land land/bro-8409-v2: the lint-workflows gate went red at 8ae486c5f6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/46113957039",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-8409-v2"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "8ae486c5f6807e59e4800a8ef021836c6bcc61ce"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/46113957039"
+      }
+    ],
+    "queuedAt": "2026-11-28T06:12:09.513Z"
   }
 ]
