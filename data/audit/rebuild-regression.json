@@ -1,14 +1,24 @@
 {
-  "timestamp": "2026-11-17T14:02:53.214Z",
+  "timestamp": "2026-11-28T19:35:10.962Z",
   "regressions": [
     {
-      "showId": "purlie-victorious-2023",
-      "oldCount": 37,
-      "newCount": 34,
-      "dropped": 3,
-      "scoredOnDisk": 39,
-      "flaggedScored": 1,
-      "inlineGuardExcluded": 1,
+      "showId": "purpose-regional-2026",
+      "oldCount": 15,
+      "newCount": 11,
+      "dropped": 4,
+      "scoredOnDisk": 15,
+      "flaggedScored": 3,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "the-cottage-regional-2026",
+      "oldCount": 9,
+      "newCount": 5,
+      "dropped": 4,
+      "scoredOnDisk": 9,
+      "flaggedScored": 0,
+      "inlineGuardExcluded": 0,
       "reason": "scored files exist but being dropped"
     }
   ]
