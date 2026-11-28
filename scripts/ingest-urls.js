@@ -403,7 +403,7 @@ async function main() {
       try {
         if (preExisting && preExisting.data && require('./lib/free-first-fetch').isStageWestSidebarText(preExisting.data.fullText)) {
           for (const k of ['fullText', 'wordCount', 'contentTier', 'contentTierReason', 'textFetchedAt', 'fetchMethod']) delete preExisting.data[k];
-          fs.writeFileSync(preExisting.path, JSON.stringify(preExisting.data, null, 2) + '\n');
+          require('./lib/review-write-guard').safeWriteReview(preExisting.path, preExisting.data, { merge: false, force: true });
           console.log('    ↻ Cleared Stage West sidebar text; re-fetching the review body');
         }
       } catch { /* leave the file as is */ }
