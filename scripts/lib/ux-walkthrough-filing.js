@@ -116,6 +116,17 @@ function similarity(a, b) {
   return overlap / Math.min(wa.size, wb.size);
 }
 
+// Exact-match key for detector titles: measured values (px, top/bottom, rendered size, aspect) drift by a pixel
+// between nightly runs, so they are masked; labels and state names stay exact. Without this an overflow of 3px
+// then 4px would refile every night (second-opinion finding, BRO-8448).
+function dedupeKey(title) {
+  return String(title)
+    .replace(/-?\d+(?:\.\d+)?px/g, '#px')
+    .replace(/\b(top|bottom)=-?[\d.]+/g, '$1=#')
+    .replace(/renders \d+(?:\.\d+)?x\d+(?:\.\d+)?/g, 'renders #x#')
+    .replace(/aspect [\d.]+/g, 'aspect #');
+}
+
 function titleFor(finding) {
   return `UX audit: ${finding && finding.summary ? finding.summary : ''}`.slice(0, 120);
 }
@@ -208,8 +219,9 @@ function planFilings({ findings = [], existing = null } = {}) {
     // Deterministic titles are templated and name the exact control ("Dead control: \"X\" (a) on tab ..."), so fuzzy word
     // overlap calls two DIFFERENT dead controls duplicates (0.77). They match on the exact title instead; model
     // opinions keep the fuzzy match (reworded repeats are the thing it exists for).
-    const isDuplicate = f.deterministic
-      ? priorTitles.includes(title)
+    // A model finding that a detector merely merged into keeps the model's wording (mergedIntoModel), so it stays fuzzy.
+    const isDuplicate = f.deterministic && !f.mergedIntoModel
+      ? priorTitles.some((t) => dedupeKey(t) === dedupeKey(title))
       : priorTitles.some((t) => similarity(t, title) >= DUPE_SIMILARITY);
     if (isDuplicate) {
       skippedDuplicate.push(title);

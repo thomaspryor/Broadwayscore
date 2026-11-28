@@ -327,3 +327,18 @@ test('two different dead controls both file; the same one repeated is skipped', 
   assert.equal(same.toFile.length, 0);
   assert.equal(same.skippedDuplicate.length, 1);
 });
+
+// BRO-8448 second-opinion findings: measured values drift per run, and merged model findings keep fuzzy dedupe.
+test('a detector finding whose measured pixels drift by a pixel is still a duplicate', () => {
+  const over = (px) => model(`Horizontal overflow on home (iphone-15): page scrollWidth exceeds clientWidth by ${px}px`, { deterministic: true });
+  const plan = planFilings({ findings: [over(4)], existing: okBoard([titleFor(over(3))]) });
+  assert.equal(plan.toFile.length, 0);
+  assert.equal(plan.skippedDuplicate.length, 1);
+});
+
+test('a model finding a detector merged into keeps fuzzy dedupe, so a reworded repeat is skipped', () => {
+  const prior = 'UX audit: Watchlist button does nothing when tapped on the mobile home screen';
+  const reworded = model('Watchlist button does nothing when tapped on mobile home screen', { deterministic: true, mergedIntoModel: true });
+  const plan = planFilings({ findings: [reworded], existing: okBoard([prior]) });
+  assert.equal(plan.toFile.length, 0);
+});

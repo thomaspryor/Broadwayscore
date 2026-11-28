@@ -1164,6 +1164,7 @@ function mergeFindingSources(modelFindings, deterministicFindings) {
     const existing = merged.find(f => similarity(det.summary, f.summary) >= 0.5);
     if (existing) {
       existing.deterministic = true;
+      existing.mergedIntoModel = true; // keeps the model's wording, so board dedupe stays fuzzy (BRO-8448)
       existing.models = [...new Set([...(existing.models || []), ...det.models])];
     } else {
       merged.push({ ...det });
