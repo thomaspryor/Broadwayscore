@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-27T12:07:04.389Z",
+  "generatedAt": "2026-11-28T11:22:15.473Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 6166,
-  "flaggedShows": 39,
-  "flaggedFiles": 123,
+  "scannedShows": 6178,
+  "flaggedShows": 36,
+  "flaggedFiles": 109,
   "readmissionRiskFiles": 1,
   "readmissionRisks": [
     {
@@ -17,8 +17,8 @@
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 22,
-    "needs-human-review": 17
+    "likely-contamination": 20,
+    "needs-human-review": 16
   },
   "shows": [
     {
@@ -221,146 +221,6 @@
           "criticName": "Elysa Gardner",
           "publishDate": "2011-11-17",
           "url": "http://www.usatoday.com/life/theater/reviews/story/2011-11-17/private-lives-broadway-cattrall/51275504/1",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-off-broadway-2026",
-      "title": "A Christmas Carol",
-      "market": "broadway",
-      "status": "previews",
-      "venue": "Perelman Performing Arts Center (PAC NYC)",
-      "previewsStartDate": "2026-11-20",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "9/9 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 9,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 8,
-        "flaggedCount": 9,
-        "venueMentionCount": 1
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "artsdesk--rachel-halliburton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "artsdesk",
-          "criticName": "Rachel Halliburton",
-          "publishDate": "2025-11-28",
-          "url": "https://theartsdesk.com/theatre/christmas-carol-old-vic-review-giles-terera-sensational-scrooge-rolls-royce-christmas-show",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "broadwayworld--aliya-al-hassan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Aliya Al-Hassan",
-          "publishDate": "2025-11-26",
-          "url": "https://www.broadwayworld.com/westend/article/BWW-Review-A-CHRISTMAS-CAROL-Middle-Temple-Hall-20171224",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "culturesauce--thom-geier.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "culturesauce",
-          "criticName": "Thom Geier",
-          "publishDate": "2025-12-04",
-          "url": "https://culturesauce.com/a-christmas-carol-michael-cerveris-off-broadway-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-theatre--anya-ryan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-theatre",
-          "criticName": "Anya Ryan",
-          "publishDate": "2025-11-26",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "one-minute-critic--ryan-leeds.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "one-minute-critic",
-          "criticName": "Ryan Leeds",
-          "publishDate": "2025-12-04",
-          "url": "https://1minutecritic.com/michael-cerveris-christmas-carol-pac-nyc-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--india-block.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "India Block",
-          "publishDate": "2025-11-26",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "theatre-weekly--greg-stewart.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "theatre-weekly",
-          "criticName": "Greg Stewart",
-          "publishDate": "2025-11-26",
-          "url": "https://theatreweekly.com/review-fitzrovia-radio-hours-a-christmas-carol/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thereviewshub--dan-english.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thereviewshub",
-          "criticName": "Dan English",
-          "publishDate": "2025-11-26",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--dominic-maxwell.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Dominic Maxwell",
-          "publishDate": "2025-11-26",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-review-old-vic-2gv5gqs7k",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -870,7 +730,7 @@
       "showId": "a-view-from-the-bridge-off-broadway-2026",
       "title": "A View from the Bridge",
       "market": "broadway",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "La MaMa Experimental Theatre Club",
       "previewsStartDate": "2026-11-27",
       "openingDate": "2026-12-13",
@@ -1140,84 +1000,6 @@
           "criticName": "Linda Amiel Burns",
           "publishDate": "January 30th, 2018",
           "url": "http://theaterpizzazz.com/hallelujah-baby-opening-nite-photos-review/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "jack-and-the-beanstalk-off-west-end-2026",
-      "title": "Jack and The Beanstalk",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Hackney Empire",
-      "previewsStartDate": "2026-11-21",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 4,
-        "distinctYears": [
-          2015,
-          2022,
-          2023,
-          2025
-        ],
-        "spanDays": 3648,
-        "flaggedCount": 4,
-        "venueMentionCount": 1
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "guardian--brian-logan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Brian Logan",
-          "publishDate": "2022-11-28",
-          "url": "https://www.theguardian.com/stage/2022/nov/28/jack-and-the-beanstalk-review-lyric-hammersmith",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--claire-allfree.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Claire Allfree",
-          "publishDate": "2015-11-29",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/jack-and-the-beanstalk-hackney-empire-review/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--paul-vale.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Paul Vale",
-          "publishDate": "2025-11-24",
-          "url": "https://www.thestage.co.uk/reviews/jack-and-the-beanstalk-review-lyric-hammersmith-london-sonia-jalaly-nicholai-la-barrie",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--rachel-halliburton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Rachel Halliburton",
-          "publishDate": "2023-11-27",
-          "url": "https://www.thetimes.com/uk/article/jack-and-the-beanstalk-review-not-enough-sparkle-in-this-london-panto-ktqjmgzf0?eafs_enabled=false",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2491,42 +2273,6 @@
           "criticName": "David Scotland",
           "publishDate": "2017-12-10",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-the-little-match-girl",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "dick-whittington-adults-only-off-west-end-2026",
-      "title": "Dick Whittington: Adults Only",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "King's Head Theatre",
-      "previewsStartDate": "2026-11-26",
-      "openingDate": "2026-11-27",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"King's Head Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2019
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--nastazja-domaradzka.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Nastazja Domaradzka",
-          "publishDate": "2019-12-06",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-dick-whittington-stratford-east",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

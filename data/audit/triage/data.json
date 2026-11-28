@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-27T11:06:05.188Z",
+  "lastChecked": "2026-11-28T10:30:53.982Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -84,32 +84,32 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "42 of 513 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-8372 Rescued reviews waiting for an owner pick (push-rescue branches)"
+      "message": "6 of 491 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-7385 Migrate pinned models before shutdown: claude-sonnet-4-5 (2026-11-30), gemini-2.5-flash/pro (2026-12-01), retired claude-3-5-sonnet/haiku fallbacks"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-11-26"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-27"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "84 review(s) with no usable text, 65 rejected although verified as a review, 21 never scored, 14 with a blocked URL (0 published on the site), across 781 current shows"
+      "message": "85 review(s) with no usable text, 47 rejected although verified as a review, 25 never scored, 14 with a blocked URL (0 published on the site), across 783 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (51782 checked)"
+      "message": "No published review score contradicts the critic's rating (51904 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "pass",
-      "message": "6 early publish date(s) awaiting recheck (limit 40); 237 already attempted and not yet confirmed"
+      "message": "1 early publish date(s) awaiting recheck (limit 40); 240 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "pass",
-      "message": "0 unexplained approved-fix drift(s) across 3997 files with approvals"
+      "message": "0 unexplained approved-fix drift(s) across 4173 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -119,7 +119,7 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 574 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 576 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
