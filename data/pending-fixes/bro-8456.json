@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-8456",
   "planId": "d5b7893a-419a-4b29-a916-8336fa4873ca",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-28T18:12:45.826Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,27 @@
         "description": "shows.json: paranormal-activity-national-tour-regional-2025.openingDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-28T20:37:15.981Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate already \"2026-11-15\", pins refreshed for and-juliet-tour-2024",
+      "noop": true
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status already \"closed\", pins refreshed for and-juliet-tour-2024",
+      "noop": true
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate already \"2025-10-16\", pins refreshed for paranormal-activity-national-tour-regional-2025",
+      "noop": true
+    }
+  ],
+  "executedIn": "ci"
 }

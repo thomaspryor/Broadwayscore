@@ -195,3 +195,59 @@ test('backfill rows are never topped up and record listed 0', () => {
   const shows = [showRow('x', 5, '2026-01-01', '2026-02-01')];
   assert.deepEqual(daily.pickTopups([{ id: 5, reviewCount: 99, backfill: true }], shows, {}, chi), []);
 });
+
+test('annual-return page: last season row closes, next season closing date is not borrowed (A Noise Within)', () => {
+  assert.equal(stage.isAnnualReturn('2025-12-01', '2026-12-24'), true);
+  assert.equal(stage.isAnnualReturn('2025-12-01', '2026-01-18'), false); // ordinary 7-week run
+  assert.equal(stage.isAnnualReturn('2025-03-01', '2026-09-30'), false); // long run off the anniversary
+  const la = getCity('la');
+  const page = { id: 8297, slug: 'a-christmas-carol', title: 'A Christmas Carol', venue: 'A Noise Within', closingDate: '2026-12-24', reviews: [] };
+  const e = stage.buildShowEntry({ page, detail: { ...detailOf('Play', { venue: 'A Noise Within', address: '3352 E Foothill Blvd Pasadena' }), closingDate: '2026-12-24' }, dates: { openingDate: '2025-12-01' }, discoveredAt: '2026-11-28', city: la });
+  assert.equal(e.status, 'closed');
+  assert.equal(e.closingDate, undefined);
+  const live = stage.buildShowEntry({ page, detail: { ...detailOf('Play', { venue: 'A Noise Within', address: '3352 E Foothill Blvd Pasadena' }), closingDate: '2026-12-24' }, dates: { openingDate: '2026-11-20' }, discoveredAt: '2026-11-28', city: la });
+  assert.equal(live.status, 'open');
+  assert.equal(live.closingDate, '2026-12-24');
+});
+
+test('annual-return listing set aside as before-since is re-evaluated when the listing credits more reviews', async () => {
+  const la = getCity('la');
+  const mk = (n) => ({ id: 8297, slug: 'a-christmas-carol', empty: false, title: 'A Christmas Carol', venue: 'A Noise Within', closingDate: '2026-12-24', reviews: Array.from({ length: n }, (_, i) => ({ outlet: `O${i}`, critic: 'C', verdict: 'recommended', url: `https://e.com/${i}` })) });
+  const io = { page: async () => mk(3), detail: async () => detailOf('Play', { venue: 'A Noise Within', address: '3352 E Foothill Blvd Pasadena', closingDate: '2026-12-24' }), dates: async () => ({ openingDate: '2025-12-01', samples: ['2025-12-01'] }) };
+  const out = await daily.runDaily({ today: '2026-11-28', listing: [{ id: 8297, reviewCount: 3 }], shows: [], seen: {}, io, city: la });
+  assert.equal(out.added.length, 0);
+  assert.equal(out.seen[8297].reason, 'before-since');
+  assert.equal(out.seen[8297].annual, true);
+  assert.deepEqual(daily.pickCandidates([{ id: 8297, reviewCount: 3 }], [], out.seen, la), []);
+  assert.equal(daily.pickCandidates([{ id: 8297, reviewCount: 5 }], [], out.seen, la).length, 1);
+  // The new season's reviews now date from this year: the row is added open with the printed closing date.
+  const io2 = { ...io, page: async () => mk(5), dates: async () => ({ openingDate: '2026-11-20', samples: ['2026-11-20'] }) };
+  const shows = [];
+  const again = await daily.runDaily({ today: '2026-11-29', listing: [{ id: 8297, reviewCount: 5 }], shows, seen: out.seen, io: io2, city: la });
+  assert.equal(again.added.length, 1);
+  assert.equal(shows[0].status, 'open');
+  assert.equal(shows[0].closingDate, '2026-12-24');
+});
+
+test('a same-title tour only counts as a duplicate when it plays this metro near the dates (BRO-8454)', () => {
+  const entry = { title: 'Paranormal Activity', openingDate: '2026-03-01', venue: 'Some Theatre, Chicago, IL' };
+  const tour = { id: 'pa-tour-2025', title: 'Paranormal Activity', category: 'tour', openingDate: '2025-10-01' };
+  const stops = (list) => () => list;
+  const chi = getCity('chicago');
+  assert.equal(stage.findDuplicate(entry, [tour], chi, stops([{ city: 'Denver, CO', venue: 'Buell', start: '2026-02-20', end: '2026-03-02' }])), null);
+  assert.equal(stage.findDuplicate(entry, [tour], chi, stops([])), null);
+  assert.equal(stage.findDuplicate(entry, [tour], chi, stops([{ city: 'Chicago, IL', venue: 'CIBC Theatre', start: '2026-02-20', end: '2026-03-02' }])), tour);
+  assert.equal(stage.findDuplicate(entry, [tour], chi, stops([{ city: 'Chicago, IL', venue: 'CIBC Theatre', start: '2025-01-01', end: '2025-01-08' }])), null);
+  // Chicago-area suburbs count as the metro, same as the regional rule (review finding).
+  assert.equal(stage.findDuplicate(entry, [tour], chi, stops([{ city: 'Rosemont, IL', venue: 'Rosemont Theatre', start: '2026-02-20', end: '2026-03-02' }])), tour);
+});
+
+test('a backfill row set aside as an annual return never records its synthetic count as the watermark (BRO-8454)', async () => {
+  const la = getCity('la');
+  const pg = { id: 8297, slug: 'a-christmas-carol', empty: false, title: 'A Christmas Carol', venue: 'A Noise Within', closingDate: '2026-12-24', reviews: Array.from({ length: 3 }, (_, i) => ({ outlet: `O${i}`, critic: 'C', verdict: 'recommended', url: `https://e.com/${i}` })) };
+  const io = { page: async () => pg, detail: async () => detailOf('Play', { venue: 'A Noise Within', address: '3352 E Foothill Blvd Pasadena', closingDate: '2026-12-24' }), dates: async () => ({ openingDate: '2025-12-01', samples: ['2025-12-01'] }) };
+  const out = await daily.runDaily({ today: '2026-11-28', listing: daily.withBackfill([], [8297]), shows: [], seen: {}, io, city: la });
+  assert.equal(out.seen[8297].annual, true);
+  assert.equal(out.seen[8297].listed, 0);
+  assert.equal(daily.pickCandidates([{ id: 8297, reviewCount: 4 }], [], out.seen, la).length, 1);
+});

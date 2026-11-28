@@ -166,6 +166,17 @@ function pickYear(openingDate) {
  * Build the add-show `show` object. `dates.openingDate` is the earliest
  * publish date among the fetched reviews (proxy for press opening).
  */
+/** True when `closing` sits about a whole number of years (1+) after `opening`: the listing's closing
+ *  date is a later season's, not the run the reviews cover. Long open-ended runs rarely land on the
+ *  anniversary, so a +/-45 day window keeps them out. */
+function isAnnualReturn(opening, closing) {
+  if (!opening || !closing) return false;
+  const gap = (Date.parse(closing) - Date.parse(opening)) / 86400000;
+  if (!(gap >= 240)) return false;
+  const years = Math.max(1, Math.round(gap / 365));
+  return Math.abs(gap - years * 365) <= 45;
+}
+
 function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chicago'), knownWriters }) {
   const year = pickYear(dates.openingDate);
   const venue = venueLine(detail, page, city) || String(page.venue || ''); // venue-write-guard-ok: staged entry only; add-show runs sanitizeVenueForWrite on apply
@@ -183,7 +194,12 @@ function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chi
   const title = norm.changed && !norm.manualReview ? norm.title : page.title;
   const base = slugify(title);
   const id = `${base}-regional-${year}`;
-  const closing = detail && detail.closingDate ? detail.closingDate : page.closingDate;
+  const listedClosing = detail && detail.closingDate ? detail.closingDate : page.closingDate;
+  // BRO-8454: a listing page reused every year prints the NEXT season's closing date while its reviews
+  // are last season's (A Noise Within "A Christmas Carol": reviews 2025-12, closing 2026-12-24).
+  // The reviews describe the earlier run, so that row closes with it; the remount check stages the
+  // new season once its own reviews arrive.
+  const closing = isAnnualReturn(dates.openingDate, listedClosing) ? null : listedClosing;
   const today = discoveredAt.slice(0, 10);
   // No "Thru" date: a run opened >120 days ago is treated as closed (open-ended listings are rare).
   const daysOld = (Date.parse(today) - Date.parse(dates.openingDate)) / 86400000;
@@ -225,12 +241,20 @@ function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chi
   return entry;
 }
 
+let tourSchedules = null;
+function defaultTourStops(id) {
+  if (!tourSchedules) {
+    try { tourSchedules = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', '..', 'data', 'tour-schedules.json'), 'utf8')).tours || {}; } catch { tourSchedules = {}; }
+  }
+  return (tourSchedules[id] || {}).stops || [];
+}
+
 /**
  * Match a staged production against existing shows. Returns the existing show
  * (a duplicate) or null. Titles compare normalised; a tour or earlier run of
  * the same title only counts when its dates are within ~120 days of this one.
  */
-function findDuplicate(entry, existingShows, city = getCity('chicago')) {
+function findDuplicate(entry, existingShows, city = getCity('chicago'), tourStopsFor = defaultTourStops) {
   const nt = normTitle(entry.title);
   const open = Date.parse(entry.openingDate);
   // A row's stored metro slug wins (every US regional row has one); only a row without one is
@@ -245,7 +269,17 @@ function findDuplicate(entry, existingShows, city = getCity('chicago')) {
     const so = Date.parse(s.openingDate || '');
     if (s.category === 'regional' && sameMetro(s) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
     if (s.category === 'tour') {
-      if (Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 400 * 86400000) return s;
+      // BRO-8454: a same-title tour is only this production when it plays this metro near the
+      // staged dates. The old any-market 400-day match dropped real local runs (a tour that never
+      // visits the city). No schedule on file means no proof, so it is not a duplicate.
+      const win = 120 * 86400000;
+      const stops = (tourStopsFor && tourStopsFor(s.id)) || [];
+      const visits = Number.isFinite(open) && stops.some((st) => {
+        if (!sameMetro({ venue: `${st.venue || 'Theatre'}, ${st.city}` })) return false;
+        const a = Date.parse(st.start), b = Date.parse(st.end || st.start);
+        return Number.isFinite(a) && open >= a - win && open <= (Number.isFinite(b) ? b : a) + win;
+      });
+      if (visits) return s;
       continue;
     }
     // Any other row must be in this metro too (BRO-8450): a same-title West End, Off-Broadway,
@@ -275,5 +309,5 @@ function dedupeId(entry, page, taken) {
 module.exports = {
   dedupeId,
   MIN_REVIEWS, TOUR_HOUSES, VIRTUAL_VENUE,
-  normTitle, slugify, linkedReviews, prefilter, detailFilter, venueLine, venueLineFromCities, buildShowEntry, findDuplicate, looksLikeNonPlay,
+  normTitle, slugify, linkedReviews, prefilter, detailFilter, venueLine, venueLineFromCities, buildShowEntry, findDuplicate, looksLikeNonPlay, isAnnualReturn,
 };

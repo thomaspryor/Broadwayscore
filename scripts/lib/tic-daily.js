@@ -64,12 +64,16 @@ function pickCandidates(listing, shows, seen, city = getCity('chicago')) {
     if (have.has(row.id)) return false;
     const s = seen[row.id];
     // 'added' but absent from shows.json: the core-data push failed, so look again.
-    if (s && !s.retry && s.reason !== 'added' && !reopened(s)) return false;
+    if (s && !s.retry && s.reason !== 'added' && !reopened(s) && !grewAfterAnnual(s, row)) return false;
     return row.reviewCount >= (city.minOutlets || stage.MIN_REVIEWS);
   });
   // Never-seen ids first so a backlog of retries cannot starve new productions.
   return [...open.filter((r) => !seen[r.id]), ...open.filter((r) => seen[r.id])];
 }
+
+// BRO-8454: an annual-return page (last season's reviews, next season's closing date) was set aside as
+// before-since. Look again once the listing credits more reviews, which means the new season's arrived.
+function grewAfterAnnual(s, row) { return !!(s && s.annual && row.reviewCount > (s.listed || 0)); }
 
 function isRetry(reason) {
   const r = String(reason).split(':')[0];
@@ -92,7 +96,10 @@ async function evaluate(row, ctx, io) {
   if (!dates) return { status: 'rejected', reason: 'no-publish-date', retry: true };
   const show = stage.buildShowEntry({ page, detail, dates, discoveredAt: ctx.today, city, knownWriters: ctx.knownWriters });
   // Short-history launch (BRO-6771): opened before the cutoff and no longer running.
-  if (city.since && show.openingDate < city.since && show.status !== 'open') return { status: 'rejected', reason: 'before-since', retry: false };
+  if (city.since && show.openingDate < city.since && show.status !== 'open') {
+    const annual = stage.isAnnualReturn(dates.openingDate, (detail && detail.closingDate) || page.closingDate);
+    return { status: 'rejected', reason: 'before-since', retry: false, ...(annual ? { annual: true } : {}) };
+  }
   const dupe = stage.findDuplicate(show, ctx.shows, city);
   if (dupe) return { status: 'rejected', reason: `duplicate:${dupe.id}`, retry: false };
   stage.dedupeId(show, page, new Set(ctx.shows.map((x) => x.id)));
@@ -217,7 +224,7 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
       continue; // not remembered: tomorrow retries
     }
     if (res.status === 'rejected') {
-      next[row.id] = { reason: res.reason, retry: res.retry, on: today, rv: RULES_VERSION };
+      next[row.id] = { reason: res.reason, retry: res.retry, on: today, rv: RULES_VERSION, ...(res.annual ? { annual: true, listed: row.backfill ? 0 : row.reviewCount } : {}) };
       continue;
     }
     const applied = applyAddShow(shows, { type: 'add-show', show: res.show });

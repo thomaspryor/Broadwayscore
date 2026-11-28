@@ -41,7 +41,10 @@ test('buildShowEntry: regional local-only entry with -regional-<year> id', () =>
 });
 test('findDuplicate: same-title Chicago regional or nearby tour', () => {
   const e = { title: 'Parade', openingDate: '2025-06-01' };
-  assert.ok(s.findDuplicate(e, [{ id: 'p', title: 'Parade', category: 'tour', openingDate: '2025-02-01' }]));
+  const tour = { id: 'p', title: 'Parade', category: 'tour', openingDate: '2025-02-01' };
+  // BRO-8454: a tour is a duplicate only when it plays Chicago near the dates.
+  assert.equal(s.findDuplicate(e, [tour], undefined, () => [{ city: 'Chicago, IL', venue: 'CIBC Theatre', start: '2025-05-20', end: '2025-06-08' }]), tour);
+  assert.equal(s.findDuplicate(e, [tour], undefined, () => [{ city: 'Denver, CO', venue: 'Buell', start: '2025-05-20', end: '2025-06-08' }]), null);
   assert.equal(s.findDuplicate(e, [{ id: 'p', title: 'Parade', category: 'broadway', openingDate: '1998-12-17' }]), null);
 });
 
