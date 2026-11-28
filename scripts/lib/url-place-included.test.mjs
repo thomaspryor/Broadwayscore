@@ -1,6 +1,6 @@
 // BRO-8449 (a)(b): included reviews whose url names another place. require()s the real
 // selector, alert builder and the reverify flag's selector; fixtures are synthetic (no review text).
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
@@ -33,8 +33,12 @@ test('classify: a url naming the venue or home market, a show with no home marke
   assert.equal(classifyUrlPlaceFile(base, { ...SHOW, category: 'tour' }), null);
 });
 
+const tmpDirs = [];
+after(() => { for (const d of tmpDirs) fs.rmSync(d, { recursive: true, force: true }); });
+
 function fixture() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'urlplace-'));
+  tmpDirs.push(dir);
   fs.mkdirSync(path.join(dir, SHOW.id));
   const w = (f, o) => fs.writeFileSync(path.join(dir, SHOW.id, f), JSON.stringify(o));
   w('a--one.json', base);
@@ -66,6 +70,7 @@ test('alert: rows route under their own keys; empty lists resolve; rows carry no
 
 test('loadAcks reads the judged map and fails soft on a missing or broken file', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'acks-'));
+  tmpDirs.push(dir);
   const good = path.join(dir, 'ok.json');
   fs.writeFileSync(good, JSON.stringify({ judged: { 'show-a/outlet--x.json': 'transfer, same production' } }));
   assert.deepEqual(loadAcks(good), { 'show-a/outlet--x.json': 'transfer, same production' });
