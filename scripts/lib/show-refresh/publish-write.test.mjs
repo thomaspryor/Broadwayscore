@@ -287,3 +287,24 @@ test('a read-back mismatch after a CAS that matched says the NEW pointer is live
     (e) => e.pointerSwapped === true && /swapped to generation 4/.test(e.message),
   );
 });
+
+test('each successful home swap retains a bounded rollback history of complete prior generations', async () => {
+  const f = fixture();
+  const prior = { ...store.HOME_PLACEHOLDER, generation: 7, manifestId: 'm1', shows: { x: { hash: h('d') } }, pending: {} };
+  const state = fakeState({ home: prior });
+  const storage = fakeStorage();
+  const r = await writePublish({ storage, state, plan: f.planWith(prior), manifest: f.m, sliceFor: f.sliceFor, now: NOW });
+  assert.equal(r.outcome, WRITE_OUTCOMES.PUBLISHED);
+  assert.deepEqual(homeOf(state).previousGenerations, [prior]);
+});
+
+test('rollback history is limited to two prior generations without nesting', async () => {
+  const f = fixture();
+  const old = (generation) => ({ ...store.HOME_PLACEHOLDER, generation, manifestId: 'm1', shows: { x: { hash: h('d') } } });
+  const prior = { ...old(7), previousGenerations: [old(6), old(5)] };
+  const state = fakeState({ home: prior });
+  await writePublish({ storage: fakeStorage(), state, plan: f.planWith(prior), manifest: f.m, sliceFor: f.sliceFor, now: NOW });
+  const history = homeOf(state).previousGenerations;
+  assert.deepEqual(history.map((v) => v.generation), [7, 6]);
+  assert.equal('previousGenerations' in history[0], false);
+});

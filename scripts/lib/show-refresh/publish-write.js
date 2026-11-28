@@ -114,6 +114,12 @@ async function writePublish({ storage, state, plan, manifest, sliceFor, expectGe
     publishedAt: new Date(now).toISOString(),
     shows: plan.nextHome.shows,
     pending: plan.nextHome.pending,
+    // Preserve complete rollback pointers atomically with the new home.
+    // Strip nested history so the row remains bounded.
+    previousGenerations: [
+      (({ previousGenerations, ...home }) => home)(prev),
+      ...(Array.isArray(prev.previousGenerations) ? prev.previousGenerations : []),
+    ].slice(0, 2),
   };
   const prevShows = prev.manifestId === next.manifestId ? prev.shows || {} : {};
   const changedIds = Object.keys({ ...prevShows, ...next.shows })
