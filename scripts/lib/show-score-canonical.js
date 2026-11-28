@@ -57,9 +57,12 @@ function pageRatingOf(html) {
  */
 function storedRatingMatchesPage(stored, page) {
   if (!stored || !page) return false;
-  const rc = stored.reviewCount || 0;
+  const rc = Number.isFinite(stored.reviewCount) && stored.reviewCount > 0 ? stored.reviewCount : 0;
   const d = page.count - rc;
   if (Math.abs(d) > Math.max(3, Math.round(page.count * 0.02))) return false;
+  // Ship-check (BRO-7434): the wide window is only trustworthy with a real count to anchor it. A missing
+  // or tiny stored count (under 10) keeps the strict "scores within 1" rule, or any score would match.
+  if (rc < 10) return Math.abs(page.score - stored.score) <= 1;
   // Sum of the ratings added (d > 0) or removed (d < 0), given both percentages are rounded (+-0.5).
   const lo = (page.score - 0.5) * page.count - (stored.score + 0.5) * rc;
   const hi = (page.score + 0.5) * page.count - (stored.score - 0.5) * rc;

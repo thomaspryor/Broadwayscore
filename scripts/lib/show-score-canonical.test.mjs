@@ -46,6 +46,10 @@ test('storedRatingMatchesPage: a small page whose score moved with one new ratin
   assert.equal(storedRatingMatchesPage({ score: 71, reviewCount: 200 }, { score: 60, count: 201 }), false);
   // One added rating can only raise or lower toward 0..100: 50%/10 -> 90%/11 is unreachable.
   assert.equal(storedRatingMatchesPage({ score: 50, reviewCount: 10 }, { score: 90, count: 11 }), false);
+  // No or tiny stored count: strict within-1 only, never a free pass for a coincidental small page.
+  assert.equal(storedRatingMatchesPage({ score: 71 }, { score: 20, count: 2 }), false);
+  assert.equal(storedRatingMatchesPage({ score: 71, reviewCount: 0 }, { score: 20, count: 3 }), false);
+  assert.equal(storedRatingMatchesPage({ score: 71, reviewCount: 6 }, { score: 40, count: 8 }), false);
 });
 
 test('allowsUkShowScorePage: London shows and UK regional houses yes; US regional and NYC no', () => {
