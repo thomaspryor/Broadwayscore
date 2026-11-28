@@ -481,3 +481,58 @@ test('BRO-8397 review: prune refuses a home with no shows map', () => {
   assert.equal(!!prune.usableHome({ state: 'ok', value: { generation: 5, shows: [] } }), false);
   assert.equal(!!prune.usableHome({ state: 'ok', value: { generation: 5, shows: {} } }), true);
 });
+
+test('BRO-8397: a reused object the live home does not point at (content revert) is re-put so a prune skips it', async () => {
+  const f = fixture();
+  const storage = fakeStorage();
+  // Both HEAD objects already exist (an older generation used them), but the live home points elsewhere.
+  storage.objs.set(`show/x/${h('b')}.json`, JSON.stringify({ showId: 'x', n: 1 }));
+  storage.objs.set(`show/y/${h('c')}.json`, JSON.stringify({ showId: 'y', n: 2 }));
+  const prior = { ...store.HOME_PLACEHOLDER, generation: 3, manifestId: 'm1', shows: { x: { hash: h('d') }, y: { hash: h('c') } }, pending: {} };
+  const state = fakeState({ home: prior });
+  const r = await writePublish({ storage, state, plan: f.planWith(prior), manifest: f.m, sliceFor: f.sliceFor, now: NOW });
+  assert.equal(r.outcome, WRITE_OUTCOMES.PUBLISHED);
+  assert.deepEqual(r.touched, ['x'], 'only x: y is already referenced by the live home');
+  assert.deepEqual(storage.calls.put, [`show/x/${h('b')}.json`]);
+});
+
+test('BRO-8397: a target deleted between the upload check and the swap is re-uploaded after the swap', async () => {
+  const f = fixture();
+  const storage = fakeStorage();
+  const victim = `show/y/${h('c')}.json`;
+  // A prune running in another concurrency group deletes y's object right before the CAS.
+  const state = fakeState({ home: { ...store.HOME_PLACEHOLDER }, beforeCas: async () => { storage.objs.delete(victim); } });
+  const r = await writePublish({ storage, state, plan: f.planWith(null), manifest: f.m, sliceFor: f.sliceFor, now: NOW });
+  assert.equal(r.outcome, WRITE_OUTCOMES.PUBLISHED);
+  assert.deepEqual(r.repaired, ['y']);
+  assert.equal(storage.objs.get(victim), JSON.stringify({ showId: 'y', n: 2 }));
+  assert.deepEqual(homeOf(state).shows.y, { hash: h('c') });
+});
+
+test('BRO-8397: a post-swap re-check error is logged, not thrown (the pointer is live; next run retries)', async () => {
+  const f = fixture();
+  const storage = fakeStorage();
+  let swapped = false;
+  const state = fakeState({ home: { ...store.HOME_PLACEHOLDER }, beforeCas: async () => { swapped = true; } });
+  const realGet = storage.get.bind(storage);
+  storage.get = async (p, o) => {
+    if (swapped && p === `show/y/${h('c')}.json`) throw new Error('socket hang up');
+    return realGet(p, o);
+  };
+  const r = await writePublish({ storage, state, plan: f.planWith(null), manifest: f.m, sliceFor: f.sliceFor, now: NOW });
+  assert.equal(r.outcome, WRITE_OUTCOMES.PUBLISHED);
+  assert.deepEqual(r.repairFailed, ['y']);
+  assert.ok(r.log.some((l) => /WARNING: could not re-check show\/y\//.test(l)));
+});
+
+test('BRO-8397: prune deletes nothing while the kill switch is on or the kill row is missing', async () => {
+  for (const kill of [{ schema: 1, killed: true, reason: 'drill', seq: 2 }, null]) {
+    const { home, storage } = pruneFixture();
+    const before = storage.objs.size;
+    const r = await prune.pruneSlices({ storage, state: fakeState({ home, kill }), now: NOW, dryRun: false, force: true });
+    assert.equal(r.ran, false);
+    assert.match(r.why, /kill switch on/);
+    assert.equal(storage.calls.removeMany.length, 0);
+    assert.equal(storage.objs.size, before);
+  }
+});

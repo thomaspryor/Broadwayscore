@@ -11,6 +11,7 @@
  * Safety:
  *   - DRY-RUN by default (lists what it would delete, deletes nothing). The CLI
  *     deletes only with SHOW_REFRESH_PRUNE_DELETE=true.
+ *   - kill switch on (or kill row unreadable) => nothing is deleted.
  *   - home unreadable or malformed => nothing is deleted.
  *   - objects younger than minAgeMs are kept: a publisher may have uploaded a
  *     slice and not yet swapped the pointer to it.
@@ -121,6 +122,10 @@ async function pruneSlices({
     const due = pruneDue(await store.readJsonObject(storage, store.PATHS.pruneLastRun), now, minIntervalMs);
     if (!due.due) return { ...base, ran: false, why: `not due: ${due.why}` };
   }
+  // The kill row stops every store write, this delete included (fails closed:
+  // a missing or unreadable kill row counts as killed, store.effectiveKill).
+  const kill = store.effectiveKill(await store.readJsonObject(state, store.PATHS.kill));
+  if (kill.killed) return { ...base, ran: false, why: `kill switch on (${kill.reason})` };
   const home = await store.readJsonObject(state, store.PATHS.home);
   if (!usableHome(home)) return { ...base, ran: false, why: `home not usable (${home.state}${home.error ? `: ${home.error}` : ''})` };
   const objects = await listSlices(storage);

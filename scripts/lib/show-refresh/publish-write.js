@@ -69,7 +69,7 @@ async function readHomeForWrite(state) {
  *   (null = home was absent). A different generation now means another run
  *   wrote since planning: stop as cas-lost before any upload.
  * @param {number} o.now
- * @returns {Promise<{outcome: string, uploaded: string[], existing: string[], homeWritten: boolean, generation: number|null, changedIds: string[], log: string[]}>}
+ * @returns {Promise<{outcome: string, uploaded: string[], existing: string[], touched?: string[], repaired?: string[], homeWritten: boolean, generation: number|null, changedIds: string[], log: string[]}>}
  */
 async function writePublish({ storage, state, plan, manifest, sliceFor, expectGeneration, now = Date.now() }) {
   const log = [];
@@ -88,6 +88,7 @@ async function writePublish({ storage, state, plan, manifest, sliceFor, expectGe
   // Uploads: every target whose object is not already stored byte-for-byte.
   const uploaded = [];
   const existing = [];
+  const touched = [];
   for (const t of plan.targets) {
     const s = sliceFor(t.id);
     if (!s || !s.slice) throw new Error(`no HEAD slice for target ${t.id}`);
@@ -99,6 +100,15 @@ async function writePublish({ storage, state, plan, manifest, sliceFor, expectGe
     if (cur.status === 200) {
       if (cur.text !== text) throw new Error(`stored ${objPath} differs from HEAD slice with the same hash`);
       existing.push(t.id);
+      // BRO-8397: an object the live home does not point at (content reverted to
+      // an old hash) may be a prune candidate. Re-put the same bytes so its
+      // updated_at is fresh and the prune's minimum age skips it. Objects the
+      // live home already references are never pruned, so they are left alone.
+      const prevShow = prev.shows && prev.shows[t.id];
+      if (!prevShow || prevShow.hash !== t.hash) {
+        await store.putShowObject(storage, t.id, t.hash, text);
+        touched.push(t.id);
+      }
       continue;
     }
     if (!store.isObjectMissing(cur)) throw new Error(`cannot check ${objPath}: status ${cur.status}`);
@@ -154,7 +164,29 @@ async function writePublish({ storage, state, plan, manifest, sliceFor, expectGe
   } else {
     log.push(`home generation ${prev.generation} -> ${next.generation}`);
   }
-  return result(WRITE_OUTCOMES.PUBLISHED, { uploaded, existing, homeWritten: true, generation: next.generation, changedIds });
+  // BRO-8397: the slice prune can delete an unreferenced object between this
+  // run's upload check and its swap (the rebuild-fast publish step runs outside
+  // the backstop's concurrency group). Re-check every target the new home points
+  // at and re-upload any that went missing (meanwhile the reader fails closed to
+  // the build). The pointer is already swapped, so a failure here is logged, not
+  // thrown: the next run re-checks every target again and re-uploads.
+  const repaired = [];
+  const repairFailed = [];
+  for (const t of plan.targets) {
+    const objPath = store.showObjectPath(t.id, t.hash);
+    try {
+      const r = await storage.get(objPath, { cacheBust: now + 1 });
+      if (r.status === 200) continue;
+      if (!store.isObjectMissing(r)) throw new Error(`re-check returned ${r.status}`);
+      await store.putShowObject(storage, t.id, t.hash, JSON.stringify(sliceFor(t.id).slice));
+      repaired.push(t.id);
+      log.push(`re-uploaded ${objPath}: it was deleted after the upload check`);
+    } catch (e) {
+      repairFailed.push(t.id);
+      log.push(`WARNING: could not re-check ${objPath} after the swap (${e instanceof Error ? e.message : e}); the next run retries`);
+    }
+  }
+  return result(WRITE_OUTCOMES.PUBLISHED, { uploaded, existing, touched, repaired, repairFailed, homeWritten: true, generation: next.generation, changedIds });
 }
 
 module.exports = { writePublish, homeMatches, readHomeForWrite, WRITE_OUTCOMES, HOME_SCHEMA };
