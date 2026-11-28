@@ -41,7 +41,7 @@ const {
 const { fetchWithCookiesPlain } = require('./fetch-plain');
 const { readEnvKeys } = require('./load-env');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
-const { RUN_MEMO_SKIP } = require('./provider-telemetry');
+const { sdBilledCredits, RUN_MEMO_SKIP } = require('./provider-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats, pressNightCapStatus } = require('./scrapingdog-caps');
@@ -816,6 +816,7 @@ async function fetchWithScrapingdog(url, options = {}) {
   const MAX_ATTEMPTS = 2;
   let lastError = null;
   let attemptsMade = 0;
+  let lastElapsedMs = null;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     // Budget guard + credit accounting per attempt (not once up front) — a
     // retried call can bill twice, and the local ledger/SD_CREDIT_BUDGET must
@@ -858,7 +859,7 @@ async function fetchWithScrapingdog(url, options = {}) {
       };
     } catch (error) {
       lastError = error;
-      recordSdCall({ url, fn: sdMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: 0, fallbackFrom: options.fallbackFrom || null, elapsed_ms: Date.now() - startedAt });
+      lastElapsedMs = Date.now() - startedAt;
       // BRO-6492: SD's "Something went wrong" 400 is a provider hiccup and
       // gets the one retry too; other 4xx (and the stealth hint) stay final.
       const _sdHttp = parseScrapingdogHttpError(error.message);
@@ -869,6 +870,8 @@ async function fetchWithScrapingdog(url, options = {}) {
   }
 
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
+  // SD bills only successful requests (A0 billing probe; BRO-3325).
+  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: sdBilledCredits(false, creditCost * attemptsMade), fallbackFrom: options.fallbackFrom || null, elapsed_ms: lastElapsedMs });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
 
   // Auto-escalate to stealth_mode on SD's own "try stealth_mode=true" 400
@@ -950,6 +953,7 @@ async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
   const MAX_ATTEMPTS = 2;
   let lastError = null;
   let attemptsMade = 0;
+  let lastElapsedMs = null;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     if (SD_CREDIT_BUDGET > 0 && _scraperStats.sdCredits + creditCost > SD_CREDIT_BUDGET) {
       _scraperStats.sdBudgetExceeded = true;
@@ -977,7 +981,7 @@ async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
       return { data: json };
     } catch (error) {
       lastError = error;
-      recordSdCall({ host: 'youtube.com', fn: sdMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: error instanceof SyntaxError ? creditCost : 0, elapsed_ms: Date.now() - startedAt });
+      lastElapsedMs = Date.now() - startedAt;
       const isTransient = !/Scrapingdog HTTP 4\d\d/.test(error.message || '') && !(error instanceof SyntaxError);
       if (isTransient && attempt < MAX_ATTEMPTS) continue;
       break;
@@ -990,6 +994,9 @@ async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
     }
     return null;
   }
+  // A 200 with an unparseable body was still billed; other failures are not.
+  const billed = lastError instanceof SyntaxError ? creditCost : sdBilledCredits(false, creditCost * attemptsMade);
+  recordSdCall({ host: 'youtube.com', fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: billed, elapsed_ms: lastElapsedMs });
   const failStatus = /Scrapingdog HTTP (\d+)/.exec(lastError.message || '')?.[1];
   // 403 is not latched here: the YouTube endpoints may answer 403 for one
   // private/region-locked video, which must not disable SD for the whole run.

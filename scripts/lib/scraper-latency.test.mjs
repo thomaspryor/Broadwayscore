@@ -18,7 +18,7 @@ const { latencyByProvider } = require('./provider-spend-core');
 
 test('provider calls write measured latency for success, failure and retry', async () => {
   const get = https.get, request = https.request, now = Date.now;
-  let clock = 1000, dogCalls = 0;
+  let clock = 1000, dogCalls = 0, failDog = false;
   Date.now = () => clock;
   function response(url, callback) {
     const req = new EventEmitter();
@@ -26,8 +26,8 @@ test('provider calls write measured latency for success, failure and retry', asy
     req.destroy = () => {};
     process.nextTick(() => {
       const res = new EventEmitter();
-      const isDog = String(url).includes('/scrape?');
-      res.statusCode = isDog && ++dogCalls === 1 ? 500 : 200;
+      const isDog = String(url).includes('/scrape?') || String(url).includes('/youtube/');
+      res.statusCode = isDog && (++dogCalls === 1 || failDog) ? 500 : 200;
       res.headers = {};
       callback(res);
       clock += 125;
@@ -45,8 +45,18 @@ test('provider calls write measured latency for success, failure and retry', asy
     const rows = fs.readFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, 'utf8').trim().split('\n').map(JSON.parse).filter(r => ['web-unlocker', 'page'].includes(r.fn));
     assert.deepEqual(rows.map(r => [r.provider, r.success, r.elapsed_ms]), [
       ['brightdata', true, 125], ['scrapingbee', true, 250],
-      ['scrapingdog', false, 250], ['scrapingdog', true, 125],
+      ['scrapingdog', true, 125],
     ]);
+    fs.writeFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, '');
+    failDog = true; dogCalls = 0;
+    await scraper.fetchWithScrapingdog('https://example.com/failure');
+    let failures = fs.readFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, 'utf8').trim().split('\n').map(JSON.parse);
+    assert.deepEqual(failures.map(r => [r.provider, r.success, r.elapsed_ms, r.credits]), [['scrapingdog', false, 125, 0]]);
+    fs.writeFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, '');
+    dogCalls = 0;
+    await scraper.fetchScrapingdogYouTube('video', 'test');
+    failures = fs.readFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, 'utf8').trim().split('\n').map(JSON.parse);
+    assert.deepEqual(failures.map(r => [r.provider, r.success, r.elapsed_ms, r.credits]), [['scrapingdog', false, 125, 0]]);
   } finally {
     https.get = get; https.request = request; Date.now = now;
     fs.rmSync(dir, { recursive: true, force: true });
