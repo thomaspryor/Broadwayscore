@@ -91,3 +91,13 @@ test('dedupeId: venue suffix on an id collision', () => {
   assert.equal(e.id, 'hamlet-regional-2024-writers-theatre');
   assert.equal(e.slug, e.id);
 });
+
+test('findDuplicate: a long-subtitle listing of a run already on file is a duplicate (BRO-8454)', () => {
+  const kept = { id: 'iceboy-regional-2026', title: 'Iceboy!', venue: 'Goodman Theatre, Chicago, IL', category: 'regional', city: 'chicago-il', previewsStartDate: '2026-06-20', openingDate: '2026-06-29', closingDate: '2026-08-16' };
+  const entry = { title: "Iceboy! or or The Completely Untrue Story of How Eugene O'Neill Came to Write The Iceman Cometh", venue: 'Goodman Theatre, Chicago, IL', openingDate: '2026-06-30', closingDate: '2026-08-16' };
+  assert.equal(s.findDuplicate(entry, [kept])?.id, 'iceboy-regional-2026');
+  // Not in this metro: a same-titled DC row is not this production.
+  assert.equal(s.findDuplicate(entry, [{ ...kept, city: 'washington-dc' }]), null);
+  // A different closing date is a different run.
+  assert.equal(s.findDuplicate({ ...entry, closingDate: '2026-09-06' }, [kept]), null);
+});

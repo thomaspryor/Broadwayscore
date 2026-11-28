@@ -68,3 +68,28 @@ test('retitle-show drops a "_<year>" listing tail, and nothing else new', () => 
   const notYear = [{ ...structuredClone(berlinKept), title: 'Berlin_27' }];
   assert.equal(applyRetitleShow(notYear, { id: berlinKept.id, expectTitle: 'Berlin_27', newTitle: 'Berlin', reason: 'x' }).ok, false);
 });
+
+// BRO-8454: real rows from shows.json 2026-11-28. One listing counts from first preview,
+// the other has only opening night (one day later) and a long subtitle.
+const iceboy = { id: 'iceboy-regional-2026', title: 'Iceboy!', venue: 'Goodman Theatre, Chicago, IL', market: 'regional', category: 'regional', status: 'closed', previewsStartDate: '2026-06-20', openingDate: '2026-06-29', closingDate: '2026-08-16' };
+const iceboyLong = { id: 'iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026', title: "Iceboy! or or The Completely Untrue Story of How Eugene O'Neill Came to Write The Iceman Cometh", venue: 'Goodman Theatre, Chicago, IL', market: 'regional', category: 'regional', status: 'closed', openingDate: '2026-06-30', closingDate: '2026-08-16' };
+
+test('isSameRunLeadingTitle: previews-dated row and opening-only row of one run match (BRO-8454)', () => {
+  assert.equal(isSameRunLeadingTitle(iceboy, iceboyLong), true);
+  assert.equal(isSameRunLeadingTitle(iceboyLong, iceboy), true);
+});
+
+test('isSameRunLeadingTitle: opening drift needs the same closing date and at most 3 days', () => {
+  assert.equal(isSameRunLeadingTitle(iceboy, { ...iceboyLong, closingDate: '2026-08-23' }), false, 'different close');
+  assert.equal(isSameRunLeadingTitle(iceboy, { ...iceboyLong, closingDate: null }), false, 'no close');
+  assert.equal(isSameRunLeadingTitle(iceboy, { ...iceboyLong, openingDate: '2026-07-03' }), false, '4 days');
+  assert.equal(isSameRunLeadingTitle(iceboy, { ...iceboyLong, openingDate: '2026-07-02' }), true, '3 days');
+  assert.equal(isSameRunLeadingTitle(iceboy, { ...iceboyLong, venue: 'Steppenwolf Theatre, Chicago, IL' }), false, 'other house');
+});
+
+test('retire-show accepts the Iceboy long-subtitle duplicate once its reviews are gone (BRO-8454)', () => {
+  const shows = [structuredClone(iceboy), structuredClone(iceboyLong)];
+  const r = applyRetireShow(shows, { type: 'retire-show', id: iceboyLong.id, expectTitle: iceboyLong.title, duplicateOf: iceboy.id, reason: 'same run' }, { retire: () => ({ ok: true }), reviewCount: () => 0, isRetired: () => false, now: new Date('2026-11-28') });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(shows.map(s => s.id), [iceboy.id]);
+});

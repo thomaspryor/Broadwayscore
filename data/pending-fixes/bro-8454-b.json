@@ -1,0 +1,112 @@
+{
+  "issueNumber": "bro-8454",
+  "planId": "96d03656-f450-4b98-a521-17f92d693584",
+  "status": "pending",
+  "createdAt": "2026-11-28T20:57:13.215Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8454 follow-up: Iceboy! at the Goodman Theatre exists twice (short title and long subtitle). Merge the long row into iceboy-regional-2026: drop the one review filed under both, move the other 11 reviews, then retire the long row.",
+    "steps": [
+      "Delete the duplicate Tribune review copy",
+      "Move 11 reviews to iceboy-regional-2026",
+      "Retire the long-titled row as a duplicate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/chicagotribune--chris-jones.json",
+        "description": "Delete the second copy of the Chicago Tribune Chris Jones review (same review, already filed under iceboy-regional-2026)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/buzznews--ken-payne.json",
+        "destPath": "iceboy-regional-2026/buzznews--ken-payne.json",
+        "description": "Move buzznews--ken-payne.json to the kept Iceboy row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/chicago-theatre-review--colin-douglas.json",
+        "destPath": "iceboy-regional-2026/chicago-theatre-review--colin-douglas.json",
+        "description": "Move chicago-theatre-review--colin-douglas.json to the kept Iceboy row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/curtaincallchicago--paul-lisnek.json",
+        "destPath": "iceboy-regional-2026/curtaincallchicago--paul-lisnek.json",
+        "description": "Move curtaincallchicago--paul-lisnek.json to the kept Iceboy row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/daily-herald--barbara-vitello.json",
+        "destPath": "iceboy-regional-2026/daily-herald--barbara-vitello.json",
+        "description": "Move daily-herald--barbara-vitello.json to the kept Iceboy row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/entertainingchicago--alli-doubek.json",
+        "destPath": "iceboy-regional-2026/entertainingchicago--alli-doubek.json",
+        "description": "Move entertainingchicago--alli-doubek.json to the kept Iceboy row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/letsplaytheatricalreview--rick-mccain.json",
+        "destPath": "iceboy-regional-2026/letsplaytheatricalreview--rick-mccain.json",
+        "description": "Move letsplaytheatricalreview--rick-mccain.json to the kept Iceboy row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/new-city-stage--christine-trevino.json",
+        "destPath": "iceboy-regional-2026/new-city-stage--christine-trevino.json",
+        "description": "Move new-city-stage--christine-trevino.json to the kept Iceboy row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/picksinsix--ed-tracy.json",
+        "destPath": "iceboy-regional-2026/picksinsix--ed-tracy.json",
+        "description": "Move picksinsix--ed-tracy.json to the kept Iceboy row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/talkinbroadway--christine-malcom.json",
+        "destPath": "iceboy-regional-2026/talkinbroadway--christine-malcom.json",
+        "description": "Move talkinbroadway--christine-malcom.json to the kept Iceboy row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/thefourthwalsh--katy-walsh.json",
+        "destPath": "iceboy-regional-2026/thefourthwalsh--katy-walsh.json",
+        "description": "Move thefourthwalsh--katy-walsh.json to the kept Iceboy row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026/third-coast-review--karin-mckie.json",
+        "destPath": "iceboy-regional-2026/third-coast-review--karin-mckie.json",
+        "description": "Move third-coast-review--karin-mckie.json to the kept Iceboy row"
+      },
+      {
+        "type": "retire-show",
+        "id": "iceboy-or-or-the-completely-untrue-story-of-how-eugene-oneill-came-to-write-the-iceman-cometh-regional-2026",
+        "expectTitle": "Iceboy! or or The Completely Untrue Story of How Eugene O'Neill Came to Write The Iceman Cometh",
+        "duplicateOf": "iceboy-regional-2026",
+        "reason": "Duplicate of iceboy-regional-2026: same Goodman Theatre run (2026-06-29/30 to 2026-08-16), listed under its long subtitle by the Theatre in Chicago feed; its reviews are moved to the kept row first",
+        "description": "Retire the long-titled Iceboy duplicate row"
+      }
+    ]
+  }
+}

@@ -93,10 +93,22 @@ const PART_WORDS = new Set(['part', 'parts', 'chapter', 'act', 'vol', 'volume', 
 function orderedTitleWords(t) {
   return foldDiacritics(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
 }
+// BRO-8454: one feed lists the run from its first preview, another only from opening
+// night ("Iceboy!" 06-20 previews / 06-29 opening vs the long-subtitle listing opening
+// 06-30). Same closing date and opening nights at most OPENING_DRIFT_DAYS apart is the
+// same run. A 2026-11-28 dry run over shows.json: 8 same-house same-close pairs with a
+// different start and openings within 3 days, 1 new hit, a real duplicate.
+const OPENING_DRIFT_DAYS = 3;
+function sameRunAnchor(a, b) {
+  const start = runStart(a);
+  if (start && start === runStart(b)) return true;
+  if (!a.closingDate || a.closingDate !== b.closingDate || !a.openingDate || !b.openingDate) return false;
+  const gapDays = Math.abs(Date.parse(a.openingDate) - Date.parse(b.openingDate)) / 86400000;
+  return Number.isFinite(gapDays) && gapDays <= OPENING_DRIFT_DAYS;
+}
 function isSameRunLeadingTitle(a, b) {
   if (!a || !b) return false;
-  const start = runStart(a);
-  if (!start || start !== runStart(b)) return false;
+  if (!sameRunAnchor(a, b)) return false;
   if (a.closingDate && b.closingDate && a.closingDate !== b.closingDate) return false;
   if (!sameVenueOrRoom(canonicalVenue(a), canonicalVenue(b))) return false;
   const wa = orderedTitleWords(a.title);
@@ -115,6 +127,34 @@ function isSameRunLeadingTitle(a, b) {
   if (!yearListing && (PART_WORDS.has(tail[0]) || /^(\d+|[ivx]+)$/.test(tail[0]))) return false;
   if (/^[^:]*:/.test(longTitle) && longTitle.slice(0, longTitle.indexOf(':')).trim().split(/[^A-Za-z0-9]+/).filter(Boolean).length <= shorter.length) return false;
   return true;
+}
+
+// BRO-8454: the duplicate audit groups rows by normalized title, so a run listed as
+// "Iceboy!" and as "Iceboy! or, The Completely Untrue Story of..." never lands in one
+// group. Leading-title variants share their first word, so bucket on it and pair with
+// isSameRunLeadingTitle (same house, same run, no cycle parts).
+function findSameRunLeadingTitleDupes(shows) {
+  const buckets = new Map();
+  for (const s of shows || []) {
+    if (!s || !s.id || !s.title) continue;
+    const first = orderedTitleWords(s.title)[0];
+    if (!first) continue;
+    if (!buckets.has(first)) buckets.set(first, []);
+    buckets.get(first).push(s);
+  }
+  const out = [];
+  for (const group of buckets.values()) {
+    for (let i = 0; i < group.length; i++) {
+      for (let j = i + 1; j < group.length; j++) {
+        const a = group[i];
+        const b = group[j];
+        if (orderedTitleWords(a.title).join(' ') === orderedTitleWords(b.title).join(' ')) continue;
+        if (isDeclaredTransferPair(a, b)) continue;
+        if (isSameRunLeadingTitle(a, b)) out.push({ a: a.id, b: b.id, venue: canonicalVenue(a) });
+      }
+    }
+  }
+  return out;
 }
 
 function titleKey(t) {
@@ -402,6 +442,29 @@ function stubIsUnplacedDupe(isStubRecord, stubTokens, otherTokens) {
   return [...stubTokens].some((t) => otherTokens.has(t));
 }
 
+// Generic venue words that don't distinguish a physical venue.
+const VENUE_GENERIC = new Set([
+  'the', 'theatre', 'theater', 'playhouse', 'royal', 'new', 'old', 'studio',
+  'stage', 'hall', 'house', 'arts', 'centre', 'center', 'london', 'west', 'end',
+  'off', 'company', 'at', 'and', 'on', 'formerly', 'open', 'air', 'tba',
+]);
+
+// Moved here from scripts/audit-duplicate-shows.js (BRO-8454) so its test can require() it.
+function auditVenueTokens(venue) {
+  return new Set(
+    String(venue || '')
+      // A US regional venue ends ", Chicago, IL": the city names the metro, not the house,
+      // so two different Chicago venues never share a token through it (BRO-8454:
+      // The Winter's Tale at Chicago Shakespeare vs a pub staging).
+      .replace(/,\s*[^,]+,\s*[A-Z]{2}\s*$/, '')
+      .toLowerCase()
+      .replace(/\(.*?\)/g, ' ') // drop parentheticals like "(formerly ...)"
+      .replace(/[^a-z0-9]+/g, ' ')
+      .split(/\s+/)
+      .filter((w) => w.length >= 3 && !VENUE_GENERIC.has(w)),
+  );
+}
+
 module.exports = {
   sameMarketPair,
   stubIsUnplacedDupe,
@@ -416,5 +479,7 @@ module.exports = {
   isColonSegmentTitle,
   isStrictTitleSubset,
   isSameRunLeadingTitle,
+  findSameRunLeadingTitleDupes,
+  auditVenueTokens,
   datesOverlap,
 };

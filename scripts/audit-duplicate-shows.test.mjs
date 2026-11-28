@@ -54,3 +54,24 @@ test('stubIsUnplacedDupe: TBA-venue stub flags, stub at its own distinct venue d
   assert.equal(stubIsUnplacedDupe(true, toks('southwark'), toks('southwark', 'elephant')), true);
   assert.equal(stubIsUnplacedDupe(false, toks(), toks('x')), false);
 });
+
+// BRO-8454: the duplicate audit's venue words and leading-title pass.
+{
+  const { auditVenueTokens, findSameRunLeadingTitleDupes } = require('./lib/show-duplicate-detection.js');
+  test('auditVenueTokens: a US city/state suffix is not a shared venue word (BRO-8454)', () => {
+    const a = auditVenueTokens('Jentes Family Courtyard Theater, Chicago, IL');
+    const b = auditVenueTokens('Mrs. Murphy and Sons Irish Bistro, Chicago, IL');
+    assert.deepEqual([...a].filter((t) => b.has(t)), []);
+    // The house name itself still counts.
+    assert.ok(auditVenueTokens('Goodman Theatre, Chicago, IL').has('goodman'));
+    // A non-US venue string is unchanged.
+    assert.ok(auditVenueTokens("King's Head Theatre, London").has('head'));
+  });
+  test('findSameRunLeadingTitleDupes: pairs a short title with its long-subtitle listing (BRO-8454)', () => {
+    const kept = { id: 'iceboy-regional-2026', title: 'Iceboy!', venue: 'Goodman Theatre, Chicago, IL', category: 'regional', previewsStartDate: '2026-06-20', openingDate: '2026-06-29', closingDate: '2026-08-16' };
+    const long = { id: 'iceboy-long', title: "Iceboy! or or The Completely Untrue Story of How Eugene O'Neill Came to Write The Iceman Cometh", venue: 'Goodman Theatre, Chicago, IL', category: 'regional', openingDate: '2026-06-30', closingDate: '2026-08-16' };
+    const other = { id: 'iceboy-elsewhere', title: 'Iceboy! The Sequel', venue: 'Steppenwolf Theatre, Chicago, IL', category: 'regional', openingDate: '2026-06-30', closingDate: '2026-08-16' };
+    const hits = findSameRunLeadingTitleDupes([kept, long, other]);
+    assert.deepEqual(hits.map((h) => [h.a, h.b]), [['iceboy-regional-2026', 'iceboy-long']]);
+  });
+}

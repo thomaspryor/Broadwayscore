@@ -12,6 +12,7 @@ const { getCity } = require('./tic-cities');
 const { resolveMetro } = require('./venue-metro');
 const { normalizeShowTitle } = require('./show-title-normalize');
 const { isFirstPartyVenueUrl } = require('./first-party-venue-url');
+const { isSameRunLeadingTitle } = require('./show-duplicate-detection');
 
 const MIN_REVIEWS = 3;
 const CHICAGO_METRO = 'chicago-il'; // data/venue-metros.json metro slug (BRO-6515)
@@ -265,7 +266,13 @@ function findDuplicate(entry, existingShows, city = getCity('chicago'), tourStop
       ? resolveMetro(row.venue) === city.metro
       : /, (chicago|[a-z. ]+), (il|in)\b/i.test(row.venue || ''));
   for (const s of existingShows) {
-    if (normTitle(s.title) !== nt) continue;
+    if (normTitle(s.title) !== nt) {
+      // BRO-8454: the same run listed under its short title elsewhere ("Iceboy!" vs
+      // "Iceboy! or, The Completely Untrue Story of..."): same house, same closing date,
+      // opening nights within a few days, and in this metro.
+      if (isSameRunLeadingTitle(entry, s) && sameMetro(s)) return s;
+      continue;
+    }
     const so = Date.parse(s.openingDate || '');
     if (s.category === 'regional' && sameMetro(s) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
     if (s.category === 'tour') {

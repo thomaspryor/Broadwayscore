@@ -46,7 +46,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeTitle } = require('./lib/deduplication');
-const { findTitleFragmentDupes, findSharedTicketIdentityDupes, sameMarketPair, stubIsUnplacedDupe } = require('./lib/show-duplicate-detection');
+const { findTitleFragmentDupes, findSharedTicketIdentityDupes, findSameRunLeadingTitleDupes, auditVenueTokens: venueTokens, sameMarketPair, stubIsUnplacedDupe } = require('./lib/show-duplicate-detection');
 const { pairKey, baselineKeySet, computeNewViolators, dedupeClustersByPair } = require('./lib/duplicate-shows-baseline');
 const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
 const { assertCorpusScanned, CorpusNotScannedError, CORPUS_NOT_SCANNED_EXIT_CODE } = require('./lib/corpus-scan-guard');
@@ -67,24 +67,6 @@ const STALE_MODE = args.includes('--check-stale') || args.includes('--prune-stal
 const INCLUDE_CLOSED = args.includes('--include-closed') || STALE_MODE;
 const jsonArg = args.find((a) => a.startsWith('--json='));
 const JSON_OUT = jsonArg ? jsonArg.split('=')[1] : path.join(ROOT, 'data', 'audit', 'duplicate-shows.json');
-
-// Generic venue words that don't distinguish a physical venue.
-const VENUE_GENERIC = new Set([
-  'the', 'theatre', 'theater', 'playhouse', 'royal', 'new', 'old', 'studio',
-  'stage', 'hall', 'house', 'arts', 'centre', 'center', 'london', 'west', 'end',
-  'off', 'company', 'at', 'and', 'on', 'formerly', 'open', 'air', 'tba',
-]);
-
-function venueTokens(venue) {
-  return new Set(
-    String(venue || '')
-      .toLowerCase()
-      .replace(/\(.*?\)/g, ' ') // drop parentheticals like "(formerly ...)"
-      .replace(/[^a-z0-9]+/g, ' ')
-      .split(/\s+/)
-      .filter((w) => w.length >= 3 && !VENUE_GENERIC.has(w)),
-  );
-}
 
 function isStub(show, reviewCount) {
   // openingDate-guard: intentional (BRO-2033). A missing openingDate IS the
@@ -244,6 +226,22 @@ function main() {
         a: { id: f.a, venue: a?.venue, opening: a?.openingDate, reviews: reviewFileCount(f.a) },
         b: { id: f.b, venue: b?.venue, opening: b?.openingDate, reviews: reviewFileCount(f.b) },
         reason: 'shared-ticket-identity',
+      }],
+    });
+  }
+
+  // Leading-title pass (BRO-8454): "Iceboy!" and "Iceboy! or, The Completely Untrue
+  // Story of..." are one run at one house, but different normalized titles put them in
+  // different groups above. isSameRunLeadingTitle holds the guards (same house, same run).
+  for (const f of findSameRunLeadingTitleDupes(shows)) {
+    const a = shows.find((s) => s.id === f.a);
+    const b = shows.find((s) => s.id === f.b);
+    rawClusters.push({
+      key: `leading-title@${f.venue}`,
+      pairs: [{
+        a: { id: f.a, venue: a?.venue, opening: a?.openingDate, reviews: reviewFileCount(f.a) },
+        b: { id: f.b, venue: b?.venue, opening: b?.openingDate, reviews: reviewFileCount(f.b) },
+        reason: 'same-run-leading-title',
       }],
     });
   }
