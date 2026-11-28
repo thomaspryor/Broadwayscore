@@ -311,6 +311,18 @@ function checkVerdict(raw, expectedHash) {
  * Where a visual request stands, from the card alone (no secret needed).
  * waiting | approved (tapped, lander has not pushed yet) | landed | rejected | answered (own words) | void | unverified | expired | none
  */
+/**
+ * BRO-8462 (one ask per card): what a new request on a card that already holds an ask should reuse.
+ * 'approval': the owner approved the latest ask and it has not shipped (or the lander voided it only because
+ * the hold moved). 'open-ask': the latest ask is still waiting. Either way, when the new tip changes the same
+ * lines, only the hold is updated and the owner is not asked again. null: ask as usual.
+ */
+function reuseExistingAsk({ state, approvedOnCard }) {
+  if (state === 'approved' || (state === 'void' && approvedOnCard)) return 'approval';
+  if (state === 'waiting') return 'open-ask';
+  return null;
+}
+
 function classifyStatus(description, comments) {
   if (!link.parseVisualApproval(description)) return 'none';
   // A card can be asked again after an expiry or a redo: only comments from the latest ask describe the current request.
@@ -374,4 +386,4 @@ function landCheckGate({ status, sha = '', env = {}, okReason = '' }) {
   return { action: 'warn', message: `WARNING: ${text} ${fix}`, reason: String(okReason).trim() || null };
 }
 
-module.exports = { changeOnMain, changeSignature, changeSignatureOfDiff, answerKind, latestVisualAnswer, landCheckGate, LAND_CHECK_CMD, visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, cropCoverageProblem, whatProblem, makeEmailThumb, thumbName, fullUrlForThumb, THUMB_MAX_BYTES, THUMB_MAX_HEIGHT, MAX_CROPS, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
+module.exports = { reuseExistingAsk, changeOnMain, changeSignature, changeSignatureOfDiff, answerKind, latestVisualAnswer, landCheckGate, LAND_CHECK_CMD, visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, cropCoverageProblem, whatProblem, makeEmailThumb, thumbName, fullUrlForThumb, THUMB_MAX_BYTES, THUMB_MAX_HEIGHT, MAX_CROPS, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };

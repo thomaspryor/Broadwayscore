@@ -147,7 +147,8 @@ async function carryOverApproval({ issueId, heldSha, cwd, dryRun }) {
   // Only an approval of the LATEST ask counts (an older ask's yes was for another change).
   const askedAt = Math.max(0, ...comments.filter((c) => /^Asked the owner to look at/.test(link.unescapeMarkdown(c.body || '').trim())).map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite));
   const approvedOnCard = comments.some((c) => !(new Date(c.createdAt).getTime() < askedAt) && link.unescapeMarkdown(c.body || '').includes(va.MARK.approved));
-  if (!(state === 'approved' || (state === 'void' && approvedOnCard))) return null;
+  const reuse = va.reuseExistingAsk({ state, approvedOnCard });
+  if (!reuse) return null;
   const sha = va.evidenceSha(issue.description);
   if (!sha) return null;
   let tip;
@@ -157,12 +158,18 @@ async function carryOverApproval({ issueId, heldSha, cwd, dryRun }) {
   } catch { return null; } // an older ask's evidence commit has no parent: ask as usual
   if (!/^[0-9a-f]{40}$/.test(tip)) return null;
   const same = va.changeSignature('origin/main', tip, cwd) === va.changeSignature('origin/main', heldSha, cwd);
-  if (!same) { console.error(`[visual-approval] ${issueId} has an owner approval, but this change edits different lines than the approved one (${tip.slice(0, 10)}); asking again.`); return null; }
+  const what = reuse === 'approval' ? 'an owner approval' : 'an open ask the owner has not answered';
+  if (!same) { console.error(`[visual-approval] ${issueId} has ${what}, but this change edits different lines than the asked one (${tip.slice(0, 10)}); this is a real design change, so asking again.`); return null; }
   const hold = va.holdBranch(issueId);
-  if (dryRun) { console.log(`[dry-run] the owner's approval carries over: would push HEAD -> ${hold} only`); return 0; }
+  if (dryRun) { console.log(`[dry-run] ${reuse === 'approval' ? "the owner's approval carries over" : 'the open ask stands'}: would push HEAD -> ${hold} only`); return 0; }
   va.git(['push', '--force', 'origin', `${heldSha}:refs/heads/${hold}`], { cwd });
-  await linear.createComment(issue.id, `Rebased the held change (${heldSha.slice(0, 10)}). It changes exactly the lines the owner approved (only the surrounding code moved), so the approval carries over and the owner is not asked again. The lander re-checks this before it ships.`);
-  console.log(`[visual-approval] ${issueId}: the owner's approval carries over; pushed the rebased change to ${hold}. Do not ask again. Stop work on this card; the lander ships it.`);
+  if (reuse === 'approval') {
+    await linear.createComment(issue.id, `Rebased the held change (${heldSha.slice(0, 10)}). It changes exactly the lines the owner approved (only the surrounding code moved), so the approval carries over and the owner is not asked again. The lander re-checks this before it ships.`);
+    console.log(`[visual-approval] ${issueId}: the owner's approval carries over; pushed the rebased change to ${hold}. Do not ask again. Stop work on this card; the lander ships it.`);
+  } else {
+    await linear.createComment(issue.id, `Updated the held change (${heldSha.slice(0, 10)}). It changes exactly the lines already shown to the owner, so the open ask stands and no new ask was sent. An Approve on it ships this tip; the lander re-checks the lines first.`);
+    console.log(`[visual-approval] ${issueId}: an ask for these exact screen changes is already waiting on the owner; pushed the new tip to ${hold} and sent no new ask. Do not ask again (no DECISION NEEDED in chat either). Stop work on this card; the lander ships it after Approve.`);
+  }
   return 0;
 }
 

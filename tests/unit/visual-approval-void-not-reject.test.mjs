@@ -209,3 +209,39 @@ test('fix 3: a line moved into another function, or a whitespace edit inside a l
   assert.notEqual(sig('@@ -40,0 +44 @@ function Footer() {\n+  <span className="gold">AU</span>\n'), base, 'moved into another function');
   assert.notEqual(sig('@@ -10,0 +11 @@ function Header() {\n+  <span className="gold  big">AU</span>\n'), sig('@@ -10,0 +11 @@ function Header() {\n+  <span className="gold big">AU</span>\n'), 'whitespace in a class string');
 });
+
+// ── 4. one ask per card: a new tip with the same screen changes reuses the ask already on the card ─────────
+test('one ask per card: an open ask or an unshipped approval is reused; a Reject or shipped change asks again', () => {
+  assert.equal(va.reuseExistingAsk({ state: 'waiting', approvedOnCard: false }), 'open-ask');
+  assert.equal(va.reuseExistingAsk({ state: 'approved', approvedOnCard: true }), 'approval');
+  assert.equal(va.reuseExistingAsk({ state: 'void', approvedOnCard: true }), 'approval');
+  for (const state of ['void', 'rejected', 'answered', 'landed', 'expired', 'unverified', 'none']) {
+    assert.equal(va.reuseExistingAsk({ state, approvedOnCard: false }), null, state);
+  }
+  // request() goes through it before it builds a new ask (a reverted wiring would ask every time).
+  const src = fs.readFileSync(new URL('../../scripts/visual-approval.js', import.meta.url), 'utf8');
+  assert.match(src, /va\.reuseExistingAsk\(/);
+  assert.ok(src.indexOf('carryOverApproval({') < src.indexOf('va.buildBlock('), 'reuse check runs before a new ask is built');
+});
+
+test('BRO-8451 replay: Yes, wrong Void, rebase v2, rebase v3 reach the owner as one ask', async () => {
+  let asks = 1; // the 19:19Z ask
+  const yesAt = Date.parse('2026-11-28T19:59:00Z');
+  // 19:59Z the chat "Yes" was recorded as Void. Now refused while the hold has unshipped code.
+  const facts = await roa.voidFacts(visualIssue, 'Yes', { git: () => 'x', changeOnMain: () => false });
+  assert.ok(roa.resolveDecision(visualIssue, 'void', facts).error, 'Void refused');
+  // The lander sees an answered card with no Reject: it keeps the held change (no 20:35Z cleanup).
+  const voided = card([ask, decision(VOID, 'Yes', yesAt)]);
+  assert.notEqual(land.planCard(voided, S, yesAt + 36 * 60e3).action, 'cleanup');
+  // The yes is recorded as the approval instead; rebases v2 and v3 change the same lines and carry it over.
+  const approved = card([ask, { id: 'ap', createdAt: at(yesAt), body: `Visual change approved by the owner. ${va.MARK.approved}` }], block());
+  const state = va.classifyStatus(approved.description, approved.comments.nodes);
+  for (const rebase of ['v2', 'v3']) {
+    const reuse = va.reuseExistingAsk({ state, approvedOnCard: true });
+    assert.ok(reuse, `${rebase} reuses the approval`);
+    if (!reuse) asks += 1;
+  }
+  // Before the owner answers, a rebased tip reuses the open ask too.
+  if (!va.reuseExistingAsk({ state: va.classifyStatus(block(), [ask]), approvedOnCard: false })) asks += 1;
+  assert.equal(asks, 1, 'the owner is asked once');
+});
