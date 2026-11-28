@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { getTierMarket } from '@/lib/market-utils';
 import { ScoreBadge } from '@/components/show-cards';
 import { useMyScoreCalls } from '@/hooks/useScoreCall';
 import type { ShowLookup } from '@/types/user';
@@ -28,7 +29,7 @@ export default function YourPredictions({ showMap }: { showMap: Record<string, S
           const title = show?.title ?? c.show_id;
           const row = (
             <>
-              <span className="shrink-0 rounded-lg outline outline-1 outline-dashed outline-offset-2 outline-white/30" data-predicted="true"><ScoreBadge score={c.called_score} size="xs" category={show?.category} /></span>
+              <span className="shrink-0 rounded-lg outline outline-1 outline-dashed outline-offset-2 outline-white/30" data-predicted="true"><ScoreBadge score={c.called_score} size="xs" category={show ? getTierMarket(show) : undefined} /></span>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-semibold text-white truncate">{title}</span>
                 <span className="block text-xs text-fg-muted">

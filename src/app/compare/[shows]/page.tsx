@@ -12,7 +12,7 @@ import { getShowAwards } from '@/lib/data-awards';
 import { getShowGrosses } from '@/lib/data-grosses';
 import { getAllComparisonSlugs, parseComparisonSlug } from '@/config/comparisons';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
-import { isLondonMarket } from '@/lib/market-utils';
+import { getTierMarket, isLondonMarket } from '@/lib/market-utils';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge, StatusBadge, FormatPill, getScoreTier } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
@@ -377,9 +377,9 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                     </h2>
                   </Link>
                   <div className="flex flex-col items-center mb-3">
-                    <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} category={show.category} tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)} isCuratedHistorical={scoreGateArg(show)} />
+                    <ScoreBadge score={score} size="lg" showCrown reviewCount={show.criticScore?.reviewCount} status={show.status} category={getTierMarket(show)} tier1And2Count={(show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0)} isCuratedHistorical={scoreGateArg(show)} />
                     {(() => {
-                      const tier = score != null ? getScoreTier(Math.round(score), show.category) : null;
+                      const tier = score != null ? getScoreTier(Math.round(score), getTierMarket(show)) : null;
                       return tier ? (
                         <span className="text-[10px] sm:text-xs font-semibold mt-1" style={{ color: tier.color }}>{tier.label}</span>
                       ) : null;

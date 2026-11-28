@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { getTierMarket } from '@/lib/market-utils';
 import Link from 'next/link';
 import type { ActorProfile } from '@/lib/data-types';
 import type { PersonTonyStats, ShowTonyInfo } from '@/lib/data-tony-noms';
@@ -21,7 +22,7 @@ function formatDate(dateStr: string): string {
 }
 
 function ShowCard({ show, loading = 'lazy', tonyInfo }: { show: ActorProfile['shows'][0]; loading?: 'eager' | 'lazy'; tonyInfo?: ShowTonyInfo }) {
-  const tier = show.score !== null ? getScoreTier(show.score, show.category) : null;
+  const tier = show.score !== null ? getScoreTier(show.score, getTierMarket(show)) : null;
 
   return (
     <Link
@@ -203,8 +204,8 @@ export default function ActorDetailClient({
 
   const highShow = profile.highScore ? profile.shows.find(s => s.title === profile.highScore!.showTitle) : null;
   const lowShow = profile.lowScore ? profile.shows.find(s => s.title === profile.lowScore!.showTitle) : null;
-  const highTier = profile.highScore ? getScoreTier(profile.highScore.score, highShow?.category) : null;
-  const lowTier = profile.lowScore ? getScoreTier(profile.lowScore.score, lowShow?.category) : null;
+  const highTier = profile.highScore ? getScoreTier(profile.highScore.score, highShow ? getTierMarket(highShow) : undefined) : null;
+  const lowTier = profile.lowScore ? getScoreTier(profile.lowScore.score, lowShow ? getTierMarket(lowShow) : undefined) : null;
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-8">

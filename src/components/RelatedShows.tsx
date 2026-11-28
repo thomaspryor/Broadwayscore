@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getTierMarket } from '@/lib/market-utils';
 import type { ShowCardShow } from '@/components/show-cards/types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { isLondonMarket, getMarketLabel } from '@/lib/venue-classification';
@@ -46,7 +47,7 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
                   size="sm"
                   showCrown
                   reviewCount={show.criticScore?.reviewCount}
-                  category={show.category}
+                  category={getTierMarket(show)}
                   tier1And2Count={show.criticScore ? (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0) : undefined}
                   isCuratedHistorical={scoreGateArg(show)}
                 />

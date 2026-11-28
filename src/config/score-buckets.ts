@@ -126,7 +126,7 @@ export const MIN_TIER1_FOR_HIGH_CONFIDENCE = 3;
 // The thresholds live ONLY in scripts/lib/score-tiers.js, shared with the app
 // feed generator (scripts/generate-mobile-data.js writes cr.l from it) so the
 // site badge and the iOS app cannot disagree on a show's tier.
-export { MARKET_GOLD_THRESHOLD, getGoldThreshold } from '../../scripts/lib/score-tiers';
+export { MARKET_GOLD_THRESHOLD, TIER_MARKET_REGIONAL_AU, getGoldThreshold } from '../../scripts/lib/score-tiers';
 
 /**
  * Whether a score qualifies as Critical Gold (renders the crown).

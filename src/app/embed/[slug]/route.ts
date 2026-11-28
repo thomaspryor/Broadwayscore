@@ -1,4 +1,5 @@
 import { getShowBySlug } from '@/lib/data-core';
+import { getTierMarket } from '@/lib/market-utils';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getScoreTier } from '@/components/show-cards';
 import { isCriticalGold } from '@/config/score-buckets';
@@ -207,11 +208,11 @@ export async function GET(request: Request, props: { params: Promise<{ slug: str
 
   if (!isTbd && rawScore != null) {
     const rounded = Math.round(rawScore);
-    const tier = getScoreTier(rounded, show.category);
+    const tier = getScoreTier(rounded, getTierMarket(show));
     if (tier) {
       tierStyle = TIER_STYLE[tier.label] ?? tierStyle;
       tierLabel = tier.label;
-      isGold = isCriticalGold(rounded, show.category);
+      isGold = isCriticalGold(rounded, getTierMarket(show));
     }
   }
 

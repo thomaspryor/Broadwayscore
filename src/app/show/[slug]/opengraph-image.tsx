@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import { getTierMarket } from '@/lib/market-utils';
 import { pngToOgJpegResponse } from '@/lib/og-jpeg';
 import { fetchImageDataUri } from '@/lib/og-image';
 import { interFontOption } from '@/lib/og-fonts';
@@ -73,7 +74,7 @@ export default async function OGImage({ params: pendingParams }: { params: Promi
   const rawScore = show.criticScore?.score;
   const hasScore = !isShowScoreTBD(show);
   const score = hasScore ? Math.round(rawScore!) : null;
-  const tier = score != null ? getScoreTier(score, show.category) : null;
+  const tier = score != null ? getScoreTier(score, getTierMarket(show)) : null;
   const tierStyle = tier ? TIER_STYLE[tier.label] : null;
   const isGold = tier?.label === 'Critical Gold';
 

@@ -16,6 +16,7 @@ const require = createRequire(import.meta.url);
 // The site's Critic Score (BRO-4313: this used to raw-mean assignedScore).
 const { computeSlimCriticScore } = require('./lib/slim-critic-score');
 const { getScoreTierLabel } = require('./lib/score-tiers');
+const { getTierMarket } = require("./lib/market-label");
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/outlet-registry.json'), 'utf-8')).outlets || {};
 
 // Helper to calculate score
@@ -52,7 +53,7 @@ showsToCheck.forEach(showId => {
   const avgScore = cs != null ? Math.round(cs) : 0;
 
   // Same tier label the site badge shows (market-aware Gold).
-  const sentiment = cs != null ? getScoreTierLabel(cs, show.category) : 'No score';
+  const sentiment = cs != null ? getScoreTierLabel(cs, getTierMarket(show)) : 'No score';
 
   console.log('========================================');
   console.log(`${show.title}`);
