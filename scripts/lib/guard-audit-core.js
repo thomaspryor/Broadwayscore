@@ -221,6 +221,16 @@ function verdictFor({ shadow, hasHistory, ledgerOk, days, lowerBound, accepted }
   return 'OK';
 }
 
+// An owner-accepted pattern includes the low ceiling that causes those trips.
+// Keep the measured drift visible, but do not re-alert on the accepted pattern.
+function guardAlertAction(g) {
+  if (g.shadow) return 'none';
+  if (g.verdict === 'ACCEPTED') return 'resolve';
+  if (g.verdict === 'DEFECT' || g.drift.drift) return 'alert';
+  if (g.verdict === 'OK') return 'resolve';
+  return 'none';
+}
+
 /**
  * The whole audit. Inputs are already-read data; returns the snapshot.
  * @param {object} p
@@ -291,7 +301,7 @@ function describeLine(r) {
 /** Snapshot shape: digest-snapshots/renderNamedDigestBlock (bannerText + items). */
 function renderGuardAudit(results, { nowIso, sinceDay, untilDay, spendByDay, ledgerOk }) {
   const defects = results.filter((r) => r.verdict === 'DEFECT').map((r) => r.key);
-  const drifts = results.filter((r) => r.drift.drift && !r.shadow).map((r) => r.key);
+  const drifts = results.filter((r) => r.drift.drift && guardAlertAction(r) === 'alert').map((r) => r.key);
   const items = results.map((r) => ({ title: r.key, detail: describeLine(r) }));
   const bannerText = !ledgerOk
     ? 'Spend guard audit (last 7 days): breaker transition ledger missing or unreadable — no verdicts.'
@@ -333,6 +343,7 @@ module.exports = {
   spendByDayFromLedger,
   mergeSpendHistory,
   verdictFor,
+  guardAlertAction,
   runGuardAudit,
   renderGuardAudit,
   renderGuardAuditHtml,

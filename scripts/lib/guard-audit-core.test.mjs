@@ -131,6 +131,15 @@ test('cap drift: ceiling that bit (latest trip row) < 1.5x 14d median → drift;
   assert.equal(zeroOnly.ceiling, null);
 });
 
+test('accepted daily trips resolve even with drift; unaccepted drift still alerts', () => {
+  const drift = { drift: true };
+  assert.equal(core.guardAlertAction({ verdict: 'ACCEPTED', drift }), 'resolve');
+  assert.equal(core.guardAlertAction({ verdict: 'DEFECT', drift }), 'alert');
+  assert.equal(core.guardAlertAction({ verdict: 'OK', drift }), 'alert');
+  assert.equal(core.guardAlertAction({ verdict: 'UNCERTAIN', drift: { drift: false } }), 'none');
+  assert.equal(core.guardAlertAction({ verdict: 'SHADOW', shadow: true, drift }), 'none');
+});
+
 test('snapshot has the renderNamedDigestBlock shape and HTML escapes', () => {
   const snap = core.runGuardAudit({ ledger: ledger(chain('sd-circuit-breaker', [day(1)])), spendRows: [], dailyRows: [], nowIso: NOW });
   assert.equal(typeof snap.bannerText, 'string');

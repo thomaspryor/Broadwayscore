@@ -31,7 +31,7 @@ Env:
 const fs = require('fs');
 const path = require('path');
 const { runGuardAuditFromFiles, DEFAULT_SNAPSHOT_PATH } = require('./lib/guard-audit-io');
-const { renderGuardAuditHtml } = require('./lib/guard-audit-core');
+const { renderGuardAuditHtml, guardAlertAction } = require('./lib/guard-audit-core');
 
 const SNAPSHOT = process.env.GUARD_AUDIT_SNAPSHOT_PATH || DEFAULT_SNAPSHOT_PATH;
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -57,10 +57,10 @@ async function main() {
   // NO DATA and SHADOW neither alert nor resolve.
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
   for (const g of snapshot.guards) {
-    if (g.shadow) continue;
+    const action = guardAlertAction(g);
     const isDefect = g.verdict === 'DEFECT';
     const isDrift = g.drift.drift;
-    if (isDefect || isDrift) {
+    if (action === 'alert') {
       const why = [isDefect ? `tripped on ${g.days} of the last 7 days (${g.dayList.join(', ')})` : null,
         isDrift ? `ceiling ${g.drift.ceiling} (${g.drift.source || 'unknown'}) is below 1.5x the 14-day median demand ${g.drift.median14d}` : null].filter(Boolean).join('; ');
       await routeAlert({
@@ -71,7 +71,7 @@ async function main() {
         disposition: 'digest',
         cooldownHours: 168,
       });
-    } else if (g.verdict === 'OK' || g.verdict === 'ACCEPTED') {
+    } else if (action === 'resolve') {
       // ACCEPTED resolves too: a DEFECT the owner then accepts via
       // acceptedDailyTrip must not stay open forever (review finding).
       resolveCondition(g.alertKey);
