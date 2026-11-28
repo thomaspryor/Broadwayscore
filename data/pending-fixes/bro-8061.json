@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-8061",
+  "planId": "e13eae15-bcdc-420f-b6ff-cb5ff104302f",
+  "status": "pending",
+  "createdAt": "2026-11-28T21:01:02.151Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct Gotta Dance! 2026 co-directors and remove credits from a different production",
+    "steps": [
+      "shows.json: gotta-dance-off-broadway-2026.creativeTeam"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gotta-dance-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Jerry Mitchell",
+            "role": "Director"
+          },
+          {
+            "name": "Chad Beguelin",
+            "role": "Book Writer"
+          },
+          {
+            "name": "Matthew Sklar",
+            "role": "Composer"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Nikki Feirt Atkins",
+            "role": "Co-Director"
+          },
+          {
+            "name": "Randy Skinner",
+            "role": "Co-Director"
+          }
+        ],
+        "description": "shows.json: gotta-dance-off-broadway-2026.creativeTeam"
+      }
+    ]
+  }
+}
