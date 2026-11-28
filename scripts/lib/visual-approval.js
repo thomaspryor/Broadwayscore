@@ -214,13 +214,16 @@ function buildEvidenceCommit(files, cwd, message, parent = null) {
 
 /**
  * BRO-8462: what a change changes, with diff context and line numbers left out. A rebase that only moved the
- * lines around the change (a conflict resolved in a neighbouring hunk, main moving underneath) keeps the same
- * signature; any added, removed or edited line in ANY file (UI or not) changes it. Pure: takes `git diff -U0` text.
+ * lines around the change (a conflict resolved in a neighbouring line, main moving underneath) keeps the same
+ * signature; any added, removed or edited line in ANY file (UI or not), or a hunk moved to another function, changes
+ * it. Residual: a line reordered inside the same function keeps it (the evidence-parent check still binds the MAC). Pure: takes `git diff -U0` text.
  */
 function changeSignatureOfDiff(diffText) {
   const kept = String(diffText || '').split('\n')
-    .filter((l) => l && !/^@@ /.test(l) && !/^index [0-9a-f]+\.\.[0-9a-f]+/.test(l))
-    .map((l) => l.replace(/\s+/g, ' ').trimEnd());
+    .filter((l) => l && !/^index [0-9a-f]+\.\.[0-9a-f]+/.test(l))
+    // Line numbers go; the hunk's enclosing-function heading stays, so a line moved into another function (or
+    // file) is a different change. Whitespace inside a line is kept exactly (a class string is content).
+    .map((l) => (/^@@ /.test(l) ? l.replace(/^@@ [^@]*@@ ?/, '@@ ') : l).trimEnd());
   if (!kept.length) return null;
   return require('crypto').createHash('sha256').update(kept.join('\n')).digest('hex');
 }
@@ -235,14 +238,15 @@ function changeSignature(base, head, cwd) {
  * working tree and the real index are untouched. Throws on a git error (callers fail closed).
  */
 function changeOnMain(holdRef, cwd, main = 'origin/main') {
-  const diff = git(['diff', '--binary', `${main}...${holdRef}`], { cwd });
-  if (!diff) return true;
+  // Raw output: git() trims, which would cut a trailing blank context line and corrupt the patch.
+  const diff = execFileSync('git', ['diff', '--binary', `${main}...${holdRef}`], { cwd, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+  if (!diff.trim()) return true;
   const os = require('os');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'va-onmain-'));
   const env = { ...process.env, GIT_INDEX_FILE: path.join(dir, 'index') };
   try {
     execFileSync('git', ['read-tree', main], { cwd, env, stdio: ['ignore', 'ignore', 'pipe'] });
-    try { execFileSync('git', ['apply', '--cached', '--check', '-R'], { cwd, env, input: `${diff}\n`, stdio: ['pipe', 'ignore', 'ignore'] }); return true; } catch { return false; }
+    try { execFileSync('git', ['apply', '--cached', '--check', '-R'], { cwd, env, input: diff, stdio: ['pipe', 'ignore', 'ignore'] }); return true; } catch { return false; }
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 
@@ -328,9 +332,11 @@ function classifyStatus(description, comments) {
   if (/ANSWERED by the owner/.test(description || '')) {
     // BRO-8462: a recorded Void is not a rejection (it read as one and the owner was asked again); own words are their note.
     const answer = latestVisualAnswer(current, askedAt || 0);
+    // Only an explicit Reject is a rejection; own words (even "Approved ...", which carries no signature) or no
+    // decision comment at all are 'answered': the session reads the owner's words, it never reworks a "no".
     if (answer && answer.kind === 'void') return 'void';
-    if (answer && answer.kind === 'own') return 'answered';
-    return 'rejected';
+    if (answer && answer.kind === 'reject') return 'rejected';
+    return 'answered';
   }
   return 'waiting';
 }

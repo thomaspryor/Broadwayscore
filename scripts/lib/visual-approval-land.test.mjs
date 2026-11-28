@@ -60,7 +60,9 @@ test('classifyStatus: waiting, approved, landed, void, unverified, rejected, exp
   assert.equal(va.classifyStatus(d, []), 'waiting');
   assert.equal(va.classifyStatus('no machine line', []), 'none');
   const answered = `${d}\nANSWERED by the owner (see the "Owner decision" comment on this card).`;
-  assert.equal(va.classifyStatus(answered, []), 'rejected');
+  // BRO-8462: answered with no Reject on record is the owner's words, not a "no" (it re-asked an owner who said yes).
+  assert.equal(va.classifyStatus(answered, []), 'answered');
+  assert.equal(va.classifyStatus(answered, [c('**Owner decision** (answered by the owner through the email)\n\nChose: Option B: reject\n\n> no\n\nDecision ref ODA1')]), 'rejected');
   const approved = [c(link.visualMarker(mac))];
   assert.equal(va.classifyStatus(answered, approved), 'approved');
   // BRO-6546: void closes an ask the owner approved in chat (no tap was ever recorded), so it must not read as rejected.

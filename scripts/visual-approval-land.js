@@ -111,13 +111,13 @@ function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedS
     .map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite).sort((a, b) => b - a)[0];
   // Answered without an approval. BRO-8462: only an explicit Reject removes the held change. A Void (closed
   // without a tap, e.g. the owner said yes in chat) was read as a rejection and BRO-8451's approved hold was
-  // deleted. A Void whose hold is already on main is tidied up; anything else keeps the hold until it is stale.
+  // deleted. A Void whose hold is already on main is tidied up; anything else keeps the hold.
   if (/ANSWERED by the owner/.test(issue.description || '')) {
     if (has(cleanedMarker(mac))) return { action: 'skip', why: 'answered, already cleaned', v, mac };
     const answer = va.latestVisualAnswer(comments.nodes, askedAt || 0);
     if (answer && answer.kind === 'reject') return { action: 'cleanup', reason: 'rejected', v, mac };
     if (answer && answer.kind === 'void' && facts.holdSettled === true) return { action: 'cleanup', reason: 'shipped', v, mac };
-    if (askedAt && now - askedAt > EXPIRE_AFTER_MS) return { action: 'cleanup', reason: 'stale', v, mac };
+    // No time-based cleanup: an owner yes given in chat (recorded as own words or a Void) must never age into a deletion.
     return { action: 'skip', why: `answered (${answer ? answer.kind : 'no answer comment found'}) without a Reject; the held change is kept`, v, mac };
   }
   if (askedAt && now - askedAt > EXPIRE_AFTER_MS && !/ANSWERED by the owner/.test(issue.description || '')) return { action: 'expire', v, mac };
@@ -295,16 +295,17 @@ async function main(argv = process.argv.slice(2)) {
     let shippedSha = null;
     // A VISUAL-OK prefix is on every UI commit, so a match alone proves nothing: the held change must also be gone from the hold branch (deleted, or no diff left against main).
     let holdSettled = false;
+    let holdSha = null; // the hold tip this run decided on: deletions lease on it, so a newer ask's hold is never removed
     try {
       const hb = va.holdBranch(issue.identifier);
-      try { va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hb}:refs/remotes/origin/${hb}`]); holdSettled = va.holdSettled({ fetchOk: true, patchIdValue: va.patchId('origin/main', `origin/${hb}`) }); } catch { holdSettled = va.holdSettled({ fetchOk: false }); }
+      try { va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hb}:refs/remotes/origin/${hb}`]); holdSha = va.git(['rev-parse', `origin/${hb}`]); holdSettled = va.holdSettled({ fetchOk: true, patchIdValue: va.patchId('origin/main', `origin/${hb}`) }); } catch { holdSettled = va.holdSettled({ fetchOk: false }); }
     } catch { holdSettled = false; }
     try { if (holdSettled) shippedSha = shippedVisualCommit(va.git(['log', 'origin/main', `--since=@${Math.floor(askedSince(issue) / 1000)}`, '--format=%H%x09%s']), issue.identifier); } catch (e) { console.error(`[visual-land] ${issue.identifier}: could not read main history: ${e.message}`); }
     const autoNow = autoDecision(issue, secret);
     if (autoNow.auto) console.log(`[visual-land] ${issue.identifier}: auto-ship allowed (${autoNow.why})`);
     // BRO-8462: an answered Void tidies up only when its change is really on main (a landed hold keeps its own commits).
-    let voidSettled = holdSettled;
-    if (!voidSettled && /ANSWERED by the owner/.test(issue.description || '')) { try { voidSettled = va.changeOnMain(`origin/${va.holdBranch(issue.identifier)}`); } catch { voidSettled = false; } }
+    // holdSettled above reads ANY fetch failure as settled (safe for the VISUAL-OK void, wrong for a deletion), so this asks again.
+    const voidSettled = /ANSWERED by the owner/.test(issue.description || '') ? voidHoldSettled(issue.identifier) : false;
     const first = planCard(issue, secret, Date.now(), null, shippedSha, autoNow.auto, { holdSettled: voidSettled });
     if (first.action === 'skip' || first.action === 'wait') { console.log(`[visual-land] ${issue.identifier}: ${first.action}${first.why ? ` (${first.why})` : ''}`); continue; }
     const { v, mac } = first;
@@ -365,17 +366,16 @@ async function main(argv = process.argv.slice(2)) {
       } else if (first.action === 'cleanup') {
         console.log(`[visual-land] ${issue.identifier}: cleanup (${first.reason}), removing ${hold}`);
         if (dryRun) continue;
-        for (const ref of [hold, va.evidenceBranch(issue.identifier)]) { try { va.git(['push', 'origin', `:refs/heads/${ref}`]); } catch { /* already gone */ } }
+        if (!removeHeld(issue, holdSha)) { console.log(`[visual-land] ${issue.identifier}: ${hold} moved since this run read it (a new ask?); not removed`); continue; }
         const why = {
           rejected: 'The owner did not approve this change, so the held branch and screenshots were removed.',
           shipped: 'The held change is already on main, so the held branch and screenshots were removed.',
-          stale: 'This ask was answered without an approval more than 14 days ago, so the held branch and screenshots were removed.',
         }[first.reason] || 'The held branch and screenshots were removed.';
         await comment(issue, `${why}\n\n${cleanedMarker(mac)}`);
       } else if (first.action === 'expire') {
         console.log(`[visual-land] ${issue.identifier}: expired`);
         if (dryRun) continue;
-        for (const ref of [hold, va.evidenceBranch(issue.identifier)]) { try { va.git(['push', 'origin', `:refs/heads/${ref}`]); } catch { /* already gone */ } }
+        if (!removeHeld(issue, holdSha)) { console.log(`[visual-land] ${issue.identifier}: ${hold} moved since this run read it (a new ask?); not removed`); continue; }
         const row = (await linear.graphql('query($id: String!) { issue(id: $id) { id team { states { nodes { id name } } } } }', { id: issue.identifier })).issue;
         const todo = ((row.team && row.team.states && row.team.states.nodes) || []).find((s) => /^todo$/i.test(s.name));
         await linear.createComment(row.id, `Nobody answered this visual approval within 14 days, so the held change was removed. The card is back in the queue; redo the work and ask again.\n\n${expiredMarker(mac)}`);
@@ -389,4 +389,31 @@ async function main(argv = process.argv.slice(2)) {
 if (require.main === module) {
   main().then((c) => { process.exitCode = c; }, (e) => { console.error(`[visual-land] ${e.stack || e.message}`); process.exitCode = 3; });
 }
-module.exports = { carryOverOk, approvedTipMatches, autoDecision, autoMarker, planRecovery, askedHold, lostBlockAnswer, planCard, shippedVisualCommit, askedSince, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };
+/**
+ * BRO-8462: for an answered Void, is the held change already on main (or gone)? Unlike holdSettled, a failed git
+ * call is NOT settled: a network blip must never read as "shipped" and delete the hold. Absent from origin = settled.
+ */
+function voidHoldSettled(id, { git = va.git, changeOnMain = va.changeOnMain } = {}) {
+  const hb = va.holdBranch(id);
+  try {
+    if (!git(['ls-remote', '--heads', 'origin', hb])) return true;
+    git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hb}:refs/remotes/origin/${hb}`]);
+    return changeOnMain(`origin/${hb}`) === true;
+  } catch { return false; }
+}
+
+/**
+ * BRO-8462: delete the hold (and then its evidence) only if each is still at the commit this run decided on, so a
+ * request that force-pushed a new hold in the meantime keeps it. Returns false when the hold moved (nothing removed).
+ * A hold already gone (holdSha null) removes the evidence the card names, leased on that sha.
+ */
+function removeHeld(issue, holdSha, { git = va.git } = {}) {
+  const hold = va.holdBranch(issue.identifier);
+  if (holdSha) { try { git(['push', `--force-with-lease=refs/heads/${hold}:${holdSha}`, 'origin', `:refs/heads/${hold}`]); } catch { if (git(['ls-remote', '--heads', 'origin', hold])) return false; } }
+  const ev = va.evidenceBranch(issue.identifier);
+  const evSha = va.evidenceSha(issue.description);
+  if (evSha) { try { git(['push', `--force-with-lease=refs/heads/${ev}:${evSha}`, 'origin', `:refs/heads/${ev}`]); } catch { /* gone, or re-pushed by a newer ask: keep it */ } }
+  return true;
+}
+
+module.exports = { voidHoldSettled, removeHeld, carryOverOk, approvedTipMatches, autoDecision, autoMarker, planRecovery, askedHold, lostBlockAnswer, planCard, shippedVisualCommit, askedSince, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };

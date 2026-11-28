@@ -50,11 +50,6 @@ async function request(argv) {
   // BRO-7501: the held tip must have passed land-local-check, or the approved change can fail its land.
   let landCheckNote = '';
   const heldSha = va.git(['rev-parse', 'HEAD'], { cwd }); // the one commit checked, judged and pushed (a concurrent commit must not slip in)
-  // BRO-8462: a rebase (a conflict fixed next to the change, main moved) must not re-ask an owner who already said yes.
-  if (!argv.includes('--ask-again')) {
-    const carried = await carryOverApproval({ issueId, heldSha, cwd, dryRun });
-    if (carried !== null) return carried;
-  }
   {
     const lc = require('./lib/land-local-check-log.js').verdictForRef(cwd, heldSha);
     const gate = va.landCheckGate({ status: lc.status, sha: lc.sha, env: process.env, okReason: arg(argv, 'land-check-ok') });
@@ -62,6 +57,12 @@ async function request(argv) {
     if (gate.action === 'refuse') return 1;
     if (gate.reason) landCheckNote = ` land-local-check override: ${gate.reason}.`;
     else if (gate.action === 'warn') landCheckNote = ` land-local-check verdict for this tip: ${lc.status} (not clean).`;
+  }
+  // BRO-8462: a rebase (a conflict fixed next to the change, main moved) must not re-ask an owner who already said
+  // yes. After the land-local-check gate, so a rebased tip that never passed it is not pushed as the approved hold.
+  if (!argv.includes('--ask-again')) {
+    const carried = await carryOverApproval({ issueId, heldSha, cwd, dryRun });
+    if (carried !== null) return carried;
   }
   let verdict;
   try { verdict = JSON.parse(fs.readFileSync(path.join(dir, 'verdict.json'), 'utf8')); } catch { console.error(`Refused: no verdict.json in ${dir}. Run node scripts/visual-qa.mjs first.`); return 1; }
@@ -143,7 +144,9 @@ async function carryOverApproval({ issueId, heldSha, cwd, dryRun }) {
   const comments = (await linear.listIssueComments([issueId])).get(issueId) || [];
   const state = va.classifyStatus(issue.description, comments);
   // approved: tapped, not shipped yet. void here can also be the lander's "held branch no longer matches" after an approval.
-  const approvedOnCard = comments.some((c) => link.unescapeMarkdown(c.body || '').includes(va.MARK.approved));
+  // Only an approval of the LATEST ask counts (an older ask's yes was for another change).
+  const askedAt = Math.max(0, ...comments.filter((c) => /^Asked the owner to look at/.test(link.unescapeMarkdown(c.body || '').trim())).map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite));
+  const approvedOnCard = comments.some((c) => !(new Date(c.createdAt).getTime() < askedAt) && link.unescapeMarkdown(c.body || '').includes(va.MARK.approved));
   if (!(state === 'approved' || (state === 'void' && approvedOnCard))) return null;
   const sha = va.evidenceSha(issue.description);
   if (!sha) return null;

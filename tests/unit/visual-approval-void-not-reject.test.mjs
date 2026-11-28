@@ -78,14 +78,15 @@ test('fix 2: BRO-8451 replay, a recorded Void is never cleaned up as a rejection
   assert.equal(land.planCard(card([ask]), S, ASK_AT + 3600e3).action, 'skip');
 });
 
-test('fix 2: Reject cleans up with the rejection note; a shipped Void or a 14-day-old answer cleans up neutrally', () => {
+test('fix 2: Reject cleans up with the rejection note; a shipped Void cleans up neutrally; nothing else ever does', () => {
   const rej = land.planCard(card([ask, decision('Option B: reject', 'no', undefined, 'answered by the owner')]), S, ASK_AT + 3600e3);
   assert.equal(rej.action, 'cleanup');
   assert.equal(rej.reason, 'rejected');
   const shipped = land.planCard(card([ask, decision(VOID, 'Yes')]), S, ASK_AT + 3600e3, null, null, false, { holdSettled: true });
   assert.deepEqual([shipped.action, shipped.reason], ['cleanup', 'shipped']);
-  const stale = land.planCard(card([ask, decision(VOID, 'Yes')]), S, ASK_AT + 15 * 24 * 3600e3, null, null, false, { holdSettled: false });
-  assert.deepEqual([stale.action, stale.reason], ['cleanup', 'stale']);
+  // An unshipped Void never ages into a deletion (the owner's chat yes would be lost on day 14).
+  const old = land.planCard(card([ask, decision(VOID, 'Yes')]), S, ASK_AT + 400 * 24 * 3600e3, null, null, false, { holdSettled: false });
+  assert.equal(old.action, 'skip');
   // A Void recorded for an OLDER ask is not this ask's answer.
   const older = land.planCard(card([decision('Option B: reject', 'no', ASK_AT - 1000, 'answered by the owner'), ask]), S, ASK_AT + 3600e3);
   assert.equal(older.action, 'skip');
@@ -95,6 +96,9 @@ test('fix 2: status reads a Void as void and own words as answered, never as rej
   assert.equal(va.classifyStatus(ANSWERED(block()), [ask, decision(VOID, 'Yes')]), 'void');
   assert.equal(va.classifyStatus(ANSWERED(block()), [ask, decision('make the badge bigger', 'bigger', undefined, 'answered by the owner')]), 'answered');
   assert.equal(va.classifyStatus(ANSWERED(block()), [ask, decision('Option B: reject', 'no', undefined, 'answered by the owner')]), 'rejected');
+  // Own words that start "Approved" carry no signature: answered, not rejected. No decision comment: answered.
+  assert.equal(va.classifyStatus(ANSWERED(block()), [ask, decision('Approved', 'yes', undefined, 'answered by the owner')]), 'answered');
+  assert.equal(va.classifyStatus(ANSWERED(block()), [ask]), 'answered');
   assert.equal(va.answerKind(VOID), 'void');
   assert.equal(va.answerKind('Rejected'), 'reject');
   assert.equal(va.answerKind('Option A: approve'), 'approve');
@@ -169,4 +173,39 @@ test('fix 3: the evidence commit keeps the approved tip as its parent; changeOnM
   assert.notEqual(va.patchId('main', 'hold', dir), null, 'the plain patch check still sees a diff after landing');
   assert.equal(va.changeOnMain('hold', dir, 'main'), true);
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ── review follow-ups (ship-check) ───────────────────────────────────────────────────────────────────────────
+test('fix 2: a failed git call never reads as "already on main" for a Void cleanup; a gone hold does', () => {
+  assert.equal(land.voidHoldSettled(ID, { git: () => { throw new Error('network down'); }, changeOnMain: () => true }), false);
+  assert.equal(land.voidHoldSettled(ID, { git: (a) => (a[0] === 'ls-remote' ? 'abc\trefs/heads/visual-hold/bro-8451' : (() => { throw new Error('fetch failed'); })()), changeOnMain: () => true }), false);
+  assert.equal(land.voidHoldSettled(ID, { git: () => '', changeOnMain: () => { throw new Error('not reached'); } }), true);
+  assert.equal(land.voidHoldSettled(ID, { git: (a) => (a[0] === 'ls-remote' ? 'abc\trefs/heads/visual-hold/bro-8451' : ''), changeOnMain: () => false }), false);
+});
+
+test('fix 2: removing a held change leases on the commit this run read; a moved hold (a new ask) is kept', () => {
+  const calls = [];
+  const issue = { identifier: ID, description: block() };
+  const moved = land.removeHeld(issue, 'a'.repeat(40), { git: (a) => { calls.push(a.join(' ')); if (a[0] === 'push') throw new Error('stale info'); return 'def\trefs/heads/visual-hold/bro-8451'; } });
+  assert.equal(moved, false);
+  assert.match(calls[0], /--force-with-lease=refs\/heads\/visual-hold\/bro-8451:a{40}/);
+  assert.ok(!calls.some((c) => /visual-evidence/.test(c)), 'evidence kept when the hold moved');
+  const ok = []; assert.equal(land.removeHeld(issue, 'a'.repeat(40), { git: (a) => { ok.push(a.join(' ')); return ''; } }), true);
+  assert.equal(ok.filter((c) => c.startsWith('push')).length, 2);
+});
+
+test('fix 1: the CI --execute run and the session both go through decide(), so a direct dispatch cannot void an unshipped hold', async () => {
+  const r = await roa.decide(visualIssue, 'void', 'Yes', { git: (a) => (a[0] === 'ls-remote' ? 'abc\trefs/heads/visual-hold/bro-8451' : ''), changeOnMain: () => false });
+  assert.ok(r.error);
+  assert.match(roa.execute.toString(), /await decide\(/, 'execute must call decide');
+  const broken = await roa.decide(visualIssue, 'void', 'Yes', { git: () => { throw new Error('network down'); } });
+  assert.match(broken.error, /could not check/);
+});
+
+test('fix 3: a line moved into another function, or a whitespace edit inside a line, is a different change', () => {
+  const sig = (body) => va.changeSignatureOfDiff(`diff --git a/src/p.tsx b/src/p.tsx\n--- a/src/p.tsx\n+++ b/src/p.tsx\n${body}`);
+  const base = sig('@@ -10,0 +11 @@ function Header() {\n+  <span className="gold">AU</span>\n');
+  assert.equal(sig('@@ -40,0 +44 @@ function Header() {\n+  <span className="gold">AU</span>\n'), base, 'line numbers moved only');
+  assert.notEqual(sig('@@ -40,0 +44 @@ function Footer() {\n+  <span className="gold">AU</span>\n'), base, 'moved into another function');
+  assert.notEqual(sig('@@ -10,0 +11 @@ function Header() {\n+  <span className="gold  big">AU</span>\n'), sig('@@ -10,0 +11 @@ function Header() {\n+  <span className="gold big">AU</span>\n'), 'whitespace in a class string');
 });

@@ -101,22 +101,38 @@ async function voidFacts(issue, text, { git = require('./lib/visual-approval.js'
   let affirmative = false;
   try { affirmative = (await import('./lib/owner-reply-classifier.mjs')).classifyOwnerReply(String(text || '')) === 'approve'; } catch { /* wording only */ }
   const first = (e) => String(e && e.message || e).split('\n')[0];
+  const since = Math.floor(askedSince(issue) / 1000);
+  // A depth-1 CI checkout has no history to search or merge-base with: deepen to 6 hours before the ask (request
+  // rebases onto current main just before it asks; main takes ~1,400 commits a day, so two days took 5 minutes
+  // and the job's limit is 5). Never make a full clone shallow. A hold forked earlier has no merge-base here, the
+  // diff below throws, and the Void is refused with that reason (fails closed).
+  let deepen = [];
+  try { if (git(['rev-parse', '--is-shallow-repository']) === 'true') deepen = ['--no-tags', `--shallow-since=${since - 6 * 3600}`]; } catch { /* not a repo: the fetch below fails closed */ }
   try {
     // Gone from origin = nothing left to ship (the lander's holdSettled reads it the same way). But after an owner
     // yes (BRO-8451: the hold was deleted by a wrong cleanup) a Void would hide that the yes went nowhere: then
     // something naming the card must be on main since the ask.
     if (!git(['ls-remote', '--heads', 'origin', hold])) {
       if (!affirmative) return { holdSettled: true, affirmative };
-      git(['fetch', '--quiet', 'origin', 'main']);
+      git(['fetch', '--quiet', ...deepen, 'origin', 'main']);
       const named = new RegExp(`\\b${issue.identifier}(?![0-9])`, 'i');
-      const since = Math.floor(askedSince(issue) / 1000);
       const onMain = named.test(git(['log', 'origin/main', `--since=@${since}`, '--format=%s%n%b']));
       return { holdSettled: onMain, holdGone: !onMain, affirmative };
     }
-    git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hold}:refs/remotes/origin/${hold}`]);
+    git(['fetch', '--quiet', ...deepen, 'origin', 'main', `+refs/heads/${hold}:refs/remotes/origin/${hold}`]);
   } catch (e) { return { error: first(e) }; }
   // Landed already (land.yml rebases, so the hold keeps its own commits): the change itself must be in main.
   try { return { holdSettled: changeOnMain(`origin/${hold}`), affirmative }; } catch (e) { return { error: first(e) }; }
+}
+
+/**
+ * BRO-8462: resolveDecision plus, for a visual Void, the git facts it needs. Both the session check and the CI
+ * --execute run go through here, so neither can record a Void the other would refuse. `deps` is for tests.
+ */
+async function decide(issue, choice, text, deps) {
+  const facts = choice === 'void' && issue && link.parseVisualApproval(issue.description) ? await voidFacts(issue, text, deps) : {};
+  if (facts.error) return { error: `could not check the held change against main (${facts.error}); a Void is only recorded once that check passes.` };
+  return resolveDecision(issue, choice, facts);
 }
 
 /** When the latest ask was made (ms): the newest "Asked the owner" comment, else the card's creation. */
@@ -140,7 +156,9 @@ async function execute(opts) {
   const secret = process.env.APPROVAL_HMAC_SECRET;
   if (!secret) { console.error('[record-owner-answer] APPROVAL_HMAC_SECRET is not set (this mode runs in CI)'); return 1; }
   const linear = require('./lib/linear-client');
-  const r = resolveDecision(await fetchIssue(opts.id), opts.choice);
+  // BRO-8462: the same Void check as the session runs, here too, so a direct dispatch (or a hold that moved after
+  // the session's check) cannot close an unshipped visual ask.
+  const r = await decide(await fetchIssue(opts.id), opts.choice, opts.text);
   if (r.error) { console.error(`[record-owner-answer] refused: ${r.error}`); return 1; }
   // Public log: card id and choice key only, never the question or the owner's words.
   console.log(`[record-owner-answer] ${opts.id}: recording choice ${r.choiceKey}`);
@@ -161,10 +179,7 @@ async function main(argv = process.argv.slice(2)) {
   // Check the card first, so a wrong card or a letter from a different question fails here.
   let r;
   try {
-    const issue = await fetchIssue(opts.id);
-    const facts = opts.choice === 'void' && issue && link.parseVisualApproval(issue.description) ? await voidFacts(issue, opts.text) : {};
-    if (facts.error) { console.error(`[record-owner-answer] refused: could not check the held change against main (${facts.error}); a Void is only recorded once that check passes.`); return 1; }
-    r = resolveDecision(issue, opts.choice, facts);
+    r = await decide(await fetchIssue(opts.id), opts.choice, opts.text);
   } catch (e) { console.error(`[record-owner-answer] could not read the card: ${e.message}`); return 1; }
   if (r.decision) console.log(describe(r.decision));
   if (r.error) { console.error(`[record-owner-answer] refused: ${r.error}`); return 1; }
@@ -177,4 +192,4 @@ if (require.main === module) {
   main().then((code) => { process.exitCode = code; }, (err) => { console.error(`[${path.basename(__filename)}] ${err.stack || err.message}`); process.exitCode = 1; });
 }
 
-module.exports = { main, parseArgs, resolveDecision, voidFacts, WORKFLOW };
+module.exports = { main, execute, decide, parseArgs, resolveDecision, voidFacts, WORKFLOW };
