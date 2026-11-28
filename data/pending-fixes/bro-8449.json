@@ -1,0 +1,126 @@
+{
+  "issueNumber": "bro-8449",
+  "planId": "e134526a-50d8-4e3c-8ccb-e434ab34b764",
+  "status": "pending",
+  "createdAt": "2026-11-28T17:44:51.457Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-8449: flag 6 included reviews that review a tour, regional or earlier staging, not this production",
+    "steps": [
+      "ceilidh-the-musical-off-west-end-2026/the-recs--unknown.json: wrongProduction",
+      "ceilidh-the-musical-off-west-end-2026/the-recs--unknown.json: wrongProductionReason",
+      "kinky-boots-west-end-2015/times-uk--allan-radcliffe.json: wrongProduction",
+      "kinky-boots-west-end-2015/times-uk--allan-radcliffe.json: wrongProductionReason",
+      "let-the-right-one-in-west-end-2014/independent--david-pollock.json: wrongProduction",
+      "let-the-right-one-in-west-end-2014/independent--david-pollock.json: wrongProductionReason",
+      "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json: wrongProduction",
+      "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json: wrongProductionReason",
+      "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json: wrongProduction",
+      "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json: wrongProductionReason",
+      "the-drifters-girl-west-end-2021/thereviewshub--sonny-waheed.json: wrongProduction",
+      "the-drifters-girl-west-end-2021/thereviewshub--sonny-waheed.json: wrongProductionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "ceilidh-the-musical-off-west-end-2026/the-recs--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "ceilidh-the-musical-off-west-end-2026/the-recs--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ceilidh-the-musical-off-west-end-2026/the-recs--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "url-place: UK tour date reviewed by The Recs SW (url touring); BRO-8449",
+        "description": "ceilidh-the-musical-off-west-end-2026/the-recs--unknown.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kinky-boots-west-end-2015/times-uk--allan-radcliffe.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "kinky-boots-west-end-2015/times-uk--allan-radcliffe.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kinky-boots-west-end-2015/times-uk--allan-radcliffe.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "url-place: 2018 UK tour at Edinburgh Playhouse, not the 2015 West End run; BRO-8449",
+        "description": "kinky-boots-west-end-2015/times-uk--allan-radcliffe.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "let-the-right-one-in-west-end-2014/independent--david-pollock.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "let-the-right-one-in-west-end-2014/independent--david-pollock.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "let-the-right-one-in-west-end-2014/independent--david-pollock.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "url-place: Dundee Rep premiere of June 2013, before the West End run; BRO-8449",
+        "description": "let-the-right-one-in-west-end-2014/independent--david-pollock.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "url-place: Leicester Curve tour url; stored body is a cookie banner; BRO-8449",
+        "description": "matilda-the-musical-west-end-2021/whatsonstage--andy-plaice.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "url-place: reviews the summer 2024 Chichester staging, not the Gielgud run; BRO-8449",
+        "description": "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-drifters-girl-west-end-2021/thereviewshub--sonny-waheed.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-drifters-girl-west-end-2021/thereviewshub--sonny-waheed.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-drifters-girl-west-end-2021/thereviewshub--sonny-waheed.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "url-place: UK tour at Leeds Grand Theatre, never a West End venue; BRO-8449",
+        "description": "the-drifters-girl-west-end-2021/thereviewshub--sonny-waheed.json: wrongProductionReason"
+      }
+    ]
+  }
+}
